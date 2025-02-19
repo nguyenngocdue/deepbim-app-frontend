@@ -1,0 +1,52 @@
+name: Deploy Frontend to Server
+
+on:
+  push:
+    branches:
+      - develop
+  workflow_dispatch:
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🛒 Checkout code
+        uses: actions/checkout@v3
+
+      - name: 📦 Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: 📥 Install dependencies
+        run: npm install
+
+      - name: 🏗️ Build Frontend
+        run: npm run build
+
+      - name: 🚀 Deploy to Beta Server via SSH (branch develop)
+        if: github.ref == 'refs/heads/develop'
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.BETA_SERVER_HOST }}
+          username: ${{ secrets.BETA_SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.BETA_SERVER_PORT }}
+          script: |
+            rm -rf /var/www/deepbim_beta/*
+          source: './dist/'
+          target: '/var/www/deepbim_beta/'
+
+      - name: 🚀 Deploy to Production Server via SSH (branch main)
+        if: github.ref == 'refs/heads/main'
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.PROD_SERVER_HOST }}
+          username: ${{ secrets.PROD_SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.PROD_SERVER_PORT }}
+          script: |
+            rm -rf /var/www/deepbim_app_frontend/*
+          source: './dist/'
+          target: '/var/www/deepbim_app_frontend/'
