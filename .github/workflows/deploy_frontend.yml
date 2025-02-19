@@ -34,19 +34,6 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.BETA_SERVER_PORT }}
           script: |
-            rm -rf /var/www/deepbim_beta/*
-          source: './dist/'
-          target: '/var/www/deepbim_beta/'
-
-      - name: 🚀 Deploy to Production Server via SSH (branch main)
-        if: github.ref == 'refs/heads/main'
-        uses: appleboy/ssh-action@v0.1.7
-        with:
-          host: ${{ secrets.PROD_SERVER_HOST }}
-          username: ${{ secrets.PROD_SERVER_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: ${{ secrets.PROD_SERVER_PORT }}
-          script: |
             rm -rf /var/www/deepbim_app_frontend/*
           source: './dist/'
           target: '/var/www/deepbim_app_frontend/'
