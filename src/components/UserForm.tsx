@@ -12,8 +12,8 @@ export default function UserForm() {
   const onSubmit = async (data: UserFormData) => {
     try {
         // console.log(`hello ${import.meta.env.VITE_API_BASE_URL}/users`);
-    //   const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/users`, data);
-      const response = await axios.post(`https://api-beta.deepbim.net/users`, data);
+      const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/users`, data);
+    //   const response = await axios.post(`https://api-beta.deepbim.net/users`, data);
 
       console.log('User created:', response.data);
       alert('User created successfully!');
