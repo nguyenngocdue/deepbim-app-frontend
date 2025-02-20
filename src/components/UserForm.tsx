@@ -11,6 +11,7 @@ export default function UserForm() {
 
   const onSubmit = async (data: UserFormData) => {
     try {
+        console.log(`${import.meta.env.VITE_API_BASE_URL}/users`);
       const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/users`, data);
       console.log('User created:', response.data);
       alert('User created successfully!');
