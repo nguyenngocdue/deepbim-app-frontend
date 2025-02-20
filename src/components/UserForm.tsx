@@ -29,7 +29,7 @@ export default function UserForm() {
       <label>Name:</label>
       <input type="text" {...register('name')} required />
 
-      <button type="submit" style={{ marginTop: '10px' }}>Submit</button>
+      <button type="submit" style={{ marginTop: '10px' }}>Ok</button>
     </form>
   );
 }
