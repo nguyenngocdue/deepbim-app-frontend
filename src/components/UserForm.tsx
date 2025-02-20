@@ -20,7 +20,6 @@ export default function UserForm() {
       reset(); // Reset form sau khi gửi thành công
     } catch (error) {
       console.error('Failed to create user:', error);
-      alert('Failed to create user!');
     }
   };
 
