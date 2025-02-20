@@ -11,7 +11,7 @@ export default function UserForm() {
 
   const onSubmit = async (data: UserFormData) => {
     try {
-      const response = await axios.post('http://178.128.28.119:3701/users', data);
+      const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/users`, data);
       console.log('User created:', response.data);
       alert('User created successfully!');
       reset(); // Reset form sau khi gửi thành công
