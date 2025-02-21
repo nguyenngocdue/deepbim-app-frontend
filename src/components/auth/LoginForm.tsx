@@ -1,25 +1,33 @@
-import SocialLogin from "@/components/auth/SocialLogin";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import React from "react";
-
+import SocialLogin from "./SocialLogin";
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
 
 const LoginForm: React.FC = () => {
   return (
     <div className="w-full max-w-md mx-auto">
-      <h2 className="text-2xl font-bold text-center mb-6">Đăng nhập</h2>
+      <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Sign In</h2>
 
       <form className="space-y-4">
-        <Input type="email" label="Email" placeholder="Nhập email của bạn" required />
-        <Input type="password" label="Mật khẩu" placeholder="••••••••" required />
-        <Button className="w-full">Đăng nhập</Button>
+        <Input type="email" label="Username or email" icon="email" placeholder="Enter your email" required />
+        <Input type="password" label="Password" icon="password" placeholder="••••••••" required />
+
+        <div className="flex items-center justify-between text-sm">
+          <label className="flex items-center space-x-2">
+            <input type="checkbox" className="w-4 h-4 text-blue-600" />
+            <span>Remember me</span>
+          </label>
+          <a href="#" className="text-blue-600 hover:underline">Forgot password?</a>
+        </div>
+
+        <Button className="w-full">Sign In</Button>
       </form>
 
-      <div className="text-center mt-4">
-        <span className="text-sm text-gray-600">Chưa có tài khoản? <a href="#" className="text-blue-500">Đăng ký</a></span>
-      </div>
-
       <SocialLogin />
+
+      <div className="text-center mt-4">
+        <span className="text-sm text-gray-600">New here? <a href="#" className="text-blue-600 font-semibold">Create An Account</a></span>
+      </div>
     </div>
   );
 };
