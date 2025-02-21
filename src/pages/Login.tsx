@@ -3,20 +3,20 @@ import LoginForm from "../components/auth/LoginForm";
 
 const Login: React.FC = () => {
   return (
-    <div className="flex min-h-screen">
-      {/* Left Column - Modern Teal Green Gradient */}
-      <div className="w-1/2 flex items-center justify-center bg-gradient-to-r from-green-300 to-teal-500 text-white px-10">
+    <div className="flex flex-col md:flex-row min-h-screen">
+      {/* Left Column - Gradient Section */}
+      <div className="md:w-1/2 w-full flex items-center justify-center bg-gradient-to-r from-green-300 to-teal-500 text-white px-10 py-16 md:py-0">
         <div className="max-w-md text-center">
-          {/* Increased Font Sizes for Better Visibility */}
-          <h1 className="text-6xl font-extrabold mb-4">Welcome back!</h1>
-          <p className="text-xl font-medium whitespace-nowrap">
+          {/* Responsive Text */}
+          <h1 className="text-4xl md:text-6xl font-extrabold mb-4">Welcome back!</h1>
+          <p className="text-lg md:text-xl font-medium whitespace-nowrap">
             You can sign in to access your existing account.
           </p>
         </div>
       </div>
 
       {/* Right Column - Login Form */}
-      <div className="w-1/2 flex items-center justify-center bg-white">
+      <div className="md:w-1/2 w-full flex items-center justify-center bg-white px-6 py-12">
         <div className="w-full max-w-md">
           <LoginForm />
         </div>
