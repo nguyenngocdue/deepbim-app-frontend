@@ -21,7 +21,7 @@ const SignupForm: React.FC = () => {
 
       <div className="text-center mt-4">
         <span className="text-sm text-gray-600">
-          Already have an account? <a href="/login" className="text-blue-600 font-semibold">Sign In</a>
+          Already have an account? <a href="/signin" className="text-blue-600 font-semibold">Sign In</a>
         </span>
       </div>
     </div>
