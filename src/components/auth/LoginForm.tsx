@@ -2,6 +2,7 @@ import React from "react";
 import SocialLogin from "./SocialLogin";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+import { Link } from "react-router-dom";
 
 const LoginForm: React.FC = () => {
   return (
@@ -25,8 +26,14 @@ const LoginForm: React.FC = () => {
 
       <SocialLogin />
 
+      {/* Navigation link to Sign-Up */}
       <div className="text-center mt-4">
-        <span className="text-sm text-gray-600">New here? <a href="#" className="text-blue-600 font-semibold">Create An Account</a></span>
+        <span className="text-sm text-gray-600">
+          New here?{" "}
+          <Link to="/signup" className="text-blue-600 font-semibold hover:underline">
+            Create An Account
+          </Link>
+        </span>
       </div>
     </div>
   );
