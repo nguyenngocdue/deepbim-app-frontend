@@ -128,7 +128,7 @@
   }
 }
 
-/* @layer base {
+@layer base {
   * {
     @apply border-border;
     scrollbar-width: thin;
@@ -140,4 +140,4 @@
   body {
     @apply min-h-svh w-full bg-background text-foreground;
   }
-} */
+}
