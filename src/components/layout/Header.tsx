@@ -4,7 +4,7 @@ const Header = () => {
   return (
     <header className="fixed top-0 w-full bg-white shadow-md z-50">
       <div className="container mx-auto flex justify-between items-center py-4 px-6">
-        <Link to="/" className="text-2xl font-bold">TLC Modular</Link>
+        <Link to="/" className="text-2xl font-bold">DeepBIM</Link>
         <nav>
           <ul className="flex space-x-6 text-lg">
             <li><Link to="/" className="hover:text-blue-600">Home</Link></li>
