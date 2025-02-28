@@ -1,7 +1,7 @@
 import ModelDetails from "@/components/bim-viewer/model-details";
 import Sidebar from "@/components/bim-viewer/sidebar";
-import ThreeScene from "@/components/bim-viewer/three-scene";
 import Toolbar from "@/components/bim-viewer/toolbar";
+import Viewer from "@/features/bim-viewer/statis/Viewer";
 
 export default function BimViewerUT() {
   return (
@@ -9,7 +9,8 @@ export default function BimViewerUT() {
       <Toolbar />
       <div className="flex flex-grow">
         <Sidebar />
-        <ThreeScene />
+        {/* <ThreeScene /> */}
+        <Viewer/>
         <ModelDetails />
       </div>
     </div>

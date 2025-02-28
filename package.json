@@ -39,6 +39,9 @@
     "@tanstack/react-query": "^5.62.3",
     "@tanstack/react-router": "^1.86.1",
     "@tanstack/react-table": "^8.20.5",
+    "@thatopen/components": "2.4.3",
+    "@thatopen/fragments": "2.4.0",
+    "@thatopen/ui": "^2.4.2",
     "axios": "^1.7.9",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -51,12 +54,14 @@
     "react-hook-form": "^7.54.0",
     "react-icons": "^5.5.0",
     "recharts": "^2.14.1",
+    "stats": "^1.0.0",
+    "stats.js": "^0.17.0",
     "tailwind-merge": "^2.5.5",
     "tailwindcss-animate": "^1.0.7",
-    "three": "^0.168.0",
+   "three": "0.160.1",
+    "web-ifc": "^0.0.66",
     "zod": "^3.23.8",
-    "zustand": "^5.0.2",
-    "react-day-picker": "8.10.1"
+    "zustand": "^5.0.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.16.0",

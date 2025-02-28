@@ -1,6 +1,6 @@
 import { createLazyFileRoute } from '@tanstack/react-router'
-import BimViewerLayout from '@/pages/bim-viewer/BimViewerLayout'
+import BimViewerUT from '@/pages/bim-viewer/BimViewerUT'
 
 export const Route = createLazyFileRoute('/_authenticated/bim-viewer-ut/')({
-  component: BimViewerLayout,
+  component: BimViewerUT,
 })
