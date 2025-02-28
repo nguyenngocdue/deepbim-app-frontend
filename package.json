@@ -55,7 +55,8 @@
     "tailwindcss-animate": "^1.0.7",
     "three": "^0.168.0",
     "zod": "^3.23.8",
-    "zustand": "^5.0.2"
+    "zustand": "^5.0.2",
+    "react-day-picker": "8.10.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.16.0",
