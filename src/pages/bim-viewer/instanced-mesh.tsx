@@ -1,73 +1,106 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
 export default function InstancedMesh() {
   const mountRef = useRef<HTMLDivElement | null>(null);
-  const rendererRef = useRef<THREE.WebGLRenderer | null>(null); // Store renderer reference
+  const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
+  const [isRotating, setIsRotating] = useState(false);
 
   useEffect(() => {
-    // If the renderer already exists, do nothing
     if (rendererRef.current) return;
 
-    // Create Scene, Camera, Renderer
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const camera = new THREE.PerspectiveCamera(
+      75,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      1000
+    );
+    camera.position.set(0, 0, 20);
+
     const renderer = new THREE.WebGLRenderer({ antialias: true });
-
     renderer.setSize(window.innerWidth, window.innerHeight);
-
-    // Remove old canvas if it exists
-    if (mountRef.current?.firstChild) {
-      mountRef.current.removeChild(mountRef.current.firstChild);
-    }
-
-    // Append Renderer to DOM inside React ref
     mountRef.current?.appendChild(renderer.domElement);
-    rendererRef.current = renderer; // Store renderer reference
+    rendererRef.current = renderer;
 
-    // Handle Resize Events
-    window.addEventListener("resize", () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-    });
+    // Thêm `OrbitControls`
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.05;
+    controls.enableRotate = true;
+    controls.enableZoom = true;
+    controls.addEventListener("start", () => setIsRotating(true));
+    controls.addEventListener("end", () => setIsRotating(false));
 
-    // Create Geometry & Material
-    const geometry = new THREE.BoxGeometry(1, 1, 1);
-    const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-
-    // Create InstancedMesh with 100 instances
+    // Tạo InstancedMesh với random màu
     const count = 100;
+    const geometry = new THREE.BoxGeometry(1, 1, 1);
+    const material = new THREE.MeshPhongMaterial({ vertexColors: true }); // Dùng vertex color
     const instancedMesh = new THREE.InstancedMesh(geometry, material, count);
-
-    // Apply transformations to each instance
-    const dummy = new THREE.Object3D();
-    for (let i = 0; i < count; i++) {
-      dummy.position.set(Math.random() * 10, Math.random() * 10, Math.random() * 10);
-      dummy.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
-      dummy.updateMatrix();
-      instancedMesh.setMatrixAt(i, dummy.matrix);
-    }
-
-    // Add InstancedMesh to Scene
     scene.add(instancedMesh);
 
-    // Camera Position
-    camera.position.z = 50;
+    const dummy = new THREE.Object3D();
+    const colors = new Float32Array(count * 3); // RGB cho từng instance
+
+    for (let i = 0; i < count; i++) {
+      // Random vị trí
+      dummy.position.set(
+        Math.random() * 10 - 5,
+        Math.random() * 10 - 5,
+        Math.random() * 10 - 5
+      );
+      dummy.rotation.set(
+        Math.random() * Math.PI,
+        Math.random() * Math.PI,
+        Math.random() * Math.PI
+      );
+      dummy.updateMatrix();
+      instancedMesh.setMatrixAt(i, dummy.matrix);
+
+      // Random màu
+      colors[i * 3] = Math.random(); // Red
+      colors[i * 3 + 1] = Math.random(); // Green
+      colors[i * 3 + 2] = Math.random(); // Blue
+    }
+
+    // Gán màu vào InstancedMesh
+    instancedMesh.geometry.setAttribute(
+      "color",
+      new THREE.InstancedBufferAttribute(colors, 3)
+    );
+    instancedMesh.instanceMatrix.needsUpdate = true;
+
+    // Thêm ánh sáng
+    const light = new THREE.DirectionalLight(0xffffff, 1);
+    light.position.set(5, 10, 5);
+    scene.add(light);
+    scene.add(new THREE.AmbientLight("#D9D2E9"));
 
     // Animation Loop
     const animate = () => {
       requestAnimationFrame(animate);
+
+      if (isRotating) {
+        for (let i = 0; i < count; i++) {
+          instancedMesh.getMatrixAt(i, dummy.matrix);
+          dummy.rotation.y += 0.01;
+          dummy.updateMatrix();
+          instancedMesh.setMatrixAt(i, dummy.matrix);
+        }
+        instancedMesh.instanceMatrix.needsUpdate = true;
+      }
+
+      controls.update();
       renderer.render(scene, camera);
     };
     animate();
 
-    // Cleanup on Unmount
     return () => {
       renderer.dispose();
-      rendererRef.current = null; // Remove reference
+      rendererRef.current = null;
     };
-  }, []);
+  }, [isRotating]);
 
   return (
     <div className="min-h-screen flex flex-col">
