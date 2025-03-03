@@ -55,6 +55,9 @@ const AuthenticatedBimViewerIndexLazyImport = createFileRoute(
 const AuthenticatedBimViewerUtIndexLazyImport = createFileRoute(
   '/_authenticated/bim-viewer-ut/',
 )()
+const AuthenticatedBimViewerIfcIndexLazyImport = createFileRoute(
+  '/_authenticated/bim-viewer-ifc/',
+)()
 const AuthenticatedAppsIndexLazyImport = createFileRoute(
   '/_authenticated/apps/',
 )()
@@ -242,6 +245,17 @@ const AuthenticatedBimViewerUtIndexLazyRoute =
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any).lazy(() =>
     import('./routes/_authenticated/bim-viewer-ut/index.lazy').then(
+      (d) => d.Route,
+    ),
+  )
+
+const AuthenticatedBimViewerIfcIndexLazyRoute =
+  AuthenticatedBimViewerIfcIndexLazyImport.update({
+    id: '/bim-viewer-ifc/',
+    path: '/bim-viewer-ifc/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any).lazy(() =>
+    import('./routes/_authenticated/bim-viewer-ifc/index.lazy').then(
       (d) => d.Route,
     ),
   )
@@ -437,6 +451,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppsIndexLazyImport
       parentRoute: typeof AuthenticatedRouteImport
     }
+    '/_authenticated/bim-viewer-ifc/': {
+      id: '/_authenticated/bim-viewer-ifc/'
+      path: '/bim-viewer-ifc'
+      fullPath: '/bim-viewer-ifc'
+      preLoaderRoute: typeof AuthenticatedBimViewerIfcIndexLazyImport
+      parentRoute: typeof AuthenticatedRouteImport
+    }
     '/_authenticated/bim-viewer-ut/': {
       id: '/_authenticated/bim-viewer-ut/'
       path: '/bim-viewer-ut'
@@ -521,6 +542,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedSettingsRouteLazyRoute: typeof AuthenticatedSettingsRouteLazyRouteWithChildren
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
   AuthenticatedAppsIndexLazyRoute: typeof AuthenticatedAppsIndexLazyRoute
+  AuthenticatedBimViewerIfcIndexLazyRoute: typeof AuthenticatedBimViewerIfcIndexLazyRoute
   AuthenticatedBimViewerUtIndexLazyRoute: typeof AuthenticatedBimViewerUtIndexLazyRoute
   AuthenticatedBimViewerIndexLazyRoute: typeof AuthenticatedBimViewerIndexLazyRoute
   AuthenticatedChatsIndexLazyRoute: typeof AuthenticatedChatsIndexLazyRoute
@@ -534,6 +556,8 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
     AuthenticatedSettingsRouteLazyRouteWithChildren,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
   AuthenticatedAppsIndexLazyRoute: AuthenticatedAppsIndexLazyRoute,
+  AuthenticatedBimViewerIfcIndexLazyRoute:
+    AuthenticatedBimViewerIfcIndexLazyRoute,
   AuthenticatedBimViewerUtIndexLazyRoute:
     AuthenticatedBimViewerUtIndexLazyRoute,
   AuthenticatedBimViewerIndexLazyRoute: AuthenticatedBimViewerIndexLazyRoute,
@@ -565,6 +589,7 @@ export interface FileRoutesByFullPath {
   '/settings/display': typeof AuthenticatedSettingsDisplayLazyRoute
   '/settings/notifications': typeof AuthenticatedSettingsNotificationsLazyRoute
   '/apps': typeof AuthenticatedAppsIndexLazyRoute
+  '/bim-viewer-ifc': typeof AuthenticatedBimViewerIfcIndexLazyRoute
   '/bim-viewer-ut': typeof AuthenticatedBimViewerUtIndexLazyRoute
   '/bim-viewer': typeof AuthenticatedBimViewerIndexLazyRoute
   '/chats': typeof AuthenticatedChatsIndexLazyRoute
@@ -591,6 +616,7 @@ export interface FileRoutesByTo {
   '/settings/display': typeof AuthenticatedSettingsDisplayLazyRoute
   '/settings/notifications': typeof AuthenticatedSettingsNotificationsLazyRoute
   '/apps': typeof AuthenticatedAppsIndexLazyRoute
+  '/bim-viewer-ifc': typeof AuthenticatedBimViewerIfcIndexLazyRoute
   '/bim-viewer-ut': typeof AuthenticatedBimViewerUtIndexLazyRoute
   '/bim-viewer': typeof AuthenticatedBimViewerIndexLazyRoute
   '/chats': typeof AuthenticatedChatsIndexLazyRoute
@@ -621,6 +647,7 @@ export interface FileRoutesById {
   '/_authenticated/settings/display': typeof AuthenticatedSettingsDisplayLazyRoute
   '/_authenticated/settings/notifications': typeof AuthenticatedSettingsNotificationsLazyRoute
   '/_authenticated/apps/': typeof AuthenticatedAppsIndexLazyRoute
+  '/_authenticated/bim-viewer-ifc/': typeof AuthenticatedBimViewerIfcIndexLazyRoute
   '/_authenticated/bim-viewer-ut/': typeof AuthenticatedBimViewerUtIndexLazyRoute
   '/_authenticated/bim-viewer/': typeof AuthenticatedBimViewerIndexLazyRoute
   '/_authenticated/chats/': typeof AuthenticatedChatsIndexLazyRoute
@@ -651,6 +678,7 @@ export interface FileRouteTypes {
     | '/settings/display'
     | '/settings/notifications'
     | '/apps'
+    | '/bim-viewer-ifc'
     | '/bim-viewer-ut'
     | '/bim-viewer'
     | '/chats'
@@ -676,6 +704,7 @@ export interface FileRouteTypes {
     | '/settings/display'
     | '/settings/notifications'
     | '/apps'
+    | '/bim-viewer-ifc'
     | '/bim-viewer-ut'
     | '/bim-viewer'
     | '/chats'
@@ -704,6 +733,7 @@ export interface FileRouteTypes {
     | '/_authenticated/settings/display'
     | '/_authenticated/settings/notifications'
     | '/_authenticated/apps/'
+    | '/_authenticated/bim-viewer-ifc/'
     | '/_authenticated/bim-viewer-ut/'
     | '/_authenticated/bim-viewer/'
     | '/_authenticated/chats/'
@@ -774,6 +804,7 @@ export const routeTree = rootRoute
         "/_authenticated/settings",
         "/_authenticated/",
         "/_authenticated/apps/",
+        "/_authenticated/bim-viewer-ifc/",
         "/_authenticated/bim-viewer-ut/",
         "/_authenticated/bim-viewer/",
         "/_authenticated/chats/",
@@ -848,6 +879,10 @@ export const routeTree = rootRoute
     },
     "/_authenticated/apps/": {
       "filePath": "_authenticated/apps/index.lazy.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/bim-viewer-ifc/": {
+      "filePath": "_authenticated/bim-viewer-ifc/index.lazy.tsx",
       "parent": "/_authenticated"
     },
     "/_authenticated/bim-viewer-ut/": {

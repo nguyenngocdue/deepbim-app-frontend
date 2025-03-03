@@ -2,10 +2,12 @@ import React, { useEffect, useRef } from "react";
 import * as OBC from "@thatopen/components";
 import * as THREE from "three";
 
+
 const Viewer: React.FC = () => {
     const containerRef = useRef<HTMLDivElement | null>(null);
     const cubeRef = useRef<HTMLDivElement | null>(null);
     const cubeRendererRef = useRef<THREE.WebGLRenderer | null>(null);
+
 
     useEffect(() => {
         const initializeViewer = async () => {
@@ -36,16 +38,18 @@ const Viewer: React.FC = () => {
 
             // IFC Loader
             const fragments = new OBC.FragmentsManager(components);
-            const loadIfcModel = async () => {
-                const response = await fetch(
-                    "https://thatopen.github.io/engine_components/resources/small.frag"
-                );
-                const arrayBuffer = await response.arrayBuffer();
-                const buffer = new Uint8Array(arrayBuffer);
-                const model = fragments.load(buffer);
-                world.scene.three.add(model);
-            };
-            await loadIfcModel();
+            // const loadIfcModel = async () => {
+            //     const response = await fetch(
+            //         "https://thatopen.github.io/engine_components/resources/small.frag"
+            //     );
+            //     const arrayBuffer = await response.arrayBuffer();
+            //     const buffer = new Uint8Array(arrayBuffer);
+            //     const model = fragments.load(buffer);
+            //     world.scene.three.add(model);
+            // };
+            // await loadIfcModel();
+
+            
 
             // Add ViewCube
             const addViewCube = () => {

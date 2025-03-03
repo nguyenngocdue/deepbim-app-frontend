@@ -14,7 +14,8 @@ export const Route = createLazyFileRoute('/_authenticated/bim-viewer/')({
 function ProvidersWrapper({ children }: { children: React.ReactNode }) {
   return (
     <SearchProvider>
-      <SidebarProvider defaultOpen={true}>{children}</SidebarProvider>
+      {/* <SidebarProvider defaultOpen={true}>{children}</SidebarProvider> */}
+      {children}
     </SearchProvider>
   )
 }

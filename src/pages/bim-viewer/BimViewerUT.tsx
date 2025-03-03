@@ -8,7 +8,7 @@ export default function BimViewerUT() {
     <div className="min-h-screen flex flex-col">
       <Toolbar />
       <div className="flex flex-grow">
-        <Sidebar />
+        {/* <Sidebar /> */}
         {/* <ThreeScene /> */}
         <Viewer/>
         <ModelDetails />
