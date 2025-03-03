@@ -15,14 +15,18 @@ const IfcLoader: React.FC = () => {
 
     /** 🏗️ Initialize Grid Scene (Always Visible) */
     useEffect(() => {
+
+        
         if (!gridContainerRef.current) return;
-    
+        
         // If world is already initialized, do nothing
         if (worldRef.current) return;
-    
+        
         const components = new OBC.Components();
         componentsRef.current = components;
-    
+
+        
+
         const worlds = components.get(OBC.Worlds);
         const world = worlds.create<
             OBC.SimpleScene,
@@ -47,6 +51,9 @@ const IfcLoader: React.FC = () => {
 
     /** 🏗️ Load IFC Model and create a new canvas */
     async function loadIfc(buffer?: Uint8Array) {
+
+        
+
         if (!ifcContainerRef.current) return;
     
         setLoading(true); // 🔴 Show spinner while uploading
@@ -88,6 +95,7 @@ const IfcLoader: React.FC = () => {
             WEBIFC.IFCTENDONANCHOR,
             WEBIFC.IFCREINFORCINGBAR,
             WEBIFC.IFCREINFORCINGELEMENT,
+            WEBIFC.IFCCOLUMN
         ];
     
         for (const cat of excludedCats) {
@@ -98,8 +106,9 @@ const IfcLoader: React.FC = () => {
     
         // Load IFC model
         const model = await fragmentIfcLoader.load(buffer);
-        model.name = "example";
+
         console.log("Model loaded:", model);
+        console.log(WEBIFC.IFCWALLSTANDARDCASE)
     
         // Position the model correctly
         model.position.set(0, 0, 0);

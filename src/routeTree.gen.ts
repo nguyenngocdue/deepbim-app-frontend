@@ -70,6 +70,9 @@ const AuthenticatedSettingsAccountLazyImport = createFileRoute(
 const AuthenticatedBimViewerUtViewerLazyImport = createFileRoute(
   '/_authenticated/bim-viewer-ut/viewer',
 )()
+const AuthenticatedBimViewerUtInstancedMeshLazyImport = createFileRoute(
+  '/_authenticated/bim-viewer-ut/instanced-mesh',
+)()
 const AuthenticatedBimViewerUtIfcLoaderLazyImport = createFileRoute(
   '/_authenticated/bim-viewer-ut/ifc-loader',
 )()
@@ -303,6 +306,17 @@ const AuthenticatedBimViewerUtViewerLazyRoute =
     ),
   )
 
+const AuthenticatedBimViewerUtInstancedMeshLazyRoute =
+  AuthenticatedBimViewerUtInstancedMeshLazyImport.update({
+    id: '/bim-viewer-ut/instanced-mesh',
+    path: '/bim-viewer-ut/instanced-mesh',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any).lazy(() =>
+    import('./routes/_authenticated/bim-viewer-ut/instanced-mesh.lazy').then(
+      (d) => d.Route,
+    ),
+  )
+
 const AuthenticatedBimViewerUtIfcLoaderLazyRoute =
   AuthenticatedBimViewerUtIfcLoaderLazyImport.update({
     id: '/bim-viewer-ut/ifc-loader',
@@ -421,6 +435,13 @@ declare module '@tanstack/react-router' {
       path: '/bim-viewer-ut/ifc-loader'
       fullPath: '/bim-viewer-ut/ifc-loader'
       preLoaderRoute: typeof AuthenticatedBimViewerUtIfcLoaderLazyImport
+      parentRoute: typeof AuthenticatedRouteImport
+    }
+    '/_authenticated/bim-viewer-ut/instanced-mesh': {
+      id: '/_authenticated/bim-viewer-ut/instanced-mesh'
+      path: '/bim-viewer-ut/instanced-mesh'
+      fullPath: '/bim-viewer-ut/instanced-mesh'
+      preLoaderRoute: typeof AuthenticatedBimViewerUtInstancedMeshLazyImport
       parentRoute: typeof AuthenticatedRouteImport
     }
     '/_authenticated/bim-viewer-ut/viewer': {
@@ -542,6 +563,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedSettingsRouteLazyRoute: typeof AuthenticatedSettingsRouteLazyRouteWithChildren
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
   AuthenticatedBimViewerUtIfcLoaderLazyRoute: typeof AuthenticatedBimViewerUtIfcLoaderLazyRoute
+  AuthenticatedBimViewerUtInstancedMeshLazyRoute: typeof AuthenticatedBimViewerUtInstancedMeshLazyRoute
   AuthenticatedBimViewerUtViewerLazyRoute: typeof AuthenticatedBimViewerUtViewerLazyRoute
   AuthenticatedAppsIndexLazyRoute: typeof AuthenticatedAppsIndexLazyRoute
   AuthenticatedBimViewerIndexLazyRoute: typeof AuthenticatedBimViewerIndexLazyRoute
@@ -557,6 +579,8 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
   AuthenticatedBimViewerUtIfcLoaderLazyRoute:
     AuthenticatedBimViewerUtIfcLoaderLazyRoute,
+  AuthenticatedBimViewerUtInstancedMeshLazyRoute:
+    AuthenticatedBimViewerUtInstancedMeshLazyRoute,
   AuthenticatedBimViewerUtViewerLazyRoute:
     AuthenticatedBimViewerUtViewerLazyRoute,
   AuthenticatedAppsIndexLazyRoute: AuthenticatedAppsIndexLazyRoute,
@@ -585,6 +609,7 @@ export interface FileRoutesByFullPath {
   '/503': typeof errors503LazyRoute
   '/': typeof AuthenticatedIndexRoute
   '/bim-viewer-ut/ifc-loader': typeof AuthenticatedBimViewerUtIfcLoaderLazyRoute
+  '/bim-viewer-ut/instanced-mesh': typeof AuthenticatedBimViewerUtInstancedMeshLazyRoute
   '/bim-viewer-ut/viewer': typeof AuthenticatedBimViewerUtViewerLazyRoute
   '/settings/account': typeof AuthenticatedSettingsAccountLazyRoute
   '/settings/appearance': typeof AuthenticatedSettingsAppearanceLazyRoute
@@ -612,6 +637,7 @@ export interface FileRoutesByTo {
   '/503': typeof errors503LazyRoute
   '/': typeof AuthenticatedIndexRoute
   '/bim-viewer-ut/ifc-loader': typeof AuthenticatedBimViewerUtIfcLoaderLazyRoute
+  '/bim-viewer-ut/instanced-mesh': typeof AuthenticatedBimViewerUtInstancedMeshLazyRoute
   '/bim-viewer-ut/viewer': typeof AuthenticatedBimViewerUtViewerLazyRoute
   '/settings/account': typeof AuthenticatedSettingsAccountLazyRoute
   '/settings/appearance': typeof AuthenticatedSettingsAppearanceLazyRoute
@@ -643,6 +669,7 @@ export interface FileRoutesById {
   '/(errors)/503': typeof errors503LazyRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
   '/_authenticated/bim-viewer-ut/ifc-loader': typeof AuthenticatedBimViewerUtIfcLoaderLazyRoute
+  '/_authenticated/bim-viewer-ut/instanced-mesh': typeof AuthenticatedBimViewerUtInstancedMeshLazyRoute
   '/_authenticated/bim-viewer-ut/viewer': typeof AuthenticatedBimViewerUtViewerLazyRoute
   '/_authenticated/settings/account': typeof AuthenticatedSettingsAccountLazyRoute
   '/_authenticated/settings/appearance': typeof AuthenticatedSettingsAppearanceLazyRoute
@@ -674,6 +701,7 @@ export interface FileRouteTypes {
     | '/503'
     | '/'
     | '/bim-viewer-ut/ifc-loader'
+    | '/bim-viewer-ut/instanced-mesh'
     | '/bim-viewer-ut/viewer'
     | '/settings/account'
     | '/settings/appearance'
@@ -700,6 +728,7 @@ export interface FileRouteTypes {
     | '/503'
     | '/'
     | '/bim-viewer-ut/ifc-loader'
+    | '/bim-viewer-ut/instanced-mesh'
     | '/bim-viewer-ut/viewer'
     | '/settings/account'
     | '/settings/appearance'
@@ -729,6 +758,7 @@ export interface FileRouteTypes {
     | '/(errors)/503'
     | '/_authenticated/'
     | '/_authenticated/bim-viewer-ut/ifc-loader'
+    | '/_authenticated/bim-viewer-ut/instanced-mesh'
     | '/_authenticated/bim-viewer-ut/viewer'
     | '/_authenticated/settings/account'
     | '/_authenticated/settings/appearance'
@@ -804,6 +834,7 @@ export const routeTree = rootRoute
         "/_authenticated/settings",
         "/_authenticated/",
         "/_authenticated/bim-viewer-ut/ifc-loader",
+        "/_authenticated/bim-viewer-ut/instanced-mesh",
         "/_authenticated/bim-viewer-ut/viewer",
         "/_authenticated/apps/",
         "/_authenticated/bim-viewer/",
@@ -863,6 +894,10 @@ export const routeTree = rootRoute
     },
     "/_authenticated/bim-viewer-ut/ifc-loader": {
       "filePath": "_authenticated/bim-viewer-ut/ifc-loader.lazy.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/bim-viewer-ut/instanced-mesh": {
+      "filePath": "_authenticated/bim-viewer-ut/instanced-mesh.lazy.tsx",
       "parent": "/_authenticated"
     },
     "/_authenticated/bim-viewer-ut/viewer": {
