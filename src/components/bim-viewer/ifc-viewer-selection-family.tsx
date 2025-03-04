@@ -1,10 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as OBC from "@thatopen/components";
-import * as THREE from "three";
 import LoadingSpinner from "@/components/bim-viewer/loading-spinner";
-import { useIfcSelection } from "@/hooks/use-ifc-selection";
+import { useSelectionFamily } from "@/hooks/use-selection-family";
 
-const IfcViewerSelection: React.FC = () => {
+const IfcViewerSelectionFamily: React.FC = () => {
     const gridContainerRef = useRef<HTMLDivElement | null>(null);
     const ifcContainerRef = useRef<HTMLDivElement | null>(null);
     const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -14,7 +13,7 @@ const IfcViewerSelection: React.FC = () => {
     const [loading, setLoading] = useState(false);
     
     // Use the custom hook for IFC selection
-    const { selectedElement } = useIfcSelection(ifcWorldRef);
+    const { selectedElement } = useSelectionFamily(ifcWorldRef);
 
     /** 🏗️ Initialize Grid Scene (Always Visible) */
     useEffect(() => {
@@ -129,4 +128,4 @@ const IfcViewerSelection: React.FC = () => {
     );
 };
 
-export default IfcViewerSelection;
+export default IfcViewerSelectionFamily;

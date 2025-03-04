@@ -18,6 +18,7 @@ import { Route as AuthenticatedIndexImport } from './routes/_authenticated/index
 import { Route as authSignInImport } from './routes/(auth)/sign-in'
 import { Route as authOtpImport } from './routes/(auth)/otp'
 import { Route as auth500Import } from './routes/(auth)/500'
+import { Route as AuthenticatedBimViewerUtIfcViewerSelectionFamilyImport } from './routes/_authenticated/bim-viewer-ut/ifc-viewer-selection-family'
 import { Route as AuthenticatedBimViewerUtIfcViewerSelectionImport } from './routes/_authenticated/bim-viewer-ut/Ifc-viewer-selection'
 
 // Create Virtual Routes
@@ -329,6 +330,13 @@ const AuthenticatedBimViewerUtIfcLoaderLazyRoute =
     ),
   )
 
+const AuthenticatedBimViewerUtIfcViewerSelectionFamilyRoute =
+  AuthenticatedBimViewerUtIfcViewerSelectionFamilyImport.update({
+    id: '/bim-viewer-ut/ifc-viewer-selection-family',
+    path: '/bim-viewer-ut/ifc-viewer-selection-family',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+
 const AuthenticatedBimViewerUtIfcViewerSelectionRoute =
   AuthenticatedBimViewerUtIfcViewerSelectionImport.update({
     id: '/bim-viewer-ut/Ifc-viewer-selection',
@@ -443,6 +451,13 @@ declare module '@tanstack/react-router' {
       path: '/bim-viewer-ut/Ifc-viewer-selection'
       fullPath: '/bim-viewer-ut/Ifc-viewer-selection'
       preLoaderRoute: typeof AuthenticatedBimViewerUtIfcViewerSelectionImport
+      parentRoute: typeof AuthenticatedRouteImport
+    }
+    '/_authenticated/bim-viewer-ut/ifc-viewer-selection-family': {
+      id: '/_authenticated/bim-viewer-ut/ifc-viewer-selection-family'
+      path: '/bim-viewer-ut/ifc-viewer-selection-family'
+      fullPath: '/bim-viewer-ut/ifc-viewer-selection-family'
+      preLoaderRoute: typeof AuthenticatedBimViewerUtIfcViewerSelectionFamilyImport
       parentRoute: typeof AuthenticatedRouteImport
     }
     '/_authenticated/bim-viewer-ut/ifc-loader': {
@@ -578,6 +593,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedSettingsRouteLazyRoute: typeof AuthenticatedSettingsRouteLazyRouteWithChildren
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
   AuthenticatedBimViewerUtIfcViewerSelectionRoute: typeof AuthenticatedBimViewerUtIfcViewerSelectionRoute
+  AuthenticatedBimViewerUtIfcViewerSelectionFamilyRoute: typeof AuthenticatedBimViewerUtIfcViewerSelectionFamilyRoute
   AuthenticatedBimViewerUtIfcLoaderLazyRoute: typeof AuthenticatedBimViewerUtIfcLoaderLazyRoute
   AuthenticatedBimViewerUtInstancedMeshLazyRoute: typeof AuthenticatedBimViewerUtInstancedMeshLazyRoute
   AuthenticatedBimViewerUtViewerLazyRoute: typeof AuthenticatedBimViewerUtViewerLazyRoute
@@ -595,6 +611,8 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
   AuthenticatedBimViewerUtIfcViewerSelectionRoute:
     AuthenticatedBimViewerUtIfcViewerSelectionRoute,
+  AuthenticatedBimViewerUtIfcViewerSelectionFamilyRoute:
+    AuthenticatedBimViewerUtIfcViewerSelectionFamilyRoute,
   AuthenticatedBimViewerUtIfcLoaderLazyRoute:
     AuthenticatedBimViewerUtIfcLoaderLazyRoute,
   AuthenticatedBimViewerUtInstancedMeshLazyRoute:
@@ -627,6 +645,7 @@ export interface FileRoutesByFullPath {
   '/503': typeof errors503LazyRoute
   '/': typeof AuthenticatedIndexRoute
   '/bim-viewer-ut/Ifc-viewer-selection': typeof AuthenticatedBimViewerUtIfcViewerSelectionRoute
+  '/bim-viewer-ut/ifc-viewer-selection-family': typeof AuthenticatedBimViewerUtIfcViewerSelectionFamilyRoute
   '/bim-viewer-ut/ifc-loader': typeof AuthenticatedBimViewerUtIfcLoaderLazyRoute
   '/bim-viewer-ut/instanced-mesh': typeof AuthenticatedBimViewerUtInstancedMeshLazyRoute
   '/bim-viewer-ut/viewer': typeof AuthenticatedBimViewerUtViewerLazyRoute
@@ -656,6 +675,7 @@ export interface FileRoutesByTo {
   '/503': typeof errors503LazyRoute
   '/': typeof AuthenticatedIndexRoute
   '/bim-viewer-ut/Ifc-viewer-selection': typeof AuthenticatedBimViewerUtIfcViewerSelectionRoute
+  '/bim-viewer-ut/ifc-viewer-selection-family': typeof AuthenticatedBimViewerUtIfcViewerSelectionFamilyRoute
   '/bim-viewer-ut/ifc-loader': typeof AuthenticatedBimViewerUtIfcLoaderLazyRoute
   '/bim-viewer-ut/instanced-mesh': typeof AuthenticatedBimViewerUtInstancedMeshLazyRoute
   '/bim-viewer-ut/viewer': typeof AuthenticatedBimViewerUtViewerLazyRoute
@@ -689,6 +709,7 @@ export interface FileRoutesById {
   '/(errors)/503': typeof errors503LazyRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
   '/_authenticated/bim-viewer-ut/Ifc-viewer-selection': typeof AuthenticatedBimViewerUtIfcViewerSelectionRoute
+  '/_authenticated/bim-viewer-ut/ifc-viewer-selection-family': typeof AuthenticatedBimViewerUtIfcViewerSelectionFamilyRoute
   '/_authenticated/bim-viewer-ut/ifc-loader': typeof AuthenticatedBimViewerUtIfcLoaderLazyRoute
   '/_authenticated/bim-viewer-ut/instanced-mesh': typeof AuthenticatedBimViewerUtInstancedMeshLazyRoute
   '/_authenticated/bim-viewer-ut/viewer': typeof AuthenticatedBimViewerUtViewerLazyRoute
@@ -722,6 +743,7 @@ export interface FileRouteTypes {
     | '/503'
     | '/'
     | '/bim-viewer-ut/Ifc-viewer-selection'
+    | '/bim-viewer-ut/ifc-viewer-selection-family'
     | '/bim-viewer-ut/ifc-loader'
     | '/bim-viewer-ut/instanced-mesh'
     | '/bim-viewer-ut/viewer'
@@ -750,6 +772,7 @@ export interface FileRouteTypes {
     | '/503'
     | '/'
     | '/bim-viewer-ut/Ifc-viewer-selection'
+    | '/bim-viewer-ut/ifc-viewer-selection-family'
     | '/bim-viewer-ut/ifc-loader'
     | '/bim-viewer-ut/instanced-mesh'
     | '/bim-viewer-ut/viewer'
@@ -781,6 +804,7 @@ export interface FileRouteTypes {
     | '/(errors)/503'
     | '/_authenticated/'
     | '/_authenticated/bim-viewer-ut/Ifc-viewer-selection'
+    | '/_authenticated/bim-viewer-ut/ifc-viewer-selection-family'
     | '/_authenticated/bim-viewer-ut/ifc-loader'
     | '/_authenticated/bim-viewer-ut/instanced-mesh'
     | '/_authenticated/bim-viewer-ut/viewer'
@@ -858,6 +882,7 @@ export const routeTree = rootRoute
         "/_authenticated/settings",
         "/_authenticated/",
         "/_authenticated/bim-viewer-ut/Ifc-viewer-selection",
+        "/_authenticated/bim-viewer-ut/ifc-viewer-selection-family",
         "/_authenticated/bim-viewer-ut/ifc-loader",
         "/_authenticated/bim-viewer-ut/instanced-mesh",
         "/_authenticated/bim-viewer-ut/viewer",
@@ -919,6 +944,10 @@ export const routeTree = rootRoute
     },
     "/_authenticated/bim-viewer-ut/Ifc-viewer-selection": {
       "filePath": "_authenticated/bim-viewer-ut/Ifc-viewer-selection.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/bim-viewer-ut/ifc-viewer-selection-family": {
+      "filePath": "_authenticated/bim-viewer-ut/ifc-viewer-selection-family.tsx",
       "parent": "/_authenticated"
     },
     "/_authenticated/bim-viewer-ut/ifc-loader": {
