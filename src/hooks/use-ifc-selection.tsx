@@ -80,6 +80,7 @@ export const useIfcSelection = (ifcWorldRef: React.RefObject<OBC.World>) => {
     // Attach event listener for selection
     useEffect(() => {
         window.addEventListener("click", onSelectElement);
+        
         return () => {
             window.removeEventListener("click", onSelectElement);
         };
