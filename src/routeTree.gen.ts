@@ -18,7 +18,8 @@ import { Route as AuthenticatedIndexImport } from './routes/_authenticated/index
 import { Route as authSignInImport } from './routes/(auth)/sign-in'
 import { Route as authOtpImport } from './routes/(auth)/otp'
 import { Route as auth500Import } from './routes/(auth)/500'
-import { Route as AuthenticatedBimViewerUtWebglClippingImport } from './routes/_authenticated/bim-viewer-ut/webgl-clipping'
+import { Route as AuthenticatedBimViewerUtWebglClippingV2Import } from './routes/_authenticated/bim-viewer-ut/webgl-clipping-v2'
+import { Route as AuthenticatedBimViewerUtWebglClippingV1Import } from './routes/_authenticated/bim-viewer-ut/webgl-clipping-v1'
 import { Route as AuthenticatedBimViewerUtIfcViewerSelectionFamilyImport } from './routes/_authenticated/bim-viewer-ut/ifc-viewer-selection-family'
 import { Route as AuthenticatedBimViewerUtIfcViewerSelectionImport } from './routes/_authenticated/bim-viewer-ut/Ifc-viewer-selection'
 
@@ -331,10 +332,17 @@ const AuthenticatedBimViewerUtIfcLoaderLazyRoute =
     ),
   )
 
-const AuthenticatedBimViewerUtWebglClippingRoute =
-  AuthenticatedBimViewerUtWebglClippingImport.update({
-    id: '/bim-viewer-ut/webgl-clipping',
-    path: '/bim-viewer-ut/webgl-clipping',
+const AuthenticatedBimViewerUtWebglClippingV2Route =
+  AuthenticatedBimViewerUtWebglClippingV2Import.update({
+    id: '/bim-viewer-ut/webgl-clipping-v2',
+    path: '/bim-viewer-ut/webgl-clipping-v2',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+
+const AuthenticatedBimViewerUtWebglClippingV1Route =
+  AuthenticatedBimViewerUtWebglClippingV1Import.update({
+    id: '/bim-viewer-ut/webgl-clipping-v1',
+    path: '/bim-viewer-ut/webgl-clipping-v1',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 
@@ -468,11 +476,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedBimViewerUtIfcViewerSelectionFamilyImport
       parentRoute: typeof AuthenticatedRouteImport
     }
-    '/_authenticated/bim-viewer-ut/webgl-clipping': {
-      id: '/_authenticated/bim-viewer-ut/webgl-clipping'
-      path: '/bim-viewer-ut/webgl-clipping'
-      fullPath: '/bim-viewer-ut/webgl-clipping'
-      preLoaderRoute: typeof AuthenticatedBimViewerUtWebglClippingImport
+    '/_authenticated/bim-viewer-ut/webgl-clipping-v1': {
+      id: '/_authenticated/bim-viewer-ut/webgl-clipping-v1'
+      path: '/bim-viewer-ut/webgl-clipping-v1'
+      fullPath: '/bim-viewer-ut/webgl-clipping-v1'
+      preLoaderRoute: typeof AuthenticatedBimViewerUtWebglClippingV1Import
+      parentRoute: typeof AuthenticatedRouteImport
+    }
+    '/_authenticated/bim-viewer-ut/webgl-clipping-v2': {
+      id: '/_authenticated/bim-viewer-ut/webgl-clipping-v2'
+      path: '/bim-viewer-ut/webgl-clipping-v2'
+      fullPath: '/bim-viewer-ut/webgl-clipping-v2'
+      preLoaderRoute: typeof AuthenticatedBimViewerUtWebglClippingV2Import
       parentRoute: typeof AuthenticatedRouteImport
     }
     '/_authenticated/bim-viewer-ut/ifc-loader': {
@@ -609,7 +624,8 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
   AuthenticatedBimViewerUtIfcViewerSelectionRoute: typeof AuthenticatedBimViewerUtIfcViewerSelectionRoute
   AuthenticatedBimViewerUtIfcViewerSelectionFamilyRoute: typeof AuthenticatedBimViewerUtIfcViewerSelectionFamilyRoute
-  AuthenticatedBimViewerUtWebglClippingRoute: typeof AuthenticatedBimViewerUtWebglClippingRoute
+  AuthenticatedBimViewerUtWebglClippingV1Route: typeof AuthenticatedBimViewerUtWebglClippingV1Route
+  AuthenticatedBimViewerUtWebglClippingV2Route: typeof AuthenticatedBimViewerUtWebglClippingV2Route
   AuthenticatedBimViewerUtIfcLoaderLazyRoute: typeof AuthenticatedBimViewerUtIfcLoaderLazyRoute
   AuthenticatedBimViewerUtInstancedMeshLazyRoute: typeof AuthenticatedBimViewerUtInstancedMeshLazyRoute
   AuthenticatedBimViewerUtViewerLazyRoute: typeof AuthenticatedBimViewerUtViewerLazyRoute
@@ -629,8 +645,10 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
     AuthenticatedBimViewerUtIfcViewerSelectionRoute,
   AuthenticatedBimViewerUtIfcViewerSelectionFamilyRoute:
     AuthenticatedBimViewerUtIfcViewerSelectionFamilyRoute,
-  AuthenticatedBimViewerUtWebglClippingRoute:
-    AuthenticatedBimViewerUtWebglClippingRoute,
+  AuthenticatedBimViewerUtWebglClippingV1Route:
+    AuthenticatedBimViewerUtWebglClippingV1Route,
+  AuthenticatedBimViewerUtWebglClippingV2Route:
+    AuthenticatedBimViewerUtWebglClippingV2Route,
   AuthenticatedBimViewerUtIfcLoaderLazyRoute:
     AuthenticatedBimViewerUtIfcLoaderLazyRoute,
   AuthenticatedBimViewerUtInstancedMeshLazyRoute:
@@ -664,7 +682,8 @@ export interface FileRoutesByFullPath {
   '/': typeof AuthenticatedIndexRoute
   '/bim-viewer-ut/Ifc-viewer-selection': typeof AuthenticatedBimViewerUtIfcViewerSelectionRoute
   '/bim-viewer-ut/ifc-viewer-selection-family': typeof AuthenticatedBimViewerUtIfcViewerSelectionFamilyRoute
-  '/bim-viewer-ut/webgl-clipping': typeof AuthenticatedBimViewerUtWebglClippingRoute
+  '/bim-viewer-ut/webgl-clipping-v1': typeof AuthenticatedBimViewerUtWebglClippingV1Route
+  '/bim-viewer-ut/webgl-clipping-v2': typeof AuthenticatedBimViewerUtWebglClippingV2Route
   '/bim-viewer-ut/ifc-loader': typeof AuthenticatedBimViewerUtIfcLoaderLazyRoute
   '/bim-viewer-ut/instanced-mesh': typeof AuthenticatedBimViewerUtInstancedMeshLazyRoute
   '/bim-viewer-ut/viewer': typeof AuthenticatedBimViewerUtViewerLazyRoute
@@ -695,7 +714,8 @@ export interface FileRoutesByTo {
   '/': typeof AuthenticatedIndexRoute
   '/bim-viewer-ut/Ifc-viewer-selection': typeof AuthenticatedBimViewerUtIfcViewerSelectionRoute
   '/bim-viewer-ut/ifc-viewer-selection-family': typeof AuthenticatedBimViewerUtIfcViewerSelectionFamilyRoute
-  '/bim-viewer-ut/webgl-clipping': typeof AuthenticatedBimViewerUtWebglClippingRoute
+  '/bim-viewer-ut/webgl-clipping-v1': typeof AuthenticatedBimViewerUtWebglClippingV1Route
+  '/bim-viewer-ut/webgl-clipping-v2': typeof AuthenticatedBimViewerUtWebglClippingV2Route
   '/bim-viewer-ut/ifc-loader': typeof AuthenticatedBimViewerUtIfcLoaderLazyRoute
   '/bim-viewer-ut/instanced-mesh': typeof AuthenticatedBimViewerUtInstancedMeshLazyRoute
   '/bim-viewer-ut/viewer': typeof AuthenticatedBimViewerUtViewerLazyRoute
@@ -730,7 +750,8 @@ export interface FileRoutesById {
   '/_authenticated/': typeof AuthenticatedIndexRoute
   '/_authenticated/bim-viewer-ut/Ifc-viewer-selection': typeof AuthenticatedBimViewerUtIfcViewerSelectionRoute
   '/_authenticated/bim-viewer-ut/ifc-viewer-selection-family': typeof AuthenticatedBimViewerUtIfcViewerSelectionFamilyRoute
-  '/_authenticated/bim-viewer-ut/webgl-clipping': typeof AuthenticatedBimViewerUtWebglClippingRoute
+  '/_authenticated/bim-viewer-ut/webgl-clipping-v1': typeof AuthenticatedBimViewerUtWebglClippingV1Route
+  '/_authenticated/bim-viewer-ut/webgl-clipping-v2': typeof AuthenticatedBimViewerUtWebglClippingV2Route
   '/_authenticated/bim-viewer-ut/ifc-loader': typeof AuthenticatedBimViewerUtIfcLoaderLazyRoute
   '/_authenticated/bim-viewer-ut/instanced-mesh': typeof AuthenticatedBimViewerUtInstancedMeshLazyRoute
   '/_authenticated/bim-viewer-ut/viewer': typeof AuthenticatedBimViewerUtViewerLazyRoute
@@ -765,7 +786,8 @@ export interface FileRouteTypes {
     | '/'
     | '/bim-viewer-ut/Ifc-viewer-selection'
     | '/bim-viewer-ut/ifc-viewer-selection-family'
-    | '/bim-viewer-ut/webgl-clipping'
+    | '/bim-viewer-ut/webgl-clipping-v1'
+    | '/bim-viewer-ut/webgl-clipping-v2'
     | '/bim-viewer-ut/ifc-loader'
     | '/bim-viewer-ut/instanced-mesh'
     | '/bim-viewer-ut/viewer'
@@ -795,7 +817,8 @@ export interface FileRouteTypes {
     | '/'
     | '/bim-viewer-ut/Ifc-viewer-selection'
     | '/bim-viewer-ut/ifc-viewer-selection-family'
-    | '/bim-viewer-ut/webgl-clipping'
+    | '/bim-viewer-ut/webgl-clipping-v1'
+    | '/bim-viewer-ut/webgl-clipping-v2'
     | '/bim-viewer-ut/ifc-loader'
     | '/bim-viewer-ut/instanced-mesh'
     | '/bim-viewer-ut/viewer'
@@ -828,7 +851,8 @@ export interface FileRouteTypes {
     | '/_authenticated/'
     | '/_authenticated/bim-viewer-ut/Ifc-viewer-selection'
     | '/_authenticated/bim-viewer-ut/ifc-viewer-selection-family'
-    | '/_authenticated/bim-viewer-ut/webgl-clipping'
+    | '/_authenticated/bim-viewer-ut/webgl-clipping-v1'
+    | '/_authenticated/bim-viewer-ut/webgl-clipping-v2'
     | '/_authenticated/bim-viewer-ut/ifc-loader'
     | '/_authenticated/bim-viewer-ut/instanced-mesh'
     | '/_authenticated/bim-viewer-ut/viewer'
@@ -907,7 +931,8 @@ export const routeTree = rootRoute
         "/_authenticated/",
         "/_authenticated/bim-viewer-ut/Ifc-viewer-selection",
         "/_authenticated/bim-viewer-ut/ifc-viewer-selection-family",
-        "/_authenticated/bim-viewer-ut/webgl-clipping",
+        "/_authenticated/bim-viewer-ut/webgl-clipping-v1",
+        "/_authenticated/bim-viewer-ut/webgl-clipping-v2",
         "/_authenticated/bim-viewer-ut/ifc-loader",
         "/_authenticated/bim-viewer-ut/instanced-mesh",
         "/_authenticated/bim-viewer-ut/viewer",
@@ -975,8 +1000,12 @@ export const routeTree = rootRoute
       "filePath": "_authenticated/bim-viewer-ut/ifc-viewer-selection-family.tsx",
       "parent": "/_authenticated"
     },
-    "/_authenticated/bim-viewer-ut/webgl-clipping": {
-      "filePath": "_authenticated/bim-viewer-ut/webgl-clipping.tsx",
+    "/_authenticated/bim-viewer-ut/webgl-clipping-v1": {
+      "filePath": "_authenticated/bim-viewer-ut/webgl-clipping-v1.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/bim-viewer-ut/webgl-clipping-v2": {
+      "filePath": "_authenticated/bim-viewer-ut/webgl-clipping-v2.tsx",
       "parent": "/_authenticated"
     },
     "/_authenticated/bim-viewer-ut/ifc-loader": {

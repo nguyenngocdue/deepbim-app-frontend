@@ -4,7 +4,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import Stats from "three/addons/libs/stats.module.js";
 
-const WebglClipping: React.FC = () => {
+const WebglClippingV1: React.FC = () => {
     // Refs for mounting, renderer, stats, and controls
     const mountRef = useRef<HTMLDivElement | null>(null);
     const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
@@ -235,4 +235,4 @@ const WebglClipping: React.FC = () => {
     return <div ref={mountRef} />;
 };
 
-export default WebglClipping;
+export default WebglClippingV1;
