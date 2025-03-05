@@ -4,7 +4,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min.js';
 import Stats from 'three/examples/jsm/libs/stats.module.js';
 
-const WebglClippingStencil: React.FC = () => {
+const WebglClippingStencilIfc: React.FC = () => {
     const mountRef = useRef<HTMLDivElement>(null);
     const initializedRef = useRef(false);
 
@@ -160,4 +160,4 @@ const WebglClippingStencil: React.FC = () => {
     return <div ref={mountRef} />;
 };
 
-export default WebglClippingStencil;
+export default WebglClippingStencilIfc;
