@@ -90,7 +90,11 @@ const WebglClippingBVH: React.FC = () => {
 
             // create line geometry with enough data to hold 100000 segments
             const lineGeometry = new THREE.BufferGeometry();
+            
+            const bufferSize = 300000;
             const linePosAttr = new THREE.BufferAttribute(new Float32Array(300000), 3, false);
+            
+
             linePosAttr.setUsage(THREE.DynamicDrawUsage);
             lineGeometry.setAttribute('position', linePosAttr);
             outlineLines = new THREE.LineSegments(lineGeometry, new THREE.LineBasicMaterial());
@@ -103,13 +107,30 @@ const WebglClippingBVH: React.FC = () => {
             // Load Model
             const loader = new GLTFLoader();
             loader.setMeshoptDecoder(MeshoptDecoder);
+
+
             loader.load(
                 'https://raw.githubusercontent.com/gkjohnson/3d-demo-data/main/models/internal-combustion-engine/model.gltf',
+                // '/scene.gltf',
                 (gltf) => {
                     // use basic material because the using clip caps is expensive since the fragment
                     // shader has to run always.
-                    const model = gltf.scene.children[0] as THREE.Mesh;
+                    let model = gltf.scene.children[0] as THREE.Mesh;
+                    if (!model || !model.geometry) {
+                        gltf.scene.traverse((child) => {
+                            if (child instanceof THREE.Mesh) {
+                                model = child;
+                            }
+                        });
+                    }
+                    console.log(model)
+
+
+
                     const mergedGeometry = model.geometry;
+
+
+                    // const mergedGeometry = model.geometry;
                     model.material = new THREE.MeshBasicMaterial();
                     model.position.set(0, 0, 0);
                     model.quaternion.identity();
@@ -327,7 +348,6 @@ const WebglClippingBVH: React.FC = () => {
         
                 let index = 0;
                 const posAttr = outlineLines.geometry.attributes.position;
-                const startTime = window.performance.now();
                 colliderBvh.shapecast( {
         
                     intersectsBounds: box => {
@@ -419,28 +439,8 @@ const WebglClippingBVH: React.FC = () => {
                 outlineLines.geometry.setDrawRange( 0, index );
                 outlineLines.position.copy( clippingPlane.normal ).multiplyScalar( - 0.00001 );
                 posAttr.needsUpdate = true;
-        
-                const delta = window.performance.now() - startTime;
-        
             }
         
-        
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
             requestAnimationFrame(render);
             controls.update();
