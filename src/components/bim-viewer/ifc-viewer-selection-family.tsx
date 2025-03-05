@@ -42,14 +42,9 @@ const IfcViewerSelectionFamily: React.FC = () => {
             const instanceId = intersection.instanceId; // Instance bị hit (nếu có)
     
             console.log("🎯 Hovered Object:", object);
+            console.log("🆔 Instance ID:", instanceId);
 
-            // 🏗 Tìm `FragmentGroup` hoặc `parent` chứa toàn bộ Family
-            let familyGroup: THREE.Object3D | null = object;
-            while (familyGroup && familyGroup.parent && !familyGroup.parent.userData?.isFamily) {
-                familyGroup = familyGroup.parent;
-            }
-
-            console.log("🏠 Family Group Found:", familyGroup);
+            
     
             // 🏗 Kiểm tra nếu object là `InstancedMesh`
             if (object.isInstancedMesh && instanceId !== undefined) {
