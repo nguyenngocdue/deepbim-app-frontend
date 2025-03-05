@@ -16,4 +16,7 @@ export default defineConfig({
       '@tabler/icons-react': '@tabler/icons-react/dist/esm/icons/index.mjs',
     },
   },
+  define: {
+    "import.meta.env.MODE": JSON.stringify(process.env.NODE_ENV || "development"),
+  },
 })
