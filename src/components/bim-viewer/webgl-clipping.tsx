@@ -30,7 +30,7 @@ const WebglClipping: React.FC = () => {
     // Initialize Stats
     if (!statsRef.current) {
       statsRef.current = new Stats();
-      statsRef.current.dom.style.pointerEvents = "none"; // Prevents blocking mouse interactions
+      statsRef.current.dom.style.pointerEvents = "none"; // Prevent blocking mouse interactions
     }
     const stats = statsRef.current;
 
@@ -41,13 +41,12 @@ const WebglClipping: React.FC = () => {
     camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.25, 50);
     camera.position.set(0, 1.3, 3);
 
-    // Initialize OrbitControls (Ensuring it exists only once)
+    // Initialize OrbitControls (Ensure it exists only once)
     if (!controlsRef.current) {
       controlsRef.current = new OrbitControls(camera, renderer.domElement);
       controlsRef.current.target.set(0, 1, 0);
       controlsRef.current.update();
     }
-  
 
     // Lighting Setup
     scene.add(new THREE.AmbientLight(0xcccccc));
@@ -65,32 +64,45 @@ const WebglClipping: React.FC = () => {
     scene.add(dirLight);
 
     // Clipping Planes
-    const localPlane = new THREE.Plane(new THREE.Vector3(0, -1, 0), 0.1);
+    const localPlane = new THREE.Plane(new THREE.Vector3(0, -1, 0), 0.5);
     const globalPlane = new THREE.Plane(new THREE.Vector3(-1, 0, 0), 0.2);
     const globalPlanes: THREE.Plane[] = [globalPlane];
     const Empty: THREE.Plane[] = [];
     renderer.clippingPlanes = Empty;
-
-    // Hiển thị Local Plane với PlaneHelper
-    const planeHelper = new THREE.PlaneHelper(localPlane, 2, 0xff0000); // Màu đỏ
+    // Display Local Clipping Plane using PlaneHelper
+    const planeHelper = new THREE.PlaneHelper(localPlane, 2, 0xff0000); // Red color
     scene.add(planeHelper);
 
-    // Bounding Box (hình hộp) có clipping
-    const bboxGeometry = new THREE.BoxGeometry(1.5, 1.5, 1.5); // Kích thước bounding box
+    const topPanelThickness = 0.1; // Adjust thickness here
+    const topPanelGeometry = new THREE.BoxGeometry(4, topPanelThickness, 4);
+
+    const topPanelMaterial  = new THREE.MeshPhongMaterial({
+        color: "#ffccff", 
+        shininess: 150, 
+        side: THREE.DoubleSide,
+        clippingPlanes: [localPlane]
+    });
+
+    const topPanel = new THREE.Mesh(topPanelGeometry, topPanelMaterial);
+    topPanel.position.y = topPanelThickness*3
+    scene.add(topPanel);
+
+
+    // Bounding Box with Clipping
+    const bboxGeometry = new THREE.BoxGeometry(1.5, 1.5, 1.5); // Bounding box size
     const bboxMaterial = new THREE.MeshBasicMaterial({
-    color: 0x00ff00, // Màu xanh lá
-    wireframe: true, // Chỉ hiển thị đường viền
-    clippingPlanes: [localPlane], // Cắt theo localPlane
-    side: THREE.DoubleSide,
+      color: 0x00ff00, // Green color
+      wireframe: true, // Show only edges
+      clippingPlanes: [localPlane], // Clip according to localPlane
+      side: THREE.DoubleSide,
     });
     const planeBoundingBox = new THREE.Mesh(bboxGeometry, bboxMaterial);
     scene.add(planeBoundingBox);
 
-    // Cập nhật Bounding Box theo Local Plane
+    // Update Bounding Box Position Based on Local Plane
     function updateBoundingBox() {
-        planeBoundingBox.position.set(0, -localPlane.constant, 0);
+      planeBoundingBox.position.set(0, -localPlane.constant, 0);
     }
-
 
     // Orbit Controls
     const controls = new OrbitControls(camera, renderer.domElement);
@@ -112,12 +124,18 @@ const WebglClipping: React.FC = () => {
     scene.add(object);
 
     // Ground Plane
-    const plan = new THREE.PlaneGeometry(5, 5);
-    const ground = new THREE.Mesh(
-        plan,
-      new THREE.MeshPhongMaterial({ color: 0xa0adaf, shininess: 150,  side: THREE.DoubleSide })
-    );
-    ground.rotation.x = -Math.PI / 2;
+    const groundThickness = 0.1; // Adjust thickness here
+    const groundGeometry = new THREE.BoxGeometry(5, groundThickness, 5);
+    const groundMaterial  = new THREE.MeshPhongMaterial({
+        color: 0xa0adaf, 
+        shininess: 150, 
+        transparent: true,
+        opacity: 0.7, // Adjust transparency
+        side: THREE.DoubleSide,
+        clippingPlanes: [localPlane]
+    });
+    const ground = new THREE.Mesh(groundGeometry, groundMaterial);
+    ground.position.y = -groundThickness / 2; // Adjust position to align with original plane
     ground.receiveShadow = true;
     scene.add(ground);
 
@@ -133,7 +151,7 @@ const WebglClipping: React.FC = () => {
     const folderLocal = gui.addFolder("Local Clipping");
     folderLocal.add(renderer, "localClippingEnabled").name("Enabled");
     folderLocal.add(material, "clipShadows").name("Shadows");
-    folderLocal.add(localPlane, "constant", -0.1, 1.25).name("Plane");
+    folderLocal.add(localPlane, "constant", -0.5, 1.25).name("Plane");
 
     const folderGlobal = gui.addFolder("Global Clipping");
     folderGlobal.add({
@@ -155,7 +173,7 @@ const WebglClipping: React.FC = () => {
         mountRef.current.appendChild(stats.dom);
       }
     }
-   
+
     // Animation Loop
     function animate() {
       requestAnimationFrame(animate);
@@ -164,7 +182,7 @@ const WebglClipping: React.FC = () => {
       object.rotation.y = time * 0.2;
       object.scale.setScalar(Math.cos(time) * 0.125 + 0.875);
 
-      controls.update(); // Ensuring OrbitControls update
+      controls.update(); // Ensure OrbitControls update
       renderer.render(scene, camera);
       stats.update();
       updateBoundingBox();
