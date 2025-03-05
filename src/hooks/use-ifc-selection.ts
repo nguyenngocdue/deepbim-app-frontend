@@ -3,8 +3,9 @@ import * as THREE from "three";
 import * as OBC from "@thatopen/components";
 
 export const useIfcSelection = (ifcWorldRef: React.RefObject<OBC.World>) => {
-    const [selectedElement, setSelectedElement] = useState<number | null>(null);
 
+    const [selectedElement, setSelectedElement] = useState<number | null>(null);
+    
     // Function to select and highlight an IFC element
     const onSelectElement = async (event: MouseEvent) => {
         if (!ifcWorldRef.current) return;
@@ -26,11 +27,6 @@ export const useIfcSelection = (ifcWorldRef: React.RefObject<OBC.World>) => {
             const intersection = intersects[0];
             const selectedObject = intersection.object as THREE.Mesh;
             const instanceId = intersection.instanceId; // If using InstancedMesh
-            const faceIndex = intersection.faceIndex;
-
-            console.log("🟢 Selected Mesh:", selectedObject);
-            console.log("🟢 Face Index:", faceIndex);
-    
             // 🔥 Get the ID from userData if available
             const elementId = selectedObject.userData.id || instanceId;
     

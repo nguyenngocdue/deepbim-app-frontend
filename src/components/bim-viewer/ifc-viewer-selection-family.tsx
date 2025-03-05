@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import * as OBC from "@thatopen/components";
 import LoadingSpinner from "@/components/bim-viewer/loading-spinner";
 import { useSelectionFamily } from "@/hooks/use-selection-family";
+import * as OBF from "@thatopen/components-front";
 
 const IfcViewerSelectionFamily: React.FC = () => {
     const gridContainerRef = useRef<HTMLDivElement | null>(null);
@@ -13,7 +14,7 @@ const IfcViewerSelectionFamily: React.FC = () => {
     const [loading, setLoading] = useState(false);
     
     // Use the custom hook for IFC selection
-    const { selectedElement } = useSelectionFamily(ifcWorldRef);
+    const { selectedElements } = useSelectionFamily(ifcWorldRef, componentsRef);
 
     /** 🏗️ Initialize Grid Scene (Always Visible) */
     useEffect(() => {
@@ -37,6 +38,13 @@ const IfcViewerSelectionFamily: React.FC = () => {
         grids.create(world);
 
         worldRef.current = world;
+
+        const highlighter = components.get(OBF.Highlighter);
+        highlighter.setup({ world });
+        highlighter.zoomToSelection = true;
+        console.log(highlighter)
+
+
     }, []);
 
     /** 🏗️ Load IFC Model and create a new canvas */
@@ -72,8 +80,14 @@ const IfcViewerSelectionFamily: React.FC = () => {
 
         fragmentIfcLoader.settings.webIfc.COORDINATE_TO_ORIGIN = true;
 
+      
         const model = await fragmentIfcLoader.load(buffer);
         console.log("Model loaded:", model);
+        model.items.map((item) => {
+            const parent = item.mesh.uuid;
+            // console.log(parent);
+           
+        })
 
         model.position.set(0, 0, 0);
         model.scale.set(1, 1, 1);
@@ -119,9 +133,14 @@ const IfcViewerSelectionFamily: React.FC = () => {
                 <button className="bim-button" onClick={() => fileInputRef.current?.click()}>Upload IFC</button>
             </div>
 
-            {selectedElement && (
+            {selectedElements.length > 0 && (
                 <div className="absolute bottom-4 left-4 bg-white p-2 rounded shadow-lg z-20">
-                    <p>Selected IFC Element ID: {selectedElement}</p>
+                    <p>Selected IFC Elements:</p>
+                    <ul>
+                        {selectedElements.map((id) => (
+                            <li key={id}>ID: {id}</li>
+                        ))}
+                    </ul>
                 </div>
             )}
         </div>

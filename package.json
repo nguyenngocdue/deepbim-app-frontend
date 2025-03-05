@@ -42,6 +42,7 @@
     "@thatopen/components": "2.4.3",
     "@thatopen/fragments": "2.4.0",
     "@thatopen/ui": "^2.4.2",
+    "@thatopen/ui-obc": "^2.4.1",
     "axios": "^1.7.9",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
