@@ -22,6 +22,7 @@ import { Route as AuthenticatedBimViewerUtWebglClippingV2Import } from './routes
 import { Route as AuthenticatedBimViewerUtWebglClippingV1Import } from './routes/_authenticated/bim-viewer-ut/webgl-clipping-v1'
 import { Route as AuthenticatedBimViewerUtWebglClippingStencilIfcImport } from './routes/_authenticated/bim-viewer-ut/webgl-clipping-stencil-ifc'
 import { Route as AuthenticatedBimViewerUtWebglClippingStencilImport } from './routes/_authenticated/bim-viewer-ut/webgl-clipping-stencil'
+import { Route as AuthenticatedBimViewerUtWebglClippingCubeImport } from './routes/_authenticated/bim-viewer-ut/webgl-clipping-cube'
 import { Route as AuthenticatedBimViewerUtIfcViewerSelectionFamilyImport } from './routes/_authenticated/bim-viewer-ut/ifc-viewer-selection-family'
 import { Route as AuthenticatedBimViewerUtIfcViewerSelectionImport } from './routes/_authenticated/bim-viewer-ut/Ifc-viewer-selection'
 
@@ -362,6 +363,13 @@ const AuthenticatedBimViewerUtWebglClippingStencilRoute =
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 
+const AuthenticatedBimViewerUtWebglClippingCubeRoute =
+  AuthenticatedBimViewerUtWebglClippingCubeImport.update({
+    id: '/bim-viewer-ut/webgl-clipping-cube',
+    path: '/bim-viewer-ut/webgl-clipping-cube',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+
 const AuthenticatedBimViewerUtIfcViewerSelectionFamilyRoute =
   AuthenticatedBimViewerUtIfcViewerSelectionFamilyImport.update({
     id: '/bim-viewer-ut/ifc-viewer-selection-family',
@@ -490,6 +498,13 @@ declare module '@tanstack/react-router' {
       path: '/bim-viewer-ut/ifc-viewer-selection-family'
       fullPath: '/bim-viewer-ut/ifc-viewer-selection-family'
       preLoaderRoute: typeof AuthenticatedBimViewerUtIfcViewerSelectionFamilyImport
+      parentRoute: typeof AuthenticatedRouteImport
+    }
+    '/_authenticated/bim-viewer-ut/webgl-clipping-cube': {
+      id: '/_authenticated/bim-viewer-ut/webgl-clipping-cube'
+      path: '/bim-viewer-ut/webgl-clipping-cube'
+      fullPath: '/bim-viewer-ut/webgl-clipping-cube'
+      preLoaderRoute: typeof AuthenticatedBimViewerUtWebglClippingCubeImport
       parentRoute: typeof AuthenticatedRouteImport
     }
     '/_authenticated/bim-viewer-ut/webgl-clipping-stencil': {
@@ -654,6 +669,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
   AuthenticatedBimViewerUtIfcViewerSelectionRoute: typeof AuthenticatedBimViewerUtIfcViewerSelectionRoute
   AuthenticatedBimViewerUtIfcViewerSelectionFamilyRoute: typeof AuthenticatedBimViewerUtIfcViewerSelectionFamilyRoute
+  AuthenticatedBimViewerUtWebglClippingCubeRoute: typeof AuthenticatedBimViewerUtWebglClippingCubeRoute
   AuthenticatedBimViewerUtWebglClippingStencilRoute: typeof AuthenticatedBimViewerUtWebglClippingStencilRoute
   AuthenticatedBimViewerUtWebglClippingStencilIfcRoute: typeof AuthenticatedBimViewerUtWebglClippingStencilIfcRoute
   AuthenticatedBimViewerUtWebglClippingV1Route: typeof AuthenticatedBimViewerUtWebglClippingV1Route
@@ -677,6 +693,8 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
     AuthenticatedBimViewerUtIfcViewerSelectionRoute,
   AuthenticatedBimViewerUtIfcViewerSelectionFamilyRoute:
     AuthenticatedBimViewerUtIfcViewerSelectionFamilyRoute,
+  AuthenticatedBimViewerUtWebglClippingCubeRoute:
+    AuthenticatedBimViewerUtWebglClippingCubeRoute,
   AuthenticatedBimViewerUtWebglClippingStencilRoute:
     AuthenticatedBimViewerUtWebglClippingStencilRoute,
   AuthenticatedBimViewerUtWebglClippingStencilIfcRoute:
@@ -718,6 +736,7 @@ export interface FileRoutesByFullPath {
   '/': typeof AuthenticatedIndexRoute
   '/bim-viewer-ut/Ifc-viewer-selection': typeof AuthenticatedBimViewerUtIfcViewerSelectionRoute
   '/bim-viewer-ut/ifc-viewer-selection-family': typeof AuthenticatedBimViewerUtIfcViewerSelectionFamilyRoute
+  '/bim-viewer-ut/webgl-clipping-cube': typeof AuthenticatedBimViewerUtWebglClippingCubeRoute
   '/bim-viewer-ut/webgl-clipping-stencil': typeof AuthenticatedBimViewerUtWebglClippingStencilRoute
   '/bim-viewer-ut/webgl-clipping-stencil-ifc': typeof AuthenticatedBimViewerUtWebglClippingStencilIfcRoute
   '/bim-viewer-ut/webgl-clipping-v1': typeof AuthenticatedBimViewerUtWebglClippingV1Route
@@ -752,6 +771,7 @@ export interface FileRoutesByTo {
   '/': typeof AuthenticatedIndexRoute
   '/bim-viewer-ut/Ifc-viewer-selection': typeof AuthenticatedBimViewerUtIfcViewerSelectionRoute
   '/bim-viewer-ut/ifc-viewer-selection-family': typeof AuthenticatedBimViewerUtIfcViewerSelectionFamilyRoute
+  '/bim-viewer-ut/webgl-clipping-cube': typeof AuthenticatedBimViewerUtWebglClippingCubeRoute
   '/bim-viewer-ut/webgl-clipping-stencil': typeof AuthenticatedBimViewerUtWebglClippingStencilRoute
   '/bim-viewer-ut/webgl-clipping-stencil-ifc': typeof AuthenticatedBimViewerUtWebglClippingStencilIfcRoute
   '/bim-viewer-ut/webgl-clipping-v1': typeof AuthenticatedBimViewerUtWebglClippingV1Route
@@ -790,6 +810,7 @@ export interface FileRoutesById {
   '/_authenticated/': typeof AuthenticatedIndexRoute
   '/_authenticated/bim-viewer-ut/Ifc-viewer-selection': typeof AuthenticatedBimViewerUtIfcViewerSelectionRoute
   '/_authenticated/bim-viewer-ut/ifc-viewer-selection-family': typeof AuthenticatedBimViewerUtIfcViewerSelectionFamilyRoute
+  '/_authenticated/bim-viewer-ut/webgl-clipping-cube': typeof AuthenticatedBimViewerUtWebglClippingCubeRoute
   '/_authenticated/bim-viewer-ut/webgl-clipping-stencil': typeof AuthenticatedBimViewerUtWebglClippingStencilRoute
   '/_authenticated/bim-viewer-ut/webgl-clipping-stencil-ifc': typeof AuthenticatedBimViewerUtWebglClippingStencilIfcRoute
   '/_authenticated/bim-viewer-ut/webgl-clipping-v1': typeof AuthenticatedBimViewerUtWebglClippingV1Route
@@ -828,6 +849,7 @@ export interface FileRouteTypes {
     | '/'
     | '/bim-viewer-ut/Ifc-viewer-selection'
     | '/bim-viewer-ut/ifc-viewer-selection-family'
+    | '/bim-viewer-ut/webgl-clipping-cube'
     | '/bim-viewer-ut/webgl-clipping-stencil'
     | '/bim-viewer-ut/webgl-clipping-stencil-ifc'
     | '/bim-viewer-ut/webgl-clipping-v1'
@@ -861,6 +883,7 @@ export interface FileRouteTypes {
     | '/'
     | '/bim-viewer-ut/Ifc-viewer-selection'
     | '/bim-viewer-ut/ifc-viewer-selection-family'
+    | '/bim-viewer-ut/webgl-clipping-cube'
     | '/bim-viewer-ut/webgl-clipping-stencil'
     | '/bim-viewer-ut/webgl-clipping-stencil-ifc'
     | '/bim-viewer-ut/webgl-clipping-v1'
@@ -897,6 +920,7 @@ export interface FileRouteTypes {
     | '/_authenticated/'
     | '/_authenticated/bim-viewer-ut/Ifc-viewer-selection'
     | '/_authenticated/bim-viewer-ut/ifc-viewer-selection-family'
+    | '/_authenticated/bim-viewer-ut/webgl-clipping-cube'
     | '/_authenticated/bim-viewer-ut/webgl-clipping-stencil'
     | '/_authenticated/bim-viewer-ut/webgl-clipping-stencil-ifc'
     | '/_authenticated/bim-viewer-ut/webgl-clipping-v1'
@@ -979,6 +1003,7 @@ export const routeTree = rootRoute
         "/_authenticated/",
         "/_authenticated/bim-viewer-ut/Ifc-viewer-selection",
         "/_authenticated/bim-viewer-ut/ifc-viewer-selection-family",
+        "/_authenticated/bim-viewer-ut/webgl-clipping-cube",
         "/_authenticated/bim-viewer-ut/webgl-clipping-stencil",
         "/_authenticated/bim-viewer-ut/webgl-clipping-stencil-ifc",
         "/_authenticated/bim-viewer-ut/webgl-clipping-v1",
@@ -1048,6 +1073,10 @@ export const routeTree = rootRoute
     },
     "/_authenticated/bim-viewer-ut/ifc-viewer-selection-family": {
       "filePath": "_authenticated/bim-viewer-ut/ifc-viewer-selection-family.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/bim-viewer-ut/webgl-clipping-cube": {
+      "filePath": "_authenticated/bim-viewer-ut/webgl-clipping-cube.tsx",
       "parent": "/_authenticated"
     },
     "/_authenticated/bim-viewer-ut/webgl-clipping-stencil": {

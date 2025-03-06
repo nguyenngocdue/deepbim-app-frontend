@@ -144,6 +144,8 @@ const WebglClippingStencil: React.FC = () => {
             }
         });
 
+        console.log(materialsRef)
+        
         // 🔹 Create Hatch Material
         hatchMaterial = new THREE.ShaderMaterial({
             uniforms: {
