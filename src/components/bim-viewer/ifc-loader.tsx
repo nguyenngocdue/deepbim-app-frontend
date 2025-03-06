@@ -188,7 +188,7 @@ const IfcLoader: React.FC = () => {
                     className="hidden"
                 />
                 <button
-                    className="bim-button"
+                    className=""
                     onClick={() => fileInputRef.current?.click()}
                 >
                     Upload IFC

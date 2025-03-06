@@ -1,163 +1,364 @@
-import React, { useEffect, useRef } from 'react';
-import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min.js';
-import Stats from 'three/examples/jsm/libs/stats.module.js';
+import React, { useEffect, useRef, useState } from "react";
+import * as THREE from "three";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
+import { useIfcLoader } from "@/hooks/use-ifc-loader";
+import { IfcLoader } from "@thatopen/components";
+import LoadingSpinner from "./loading-spinner";
 
-const WebglClippingStencilIfc: React.FC = () => {
-    const mountRef = useRef<HTMLDivElement>(null);
+const WebglClippingStencil: React.FC = () => {
     const initializedRef = useRef(false);
+    const fileInputRef = useRef<HTMLInputElement | null>(null);
+    const ifcLoaderRef = useRef<IfcLoader | null>(null);
+    const { ifcContainerRef, loadIfc, loading, ifcWorldRef, model } = useIfcLoader();
+
+    const [activePlaneIndex, setActivePlaneIndex] = useState(-1); // -1 = no active plane
+    const [globalOffset, setGlobalOffset] = useState(0);
+    const planesRef = useRef<THREE.Plane[]>([]);
+    const materialsRef = useRef<{ original: THREE.Material | THREE.Material[], clipping: THREE.Material }[]>([]);
+    const bboxRef = useRef<THREE.Box3 | null>(null);
+    const baseConstantsRef = useRef<number[]>([]);
+    const [showHatch, setShowHatch] = useState(false);
+
+    let renderer: THREE.WebGLRenderer, camera: THREE.PerspectiveCamera, scene: THREE.Scene;
+    let controls: OrbitControls;
+    let planes: THREE.Plane[];
+    let planeHelpers: THREE.PlaneHelper[];
+    let clock: THREE.Clock;
+    let object: THREE.Group;
+    let hatchMaterial: THREE.ShaderMaterial;
 
     useEffect(() => {
-        if (!mountRef.current || initializedRef.current) return;
+        if (!model || initializedRef.current) return;
         initializedRef.current = true;
 
-        let renderer: THREE.WebGLRenderer, camera: THREE.PerspectiveCamera, scene: THREE.Scene;
-        let controls: OrbitControls, stats: Stats;
-        let planes: THREE.Plane[], planeHelpers: THREE.PlaneHelper[];
-        let object: THREE.Group, clock: THREE.Clock;
+        // 🔹 Initialize Three.js Scene
+        clock = new THREE.Clock();
+        scene = new THREE.Scene();
+        camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 100);
+        camera.position.set(2, 2, 2);
+        scene.add(new THREE.AmbientLight(0xffffff, 1.5));
 
-        const params = {
-            animate: true,
-            planeX: { constant: 0, negated: false, displayHelper: false },
-            planeY: { constant: 0, negated: false, displayHelper: false },
-            planeZ: { constant: 0, negated: false, displayHelper: false },
-        };
+        const dirLight = new THREE.DirectionalLight(0xffffff, 3);
+        dirLight.position.set(5, 10, 7.5);
+        scene.add(dirLight);
 
-        const init = () => {
-            clock = new THREE.Clock();
-            scene = new THREE.Scene();
-            camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 100);
-            camera.position.set(2, 2, 2);
-            scene.add(new THREE.AmbientLight(0xffffff, 1.5));
-
-            const dirLight = new THREE.DirectionalLight(0xffffff, 3);
-            dirLight.position.set(5, 10, 7.5);
-            scene.add(dirLight);
-
-            planes = [
-                new THREE.Plane(new THREE.Vector3(-1, 0, 0), 0),
-                new THREE.Plane(new THREE.Vector3(0, -1, 0), 0),
-                new THREE.Plane(new THREE.Vector3(0, 0, -1), 0)
-            ];
-            console.log(planes)
-
-            planeHelpers = planes.map(p => new THREE.PlaneHelper(p, 2, 0xffffff));
-            planeHelpers.forEach(ph => {
-                ph.visible = false;
-                scene.add(ph);
-            });
-
-            const geometry = new THREE.TorusKnotGeometry(0.4, 0.15, 220, 60);
-            object = new THREE.Group();
-            scene.add(object);
-            
-            // Tạo vật liệu cho phần bên trong bị cắt
-            const insideMaterial = new THREE.MeshStandardMaterial({
-                color: 0xD81B60, // Màu đỏ hồng giống hình mẫu
-                metalness: 0.1,
-                roughness: 0.75,
-                clippingPlanes: planes, // Vẫn bị cắt bởi planes
-                side: THREE.BackSide, // Lật mặt để hiển thị bên trong
-            });
-
-            // Clone geometry để tạo phần cắt
-            const innerMesh = new THREE.Mesh(geometry, insideMaterial);
-            innerMesh.renderOrder = 5; // Đảm bảo hiển thị đúng lớp
-            object.add(innerMesh);
-
-            const material = new THREE.MeshStandardMaterial({
-                color: 0xFFC107,
-                metalness: 0.1,
-                roughness: 0.75,
-                clippingPlanes: planes,
-                clipShadows: true,
-                shadowSide: THREE.DoubleSide,
-            });
-
-            const clippedColorFront = new THREE.Mesh(geometry, material);
-            clippedColorFront.castShadow = true;
-            clippedColorFront.renderOrder = 6;
-            object.add(clippedColorFront);
-
-            renderer = new THREE.WebGLRenderer({ antialias: true, stencil: true });
-            renderer.setPixelRatio(window.devicePixelRatio);
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            renderer.setClearColor(0x263238);
-            renderer.setAnimationLoop(animate);
-            renderer.shadowMap.enabled = true;
-            renderer.localClippingEnabled = true;
-            mountRef.current.appendChild(renderer.domElement);
-
-            stats = new Stats();
-            document.body.appendChild(stats.dom);
-
-            controls = new OrbitControls(camera, renderer.domElement);
-            controls.minDistance = 2;
-            controls.maxDistance = 20;
-            controls.update();
-
-            const gui = new GUI();
-            gui.add(params, 'animate');
-
-            const planeX = gui.addFolder('planeX');
-            planeX.add(params.planeX, 'displayHelper').onChange(v => planeHelpers[0].visible = v);
-            planeX.add(params.planeX, 'constant').min(-1).max(1).onChange(d => planes[0].constant = d);
-            planeX.add(params.planeX, 'negated').onChange(() => {
-                planes[0].negate();
-                params.planeX.constant = planes[0].constant;
-            });
-            planeX.open();
-
-            const planeY = gui.addFolder('planeY');
-            planeY.add(params.planeY, 'displayHelper').onChange(v => planeHelpers[1].visible = v);
-            planeY.add(params.planeY, 'constant').min(-1).max(1).onChange(d => planes[1].constant = d);
-            planeY.add(params.planeY, 'negated').onChange(() => {
-                planes[1].negate();
-                params.planeY.constant = planes[1].constant;
-            });
-            planeY.open();
-
-            const planeZ = gui.addFolder('planeZ');
-            planeZ.add(params.planeZ, 'displayHelper').onChange(v => planeHelpers[2].visible = v);
-            planeZ.add(params.planeZ, 'constant').min(-1).max(1).onChange(d => planes[2].constant = d);
-            planeZ.add(params.planeZ, 'negated').onChange(() => {
-                planes[2].negate();
-                params.planeZ.constant = planes[2].constant;
-            });
-            planeZ.open();
-        };
-
-        function animate() {
-            const delta = clock.getDelta();
-            if (params.animate) {
-                object.rotation.x += delta * 0.5;
-                object.rotation.y += delta * 0.2;
+        // 🔹 Compute Bounding Box
+        const bbox = new THREE.Box3();
+        model.traverse((child) => {
+            if (child.isMesh) {
+                child.geometry.computeBoundingBox();
+                child.updateMatrixWorld(true);
+                bbox.expandByObject(child);
             }
-            stats.begin();
-            renderer.render(scene, camera);
-            stats.end();
-        }
+        });
+        bboxRef.current = bbox;
+        const size = bbox.getSize(new THREE.Vector3());
+        const center = bbox.getCenter(new THREE.Vector3());
 
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
+        // 🟢 Define base constants for planes
+        baseConstantsRef.current = [
+            -(bbox.max.x + 10),  // X+
+            bbox.min.x - 10,     // X-
+            -(bbox.max.y + 10),  // Y+
+            bbox.min.y - 10,     // Y-
+            -(bbox.max.z + 10),  // Z+
+            bbox.min.z - 10      // Z-
+        ];
+
+        // 🟢 Create clipping planes
+        planes = [
+            new THREE.Plane(new THREE.Vector3(-1, 0, 0), baseConstantsRef.current[0]), // X+
+            new THREE.Plane(new THREE.Vector3(1, 0, 0), baseConstantsRef.current[1]),  // X-
+            new THREE.Plane(new THREE.Vector3(0, -1, 0), baseConstantsRef.current[2]), // Y+
+            new THREE.Plane(new THREE.Vector3(0, 1, 0), baseConstantsRef.current[3]),  // Y-
+            new THREE.Plane(new THREE.Vector3(0, 0, -1), baseConstantsRef.current[4]), // Z+
+            new THREE.Plane(new THREE.Vector3(0, 0, 1), baseConstantsRef.current[5])   // Z-
+        ];
+        planesRef.current = planes;
+
+        // 🔹 Create PlaneHelpers
+        planeHelpers = planes.map((plane, index) => {
+            const helperSize = Math.max(size.x, size.y, size.z) * 2; // Ensure large enough size
+            const helper = new THREE.PlaneHelper(plane, helperSize, 0xff0000); // Red color for visibility
+
+            switch (index) {
+                case 0: helper.position.set(bbox.max.x, center.y, center.z); break; // X+
+                case 1: helper.position.set(bbox.min.x, center.y, center.z); break; // X-
+                case 2: helper.position.set(center.x, bbox.max.y, center.z); break; // Y+
+                case 3: helper.position.set(center.x, bbox.min.y, center.z); break; // Y-
+                case 4: helper.position.set(center.x, center.y, bbox.max.z); break; // Z+
+                case 5: helper.position.set(center.x, center.y, bbox.min.z); break; // Z-
+            }
+
+            return helper;
         });
 
-        init();
+        planeHelpers.forEach(ph => {
+            ph.visible = true;
+            scene.add(ph);
+        });
+        
+
+        // 🔹 Handle Materials and Clipping
+        materialsRef.current = [];
+        model.traverse((child) => {
+            if (child.isMesh) {
+                const originalMaterial = Array.isArray(child.material)
+                    ? child.material.map(mat => mat.clone())
+                    : child.material.clone();
+
+                // Create clipping material
+                const clippingMaterial = Array.isArray(originalMaterial)
+                    ? originalMaterial.map(mat => {
+                        const newMat = mat.clone();
+                        newMat.clippingPlanes = [];
+                        newMat.clipShadows = true;
+                        newMat.stencilWrite = true;
+                        newMat.stencilRef = 1;
+                        newMat.stencilZPass = THREE.ReplaceStencilOp;
+                        newMat.side = THREE.DoubleSide; // Ensure solid rendering
+                        return newMat;
+                    })
+                    : originalMaterial.clone();
+
+                if (!Array.isArray(clippingMaterial)) {
+                    clippingMaterial.clippingPlanes = [];
+                    clippingMaterial.clipShadows = true;
+                    clippingMaterial.stencilWrite = true;
+                    clippingMaterial.stencilRef = 1;
+                    clippingMaterial.stencilZPass = THREE.ReplaceStencilOp;
+                    clippingMaterial.side = THREE.DoubleSide; // Ensure solid rendering
+                }
+
+                child.material = Array.isArray(clippingMaterial)
+                    ? clippingMaterial
+                    : clippingMaterial;
+
+                materialsRef.current.push({
+                    original: originalMaterial,
+                    clipping: Array.isArray(clippingMaterial)
+                        ? clippingMaterial[0]
+                        : clippingMaterial
+                });
+            }
+        });
+
+        // 🔹 Create Hatch Material
+        hatchMaterial = new THREE.ShaderMaterial({
+            uniforms: {
+                uColor: { value: new THREE.Color(0xff0000) },
+                uViewport: { value: new THREE.Vector2() }
+            },
+            vertexShader: `
+                varying vec3 vViewPosition;
+                void main() {
+                    vViewPosition = (modelViewMatrix * vec4(position, 1.0)).xyz;
+                    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+                }
+            `,
+            fragmentShader: `
+                uniform vec3 uColor;
+                uniform vec2 uViewport;
+                varying vec3 vViewPosition;
+
+                void main() {
+                    if (gl_FragCoord.z < 0.99) discard;
+                    float scale = 10.0;
+                    vec2 coord = gl_FragCoord.xy / uViewport * scale;
+                    if (fract(coord.x + coord.y) > 0.5) discard;
+                    gl_FragColor = vec4(uColor, 1.0);
+                }
+            `,
+            depthTest: true,
+            depthWrite: false,
+            stencilWrite: true,
+            stencilRef: 1,
+            stencilFunc: THREE.NotEqualStencilFunc,
+            stencilZPass: THREE.ReplaceStencilOp
+        });
+
+        console.log(hatchMaterial);
+
+        // 🔹 Renderer Setup
+        renderer = new THREE.WebGLRenderer({
+            antialias: true,
+            stencil: true,
+            preserveDrawingBuffer: true
+        });
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setClearColor(0x263238);
+        renderer.localClippingEnabled = true;
+        renderer.shadowMap.enabled = true;
+        renderer.autoClearStencil = false;
+        ifcContainerRef.current?.appendChild(renderer.domElement);
+
+        // 🔹 Controls Setup
+        controls = new OrbitControls(camera, renderer.domElement);
+        controls.minDistance = 2;
+        controls.maxDistance = 20;
+        controls.update();
+
+        // 🔹 GUI Setup
+        const gui = new GUI();
+
+        const clippingFolder = gui.addFolder('Clipping Control');
+        clippingFolder.add({ activePlane: activePlaneIndex }, 'activePlane', {
+            'None': -1,
+            'X+ (Right)': 0,
+            'X- (Left)': 1,
+            'Y+ (Top)': 2,
+            'Y- (Bottom)': 3,
+            'Z+ (Back)': 4,
+            'Z- (Front)': 5
+        }).name('Active Plane')
+          .onChange((value) => {
+              setActivePlaneIndex(value);
+          });
+
+        clippingFolder.add({ offset: 0 }, 'offset', -10, 10, 0.1)
+            .name('Global Offset')
+            .onChange((value) => {
+                setGlobalOffset(value);
+            });
+
+        clippingFolder.add({ showHatch: false }, 'showHatch')
+            .name('Show Hatch')
+            .onChange((value) => {
+                setShowHatch(value);
+                materialsRef.current.forEach(({ clipping }) => {
+                    if (Array.isArray(clipping)) {
+                        clipping.forEach(mat => {
+                            mat.stencilWrite = value;
+                            mat.needsUpdate = true;
+                        });
+                    } else {
+                        clipping.stencilWrite = value;
+                        clipping.needsUpdate = true;
+                    }
+                });
+            });
+        clippingFolder.open();
+
+        planes.forEach((plane, index) => {
+            const axis = ["x", "x", "y", "y", "z", "z"][index];
+            const folder = gui.addFolder(`Plane ${["X+", "X-", "Y+", "Y-", "Z+", "Z-"][index]}`);
+
+            folder.add(plane, 'constant', -100, 100, 0.1)
+                .name('Position')
+                .onChange(() => {
+                    planeHelpers[index].updateMatrixWorld();
+                });
+
+            folder.add(planeHelpers[index], 'visible').name('Show Helper');
+        });
+
+        // 🔹 Animation Loop
+        const animate = () => {
+            requestAnimationFrame(animate);
+            controls.update();
+
+            hatchMaterial.uniforms.uViewport.value.set(
+                window.innerWidth * window.devicePixelRatio,
+                window.innerHeight * window.devicePixelRatio
+            );
+
+            renderer.clear();
+            renderer.render(scene, camera);
+
+            if (showHatch) {
+                renderer.clearStencil();
+                renderer.render(scene, camera);
+                renderer.render(new THREE.Scene(), camera);
+            }
+        };
+        animate();
 
         return () => {
-            window.removeEventListener('resize', () => {
-                camera.aspect = window.innerWidth / window.innerHeight;
-                camera.updateProjectionMatrix();
-                renderer.setSize(window.innerWidth, window.innerHeight);
-            });
-            mountRef.current?.removeChild(renderer.domElement);
+            gui.destroy();
+            renderer.dispose();
+            window.removeEventListener('resize', handleResize);
         };
-    }, []);
+    }, [model]);
 
-    return <div ref={mountRef} />;
+    useEffect(() => {
+        if (!model || materialsRef.current.length === 0) return;
+
+        materialsRef.current.forEach(({ clipping }) => {
+            const planes = activePlaneIndex === -1
+                ? []
+                : [planesRef.current[activePlaneIndex]];
+
+            if (Array.isArray(clipping)) {
+                clipping.forEach(mat => {
+                    mat.clippingPlanes = planes;
+                    mat.needsUpdate = true;
+                });
+            } else {
+                clipping.clippingPlanes = planes;
+                clipping.needsUpdate = true;
+            }
+        });
+    }, [activePlaneIndex, model]);
+
+    useEffect(() => {
+        if (!planesRef.current || !baseConstantsRef.current) return;
+
+        planesRef.current.forEach((plane, index) => {
+            if (index % 2 === 0) {
+                plane.constant = baseConstantsRef.current[index] - globalOffset;
+            } else {
+                plane.constant = baseConstantsRef.current[index] + globalOffset;
+            }
+        });
+    }, [globalOffset]);
+
+    const handleResize = () => {
+        if (!camera) return;
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    };
+    window.addEventListener('resize', handleResize);
+
+    const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (event.target.files && event.target.files.length > 0) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+            reader.readAsArrayBuffer(file);
+            reader.onload = async () => {
+                if (reader.result) {
+                    const buffer = new Uint8Array(reader.result as ArrayBuffer);
+                    loadIfc(buffer);
+                }
+            };
+        }
+    };
+
+    return (
+        <div className="w-full h-full relative">
+            <div ref={ifcContainerRef} className="absolute inset-0 z-10" />
+
+            {loading && <LoadingSpinner />}
+
+            <div className="absolute top-4 left-4 bg-white p-2 rounded shadow-lg z-20 space-x-2">
+                <input
+                    type="file"
+                    ref={fileInputRef}
+                    accept=".ifc"
+                    onChange={handleFileChange}
+                    className="hidden"
+                />
+                <button
+                    onClick={() => fileInputRef.current?.click()}
+                    className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 transition"
+                >
+                    Upload IFC
+                </button>
+            </div>
+        </div>
+    );
 };
 
-export default WebglClippingStencilIfc;
+export default WebglClippingStencil;

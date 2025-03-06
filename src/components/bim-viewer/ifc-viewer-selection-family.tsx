@@ -173,7 +173,7 @@ const IfcViewerSelectionFamily: React.FC = () => {
 
             <div className="absolute top-4 left-4 bg-white p-2 rounded shadow-lg z-20">
                 <input type="file" ref={fileInputRef} accept=".ifc" onChange={handleFileChange} className="hidden" />
-                <button className="bim-button" onClick={() => fileInputRef.current?.click()}>Upload IFC</button>
+                <button className="" onClick={() => fileInputRef.current?.click()}>Upload IFC</button>
             </div>
         </div>
     );
