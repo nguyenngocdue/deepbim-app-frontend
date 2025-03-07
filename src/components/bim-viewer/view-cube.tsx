@@ -4,44 +4,54 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { ViewportGizmo } from "three-viewport-gizmo";
 
 const ViewCube: React.FC = () => {
+  // Reference to the div where Three.js will be mounted
   const mountRef = useRef<HTMLDivElement | null>(null);
+  
+  // State to prevent re-initialization
   const [initialized, setInitialized] = useState(false);
 
-  // Hàm khởi tạo Three.js
+  // Function to initialize Three.js
   const initThreeJS = () => {
-    if (!mountRef.current || initialized) return; // Nếu đã init thì không làm lại
+    if (!mountRef.current || initialized) return; // Prevent duplicate initialization
 
-    setInitialized(true); // Đánh dấu đã khởi tạo
+    setInitialized(true); // Mark as initialized
 
+    // Create scene
     const scene = new THREE.Scene();
+    
+    // Create camera
     const camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 100);
     camera.position.set(0, 5, 8);
 
+    // Create renderer
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
+    
+    // Append renderer to the DOM
     mountRef.current.appendChild(renderer.domElement);
 
-    // Tạo Cube
+    // Create a cube
     const geometry = new THREE.BoxGeometry(2, 2, 2);
     const material = new THREE.MeshBasicMaterial({ color: 0x44aa88, wireframe: true });
     const cube = new THREE.Mesh(geometry, material);
     scene.add(cube);
 
-    // Khởi tạo OrbitControls & Gizmo
+    // Initialize OrbitControls & ViewportGizmo
     const gizmo = new ViewportGizmo(camera, renderer, { type: "cube" });
     const controls = new OrbitControls(camera, renderer.domElement);
     gizmo.attachControls(controls);
 
+    // Set camera target
     camera.lookAt(gizmo.target);
 
-    // Vòng lặp animation
+    // Animation loop
     const animate = () => {
-      cube.rotation.x += 0.01;
+      cube.rotation.x += 0.01; // Rotate cube
       cube.rotation.y += 0.01;
 
-      renderer.render(scene, camera);
-      gizmo.render();
-      requestAnimationFrame(animate);
+      renderer.render(scene, camera); // Render scene
+      gizmo.render(); // Render gizmo
+      requestAnimationFrame(animate); // Continue animation loop
     };
 
     animate();
@@ -50,8 +60,8 @@ const ViewCube: React.FC = () => {
   return (
     <div
       ref={(ref) => {
-        mountRef.current = ref;
-        if (ref) initThreeJS(); // Chỉ chạy init khi ref có giá trị
+        mountRef.current = ref; // Assign ref to mount div
+        if (ref) initThreeJS(); // Initialize Three.js only when ref is assigned
       }}
       style={{ width: "100vw", height: "100vh" }}
     />
