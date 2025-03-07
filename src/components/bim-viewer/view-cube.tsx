@@ -7,33 +7,38 @@ import { ViewportGizmo } from "three-viewport-gizmo";
 function getGizmoConfig() {
   return {
     type: "cube",
-    background: { color: "#CCCCCC" }, // Dark background
+    background: { color: "#CCCCCC" }, // Dark background for contrast
     corners: {
-      color: 0x777777, // Slightly darker corners
-      labelColor: 0xffffff, // White labels
+      color: '#6FA8DC', // Darker gray corners
+      labelColor: 0xffffff, // White text
     },
     edges: {
-      color: 0xffffff, // Bright white edges
-      labelColor: 0x000000, // Black text
-      lineStyle: "dashed", // Dashed border style
-      lineWidth: 5, // Extra thick edges
+      color: 0x00ff00, // Green edges
+      labelColor: "#134E15", // Black text
+      lineStyle: "dashed", // Dashed border effect
+      lineWidth: 3, // Bold lines
       dashSize: 8, // Dash length
       gapSize: 4, // Space between dashes
     },
     right: {
-      color: 0xffffff, // White faces
-      labelColor: 0x000000, // Black text
+      color: 0xffffff, // White face
+      labelColor: "#134E15", // Black text
     },
     top: {
       color: 0xffffff,
-      labelColor: 0x000000,
+      labelColor: "#134E15",
     },
     front: {
       color: 0xffffff,
-      labelColor: 0x000000,
+      labelColor: "#134E15",
+    },
+    bottom: {
+      color: 0x999999, // Slightly darker gray to simulate shadow
+      labelColor: "#134E15",
     },
   };
 }
+
 
 const ViewCube: React.FC = () => {
   const mountRef = useRef<HTMLDivElement | null>(null);
@@ -58,7 +63,7 @@ const ViewCube: React.FC = () => {
     mountRef.current.appendChild(renderer.domElement);
 
     // Create the main cube (solid white)
-    const cubeGeometry = new THREE.BoxGeometry(2, 2, 2);
+    const cubeGeometry = new THREE.BoxGeometry(5, 5, 5);
     const cubeMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.3 });
     const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
     cube.castShadow = true;
@@ -119,12 +124,12 @@ const ViewCube: React.FC = () => {
 
     // Apply textures with labels
     const labeledMaterials = [
-      new THREE.MeshStandardMaterial({ map: createTextTexture("TOP") }), // Top
-      new THREE.MeshStandardMaterial({ map: createTextTexture("BOTTOM") }), // Bottom
-      new THREE.MeshStandardMaterial({ map: createTextTexture("FRONT") }), // Front
-      new THREE.MeshStandardMaterial({ map: createTextTexture("BACK") }), // Back
-      new THREE.MeshStandardMaterial({ map: createTextTexture("LEFT") }), // Left
-      new THREE.MeshStandardMaterial({ map: createTextTexture("RIGHT") }), // Right
+      new THREE.MeshStandardMaterial({ map: createTextTexture("RIGHT") }), 
+      new THREE.MeshStandardMaterial({ map: createTextTexture("LEFT") }), 
+      new THREE.MeshStandardMaterial({ map: createTextTexture("TOP") }), 
+      new THREE.MeshStandardMaterial({ map: createTextTexture("BOTTOM") }), 
+      new THREE.MeshStandardMaterial({ map: createTextTexture("FRONT") }), 
+      new THREE.MeshStandardMaterial({ map: createTextTexture("BACK") }), 
     ];
     cube.material = labeledMaterials;
 
@@ -137,9 +142,6 @@ const ViewCube: React.FC = () => {
 
     // Animation loop
     const animate = () => {
-      cube.rotation.y += 0.01;
-      dashedLines.rotation.y += 0.01; // Rotate dashed edges with cube
-
       renderer.render(scene, camera);
       gizmo.render();
       requestAnimationFrame(animate);
