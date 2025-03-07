@@ -4,40 +4,72 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { ViewportGizmo } from "three-viewport-gizmo";
 
 // Configure Viewport Gizmo style with bold dashed borders
+// Configure Viewport Gizmo style with bold dashed borders and hover effects
 function getGizmoConfig() {
   return {
     type: "cube",
-    background: { color: "#CCCCCC" }, // Dark background for contrast
+    background: { color: "#CCCCCC" }, // Light gray background for contrast
+
     corners: {
-      color: '#6FA8DC', // Darker gray corners
+      color: "#6FA8DC", // Default blue-gray corners
       labelColor: 0xffffff, // White text
+      hover: {
+        color: "#3D85C6", // Darker blue on hover
+        labelColor: 0x000000, // Black text on hover
+      },
     },
+
     edges: {
-      color: 0x00ff00, // Green edges
-      labelColor: "#134E15", // Black text
+      color: "#EDF7E9", // Green edges (default)
+      labelColor: "#134E15", // Dark green text
       lineStyle: "dashed", // Dashed border effect
       lineWidth: 3, // Bold lines
       dashSize: 8, // Dash length
       gapSize: 4, // Space between dashes
+      hover: {
+        color: "#0055FF", // Blue edges when hovered
+        labelColor: "#FFFFFF", // White text when hovered
+      },
     },
+
     right: {
-      color: 0xffffff, // White face
-      labelColor: "#134E15", // Black text
+      color: "#EDF7E9", // Default white face
+      labelColor: "#134E15", // Dark green text
+      hover: {
+        color: "#A4C2F4", // Light blue when hovered
+        labelColor: "#000000", // Black text when hovered
+      },
     },
+
     top: {
-      color: 0xffffff,
-      labelColor: "#134E15",
+      color: "#EDF7E9", // Default white face
+      labelColor: "#134E15", // Dark green text
+      hover: {
+        color: "#A4C2F4", // Light blue when hovered
+        labelColor: "#000000", // Black text when hovered
+      },
     },
+
     front: {
-      color: 0xffffff,
-      labelColor: "#134E15",
+      color: "#EDF7E9", // Default white face
+      labelColor: "#134E15", // Dark green text
+      hover: {
+        color: "#A4C2F4", // Light blue when hovered
+        labelColor: "#000000", // Black text when hovered
+      },
     },
+
     bottom: {
-      color: 0x999999, // Slightly darker gray to simulate shadow
-      labelColor: "#134E15",
+      color: "#EDF7E9", // Slightly darker gray to simulate shadow
+      labelColor: "#134E15", // Dark green text
+      hover: {
+        color: "#666666", // Darker gray on hover
+        labelColor: "#FFFFFF", // White text on hover
+      },
     },
   };
 }
+
 
 
 const ViewCube: React.FC = () => {
