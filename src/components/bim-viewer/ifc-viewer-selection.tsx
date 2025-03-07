@@ -1,8 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
-import * as OBC from "@thatopen/components";
 import * as THREE from "three";
-import LoadingSpinner from "@/components/bim-viewer/loading-spinner";
-import { useIfcSelection } from "@/hooks/use-ifc-selection";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { ViewportGizmo } from "three-viewport-gizmo";
 
 const IfcViewerSelection: React.FC = () => {
     const gridContainerRef = useRef<HTMLDivElement | null>(null);
