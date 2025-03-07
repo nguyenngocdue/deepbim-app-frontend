@@ -10,9 +10,8 @@ interface ViewCubeProps {
   controls: OrbitControls;
 }
 
-function getGizmoConfig() {
-  return {
-    type: "cube",
+const  getGizmoConfig = {
+    type: "cube" as const,
     position: "bottom-left", // Change position of Gizmo (Try "top-left", "top-right", etc.)
     style: { transform: "translateY(10px)" }, // Move down by 10px
     background: { color: "rgba(255, 255, 255, 0)" }, // Transparent Background
@@ -35,7 +34,6 @@ function getGizmoConfig() {
     top: { color: "#F1FAEE", labelColor: "#1D3557", hover: { color: "#A8DADC", labelColor: "#000000" } },
     front: { color: "#E9F5DB", labelColor: "#1D3557", hover: { color: "#A8DADC", labelColor: "#000000" } },
     bottom: { color: "#D9E2EC", labelColor: "#1D3557", hover: { color: "#B0C4DE", labelColor: "#FFFFFF" } },
-  };
 }
 
 const ViewCube: React.FC<ViewCubeProps> = ({ camera, renderer, controls }) => {
@@ -45,7 +43,7 @@ const ViewCube: React.FC<ViewCubeProps> = ({ camera, renderer, controls }) => {
   useEffect(() => {
     if (gizmoRef.current) return; // Prevent multiple initializations
 
-    const gizmo = new ViewportGizmo(camera, renderer, getGizmoConfig());
+    const gizmo = new ViewportGizmo(camera, renderer, getGizmoConfig );
     gizmo.attachControls(controls);
     gizmoRef.current = gizmo;
 
