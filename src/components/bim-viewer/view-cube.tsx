@@ -3,68 +3,66 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { ViewportGizmo } from "three-viewport-gizmo";
 
-// Configure Viewport Gizmo style with bold dashed borders
-// Configure Viewport Gizmo style with bold dashed borders and hover effects
 function getGizmoConfig() {
   return {
     type: "cube",
-    background: { color: "#CCCCCC" }, // Light gray background for contrast
+    background: { color: "#F5F5F5" }, // Light gray for a clean, modern look
 
     corners: {
-      color: "#6FA8DC", // Default blue-gray corners
-      labelColor: 0xffffff, // White text
+      color: "#98C1D9", // Soft blue-gray for a futuristic feel
+      labelColor: "#FFFFFF", // White text for visibility
       hover: {
-        color: "#3D85C6", // Darker blue on hover
-        labelColor: 0x000000, // Black text on hover
+        color: "#3D5A80", // Darker blue on hover for depth
+        labelColor: "#000000", // Black text on hover
       },
     },
 
     edges: {
-      color: "#EDF7E9", // Green edges (default)
-      labelColor: "#134E15", // Dark green text
+      color: "#A8DADC", // Soft teal edges for a modern look
+      labelColor: "#1D3557", // Deep blue text for contrast
       lineStyle: "dashed", // Dashed border effect
       lineWidth: 3, // Bold lines
       dashSize: 8, // Dash length
       gapSize: 4, // Space between dashes
       hover: {
-        color: "#0055FF", // Blue edges when hovered
-        labelColor: "#FFFFFF", // White text when hovered
+        color: "#457B9D", // Rich blue edges on hover
+        labelColor: "#F1FAEE", // Soft white text when hovered
       },
     },
 
     right: {
-      color: "#EDF7E9", // Default white face
-      labelColor: "#134E15", // Dark green text
+      color: "#E9F5DB", // Soft pastel green for a fresh look
+      labelColor: "#1D3557", // Deep blue text
       hover: {
-        color: "#A4C2F4", // Light blue when hovered
+        color: "#A8DADC", // Light teal on hover
         labelColor: "#000000", // Black text when hovered
       },
     },
 
     top: {
-      color: "#EDF7E9", // Default white face
-      labelColor: "#134E15", // Dark green text
+      color: "#F1FAEE", // Very light pastel green for a modern touch
+      labelColor: "#1D3557",
       hover: {
-        color: "#A4C2F4", // Light blue when hovered
-        labelColor: "#000000", // Black text when hovered
+        color: "#A8DADC", // Light teal on hover
+        labelColor: "#000000",
       },
     },
 
     front: {
-      color: "#EDF7E9", // Default white face
-      labelColor: "#134E15", // Dark green text
+      color: "#E9F5DB", // Fresh green tint
+      labelColor: "#1D3557",
       hover: {
-        color: "#A4C2F4", // Light blue when hovered
-        labelColor: "#000000", // Black text when hovered
+        color: "#A8DADC", // Light teal when hovered
+        labelColor: "#000000",
       },
     },
 
     bottom: {
-      color: "#EDF7E9", // Slightly darker gray to simulate shadow
-      labelColor: "#134E15", // Dark green text
+      color: "#D9E2EC", // Soft blue-gray to create a shadow effect
+      labelColor: "#1D3557",
       hover: {
-        color: "#666666", // Darker gray on hover
-        labelColor: "#FFFFFF", // White text on hover
+        color: "#B0C4DE", // Slightly darker blue-gray for depth on hover
+        labelColor: "#FFFFFF",
       },
     },
   };
