@@ -2,89 +2,53 @@ import React, { useRef } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { ViewportGizmo } from "three-viewport-gizmo";
+import { FaHome } from "react-icons/fa";
 
 function getGizmoConfig() {
   return {
     type: "cube",
-    background: { color: "#F5F5F5" }, // Light gray for a clean, modern look
+    position: "bottom-left", // Change position of Gizmo (Try "top-left", "top-right", etc.)
+    style: { transform: "translateY(10px)"}, // Move down by 10px
+    background: { color: "rgba(255, 255, 255, 0)" }, // Transparent Background
 
     corners: {
-      color: "#98C1D9", // Soft blue-gray for a futuristic feel
-      labelColor: "#FFFFFF", // White text for visibility
-      hover: {
-        color: "#3D5A80", // Darker blue on hover for depth
-        labelColor: "#000000", // Black text on hover
-      },
+      color: "#98C1D9",
+      labelColor: "#FFFFFF",
+      hover: { color: "#3D5A80", labelColor: "#000000" },
     },
-
     edges: {
-      color: "#A8DADC", // Soft teal edges for a modern look
-      labelColor: "#1D3557", // Deep blue text for contrast
-      lineStyle: "dashed", // Dashed border effect
-      lineWidth: 3, // Bold lines
-      dashSize: 8, // Dash length
-      gapSize: 4, // Space between dashes
-      hover: {
-        color: "#457B9D", // Rich blue edges on hover
-        labelColor: "#F1FAEE", // Soft white text when hovered
-      },
-    },
-
-    right: {
-      color: "#E9F5DB", // Soft pastel green for a fresh look
-      labelColor: "#1D3557", // Deep blue text
-      hover: {
-        color: "#A8DADC", // Light teal on hover
-        labelColor: "#000000", // Black text when hovered
-      },
-    },
-
-    top: {
-      color: "#F1FAEE", // Very light pastel green for a modern touch
+      color: "#A8DADC",
       labelColor: "#1D3557",
-      hover: {
-        color: "#A8DADC", // Light teal on hover
-        labelColor: "#000000",
-      },
+      lineStyle: "dashed",
+      lineWidth: 3,
+      dashSize: 8,
+      gapSize: 4,
+      hover: { color: "#457B9D", labelColor: "#F1FAEE" },
     },
-
-    front: {
-      color: "#E9F5DB", // Fresh green tint
-      labelColor: "#1D3557",
-      hover: {
-        color: "#A8DADC", // Light teal when hovered
-        labelColor: "#000000",
-      },
-    },
-
-    bottom: {
-      color: "#D9E2EC", // Soft blue-gray to create a shadow effect
-      labelColor: "#1D3557",
-      hover: {
-        color: "#B0C4DE", // Slightly darker blue-gray for depth on hover
-        labelColor: "#FFFFFF",
-      },
-    },
+    right: { color: "#E9F5DB", labelColor: "#1D3557", hover: { color: "#A8DADC", labelColor: "#000000" } },
+    top: { color: "#F1FAEE", labelColor: "#1D3557", hover: { color: "#A8DADC", labelColor: "#000000" } },
+    front: { color: "#E9F5DB", labelColor: "#1D3557", hover: { color: "#A8DADC", labelColor: "#000000" } },
+    bottom: { color: "#D9E2EC", labelColor: "#1D3557", hover: { color: "#B0C4DE", labelColor: "#FFFFFF" } },
   };
 }
-
 
 
 const ViewCube: React.FC = () => {
   const mountRef = useRef<HTMLDivElement | null>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
+  const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
+  const gizmoRef = useRef<ViewportGizmo | null>(null);
+  const controlsRef = useRef<OrbitControls | null>(null);
 
-  // Function to initialize Three.js
+  // Initialize Three.js with Geometry Cube
   const initThreeJS = () => {
     if (!mountRef.current || rendererRef.current) return;
 
     const scene = new THREE.Scene();
-
-    // Create camera
     const camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 100);
     camera.position.set(5, 5, 10);
+    cameraRef.current = camera;
 
-    // Create renderer with shadows enabled
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
@@ -92,44 +56,13 @@ const ViewCube: React.FC = () => {
     rendererRef.current = renderer;
     mountRef.current.appendChild(renderer.domElement);
 
-    // Create the main cube (solid white)
+    // Create Main Cube (Geometry)
     const cubeGeometry = new THREE.BoxGeometry(5, 5, 5);
     const cubeMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.3 });
     const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
     cube.castShadow = true;
     cube.receiveShadow = true;
     scene.add(cube);
-
-    // Add dashed green edges
-    const edges = new THREE.EdgesGeometry(cubeGeometry);
-    const dashedMaterial = new THREE.LineDashedMaterial({
-      color: 0x00ff00, // Green color
-      linewidth: 2,
-      scale: 1,
-      dashSize: 0.3, // Dash length
-      gapSize: 0.15, // Gap between dashes
-    });
-    const dashedLines = new THREE.LineSegments(edges, dashedMaterial);
-    dashedLines.computeLineDistances(); // Necessary for dashed effect
-    scene.add(dashedLines);
-
-    // Create a ground plane to catch shadows
-    const planeGeometry = new THREE.PlaneGeometry(10, 10);
-    const planeMaterial = new THREE.ShadowMaterial({ opacity: 0.3 });
-    const plane = new THREE.Mesh(planeGeometry, planeMaterial);
-    plane.rotation.x = -Math.PI / 2;
-    plane.position.y = -1.5;
-    plane.receiveShadow = true;
-    scene.add(plane);
-
-    // Add lighting for shadows
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
-    scene.add(ambientLight);
-
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 1.2);
-    directionalLight.position.set(5, 10, 5);
-    directionalLight.castShadow = true;
-    scene.add(directionalLight);
 
     // Add text labels
     const createTextTexture = (text: string) => {
@@ -151,45 +84,108 @@ const ViewCube: React.FC = () => {
 
       return new THREE.CanvasTexture(canvas);
     };
-
     // Apply textures with labels
     const labeledMaterials = [
-      new THREE.MeshStandardMaterial({ map: createTextTexture("RIGHT") }), 
-      new THREE.MeshStandardMaterial({ map: createTextTexture("LEFT") }), 
-      new THREE.MeshStandardMaterial({ map: createTextTexture("TOP") }), 
-      new THREE.MeshStandardMaterial({ map: createTextTexture("BOTTOM") }), 
-      new THREE.MeshStandardMaterial({ map: createTextTexture("FRONT") }), 
-      new THREE.MeshStandardMaterial({ map: createTextTexture("BACK") }), 
+      new THREE.MeshStandardMaterial({ map: createTextTexture("RIGHT") }),
+      new THREE.MeshStandardMaterial({ map: createTextTexture("LEFT") }),
+      new THREE.MeshStandardMaterial({ map: createTextTexture("TOP") }),
+      new THREE.MeshStandardMaterial({ map: createTextTexture("BOTTOM") }),
+      new THREE.MeshStandardMaterial({ map: createTextTexture("FRONT") }),
+      new THREE.MeshStandardMaterial({ map: createTextTexture("BACK") }),
     ];
     cube.material = labeledMaterials;
 
-    // Initialize OrbitControls & ViewportGizmo
+    // Add Dashed Green Edges
+    const edges = new THREE.EdgesGeometry(cubeGeometry);
+    const dashedMaterial = new THREE.LineDashedMaterial({
+      color: 0x00ff00, // Green color
+      linewidth: 2,
+      scale: 1,
+      dashSize: 0.3,
+      gapSize: 0.15,
+    });
+    const dashedLines = new THREE.LineSegments(edges, dashedMaterial);
+    dashedLines.computeLineDistances();
+    scene.add(dashedLines);
+
+    // Create Ground Plane for Shadows
+    const planeGeometry = new THREE.PlaneGeometry(10, 10);
+    const planeMaterial = new THREE.ShadowMaterial({ opacity: 0.3 });
+    const plane = new THREE.Mesh(planeGeometry, planeMaterial);
+    plane.rotation.x = -Math.PI / 2;
+    plane.position.y = -3;
+    plane.receiveShadow = true;
+    scene.add(plane);
+
+    // Add Lights
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+    scene.add(ambientLight);
+
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1.2);
+    directionalLight.position.set(5, 10, 5);
+    directionalLight.castShadow = true;
+    scene.add(directionalLight);
+
+    // Add Viewport Gizmo
     const gizmo = new ViewportGizmo(camera, renderer, getGizmoConfig());
+    gizmoRef.current = gizmo;
     const controls = new OrbitControls(camera, renderer.domElement);
+    controlsRef.current = controls;
     gizmo.attachControls(controls);
 
     camera.lookAt(gizmo.target);
 
-    // Animation loop
     const animate = () => {
+      cube.rotation.y += 0.01; // Rotating Cube
+      dashedLines.rotation.y += 0.01; // Keep edges rotating
+
       renderer.render(scene, camera);
       gizmo.render();
       requestAnimationFrame(animate);
     };
 
     animate();
+
+    setTimeout(() => {
+      const gizmoElement = document.querySelector(".viewport-gizmo");
+      if (gizmoElement) {
+        gizmoElement.setAttribute("style", "position: absolute; bottom: 10px; right: 20px; transform: translateY(10px);");
+      }
+    }, 500);
+  };
+
+  // Reset View to Default
+  const resetView = () => {
+    if (cameraRef.current && controlsRef.current) {
+      cameraRef.current.position.set(5, 5, 10);
+      cameraRef.current.lookAt(0, 0, 0);
+      controlsRef.current.target.set(0, 0, 0);
+      controlsRef.current.update();
+      gizmoRef.current?.render();
+    }
   };
 
   return (
-    <div
-      ref={(ref) => {
-        if (ref && !rendererRef.current) {
-          mountRef.current = ref;
-          initThreeJS();
-        }
-      }}
-      style={{ width: "100vw", height: "100vh", background: "#222222" }} // Dark background
-    />
+    <>
+      <div
+        ref={(ref) => {
+          if (ref && !rendererRef.current) {
+            mountRef.current = ref;
+            initThreeJS();
+          }
+        }}
+        className="relative w-screen h-screen bg-gray-900"
+      >
+        {/* House Button to the Left of Gizmo */}
+        <button
+          onClick={resetView}
+          className="absolute top-[15px] right-[200px] bg-transparent border-none shadow-none text-white p-3 text-2xl hover:text-gray-300 transition"
+        >
+          <FaHome />
+        </button>
+      </div>
+    </>
+
   );
 };
 
