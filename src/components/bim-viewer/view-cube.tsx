@@ -79,7 +79,7 @@ const ViewCube: React.FC = () => {
       context.fillStyle = "black";
       context.font = "bold 48px Arial";
       context.textAlign = "center";
-      context.textBaseline = "middle";
+      context.textBaseline = "middle"; 
       context.fillText(text, canvas.width / 2, canvas.height / 2);
 
       return new THREE.CanvasTexture(canvas);
