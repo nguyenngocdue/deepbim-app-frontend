@@ -19,7 +19,7 @@ import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
 
-const ROOT = "../../three-viewport-gizmo/assets/";
+const ROOT = "../../assets/";
 
 export const loadThreeModel = (scene, renderer) => {
   const threeModel = new Group();
@@ -46,7 +46,6 @@ export const loadThreeModel = (scene, renderer) => {
     specularIntensity: 1,
   });
 
-  console.log("object")
   /**
    * Three.js logo
    * By: [Fyrestar](https://sketchfab.com/mevedia)
