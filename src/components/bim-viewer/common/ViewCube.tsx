@@ -50,6 +50,7 @@ const ViewCube: React.FC<ViewCubeProps> = ({ camera, renderer, controls }) => {
     // Ensure camera looks at the scene center
     camera.lookAt(0, 0, 0);
     controls.update();
+    console.log(camera, renderer, controls)
 
     const animate = () => {
       if (gizmoRef.current) gizmoRef.current.render();

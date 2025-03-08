@@ -5,12 +5,14 @@ import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
 import { useIfcLoader } from "@/hooks/use-ifc-loader";
 import { IfcLoader } from "@thatopen/components";
 import LoadingSpinner from "./loading-spinner";
+import ViewCube from "./common/ViewCube";
 
 const WebglClippingStencil: React.FC = () => {
     const initializedRef = useRef(false);
     const fileInputRef = useRef<HTMLInputElement | null>(null);
     const ifcLoaderRef = useRef<IfcLoader | null>(null);
     const { ifcContainerRef, loadIfc, loading, ifcWorldRef, model } = useIfcLoader();
+    const [isReady, setIsReady] = useState(false);
 
     const [activePlaneIndex, setActivePlaneIndex] = useState(-1); // -1 = no active plane
     const [globalOffset, setGlobalOffset] = useState(0);
@@ -19,6 +21,9 @@ const WebglClippingStencil: React.FC = () => {
     const bboxRef = useRef<THREE.Box3 | null>(null);
     const baseConstantsRef = useRef<number[]>([]);
     const [showHatch, setShowHatch] = useState(false);
+  const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
+  const controlsRef = useRef<OrbitControls | null>(null);
+  const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
 
     let renderer: THREE.WebGLRenderer, camera: THREE.PerspectiveCamera, scene: THREE.Scene;
     let controls: OrbitControls;
@@ -31,6 +36,7 @@ const WebglClippingStencil: React.FC = () => {
     useEffect(() => {
         if (!model || initializedRef.current) return;
         initializedRef.current = true;
+        setIsReady(true);
 
         // 🔹 Initialize Three.js Scene
         clock = new THREE.Clock();
@@ -359,6 +365,10 @@ const WebglClippingStencil: React.FC = () => {
                     Upload IFC
                 </button>
             </div>
+
+            {isReady && cameraRef.current && rendererRef.current && controlsRef.current && (
+                <ViewCube camera={cameraRef.current} renderer={rendererRef.current} controls={controlsRef.current} />
+            )}
         </div>
     );
 };

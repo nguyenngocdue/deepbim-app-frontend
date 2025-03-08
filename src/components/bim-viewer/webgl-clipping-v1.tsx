@@ -58,6 +58,8 @@ const WebglClippingV1: React.FC = () => {
         camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.25, 50);
         camera.position.set(0, 1.3, 3);
 
+        console.log(camera)
+
         // Initialize OrbitControls (ensure it exists only once)
         if (!controlsRef.current) {
             controlsRef.current = new OrbitControls(camera, renderer.domElement);

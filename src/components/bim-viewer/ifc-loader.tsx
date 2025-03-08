@@ -3,6 +3,8 @@ import * as OBC from "@thatopen/components";
 import * as THREE from "three";
 import * as WEBIFC from "web-ifc";
 import LoadingSpinner from "@/components/bim-viewer/loading-spinner";
+import { OrbitControls } from "three/examples/jsm/Addons.js";
+import ViewCube from "./common/ViewCube";
 
 const IfcLoader: React.FC = () => {
     const gridContainerRef = useRef<HTMLDivElement | null>(null);
@@ -11,13 +13,18 @@ const IfcLoader: React.FC = () => {
     const worldRef = useRef<OBC.World | null>(null);
     const ifcWorldRef = useRef<OBC.World | null>(null);
     const componentsRef = useRef<OBC.Components | null>(null);
-    const [loading, setLoading] = useState(false); // 🔴 Loading state
+    const [loading, setLoading] = useState(false); 
+    const [isReady, setIsReady] = useState(false);
+
+    const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
+    const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
+    const controlsRef = useRef<OrbitControls | null>(null);
 
     /** 🏗️ Initialize Grid Scene (Always Visible) */
     useEffect(() => {
 
-        
         if (!gridContainerRef.current) return;
+        setIsReady(true);
         
         // If world is already initialized, do nothing
         if (worldRef.current) return;
@@ -38,6 +45,8 @@ const IfcLoader: React.FC = () => {
         world.renderer = new OBC.SimpleRenderer(components, gridContainerRef.current);
         world.camera = new OBC.SimpleCamera(components);
     
+        
+
         components.init();
         world.scene.setup();
         world.camera.controls.setLookAt(12, 6, 8, 0, 0, 0);
@@ -47,12 +56,37 @@ const IfcLoader: React.FC = () => {
         grids.create(world);
     
         worldRef.current = world; // Save reference to prevent re-initialization
+
+
+        // Orbit Controls
+        const controls = new OrbitControls(world.camera.three, world.renderer.three.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.enableRotate = true; // ✅ Ensure rotation is enabled
+        controlsRef.current = controls; // ✅ Store in ref
+
+        // setting viewcube
+        cameraRef.current = world.camera.three;
+        rendererRef.current = world.renderer.three;
+
+
+        // ✅ Fix: Ensure Renderer Continuously Updates
+        const animate = () => {
+            if (!world.renderer) return;
+            world.renderer.update(); // Update renderer
+            controls.update(); // Update OrbitControls
+            requestAnimationFrame(animate);
+        };
+        animate(); // Start the loop
+
+        return () => {
+            controls.dispose(); // Cleanup
+        };
+
     }, []);
 
     /** 🏗️ Load IFC Model and create a new canvas */
     async function loadIfc(buffer?: Uint8Array) {
-
-        
 
         if (!ifcContainerRef.current) return;
     
@@ -80,22 +114,34 @@ const IfcLoader: React.FC = () => {
     
         components.init();
         ifcWorld.scene.setup();
-    
+
         // Set default view to a top-down angle
         ifcWorld.camera.controls.setLookAt(12, 6, 8, 0, 0, 0);
     
+        // setting viewcube
+        setIsReady(true);
+        cameraRef.current = ifcWorld.camera.three;
+        rendererRef.current = ifcWorld.renderer.three;
+        const controls = new OrbitControls(ifcWorld.camera.three, ifcWorld.renderer.three.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.enableRotate = true; // ✅ Ensure rotation is enabled
+        controlsRef.current = controls;
+
+
         // Add Grid to IFC Viewer Scene
         const grids = components.get(OBC.Grids);
         grids.create(ifcWorld);
-    
+
+     
         const fragmentIfcLoader = components.get(OBC.IfcLoader);
         await fragmentIfcLoader.setup();
     
         const excludedCats = [
             WEBIFC.IFCTENDONANCHOR,
-            WEBIFC.IFCREINFORCINGBAR,
-            WEBIFC.IFCREINFORCINGELEMENT,
-            WEBIFC.IFCCOLUMN
+            // WEBIFC.IFCREINFORCINGBAR,
+            // WEBIFC.IFCREINFORCINGELEMENT,
+            // WEBIFC.IFCCOLUMN
         ];
     
         for (const cat of excludedCats) {
@@ -108,7 +154,6 @@ const IfcLoader: React.FC = () => {
         const model = await fragmentIfcLoader.load(buffer);
 
         console.log("Model loaded:", model);
-        console.log(WEBIFC.IFCWALLSTANDARDCASE)
     
         // Position the model correctly
         model.position.set(0, 0, 0);
@@ -162,9 +207,12 @@ const IfcLoader: React.FC = () => {
             };
         }
     };
-
     return (
         <div className="w-full h-full relative">
+             {isReady && cameraRef.current && rendererRef.current && controlsRef.current && (
+        <ViewCube camera={cameraRef.current} renderer={rendererRef.current} controls={controlsRef.current} />
+      )}
+
             {/* Grid Viewer (Always Visible) */}
             <div ref={gridContainerRef} className="absolute inset-0 z-0" />
 

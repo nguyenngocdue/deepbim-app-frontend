@@ -3,7 +3,7 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import ViewCube from "./common/ViewCube";
 
-const GeometryScene: React.FC = () => {
+const GeometrySceneViewCube: React.FC = () => {
   const mountRef = useRef<HTMLDivElement | null>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
   const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
@@ -75,4 +75,4 @@ const GeometryScene: React.FC = () => {
   );
 };
 
-export default GeometryScene;
+export default GeometrySceneViewCube;

@@ -6,7 +6,7 @@ import { FaHome } from "react-icons/fa";
 
 function getGizmoConfig() {
   return {
-    type: "cube",
+    type: "cube" as const,
     position: "bottom-left", // Change position of Gizmo (Try "top-left", "top-right", etc.)
     style: { transform: "translateY(10px)"}, // Move down by 10px
     background: { color: "rgba(255, 255, 255, 0)" }, // Transparent Background
