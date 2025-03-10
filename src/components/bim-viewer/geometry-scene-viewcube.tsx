@@ -9,6 +9,8 @@ const GeometrySceneViewCube: React.FC = () => {
   const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
   const controlsRef = useRef<OrbitControls | null>(null);
   const [isReady, setIsReady] = useState(false);
+  const modelRef = useRef<THREE.Object3D | null>(null);
+  
 
   const initThreeJS = () => {
     if (!mountRef.current || rendererRef.current) return;
@@ -30,6 +32,7 @@ const GeometrySceneViewCube: React.FC = () => {
     const material = new THREE.MeshPhongMaterial({ color: 0xffffff });
     const mesh = new THREE.Mesh(box, material);
     scene.add(mesh);
+    modelRef.current = mesh;
 
     const controls = new OrbitControls(camera, renderer.domElement);
     controlsRef.current = controls;
@@ -69,7 +72,12 @@ const GeometrySceneViewCube: React.FC = () => {
       className="relative bg-gray-900"
     >
       {isReady && cameraRef.current && rendererRef.current && controlsRef.current && (
-        <ViewCube camera={cameraRef.current} renderer={rendererRef.current} controls={controlsRef.current} />
+        <ViewCube 
+          camera={cameraRef.current}
+          renderer={rendererRef.current}
+          controls={controlsRef.current}
+          model={modelRef.current} // Pass the model reference
+        />
       )}
     </div>
   );
