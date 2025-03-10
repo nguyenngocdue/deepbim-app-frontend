@@ -6,11 +6,12 @@ import {
   FaUserCog,
 } from "react-icons/fa";
 import ViewFit from "../bim-viewer/view-fit";
+import CameraSetting from "../bim-viewer/camera-setting";
 
 interface HeaderViewerProps {
   resetView: () => void;
 }
-const HeaderViewer: React.FC<HeaderViewerProps>  = ({resetView}) => {
+const HeaderViewer: React.FC = () => {
 
   const handleClick = (item : string) => {
     console.log(item)
@@ -32,7 +33,8 @@ const HeaderViewer: React.FC<HeaderViewerProps>  = ({resetView}) => {
             <Separator orientation="vertical" className="h-6" />
             
             {/* Tools */}
-            <ViewFit resetView={resetView} />
+            <ViewFit />
+            <CameraSetting/>
 
           </div>
         </header>
