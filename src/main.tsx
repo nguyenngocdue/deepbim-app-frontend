@@ -15,6 +15,8 @@ import { ThemeProvider } from './context/theme-context'
 import './index.css'
 import { routeTree } from './routeTree.gen'
 // Generated Routes
+import "./i18n/i18n"; // ĐẢM BẢO import đúng `i18n`
+import "./index.css"
 
 const queryClient = new QueryClient({
   defaultOptions: {
