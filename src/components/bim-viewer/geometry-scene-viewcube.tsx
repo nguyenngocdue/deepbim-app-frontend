@@ -2,13 +2,17 @@ import React, { useRef, useState, useEffect } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { useViewCube } from "@/context/view-cube-context2";
+import ViewCube from "./common/ViewCube";
 
 const GeometrySceneViewCube: React.FC = () => {
   const mountRef = useRef<HTMLDivElement | null>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
-  const modelRef = useRef<THREE.Mesh | null>(null);
+  const  modelRef = useRef<THREE.Mesh | null>(null);
   const sceneRef = useRef<THREE.Scene | null>(null);
   const [isReady, setIsReady] = useState(false);
+  const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
+  const controlsRef = useRef<OrbitControls | null>(null);
+
 
   const { setCamera, camera, controls } = useViewCube();
 
@@ -35,6 +39,8 @@ const GeometrySceneViewCube: React.FC = () => {
       const newControls = new OrbitControls(activeCamera, renderer.domElement);
       newControls.target.set(0, 0, 0);
       newControls.update();
+      controlsRef.current = newControls;
+
       setCamera(activeCamera, newControls);
     }
 
@@ -50,15 +56,14 @@ const GeometrySceneViewCube: React.FC = () => {
     renderer.shadowMap.enabled = true;
     mountRef.current.appendChild(renderer.domElement);
     rendererRef.current = renderer;
-
     return renderer;
   };
 
   /** 🏗️ Khởi tạo Model */
   const initModel = (scene: THREE.Scene) => {
     if (!modelRef.current) {
-      const boxGeometry = new THREE.BoxGeometry(2, 2, 2);
-      const material = new THREE.MeshPhongMaterial({ color: 0x44aa88 });
+      const boxGeometry = new THREE.BoxGeometry(20, 2, 2);
+      const material = new THREE.MeshPhongMaterial({ color: "#6fa8dc" });
       const boxMesh = new THREE.Mesh(boxGeometry, material);
       scene.add(boxMesh);
       modelRef.current = boxMesh;
@@ -77,6 +82,8 @@ const GeometrySceneViewCube: React.FC = () => {
     const scene = sceneRef.current!;
     const activeCamera = initCamera(renderer);
     setCamera(activeCamera, controls || new OrbitControls(activeCamera, renderer.domElement));
+    cameraRef.current = activeCamera;
+
     initModel(scene);
 
     /** 🔄 Render Scene */
@@ -112,27 +119,30 @@ const GeometrySceneViewCube: React.FC = () => {
 
   useEffect(() => {
     if (!camera || !controls || !rendererRef.current || !sceneRef.current) return;
-    rendererRef.current.render(sceneRef.current, camera);
-  
-    controls.object = camera;
+    
+    controls.object = camera; // ✅ Cập nhật camera mới cho controls
     controls.update();
-    const scenePosition = camera.position.clone();
-    camera.position.copy(scenePosition);
-    camera.updateProjectionMatrix();
+    controlsRef.current = controls;
   
-    controls.object = camera;
-    controls.update();
-
-     const animate = () => {
+    const animate = () => {
       requestAnimationFrame(animate);
-      controls?.update();
-      if (rendererRef.current) rendererRef.current.render(sceneRef.current!, camera);
+      controls.update();
+      rendererRef.current?.render(sceneRef.current!, camera);
     };
     animate();
-
   }, [camera]);
+  
 
-  return <div ref={mountRef} className="relative bg-gray-900 z-10" />;
+  return <div ref={mountRef} className="relative bg-gray-900 z-10">
+          {isReady && cameraRef.current && rendererRef.current && controlsRef.current && (
+          <ViewCube 
+            camera={cameraRef.current}
+            renderer={rendererRef.current}
+            controls={controlsRef.current}
+            model={modelRef.current} // Pass the model reference
+          />
+        )}
+  </div>;
 };
 
 export default GeometrySceneViewCube;
