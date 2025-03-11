@@ -14,12 +14,12 @@ const resources = {
       },
 
       hero: {
-        welcome: "Spread your project",
-        subtitle: "in an easy way",
+        welcome: "Accelerate your project with",
+        subtitle: "ease",
         description:
-          "Enhance your project workflow with 3D models, full data ownership, and powerful BIM analysis.",
+          "Optimize your workflow with 3D models, full data ownership, and powerful BIM analysis.",
         start: "Get Started",
-        deploy: "Deploy yourself",
+        deploy: "Deploy Yourself",
       },
 
       benefits: {
@@ -134,10 +134,10 @@ const resources = {
       },
 
       hero: {
-        welcome: "Lan tỏa dự án một",
-        subtitle: "cách dễ dàng",
+        welcome: "Tăng tốc dự án của bạn một",
+        subtitle: "cách đơn giản",
         description:
-          "Nâng tầm quy trình làm việc với mô hình 3D, toàn quyền sở hữu dữ liệu và phân tích mô hình BIM mạnh mẽ.",
+          "Tối ưu quy trình làm việc với mô hình 3D, quyền kiểm soát dữ liệu tuyệt đối và phân tích BIM mạnh mẽ.",
         start: "Bắt đầu",
         deploy: "Tự triển khai",
       },

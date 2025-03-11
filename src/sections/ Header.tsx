@@ -13,11 +13,11 @@ const Header = () => {
 
   return (
     <header className="fixed top-0 left-0 w-full bg-white bg-opacity-80 backdrop-blur-md shadow-md z-50  text-center">
-      <div className="flex justify-between items-center px-10 py-2">
+      <div className="flex justify-between items-center px-10 py-1">
         {/* Logo */}
         <div className="flex text-center items-center">
-            <img src="/logo/normal-logo.png" className="h-8 w-8" alt="Logo" />
-            <h1 className="pl-4 text-xl font-bold text-green-600">DeepBIM</h1>
+            <img src="/logo/normal-logo.png" className="h-12 w-12" alt="Logo" />
+            <h1 className="text-xl font-bold text-green-600">DeepBIM</h1>
 
         </div>
 
