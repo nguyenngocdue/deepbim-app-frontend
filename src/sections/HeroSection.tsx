@@ -16,7 +16,7 @@ const HeroSection = () => {
         </div>
       </div>
       <div className="w-1/2">
-        <img src="/src/assets/3d-model.png" alt="3D Model" className="w-full shadow-lg rounded-lg" />
+        <img src="https://viralution.io/app.png" alt="3D Model" className="w-full shadow-lg rounded-lg" />
       </div>
     </section>
   );
