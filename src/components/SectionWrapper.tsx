@@ -1,8 +1,13 @@
 import { motion } from "framer-motion";
-import { useRef } from "react";
+import React, { useRef } from "react";
 import { useInView } from "framer-motion";
 
-const SectionWrapper = ({ children }: { children: React.ReactNode }) => {
+interface SectionWrapperProps {
+  children: React.ReactNode;
+  className?: string,
+}
+
+const SectionWrapper = ({ children, className }:  SectionWrapperProps) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: false, margin: "-100px" });
 
@@ -20,7 +25,7 @@ const SectionWrapper = ({ children }: { children: React.ReactNode }) => {
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
       exit="exit"
-      className="mb-20"
+      className={`${className || "mb-10 mt-0"}`}
     >
       {children}
     </motion.div>

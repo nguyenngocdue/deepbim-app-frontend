@@ -1,19 +1,18 @@
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { TypeAnimation } from "react-type-animation";
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
+import { useLanguage } from "@/context/LanguageContext";
 import AnimatedBorderImage3 from "@/components/ui/animated-border-image3";
 
 const HeroSection = () => {
-  const { t, ready } = useTranslation();
-  const [subtitle, setSubtitle] = useState("");
+  const { t } = useTranslation();
+  const { language } = useLanguage(); // Get current language from context
 
-  // Đảm bảo i18next load hoàn chỉnh trước khi hiển thị nội dung
-  useEffect(() => {
-    if (ready) {
-      setSubtitle(t("hero.subtitle") || "");
-    }
-  }, [ready, t]);
+  // Dynamically update subtitle based on language
+  const subtitle = useMemo(() => t("hero.subtitle") || "", [t, language]);
+
+  console.log(language, subtitle); // Debugging output
 
   return (
     <motion.section
@@ -33,16 +32,17 @@ const HeroSection = () => {
           {t("hero.welcome")}{" "}
           {subtitle && (
             <TypeAnimation
+              key={language} // 🔥 Ensure animation resets when language changes
               sequence={[
-                subtitle,  // Gõ chữ ra
-                1500,      // Giữ nguyên trong 1.5s
-                "",        // Xóa chữ
-                500,       // Giữ nguyên trong 0.5s
-                subtitle   // Gõ lại từ đầu
+                subtitle, // Type the subtitle
+                1500, // Hold for 1.5 seconds
+                "", // Erase text
+                500, // Pause for 0.5 seconds
+                subtitle, // Retype
               ]}
               wrapper="span"
-              speed={40} // Giảm tốc độ để tự nhiên hơn
-              repeat={Infinity} // Lặp vô hạn
+              speed={40} // Smooth typing speed
+              repeat={Infinity} // Loop infinitely
               className="text-green-500"
             />
           )}
@@ -56,27 +56,17 @@ const HeroSection = () => {
           {t("hero.description")}
         </motion.p>
 
-        {/* Buttons with Hover Effect */}
+        {/* Buttons */}
         <div className="mt-8 flex gap-4 justify-center md:justify-start">
-          <motion.button
-            className="px-6 py-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition transform hover:scale-105 focus:ring-2 focus:ring-green-500 focus:outline-none"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.95 }}
-            aria-label={t("hero.start")}
-          >
+          <motion.button className="px-6 py-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition">
             {t("hero.start")}
           </motion.button>
-          <motion.button
-            className="px-6 py-3 border border-gray-300 text-gray-800 font-semibold rounded-lg hover:bg-gray-200 transition transform hover:scale-105 focus:ring-2 focus:ring-gray-400 focus:outline-none"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            aria-label={t("hero.deploy")}
-          >
+          <motion.button className="px-6 py-3 border border-gray-300 text-gray-800 font-semibold rounded-lg hover:bg-gray-200 transition">
             {t("hero.deploy")}
           </motion.button>
         </div>
       </motion.div>
-        <AnimatedBorderImage3  imgUrl="https://viralution.io/app.png"/>
+      <AnimatedBorderImage3 imgUrl="https://viralution.io/app.png" />
     </motion.section>
   );
 };

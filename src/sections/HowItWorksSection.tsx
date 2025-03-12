@@ -1,3 +1,5 @@
+import ForceGraph from "@/components/ForceGraph";
+import DownloadButton from "@/components/ui/download-button";
 import { useTranslation } from "react-i18next";
 
 const HowItWorksSection = () => {
@@ -10,22 +12,10 @@ const HowItWorksSection = () => {
 
       {/* Image Diagram */}
       <div className="flex justify-center mt-10">
-        <img
-          src="https://viralution.io/how_it_works.png"
-          alt="How It Works Diagram"
-          className="w-full max-w-2xl"
-        />
+        <ForceGraph/>
       </div>
-
       {/* Download Button */}
-      <div className="mt-6">
-        <a
-          href="/download"
-          className="inline-flex items-center px-6 py-3 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 transition"
-        >
-          <span className="mr-2">🔽</span> {t("how_it_works.download")}
-        </a>
-      </div>
+      <DownloadButton textKey={t("how_it_works.download")}/>
     </section>
   );
 };

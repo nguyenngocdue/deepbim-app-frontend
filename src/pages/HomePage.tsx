@@ -9,37 +9,42 @@ import Footer from "@/sections/Footer";
 
 import SectionWrapper from "@/components/SectionWrapper"; 
 import Header from "@/sections/ Header";
+import { LanguageProvider } from "@/context/LanguageContext";
+import useScrollRestoration from "@/hooks/useScrollRestoration";
+
 
 const HomePage = () => {
+  useScrollRestoration(); // Activate scroll restoration
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header />
-      <HeroSection />
+      <LanguageProvider>
+        <Header />
+        <HeroSection />
 
-      <SectionWrapper>
-        <BenefitsSection />
-      </SectionWrapper>
+        <SectionWrapper>
+          <BenefitsSection />
+        </SectionWrapper>
 
-      <SectionWrapper>
-        <FeaturesSection />
-      </SectionWrapper>
+        <SectionWrapper>
+          <FeaturesSection />
+        </SectionWrapper>
 
-      <SectionWrapper>
-        <ProblemsSection />
-      </SectionWrapper>
+        <SectionWrapper className="mb-0">
+          <ProblemsSection />
+        </SectionWrapper>
 
-      <SectionWrapper>
-        <SolutionsSection />
-      </SectionWrapper>
+        <SectionWrapper>
+          <SolutionsSection />
+        </SectionWrapper>
 
-      <SectionWrapper>
-        <HowItWorksSection />
-      </SectionWrapper>
+        <SectionWrapper>
+          <HowItWorksSection />
+        </SectionWrapper>
 
-      <SectionWrapper>
-        <CallToActionSection />
-      </SectionWrapper>
-
+        <SectionWrapper className="mb-0">
+          <CallToActionSection />
+        </SectionWrapper>
+      </LanguageProvider>
       <Footer />
     </div>
   );

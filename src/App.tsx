@@ -1,13 +1,13 @@
 import './App.css'
-import UserForm from './components/UserForm'
+import useScrollRestoration from './hooks/useScrollRestoration';
 import './index.css'
+import HomePage from './pages/HomePage'
 
 function App() {
-
+  // useScrollRestoration(); // Activate scroll restoration
   return (
     <>
-      <span className='bg-blue-400 text-red-400'>Hello</span>
-      <UserForm/>
+      <HomePage/>
     </>
   )
 }

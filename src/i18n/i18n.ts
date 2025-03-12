@@ -14,10 +14,10 @@ const resources = {
       },
 
       hero: {
-        welcome: "Accelerate your project with",
-        subtitle: "ease",
+        welcome: "Optimize and accelerate your project ",
+        subtitle: "seamlessly",
         description:
-          "Optimize your workflow with 3D models, full data ownership, and powerful BIM analysis.",
+          "Enhance your 3D model workflow, ensure absolute data control, and leverage powerful BIM analytics. By applying AI, automatically detect design conflicts, predict risks, and optimize costs, enabling higher efficiency and smarter decision-making for investors, businesses, and engineers. Elevate your projects with AI & BIM technology! 🚀",
         start: "Get Started",
         deploy: "Deploy Yourself",
       },
@@ -65,7 +65,7 @@ const resources = {
 
       problems: {
         title: "Your Problems",
-        description: "Let's explore the key challenges that Viralution helps you solve.",
+        description: "Let's explore the key challenges that DeepBim helps you solve.",
         items: {
           platform_dependency: {
             title: "Platform Dependency",
@@ -84,7 +84,7 @@ const resources = {
 
       solutions: {
         title: "Our Solutions",
-        description: "With Viralution, you have the tools and platform to manage projects easily.",
+        description: "With DeepBim, you have the tools and platform to manage projects easily.",
         items: {
           own_data: {
             title: "Full Data Ownership",
@@ -105,7 +105,7 @@ const resources = {
 
       cta: {
         title: "Ready to enhance your workflow?",
-        description: "Join thousands of experts using Viralution to optimize their projects.",
+        description: "Join thousands of experts using DeepBim to optimize their projects.",
         placeholder: "Enter your email",
         button: "Sign Up Now",
         error: "Please enter a valid email address.",
@@ -113,7 +113,7 @@ const resources = {
       },
 
       footer: {
-        copyright: "All rights reserved to Viralution.",
+        copyright: "All rights reserved to DeepBim.",
         terms: "Terms of Service",
         privacy: "Privacy Policy",
         contact: "Contact",
@@ -137,7 +137,7 @@ const resources = {
         welcome: "Tăng tốc dự án của bạn một",
         subtitle: "cách đơn giản",
         description:
-          "Tối ưu quy trình làm việc với mô hình 3D, quyền kiểm soát dữ liệu tuyệt đối và phân tích BIM mạnh mẽ.",
+          "Tối ưu quy trình làm việc với mô hình 3D, đảm bảo quyền kiểm soát dữ liệu tuyệt đối và nâng cao phân tích BIM mạnh mẽ. Ứng dụng AI giúp tự động phát hiện lỗi thiết kế, dự đoán rủi ro, tối ưu chi phí, mang lại hiệu suất cao hơn và quyết định chính xác hơn cho chủ đầu tư, doanh nghiệp và kỹ sư. Nâng tầm dự án của bạn với công nghệ AI & BIM!🚀",
         start: "Bắt đầu",
         deploy: "Tự triển khai",
       },
@@ -186,7 +186,7 @@ const resources = {
 
       problems: {
         title: "Vấn đề của bạn",
-        description: "Hãy cùng tìm hiểu những vấn đề chính Viralution đang giải quyết.",
+        description: "Hãy cùng tìm hiểu những vấn đề chính DeepBim đang giải quyết.",
         items: {
           platform_dependency: {
             title: "Phụ thuộc vào nền tảng",
@@ -205,7 +205,7 @@ const resources = {
 
       solutions: {
         title: "Giải pháp của chúng tôi",
-        description: "Với Viralution, bạn sẽ có công cụ/nền tảng để quản lý dự án dễ dàng hơn.",
+        description: "Với DeepBim, bạn sẽ có công cụ/nền tảng để quản lý dự án dễ dàng hơn.",
         items: {
           own_data: {
             title: "Bạn Toàn Quyền Sở Hữu",
@@ -226,7 +226,7 @@ const resources = {
 
       cta: {
         title: "Sẵn sàng nâng cao quy trình làm việc của bạn?",
-        description: "Tham gia cùng hàng nghìn chuyên gia đang sử dụng Viralution để tối ưu hóa dự án của họ.",
+        description: "Tham gia cùng hàng nghìn chuyên gia đang sử dụng DeepBim để tối ưu hóa dự án của họ.",
         placeholder: "Nhập email của bạn",
         button: "Đăng ký ngay",
         error: "Vui lòng nhập địa chỉ email hợp lệ.",
@@ -234,7 +234,7 @@ const resources = {
       },
 
       footer: {
-        copyright: "Bản quyền thuộc về Viralution.",
+        copyright: "Bản quyền thuộc về DeepBim.",
         terms: "Điều khoản dịch vụ",
         privacy: "Chính sách bảo mật",
         contact: "Liên hệ",

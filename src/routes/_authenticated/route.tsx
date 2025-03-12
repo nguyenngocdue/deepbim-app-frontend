@@ -16,7 +16,7 @@ function RouteComponent() {
     <SearchProvider>
       <SidebarProvider defaultOpen={defaultOpen}>
         <SkipToMain />
-        {/* <AppSidebar /> */} 
+        {/* <AppSidebar />  */}
         <div
           id='content'
           className={cn(
