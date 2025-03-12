@@ -56,7 +56,7 @@ const FeatureCard = ({ icon, title, description, image }: FeatureCardProps) => {
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.6, delay: 0.4 }}
       >
-        <AnimatedBorderImage  imgUrl={image}/>
+        <AnimatedBorderImage imgUrl={image}/>
       </motion.div>
     </motion.div>
   );

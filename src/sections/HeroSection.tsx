@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { TypeAnimation } from "react-type-animation";
 import { useEffect, useState } from "react";
-import AnimatedBorderImage from "@/components/ui/animated-border-image ";
+import AnimatedBorderImage3 from "@/components/ui/animated-border-image3";
 
 const HeroSection = () => {
   const { t, ready } = useTranslation();
@@ -76,7 +76,7 @@ const HeroSection = () => {
           </motion.button>
         </div>
       </motion.div>
-        <AnimatedBorderImage  imgUrl="https://viralution.io/app.png"/>
+        <AnimatedBorderImage3  imgUrl="https://viralution.io/app.png"/>
     </motion.section>
   );
 };
