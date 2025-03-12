@@ -1,5 +1,5 @@
 import ModelDetails from "@/components/bim-viewer/model-details";
-import Sidebar from "@/components/bim-viewer/sidebar";
+import Sidebar from "@/components/bim-viewer/de-sidebar";
 import ThreeScene from "@/components/bim-viewer/three-scene";
 import Toolbar from "@/components/bim-viewer/toolbar";
 
