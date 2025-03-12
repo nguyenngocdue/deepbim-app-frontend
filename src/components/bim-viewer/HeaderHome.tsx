@@ -27,7 +27,7 @@ const HeaderHome: React.FC<HeaderProps> = ({ toggleSidebar, isSidebarOpen, bread
 
         {/* Breadcrumb Navigation */}
         <nav className="flex items-center text-green-400 text-xl font-semibold">
-          <span>Viralution</span>
+          <span>DeepBim</span>
           {breadcrumbs.map((crumb, index) => (
             <div key={index} className="flex items-center text-gray-300 text-lg ml-2">
               <FaChevronRight size={14} className="mx-1" />

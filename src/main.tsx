@@ -17,6 +17,7 @@ import { routeTree } from './routeTree.gen'
 // Generated Routes
 import "./i18n/i18n"; // ĐẢM BẢO import đúng `i18n`
 import "./index.css"
+import "./styles/global.css"
 
 const queryClient = new QueryClient({
   defaultOptions: {

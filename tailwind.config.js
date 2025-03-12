@@ -17,6 +17,8 @@ export default {
     },
     extend: {
       fontFamily: {
+        sans: ["Inter", "sans-serif"],  
+        serif: ["Merriweather", "serif"],
         inter: ['Inter', ...fontFamily.sans],
         manrope: ['Manrope', ...fontFamily.sans],
       },

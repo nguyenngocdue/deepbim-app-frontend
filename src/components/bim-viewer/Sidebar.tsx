@@ -26,7 +26,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isSidebarOpen, isCollapsed, toggleSid
        
         {/* Logo (Centered based on collapse state) */}
         {isSidebarOpen && (
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center ">
             <LogoWord isHiddenText={Boolean(isCollapsed)} />
         </div>
         )}
