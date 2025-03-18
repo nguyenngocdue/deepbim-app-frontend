@@ -5,7 +5,7 @@ services:
     restart: always
     expose:
       - "80"
-      # - "443"
+      - "443"
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
       # - ../.docker_configs/certs:/etc/nginx/certs  # Đảm bảo chứng chỉ được mount đúng
@@ -21,7 +21,7 @@ services:
     container_name: frontend_container_202
     restart: always
     expose:
-      - "80"
+      - "443"
     networks:
       - custom_network
 
