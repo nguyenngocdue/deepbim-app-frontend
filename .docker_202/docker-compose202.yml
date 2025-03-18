@@ -11,8 +11,8 @@ services:
       - ../.docker_configs/certs:/etc/nginx/certs:ro  # Đảm bảo chứng chỉ được mount đúng
     networks:
       - custom_network
-    depends_on:
-      - frontend
+    # depends_on:
+    #   - frontend
 
   # frontend:
   #   build:
