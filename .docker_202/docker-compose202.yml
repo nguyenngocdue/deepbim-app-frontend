@@ -1,6 +1,10 @@
 services:
   frontend:
-    image: nguyenngocdue/vite-frontend:beta
+    build:
+      context: ..
+      dockerfile: .docker_202/Dockerfile
+    container_name: frontend_container_202
+    # image: nguyenngocdue/vite-frontend:beta
     restart: always
     ports:
       - "8080:80"
