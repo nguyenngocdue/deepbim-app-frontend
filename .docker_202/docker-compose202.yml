@@ -1,0 +1,10 @@
+services:
+  frontend:
+    image: nguyenngocdue/vite-frontend:beta
+    restart: always
+    ports:
+      - "81:80"
+      - "444:443"
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt
+      - /var/www/certbot:/var/www/certbot
