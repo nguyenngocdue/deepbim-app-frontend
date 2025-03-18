@@ -59,7 +59,7 @@ const HeroSection = () => {
         {/* Buttons */}
         <div className="mt-8 flex gap-4 justify-center md:justify-start">
           <motion.button className="px-6 py-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition">
-            {t("hero.start")}
+            <a href="/apps/home">{t("hero.start")}</a>
           </motion.button>
           <motion.button className="px-6 py-3 border border-gray-300 text-gray-800 font-semibold rounded-lg hover:bg-gray-200 transition">
             {t("hero.deploy")}
