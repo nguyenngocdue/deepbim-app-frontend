@@ -14,16 +14,16 @@ services:
     # depends_on:
     #   - frontend
 
-  # frontend:
-  #   build:
-  #     context: ..
-  #     dockerfile: .docker_202/Dockerfile
-  #   container_name: frontend_container_202
-  #   restart: always
-  #   expose:
-  #     - "443"
-  #   networks:
-  #     - custom_network
+  frontend:
+    build:
+      context: ..
+      dockerfile: .docker_202/Dockerfile
+    container_name: frontend_container_202
+    restart: always
+    expose:
+      - "443"
+    networks:
+      - custom_network
 
 networks:
   custom_network:
