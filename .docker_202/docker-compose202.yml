@@ -4,6 +4,8 @@ services:
       context: ..
       dockerfile: .docker_202/Dockerfile
     container_name: frontend_container_202
+    expose:
+      - "3003"
     networks:
       - beta_network
     restart: always
@@ -15,7 +17,7 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ./reverse-proxy.conf:/etc/nginx/conf.d/reverse-proxy.conf
+      - ./nginx-frontend.conf:/etc/nginx/nginx.conf
       - /etc/letsencrypt:/etc/letsencrypt
     depends_on:
       - frontend
