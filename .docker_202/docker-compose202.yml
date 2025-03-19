@@ -42,7 +42,7 @@ services:
     image: nginx:latest
     container_name: nginx_proxy
     ports:
-      - "3003:80"  # Port nội bộ 80, ánh xạ ra host port 3003
+      - "3003:443"  # Port nội bộ 80, ánh xạ ra host port 3003
     volumes:
       - ./nginx-proxy.conf:/etc/nginx/conf.d/default.conf
       - ../.docker_configs/certs:/etc/nginx/certs
