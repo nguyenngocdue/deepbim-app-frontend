@@ -37,7 +37,6 @@
 #     driver: local
 
 
-version: '3.8'
 
 services:
   nginx-proxy:
