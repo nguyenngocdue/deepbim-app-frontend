@@ -4,23 +4,8 @@ services:
       context: ..
       dockerfile: .docker_202/Dockerfile
     container_name: frontend_container_202
-    expose:
-      - "3003"
-    networks:
-      - beta_network
-    restart: always
-
-  nginx_proxy:
-    image: nginx:alpine
-    container_name: nginx_proxy
     ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./nginx-frontend.conf:/etc/nginx/nginx.conf
-      - /etc/letsencrypt:/etc/letsencrypt
-    depends_on:
-      - frontend
+      - "3003:3003"  # Ánh xạ từ host:3005 sang container:80
     networks:
       - beta_network
     restart: always
