@@ -7,12 +7,7 @@ services:
     expose:
       - "3005"  # Port nội bộ của frontend
     ports:
-      - "3005:80"  # Ánh xạ port ra host để Nginx trên host truy cập
+      - "3005:80"  # Ánh xạ frontend từ container ra ngoài host (localhost:3005)
     networks:
       - beta_network
     restart: always
-
-networks:
-  beta_network:
-    name: beta_network
-    external: true
