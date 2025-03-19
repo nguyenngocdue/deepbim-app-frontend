@@ -23,6 +23,4 @@ COPY --from=build /usr/src/app/dist /usr/share/nginx/html
 
 # Expose port 3003
 EXPOSE 3003
-
-# Khởi động Nginx
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["npm", "run", "dev"]
