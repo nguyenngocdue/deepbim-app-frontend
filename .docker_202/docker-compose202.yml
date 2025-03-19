@@ -4,10 +4,8 @@ services:
       context: ..
       dockerfile: .docker_202/Dockerfile
     container_name: frontend_container_202
-    expose:
-      - "3005"  # Port nội bộ của frontend
     ports:
-      - "3005:80"  # Ánh xạ frontend từ container ra ngoài host (localhost:3005)
+      - "3003:80"  # Ánh xạ frontend từ container ra ngoài host (localhost:3005)
     networks:
       - beta_network
     restart: always

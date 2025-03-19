@@ -22,5 +22,5 @@ COPY .docker_202/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /usr/src/app/dist /usr/share/nginx/html
 
 # Expose port 3003
-EXPOSE 3003
+EXPOSE 80
 CMD ["npm", "run", "dev"]
