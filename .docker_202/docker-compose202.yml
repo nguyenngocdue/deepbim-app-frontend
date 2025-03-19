@@ -43,11 +43,13 @@ services:
     build:
       context: ..
       dockerfile: .docker_202/Dockerfile
-    container_name: frontend_container_202
-    expose:
-      - "3003"  # Port nội bộ của frontend
-    networks:
-      - beta_network
+      container_name: frontend_container_202
+      expose:
+        - "3003"  # Port nội bộ của frontend
+      ports:
+        - "3003:3003"  # Ánh xạ port ra host
+      networks:
+        - beta_network
 
 volumes:
   certs:
