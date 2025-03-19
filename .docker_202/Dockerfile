@@ -18,9 +18,9 @@ FROM nginx:alpine AS production
 # Copy file cấu hình Nginx
 COPY .docker_202/nginx-frontend.conf /etc/nginx/conf.d/default.conf
 
-# Copy thư mục build từ Stage 1 vào Nginx
+# Copy thư mục build từ Stage 1 vào thư mục web root của Nginx
 COPY --from=build /usr/src/app/dist /usr/share/nginx/html
 
-# Expose port 3003
-EXPOSE 80
+EXPOSE 80 443
+
 CMD ["nginx", "-g", "daemon off;"]
