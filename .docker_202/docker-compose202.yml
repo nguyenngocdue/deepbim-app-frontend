@@ -5,7 +5,7 @@ services:
       dockerfile: .docker_202/Dockerfile
     container_name: frontend_container_202
     ports:
-      - "3003:80"  # Ánh xạ frontend từ container ra ngoài host (localhost:3005)
+      - "3003:443"  # Ánh xạ frontend từ container ra ngoài host (localhost:3005)
     networks:
       - beta_network
     restart: always
