@@ -22,7 +22,6 @@ services:
     restart: always
     expose:
       - "3000" # Port mà Vite lắng nghe
-    command: npm run dev # Đảm bảo chạy Vite dev server
     networks:
       - custom_network
 
