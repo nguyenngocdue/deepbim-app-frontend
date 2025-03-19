@@ -8,7 +8,7 @@ import path from 'path';
 export default defineConfig({
   server: {
     host: '0.0.0.0', // Lắng nghe trên tất cả interface (cần cho Docker)
-    port: 3000,      // Thay đổi port mặc định từ 5173 sang 3000 (hoặc port bạn muốn)
+    port: 3003,      // Thay đổi port mặc định từ 5173 sang 3003 (hoặc port bạn muốn)
     strictPort: true, // Nếu port đã được sử dụng, Vite sẽ báo lỗi thay vì tự chọn port khác
   },
   plugins: [react(), TanStackRouterVite()],
