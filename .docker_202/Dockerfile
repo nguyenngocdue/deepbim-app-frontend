@@ -22,6 +22,6 @@ COPY .docker_202/nginx.conf /etc/nginx/conf.d/default.conf
 # Copy thư mục build từ Stage 1 vào thư mục web root của Nginx
 COPY --from=build /usr/src/app/dist /usr/share/nginx/html
 
-EXPOSE 80 443
+EXPOSE 3003
 
 CMD ["nginx", "-g", "daemon off;"]
