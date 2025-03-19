@@ -21,7 +21,7 @@ COPY . .
 # Copy thư mục build từ Stage 1 vào thư mục web root của Nginx
 # COPY --from=build /usr/src/app/dist /usr/share/nginx/html
 
-EXPOSE 3003
+EXPOSE 5173
 
 # Khởi động ứng dụng trên cổng 3003
 CMD ["npm", "run", "dev"]
