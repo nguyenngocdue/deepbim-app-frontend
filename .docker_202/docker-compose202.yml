@@ -39,22 +39,6 @@
 
 
 services:
-  nginx-proxy:
-    image: nginx:latest
-    container_name: nginx_proxy
-    ports:
-      - "80:80"    # HTTP
-      - "443:443"  # HTTPS
-    volumes:
-      - ./nginx-proxy.conf:/etc/nginx/conf.d/default.conf
-      - ./certs:/etc/letsencrypt  # Ánh xạ thư mục chứa chứng chỉ SSL
-      - certbot-www:/var/www/certbot
-    restart: always
-    networks:
-      - beta_network
-    depends_on:
-      - frontend
-
   frontend:
     build:
       context: ..
