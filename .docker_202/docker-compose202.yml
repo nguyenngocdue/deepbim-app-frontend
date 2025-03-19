@@ -21,7 +21,7 @@ services:
     container_name: frontend_container_202
     restart: always
     expose:
-      - "443" # Port mà frontend lắng nghe bên trong container
+      - "3003" # Port mà frontend lắng nghe bên trong container
     networks:
       - custom_network
 
