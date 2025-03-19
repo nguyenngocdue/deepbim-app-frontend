@@ -21,7 +21,7 @@ services:
     container_name: frontend_container_202
     restart: always
     expose:
-      - "3000" # Port mà Vite lắng nghe
+      - "3003" # Port mà Vite lắng nghe
     networks:
       - custom_network
 
