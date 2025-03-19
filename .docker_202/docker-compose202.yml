@@ -3,7 +3,7 @@ services:
     image: nginx:latest
     container_name: nginx_proxy
     restart: always
-    ports:
+    ports: # Thêm ports để map từ host vào container
       - "80:80"
       - "443:443"
     volumes:
@@ -21,8 +21,7 @@ services:
     container_name: frontend_container_202
     restart: always
     expose:
-      - "3003" # Port mà Vite lắng nghe
-    command: npm run dev # Đảm bảo chạy Vite dev server
+      - "3003" # Port mà frontend lắng nghe bên trong container
     networks:
       - custom_network
 
