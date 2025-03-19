@@ -4,8 +4,18 @@ services:
       context: ..
       dockerfile: .docker_202/Dockerfile
     container_name: frontend_container_202
+    networks:
+      - beta_network
+    restart: always
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx_container
     ports:
-      - "3003:80"  # Ánh xạ port ra host để Nginx trên host truy cập
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./reverse-proxy.conf:/etc/nginx/conf.d/reverse-proxy.conf
     networks:
       - beta_network
     restart: always
