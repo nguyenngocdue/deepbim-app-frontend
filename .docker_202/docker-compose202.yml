@@ -47,13 +47,10 @@ services:
     expose:
       - "3003"  # Port nội bộ của frontend
     ports:
-      - "3003:3003"  # Ánh xạ port ra host
+      - "3003:3003"  # Ánh xạ port ra host để Nginx trên host truy cập
     networks:
       - beta_network
-
-volumes:
-  certs:
-  certbot-www:
+    restart: always
 
 networks:
   beta_network:
