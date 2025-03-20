@@ -17,7 +17,7 @@ import { Route as AuthenticatedRouteImport } from './routes/_authenticated/route
 import { Route as authSignInImport } from './routes/(auth)/sign-in'
 import { Route as authOtpImport } from './routes/(auth)/otp'
 import { Route as auth500Import } from './routes/(auth)/500'
-import { Route as AuthenticatedBimViewerMainViewerImport } from './routes/_authenticated/bim-viewer/main-viewer'
+import { Route as AuthenticatedViewerIndexImport } from './routes/_authenticated/viewer/index'
 import { Route as AuthenticatedBimViewerUtWebglClippingV2Import } from './routes/_authenticated/bim-viewer-ut/webgl-clipping-v2'
 import { Route as AuthenticatedBimViewerUtWebglClippingV1Import } from './routes/_authenticated/bim-viewer-ut/webgl-clipping-v1'
 import { Route as AuthenticatedBimViewerUtWebglClippingStencilIfcImport } from './routes/_authenticated/bim-viewer-ut/webgl-clipping-stencil-ifc'
@@ -59,9 +59,6 @@ const AuthenticatedHelpCenterIndexLazyImport = createFileRoute(
 )()
 const AuthenticatedChatsIndexLazyImport = createFileRoute(
   '/_authenticated/chats/',
-)()
-const AuthenticatedBimViewerIndexLazyImport = createFileRoute(
-  '/_authenticated/bim-viewer/',
 )()
 const AuthenticatedAppsIndexLazyImport = createFileRoute(
   '/_authenticated/apps/',
@@ -243,17 +240,6 @@ const AuthenticatedChatsIndexLazyRoute =
     import('./routes/_authenticated/chats/index.lazy').then((d) => d.Route),
   )
 
-const AuthenticatedBimViewerIndexLazyRoute =
-  AuthenticatedBimViewerIndexLazyImport.update({
-    id: '/bim-viewer/',
-    path: '/bim-viewer/',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any).lazy(() =>
-    import('./routes/_authenticated/bim-viewer/index.lazy').then(
-      (d) => d.Route,
-    ),
-  )
-
 const AuthenticatedAppsIndexLazyRoute = AuthenticatedAppsIndexLazyImport.update(
   {
     id: '/apps/',
@@ -263,6 +249,12 @@ const AuthenticatedAppsIndexLazyRoute = AuthenticatedAppsIndexLazyImport.update(
 ).lazy(() =>
   import('./routes/_authenticated/apps/index.lazy').then((d) => d.Route),
 )
+
+const AuthenticatedViewerIndexRoute = AuthenticatedViewerIndexImport.update({
+  id: '/viewer/',
+  path: '/viewer/',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 
 const AuthenticatedSettingsNotificationsLazyRoute =
   AuthenticatedSettingsNotificationsLazyImport.update({
@@ -340,13 +332,6 @@ const AuthenticatedBimViewerUtIfcLoaderLazyRoute =
       (d) => d.Route,
     ),
   )
-
-const AuthenticatedBimViewerMainViewerRoute =
-  AuthenticatedBimViewerMainViewerImport.update({
-    id: '/bim-viewer/main-viewer',
-    path: '/bim-viewer/main-viewer',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any)
 
 const AuthenticatedBimViewerUtWebglClippingV2Route =
   AuthenticatedBimViewerUtWebglClippingV2Import.update({
@@ -589,13 +574,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedBimViewerUtWebglClippingV2Import
       parentRoute: typeof AuthenticatedRouteImport
     }
-    '/_authenticated/bim-viewer/main-viewer': {
-      id: '/_authenticated/bim-viewer/main-viewer'
-      path: '/bim-viewer/main-viewer'
-      fullPath: '/bim-viewer/main-viewer'
-      preLoaderRoute: typeof AuthenticatedBimViewerMainViewerImport
-      parentRoute: typeof AuthenticatedRouteImport
-    }
     '/_authenticated/bim-viewer-ut/ifc-loader': {
       id: '/_authenticated/bim-viewer-ut/ifc-loader'
       path: '/bim-viewer-ut/ifc-loader'
@@ -645,18 +623,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSettingsNotificationsLazyImport
       parentRoute: typeof AuthenticatedSettingsRouteLazyImport
     }
+    '/_authenticated/viewer/': {
+      id: '/_authenticated/viewer/'
+      path: '/viewer'
+      fullPath: '/viewer'
+      preLoaderRoute: typeof AuthenticatedViewerIndexImport
+      parentRoute: typeof AuthenticatedRouteImport
+    }
     '/_authenticated/apps/': {
       id: '/_authenticated/apps/'
       path: '/apps'
       fullPath: '/apps'
       preLoaderRoute: typeof AuthenticatedAppsIndexLazyImport
-      parentRoute: typeof AuthenticatedRouteImport
-    }
-    '/_authenticated/bim-viewer/': {
-      id: '/_authenticated/bim-viewer/'
-      path: '/bim-viewer'
-      fullPath: '/bim-viewer'
-      preLoaderRoute: typeof AuthenticatedBimViewerIndexLazyImport
       parentRoute: typeof AuthenticatedRouteImport
     }
     '/_authenticated/chats/': {
@@ -738,12 +716,11 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedBimViewerUtWebglClippingStencilIfcRoute: typeof AuthenticatedBimViewerUtWebglClippingStencilIfcRoute
   AuthenticatedBimViewerUtWebglClippingV1Route: typeof AuthenticatedBimViewerUtWebglClippingV1Route
   AuthenticatedBimViewerUtWebglClippingV2Route: typeof AuthenticatedBimViewerUtWebglClippingV2Route
-  AuthenticatedBimViewerMainViewerRoute: typeof AuthenticatedBimViewerMainViewerRoute
   AuthenticatedBimViewerUtIfcLoaderLazyRoute: typeof AuthenticatedBimViewerUtIfcLoaderLazyRoute
   AuthenticatedBimViewerUtInstancedMeshLazyRoute: typeof AuthenticatedBimViewerUtInstancedMeshLazyRoute
   AuthenticatedBimViewerUtViewerLazyRoute: typeof AuthenticatedBimViewerUtViewerLazyRoute
+  AuthenticatedViewerIndexRoute: typeof AuthenticatedViewerIndexRoute
   AuthenticatedAppsIndexLazyRoute: typeof AuthenticatedAppsIndexLazyRoute
-  AuthenticatedBimViewerIndexLazyRoute: typeof AuthenticatedBimViewerIndexLazyRoute
   AuthenticatedChatsIndexLazyRoute: typeof AuthenticatedChatsIndexLazyRoute
   AuthenticatedHelpCenterIndexLazyRoute: typeof AuthenticatedHelpCenterIndexLazyRoute
   AuthenticatedTasksIndexLazyRoute: typeof AuthenticatedTasksIndexLazyRoute
@@ -772,15 +749,14 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
     AuthenticatedBimViewerUtWebglClippingV1Route,
   AuthenticatedBimViewerUtWebglClippingV2Route:
     AuthenticatedBimViewerUtWebglClippingV2Route,
-  AuthenticatedBimViewerMainViewerRoute: AuthenticatedBimViewerMainViewerRoute,
   AuthenticatedBimViewerUtIfcLoaderLazyRoute:
     AuthenticatedBimViewerUtIfcLoaderLazyRoute,
   AuthenticatedBimViewerUtInstancedMeshLazyRoute:
     AuthenticatedBimViewerUtInstancedMeshLazyRoute,
   AuthenticatedBimViewerUtViewerLazyRoute:
     AuthenticatedBimViewerUtViewerLazyRoute,
+  AuthenticatedViewerIndexRoute: AuthenticatedViewerIndexRoute,
   AuthenticatedAppsIndexLazyRoute: AuthenticatedAppsIndexLazyRoute,
-  AuthenticatedBimViewerIndexLazyRoute: AuthenticatedBimViewerIndexLazyRoute,
   AuthenticatedChatsIndexLazyRoute: AuthenticatedChatsIndexLazyRoute,
   AuthenticatedHelpCenterIndexLazyRoute: AuthenticatedHelpCenterIndexLazyRoute,
   AuthenticatedTasksIndexLazyRoute: AuthenticatedTasksIndexLazyRoute,
@@ -814,7 +790,6 @@ export interface FileRoutesByFullPath {
   '/bim-viewer-ut/webgl-clipping-stencil-ifc': typeof AuthenticatedBimViewerUtWebglClippingStencilIfcRoute
   '/bim-viewer-ut/webgl-clipping-v1': typeof AuthenticatedBimViewerUtWebglClippingV1Route
   '/bim-viewer-ut/webgl-clipping-v2': typeof AuthenticatedBimViewerUtWebglClippingV2Route
-  '/bim-viewer/main-viewer': typeof AuthenticatedBimViewerMainViewerRoute
   '/bim-viewer-ut/ifc-loader': typeof AuthenticatedBimViewerUtIfcLoaderLazyRoute
   '/bim-viewer-ut/instanced-mesh': typeof AuthenticatedBimViewerUtInstancedMeshLazyRoute
   '/bim-viewer-ut/viewer': typeof AuthenticatedBimViewerUtViewerLazyRoute
@@ -822,8 +797,8 @@ export interface FileRoutesByFullPath {
   '/settings/appearance': typeof AuthenticatedSettingsAppearanceLazyRoute
   '/settings/display': typeof AuthenticatedSettingsDisplayLazyRoute
   '/settings/notifications': typeof AuthenticatedSettingsNotificationsLazyRoute
+  '/viewer': typeof AuthenticatedViewerIndexRoute
   '/apps': typeof AuthenticatedAppsIndexLazyRoute
-  '/bim-viewer': typeof AuthenticatedBimViewerIndexLazyRoute
   '/chats': typeof AuthenticatedChatsIndexLazyRoute
   '/help-center': typeof AuthenticatedHelpCenterIndexLazyRoute
   '/settings/': typeof AuthenticatedSettingsIndexLazyRoute
@@ -853,7 +828,6 @@ export interface FileRoutesByTo {
   '/bim-viewer-ut/webgl-clipping-stencil-ifc': typeof AuthenticatedBimViewerUtWebglClippingStencilIfcRoute
   '/bim-viewer-ut/webgl-clipping-v1': typeof AuthenticatedBimViewerUtWebglClippingV1Route
   '/bim-viewer-ut/webgl-clipping-v2': typeof AuthenticatedBimViewerUtWebglClippingV2Route
-  '/bim-viewer/main-viewer': typeof AuthenticatedBimViewerMainViewerRoute
   '/bim-viewer-ut/ifc-loader': typeof AuthenticatedBimViewerUtIfcLoaderLazyRoute
   '/bim-viewer-ut/instanced-mesh': typeof AuthenticatedBimViewerUtInstancedMeshLazyRoute
   '/bim-viewer-ut/viewer': typeof AuthenticatedBimViewerUtViewerLazyRoute
@@ -861,8 +835,8 @@ export interface FileRoutesByTo {
   '/settings/appearance': typeof AuthenticatedSettingsAppearanceLazyRoute
   '/settings/display': typeof AuthenticatedSettingsDisplayLazyRoute
   '/settings/notifications': typeof AuthenticatedSettingsNotificationsLazyRoute
+  '/viewer': typeof AuthenticatedViewerIndexRoute
   '/apps': typeof AuthenticatedAppsIndexLazyRoute
-  '/bim-viewer': typeof AuthenticatedBimViewerIndexLazyRoute
   '/chats': typeof AuthenticatedChatsIndexLazyRoute
   '/help-center': typeof AuthenticatedHelpCenterIndexLazyRoute
   '/settings': typeof AuthenticatedSettingsIndexLazyRoute
@@ -896,7 +870,6 @@ export interface FileRoutesById {
   '/_authenticated/bim-viewer-ut/webgl-clipping-stencil-ifc': typeof AuthenticatedBimViewerUtWebglClippingStencilIfcRoute
   '/_authenticated/bim-viewer-ut/webgl-clipping-v1': typeof AuthenticatedBimViewerUtWebglClippingV1Route
   '/_authenticated/bim-viewer-ut/webgl-clipping-v2': typeof AuthenticatedBimViewerUtWebglClippingV2Route
-  '/_authenticated/bim-viewer/main-viewer': typeof AuthenticatedBimViewerMainViewerRoute
   '/_authenticated/bim-viewer-ut/ifc-loader': typeof AuthenticatedBimViewerUtIfcLoaderLazyRoute
   '/_authenticated/bim-viewer-ut/instanced-mesh': typeof AuthenticatedBimViewerUtInstancedMeshLazyRoute
   '/_authenticated/bim-viewer-ut/viewer': typeof AuthenticatedBimViewerUtViewerLazyRoute
@@ -904,8 +877,8 @@ export interface FileRoutesById {
   '/_authenticated/settings/appearance': typeof AuthenticatedSettingsAppearanceLazyRoute
   '/_authenticated/settings/display': typeof AuthenticatedSettingsDisplayLazyRoute
   '/_authenticated/settings/notifications': typeof AuthenticatedSettingsNotificationsLazyRoute
+  '/_authenticated/viewer/': typeof AuthenticatedViewerIndexRoute
   '/_authenticated/apps/': typeof AuthenticatedAppsIndexLazyRoute
-  '/_authenticated/bim-viewer/': typeof AuthenticatedBimViewerIndexLazyRoute
   '/_authenticated/chats/': typeof AuthenticatedChatsIndexLazyRoute
   '/_authenticated/help-center/': typeof AuthenticatedHelpCenterIndexLazyRoute
   '/_authenticated/settings/': typeof AuthenticatedSettingsIndexLazyRoute
@@ -939,7 +912,6 @@ export interface FileRouteTypes {
     | '/bim-viewer-ut/webgl-clipping-stencil-ifc'
     | '/bim-viewer-ut/webgl-clipping-v1'
     | '/bim-viewer-ut/webgl-clipping-v2'
-    | '/bim-viewer/main-viewer'
     | '/bim-viewer-ut/ifc-loader'
     | '/bim-viewer-ut/instanced-mesh'
     | '/bim-viewer-ut/viewer'
@@ -947,8 +919,8 @@ export interface FileRouteTypes {
     | '/settings/appearance'
     | '/settings/display'
     | '/settings/notifications'
+    | '/viewer'
     | '/apps'
-    | '/bim-viewer'
     | '/chats'
     | '/help-center'
     | '/settings/'
@@ -977,7 +949,6 @@ export interface FileRouteTypes {
     | '/bim-viewer-ut/webgl-clipping-stencil-ifc'
     | '/bim-viewer-ut/webgl-clipping-v1'
     | '/bim-viewer-ut/webgl-clipping-v2'
-    | '/bim-viewer/main-viewer'
     | '/bim-viewer-ut/ifc-loader'
     | '/bim-viewer-ut/instanced-mesh'
     | '/bim-viewer-ut/viewer'
@@ -985,8 +956,8 @@ export interface FileRouteTypes {
     | '/settings/appearance'
     | '/settings/display'
     | '/settings/notifications'
+    | '/viewer'
     | '/apps'
-    | '/bim-viewer'
     | '/chats'
     | '/help-center'
     | '/settings'
@@ -1018,7 +989,6 @@ export interface FileRouteTypes {
     | '/_authenticated/bim-viewer-ut/webgl-clipping-stencil-ifc'
     | '/_authenticated/bim-viewer-ut/webgl-clipping-v1'
     | '/_authenticated/bim-viewer-ut/webgl-clipping-v2'
-    | '/_authenticated/bim-viewer/main-viewer'
     | '/_authenticated/bim-viewer-ut/ifc-loader'
     | '/_authenticated/bim-viewer-ut/instanced-mesh'
     | '/_authenticated/bim-viewer-ut/viewer'
@@ -1026,8 +996,8 @@ export interface FileRouteTypes {
     | '/_authenticated/settings/appearance'
     | '/_authenticated/settings/display'
     | '/_authenticated/settings/notifications'
+    | '/_authenticated/viewer/'
     | '/_authenticated/apps/'
-    | '/_authenticated/bim-viewer/'
     | '/_authenticated/chats/'
     | '/_authenticated/help-center/'
     | '/_authenticated/settings/'
@@ -1105,12 +1075,11 @@ export const routeTree = rootRoute
         "/_authenticated/bim-viewer-ut/webgl-clipping-stencil-ifc",
         "/_authenticated/bim-viewer-ut/webgl-clipping-v1",
         "/_authenticated/bim-viewer-ut/webgl-clipping-v2",
-        "/_authenticated/bim-viewer/main-viewer",
         "/_authenticated/bim-viewer-ut/ifc-loader",
         "/_authenticated/bim-viewer-ut/instanced-mesh",
         "/_authenticated/bim-viewer-ut/viewer",
+        "/_authenticated/viewer/",
         "/_authenticated/apps/",
-        "/_authenticated/bim-viewer/",
         "/_authenticated/chats/",
         "/_authenticated/help-center/",
         "/_authenticated/tasks/",
@@ -1205,10 +1174,6 @@ export const routeTree = rootRoute
       "filePath": "_authenticated/bim-viewer-ut/webgl-clipping-v2.tsx",
       "parent": "/_authenticated"
     },
-    "/_authenticated/bim-viewer/main-viewer": {
-      "filePath": "_authenticated/bim-viewer/main-viewer.tsx",
-      "parent": "/_authenticated"
-    },
     "/_authenticated/bim-viewer-ut/ifc-loader": {
       "filePath": "_authenticated/bim-viewer-ut/ifc-loader.lazy.tsx",
       "parent": "/_authenticated"
@@ -1237,12 +1202,12 @@ export const routeTree = rootRoute
       "filePath": "_authenticated/settings/notifications.lazy.tsx",
       "parent": "/_authenticated/settings"
     },
-    "/_authenticated/apps/": {
-      "filePath": "_authenticated/apps/index.lazy.tsx",
+    "/_authenticated/viewer/": {
+      "filePath": "_authenticated/viewer/index.tsx",
       "parent": "/_authenticated"
     },
-    "/_authenticated/bim-viewer/": {
-      "filePath": "_authenticated/bim-viewer/index.lazy.tsx",
+    "/_authenticated/apps/": {
+      "filePath": "_authenticated/apps/index.lazy.tsx",
       "parent": "/_authenticated"
     },
     "/_authenticated/chats/": {
