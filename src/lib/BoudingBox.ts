@@ -1,3 +1,4 @@
+import { RefObject } from 'react';
 import * as THREE from 'three';
 
 export const addBoundingBox = (model: THREE.Object3D) => {
@@ -15,17 +16,17 @@ export const animateBoundingBox = (boxHelper: THREE.BoxHelper, model: THREE.Obje
 };
 
 
-// 🟢 Cập nhật Bounding Box dựa trên vị trí mũi tên (ArrowHelper)
+
 export const updateBoundingBoxByArrow = (
-    arrows: THREE.ArrowHelper[], // Mảng các mũi tên ArrowHelper
-    planes: THREE.Plane[],       // Mảng các mặt phẳng clipping
-    boxHelperRef: React.RefObject<THREE.Box3Helper | null>, // Tham chiếu đến Box3Helper
-    scene: THREE.Scene // Scene Three.js để thêm vào Box3Helper
+    arrows: THREE.ArrowHelper[],  // Mảng các mũi tên ArrowHelper
+    planes: THREE.Plane[],        // Mảng các mặt phẳng clipping
+    boxHelperRef: RefObject<THREE.Box3Helper | null>, // Tham chiếu đến Box3Helper
+    scene: THREE.Scene            // Scene Three.js để thêm vào Box3Helper
 ) => {
+    // Tạo một Bounding Box mới
     const newBbox = new THREE.Box3();
     
-
-    // Tính toán Bounding Box từ các mũi tên
+    // 🟢 Tính toán Bounding Box từ các mũi tên
     arrows.forEach((arrow, index) => {
         const plane = planes[index];
 
@@ -45,24 +46,33 @@ export const updateBoundingBoxByArrow = (
         }
     });
 
-    // 🟢 Cập nhật hoặc tạo lại Bounding Box từ vùng mới
+    // 🟢 Nếu Box3Helper cũ tồn tại, xóa nó đi
     if (boxHelperRef.current) {
-        scene.remove(boxHelperRef.current); // Xóa Bounding Box cũ
+        scene.remove(boxHelperRef.current); // Xóa Bounding Box cũ khỏi scene
+        // Giải phóng tài nguyên geometry và material
+        boxHelperRef.current.geometry.dispose(); 
+        boxHelperRef.current.material.dispose(); 
+        boxHelperRef.current = null; // Đảm bảo xóa đối tượng
     }
 
+    // 🟢 Tạo vật liệu tùy chỉnh với hiệu ứng nét đứt
     const dashedMaterial = new THREE.LineBasicMaterial({
-        color: 0x3b82f6, // Chuyển đổi số hex thành THREE.Color
-        linewidth: 2,   // Độ dày nét vẽ
-        dashed: true,   // Bật nét đứt
-        dashSize: 2,  // Kích thước mỗi đoạn đứt
-        gapSize: 2    // Kích thước khoảng cách giữa các đoạn đứt
+        color: 0x3b82f6,  // Màu blue-400
+        linewidth: 1,     // Độ dày nét vẽ (lưu ý: không phải tất cả trình duyệt đều hỗ trợ)
+        dashed: true,     // Bật nét đứt
+        dashSize: 0.1,    // Kích thước mỗi đoạn đứt
+        gapSize: 0.1      // Khoảng cách giữa các đoạn đứt
     });
 
-    // Tạo mới Box3Helper từ Bounding Box đã tính toán
-    boxHelperRef.current = new THREE.Box3Helper(newBbox, 0x3b82f6);
-    scene.add(boxHelperRef.current); // Thêm vào scene
+    // 🟢 Tạo mới Box3Helper với màu mặc định
+    boxHelperRef.current = new THREE.Box3Helper(newBbox);
 
-    // console.log("Updated Bounding Box:", newBbox);
+    // 🟢 Gán vật liệu tùy chỉnh cho Box3Helper
+    boxHelperRef.current.material = dashedMaterial;
+
+    // Thêm Box3Helper vào scene
+    scene.add(boxHelperRef.current);
+
+    console.log("Updated Bounding Box:", newBbox);
 };
-
 
