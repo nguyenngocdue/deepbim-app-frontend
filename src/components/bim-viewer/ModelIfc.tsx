@@ -14,8 +14,9 @@ const ModelIfc: React.FC = () => {
     const planesRef = useRef<THREE.Plane[]>([]);
     const arrowsRef = useRef<THREE.ArrowHelper[]>([]);
     const materialsRef = useRef<{ original: THREE.Material | THREE.Material[], clipping: THREE.Material }[]>([]);
-    const [sectionActive, setSectionActive] = useState(false);
+    const [sectionActive, setSectionActive] = useState(true);
 
+  
     useEffect(() => {
         if (!ifcContainerRef.current) return;
 
@@ -36,7 +37,7 @@ const ModelIfc: React.FC = () => {
 
         // Setup Orbit Controls
         const controls = new OrbitControls(world.camera.three, world.renderer.three.domElement);
-        controls.enableDamping = true;
+        controls.enableDamping = false;
         controls.dampingFactor = 0.1;
         controlsRef.current = controls;
 
@@ -72,6 +73,7 @@ const ModelIfc: React.FC = () => {
             await ifcLoader.setup();
 
             const response = await fetch("/ifc/small.ifc");
+            // const response = await fetch("/ifc/Archicad.ifc");
             if (!response.ok) throw new Error("Không thể tải file IFC");
 
             const buffer = await response.arrayBuffer();
@@ -109,6 +111,7 @@ const ModelIfc: React.FC = () => {
                     clipping: Array.isArray(clippingMaterial) ? clippingMaterial[0] : clippingMaterial
                 });
             });
+            console.log(model)
             worldRef.current.scene.three.add(model);
             createClippingPlanes(model);
         } catch (error) {
@@ -122,14 +125,16 @@ const ModelIfc: React.FC = () => {
         const bbox = new THREE.Box3().setFromObject(model);
         const center = bbox.getCenter(new THREE.Vector3());
 
+       
         planesRef.current = [
+            new THREE.Plane(new THREE.Vector3(-1, 0, 0), bbox.max.x),   // X-
             new THREE.Plane(new THREE.Vector3(1, 0, 0), -bbox.min.x),  // X+
-            new THREE.Plane(new THREE.Vector3(-1, 0, 0), bbox.max.x),  // X-
+            new THREE.Plane(new THREE.Vector3(0, -1, 0), bbox.max.y),   // Y-
             new THREE.Plane(new THREE.Vector3(0, 1, 0), -bbox.min.y),  // Y+
-            new THREE.Plane(new THREE.Vector3(0, -1, 0), bbox.max.y),  // Y-
+            new THREE.Plane(new THREE.Vector3(0, 0, -1), bbox.max.z),   // Z-
             new THREE.Plane(new THREE.Vector3(0, 0, 1), -bbox.min.z),  // Z+
-            new THREE.Plane(new THREE.Vector3(0, 0, -1), bbox.max.z),  // Z-
         ];
+        
         // addPlaneHelpersToScene(worldRef.current!, planesRef.current, false)
         createArrowHelpers(bbox, center);
         updateClipping();
@@ -151,12 +156,12 @@ const ModelIfc: React.FC = () => {
         addKeyPointsToScene(worldRef.current!, positions);
 
         const directions = [
-            new THREE.Vector3(-1, 0, 0), // X+ -> trái
-            new THREE.Vector3(1, 0, 0),  // X- -> phải
-            new THREE.Vector3(0, -1, 0), // Y+ -> xuống
-            new THREE.Vector3(0, 1, 0),  // Y- -> lên
-            new THREE.Vector3(0, 0, -1), // Z+ -> vào
-            new THREE.Vector3(0, 0, 1),  // Z- -> ra
+            new THREE.Vector3(-1, 0, 0),  // X+ (phải)
+            new THREE.Vector3(1, 0, 0),   // X- (trái)
+            new THREE.Vector3(0, -1, 0),  // Y+ (xuống)
+            new THREE.Vector3(0, 1, 0),   // Y- (lên)
+            new THREE.Vector3(0, 0, -1),  // Z+ (vào)
+            new THREE.Vector3(0, 0, 1),   // Z- (ra)
         ];
 
         arrowsRef.current = [];
@@ -164,8 +169,8 @@ const ModelIfc: React.FC = () => {
 
         directions.forEach((dir, index) => {
             const arrow = new THREE.ArrowHelper(dir, positions[index], 0.5, 0xff0000);
-            
-            arrow.visible = false; // Ban đầu ẩn tất cả mũi tên
+            arrow.scale.set(2, 2, 2);
+            arrow.visible = true; // Ban đầu ẩn tất cả mũi tên
             arrowsRef.current.push(arrow);
 
             const control = new TransformControls(
@@ -210,56 +215,30 @@ const ModelIfc: React.FC = () => {
                 }
             });
 
+
             control.addEventListener("objectChange", () => {
                 const arrowPosition = arrow.position.clone();
-
-                // Chỉ cho phép di chuyển dọc theo trục cụ thể
-                if (dir.equals(new THREE.Vector3(1, 0, 0))) {
-                    // Trục X+
-                    arrowPosition.y = positions[index].y; // Giữ nguyên y
-                    arrowPosition.z = positions[index].z; // Giữ nguyên z
-                } else if (dir.equals(new THREE.Vector3(-1, 0, 0))) {
-                    // Trục X-
-                    arrowPosition.y = positions[index].y;
-                    arrowPosition.z = positions[index].z;
-                } else if (dir.equals(new THREE.Vector3(0, 1, 0))) {
-                    // Trục Y+
-                    arrowPosition.x = positions[index].x; // Giữ nguyên x
-                    arrowPosition.z = positions[index].z; // Giữ nguyên z
-                } else if (dir.equals(new THREE.Vector3(0, -1, 0))) {
-                    // Trục Y-
-                    arrowPosition.x = positions[index].x;
-                    arrowPosition.z = positions[index].z;
-                } else if (dir.equals(new THREE.Vector3(0, 0, 1))) {
-                    // Trục Z+
-                    arrowPosition.x = positions[index].x; // Giữ nguyên x
-                    arrowPosition.y = positions[index].y; // Giữ nguyên y
-                } else if (dir.equals(new THREE.Vector3(0, 0, -1))) {
-                    // Trục Z-
-                    arrowPosition.x = positions[index].x;
-                    arrowPosition.y = positions[index].y;
-                }
-            
                 // Cập nhật vị trí của mũi tên
                 arrow.position.copy(arrowPosition);
                 updateClippingPlane(index);
                 updateClipping(); // Cập nhật clipping ngay lập tức
             });
 
+            
             worldRef.current!.scene.three.add(arrow, control);
             transformControlsRef.current.push(control);
         });
 
-        console.log("Arrows created:", arrowsRef.current);
-        console.log("Transform Controls created:", transformControlsRef.current);
+        // console.log("Arrows created:", arrowsRef.current);
+        // console.log("Transform Controls created:", transformControlsRef.current);
     };
 
     const updateClippingPlane = (index: number) => {
         const arrow = arrowsRef.current[index];
         const plane = planesRef.current[index];
-        plane.constant = -arrow.position.dot(plane.normal); // Cập nhật constant dựa trên vị trí mũi tên
 
-        console.log(`Updated plane ${index}:`, plane);
+        plane.constant = -arrow.position.dot(plane.normal); // Cập nhật constant dựa trên vị trí mũi tên
+        // console.log(`Updated plane ${index}:`, plane, ', Position:', arrow.position);
     };
 
     const updateClipping = () => {
@@ -283,12 +262,31 @@ const ModelIfc: React.FC = () => {
             if (newState) {
                 // Hiển thị mũi tên và TransformControls
                 arrowsRef.current.forEach(arrow => {
-                    arrow.visible = true;
+                    arrow.visible = false;
                     worldRef.current?.scene.three.add(arrow);
                 });
                 transformControlsRef.current.forEach(control => {
                     control.visible = true;
-                    worldRef.current?.scene.three.add(control);
+                    control.children.forEach(child => {
+                    })
+                    // control.children.forEach(child => {
+                    //     if(child.position.x === 0 && child.position.y === 0 && child.position.z ===0){
+                    //         child.visible = false;
+                    //     } else{
+                    //         child.visible = true;
+                    //         child.scale.set(5, 5, 5);
+
+                    //         child.traverse(obj => {
+                    //             if (obj.isMesh) {
+                    //                 obj.material.color.set(0xff0000);
+                    //             }
+                    //         });
+                    //         worldRef.current?.scene.three.add(child);
+                    //     }
+                    // });
+                            worldRef.current?.scene.three.add(control);
+
+
                 });
                 updateClipping();
             } else {
