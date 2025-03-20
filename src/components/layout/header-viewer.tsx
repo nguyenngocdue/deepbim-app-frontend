@@ -7,10 +7,8 @@ import {
 } from "react-icons/fa";
 import ViewFit from "../bim-viewer/view-fit";
 import CameraSetting from "../bim-viewer/camera-setting";
+import SectionBox from "../bim-viewer/SectionBox";
 
-interface HeaderViewerProps {
-  resetView: () => void;
-}
 const HeaderViewer: React.FC = () => {
 
   const handleClick = (item : string) => {
@@ -35,6 +33,7 @@ const HeaderViewer: React.FC = () => {
             {/* Tools */}
             <ViewFit />
             <CameraSetting/>
+            <SectionBox/>
 
           </div>
         </header>
