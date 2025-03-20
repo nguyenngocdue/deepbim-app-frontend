@@ -5,6 +5,7 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { TransformControls } from "three/examples/jsm/controls/TransformControls.js";
 import { addAxesWithTextLabelsToScene } from "@/lib/AxesUtils";
 import { addKeyPointsToScene } from "@/lib/PointUtils";
+import { updateBoundingBoxByArrow } from "@/lib/BoudingBox";
 
 const ModelIfc: React.FC = () => {
     const ifcContainerRef = useRef<HTMLDivElement | null>(null);
@@ -15,8 +16,8 @@ const ModelIfc: React.FC = () => {
     const arrowsRef = useRef<THREE.ArrowHelper[]>([]);
     const materialsRef = useRef<{ original: THREE.Material | THREE.Material[], clipping: THREE.Material }[]>([]);
     const [sectionActive, setSectionActive] = useState(true);
+    const boxHelperRef = useRef<THREE.BoxHelper | null>(null);
 
-  
     useEffect(() => {
         if (!ifcContainerRef.current) return;
 
@@ -41,10 +42,10 @@ const ModelIfc: React.FC = () => {
         controls.dampingFactor = 0.1;
         controlsRef.current = controls;
 
-        
+
         worldRef.current = world;
         loadIfcModel();
-        
+
         // Add axes and labels to the scene
         addAxesWithTextLabelsToScene(worldRef.current, 10, 0.5); // Axes size: 10 units
 
@@ -79,6 +80,7 @@ const ModelIfc: React.FC = () => {
             const buffer = await response.arrayBuffer();
             const model = await ifcLoader.load(new Uint8Array(buffer));
 
+
             materialsRef.current = [];
             model.traverse((child: { isMesh: boolean; material: THREE.Material | THREE.Material[]; }) => {
                 if (!child.isMesh) return;
@@ -111,9 +113,17 @@ const ModelIfc: React.FC = () => {
                     clipping: Array.isArray(clippingMaterial) ? clippingMaterial[0] : clippingMaterial
                 });
             });
-            console.log(model)
             worldRef.current.scene.three.add(model);
             createClippingPlanes(model);
+
+            if (boxHelperRef.current) {
+                worldRef.current!.scene.three.remove(boxHelperRef.current);
+            }
+            // Tạo mới BoxHelper
+            boxHelperRef.current = new THREE.BoxHelper(model, 0xff0000);
+            worldRef.current!.scene.three.add(boxHelperRef.current);
+
+
         } catch (error) {
             console.error("Error loading IFC:", error);
         }
@@ -125,7 +135,6 @@ const ModelIfc: React.FC = () => {
         const bbox = new THREE.Box3().setFromObject(model);
         const center = bbox.getCenter(new THREE.Vector3());
 
-       
         planesRef.current = [
             new THREE.Plane(new THREE.Vector3(-1, 0, 0), bbox.max.x),   // X-
             new THREE.Plane(new THREE.Vector3(1, 0, 0), -bbox.min.x),  // X+
@@ -134,7 +143,7 @@ const ModelIfc: React.FC = () => {
             new THREE.Plane(new THREE.Vector3(0, 0, -1), bbox.max.z),   // Z-
             new THREE.Plane(new THREE.Vector3(0, 0, 1), -bbox.min.z),  // Z+
         ];
-        
+
         // addPlaneHelpersToScene(worldRef.current!, planesRef.current, false)
         createArrowHelpers(bbox, center);
         updateClipping();
@@ -168,8 +177,8 @@ const ModelIfc: React.FC = () => {
         transformControlsRef.current = [];
 
         directions.forEach((dir, index) => {
-            const arrow = new THREE.ArrowHelper(dir, positions[index], 0.5, 0xff0000);
-            arrow.scale.set(2, 2, 2);
+            const arrow = new THREE.ArrowHelper(dir.normalize(), positions[index], 0.5, 0xff0000);
+            // arrow.scale.set(2, 2, 2);
             arrow.visible = true; // Ban đầu ẩn tất cả mũi tên
             arrowsRef.current.push(arrow);
 
@@ -181,12 +190,12 @@ const ModelIfc: React.FC = () => {
             control.setMode("translate");
             control.setSpace("local");
             control.visible = false; // Ban đầu ẩn tất cả TransformControls
-            
+
             // Set default visibility of TransformControls axes
             control.showX = false;
             control.showY = false;
             control.showZ = false;
-           // Check if the arrow direction is parallel to any axis of TransformControls
+            // Check if the arrow direction is parallel to any axis of TransformControls
             if ((dir.x === 1 || dir.x === -1) && dir.y === 0 && dir.z === 0) {
                 control.showY = true; // Show X-axis
             }
@@ -221,10 +230,11 @@ const ModelIfc: React.FC = () => {
                 // Cập nhật vị trí của mũi tên
                 arrow.position.copy(arrowPosition);
                 updateClippingPlane(index);
-                updateClipping(); // Cập nhật clipping ngay lập tức
+                updateClipping();
+                updateBoundingBoxByArrow(arrowsRef.current, planesRef.current, boxHelperRef, worldRef.current.scene.three);
             });
 
-            
+
             worldRef.current!.scene.three.add(arrow, control);
             transformControlsRef.current.push(control);
         });
@@ -241,6 +251,7 @@ const ModelIfc: React.FC = () => {
         // console.log(`Updated plane ${index}:`, plane, ', Position:', arrow.position);
     };
 
+
     const updateClipping = () => {
         if (!worldRef.current) return;
         const renderer = worldRef.current.renderer.three;
@@ -254,11 +265,14 @@ const ModelIfc: React.FC = () => {
         }
     };
 
+
+
+
+
     const toggleSectionBox = () => {
         setSectionActive(prev => {
             const newState = !prev;
-            console.log("Section Active:", newState);
-
+            // console.log("Section Active:", newState);
             if (newState) {
                 // Hiển thị mũi tên và TransformControls
                 arrowsRef.current.forEach(arrow => {
@@ -267,26 +281,10 @@ const ModelIfc: React.FC = () => {
                 });
                 transformControlsRef.current.forEach(control => {
                     control.visible = true;
-                    control.children.forEach(child => {
-                    })
                     // control.children.forEach(child => {
-                    //     if(child.position.x === 0 && child.position.y === 0 && child.position.z ===0){
-                    //         child.visible = false;
-                    //     } else{
-                    //         child.visible = true;
-                    //         child.scale.set(5, 5, 5);
-
-                    //         child.traverse(obj => {
-                    //             if (obj.isMesh) {
-                    //                 obj.material.color.set(0xff0000);
-                    //             }
-                    //         });
-                    //         worldRef.current?.scene.three.add(child);
-                    //     }
-                    // });
-                            worldRef.current?.scene.three.add(control);
-
-
+                    //     console.log(child.position)
+                    // })
+                    worldRef.current?.scene.three.add(control);
                 });
                 updateClipping();
             } else {
@@ -311,9 +309,8 @@ const ModelIfc: React.FC = () => {
             <div ref={ifcContainerRef} className="w-full h-full" />
             <button
                 onClick={toggleSectionBox}
-                className={`absolute top-5 left-5 p-2 rounded text-white ${
-                    sectionActive ? 'bg-red-500' : 'bg-blue-500'
-                }`}
+                className={`absolute top-5 left-5 p-2 rounded text-white ${sectionActive ? 'bg-red-500' : 'bg-blue-500'
+                    }`}
             >
                 {sectionActive ? 'Tắt SectionBox' : 'Bật SectionBox'}
             </button>
