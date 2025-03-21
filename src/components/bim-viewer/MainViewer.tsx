@@ -20,6 +20,18 @@ const MainViewer: React.FC = () => {
     }));
 };
 
+ // State và hàm xử lý file path
+ const [selectedFile, setselectedFile] = useState<Uint8Array | null>(null);
+ const handleFileSelect = (filePath: Uint8Array | null) => {
+     if (filePath) {
+         setselectedFile(filePath);
+         console.log("File path received:", filePath);
+     } else {
+         console.log("No file selected");
+     }
+ };
+
+
 
   return (
     <ViewCubeProvider>
@@ -31,9 +43,11 @@ const MainViewer: React.FC = () => {
                 onToggle={toggleState}
                 sectionActive={states.sectionActive}
                 coordinateSyssActive={states.coordinateSyssActive}
+                handleFileSelect={handleFileSelect}
                 />
           </div>
-          <ModelIfc sectionActive={states.sectionActive} coordinateSyssActive={states.coordinateSyssActive}/>
+          <ModelIfc sectionActive={states.sectionActive} coordinateSyssActive={states.coordinateSyssActive} 
+          selectedFile={selectedFile} onFileSelect={handleFileSelect}/>
         </div>
       </ViewCubeProvider2>
     </ViewCubeProvider>

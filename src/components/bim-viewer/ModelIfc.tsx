@@ -3,7 +3,6 @@ import * as OBC from "@thatopen/components";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { TransformControls } from "three/examples/jsm/controls/TransformControls.js";
-import { addAxesWithTextLabelsToScene, removeAxesWithTextLabelsFromScene } from "@/lib/AxesUtils";
 import { addKeyPointsToScene } from "@/lib/PointUtils";
 import { removeBoxHelperFromScene, updateBoundingBoxByArrow } from "@/lib/BoudingBox";
 import { resetModelToOriginalState } from "@/lib/ModelUtils";
@@ -11,10 +10,12 @@ import { resetModelToOriginalState } from "@/lib/ModelUtils";
 interface ModelIfcProps {
     sectionActive: boolean; // Trạng thái Section Box từ component cha
     coordinateSyssActive: boolean;
+    selectedFile: string | null; // Selected file path
+    onFileSelect: (filePath: Uint8Array | null) => void; // File selection handler
 }
 
 
-const ModelIfc: React.FC<ModelIfcProps> = ({ sectionActive, coordinateSyssActive }) => {
+const ModelIfc: React.FC<ModelIfcProps> = ({ sectionActive, coordinateSyssActive, selectedFile, onFileSelect }) => {
     const ifcContainerRef = useRef<HTMLDivElement | null>(null);
     const worldRef = useRef<OBC.World | null>(null);
     const controlsRef = useRef<OrbitControls | null>(null);
@@ -28,6 +29,12 @@ const ModelIfc: React.FC<ModelIfcProps> = ({ sectionActive, coordinateSyssActive
     const initialPlaneRef = useRef<THREE.Plane[]>([]);
 
     let globalScene: THREE.Scene | null = null;
+
+    useEffect(() => {
+        if (selectedFile) {
+            loadIfcModel()
+        }
+    }, [selectedFile]);
 
     useEffect(() => {
         if (!ifcContainerRef.current) return;
@@ -94,13 +101,15 @@ const ModelIfc: React.FC<ModelIfcProps> = ({ sectionActive, coordinateSyssActive
         try {
             const ifcLoader = worldRef.current.components.get(OBC.IfcLoader);
             await ifcLoader.setup();
-
+            // API
             const response = await fetch("/ifc/small.ifc");
             // const response = await fetch("/ifc/Archicad.ifc");
             if (!response.ok) throw new Error("Can't upload IFC");
-
             const buffer = await response.arrayBuffer();
             const model = await ifcLoader.load(new Uint8Array(buffer));
+
+            // console.log(selectedFile);
+            // const model = await ifcLoader.load(selectedFile);
 
 
             materialsRef.current = [];

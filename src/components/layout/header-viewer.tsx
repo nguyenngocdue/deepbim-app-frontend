@@ -9,13 +9,16 @@ import ViewFit from "../bim-viewer/view-fit";
 import CameraSetting from "../bim-viewer/camera-setting";
 import SectionBox from "../bim-viewer/SectionBox";
 import CoordinateSystem from "../bim-viewer/CoordinateSystem";
+import UploadModel from "../bim-viewer/UploadModel";
 
 interface HeaderViewerProps {
   onToggle: (stateName: string) => void; // Hàm chung để toggle trạng thái
   sectionActive: boolean; // Trạng thái Section Box
   coordinateSyssActive: boolean; // Trạng thái Coordinate System
+  uploadModelActive: boolean;
+  handleFileSelect: (filePath: Uint8Array | null) => void;
 }
-const HeaderViewer: React.FC<HeaderViewerProps> = ( {onToggle, sectionActive, coordinateSyssActive}) => {
+const HeaderViewer: React.FC<HeaderViewerProps> = ( {onToggle, sectionActive, coordinateSyssActive, handleFileSelect}) => {
 
 
   const handleClick = (item : string) => {
@@ -48,6 +51,10 @@ const HeaderViewer: React.FC<HeaderViewerProps> = ( {onToggle, sectionActive, co
               onToggle={() => onToggle("coordinateSyssActive")}
               isActive={coordinateSyssActive}
               />
+            <UploadModel
+                onToggle={handleFileSelect}
+                isActive={coordinateSyssActive}
+            />
 
           </div>
         </header>
