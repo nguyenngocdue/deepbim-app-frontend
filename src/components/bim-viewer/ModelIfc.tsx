@@ -208,7 +208,7 @@ const ModelIfc: React.FC = () => {
             control.attach(arrow);
             control.setMode("translate");
             control.setSpace("local");
-            control.visible = false; // Ban đầu ẩn tất cả TransformControls
+            control.visible = false; // Hidden TransformControls axes
 
             // Set default visibility of TransformControls axes
             control.showX = false;
@@ -217,6 +217,12 @@ const ModelIfc: React.FC = () => {
             // Check if the arrow direction is parallel to any axis of TransformControls
             if ((dir.x === 1 || dir.x === -1) && dir.y === 0 && dir.z === 0) {
                 control.showY = true; // Show X-axis
+                control.children.forEach((child, index) => {
+                    if (child.object instanceof THREE.ArrowHelper) {
+                        console.log(child.axis);
+                        child.visible = index % 2 === 0;
+                    }
+                });
             }
             if ((dir.y === 1 || dir.y === -1) && dir.x === 0 && dir.z === 0) {
                 control.showY = true; // Show Y-axis
