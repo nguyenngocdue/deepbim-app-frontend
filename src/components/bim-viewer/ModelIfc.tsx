@@ -8,7 +8,12 @@ import { addKeyPointsToScene } from "@/lib/PointUtils";
 import { removeBoxHelperFromScene, updateBoundingBoxByArrow } from "@/lib/BoudingBox";
 import { resetModelToOriginalState } from "@/lib/ModelUtils";
 
-const ModelIfc: React.FC = () => {
+interface ModelIfcProps {
+    sectionActive: boolean; // Trạng thái Section Box từ component cha
+}
+
+
+const ModelIfc: React.FC<ModelIfcProps> = ({ sectionActive }) => {
     const ifcContainerRef = useRef<HTMLDivElement | null>(null);
     const worldRef = useRef<OBC.World | null>(null);
     const controlsRef = useRef<OrbitControls | null>(null);
@@ -16,13 +21,18 @@ const ModelIfc: React.FC = () => {
     const planesRef = useRef<THREE.Plane[]>([]);
     const arrowsRef = useRef<THREE.ArrowHelper[]>([]);
     const materialsRef = useRef<{ original: THREE.Material | THREE.Material[], clipping: THREE.Material }[]>([]);
-    const [sectionActive, setSectionActive] = useState(false);
     const boxHelperRef = useRef<THREE.BoxHelper | null>(null);
-    const modelRef = useRef<THREE.Object3D | null>(null); 
+    const modelRef = useRef<THREE.Object3D | null>(null);
     const initialPositionsRef = useRef<THREE.Vector3[]>([]);
     const initialPlaneRef = useRef<THREE.Plane[]>([]);
 
     let globalScene: THREE.Scene | null = null;
+
+    useEffect(() => {
+        if (!ifcContainerRef.current) return;
+        toggleSectionBox()
+    }, [sectionActive]);
+
 
     useEffect(() => {
         if (!ifcContainerRef.current) return;
@@ -53,7 +63,7 @@ const ModelIfc: React.FC = () => {
         loadIfcModel();
 
         // Set globalScene to worldRef.current!.scene.three once it's available
-        globalScene = worldRef.current!.scene.three as THREE.Scene;; 
+        globalScene = worldRef.current!.scene.three as THREE.Scene;;
 
         // Safely use globalScene
         if (globalScene) {
@@ -137,7 +147,7 @@ const ModelIfc: React.FC = () => {
             if (boxHelperRef.current) {
                 worldRef.current!.scene.three.remove(boxHelperRef.current);
             }
-           
+
         } catch (error) {
             console.error("Error loading IFC:", error);
         }
@@ -148,7 +158,7 @@ const ModelIfc: React.FC = () => {
 
         const bbox = new THREE.Box3().setFromObject(model);
         const center = bbox.getCenter(new THREE.Vector3());
-        
+
         planesRef.current = [
             new THREE.Plane(new THREE.Vector3(-1, 0, 0), bbox.max.x),   // X-
             new THREE.Plane(new THREE.Vector3(1, 0, 0), -bbox.min.x),  // X+
@@ -157,7 +167,7 @@ const ModelIfc: React.FC = () => {
             new THREE.Plane(new THREE.Vector3(0, 0, -1), bbox.max.z),   // Z-
             new THREE.Plane(new THREE.Vector3(0, 0, 1), -bbox.min.z),  // Z+
         ];
-    
+
         // Store the initial state of the planes
         initialPlaneRef.current = planesRef.current.map(plane => {
             return new THREE.Plane().copy(plane); // Create a deep copy of each plane
@@ -182,7 +192,7 @@ const ModelIfc: React.FC = () => {
         initialPositionsRef.current = positions;
 
         // Add key points to the scene
-        const vectorOnElements =  addKeyPointsToScene(worldRef.current!, positions);
+        const vectorOnElements = addKeyPointsToScene(worldRef.current!, positions);
 
         const directions = [
             new THREE.Vector3(-1, 0, 0),  // X+ (phải)
@@ -219,7 +229,7 @@ const ModelIfc: React.FC = () => {
                 control.showY = true; // Show X-axis
                 control.children.forEach((child, index) => {
                     if (child.object instanceof THREE.ArrowHelper) {
-                        console.log(child.axis);
+                        // console.log(child.axis);
                         child.visible = index % 2 === 0;
                     }
                 });
@@ -291,7 +301,7 @@ const ModelIfc: React.FC = () => {
                 clipping.clippingPlanes = planesRef.current;
                 clipping.needsUpdate = true;
             });
-        }else {
+        } else {
             materialsRef.current.forEach(({ clipping }) => {
                 clipping.clippingPlanes = [];
                 clipping.needsUpdate = true;
@@ -301,78 +311,62 @@ const ModelIfc: React.FC = () => {
     };
 
     useEffect(() => {
-        if(!worldRef.current) return;
+        if (!worldRef.current) return;
         if (sectionActive) {
             updateClipping(sectionActive);
-        }else {
+        } else {
             updateClipping(false);
         }
     }, [sectionActive])
 
     const toggleSectionBox = () => {
-        setSectionActive((prev) => {
-            const newState = !prev; // Toggle the state
-    
-            console.log("Section Active:", newState);
-    
-            // If we are activating the section box (newState is true)
-            if (newState) {
-                // Show arrows and TransformControls
-                arrowsRef.current.forEach((arrow) => {
-                    arrow.visible = true;
-                    worldRef.current?.scene.three.add(arrow);
-                });
-    
-                transformControlsRef.current.forEach((control) => {
-                    control.visible = true;
-                    worldRef.current?.scene.three.add(control);
-                });
-                // Add BoxHelper for the model (if it exists)
-                if (modelRef.current) {
-                    boxHelperRef.current = new THREE.BoxHelper(modelRef.current, 0xff0000);
-                    worldRef.current?.scene.three.add(boxHelperRef.current)
-                }
-            } else {
-                // If we are deactivating the section box (newState is false), hide arrows and controls
-                arrowsRef.current.forEach((arrow) => {
-                    worldRef.current?.scene.three.remove(arrow);
-                });
-    
-                transformControlsRef.current.forEach((control) => {
-                    control.visible = false;
-                    worldRef.current?.scene.three.remove(control);
-                });
-                // Reset model
-                if (modelRef.current) {
-                    resetModelToOriginalState(
-                        modelRef.current, 
-                        materialsRef, 
-                        planesRef, 
-                        initialPlaneRef, 
-                        arrowsRef, 
-                        initialPositionsRef 
-                    )}
-                // Turn off clipping planes
-                updateClipping(false);
-                
-                
+        // If we are activating the section box (newState is true)
+        if (sectionActive) {
+            // Show arrows and TransformControls
+            arrowsRef.current.forEach((arrow) => {
+                arrow.visible = true;
+                worldRef.current?.scene.three.add(arrow);
+            });
+
+            transformControlsRef.current.forEach((control) => {
+                control.visible = true;
+                worldRef.current?.scene.three.add(control);
+            });
+            // Add BoxHelper for the model (if it exists)
+            if (modelRef.current) {
+                boxHelperRef.current = new THREE.BoxHelper(modelRef.current, 0xff0000);
+                worldRef.current?.scene.three.add(boxHelperRef.current)
             }
-            return newState;
-        });
+        } else {
+            // If we are deactivating the section box (newState is false), hide arrows and controls
+            arrowsRef.current.forEach((arrow) => {
+                worldRef.current?.scene.three.remove(arrow);
+            });
+
+            transformControlsRef.current.forEach((control) => {
+                control.visible = false;
+                worldRef.current?.scene.three.remove(control);
+            });
+            // Reset model
+            if (modelRef.current) {
+                resetModelToOriginalState(
+                    modelRef.current,
+                    materialsRef,
+                    planesRef,
+                    initialPlaneRef,
+                    arrowsRef,
+                    initialPositionsRef
+                )
+            }
+            // Turn off clipping planes
+            updateClipping(false);
+        }
+        return sectionActive;
     };
-    
-    
 
     return (
         <div className="relative w-screen h-screen">
             <div ref={ifcContainerRef} className="w-full h-full" />
-            <button
-                onClick={toggleSectionBox}
-                className={`absolute top-5 left-5 p-2 rounded text-white ${sectionActive ? 'bg-red-500' : 'bg-blue-500'
-                    }`}
-            >
-                {sectionActive ? 'Tắt SectionBox' : 'Bật SectionBox'}
-            </button>
         </div>
     );
 };

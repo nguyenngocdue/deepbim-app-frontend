@@ -9,7 +9,12 @@ import ViewFit from "../bim-viewer/view-fit";
 import CameraSetting from "../bim-viewer/camera-setting";
 import SectionBox from "../bim-viewer/SectionBox";
 
-const HeaderViewer: React.FC = () => {
+interface HeaderViewerProps {
+  onToggle: () => void; // Hàm callback để toggle Section Box
+  sectionActive: boolean;
+}
+const HeaderViewer: React.FC<HeaderViewerProps> = ( {onToggle, sectionActive}) => {
+
 
   const handleClick = (item : string) => {
     console.log(item)
@@ -33,7 +38,7 @@ const HeaderViewer: React.FC = () => {
             {/* Tools */}
             <ViewFit />
             <CameraSetting/>
-            <SectionBox/>
+            <SectionBox onToggle={onToggle} isActive={sectionActive}/>
 
           </div>
         </header>
