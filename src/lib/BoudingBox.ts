@@ -15,22 +15,20 @@ export const animateBoundingBox = (boxHelper: THREE.BoxHelper, model: THREE.Obje
     updateBox();
 };
 
-
-
 export const updateBoundingBoxByArrow = (
-    arrows: THREE.ArrowHelper[],  // Mảng các mũi tên ArrowHelper
-    planes: THREE.Plane[],        // Mảng các mặt phẳng clipping
-    boxHelperRef: RefObject<THREE.Box3Helper | null>, // Tham chiếu đến Box3Helper
-    scene: THREE.Scene            // Scene Three.js để thêm vào Box3Helper
+    arrows: THREE.ArrowHelper[],  // Array of ArrowHelper objects
+    planes: THREE.Plane[],        // Array of clipping planes
+    boxHelperRef: RefObject<THREE.Box3Helper | null>, // Reference to Box3Helper
+    scene: THREE.Scene            // Three.js scene to add the Box3Helper
 ) => {
-    // Tạo một Bounding Box mới
+    //Create a new Bounding Box
     const newBbox = new THREE.Box3();
-    
-    // 🟢 Tính toán Bounding Box từ các mũi tên
+
+    //Calculate the Bounding Box from the arrow positions
     arrows.forEach((arrow, index) => {
         const plane = planes[index];
 
-        // Lấy vị trí của mũi tên và cập nhật Bounding Box
+        // Get the position of the arrow and update the Bounding Box
         const arrowPos = arrow.position.clone();
         if (plane.normal.x !== 0) {
             newBbox.min.x = Math.min(newBbox.min.x, arrowPos.x);
@@ -46,33 +44,40 @@ export const updateBoundingBoxByArrow = (
         }
     });
 
-    // 🟢 Nếu Box3Helper cũ tồn tại, xóa nó đi
+    //If an old Box3Helper exists, remove it
     if (boxHelperRef.current) {
-        scene.remove(boxHelperRef.current); // Xóa Bounding Box cũ khỏi scene
-        // Giải phóng tài nguyên geometry và material
+        scene.remove(boxHelperRef.current); // Remove the old Bounding Box from the scene
+        // Dispose of the geometry and material resources
         boxHelperRef.current.geometry.dispose(); 
-        boxHelperRef.current.material.dispose(); 
-        boxHelperRef.current = null; // Đảm bảo xóa đối tượng
+        boxHelperRef.current = null; // Ensure the object is cleared
     }
 
-    // 🟢 Tạo vật liệu tùy chỉnh với hiệu ứng nét đứt
+    //Create a custom material with a dashed effect
     const dashedMaterial = new THREE.LineBasicMaterial({
-        color: 0x3b82f6,  // Màu blue-400
-        linewidth: 1,     // Độ dày nét vẽ (lưu ý: không phải tất cả trình duyệt đều hỗ trợ)
-        dashed: true,     // Bật nét đứt
-        dashSize: 0.1,    // Kích thước mỗi đoạn đứt
-        gapSize: 0.1      // Khoảng cách giữa các đoạn đứt
+        color: 0x3b82f6,  // Blue color (blue-400)
+        linewidth: 1,     // Line width (Note: not all browsers support this)
+        dashed: true,     // Enable dashed lines
+        dashSize: 0.1,    // Length of each dash
+        gapSize: 0.1      // Gap between dashes
     });
 
-    // 🟢 Tạo mới Box3Helper với màu mặc định
+    //Create a new Box3Helper with the default color
     boxHelperRef.current = new THREE.Box3Helper(newBbox);
 
-    // 🟢 Gán vật liệu tùy chỉnh cho Box3Helper
+    //Assign the custom material to the Box3Helper
     boxHelperRef.current.material = dashedMaterial;
 
-    // Thêm Box3Helper vào scene
+    //Add the Box3Helper to the scene
     scene.add(boxHelperRef.current);
-
-    console.log("Updated Bounding Box:", newBbox);
+    // console.log("Updated Bounding Box:", newBbox);
 };
+
+export const anchorVector = (
+    originalVector  : THREE.Vector3,
+    targetVector: THREE.Vector3
+)  => {
+    originalVector.set(targetVector.x, targetVector.y, targetVector.z);
+    return originalVector;
+}
+
 

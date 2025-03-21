@@ -54,4 +54,21 @@ export const addKeyPointsToScene = (
         const sphere = createKeyPoint(position, color, 0.1);
         world.scene.three.add(sphere);
     });
+    return positions
 };
+
+
+/**
+ * Adds a point cloud to the given scene.
+ * @param {THREE.Vector3[]} points - An array of points (THREE.Vector3) representing the vertices to be displayed in the point cloud.
+ * @param {THREE.Scene} scene - The Three.js scene where the point cloud will be added.
+ */
+export function addPointsToScene(
+    points: THREE.Vector3[], 
+    scene: THREE.Scene
+): void {
+    const geometry = new THREE.BufferGeometry().setFromPoints(points);
+    const material = new THREE.PointsMaterial({ color: 0x00ff00, size: 0.1 });
+    const pointCloud = new THREE.Points(geometry, material);
+    scene.add(pointCloud);
+}

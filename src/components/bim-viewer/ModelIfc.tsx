@@ -5,7 +5,7 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { TransformControls } from "three/examples/jsm/controls/TransformControls.js";
 import { addAxesWithTextLabelsToScene } from "@/lib/AxesUtils";
 import { addKeyPointsToScene } from "@/lib/PointUtils";
-import { updateBoundingBoxByArrow } from "@/lib/BoudingBox";
+import { anchorVector, updateBoundingBoxByArrow } from "@/lib/BoudingBox";
 
 const ModelIfc: React.FC = () => {
     const ifcContainerRef = useRef<HTMLDivElement | null>(null);
@@ -17,6 +17,7 @@ const ModelIfc: React.FC = () => {
     const materialsRef = useRef<{ original: THREE.Material | THREE.Material[], clipping: THREE.Material }[]>([]);
     const [sectionActive, setSectionActive] = useState(true);
     const boxHelperRef = useRef<THREE.BoxHelper | null>(null);
+    let globalScene: THREE.Scene | null = null;
 
     useEffect(() => {
         if (!ifcContainerRef.current) return;
@@ -46,8 +47,13 @@ const ModelIfc: React.FC = () => {
         worldRef.current = world;
         loadIfcModel();
 
-        // Add axes and labels to the scene
-        addAxesWithTextLabelsToScene(worldRef.current, 10, 0.5); // Axes size: 10 units
+        // Set globalScene to worldRef.current!.scene.three once it's available
+        globalScene = worldRef.current!.scene.three as THREE.Scene;; 
+
+        // Safely use globalScene
+        if (globalScene) {
+            addAxesWithTextLabelsToScene({ scene: { three: globalScene } }, 10, 0.5); // Axes size: 10 units
+        }
 
         const animate = () => {
             if (!worldRef.current || !worldRef.current.renderer) return;
@@ -73,9 +79,9 @@ const ModelIfc: React.FC = () => {
             const ifcLoader = worldRef.current.components.get(OBC.IfcLoader);
             await ifcLoader.setup();
 
-            const response = await fetch("/ifc/small.ifc");
-            // const response = await fetch("/ifc/Archicad.ifc");
-            if (!response.ok) throw new Error("Không thể tải file IFC");
+            // const response = await fetch("/ifc/small.ifc");
+            const response = await fetch("/ifc/Archicad.ifc");
+            if (!response.ok) throw new Error("Can't upload IFC");
 
             const buffer = await response.arrayBuffer();
             const model = await ifcLoader.load(new Uint8Array(buffer));
@@ -162,7 +168,7 @@ const ModelIfc: React.FC = () => {
         ];
 
         // Add key points to the scene
-        addKeyPointsToScene(worldRef.current!, positions);
+        const vectorOnElements =  addKeyPointsToScene(worldRef.current!, positions);
 
         const directions = [
             new THREE.Vector3(-1, 0, 0),  // X+ (phải)
@@ -178,8 +184,7 @@ const ModelIfc: React.FC = () => {
 
         directions.forEach((dir, index) => {
             const arrow = new THREE.ArrowHelper(dir.normalize(), positions[index], 0.5, 0xff0000);
-            // arrow.scale.set(2, 2, 2);
-            arrow.visible = true; // Ban đầu ẩn tất cả mũi tên
+            arrow.visible = false; // Ban đầu ẩn tất cả mũi tên
             arrowsRef.current.push(arrow);
 
             const control = new TransformControls(
@@ -232,6 +237,14 @@ const ModelIfc: React.FC = () => {
                 updateClippingPlane(index);
                 updateClipping();
                 updateBoundingBoxByArrow(arrowsRef.current, planesRef.current, boxHelperRef, worldRef.current.scene.three);
+                if (vectorOnElements) {
+                    const newPoint = anchorVector(vectorOnElements[index], arrow.position);
+                    vectorOnElements.forEach((vector) => {
+                        worldRef.current?.scene.three.remove(vector);
+                    });
+                    const p = addKeyPointsToScene(worldRef.current!, [newPoint]);
+                }
+
             });
 
 
