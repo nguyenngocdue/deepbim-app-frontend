@@ -3,17 +3,18 @@ import * as OBC from "@thatopen/components";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { TransformControls } from "three/examples/jsm/controls/TransformControls.js";
-import { addAxesWithTextLabelsToScene } from "@/lib/AxesUtils";
+import { addAxesWithTextLabelsToScene, removeAxesWithTextLabelsFromScene } from "@/lib/AxesUtils";
 import { addKeyPointsToScene } from "@/lib/PointUtils";
 import { removeBoxHelperFromScene, updateBoundingBoxByArrow } from "@/lib/BoudingBox";
 import { resetModelToOriginalState } from "@/lib/ModelUtils";
 
 interface ModelIfcProps {
     sectionActive: boolean; // Trạng thái Section Box từ component cha
+    coordinateSyssActive: boolean;
 }
 
 
-const ModelIfc: React.FC<ModelIfcProps> = ({ sectionActive }) => {
+const ModelIfc: React.FC<ModelIfcProps> = ({ sectionActive, coordinateSyssActive }) => {
     const ifcContainerRef = useRef<HTMLDivElement | null>(null);
     const worldRef = useRef<OBC.World | null>(null);
     const controlsRef = useRef<OrbitControls | null>(null);
@@ -31,7 +32,15 @@ const ModelIfc: React.FC<ModelIfcProps> = ({ sectionActive }) => {
     useEffect(() => {
         if (!ifcContainerRef.current) return;
         toggleSectionBox()
-    }, [sectionActive]);
+            // if(coordinateSyssActive) {
+            //     globalScene = worldRef.current!.scene.three as THREE.Scene;;
+            //     addAxesWithTextLabelsToScene({ scene: { three: globalScene } }, 10, 0.5);
+            // }else{
+            //     console.log(globalScene)
+            //     // removeAxesWithTextLabelsFromScene(globalScene);
+            // }
+
+    }, [sectionActive, coordinateSyssActive]);
 
 
     useEffect(() => {
@@ -61,14 +70,6 @@ const ModelIfc: React.FC<ModelIfcProps> = ({ sectionActive }) => {
 
         worldRef.current = world;
         loadIfcModel();
-
-        // Set globalScene to worldRef.current!.scene.three once it's available
-        globalScene = worldRef.current!.scene.three as THREE.Scene;;
-
-        // Safely use globalScene
-        if (globalScene) {
-            addAxesWithTextLabelsToScene({ scene: { three: globalScene } }, 10, 0.5); // Axes size: 10 units
-        }
 
         const animate = () => {
             if (!worldRef.current || !worldRef.current.renderer) return;
@@ -295,7 +296,7 @@ const ModelIfc: React.FC<ModelIfcProps> = ({ sectionActive }) => {
         if (!worldRef.current) return;
         const renderer = worldRef.current.renderer.three;
         renderer.localClippingEnabled = isActive;
-        console.log("updateClipping", isActive)
+        // console.log("updateClipping", isActive)
         if (isActive) {
             materialsRef.current.forEach(({ clipping }) => {
                 clipping.clippingPlanes = planesRef.current;

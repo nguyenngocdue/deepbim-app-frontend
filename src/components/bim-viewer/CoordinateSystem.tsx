@@ -1,15 +1,16 @@
-import { Button } from "@/components/ui/button";
-import { GiIceCube } from "react-icons/gi";
+import React from 'react';
+import { LuAxis3D } from "react-icons/lu";
+import { Button } from '../ui/button';
 
-interface SectionBoxProps {
-    onToggle: () => void; // Callback function to toggle the Section Box
-    isActive: boolean;    // Current state of the Section Box
+interface CoordinateSystemProps {
+    onToggle: () => void; // Callback function to toggle the Coordinate System
+    isActive: boolean;    // Current state of the Coordinate System
 }
 
-const SectionBox: React.FC<SectionBoxProps> = ({ onToggle, isActive }) => {
+const CoordinateSystem: React.FC<CoordinateSystemProps> = ({ onToggle, isActive }) => {
     return (
         <Button
-            title="Toggle Perspective/Ortho"
+            title="Toggle Coordinate System"
             onClick={(e) => {
                 // Change the color immediately by toggling classes directly in the DOM
                 const button = e.currentTarget;
@@ -21,10 +22,10 @@ const SectionBox: React.FC<SectionBoxProps> = ({ onToggle, isActive }) => {
             }}
             className={`hover:bg-blue-500 ${isActive ? 'bg-green-500' : ''}`}
         >
-            <GiIceCube className="text-lg" />
-            <span className="ml-1">SectionBox</span>
+            <LuAxis3D className="text-lg" />
+            <span className="ml-1">CS</span>
         </Button>
     );
 };
 
-export default SectionBox;
+export default CoordinateSystem;

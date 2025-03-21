@@ -74,3 +74,17 @@ export const addAxesWithTextLabelsToScene = async (
         world.scene.three.add(label);
     }
 };
+
+export const removeAxesWithTextLabelsFromScene = (scene: THREE.Scene) => {
+    const axesHelper = scene.getObjectByName("axesHelper");
+    if (axesHelper) {
+        scene.remove(axesHelper);
+    }
+
+    // Xóa các nhãn văn bản (text labels)
+    scene.children.forEach((child) => {
+        if (child.name.startsWith("axisLabel")) {
+            scene.remove(child);
+        }
+    });
+};

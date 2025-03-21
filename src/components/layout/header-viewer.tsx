@@ -8,12 +8,14 @@ import {
 import ViewFit from "../bim-viewer/view-fit";
 import CameraSetting from "../bim-viewer/camera-setting";
 import SectionBox from "../bim-viewer/SectionBox";
+import CoordinateSystem from "../bim-viewer/CoordinateSystem";
 
 interface HeaderViewerProps {
-  onToggle: () => void; // Hàm callback để toggle Section Box
-  sectionActive: boolean;
+  onToggle: (stateName: string) => void; // Hàm chung để toggle trạng thái
+  sectionActive: boolean; // Trạng thái Section Box
+  coordinateSyssActive: boolean; // Trạng thái Coordinate System
 }
-const HeaderViewer: React.FC<HeaderViewerProps> = ( {onToggle, sectionActive}) => {
+const HeaderViewer: React.FC<HeaderViewerProps> = ( {onToggle, sectionActive, coordinateSyssActive}) => {
 
 
   const handleClick = (item : string) => {
@@ -38,7 +40,14 @@ const HeaderViewer: React.FC<HeaderViewerProps> = ( {onToggle, sectionActive}) =
             {/* Tools */}
             <ViewFit />
             <CameraSetting/>
-            <SectionBox onToggle={onToggle} isActive={sectionActive}/>
+            <SectionBox 
+              onToggle={() => onToggle("sectionActive")} // Gọi toggleState với tên trạng thái
+              isActive={sectionActive}
+            />
+            <CoordinateSystem 
+              onToggle={() => onToggle("coordinateSyssActive")}
+              isActive={coordinateSyssActive}
+              />
 
           </div>
         </header>
