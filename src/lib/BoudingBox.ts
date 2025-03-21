@@ -69,7 +69,6 @@ export const updateBoundingBoxByArrow = (
 
     //Add the Box3Helper to the scene
     scene.add(boxHelperRef.current);
-    // console.log("Updated Bounding Box:", newBbox);
 };
 
 export const anchorVector = (
@@ -80,4 +79,22 @@ export const anchorVector = (
     return originalVector;
 }
 
+export const removeBoxHelperFromScene = (scene: THREE.Scene) => {
+    scene.traverse((child) => {
+        switch (true) {
+            case child instanceof THREE.BoxHelper:
+                scene.remove(child); // Remove BoxHelper from the scene
+                // console.log("BoxHelper removed:", child);
+                break;
+
+            case child instanceof THREE.Box3Helper:
+                scene.remove(child); // Remove Box3Helper from the scene
+                // console.log("Box3Helper removed:", child);
+                break;
+            default:
+                // Do nothing for objects that are not helpers
+                break;
+        }
+    });
+};
 
