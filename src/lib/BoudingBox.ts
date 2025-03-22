@@ -98,3 +98,19 @@ export const removeBoxHelperFromScene = (scene: THREE.Scene) => {
     });
 };
 
+export const createBoundingBoxMesh = (model: THREE.Object3D) => {
+    const bbox = new THREE.Box3().setFromObject(model);
+    const boxGeometry = new THREE.BoxGeometry(
+        bbox.max.x - bbox.min.x,
+        bbox.max.y - bbox.min.y,
+        bbox.max.z - bbox.min.z
+    );
+    const boxMaterial = new THREE.MeshBasicMaterial({
+        color: 0xff0000,
+        wireframe: true, // Hiển thị dạng khung dây nếu muốn giống BoxHelper
+    });
+    const boundingBoxMesh = new THREE.Mesh(boxGeometry, boxMaterial);
+    boundingBoxMesh.position.copy(bbox.getCenter(new THREE.Vector3()));
+    return boundingBoxMesh;
+};
+

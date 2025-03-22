@@ -39,6 +39,7 @@
     "@tanstack/react-router": "^1.86.1",
     "@tanstack/react-table": "^8.20.5",
     "@thatopen/components": "^2.4.5",
+    "@thatopen/components-front": "^2.4.4",
     "@thatopen/fragments": "2.4.0",
     "@types/d3": "^7.4.3",
     "axios": "^1.7.9",

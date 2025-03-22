@@ -23,7 +23,6 @@ declare module "three" {
 }
 import { computeBoundsTree, disposeBoundsTree, acceleratedRaycast, MeshBVH } from "three-mesh-bvh";
 import { ThreeHighlighter } from "@/lib/effects/HighlightElement";
-import { highlightMeshOnRaycast } from "@/lib/effects/HighlightMeshOnRaycast";
 
 // Gán các phương thức BVH vào prototype của BufferGeometry và Mesh
 THREE.BufferGeometry.prototype.computeBoundsTree = computeBoundsTree;
@@ -48,7 +47,6 @@ const ModelIfc: React.FC<ModelIfcProps> = ({ sectionActive, coordinateSyssActive
 
 
     const [isRaycastingMode, setIsRaycastingMode] = useState(false);
-
     useEffect(() => {
         if (selectedFile) {
             loadIfcModel()
@@ -56,17 +54,150 @@ const ModelIfc: React.FC<ModelIfcProps> = ({ sectionActive, coordinateSyssActive
     }, [selectedFile]);
 
 
-   
+    function regenerateHighlight(
+        mesh: THREE.Mesh,
+        indices: Iterable<number>,
+        instance: number | undefined,
+        getVerts: (
+          mesh: THREE.Mesh,
+          faceIndex: number,
+          instance?: number
+        ) => {
+          p1: THREE.Vector3;
+          p2: THREE.Vector3;
+          p3: THREE.Vector3;
+        }
+      ): { geometry: THREE.BufferGeometry; area: number } {
+        const positions: number[] = [];
+        const triangleIndices: number[] = [];
+        let area = 0;
+        let counter = 0;
+      
+        const triangle = new THREE.Triangle();
+      
+        for (const faceIndex of indices) {
+          const { p1, p2, p3 } = getVerts(mesh, faceIndex, instance);
+      
+          positions.push(p1.x, p1.y, p1.z);
+          positions.push(p2.x, p2.y, p2.z);
+          positions.push(p3.x, p3.y, p3.z);
+      
+          triangle.set(p1, p2, p3);
+          area += triangle.getArea();
+      
+          triangleIndices.push(counter, counter + 1, counter + 2);
+          counter += 3;
+        }
+      
+        const geometry = new THREE.BufferGeometry();
+        geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+        geometry.setIndex(triangleIndices);
+        geometry.computeVertexNormals();
+      
+        return { geometry, area };
+      }
+      
+      
+      
+
+
     useEffect(() => {
-        const handleMouseClick = (event: MouseEvent) => {
-            highlightMeshOnRaycast(worldRef, event);
-          };
-          window.addEventListener('click', handleMouseClick);
-          return () => {
-            window.removeEventListener('click', handleMouseClick);
-          };
+
+        const handleCanvasClick = (event: MouseEvent) => {
+              //Getting the highlighter
+              const components = new OBC.Components();
+              const world = worldRef.current;
+            
+              if (!world) return;
+            
+              const raycasters = components.get(OBC.Raycasters);
+              let caster = raycasters.get(world);
+              if (!caster) {
+                raycasters.set(world);
+                caster = raycasters.get(world);
+              }
+            
+              caster.camera = world.camera.three;
+              caster.world = world;
+            
+              const canvas = world.renderer.three.domElement;
+   
+                const rect = canvas.getBoundingClientRect();
+                const x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+                const y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+            
+                // ✅ Cập nhật vị trí chuột theo chuẩn Normalized Device Coordinates
+                caster.mouse.position.set(x, y);
+
+                const meshes: THREE.Mesh[] = [];
+                world.scene.three.traverse((child) => {
+                    if (child instanceof THREE.Mesh) {
+                        meshes.push(child);
+                    }
+                });
+                const result = caster.castRay(meshes); // Trả về object hoặc null
+                const measurements = components.get(OBC.MeasurementUtils);
+                if (result && result.face && result.object) {
+                    const mesh = result.object as THREE.Mesh | THREE.InstancedMesh;
+                    const instance = result.instance;
+                    const faceIndex = result.faceIndex!;
+
+                    // 1. Lấy thông tin các mặt từ MeasurementUtils
+                    const faceData = measurements.getFace(mesh, faceIndex, instance);
+                    if (!faceData || !faceData.indices) {
+                        console.warn("❌ Không lấy được face từ measurements.");
+                        return;
+                    }
+
+                    const faceIndices = Array.from(faceData.indices);
+
+                    // 2. Tính geometry và diện tích
+                    const { geometry, area } = regenerateHighlight(
+                        mesh,
+                        faceIndices,
+                        instance,
+                        (m, i, inst) => measurements.getVerticesAndNormal(m, i, inst)
+                    );
+
+                    console.log("📐 Diện tích mặt được chọn:", area.toFixed(4));
+                    // 3. Tạo material highlight
+                    const highlightMaterial = new THREE.MeshBasicMaterial({
+                        color: 0x00ffcc,
+                        opacity: 0.6,
+                        transparent: true,
+                        side: THREE.DoubleSide,
+                        depthTest: false
+                    });
+
+                    const highlightMesh = new THREE.Mesh(geometry, highlightMaterial);
+                    // 4. Đặt về đúng vị trí trong thế giới
+                    highlightMesh.position.set(0, 0, 0);
+                    highlightMesh.rotation.set(0, 0, 0);
+                    highlightMesh.scale.set(1, 1, 1);
+                    highlightMesh.updateMatrix();
+
+                    if (mesh instanceof THREE.InstancedMesh && instance !== undefined) {
+                        const matrix = new THREE.Matrix4();
+                        mesh.getMatrixAt(instance, matrix);
+                        highlightMesh.applyMatrix4(matrix);
+                    } else {
+                        highlightMesh.applyMatrix4(mesh.matrixWorld);
+                    }
+                    // 5. Thêm vào scene
+                    world.scene.three.add(highlightMesh);
+                  }
+        };
+
+        const container = ifcContainerRef.current;
+        container.addEventListener("click", handleCanvasClick);
+    
+        return () => {
+            container.removeEventListener("click", handleCanvasClick);
+        };
     }, [sectionActive]);
 
+
+    
 
     useEffect(() => {
         if (!ifcContainerRef.current) return;
