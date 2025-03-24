@@ -21,6 +21,7 @@ import { useHighlightSetup } from "@/features/bim-viewer/useHighlightSetup";
 import { useIfcLoader } from "@/features/bim-viewer/useIfcLoader";
 import { useClippingEdges } from "@/features/bim-viewer/useClippingEdges";
 import { useEdgeMeasurement } from "@/features/bim-viewer/useEdgeMeasurement";
+import { useFaceMeasurement } from "@/features/bim-viewer/useFaceMeasurement";
 
 // Gán các phương thức BVH vào prototype của BufferGeometry và Mesh
 THREE.BufferGeometry.prototype.computeBoundsTree = computeBoundsTree;
@@ -36,6 +37,7 @@ interface ModelIfcProps {
     isHighlightEnabled:boolean;
     isClippingEdges:boolean;
     isEdgeMeasurement:boolean;
+    isFaceMeasurement:boolean;
 }
 
 
@@ -45,6 +47,7 @@ const ModelIfc: React.FC<ModelIfcProps> = (
         isHighlightEnabled,
         isClippingEdges,
         isEdgeMeasurement,
+        isFaceMeasurement,
     }) => {
     const ifcContainerRef = useRef<HTMLDivElement | null>(null);
     const worldRef = useRef<OBC.World | null>(null);
@@ -81,6 +84,11 @@ const ModelIfc: React.FC<ModelIfcProps> = (
     useEffect(() => {
         useClippingEdges({ isClippingEdges, componentRef, worldRef, ifcContainerRef, modelRef });
     }, [isWorldReady, isClippingEdges]);
+
+    // FaceMeasurement
+    useEffect(() => {
+        useFaceMeasurement({ isFaceMeasurement, componentRef, worldRef, ifcContainerRef, modelRef });
+    }, [isWorldReady, isFaceMeasurement]);
 
 
 

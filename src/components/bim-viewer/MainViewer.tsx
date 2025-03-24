@@ -3,6 +3,7 @@ import HeaderViewer from "../layout/header-viewer";
 import { ViewCubeProvider } from "@/context/view-cube-context";
 import { ViewCubeProvider2 } from "@/context/view-cube-context2";
 import ModelIfc from "./ModelIfc";
+import FaceMeasurementGuide from "./guides/FaceMeasurementGuide";
 
 const MainViewer: React.FC = () => {
 
@@ -14,6 +15,7 @@ const MainViewer: React.FC = () => {
     isHighlightEnabled:false,
     isClippingEdges:false,
     isEdgeMeasurement:false,
+    isFaceMeasurement:false,
   });
 
   // Hàm chung để toggle trạng thái
@@ -51,6 +53,7 @@ const MainViewer: React.FC = () => {
                 isHighlightEnabled={states.isHighlightEnabled}
                 isClippingEdges={states.isClippingEdges}
                 isEdgeMeasurement={states.isEdgeMeasurement}
+                isFaceMeasurement={states.isFaceMeasurement}
                 />
           </div>
           <ModelIfc 
@@ -62,7 +65,12 @@ const MainViewer: React.FC = () => {
             isHighlightEnabled={states.isHighlightEnabled}
             isClippingEdges={states.isClippingEdges}
             isEdgeMeasurement={states.isEdgeMeasurement}
+            isFaceMeasurement={states.isFaceMeasurement}
             />
+            <FaceMeasurementGuide
+              isEnabled={states.isFaceMeasurement}
+            />
+
         </div>
       </ViewCubeProvider2>
     </ViewCubeProvider>
