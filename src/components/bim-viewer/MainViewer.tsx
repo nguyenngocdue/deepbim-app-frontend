@@ -13,6 +13,7 @@ const MainViewer: React.FC = () => {
     coordinateSysActive: false,
     isHighlightEnabled:false,
     isClippingEdges:false,
+    isEdgeMeasurement:false,
   });
 
   // Hàm chung để toggle trạng thái
@@ -49,6 +50,7 @@ const MainViewer: React.FC = () => {
                 coordinateSysActive={states.coordinateSysActive}
                 isHighlightEnabled={states.isHighlightEnabled}
                 isClippingEdges={states.isClippingEdges}
+                isEdgeMeasurement={states.isEdgeMeasurement}
                 />
           </div>
           <ModelIfc 
@@ -59,6 +61,7 @@ const MainViewer: React.FC = () => {
             coordinateSysActive={states.coordinateSysActive}
             isHighlightEnabled={states.isHighlightEnabled}
             isClippingEdges={states.isClippingEdges}
+            isEdgeMeasurement={states.isEdgeMeasurement}
             />
         </div>
       </ViewCubeProvider2>

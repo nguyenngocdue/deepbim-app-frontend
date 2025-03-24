@@ -20,6 +20,7 @@ import { computeBoundsTree, disposeBoundsTree, acceleratedRaycast, MeshBVH } fro
 import { useHighlightSetup } from "@/features/bim-viewer/useHighlightSetup";
 import { useIfcLoader } from "@/features/bim-viewer/useIfcLoader";
 import { useClippingEdges } from "@/features/bim-viewer/useClippingEdges";
+import { useEdgeMeasurement } from "@/features/bim-viewer/useEdgeMeasurement";
 
 // Gán các phương thức BVH vào prototype của BufferGeometry và Mesh
 THREE.BufferGeometry.prototype.computeBoundsTree = computeBoundsTree;
@@ -34,6 +35,7 @@ interface ModelIfcProps {
     coordinateSysActive: boolean;
     isHighlightEnabled:boolean;
     isClippingEdges:boolean;
+    isEdgeMeasurement:boolean;
 }
 
 
@@ -42,6 +44,7 @@ const ModelIfc: React.FC<ModelIfcProps> = (
         selectedFile, 
         isHighlightEnabled,
         isClippingEdges,
+        isEdgeMeasurement,
     }) => {
     const ifcContainerRef = useRef<HTMLDivElement | null>(null);
     const worldRef = useRef<OBC.World | null>(null);
@@ -68,8 +71,13 @@ const ModelIfc: React.FC<ModelIfcProps> = (
         useHighlightSetup({ isHighlightEnabled, componentRef, worldRef });
     }, [isWorldReady, isHighlightEnabled]);
 
-    console.log(isClippingEdges)
-    //clipping edges
+    
+    //Clipping edges
+    useEffect(() => {
+        useEdgeMeasurement({ isEdgeMeasurement, componentRef, worldRef, ifcContainerRef, modelRef });
+    }, [isWorldReady, isEdgeMeasurement]);
+
+    // EdgeMeasurement
     useEffect(() => {
         useClippingEdges({ isClippingEdges, componentRef, worldRef, ifcContainerRef, modelRef });
     }, [isWorldReady, isClippingEdges]);
@@ -104,14 +112,6 @@ const ModelIfc: React.FC<ModelIfcProps> = (
         // Getting the highlighter
         worldRef.current = world;
         setIsWorldReady(true);
-
-
-
-
-
-       
-
-
 
         
         const animate = () => {

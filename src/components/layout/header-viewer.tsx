@@ -12,6 +12,7 @@ import CoordinateSystem from "../bim-viewer/CoordinateSystem";
 import UploadModel from "../bim-viewer/UploadModel";
 import HighlightElement from "../bim-viewer/HighlightElement";
 import ClippingEdges from "../bim-viewer/ClippingEdges";
+import EdgeMeasurement from "../bim-viewer/EdgeMeasurement";
 
 interface HeaderViewerProps {
   onToggle: (stateName: string) => void; // Hàm chung để toggle trạng thái
@@ -21,6 +22,7 @@ interface HeaderViewerProps {
   handleFileSelect: (filePath: Uint8Array | null) => void;
   isHighlightEnabled:boolean,
   isClippingEdges:boolean,
+  isEdgeMeasurement:boolean
 }
 const HeaderViewer: React.FC<HeaderViewerProps> = ( 
   { 
@@ -30,6 +32,7 @@ const HeaderViewer: React.FC<HeaderViewerProps> = (
     handleFileSelect,
     isHighlightEnabled,
     isClippingEdges,
+    isEdgeMeasurement,
   }
 ) => {
 
@@ -71,6 +74,10 @@ const HeaderViewer: React.FC<HeaderViewerProps> = (
             <ClippingEdges
               onToggle={() => onToggle("isClippingEdges")}
               isActive={isClippingEdges}
+            />
+            <EdgeMeasurement
+             onToggle={() => onToggle("isEdgeMeasurement")}
+             isActive={isEdgeMeasurement}
             />
 
           </div>
