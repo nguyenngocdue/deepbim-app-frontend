@@ -11,6 +11,7 @@ import SectionBox from "../bim-viewer/SectionBox";
 import CoordinateSystem from "../bim-viewer/CoordinateSystem";
 import UploadModel from "../bim-viewer/UploadModel";
 import HighlightElement from "../bim-viewer/HighlightElement";
+import ClippingEdges from "../bim-viewer/ClippingEdges";
 
 interface HeaderViewerProps {
   onToggle: (stateName: string) => void; // Hàm chung để toggle trạng thái
@@ -18,7 +19,8 @@ interface HeaderViewerProps {
   coordinateSysActive: boolean; // Trạng thái Coordinate System
   uploadModelActive: boolean;
   handleFileSelect: (filePath: Uint8Array | null) => void;
-  isHighlightEnabled:boolean
+  isHighlightEnabled:boolean,
+  isClippingEdges:boolean,
 }
 const HeaderViewer: React.FC<HeaderViewerProps> = ( 
   { 
@@ -27,6 +29,7 @@ const HeaderViewer: React.FC<HeaderViewerProps> = (
     coordinateSysActive, 
     handleFileSelect,
     isHighlightEnabled,
+    isClippingEdges,
   }
 ) => {
 
@@ -64,6 +67,10 @@ const HeaderViewer: React.FC<HeaderViewerProps> = (
             <HighlightElement
                 onToggle={() => onToggle("isHighlightEnabled")}
                 isActive={isHighlightEnabled}
+            />
+            <ClippingEdges
+              onToggle={() => onToggle("isClippingEdges")}
+              isActive={isClippingEdges}
             />
 
           </div>

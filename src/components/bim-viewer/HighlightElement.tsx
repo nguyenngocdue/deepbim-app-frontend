@@ -7,8 +7,9 @@ interface HighlightElementPros {
   isActive: boolean;    // Current state of the Section Box
 }
 
-const HighlightElement: React.FC<HighlightElementPros> = ({onToggle, isActive}) => {
-  console.log(isActive)
+const HighlightElement: React.FC<HighlightElementPros> = (
+  {onToggle, isActive}
+) => {
   return (
     <>
      <ElementToggle

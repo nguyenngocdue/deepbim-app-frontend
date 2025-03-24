@@ -22,7 +22,6 @@ const ElementToggle: React.FC<ElementToggleProps> = ({
     className = "",
     hoverTitle = "Toggle Element",
 }) => {
-    console.log(isActive);
     return (
         <Button
             title={hoverTitle} // Use hoverTitle for the tooltip

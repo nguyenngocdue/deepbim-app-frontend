@@ -11,7 +11,8 @@ const MainViewer: React.FC = () => {
     sectionActive: false,
     coordinateSyssActive: false,
     coordinateSysActive: false,
-    isHighlightEnabled:false
+    isHighlightEnabled:false,
+    isClippingEdges:false,
   });
 
   // Hàm chung để toggle trạng thái
@@ -34,7 +35,6 @@ const MainViewer: React.FC = () => {
  };
 
 
-
   return (
     <ViewCubeProvider>
       <ViewCubeProvider2>
@@ -48,6 +48,7 @@ const MainViewer: React.FC = () => {
                 handleFileSelect={handleFileSelect}
                 coordinateSysActive={states.coordinateSysActive}
                 isHighlightEnabled={states.isHighlightEnabled}
+                isClippingEdges={states.isClippingEdges}
                 />
           </div>
           <ModelIfc 
@@ -57,7 +58,7 @@ const MainViewer: React.FC = () => {
             onFileSelect={handleFileSelect}
             coordinateSysActive={states.coordinateSysActive}
             isHighlightEnabled={states.isHighlightEnabled}
-
+            isClippingEdges={states.isClippingEdges}
             />
         </div>
       </ViewCubeProvider2>
