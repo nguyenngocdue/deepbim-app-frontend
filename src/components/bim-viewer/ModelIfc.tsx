@@ -33,7 +33,8 @@ THREE.BufferGeometry.prototype.disposeBoundsTree = disposeBoundsTree;
 THREE.Mesh.prototype.raycast = acceleratedRaycast;
 
 interface ModelIfcProps {
-    sectionActive: boolean; // Trạng thái Section Box từ component cha
+    isOrthoPerspective:boolean
+    sectionActive: boolean; 
     coordinateSyssActive: boolean;
     selectedFile: Uint8Array | null; // Selected file path
     onFileSelect: (filePath: Uint8Array | null) => void; // File selection handler
@@ -45,11 +46,13 @@ interface ModelIfcProps {
     haveGrids:boolean;
     hasVolumeMeasurement:boolean;
     havePlansViews:boolean;
+    haveLengthMeasurements:boolean;
 }
 
 
 const ModelIfc: React.FC<ModelIfcProps> = (
     { 
+        isOrthoPerspective,
         selectedFile, 
         isHighlightEnabled,
         isClippingEdges,
@@ -120,9 +123,6 @@ const ModelIfc: React.FC<ModelIfcProps> = (
     useEffect(() => {
         useLengthMeasurements({ haveLengthMeasurements, componentRef, worldRef, ifcContainerRef, modelRef });
     }, [isWorldReady, haveLengthMeasurements]);
-    
-
-
 
 
     
@@ -130,16 +130,21 @@ const ModelIfc: React.FC<ModelIfcProps> = (
         if (!ifcContainerRef.current) return;
         // Initialize components
         const components = new OBC.Components();
-        const world = components.get(OBC.Worlds).create<
+        const world = isOrthoPerspective
+        ? components.get(OBC.Worlds).create<
             OBC.SimpleScene,
-            OBC.SimpleCamera,
+            OBC.SimpleCamera, 
             OBCF.PostproductionRenderer
-        >();
+            >()
+        : components.get(OBC.Worlds).create<
+            OBC.SimpleScene,
+            OBC.OrthoPerspectiveCamera,
+            OBCF.PostproductionRenderer
+            >();
 
-       
         world.scene = new OBC.SimpleScene(components);
         world.renderer = new OBCF.PostproductionRenderer(components, ifcContainerRef.current);
-        world.camera = new OBC.SimpleCamera(components);
+        world.camera = new OBC.OrthoPerspectiveCamera(components);
 
         components.init();
         componentRef.current = components;

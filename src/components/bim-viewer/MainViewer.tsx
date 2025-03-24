@@ -20,6 +20,7 @@ const MainViewer: React.FC = () => {
     hasVolumeMeasurement:false,
     havePlansViews:false,
     haveLengthMeasurements:false,
+    isOrthoPerspective:false,
   });
 
   // Hàm chung để toggle trạng thái
@@ -50,6 +51,7 @@ const MainViewer: React.FC = () => {
             {/* ✅ Ensure function exists before calling */}
             <HeaderViewer 
                 onToggle={toggleState}
+                isOrthoPerspective={states.isOrthoPerspective}
                 sectionActive={states.sectionActive}
                 coordinateSyssActive={states.coordinateSyssActive}
                 handleFileSelect={handleFileSelect}
@@ -67,6 +69,7 @@ const MainViewer: React.FC = () => {
           <ModelIfc 
             sectionActive={states.sectionActive} 
             coordinateSyssActive={states.coordinateSyssActive} 
+            isOrthoPerspective={states.isOrthoPerspective}
             selectedFile={selectedFile} 
             onFileSelect={handleFileSelect}
             coordinateSysActive={states.coordinateSysActive}
