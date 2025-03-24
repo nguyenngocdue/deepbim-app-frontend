@@ -25,6 +25,7 @@ import { useFaceMeasurement } from "@/features/bim-viewer/useFaceMeasurement";
 import { userGrids } from "@/features/bim-viewer/userGrids";
 import { useVolumeMeasurement } from "@/features/bim-viewer/useVolumeMeasurement";
 import { usePlaneViews } from "@/features/bim-viewer/usePlaneViews";
+import { useLengthMeasurements } from "@/features/bim-viewer/useLengthMeasurements";
 
 // Gán các phương thức BVH vào prototype của BufferGeometry và Mesh
 THREE.BufferGeometry.prototype.computeBoundsTree = computeBoundsTree;
@@ -57,6 +58,7 @@ const ModelIfc: React.FC<ModelIfcProps> = (
         haveGrids,
         hasVolumeMeasurement,
         havePlansViews,
+        haveLengthMeasurements,
     }) => {
     const ifcContainerRef = useRef<HTMLDivElement | null>(null);
     const worldRef = useRef<OBC.World | null>(null);
@@ -114,6 +116,11 @@ const ModelIfc: React.FC<ModelIfcProps> = (
         usePlaneViews({ havePlansViews, componentRef, worldRef, ifcContainerRef, modelRef });
     }, [isWorldReady, havePlansViews]);
 
+    // LengthMeasurements
+    useEffect(() => {
+        useLengthMeasurements({ haveLengthMeasurements, componentRef, worldRef, ifcContainerRef, modelRef });
+    }, [isWorldReady, haveLengthMeasurements]);
+    
 
 
 

@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import HeaderViewer from "../layout/header-viewer";
+import HeaderViewer from "../layout/HeaderViewer";
 import { ViewCubeProvider } from "@/context/view-cube-context";
 import { ViewCubeProvider2 } from "@/context/view-cube-context2";
 import ModelIfc from "./ModelIfc";
@@ -18,7 +18,8 @@ const MainViewer: React.FC = () => {
     isFaceMeasurement:false,
     haveGrids:false,
     hasVolumeMeasurement:false,
-    havePlansViews:false
+    havePlansViews:false,
+    haveLengthMeasurements:false,
   });
 
   // Hàm chung để toggle trạng thái
@@ -60,6 +61,7 @@ const MainViewer: React.FC = () => {
                 haveGrids={states.haveGrids}
                 hasVolumeMeasurement={states.hasVolumeMeasurement}
                 havePlansViews={states.havePlansViews}
+                haveLengthMeasurements={states.haveLengthMeasurements}
                 />
           </div>
           <ModelIfc 
@@ -75,6 +77,7 @@ const MainViewer: React.FC = () => {
             haveGrids={states.haveGrids}
             hasVolumeMeasurement={states.hasVolumeMeasurement}
             havePlansViews={states.havePlansViews}
+            haveLengthMeasurements={states.haveLengthMeasurements}
             />
             <FaceMeasurementGuide
               isEnabled={states.isFaceMeasurement}
