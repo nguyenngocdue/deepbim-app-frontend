@@ -23,6 +23,7 @@ interface UseIfcLoaderProps {
       await ifcLoader.setup();
   
       const response = await fetch("/ifc/small.ifc");
+      // const response = await fetch("/ifc/Archicad.ifc");
       if (!response.ok) throw new Error("Can't upload IFC");
       const buffer = await response.arrayBuffer();
       const model = await ifcLoader.load(new Uint8Array(buffer));

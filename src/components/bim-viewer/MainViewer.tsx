@@ -16,6 +16,8 @@ const MainViewer: React.FC = () => {
     isClippingEdges:false,
     isEdgeMeasurement:false,
     isFaceMeasurement:false,
+    haveGrids:false,
+    hasVolumeMeasurement:false,
   });
 
   // Hàm chung để toggle trạng thái
@@ -54,6 +56,8 @@ const MainViewer: React.FC = () => {
                 isClippingEdges={states.isClippingEdges}
                 isEdgeMeasurement={states.isEdgeMeasurement}
                 isFaceMeasurement={states.isFaceMeasurement}
+                haveGrids={states.haveGrids}
+                hasVolumeMeasurement={states.hasVolumeMeasurement}
                 />
           </div>
           <ModelIfc 
@@ -66,6 +70,8 @@ const MainViewer: React.FC = () => {
             isClippingEdges={states.isClippingEdges}
             isEdgeMeasurement={states.isEdgeMeasurement}
             isFaceMeasurement={states.isFaceMeasurement}
+            haveGrids={states.haveGrids}
+            hasVolumeMeasurement={states.hasVolumeMeasurement}
             />
             <FaceMeasurementGuide
               isEnabled={states.isFaceMeasurement}

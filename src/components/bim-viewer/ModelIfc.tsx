@@ -22,6 +22,8 @@ import { useIfcLoader } from "@/features/bim-viewer/useIfcLoader";
 import { useClippingEdges } from "@/features/bim-viewer/useClippingEdges";
 import { useEdgeMeasurement } from "@/features/bim-viewer/useEdgeMeasurement";
 import { useFaceMeasurement } from "@/features/bim-viewer/useFaceMeasurement";
+import { userGrids } from "@/features/bim-viewer/userGrids";
+import { useVolumeMeasurement } from "@/features/bim-viewer/userVolumeMeasurement";
 
 // Gán các phương thức BVH vào prototype của BufferGeometry và Mesh
 THREE.BufferGeometry.prototype.computeBoundsTree = computeBoundsTree;
@@ -38,6 +40,8 @@ interface ModelIfcProps {
     isClippingEdges:boolean;
     isEdgeMeasurement:boolean;
     isFaceMeasurement:boolean;
+    haveGrids:boolean;
+    hasVolumeMeasurement:boolean;
 }
 
 
@@ -48,6 +52,8 @@ const ModelIfc: React.FC<ModelIfcProps> = (
         isClippingEdges,
         isEdgeMeasurement,
         isFaceMeasurement,
+        haveGrids,
+        hasVolumeMeasurement,
     }) => {
     const ifcContainerRef = useRef<HTMLDivElement | null>(null);
     const worldRef = useRef<OBC.World | null>(null);
@@ -90,6 +96,17 @@ const ModelIfc: React.FC<ModelIfcProps> = (
         useFaceMeasurement({ isFaceMeasurement, componentRef, worldRef, ifcContainerRef, modelRef });
     }, [isWorldReady, isFaceMeasurement]);
 
+    // haveGrids
+    useEffect(() => {
+        userGrids({ haveGrids, componentRef, worldRef, ifcContainerRef, modelRef });
+    }, [isWorldReady, haveGrids]);
+
+    // VolumeMeasurement
+    useEffect(() => {
+        useVolumeMeasurement({ hasVolumeMeasurement, componentRef, worldRef, ifcContainerRef, modelRef });
+    }, [isWorldReady, hasVolumeMeasurement]);
+
+
 
 
 
@@ -114,6 +131,7 @@ const ModelIfc: React.FC<ModelIfcProps> = (
         world.renderer.postproduction.enabled = true;
         world.camera.controls.setLookAt(12, 6, 8, 0, 0, -10);
 
+        
         world.scene.three.background = new THREE.Color(0xcccccc);
         world.scene.setup();
 
