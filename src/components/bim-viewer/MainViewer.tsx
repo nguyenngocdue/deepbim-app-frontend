@@ -10,6 +10,8 @@ const MainViewer: React.FC = () => {
   const [states, setStates] = useState({
     sectionActive: false,
     coordinateSyssActive: false,
+    coordinateSysActive: false,
+    isHighlightEnabled:false
   });
 
   // Hàm chung để toggle trạng thái
@@ -44,10 +46,19 @@ const MainViewer: React.FC = () => {
                 sectionActive={states.sectionActive}
                 coordinateSyssActive={states.coordinateSyssActive}
                 handleFileSelect={handleFileSelect}
+                coordinateSysActive={states.coordinateSysActive}
+                isHighlightEnabled={states.isHighlightEnabled}
                 />
           </div>
-          <ModelIfc sectionActive={states.sectionActive} coordinateSyssActive={states.coordinateSyssActive} 
-          selectedFile={selectedFile} onFileSelect={handleFileSelect}/>
+          <ModelIfc 
+            sectionActive={states.sectionActive} 
+            coordinateSyssActive={states.coordinateSyssActive} 
+            selectedFile={selectedFile} 
+            onFileSelect={handleFileSelect}
+            coordinateSysActive={states.coordinateSysActive}
+            isHighlightEnabled={states.isHighlightEnabled}
+
+            />
         </div>
       </ViewCubeProvider2>
     </ViewCubeProvider>

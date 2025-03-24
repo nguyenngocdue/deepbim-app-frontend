@@ -10,20 +10,26 @@ import CameraSetting from "../bim-viewer/camera-setting";
 import SectionBox from "../bim-viewer/SectionBox";
 import CoordinateSystem from "../bim-viewer/CoordinateSystem";
 import UploadModel from "../bim-viewer/UploadModel";
+import HighlightElement from "../bim-viewer/HighlightElement";
 
 interface HeaderViewerProps {
   onToggle: (stateName: string) => void; // Hàm chung để toggle trạng thái
   sectionActive: boolean; // Trạng thái Section Box
-  coordinateSyssActive: boolean; // Trạng thái Coordinate System
+  coordinateSysActive: boolean; // Trạng thái Coordinate System
   uploadModelActive: boolean;
   handleFileSelect: (filePath: Uint8Array | null) => void;
+  isHighlightEnabled:boolean
 }
-const HeaderViewer: React.FC<HeaderViewerProps> = ( {onToggle, sectionActive, coordinateSyssActive, handleFileSelect}) => {
-
-
-  const handleClick = (item : string) => {
-    console.log(item)
+const HeaderViewer: React.FC<HeaderViewerProps> = ( 
+  { 
+    onToggle, 
+    sectionActive, 
+    coordinateSysActive, 
+    handleFileSelect,
+    isHighlightEnabled,
   }
+) => {
+
   return (
     <>
         <header className="z-50  absolute top-0 left-10 w-[65%] bg-black/50 backdrop-blur-md text-white px-4 md:px-6 py-2 shadow-md flex items-center">
@@ -35,7 +41,7 @@ const HeaderViewer: React.FC<HeaderViewerProps> = ( {onToggle, sectionActive, co
 
           <div className="flex items-center gap-4 ml-6">
             {/* Main Navigation */}
-            <Button variant="ghost" size="icon" onClick={() => handleClick("Users")}>
+            <Button variant="ghost" size="icon">
               <FaUserCog className="text-lg" />
             </Button>
             <Separator orientation="vertical" className="h-6" />
@@ -48,12 +54,16 @@ const HeaderViewer: React.FC<HeaderViewerProps> = ( {onToggle, sectionActive, co
               isActive={sectionActive}
             />
             <CoordinateSystem 
-              onToggle={() => onToggle("coordinateSyssActive")}
-              isActive={coordinateSyssActive}
+              onToggle={() => onToggle("coordinateSysActive")}
+              isActive={coordinateSysActive}
               />
             <UploadModel
                 onToggle={handleFileSelect}
-                isActive={coordinateSyssActive}
+                isActive={coordinateSysActive}
+            />
+            <HighlightElement
+                onToggle={() => onToggle("isHighlightEnabled")}
+                isActive={isHighlightEnabled}
             />
 
           </div>

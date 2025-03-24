@@ -1,13 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as OBC from "@thatopen/components";
 import * as THREE from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { TransformControls } from "three/examples/jsm/controls/TransformControls.js";
-import { removeBoxHelperFromScene } from "@/lib/BoudingBox";
-import { resetModelToOriginalState } from "@/lib/ModelUtils";
 import * as OBCF from "@thatopen/components-front";
-import * as F from "three";
-
 
 declare module "three" {
     interface BufferGeometry {
@@ -22,8 +17,8 @@ declare module "three" {
     }
 }
 import { computeBoundsTree, disposeBoundsTree, acceleratedRaycast, MeshBVH } from "three-mesh-bvh";
-import { ThreeHighlighter } from "@/lib/effects/HighlightElement";
-import { highlightMeshOnRaycast } from "@/lib/effects/HighlightMeshOnRaycast";
+import { useHighlightSetup } from "@/features/bim-viewer/useHighlightSetup";
+import { useIfcLoader } from "@/features/bim-viewer/useIfcLoader";
 
 // Gán các phương thức BVH vào prototype của BufferGeometry và Mesh
 THREE.BufferGeometry.prototype.computeBoundsTree = computeBoundsTree;
@@ -33,50 +28,47 @@ THREE.Mesh.prototype.raycast = acceleratedRaycast;
 interface ModelIfcProps {
     sectionActive: boolean; // Trạng thái Section Box từ component cha
     coordinateSyssActive: boolean;
-    selectedFile: string | null; // Selected file path
+    selectedFile: Uint8Array | null; // Selected file path
     onFileSelect: (filePath: Uint8Array | null) => void; // File selection handler
+    coordinateSysActive: boolean;
+    isHighlightEnabled:boolean;
 }
 
 
-const ModelIfc: React.FC<ModelIfcProps> = ({ sectionActive, coordinateSyssActive, selectedFile, onFileSelect }) => {
+const ModelIfc: React.FC<ModelIfcProps> = (
+    { 
+        selectedFile, 
+        isHighlightEnabled
+    }) => {
     const ifcContainerRef = useRef<HTMLDivElement | null>(null);
     const worldRef = useRef<OBC.World | null>(null);
     const transformControlsRef = useRef<TransformControls[]>([]);
     const boxHelperRef = useRef<THREE.BoxHelper | null>(null);
     const modelRef = useRef<THREE.Object3D | null>(null);
+    const componentRef = useRef<OBC.Components | null>(null);
 
-
-
-    const [isRaycastingMode, setIsRaycastingMode] = useState(false);
+    const [isWorldReady, setIsWorldReady] = useState(false);
 
     useEffect(() => {
-        if (selectedFile) {
-            loadIfcModel()
+        if (isWorldReady && !selectedFile) {
+            useIfcLoader({
+                worldRef,
+                componentRef,
+                modelRef,
+                boxHelperRef
+              });
         }
-    }, [selectedFile]);
-
-
-   
+    }, [isWorldReady]);
+    
+    //hihglight
     useEffect(() => {
-        const handleMouseClick = (event: MouseEvent) => {
-            highlightMeshOnRaycast(worldRef, event);
-          };
-          window.addEventListener('click', handleMouseClick);
-          return () => {
-            window.removeEventListener('click', handleMouseClick);
-          };
-    }, [sectionActive]);
+        useHighlightSetup({ isHighlightEnabled, componentRef, worldRef });
+    }, [isWorldReady, isHighlightEnabled]);
 
 
+    
     useEffect(() => {
         if (!ifcContainerRef.current) return;
-        toggleSectionBox()
-    }, [sectionActive ]);
-
-
-    useEffect(() => {
-        if (!ifcContainerRef.current) return;
-
         // Initialize components
         const components = new OBC.Components();
         const world = components.get(OBC.Worlds).create<
@@ -91,63 +83,20 @@ const ModelIfc: React.FC<ModelIfcProps> = ({ sectionActive, coordinateSyssActive
         world.camera = new OBC.SimpleCamera(components);
 
         components.init();
+        componentRef.current = components;
         world.renderer.postproduction.enabled = true;
         world.camera.controls.setLookAt(12, 6, 8, 0, 0, -10);
 
         world.scene.three.background = new THREE.Color(0xcccccc);
         world.scene.setup();
 
-        // Grid
-        // const grids = components.get(OBC.Grids);
-        // const grid = grids.create(world);
-        // world.renderer.postproduction.customEffects.excludedMeshes.push(grid.three);
-
-        // Setup Orbit Controls
-        // const controls = new OrbitControls(world.camera.three, world.renderer.three.domElement);
-        // controls.enableDamping = true;
-        // controls.dampingFactor = 0.1;
-        // controlsRef.current = controls;
-
-        
         // Getting the highlighter
         worldRef.current = world;
-        // const highlighter = components.get(OBCF.Highlighter);    
-        // highlighter.setup({ world : worldRef.current });
-        // highlighter.zoomToSelection = true;
-
-
-        // const outliner = components.get(OBCF.Outliner);
-        // outliner.world = world;
-        // outliner.enabled = true;
-
-        // outliner.create(
-        // "example",
-        // new THREE.MeshBasicMaterial({
-        //     color: 0xbcf124,
-        //     transparent: true,
-        //     opacity: 0.5,
-        // }),
-        // );
-
-        // highlighter.events.select.onHighlight.add((data) => {
-        // outliner.clear("example");
-        // outliner.add("example", data);
-        // });
-
-        // highlighter.events.select.onClear.add(() => {
-        // outliner.clear("example");
-        // });
-
-
-
-
-        loadIfcModel();
-
+        setIsWorldReady(true);
+        
         const animate = () => {
             if (!worldRef.current || !worldRef.current.renderer) return;
-
             requestAnimationFrame(animate);
-            // controls.update();
             worldRef.current.renderer.update();
         };
         animate();
@@ -158,67 +107,10 @@ const ModelIfc: React.FC<ModelIfcProps> = ({ sectionActive, coordinateSyssActive
             components.dispose();
             worldRef.current = null; // Reset worldRef khi unmount
         };
-    }, [sectionActive]);
+        
+    }, []);
 
-    const loadIfcModel = async () => {
-        if (!worldRef.current) return;
-
-        try {
-            const ifcLoader = worldRef.current.components.get(OBC.IfcLoader);
-            await ifcLoader.setup();
-            // API
-            const response = await fetch("/ifc/small.ifc");
-            // const response = await fetch("/ifc/Archicad.ifc");
-            if (!response.ok) throw new Error("Can't upload IFC");
-            const buffer = await response.arrayBuffer();
-            const model = await ifcLoader.load(new Uint8Array(buffer));
-
-            // console.log(selectedFile);
-            // const model = await ifcLoader.load(selectedFile);
-
-
-           
-
-            // 2. Store the model in modelRef
-            modelRef.current = model;
-
-            // Add model to the scene
-            if (model) {
-                worldRef.current.scene.three.add(model);
-            }
-
-            if (boxHelperRef.current) {
-                worldRef.current!.scene.three.remove(boxHelperRef.current);
-            }
-
-
-        } catch (error) {
-            console.error("Error loading IFC:", error);
-        }
-    };
-
-    
-
-    
-
-    
-
-
-
-
-    const toggleSectionBox = () => {
-        // If we are activating the section box (newState is true)
-        if (sectionActive) {
-
-            // Enable raycasting mode when section box is deactivated
-            setIsRaycastingMode(true);
-
-        } else {
-           
-        }
-        return sectionActive;
-    };
-
+  
     return (
         <div className="relative w-screen h-screen">
             <div ref={ifcContainerRef} className="w-full h-full" />
