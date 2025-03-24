@@ -26,12 +26,6 @@ export function useVolumeMeasurement({
   if (!components || !world || !container || !model) return;
 
   if (hasVolumeMeasurement) {
-    // for (const child of model.children) {
-    //   if (child instanceof THREE.Mesh) {
-    //     world.meshes.add(child);
-    //   }
-    // }
-
     const dimensions = components.get(OBCF.VolumeMeasurement);
     dimensions.world = world;
     dimensions.enabled = true;

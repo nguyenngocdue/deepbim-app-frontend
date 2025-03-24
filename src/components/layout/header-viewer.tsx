@@ -15,6 +15,7 @@ import EdgeMeasurement from "../bim-viewer/EdgeMeasurement";
 import FaceMeasurement from "../bim-viewer/FaceMeasurement";
 import Grids from "../bim-viewer/Grids";
 import VolumeMeasurement from "../bim-viewer/VolumeMeasurement";
+import PlansViews from "../bim-viewer/PlansViews";
 
 interface HeaderViewerProps {
   onToggle: (stateName: string) => void; // Hàm chung để toggle trạng thái
@@ -28,6 +29,7 @@ interface HeaderViewerProps {
   isFaceMeasurement: boolean,
   haveGrids: boolean,
   hasVolumeMeasurement: boolean
+  havePlansViews:boolean;
 }
 const HeaderViewer: React.FC<HeaderViewerProps> = (
   {
@@ -41,6 +43,7 @@ const HeaderViewer: React.FC<HeaderViewerProps> = (
     isFaceMeasurement,
     haveGrids,
     hasVolumeMeasurement,
+    havePlansViews,
   }
 ) => {
 
@@ -104,6 +107,11 @@ const HeaderViewer: React.FC<HeaderViewerProps> = (
                 onToggle={() => onToggle("hasVolumeMeasurement")}
                 isActive={hasVolumeMeasurement}
               />
+              <PlansViews
+                onToggle={() => onToggle("havePlansViews")}
+                isActive={havePlansViews}
+                />
+              
             </div>
           </div>
         </div>

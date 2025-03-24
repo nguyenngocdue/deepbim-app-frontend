@@ -18,6 +18,7 @@ const MainViewer: React.FC = () => {
     isFaceMeasurement:false,
     haveGrids:false,
     hasVolumeMeasurement:false,
+    havePlansViews:false
   });
 
   // Hàm chung để toggle trạng thái
@@ -58,6 +59,7 @@ const MainViewer: React.FC = () => {
                 isFaceMeasurement={states.isFaceMeasurement}
                 haveGrids={states.haveGrids}
                 hasVolumeMeasurement={states.hasVolumeMeasurement}
+                havePlansViews={states.havePlansViews}
                 />
           </div>
           <ModelIfc 
@@ -72,6 +74,7 @@ const MainViewer: React.FC = () => {
             isFaceMeasurement={states.isFaceMeasurement}
             haveGrids={states.haveGrids}
             hasVolumeMeasurement={states.hasVolumeMeasurement}
+            havePlansViews={states.havePlansViews}
             />
             <FaceMeasurementGuide
               isEnabled={states.isFaceMeasurement}

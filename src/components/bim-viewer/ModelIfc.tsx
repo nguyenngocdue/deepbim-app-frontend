@@ -23,7 +23,8 @@ import { useClippingEdges } from "@/features/bim-viewer/useClippingEdges";
 import { useEdgeMeasurement } from "@/features/bim-viewer/useEdgeMeasurement";
 import { useFaceMeasurement } from "@/features/bim-viewer/useFaceMeasurement";
 import { userGrids } from "@/features/bim-viewer/userGrids";
-import { useVolumeMeasurement } from "@/features/bim-viewer/userVolumeMeasurement";
+import { useVolumeMeasurement } from "@/features/bim-viewer/useVolumeMeasurement";
+import { usePlaneViews } from "@/features/bim-viewer/usePlaneViews";
 
 // Gán các phương thức BVH vào prototype của BufferGeometry và Mesh
 THREE.BufferGeometry.prototype.computeBoundsTree = computeBoundsTree;
@@ -42,6 +43,7 @@ interface ModelIfcProps {
     isFaceMeasurement:boolean;
     haveGrids:boolean;
     hasVolumeMeasurement:boolean;
+    havePlansViews:boolean;
 }
 
 
@@ -54,6 +56,7 @@ const ModelIfc: React.FC<ModelIfcProps> = (
         isFaceMeasurement,
         haveGrids,
         hasVolumeMeasurement,
+        havePlansViews,
     }) => {
     const ifcContainerRef = useRef<HTMLDivElement | null>(null);
     const worldRef = useRef<OBC.World | null>(null);
@@ -105,6 +108,11 @@ const ModelIfc: React.FC<ModelIfcProps> = (
     useEffect(() => {
         useVolumeMeasurement({ hasVolumeMeasurement, componentRef, worldRef, ifcContainerRef, modelRef });
     }, [isWorldReady, hasVolumeMeasurement]);
+
+    // Planviews
+    useEffect(() => {
+        usePlaneViews({ havePlansViews, componentRef, worldRef, ifcContainerRef, modelRef });
+    }, [isWorldReady, havePlansViews]);
 
 
 
