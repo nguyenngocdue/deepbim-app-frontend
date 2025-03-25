@@ -1,3 +1,6 @@
+import * as OBC from "@thatopen/components";
+import * as OBCF from "@thatopen/components-front";
+
 export function UpdateCameraType(
     isOrthoPerspective: boolean,
     worldRef: React.RefObject<any>,
@@ -12,6 +15,9 @@ export function UpdateCameraType(
       camera.projection.set("Orthographic");
       camera.projection.setOrthoCamera(); // Thiết lập thông số Orthographic
     } else {
+        const components = new OBC.Components();
+        // const world = worldRef.current;
+        // world.camera = new OBC.SimpleCamera(components);
       camera.projection.set("Perspective");
       camera.projection.setPerspectiveCamera();
     }
@@ -20,8 +26,8 @@ export function UpdateCameraType(
     switch (navigationMode) {
       case "Orbit":
         camera.controls.mode = "orbit";
-        camera.controls.minDistance = 1;
-        camera.controls.maxDistance = 1000;
+        // camera.controls.minDistance = 1;
+        // camera.controls.maxDistance = 1000;
         camera.controls.enableZoom = true;
         break;
   
