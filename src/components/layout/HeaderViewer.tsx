@@ -20,27 +20,11 @@ import LengthMeasurements from "../bim-viewer/LengthMeasurements";
 import AreaMeasurements from "../bim-viewer/AreaMeasurements";
 import AngleMeasurements from "../bim-viewer/AngleMeasurements";
 import WorldSettings from "../bim-viewer/WorldSettings";
+import OriginalWorldCamera from "../bim-viewer/OriginalWorldCamera";
+import { ModelIfcProps } from "@/props/ModelIfcProps";
 
-interface HeaderViewerProps {
-  onToggle: (stateName: string) => void; // Hàm chung để toggle trạng thái
-  sectionActive: boolean; // Trạng thái Section Box
-  coordinateSysActive: boolean; // Trạng thái Coordinate System
-  uploadModelActive: boolean;
-  handleFileSelect: (filePath: Uint8Array | null) => void;
-  isHighlightEnabled: boolean,
-  isClippingEdges: boolean,
-  isEdgeMeasurement: boolean,
-  isFaceMeasurement: boolean,
-  haveGrids: boolean,
-  hasVolumeMeasurement: boolean
-  havePlansViews: boolean;
-  haveLengthMeasurements: boolean;
-  isOrthoPerspective:boolean;
-  haveAreaMeasureElements:boolean;
-  haveAngleMeasurements:boolean;
-  haveWorldSettings:boolean;
-}
-const HeaderViewer: React.FC<HeaderViewerProps> = (
+
+const HeaderViewer: React.FC<ModelIfcProps> = (
   {
     onToggle,
     sectionActive,
@@ -57,7 +41,8 @@ const HeaderViewer: React.FC<HeaderViewerProps> = (
     isOrthoPerspective,
     haveAreaMeasureElements,
     haveAngleMeasurements,
-    haveWorldSettings
+    haveWorldSettings,
+    isOriginalWorldCamera,
   }
 ) => {
 
@@ -99,6 +84,7 @@ const HeaderViewer: React.FC<HeaderViewerProps> = (
     <AreaMeasurements onToggle={() => onToggle("haveAreaMeasureElements")} isActive={haveAreaMeasureElements} />
     <AngleMeasurements onToggle={() => onToggle("haveAngleMeasurements")} isActive={haveAngleMeasurements} />
     <WorldSettings onToggle={() => onToggle("haveWorldSettings")} isActive={haveWorldSettings} />
+    <OriginalWorldCamera onToggle={() => onToggle("isOriginalWorldCamera")} isActive={isOriginalWorldCamera} />
   </div>
 </div>
 

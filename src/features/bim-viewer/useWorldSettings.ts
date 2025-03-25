@@ -1,4 +1,3 @@
-import * as OBCF from "@thatopen/components-front";
 import * as OBC from "@thatopen/components";
 import React from "react";
 import * as THREE from 'three'
@@ -26,12 +25,12 @@ export function useWorldSettings({
   if (!components || !world || !container || !model) return;
 
   if (haveWorldSettings) {
- 
      // configuration
     world.scene.config.backgroundColor="#28d765"
     world.scene.config.directionalLight.intensity=0.5
     world.scene.config.ambientLight.intensity = 5
-
-   console.log(world.renderer)
+  } else {
+    world.scene.config.directionalLight.intensity=5
+    world.scene.config.ambientLight.intensity = 1
   }
 }

@@ -24,31 +24,13 @@ import { useAreaMeasurements } from "@/features/bim-viewer/useAreaMeasurements";
 import { useAngleMeasurements } from "@/features/bim-viewer/useAngleMeasurements";
 import { useWorldSettings } from "@/features/bim-viewer/useWorldSettings";
 import { useGrids } from "@/features/bim-viewer/useGrid";
+import { ModelIfcProps } from "@/props/ModelIfcProps";
+import { useOriginalWorldCamera } from "@/features/bim-viewer/useOriginalWorldCamera";
 
 THREE.BufferGeometry.prototype.computeBoundsTree = computeBoundsTree;
 THREE.BufferGeometry.prototype.disposeBoundsTree = disposeBoundsTree;
 THREE.Mesh.prototype.raycast = acceleratedRaycast;
 
-interface ModelIfcProps {
-  sectionActive: boolean;
-  isOrthoPerspective: boolean;
-  navigationMode: "Orbit" | "FirstPerson" | "Plan";
-  coordinateSyssActive: boolean;
-  selectedFile: Uint8Array | null;
-  onFileSelect: (filePath: Uint8Array | null) => void;
-  coordinateSysActive: boolean;
-  isHighlightEnabled: boolean;
-  isClippingEdges: boolean;
-  isEdgeMeasurement: boolean;
-  isFaceMeasurement: boolean;
-  haveGrids: boolean;
-  hasVolumeMeasurement: boolean;
-  havePlansViews: boolean;
-  haveLengthMeasurements: boolean;
-  haveAreaMeasureElements:boolean;
-  haveAngleMeasurements:boolean;
-  haveWorldSettings:boolean;
-}
 
 const ModelIfc: React.FC<ModelIfcProps> = ({
   isOrthoPerspective,
@@ -65,6 +47,7 @@ const ModelIfc: React.FC<ModelIfcProps> = ({
   haveAreaMeasureElements,
   haveAngleMeasurements,
   haveWorldSettings,
+  isOriginalWorldCamera,
 }) => {
   const ifcContainerRef = useRef<HTMLDivElement | null>(null);
   const worldRef = useRef<any>(null);
@@ -153,6 +136,10 @@ const ModelIfc: React.FC<ModelIfcProps> = ({
   useEffect(() => {
     useWorldSettings({ haveWorldSettings, componentRef, worldRef, ifcContainerRef, modelRef });
   }, [isWorldReady, haveWorldSettings]);
+
+  useEffect(() => {
+    useOriginalWorldCamera({isOriginalWorldCamera , componentRef, worldRef, ifcContainerRef, modelRef });
+  }, [isWorldReady, isOriginalWorldCamera]);
 
   return (
     <div className="relative w-screen h-screen">

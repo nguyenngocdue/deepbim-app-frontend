@@ -36,7 +36,7 @@ export function InitializeWorld(container: HTMLDivElement, haveGrids: boolean = 
 
     // configuration
     world.scene.config.backgroundColor="#28d765"
-    world.scene.config.directionalLight.intensity=1
-    world.scene.config.ambientLight.intensity = 10
+    world.scene.config.directionalLight.intensity=5
+    world.scene.config.ambientLight.intensity = 1
   return { world, components, grid };
 }
