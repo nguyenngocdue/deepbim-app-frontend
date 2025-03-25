@@ -21,6 +21,9 @@ const MainViewer: React.FC = () => {
     havePlansViews:false,
     haveLengthMeasurements:false,
     isOrthoPerspective:false,
+    haveAreaMeasureElements:false,
+    haveAngleMeasurements:false,
+    haveWorldSettings:false,
   });
 
   // Hàm chung để toggle trạng thái
@@ -41,6 +44,7 @@ const MainViewer: React.FC = () => {
          console.log("No file selected");
      }
  };
+
 
 
   return (
@@ -64,6 +68,9 @@ const MainViewer: React.FC = () => {
                 hasVolumeMeasurement={states.hasVolumeMeasurement}
                 havePlansViews={states.havePlansViews}
                 haveLengthMeasurements={states.haveLengthMeasurements}
+                haveAreaMeasureElements={states.haveAreaMeasureElements}
+                haveAngleMeasurements={states.haveAngleMeasurements}
+                haveWorldSettings={states.haveWorldSettings}
                 />
           </div>
           <ModelIfc 
@@ -81,6 +88,9 @@ const MainViewer: React.FC = () => {
             hasVolumeMeasurement={states.hasVolumeMeasurement}
             havePlansViews={states.havePlansViews}
             haveLengthMeasurements={states.haveLengthMeasurements}
+            haveAreaMeasureElements={states.haveAreaMeasureElements}
+            haveAngleMeasurements={states.haveAngleMeasurements}
+            haveWorldSettings={states.haveWorldSettings}
             />
             <FaceMeasurementGuide
               isEnabled={states.isFaceMeasurement}

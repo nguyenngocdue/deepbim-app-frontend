@@ -1,22 +1,23 @@
+import * as OBCF from "@thatopen/components-front";
 import * as OBC from "@thatopen/components";
 import React from "react";
 import * as THREE from 'three'
 
-interface GridsProps {
-  haveGrids: boolean;
+interface WorldSettingsProps {
+  haveWorldSettings: boolean;
   componentRef: React.RefObject<OBC.Components | null>;
   worldRef: React.RefObject<OBC.World | null>;
   ifcContainerRef: React.RefObject<HTMLDivElement | null>;
   modelRef: React.RefObject<THREE.Object3D | null>;
 }
 
-export function userGrids({
-  haveGrids,
+export function useWorldSettings({
+  haveWorldSettings,
   componentRef,
   worldRef,
   ifcContainerRef,
   modelRef,
-}: GridsProps): void {
+}: WorldSettingsProps): void {
   const components = componentRef.current;
   const world = worldRef.current;
   const container = ifcContainerRef.current;
@@ -24,8 +25,13 @@ export function userGrids({
 
   if (!components || !world || !container || !model) return;
 
-  if (haveGrids) {
-    const grids = components.get(OBC.Grids);
-    const grid = grids.create(world);
+  if (haveWorldSettings) {
+ 
+     // configuration
+    world.scene.config.backgroundColor="#28d765"
+    world.scene.config.directionalLight.intensity=0.5
+    world.scene.config.ambientLight.intensity = 5
+
+   console.log(world.renderer)
   }
 }
