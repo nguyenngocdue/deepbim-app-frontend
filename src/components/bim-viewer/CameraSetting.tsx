@@ -14,7 +14,7 @@ const CameraSetting: React.FC<CameraSettingProps> = ({ onToggle, isActive }) => 
                 onToggle={onToggle}
                 isActive={isActive}
                 icon={isActive ? <MdDraw /> : <MdDraw />}
-                label={isActive ? "CameraSetting" : "CameraSetting"}
+                label={isActive ? "Ortho" : "Perspec"}
                 activeColor="bg-gray-800 text-white bg-blue-400"
                 inactiveColor=""
                 className=""

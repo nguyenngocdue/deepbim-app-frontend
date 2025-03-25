@@ -22,8 +22,11 @@ interface UseIfcLoaderProps {
       const ifcLoader = componentRef.current?.get(OBC.IfcLoader);
       await ifcLoader.setup();
   
+      // const response = await fetch("/ifc/231017_Test_Sprinkler_R24.ifc");
+      // const response = await fetch("/ifc/Equipment.ifc");
       const response = await fetch("/ifc/small.ifc");
       // const response = await fetch("/ifc/Archicad.ifc");
+      // const response = await fetch("/ifc/Model_R24.ifc");
       if (!response.ok) throw new Error("Can't upload IFC");
       const buffer = await response.arrayBuffer();
       const model = await ifcLoader.load(new Uint8Array(buffer));

@@ -1,22 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
-import * as OBC from "@thatopen/components";
 import * as THREE from "three";
 import { TransformControls } from "three/examples/jsm/controls/TransformControls.js";
-import * as OBCF from "@thatopen/components-front";
 
-declare module "three" {
-    interface BufferGeometry {
-        computeBoundsTree?: () => void;
-        disposeBoundsTree?: () => void;
-    }
-}
 
-declare module "three" {
-    interface Mesh {
-        raycast: (raycaster: THREE.Raycaster, intersects: Array<THREE.Intersection>) => void;
-    }
-}
-import { computeBoundsTree, disposeBoundsTree, acceleratedRaycast, MeshBVH } from "three-mesh-bvh";
 import { useHighlightSetup } from "@/features/bim-viewer/useHighlightSetup";
 import { useIfcLoader } from "@/features/bim-viewer/useIfcLoader";
 import { useClippingEdges } from "@/features/bim-viewer/useClippingEdges";
@@ -27,161 +13,130 @@ import { useVolumeMeasurement } from "@/features/bim-viewer/useVolumeMeasurement
 import { usePlaneViews } from "@/features/bim-viewer/usePlaneViews";
 import { useLengthMeasurements } from "@/features/bim-viewer/useLengthMeasurements";
 
-// Gán các phương thức BVH vào prototype của BufferGeometry và Mesh
+import {
+  computeBoundsTree,
+  disposeBoundsTree,
+  acceleratedRaycast
+} from "three-mesh-bvh";
+import { UpdateCameraType } from "./common/UpdateCameraType";
+import { InitializeWorld } from "./common/InitializeWorld";
+
 THREE.BufferGeometry.prototype.computeBoundsTree = computeBoundsTree;
 THREE.BufferGeometry.prototype.disposeBoundsTree = disposeBoundsTree;
 THREE.Mesh.prototype.raycast = acceleratedRaycast;
 
 interface ModelIfcProps {
-    isOrthoPerspective:boolean
-    sectionActive: boolean; 
-    coordinateSyssActive: boolean;
-    selectedFile: Uint8Array | null; // Selected file path
-    onFileSelect: (filePath: Uint8Array | null) => void; // File selection handler
-    coordinateSysActive: boolean;
-    isHighlightEnabled:boolean;
-    isClippingEdges:boolean;
-    isEdgeMeasurement:boolean;
-    isFaceMeasurement:boolean;
-    haveGrids:boolean;
-    hasVolumeMeasurement:boolean;
-    havePlansViews:boolean;
-    haveLengthMeasurements:boolean;
+  isOrthoPerspective: boolean;
+  navigationMode: "Orbit" | "FirstPerson" | "Plan";
+  sectionActive: boolean;
+  coordinateSyssActive: boolean;
+  selectedFile: Uint8Array | null;
+  onFileSelect: (filePath: Uint8Array | null) => void;
+  coordinateSysActive: boolean;
+  isHighlightEnabled: boolean;
+  isClippingEdges: boolean;
+  isEdgeMeasurement: boolean;
+  isFaceMeasurement: boolean;
+  haveGrids: boolean;
+  hasVolumeMeasurement: boolean;
+  havePlansViews: boolean;
+  haveLengthMeasurements: boolean;
 }
 
+const ModelIfc: React.FC<ModelIfcProps> = ({
+  isOrthoPerspective,
+  navigationMode,
+  selectedFile,
+  isHighlightEnabled,
+  isClippingEdges,
+  isEdgeMeasurement,
+  isFaceMeasurement,
+  haveGrids,
+  hasVolumeMeasurement,
+  havePlansViews,
+  haveLengthMeasurements
+}) => {
+  const ifcContainerRef = useRef<HTMLDivElement | null>(null);
+  const worldRef = useRef<any>(null);
+  const componentRef = useRef<any>(null);
+  const modelRef = useRef<THREE.Object3D | null>(null);
+  const boxHelperRef = useRef<THREE.BoxHelper | null>(null);
+  const transformControlsRef = useRef<TransformControls[]>([]);
 
-const ModelIfc: React.FC<ModelIfcProps> = (
-    { 
-        isOrthoPerspective,
-        selectedFile, 
-        isHighlightEnabled,
-        isClippingEdges,
-        isEdgeMeasurement,
-        isFaceMeasurement,
-        haveGrids,
-        hasVolumeMeasurement,
-        havePlansViews,
-        haveLengthMeasurements,
-    }) => {
-    const ifcContainerRef = useRef<HTMLDivElement | null>(null);
-    const worldRef = useRef<OBC.World | null>(null);
-    const transformControlsRef = useRef<TransformControls[]>([]);
-    const boxHelperRef = useRef<THREE.BoxHelper | null>(null);
-    const modelRef = useRef<THREE.Object3D | null>(null);
-    const componentRef = useRef<OBC.Components | null>(null);
+  const [isWorldReady, setIsWorldReady] = useState(false);
 
-    const [isWorldReady, setIsWorldReady] = useState(false);
+  useEffect(() => {
+    if (!ifcContainerRef.current) return;
+    const { world, components } = InitializeWorld(ifcContainerRef.current);
+    componentRef.current = components;
+    worldRef.current = world;
+    setIsWorldReady(true);
 
-    useEffect(() => {
-        if (isWorldReady && !selectedFile) {
-            useIfcLoader({
-                worldRef,
-                componentRef,
-                modelRef,
-                boxHelperRef
-              });
-        }
-    }, [isWorldReady]);
-    
-    //hihglight
-    useEffect(() => {
-        useHighlightSetup({ isHighlightEnabled, componentRef, worldRef });
-    }, [isWorldReady, isHighlightEnabled]);
+    const animate = () => {
+      if (!worldRef.current || !worldRef.current.renderer) return;
+      requestAnimationFrame(animate);
+      worldRef.current.renderer.update();
+    };
+    animate();
 
-    
-    //Clipping edges
-    useEffect(() => {
-        useEdgeMeasurement({ isEdgeMeasurement, componentRef, worldRef, ifcContainerRef, modelRef });
-    }, [isWorldReady, isEdgeMeasurement]);
+    // Cleanup
+    return () => {
+      transformControlsRef.current.forEach((c) => c.dispose());
+      components.dispose();
+      worldRef.current = null;
+    };
+  }, []);
 
-    // EdgeMeasurement
-    useEffect(() => {
-        useClippingEdges({ isClippingEdges, componentRef, worldRef, ifcContainerRef, modelRef });
-    }, [isWorldReady, isClippingEdges]);
+  useEffect(() => {
+    if (isWorldReady && !selectedFile) {
+      useIfcLoader({ worldRef, componentRef, modelRef, boxHelperRef });
+    }
+  }, [isWorldReady]);
 
-    // FaceMeasurement
-    useEffect(() => {
-        useFaceMeasurement({ isFaceMeasurement, componentRef, worldRef, ifcContainerRef, modelRef });
-    }, [isWorldReady, isFaceMeasurement]);
+  useEffect(() => {
+    useHighlightSetup({ isHighlightEnabled, componentRef, worldRef });
+  }, [isWorldReady, isHighlightEnabled]);
 
-    // haveGrids
-    useEffect(() => {
-        userGrids({ haveGrids, componentRef, worldRef, ifcContainerRef, modelRef });
-    }, [isWorldReady, haveGrids]);
+  useEffect(() => {
+    useEdgeMeasurement({ isEdgeMeasurement, componentRef, worldRef, ifcContainerRef, modelRef });
+  }, [isWorldReady, isEdgeMeasurement]);
 
-    // VolumeMeasurement
-    useEffect(() => {
-        useVolumeMeasurement({ hasVolumeMeasurement, componentRef, worldRef, ifcContainerRef, modelRef });
-    }, [isWorldReady, hasVolumeMeasurement]);
+  useEffect(() => {
+    useClippingEdges({ isClippingEdges, componentRef, worldRef, ifcContainerRef, modelRef });
+  }, [isWorldReady, isClippingEdges]);
 
-    // Planviews
-    useEffect(() => {
-        usePlaneViews({ havePlansViews, componentRef, worldRef, ifcContainerRef, modelRef });
-    }, [isWorldReady, havePlansViews]);
+  useEffect(() => {
+    useFaceMeasurement({ isFaceMeasurement, componentRef, worldRef, ifcContainerRef, modelRef });
+  }, [isWorldReady, isFaceMeasurement]);
 
-    // LengthMeasurements
-    useEffect(() => {
-        useLengthMeasurements({ haveLengthMeasurements, componentRef, worldRef, ifcContainerRef, modelRef });
-    }, [isWorldReady, haveLengthMeasurements]);
+  useEffect(() => {
+    userGrids({ haveGrids, componentRef, worldRef, ifcContainerRef, modelRef });
+  }, [isWorldReady, haveGrids]);
 
+  useEffect(() => {
+    useVolumeMeasurement({ hasVolumeMeasurement, componentRef, worldRef, ifcContainerRef, modelRef });
+  }, [isWorldReady, hasVolumeMeasurement]);
 
-    
-    useEffect(() => {
-        if (!ifcContainerRef.current) return;
-        // Initialize components
-        const components = new OBC.Components();
-        const world = isOrthoPerspective
-        ? components.get(OBC.Worlds).create<
-            OBC.SimpleScene,
-            OBC.SimpleCamera, 
-            OBCF.PostproductionRenderer
-            >()
-        : components.get(OBC.Worlds).create<
-            OBC.SimpleScene,
-            OBC.OrthoPerspectiveCamera,
-            OBCF.PostproductionRenderer
-            >();
+  useEffect(() => {
+    usePlaneViews({ havePlansViews, componentRef, worldRef, ifcContainerRef, modelRef });
+  }, [isWorldReady, havePlansViews]);
 
-        world.scene = new OBC.SimpleScene(components);
-        world.renderer = new OBCF.PostproductionRenderer(components, ifcContainerRef.current);
-        world.camera = new OBC.OrthoPerspectiveCamera(components);
+  useEffect(() => {
+    useLengthMeasurements({ haveLengthMeasurements, componentRef, worldRef, ifcContainerRef, modelRef });
+  }, [isWorldReady, haveLengthMeasurements]);
 
-        components.init();
-        componentRef.current = components;
-        world.renderer.postproduction.enabled = true;
-        world.camera.controls.setLookAt(12, 6, 8, 0, 0, -10);
-
-        
-        world.scene.three.background = new THREE.Color(0xcccccc);
-        world.scene.setup();
-
-        // Getting the highlighter
-        worldRef.current = world;
-        setIsWorldReady(true);
-
-        
-        const animate = () => {
-            if (!worldRef.current || !worldRef.current.renderer) return;
-            requestAnimationFrame(animate);
-            worldRef.current.renderer.update();
-        };
-        animate();
-
-        return () => {
-            // controls.dispose();
-            transformControlsRef.current.forEach(control => control.dispose());
-            components.dispose();
-            worldRef.current = null; // Reset worldRef khi unmount
-        };
-        
-    }, []);
-
+  useEffect(() => {
+    if (!isWorldReady || !worldRef.current) return;
   
-    return (
-        <div className="relative w-screen h-screen">
-            <div ref={ifcContainerRef} className="w-full h-full" />
-        </div>
-    );
+    // Cập nhật chế độ camera và chế độ điều hướng
+    UpdateCameraType(isOrthoPerspective, worldRef, navigationMode);
+  }, [isOrthoPerspective, navigationMode, isWorldReady]);
+
+  return (
+    <div className="relative w-screen h-screen">
+      <div ref={ifcContainerRef} className="w-full h-full" />
+    </div>
+  );
 };
 
 export default ModelIfc;

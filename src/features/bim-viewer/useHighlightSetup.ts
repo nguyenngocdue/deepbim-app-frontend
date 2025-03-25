@@ -30,23 +30,23 @@ export function useHighlightSetup({
       highlighter.setup({ world });
       highlighter.zoomToSelection = true;
 
-      outliner.create(
-        "example",
-        new THREE.MeshBasicMaterial({
-          color: 0xbcf124,
-          transparent: true,
-          opacity: 0.5,
-        })
-      );
+      // outliner.create(
+      //   "example",
+      //   new THREE.MeshBasicMaterial({
+      //     color: 0xbcf124,
+      //     transparent: true,
+      //     opacity: 0.5,
+      //   })
+      // );
 
-      highlighter.events.select.onHighlight.add((data) => {
-        outliner.clear("example");
-        outliner.add("example", data);
-      });
+      // highlighter.events.select.onHighlight.add((data) => {
+      //   outliner.clear("example");
+      //   outliner.add("example", data);
+      // });
 
-      highlighter.events.select.onClear.add(() => {
-        outliner.clear("example");
-      });
+      // highlighter.events.select.onClear.add(() => {
+      //   outliner.clear("example");
+      // });
     } catch (error) {
       if ((error as Error).message.includes("already exists")) {
         console.warn("Highlight selection already exists. Skipping setup.");
