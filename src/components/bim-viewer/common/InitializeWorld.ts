@@ -33,21 +33,10 @@ export function InitializeWorld(container: HTMLDivElement, haveGrids: boolean = 
   const grids = components.get(OBC.Grids);
   const grid = grids.create(world);
   
-  // // Lắng nghe sự kiện thay đổi chế độ camera
-  // world.camera.projection.onChanged.add(() => {
-  //   console.log("object")
-  //   const projection = world.camera.projection.current;
-  //   console.log("Current projection:", projection);
-
-  //   if (grid) {
-  //     grid.fade = projection === "Perspective";
-  //   }
-  // });
-
 
     // configuration
-    // world.scene.config.backgroundColor="#28d765"
-    // world.scene.config.directionalLight.intensity=1
-    // world.scene.config.ambientLight.intensity = 10
+    world.scene.config.backgroundColor="#28d765"
+    world.scene.config.directionalLight.intensity=1
+    world.scene.config.ambientLight.intensity = 10
   return { world, components, grid };
 }

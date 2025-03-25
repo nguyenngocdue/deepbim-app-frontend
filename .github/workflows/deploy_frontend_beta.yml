@@ -3,7 +3,7 @@ name: Deploy Frontend to Server
 on:
   push:
     branches:
-      - develop
+      - develop_off
   workflow_dispatch:
 
 jobs:

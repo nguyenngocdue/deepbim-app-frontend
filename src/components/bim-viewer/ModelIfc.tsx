@@ -72,7 +72,7 @@ const ModelIfc: React.FC<ModelIfcProps> = ({
   const modelRef = useRef<THREE.Object3D | null>(null);
   const boxHelperRef = useRef<THREE.BoxHelper | null>(null);
   const transformControlsRef = useRef<TransformControls[]>([]);
-  const gridRef= useRef<OBC.Grids | null>(null);
+  const gridRef= useRef<any | null>(null);
 
   const [isWorldReady, setIsWorldReady] = useState(false);
 
