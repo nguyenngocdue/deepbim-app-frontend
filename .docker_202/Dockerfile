@@ -18,7 +18,7 @@ FROM nginx:alpine AS production
 # Copy file cấu hình Nginx
 COPY .docker_202/nginx-frontend.conf /etc/nginx/conf.d/default.conf
 
-# Copy thư mục build từ Stage 1 vào thư mục web root của Nginx
+# Copy thư mục build từ Stage 1 vào thseư mục web root của Nginx
 COPY --from=build /usr/src/app/dist /usr/share/nginx/html
 
 EXPOSE 5173

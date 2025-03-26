@@ -26,6 +26,7 @@ import { useWorldSettings } from "@/features/bim-viewer/useWorldSettings";
 import { useGrids } from "@/features/bim-viewer/useGrid";
 import { ModelIfcProps } from "@/props/ModelIfcProps";
 import { useOriginalWorldCamera } from "@/features/bim-viewer/useOriginalWorldCamera";
+import { useSectionBox } from "@/features/bim-viewer/useSectionBox";
 
 THREE.BufferGeometry.prototype.computeBoundsTree = computeBoundsTree;
 THREE.BufferGeometry.prototype.disposeBoundsTree = disposeBoundsTree;
@@ -48,6 +49,7 @@ const ModelIfc: React.FC<ModelIfcProps> = ({
   haveAngleMeasurements,
   haveWorldSettings,
   isOriginalWorldCamera,
+  sectionActive,
 }) => {
   const ifcContainerRef = useRef<HTMLDivElement | null>(null);
   const worldRef = useRef<any>(null);
@@ -140,6 +142,11 @@ const ModelIfc: React.FC<ModelIfcProps> = ({
   useEffect(() => {
     useOriginalWorldCamera({isOriginalWorldCamera , componentRef, worldRef, ifcContainerRef, modelRef });
   }, [isWorldReady, isOriginalWorldCamera]);
+
+  useEffect(() => {
+    useSectionBox({sectionActive , componentRef, worldRef, ifcContainerRef, modelRef });
+  }, [isWorldReady, sectionActive]);
+  
 
   return (
     <div className="relative w-screen h-screen">

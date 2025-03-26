@@ -54,3 +54,37 @@ export const drawTrianglesFromMesh = (mesh: THREE.Mesh): THREE.LineSegments => {
     lineGeometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
     return new THREE.LineSegments(lineGeometry, material);
 };
+
+
+/**
+ * Draws a triangle with outline lines from three vertices.
+ * @param vertexA - The first vertex (THREE.Vector3)
+ * @param vertexB - The second vertex (THREE.Vector3)
+ * @param vertexC - The third vertex (THREE.Vector3)
+ * @param color - The color of the outline (default is 0xff0000 - red)
+ * @returns A THREE.LineSegments object representing the triangle's outline
+ */
+export function drawTriangleWithLines(
+    vertexA: THREE.Vector3,
+    vertexB: THREE.Vector3,
+    vertexC: THREE.Vector3,
+    color: number = 0xff0000
+  ): THREE.LineSegments {
+    // Create an array of points representing the edges of the triangle
+    const points: THREE.Vector3[] = [
+      vertexA, vertexB, // Edge AB
+      vertexB, vertexC, // Edge BC
+      vertexC, vertexA, // Edge CA
+    ];
+  
+    // Create geometry from the points
+    const geometry = new THREE.BufferGeometry().setFromPoints(points);
+  
+    // Create material for the outline
+    const material = new THREE.LineBasicMaterial({ color });
+  
+    // Create LineSegments to draw the outline
+    const lineSegments = new THREE.LineSegments(geometry, material);
+  
+    return lineSegments;
+  }

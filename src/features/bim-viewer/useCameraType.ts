@@ -26,7 +26,6 @@ export async function useCameraType({
     if (!components || !world || !container || !model) return;
 
     if (isOrthoPerspective) {
-        console.log(isOrthoPerspective)
         for (const child of model.children) {
             if (child instanceof THREE.Mesh) {
                 world.meshes.add(child);

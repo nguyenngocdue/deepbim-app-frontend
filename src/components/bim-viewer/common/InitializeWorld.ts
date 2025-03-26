@@ -14,14 +14,16 @@ export function InitializeWorld(container: HTMLDivElement, haveGrids: boolean = 
 
   world.scene = new OBC.SimpleScene(components);
   world.renderer = new OBCF.PostproductionRenderer(components, container);
-  world.camera = new OBC.SimpleCamera(components);
+  const simpleCamera = new OBC.SimpleCamera(components);
+  world.camera = simpleCamera;
+  simpleCamera.controls.setLookAt(24, 12, 16, 0, 0, -10); 
 
-  // Khởi tạo Camera và gán vào world.camera
-  const orthoPerspectiveCamera = new OBC.OrthoPerspectiveCamera(components);
-  world.camera = orthoPerspectiveCamera;
+  // // Khởi tạo Camera và gán vào world.camera
+  // const orthoPerspectiveCamera = new OBC.OrthoPerspectiveCamera(components);
+  // world.camera = orthoPerspectiveCamera;
 
-  // Cấu hình camera
-  orthoPerspectiveCamera.controls.setLookAt(24, 12, 16, 0, 0, -10);
+  // // Cấu hình camera
+  // orthoPerspectiveCamera.controls.setLookAt(24, 12, 16, 0, 0, -10);
 
   // Thiết lập Scene
   world.scene.setup();
