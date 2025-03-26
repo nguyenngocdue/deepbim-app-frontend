@@ -3,9 +3,7 @@ import * as OBC from "@thatopen/components";
 import React from "react";
 import * as THREE from 'three'
 import { createBoxFacesFromBox3 } from "@/lib/CreateBoxFacesFromBox3";
-import { drawTriangleWithLines } from "@/lib/Drawing";
-import { drawTrianglesFromFaces, extractFaceVerticesToWorld } from "@/lib/Face";
-import { applyClipping } from "@/lib/ApplyClipping";
+import { extractFaceVerticesToWorld } from "@/lib/Face";
 
 interface SectionBoxProps {
   sectionActive: boolean;
@@ -45,7 +43,7 @@ export function useSectionBox({
   const raycaster = new THREE.Raycaster();
   const mouse = new THREE.Vector2();
 
-  window.addEventListener('click', (event) => {
+  const handleClick =  window.addEventListener('click', (event) => {
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
     raycaster.setFromCamera(mouse, world.camera.three);
@@ -58,5 +56,10 @@ export function useSectionBox({
 
     }
   });
+  window.addEventListener('click', handleClick);
+
+  return () => {
+    window.removeEventListener('click', handleClick);
+  };
 
 }

@@ -20,4 +20,5 @@ export interface ModelIfcProps {
     haveAngleMeasurements:boolean;
     haveWorldSettings:boolean;
     isOriginalWorldCamera:boolean;
+    isFreeControlElements:boolean;
 }

@@ -22,6 +22,11 @@ import AngleMeasurements from "../bim-viewer/AngleMeasurements";
 import WorldSettings from "../bim-viewer/WorldSettings";
 import OriginalWorldCamera from "../bim-viewer/OriginalWorldCamera";
 import { ModelIfcProps } from "@/props/ModelIfcProps";
+import { buttonConfig } from "@/config/buttonConfig";
+import ElementToggle from "../bim-viewer/common/ElementToggle";
+import FreeControlElements from "../bim-viewer/FreeControlElements";
+
+
 
 
 const HeaderViewer: React.FC<ModelIfcProps> = (
@@ -43,6 +48,7 @@ const HeaderViewer: React.FC<ModelIfcProps> = (
     haveAngleMeasurements,
     haveWorldSettings,
     isOriginalWorldCamera,
+    isFreeControlElements,
   }
 ) => {
 
@@ -85,6 +91,8 @@ const HeaderViewer: React.FC<ModelIfcProps> = (
     <AngleMeasurements onToggle={() => onToggle("haveAngleMeasurements")} isActive={haveAngleMeasurements} />
     <WorldSettings onToggle={() => onToggle("haveWorldSettings")} isActive={haveWorldSettings} />
     <OriginalWorldCamera onToggle={() => onToggle("isOriginalWorldCamera")} isActive={isOriginalWorldCamera} />
+    <FreeControlElements onToggle={() => onToggle("isFreeControlElements")} isActive={isFreeControlElements} />
+
   </div>
 </div>
 
@@ -96,3 +104,37 @@ const HeaderViewer: React.FC<ModelIfcProps> = (
 };
 
 export default HeaderViewer;
+
+
+const ButtonWrapper: React.FC<{
+  config: typeof buttonConfig[number];
+  onToggle: (key: string) => void;
+  isActive?: boolean;
+  handleFileSelect?: (filePath: Uint8Array | null) => void;
+}> = ({ config, onToggle, isActive, handleFileSelect }) => {
+  const { icon, label, toggleKey, Component } = config;
+
+  // Xử lý logic tùy theo Component
+  if (Component) {
+    return (
+      <Component
+        onToggle={() => onToggle(toggleKey!)}
+        isActive={isActive}
+      />
+    );
+  }
+
+  // Nếu không có Component, render button đơn giản
+  return (
+    <ElementToggle
+      onToggle={() => onToggle(toggleKey!)}
+      isActive={isActive}
+      icon={icon}
+      label={label}
+      activeColor="bg-gray-800 text-white bg-blue-400"
+      inactiveColor=""
+      className=""
+      hoverTitle={label}
+    />
+  );
+};
