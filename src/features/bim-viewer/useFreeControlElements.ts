@@ -109,6 +109,8 @@ export function useFreeControlElements({
       highlightAxis: true,
       snapTranslation: { x: true, y: true, z: true },
     });
+    //Customer color
+    applyGizmoColors(controls)
     controls.updateMatrixWorld(true);
     controls.visible = true;
     allControls.push(controls);
@@ -164,3 +166,21 @@ export function useFreeControlElements({
     window.removeEventListener("keydown", handleKeyDown);
   };
 }
+
+function applyGizmoColors(controls: any) {
+  // Arrows
+  controls.translationXP.setColor('#e74c3c'); // Red
+  controls.translationYN.setColor('#27ae60'); // Green
+  controls.translationZP.setColor('#2980b9'); // Blue
+
+  // Rings
+  controls.rotationX.setColor('#ff9f43');     // Orange
+  controls.rotationY.setColor('#f1c40f');     // Yellow
+  controls.rotationZ.setColor('#9b59b6');     // Purple
+
+  // Hide XY plane
+  controls.pickPlaneXY.visible = false;
+}
+
+
+
