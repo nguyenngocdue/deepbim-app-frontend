@@ -25,6 +25,7 @@ import { ModelIfcProps } from "@/props/ModelIfcProps";
 import { buttonConfig } from "@/config/buttonConfig";
 import ElementToggle from "../bim-viewer/common/ElementToggle";
 import FreeControlElements from "../bim-viewer/FreeControlElements";
+import FreeControlElements2 from "../bim-viewer/FreeControlElements2";
 
 
 
@@ -49,6 +50,7 @@ const HeaderViewer: React.FC<ModelIfcProps> = (
     haveWorldSettings,
     isOriginalWorldCamera,
     isFreeControlElements,
+    isFreeControlElements2,
   }
 ) => {
 
@@ -92,7 +94,7 @@ const HeaderViewer: React.FC<ModelIfcProps> = (
     <WorldSettings onToggle={() => onToggle("haveWorldSettings")} isActive={haveWorldSettings} />
     <OriginalWorldCamera onToggle={() => onToggle("isOriginalWorldCamera")} isActive={isOriginalWorldCamera} />
     <FreeControlElements onToggle={() => onToggle("isFreeControlElements")} isActive={isFreeControlElements} />
-
+    <FreeControlElements2 onToggle={() => onToggle("isFreeControlElements2")} isActive={isFreeControlElements2} />
   </div>
 </div>
 
@@ -105,36 +107,3 @@ const HeaderViewer: React.FC<ModelIfcProps> = (
 
 export default HeaderViewer;
 
-
-const ButtonWrapper: React.FC<{
-  config: typeof buttonConfig[number];
-  onToggle: (key: string) => void;
-  isActive?: boolean;
-  handleFileSelect?: (filePath: Uint8Array | null) => void;
-}> = ({ config, onToggle, isActive, handleFileSelect }) => {
-  const { icon, label, toggleKey, Component } = config;
-
-  // Xử lý logic tùy theo Component
-  if (Component) {
-    return (
-      <Component
-        onToggle={() => onToggle(toggleKey!)}
-        isActive={isActive}
-      />
-    );
-  }
-
-  // Nếu không có Component, render button đơn giản
-  return (
-    <ElementToggle
-      onToggle={() => onToggle(toggleKey!)}
-      isActive={isActive}
-      icon={icon}
-      label={label}
-      activeColor="bg-gray-800 text-white bg-blue-400"
-      inactiveColor=""
-      className=""
-      hoverTitle={label}
-    />
-  );
-};

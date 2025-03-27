@@ -4,6 +4,8 @@ import { ViewCubeProvider } from "@/context/view-cube-context";
 import { ViewCubeProvider2 } from "@/context/view-cube-context2";
 import ModelIfc from "./ModelIfc";
 import FaceMeasurementGuide from "./guides/FaceMeasurementGuide";
+import '../../App.css'
+
 
 const MainViewer: React.FC = () => {
 
@@ -26,6 +28,7 @@ const MainViewer: React.FC = () => {
     haveWorldSettings:false,
     isOriginalWorldCamera:false,
     isFreeControlElements:false,
+    isFreeControlElements2:false,
   });
 
   // Hàm chung để toggle trạng thái
@@ -75,6 +78,7 @@ const MainViewer: React.FC = () => {
                 haveWorldSettings={states.haveWorldSettings}
                 isOriginalWorldCamera={states.isOriginalWorldCamera}
                 isFreeControlElements={states.isFreeControlElements}
+                isFreeControlElements2={states.isFreeControlElements2}
                 />
           </div>
           <ModelIfc 
@@ -97,6 +101,7 @@ const MainViewer: React.FC = () => {
             haveWorldSettings={states.haveWorldSettings}
             isOriginalWorldCamera={states.isOriginalWorldCamera}
             isFreeControlElements={states.isFreeControlElements}
+            isFreeControlElements2={states.isFreeControlElements2}
             />
             <FaceMeasurementGuide
               isEnabled={states.isFaceMeasurement}

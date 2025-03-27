@@ -28,6 +28,7 @@ import { ModelIfcProps } from "@/props/ModelIfcProps";
 import { useOriginalWorldCamera } from "@/features/bim-viewer/useOriginalWorldCamera";
 import { useSectionBox } from "@/features/bim-viewer/useSectionBox";
 import { useFreeControlElements } from "@/features/bim-viewer/useFreeControlElements";
+import { useFreeControlElements2 } from "@/features/bim-viewer/useFreeControlElements2";
 
 THREE.BufferGeometry.prototype.computeBoundsTree = computeBoundsTree;
 THREE.BufferGeometry.prototype.disposeBoundsTree = disposeBoundsTree;
@@ -52,6 +53,7 @@ const ModelIfc: React.FC<ModelIfcProps> = ({
   isOriginalWorldCamera,
   sectionActive,
   isFreeControlElements,
+  isFreeControlElements2
 }) => {
   const ifcContainerRef = useRef<HTMLDivElement | null>(null);
   const worldRef = useRef<any>(null);
@@ -152,6 +154,9 @@ const ModelIfc: React.FC<ModelIfcProps> = ({
   useEffect(() => {
     useFreeControlElements({isFreeControlElements , componentRef, worldRef, ifcContainerRef, modelRef });
   }, [isWorldReady, isFreeControlElements]);
+
+  useFreeControlElements2({isFreeControlElements2 , componentRef, worldRef, ifcContainerRef, modelRef });
+  
   
 
   
