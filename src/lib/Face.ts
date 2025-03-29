@@ -39,12 +39,12 @@ export function extractFaceVerticesToWorld(face: THREE.Mesh): THREE.Vector3[] {
  * @param color - The color of the triangle outlines (default is 0x00ff00 - green)
  */
 export function drawTrianglesFromFaces(
-    faces: THREE.Mesh | THREE.Mesh[],
+    mesh: THREE.Mesh | THREE.Mesh[],
     scene: THREE.Scene,
     color: number = 0x00ff00
   ): void {
-    // Ensure that faces is always an array
-    const faceArray = Array.isArray(faces) ? faces : [faces];
+    // Ensure that mesh is always an array
+    const faceArray = Array.isArray(mesh) ? mesh : [mesh];
   
     // Iterate through each mesh in the array
     for (const face of faceArray) {
@@ -67,11 +67,11 @@ export function drawTrianglesFromFaces(
         const vertexA = new THREE.Vector3().fromBufferAttribute(positionAttribute, a);
         const vertexB = new THREE.Vector3().fromBufferAttribute(positionAttribute, b);
         const vertexC = new THREE.Vector3().fromBufferAttribute(positionAttribute, c);
-  
         // Convert from local space to world space
         face.localToWorld(vertexA);
         face.localToWorld(vertexB);
         face.localToWorld(vertexC);
+
   
         // Draw the triangle with outlines
         const triangleLines = drawTriangleWithLines(vertexA, vertexB, vertexC, color);

@@ -114,3 +114,55 @@ export const createBoundingBoxMesh = (model: THREE.Object3D) => {
     return boundingBoxMesh;
 };
 
+export function snapToVertex(mesh: THREE.Mesh, intersectionPoint: THREE.Vector3): THREE.Vector3 | null {
+    const positionAttribute = mesh.geometry.getAttribute('position');
+    if (!positionAttribute) return null;
+  
+    let closestVertex: THREE.Vector3 | null = null;
+    let minDistance = Infinity;
+  
+    for (let i = 0; i < positionAttribute.count; i++) {
+      const vertex = new THREE.Vector3().fromBufferAttribute(positionAttribute, i);
+      mesh.localToWorld(vertex); // Chuyển từ local space sang world space
+  
+      const distance = vertex.distanceTo(intersectionPoint);
+      if (distance < minDistance) {
+        minDistance = distance;
+        closestVertex = vertex;
+      }
+    }
+  
+    return closestVertex;
+  }
+
+
+  export function snapToEdge(mesh: THREE.Mesh, intersectionPoint: THREE.Vector3): THREE.Vector3 | null {
+    const positionAttribute = mesh.geometry.getAttribute('position');
+    const indexAttribute = mesh.geometry.index;
+    if (!positionAttribute || !indexAttribute) return null;
+  
+    let closestPoint: THREE.Vector3 | null = null;
+    let minDistance = Infinity;
+  
+    for (let i = 0; i < indexAttribute.count; i += 2) {
+      const a = new THREE.Vector3().fromBufferAttribute(positionAttribute, indexAttribute.getX(i));
+      const b = new THREE.Vector3().fromBufferAttribute(positionAttribute, indexAttribute.getX(i + 1));
+  
+      mesh.localToWorld(a);
+      mesh.localToWorld(b);
+  
+      const pointOnEdge = closestPointOnSegment(intersectionPoint, a, b);
+      const distance = pointOnEdge.distanceTo(intersectionPoint);
+  
+      if (distance < minDistance) {
+        minDistance = distance;
+        closestPoint = pointOnEdge;
+      }
+    }
+  
+    return closestPoint;
+  }
+
+
+  
+

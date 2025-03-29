@@ -8,25 +8,23 @@ import * as THREE from "three";
  * @param size - The radius of the sphere.
  * @returns A mesh representing the key point.
  */
-export const createKeyPoint = (
-    position: THREE.Vector3,
-    color: number = 0xff0000,
-    size: number = 0.1
-): THREE.Mesh => {
-    // Create sphere geometry
-    const geometry = new THREE.SphereGeometry(size, 8, 8); // Low-resolution sphere
-
-    // Create material with the specified color
-    const material = new THREE.MeshBasicMaterial({ color: color });
-
-    // Create a mesh from the geometry and material
-    const sphere = new THREE.Mesh(geometry, material);
-
-    // Set the position of the sphere
-    sphere.position.copy(position);
-
-    return sphere;
-};
+export function createKeyPoint(p: THREE.Vector3, color: number = 0xff0000, size: number = 0.1): THREE.Points {
+    // Tạo geometry với một điểm duy nhất
+    const geometry = new THREE.BufferGeometry();
+    const vertices = new Float32Array([p.x, p.y, p.z]); // Một điểm tại vị trí p
+    geometry.setAttribute('position', new THREE.BufferAttribute(vertices, 3));
+  
+    // Tạo vật liệu cho điểm
+    const material = new THREE.PointsMaterial({
+      color: color, // Màu của điểm
+      size: size,   // Kích thước của điểm
+    });
+  
+    // Tạo Points
+    const point = new THREE.Points(geometry, material);
+  
+    return point;
+  };
 
 /**
  * Adds key points to the scene based on predefined positions.

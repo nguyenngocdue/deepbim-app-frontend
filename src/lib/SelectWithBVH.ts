@@ -1,12 +1,19 @@
 import * as THREE from 'three';
 import { MeshBVH } from 'three-mesh-bvh';
 
-function createKeyPoint(p: THREE.Vector3, color:number = 0xff0000): THREE.Mesh {
-  const geom = new THREE.SphereGeometry(0.01, 0.1, 0.1); // Kích thước 0.1
-  const mat = new THREE.MeshBasicMaterial({ color: color }); // Màu đỏ
-  const mesh = new THREE.Mesh(geom, mat);
-  mesh.position.copy(p);
-  return mesh;
+function createKeyPoint(p: THREE.Vector3, color: number = 0xff0000, size: number = 0.1): THREE.Points {
+  // Tạo geometry với một điểm duy nhất
+  const geometry = new THREE.BufferGeometry();
+  const vertices = new Float32Array([p.x, p.y, p.z]); // Một điểm tại vị trí p
+  geometry.setAttribute('position', new THREE.BufferAttribute(vertices, 3));
+  // Tạo vật liệu cho điểm
+  const material = new THREE.PointsMaterial({
+    color: color, // Màu của điểm
+    size: size,   // Kích thước của điểm
+  });
+  // Tạo Points
+  const point = new THREE.Points(geometry, material);
+  return point;
 }
 /**
  * Chọn mesh bằng vùng chữ nhật (startPoint -> endPoint) trên màn hình,
@@ -19,7 +26,6 @@ export function selectWithBVH(
   meshes: THREE.Mesh[],
   scene: THREE.Scene | any,
 ): THREE.Mesh[] {
-  console.log(meshes)
   if (!camera || !startPoint || !endPoint || !meshes) {
     console.error("Invalid input parameters");
     return [];
@@ -120,12 +126,13 @@ export function selectWithBVH(
         });
       },
       intersectsTriangle: (tri: any) => {
-        drawTriangle(tri.a, tri.b, tri.c); 
-        
+        console.log(tri.a,tri.b,tri.c);
+        // drawTriangle(tri.a, tri.b, tri.c); 
+
+        const o1 = createKeyPoint(tri.a, 0x00FF00);
+        scene.current.scene.three.add(o1);
+
         const checkPoint = (point: THREE.Vector3) => {
-          const o1 = createKeyPoint(point);
-          console.log(point);
-          scene.current.scene.three.add(o1)
 
           const distToLeft = leftPlane.distanceToPoint(point);
           const distToRight = rightPlane.distanceToPoint(point);
@@ -133,7 +140,9 @@ export function selectWithBVH(
           return distToLeft >= 0 && distToRight <= 0;
         };
         console.log(checkPoint(tri.a) , checkPoint(tri.b) , checkPoint(tri.c))
-        return checkPoint(tri.a) && checkPoint(tri.b) && checkPoint(tri.c);
+        if(checkPoint(tri.a) && checkPoint(tri.b) && checkPoint(tri.c)){
+          intersected = true;
+        };
       }
     });
     if (intersected) {
@@ -150,3 +159,6 @@ export function selectWithBVH(
   console.log("Selected meshes:", selected);
   return selected;
 }
+
+
+// https://stackoverflow.com/questions/55278137/how-to-select-and-highlight-multiple-objects-with-rectangular-selection-ribbon
