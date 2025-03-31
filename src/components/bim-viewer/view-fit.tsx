@@ -4,7 +4,7 @@ import ElementToggle from './common/ElementToggle';
 
 interface ViewFitProps {
     onToggle: () => void; 
-    isActive: boolean;    
+    isActive: boolean;
 }
 
 const ViewFit: React.FC<ViewFitProps> = ({ onToggle, isActive }) => {
@@ -15,7 +15,8 @@ const ViewFit: React.FC<ViewFitProps> = ({ onToggle, isActive }) => {
                 isActive={isActive}
                 icon={isActive ? <HiViewfinderCircle /> : <HiViewfinderCircle />}
                 label={isActive ? "" : ""}
-                activeColor="bg-gray-800 text-white bg-blue-400"
+                activeColor=" text-white bg-blue-400"
+                showActiveColor={false}
                 inactiveColor=""
                 className=""
                 hoverTitle="ViewFit"

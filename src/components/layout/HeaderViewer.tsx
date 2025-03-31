@@ -6,10 +6,8 @@ import {
 } from "react-icons/fa";
 import ViewFit from "../bim-viewer/view-fit";
 import CameraSetting from "../bim-viewer/CameraSetting";
-import SectionBox from "../bim-viewer/SectionBox";
 import CoordinateSystem from "../bim-viewer/CoordinateSystem";
 import UploadModel from "../bim-viewer/UploadModel";
-import HighlightElement from "../bim-viewer/HighlightElement";
 import ClippingEdges from "../bim-viewer/ClippingEdges";
 import EdgeMeasurement from "../bim-viewer/EdgeMeasurement";
 import FaceMeasurement from "../bim-viewer/FaceMeasurement";
@@ -20,12 +18,8 @@ import LengthMeasurements from "../bim-viewer/LengthMeasurements";
 import AreaMeasurements from "../bim-viewer/AreaMeasurements";
 import AngleMeasurements from "../bim-viewer/AngleMeasurements";
 import WorldSettings from "../bim-viewer/WorldSettings";
-import OriginalWorldCamera from "../bim-viewer/OriginalWorldCamera";
 import { ModelIfcProps } from "@/props/ModelIfcProps";
-import { buttonConfig } from "@/config/buttonConfig";
-import ElementToggle from "../bim-viewer/common/ElementToggle";
 import FreeControlElements from "../bim-viewer/FreeControlElements";
-import PlaneHover from "../bim-viewer/PlaneHover";
 
 
 
@@ -51,6 +45,7 @@ const HeaderViewer: React.FC<ModelIfcProps> = (
     isOriginalWorldCamera,
     isFreeControlElements,
     isPlaneHover,
+    isFitView
   }
 ) => {
 
@@ -77,7 +72,7 @@ const HeaderViewer: React.FC<ModelIfcProps> = (
     <Separator orientation="vertical" className="h-6" />
     <UploadModel onToggle={handleFileSelect} isActive={coordinateSysActive} />
     <Separator orientation="vertical" className="h-6" />
-    <ViewFit />
+    <ViewFit onToggle={() => onToggle("isFitView")} isActive={isFitView} />
     <CameraSetting onToggle={() => onToggle("isOrthoPerspective")} isActive={isOrthoPerspective} />
     {/* <SectionBox onToggle={() => onToggle("sectionActive")} isActive={sectionActive} /> */}
     <CoordinateSystem onToggle={() => onToggle("coordinateSysActive")} isActive={coordinateSysActive} />

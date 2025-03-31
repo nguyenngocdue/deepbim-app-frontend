@@ -29,6 +29,7 @@ const MainViewer: React.FC = () => {
     isOriginalWorldCamera:false,
     isFreeControlElements:false,
     isPlaneHover:false,
+    isFitView:false,
   });
 
   // Hàm chung để toggle trạng thái
@@ -60,6 +61,7 @@ const MainViewer: React.FC = () => {
             {/* ✅ Ensure function exists before calling */}
             <HeaderViewer 
                 onToggle={toggleState}
+                isFitView={states.isFitView}
                 isOrthoPerspective={states.isOrthoPerspective}
                 sectionActive={states.sectionActive}
                 coordinateSyssActive={states.coordinateSyssActive}
@@ -83,6 +85,7 @@ const MainViewer: React.FC = () => {
           </div>
           <ModelIfc 
             sectionActive={states.sectionActive} 
+            isFitView={states.isFitView}
             coordinateSyssActive={states.coordinateSyssActive} 
             isOrthoPerspective={states.isOrthoPerspective}
             selectedFile={selectedFile} 

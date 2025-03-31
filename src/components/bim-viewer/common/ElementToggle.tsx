@@ -10,6 +10,7 @@ interface ElementToggleProps {
     inactiveColor?: string; // Custom color when inactive
     className?: string;    // Additional custom class names
     hoverTitle?: string;   // Optional hover title
+    showActiveColor?:boolean;
 }
 
 const ElementToggle: React.FC<ElementToggleProps> = ({
@@ -21,6 +22,7 @@ const ElementToggle: React.FC<ElementToggleProps> = ({
     inactiveColor = "bg-blue-500",
     className = "",
     hoverTitle = "Toggle Element",
+    showActiveColor=true
 }) => {
     return (
         <Button
@@ -29,7 +31,7 @@ const ElementToggle: React.FC<ElementToggleProps> = ({
                 // Call the onToggle function to update the state
                 onToggle();
             }}
-            className={`hover:${inactiveColor} ${isActive ? activeColor : inactiveColor} ${className}`}
+            className={`hover:${inactiveColor}  ${isActive ? (showActiveColor ? activeColor : inactiveColor) : inactiveColor} ${className}`}
         >
             {icon && <div className="text-lg">{icon}</div>}
             {label &&  <span className="ml-1">{label}</span>}

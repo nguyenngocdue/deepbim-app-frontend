@@ -29,6 +29,7 @@ import { useOriginalWorldCamera } from "@/features/bim-viewer/useOriginalWorldCa
 import { useSectionBox } from "@/features/bim-viewer/useSectionBox";
 import { useFreeControlElements } from "@/features/bim-viewer/useFreeControlElements";
 import { usePlaneHover } from "@/features/bim-viewer/usePlaneHover";
+import { useSetViewPoint } from "@/features/bim-viewer/useSetViewPoint";
 
 THREE.BufferGeometry.prototype.computeBoundsTree = computeBoundsTree;
 THREE.BufferGeometry.prototype.disposeBoundsTree = disposeBoundsTree;
@@ -53,7 +54,8 @@ const ModelIfc: React.FC<ModelIfcProps> = ({
   isOriginalWorldCamera,
   sectionActive,
   isFreeControlElements,
-  isPlaneHover
+  isPlaneHover,
+  isFitView,
 }) => {
   const ifcContainerRef = useRef<HTMLDivElement | null>(null);
   const worldRef = useRef<any>(null);
@@ -156,6 +158,8 @@ const ModelIfc: React.FC<ModelIfcProps> = ({
   }, [isWorldReady, isFreeControlElements]);
 
   usePlaneHover({isPlaneHover , componentRef, worldRef, ifcContainerRef, modelRef });
+
+  useSetViewPoint({isFitView,  componentRef, worldRef, ifcContainerRef, modelRef })
   
   
 
