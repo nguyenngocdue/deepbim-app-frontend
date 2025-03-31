@@ -1,5 +1,5 @@
-import LogoSection from "@/components/layout/LogoSection";
 import { SunIcon } from "lucide-react";
+import LogoSection from "@/components/layout/LogoSection";
 
 interface HeaderProps {
   onToggleTheme: () => void;
@@ -13,14 +13,15 @@ export const Header = ({ onToggleTheme, className }: HeaderProps) => {
     >
       {/* Logo */}
       <nav className="flex gap-6">
-        <LogoSection/>
+        <LogoSection />
       </nav>
 
-
       {/* Right-side elements */}
-      <div className="flex grow items-end gap-4 md:ml-auto md:gap-2 lg:gap-4 justify-end">
+      <div className="flex grow items-end justify-end gap-4 md:ml-auto md:gap-2 lg:gap-4">
         {/* Get in touch button */}
-        <button className="items-center justify-center whitespace-nowrap rounded-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 text-primary-foreground hover:bg-primary/90 px-4 py-2 bg-primary text-md h-10 hidden sm:block">
+        <button
+          className="items-center justify-center whitespace-nowrap rounded-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 text-primary-foreground hover:bg-primary/90 px-4 py-2 bg-primary text-md h-10 hidden sm:block"
+        >
           <a href="https://creoox.com/contact/" target="_blank">
             <span>Get in touch</span>
           </a>

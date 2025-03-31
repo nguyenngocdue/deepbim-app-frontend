@@ -2,9 +2,11 @@ import { useState, useEffect } from "react";
 import { ModalHeader } from "./ModalHeader";
 import { Button } from "@/components/ui/button";
 import { Header } from "./Header";
+import HelpForm from "./HelpForm";
 
 const WelcomeUpload = () => {
     const [theme, setTheme] = useState<"light" | "dark">("light");
+    const [showHelpForm, setShowHelpForm] = useState(false);
 
     useEffect(() => {
         const savedTheme = localStorage.getItem("theme") || "light";
@@ -32,7 +34,7 @@ const WelcomeUpload = () => {
 
     return (
         <div className={`relative h-screen flex flex-col ${theme === "dark" ? "bg-gray-900" : "bg-gray-200"}`}>
-                <Header onToggleTheme={toggleTheme} className={theme === "dark" ? "bg-gray-800" : "bg-gray-100"} />
+            <Header onToggleTheme={toggleTheme} className={theme === "dark" ? "bg-gray-800" : "bg-gray-100"} />
             <div className={`relative flex flex-col items-center justify-center flex-1 p-6 ${theme === "dark" ? "bg-gray-900" : "bg-white"}`}>
                 <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-2xl max-w-lg w-full text-center backdrop-blur-lg">
                     <ModalHeader title="Welcome to DeepBIM" subtitle="Your Trusted 3D / BIM Viewer" />
@@ -54,12 +56,17 @@ const WelcomeUpload = () => {
                     </div>
                 </div>
             </div>
+
+
             <button
-                className="fixed bottom-6 left-6 bg-purple-600 text-white rounded-full p-4 shadow-lg transition hover:bg-purple-800"
-                onClick={() => alert("Any issue? Please contact us.")}
+                className="fixed bottom-6 left-6 rounded-full p-4 shadow-lg transition bg-purple-600 hover:bg-purple-800 text-white"
+                onClick={() => setShowHelpForm(true)}
             >
-                Need help?
+                {!showHelpForm  ? "Need help" : ""}
             </button>
+
+            {showHelpForm && <HelpForm onClose={() => setShowHelpForm(false)} />}
+
         </div>
     );
 };
