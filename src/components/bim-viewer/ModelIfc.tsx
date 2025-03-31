@@ -11,21 +11,18 @@ import { useFaceMeasurement } from "@/features/bim-viewer/useFaceMeasurement";
 import { useVolumeMeasurement } from "@/features/bim-viewer/useVolumeMeasurement";
 import { usePlaneViews } from "@/features/bim-viewer/usePlaneViews";
 import { useLengthMeasurements } from "@/features/bim-viewer/useLengthMeasurements";
-import * as OBC from "@thatopen/components";
 
 import {
   computeBoundsTree,
   disposeBoundsTree,
   acceleratedRaycast
 } from "three-mesh-bvh";
-import { UpdateCameraType } from "./common/UpdateCameraType";
 import { InitializeWorld } from "./common/InitializeWorld";
 import { useAreaMeasurements } from "@/features/bim-viewer/useAreaMeasurements";
 import { useAngleMeasurements } from "@/features/bim-viewer/useAngleMeasurements";
 import { useWorldSettings } from "@/features/bim-viewer/useWorldSettings";
 import { useGrids } from "@/features/bim-viewer/useGrid";
 import { ModelIfcProps } from "@/props/ModelIfcProps";
-import { useOriginalWorldCamera } from "@/features/bim-viewer/useOriginalWorldCamera";
 import { useSectionBox } from "@/features/bim-viewer/useSectionBox";
 import { useFreeControlElements } from "@/features/bim-viewer/useFreeControlElements";
 import { usePlaneHover } from "@/features/bim-viewer/usePlaneHover";
@@ -51,7 +48,6 @@ const ModelIfc: React.FC<ModelIfcProps> = ({
   haveAreaMeasureElements,
   haveAngleMeasurements,
   haveWorldSettings,
-  isOriginalWorldCamera,
   sectionActive,
   isFreeControlElements,
   isPlaneHover,
@@ -69,7 +65,7 @@ const ModelIfc: React.FC<ModelIfcProps> = ({
 
   useEffect(() => {
     if (!ifcContainerRef.current) return;
-    const { world, components, grid } = InitializeWorld(ifcContainerRef.current,haveGrids );
+    const { world, components, grid } = InitializeWorld(ifcContainerRef.current,haveGrids, isOrthoPerspective );
     componentRef.current = components;
     worldRef.current = world;
     gridRef.current = grid;
@@ -88,7 +84,7 @@ const ModelIfc: React.FC<ModelIfcProps> = ({
       components.dispose();
       worldRef.current = null;
     };
-  }, []);
+  }, [isOrthoPerspective]);
 
   useEffect(() => {
     if (isWorldReady && !selectedFile) {
@@ -132,10 +128,7 @@ const ModelIfc: React.FC<ModelIfcProps> = ({
     useAreaMeasurements({ haveAreaMeasureElements, componentRef, worldRef, ifcContainerRef, modelRef });
   }, [isWorldReady, haveAreaMeasureElements]);
 
-  useEffect(() => {
-    if (!isWorldReady || !worldRef.current) return;
-    UpdateCameraType(isOrthoPerspective, worldRef, navigationMode, componentRef);
-  }, [isOrthoPerspective, navigationMode, isWorldReady]);
+
 
   useEffect(() => {
     useAngleMeasurements({ haveAngleMeasurements, componentRef, worldRef, ifcContainerRef, modelRef });
@@ -145,9 +138,6 @@ const ModelIfc: React.FC<ModelIfcProps> = ({
     useWorldSettings({ haveWorldSettings, componentRef, worldRef, ifcContainerRef, modelRef });
   }, [isWorldReady, haveWorldSettings]);
 
-  useEffect(() => {
-    useOriginalWorldCamera({isOriginalWorldCamera , componentRef, worldRef, ifcContainerRef, modelRef });
-  }, [isWorldReady, isOriginalWorldCamera]);
 
   useEffect(() => {
     useSectionBox({sectionActive , componentRef, worldRef, ifcContainerRef, modelRef });
@@ -158,8 +148,8 @@ const ModelIfc: React.FC<ModelIfcProps> = ({
   }, [isWorldReady, isFreeControlElements]);
 
   usePlaneHover({isPlaneHover , componentRef, worldRef, ifcContainerRef, modelRef });
+  useSetViewPoint({isFitView,  componentRef, worldRef, ifcContainerRef, modelRef });
 
-  useSetViewPoint({isFitView,  componentRef, worldRef, ifcContainerRef, modelRef })
   
   
 

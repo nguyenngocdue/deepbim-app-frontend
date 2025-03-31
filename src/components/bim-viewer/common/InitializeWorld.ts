@@ -2,7 +2,7 @@ import * as OBC from "@thatopen/components";
 import * as OBCF from "@thatopen/components-front";
 import * as THREE from 'three';
 
-export function InitializeWorld(container: HTMLDivElement, haveGrids: boolean = false) {
+export function InitializeWorld(container: HTMLDivElement, haveGrids: boolean = false, isOrthoPerspective: boolean) {
   const components = new OBC.Components();
   const worlds = components.get(OBC.Worlds);
   // Tạo world
@@ -18,12 +18,16 @@ export function InitializeWorld(container: HTMLDivElement, haveGrids: boolean = 
   world.camera = simpleCamera;
   simpleCamera.controls.setLookAt(24, 12, 16, 0, 0, -10); 
 
-  // // Khởi tạo Camera và gán vào world.camera
-  // const orthoPerspectiveCamera = new OBC.OrthoPerspectiveCamera(components);
-  // world.camera = orthoPerspectiveCamera;
 
-  // // Cấu hình camera
-  // orthoPerspectiveCamera.controls.setLookAt(24, 12, 16, 0, 0, -10);
+  if(isOrthoPerspective) {
+    // // Khởi tạo Camera và gán vào world.camera
+    const orthoPerspectiveCamera = new OBC.OrthoPerspectiveCamera(components);
+    world.camera = orthoPerspectiveCamera;
+    // Cấu hình camera
+    orthoPerspectiveCamera.controls.setLookAt(30, 20, 30, 0, 0, 0);
+    orthoPerspectiveCamera.projection.set("Orthographic");
+  }
+
 
   // Thiết lập Scene
   world.scene.setup();
