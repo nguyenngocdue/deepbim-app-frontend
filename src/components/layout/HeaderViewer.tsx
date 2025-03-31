@@ -25,7 +25,7 @@ import { ModelIfcProps } from "@/props/ModelIfcProps";
 import { buttonConfig } from "@/config/buttonConfig";
 import ElementToggle from "../bim-viewer/common/ElementToggle";
 import FreeControlElements from "../bim-viewer/FreeControlElements";
-import FreeControlElements2 from "../bim-viewer/FreeControlElements2";
+import PlaneHover from "../bim-viewer/PlaneHover";
 
 
 
@@ -50,7 +50,7 @@ const HeaderViewer: React.FC<ModelIfcProps> = (
     haveWorldSettings,
     isOriginalWorldCamera,
     isFreeControlElements,
-    isFreeControlElements2,
+    isPlaneHover,
   }
 ) => {
 
@@ -75,13 +75,13 @@ const HeaderViewer: React.FC<ModelIfcProps> = (
       <FaUserCog className="text-lg" />
     </Button>
     <Separator orientation="vertical" className="h-6" />
-
+    <UploadModel onToggle={handleFileSelect} isActive={coordinateSysActive} />
+    <Separator orientation="vertical" className="h-6" />
     <ViewFit />
     <CameraSetting onToggle={() => onToggle("isOrthoPerspective")} isActive={isOrthoPerspective} />
-    <SectionBox onToggle={() => onToggle("sectionActive")} isActive={sectionActive} />
+    {/* <SectionBox onToggle={() => onToggle("sectionActive")} isActive={sectionActive} /> */}
     <CoordinateSystem onToggle={() => onToggle("coordinateSysActive")} isActive={coordinateSysActive} />
-    <UploadModel onToggle={handleFileSelect} isActive={coordinateSysActive} />
-    <HighlightElement onToggle={() => onToggle("isHighlightEnabled")} isActive={isHighlightEnabled} />
+    {/* <HighlightElement onToggle={() => onToggle("isHighlightEnabled")} isActive={isHighlightEnabled} /> */}
     <ClippingEdges onToggle={() => onToggle("isClippingEdges")} isActive={isClippingEdges} />
     <EdgeMeasurement onToggle={() => onToggle("isEdgeMeasurement")} isActive={isEdgeMeasurement} />
     <FaceMeasurement onToggle={() => onToggle("isFaceMeasurement")} isActive={isFaceMeasurement} />
@@ -92,9 +92,9 @@ const HeaderViewer: React.FC<ModelIfcProps> = (
     <AreaMeasurements onToggle={() => onToggle("haveAreaMeasureElements")} isActive={haveAreaMeasureElements} />
     <AngleMeasurements onToggle={() => onToggle("haveAngleMeasurements")} isActive={haveAngleMeasurements} />
     <WorldSettings onToggle={() => onToggle("haveWorldSettings")} isActive={haveWorldSettings} />
-    <OriginalWorldCamera onToggle={() => onToggle("isOriginalWorldCamera")} isActive={isOriginalWorldCamera} />
+    {/* <OriginalWorldCamera onToggle={() => onToggle("isOriginalWorldCamera")} isActive={isOriginalWorldCamera} /> */}
     <FreeControlElements onToggle={() => onToggle("isFreeControlElements")} isActive={isFreeControlElements} />
-    <FreeControlElements2 onToggle={() => onToggle("isFreeControlElements2")} isActive={isFreeControlElements2} />
+    {/* <PlaneHover onToggle={() => onToggle("isPlaneHover")} isActive={isPlaneHover} /> */}
   </div>
 </div>
 

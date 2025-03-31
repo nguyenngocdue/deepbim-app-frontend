@@ -1,27 +1,28 @@
-import { Button } from "@/components/ui/button";
-import { useViewCube } from "@/context/view-cube-context2";
 import { HiViewfinderCircle } from "react-icons/hi2";
+import React from 'react'
+import ElementToggle from './common/ElementToggle';
 
+interface ViewFitProps {
+    onToggle: () => void; 
+    isActive: boolean;    
+}
 
-const ViewFit: React.FC = () => {
-  const context = useViewCube();
-  
-  if (!context) {
-    console.error("❌ ViewFit: `useViewCube()` returned null!");
-    return null;
-  }
+const ViewFit: React.FC<ViewFitProps> = ({ onToggle, isActive }) => {
+    return (
+        <>
+            <ElementToggle
+                onToggle={onToggle}
+                isActive={isActive}
+                icon={isActive ? <HiViewfinderCircle /> : <HiViewfinderCircle />}
+                label={isActive ? "" : ""}
+                activeColor="bg-gray-800 text-white bg-blue-400"
+                inactiveColor=""
+                className=""
+                hoverTitle="ViewFit"
+            />
+        </>
+    )
+}
 
-  const { resetView } = context;
+export default ViewFit
 
-  return (
-    <Button onClick={() => { 
-      console.log("🛠 Resetting View...");
-      resetView();
-    }}>
-      <HiViewfinderCircle className="text-lg" />
-    </Button>
-  );
-};
-
-
-export default ViewFit;

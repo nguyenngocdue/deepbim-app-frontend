@@ -28,7 +28,7 @@ const MainViewer: React.FC = () => {
     haveWorldSettings:false,
     isOriginalWorldCamera:false,
     isFreeControlElements:false,
-    isFreeControlElements2:false,
+    isPlaneHover:false,
   });
 
   // Hàm chung để toggle trạng thái
@@ -78,7 +78,7 @@ const MainViewer: React.FC = () => {
                 haveWorldSettings={states.haveWorldSettings}
                 isOriginalWorldCamera={states.isOriginalWorldCamera}
                 isFreeControlElements={states.isFreeControlElements}
-                isFreeControlElements2={states.isFreeControlElements2}
+                isPlaneHover={states.isPlaneHover}
                 />
           </div>
           <ModelIfc 
@@ -101,7 +101,7 @@ const MainViewer: React.FC = () => {
             haveWorldSettings={states.haveWorldSettings}
             isOriginalWorldCamera={states.isOriginalWorldCamera}
             isFreeControlElements={states.isFreeControlElements}
-            isFreeControlElements2={states.isFreeControlElements2}
+            isPlaneHover={states.isPlaneHover}
             />
             <FaceMeasurementGuide
               isEnabled={states.isFaceMeasurement}

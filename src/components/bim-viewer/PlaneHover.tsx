@@ -2,12 +2,12 @@ import React from 'react'
 import ElementToggle from './common/ElementToggle';
 import { MdOutlineControlCamera } from "react-icons/md";
 
-interface OriginalWorldCameraProps {
+interface PlaneHoverProps {
     onToggle: () => void; // Callback function to toggle the Section Box
     isActive: boolean;    // Current state of the Section Box
   }
 
-const FreeControlElements2:React.FC<OriginalWorldCameraProps> = ({onToggle, isActive}) => {
+const PlaneHover:React.FC<PlaneHoverProps> = ({onToggle, isActive}) => {
     return (
         <>
          <ElementToggle
@@ -24,4 +24,4 @@ const FreeControlElements2:React.FC<OriginalWorldCameraProps> = ({onToggle, isAc
     )
 }
 
-export default FreeControlElements2
+export default PlaneHover

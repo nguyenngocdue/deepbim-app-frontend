@@ -1,12 +1,9 @@
-import { ThreeHighlighter } from "@/lib/effects/HighlightElement";
-import { drawTrianglesFromFaces, highlightFace, highlightFaceBoundary, highlightFaceOutline, highlightRectangleFace, highlightRectangleOnSurface } from "@/lib/Face";
-import { addPointsToScene, createKeyPoint } from "@/lib/PointUtils";
 import * as OBC from "@thatopen/components";
 import { useEffect } from "react";
 import * as THREE from 'three';
 
-interface FreeControlElements2Props {
-  isFreeControlElements2: boolean;
+interface PlaneHoverProps {
+  isPlaneHover: boolean;
   componentRef: React.RefObject<OBC.Components | null>;
   worldRef: React.RefObject<OBC.World | null>;
   ifcContainerRef: React.RefObject<HTMLDivElement | null>;
@@ -14,16 +11,16 @@ interface FreeControlElements2Props {
 }
 
 
-export function useFreeControlElements2({
-  isFreeControlElements2,
+export function usePlaneHover({
+  isPlaneHover,
   componentRef,
   worldRef,
   ifcContainerRef,
   modelRef,
-}: FreeControlElements2Props) {
+}: PlaneHoverProps) {
 
   useEffect(() => {
-    if (!isFreeControlElements2) return;
+    if (!isPlaneHover) return;
   
     const components = componentRef.current;
     const world = worldRef.current;
@@ -74,7 +71,7 @@ export function useFreeControlElements2({
       }
     };
   }, [
-    isFreeControlElements2,
+    isPlaneHover,
     componentRef,
     worldRef,
     ifcContainerRef,

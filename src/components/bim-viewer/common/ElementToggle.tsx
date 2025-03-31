@@ -32,7 +32,8 @@ const ElementToggle: React.FC<ElementToggleProps> = ({
             className={`hover:${inactiveColor} ${isActive ? activeColor : inactiveColor} ${className}`}
         >
             {icon && <div className="text-lg">{icon}</div>}
-            <span className="ml-1">{label}</span>
+            {label &&  <span className="ml-1">{label}</span>}
+           
         </Button>
     );
 };

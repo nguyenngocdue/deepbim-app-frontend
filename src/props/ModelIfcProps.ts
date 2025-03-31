@@ -21,5 +21,5 @@ export interface ModelIfcProps {
     haveWorldSettings:boolean;
     isOriginalWorldCamera:boolean;
     isFreeControlElements:boolean;
-    isFreeControlElements2:boolean;
+    isPlaneHover:boolean;
 }
