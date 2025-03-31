@@ -20,6 +20,7 @@ import AngleMeasurements from "../bim-viewer/AngleMeasurements";
 import WorldSettings from "../bim-viewer/WorldSettings";
 import { ModelIfcProps } from "@/props/ModelIfcProps";
 import FreeControlElements from "../bim-viewer/FreeControlElements";
+import LogoSection from "./LogoSection";
 
 
 
@@ -56,13 +57,7 @@ const HeaderViewer: React.FC<ModelIfcProps> = (
   <div className="flex flex-col gap-2">
     
     {/* Logo Section */}
-    <div className="flex items-center justify-between text-purple-500 text-xl font-bold gap-2">
-      <div className="flex items-center gap-2">
-        <FaCubes />
-        <span className="hidden sm:inline">DeepBIM</span>
-        <span className="text-xs text-gray-400 hidden md:inline">Powered by Nissan</span>
-      </div>
-    </div>
+    <LogoSection/>
 
 {/* Toolbar Section */}
 <div className="max-h-48 overflow-y-auto overflow-x-hidden">

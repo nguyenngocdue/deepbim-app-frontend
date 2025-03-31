@@ -18,6 +18,7 @@ import { Route as authSignInImport } from './routes/(auth)/sign-in'
 import { Route as authOtpImport } from './routes/(auth)/otp'
 import { Route as auth500Import } from './routes/(auth)/500'
 import { Route as AuthenticatedViewerIndexImport } from './routes/_authenticated/viewer/index'
+import { Route as AuthenticatedUploadIndexImport } from './routes/_authenticated/upload/index'
 import { Route as AuthenticatedBimViewerUtWebglClippingV2Import } from './routes/_authenticated/bim-viewer-ut/webgl-clipping-v2'
 import { Route as AuthenticatedBimViewerUtWebglClippingV1Import } from './routes/_authenticated/bim-viewer-ut/webgl-clipping-v1'
 import { Route as AuthenticatedBimViewerUtWebglClippingStencilIfcImport } from './routes/_authenticated/bim-viewer-ut/webgl-clipping-stencil-ifc'
@@ -253,6 +254,12 @@ const AuthenticatedAppsIndexLazyRoute = AuthenticatedAppsIndexLazyImport.update(
 const AuthenticatedViewerIndexRoute = AuthenticatedViewerIndexImport.update({
   id: '/viewer/',
   path: '/viewer/',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+
+const AuthenticatedUploadIndexRoute = AuthenticatedUploadIndexImport.update({
+  id: '/upload/',
+  path: '/upload/',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 
@@ -623,6 +630,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSettingsNotificationsLazyImport
       parentRoute: typeof AuthenticatedSettingsRouteLazyImport
     }
+    '/_authenticated/upload/': {
+      id: '/_authenticated/upload/'
+      path: '/upload'
+      fullPath: '/upload'
+      preLoaderRoute: typeof AuthenticatedUploadIndexImport
+      parentRoute: typeof AuthenticatedRouteImport
+    }
     '/_authenticated/viewer/': {
       id: '/_authenticated/viewer/'
       path: '/viewer'
@@ -719,6 +733,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedBimViewerUtIfcLoaderLazyRoute: typeof AuthenticatedBimViewerUtIfcLoaderLazyRoute
   AuthenticatedBimViewerUtInstancedMeshLazyRoute: typeof AuthenticatedBimViewerUtInstancedMeshLazyRoute
   AuthenticatedBimViewerUtViewerLazyRoute: typeof AuthenticatedBimViewerUtViewerLazyRoute
+  AuthenticatedUploadIndexRoute: typeof AuthenticatedUploadIndexRoute
   AuthenticatedViewerIndexRoute: typeof AuthenticatedViewerIndexRoute
   AuthenticatedAppsIndexLazyRoute: typeof AuthenticatedAppsIndexLazyRoute
   AuthenticatedChatsIndexLazyRoute: typeof AuthenticatedChatsIndexLazyRoute
@@ -755,6 +770,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
     AuthenticatedBimViewerUtInstancedMeshLazyRoute,
   AuthenticatedBimViewerUtViewerLazyRoute:
     AuthenticatedBimViewerUtViewerLazyRoute,
+  AuthenticatedUploadIndexRoute: AuthenticatedUploadIndexRoute,
   AuthenticatedViewerIndexRoute: AuthenticatedViewerIndexRoute,
   AuthenticatedAppsIndexLazyRoute: AuthenticatedAppsIndexLazyRoute,
   AuthenticatedChatsIndexLazyRoute: AuthenticatedChatsIndexLazyRoute,
@@ -797,6 +813,7 @@ export interface FileRoutesByFullPath {
   '/settings/appearance': typeof AuthenticatedSettingsAppearanceLazyRoute
   '/settings/display': typeof AuthenticatedSettingsDisplayLazyRoute
   '/settings/notifications': typeof AuthenticatedSettingsNotificationsLazyRoute
+  '/upload': typeof AuthenticatedUploadIndexRoute
   '/viewer': typeof AuthenticatedViewerIndexRoute
   '/apps': typeof AuthenticatedAppsIndexLazyRoute
   '/chats': typeof AuthenticatedChatsIndexLazyRoute
@@ -835,6 +852,7 @@ export interface FileRoutesByTo {
   '/settings/appearance': typeof AuthenticatedSettingsAppearanceLazyRoute
   '/settings/display': typeof AuthenticatedSettingsDisplayLazyRoute
   '/settings/notifications': typeof AuthenticatedSettingsNotificationsLazyRoute
+  '/upload': typeof AuthenticatedUploadIndexRoute
   '/viewer': typeof AuthenticatedViewerIndexRoute
   '/apps': typeof AuthenticatedAppsIndexLazyRoute
   '/chats': typeof AuthenticatedChatsIndexLazyRoute
@@ -877,6 +895,7 @@ export interface FileRoutesById {
   '/_authenticated/settings/appearance': typeof AuthenticatedSettingsAppearanceLazyRoute
   '/_authenticated/settings/display': typeof AuthenticatedSettingsDisplayLazyRoute
   '/_authenticated/settings/notifications': typeof AuthenticatedSettingsNotificationsLazyRoute
+  '/_authenticated/upload/': typeof AuthenticatedUploadIndexRoute
   '/_authenticated/viewer/': typeof AuthenticatedViewerIndexRoute
   '/_authenticated/apps/': typeof AuthenticatedAppsIndexLazyRoute
   '/_authenticated/chats/': typeof AuthenticatedChatsIndexLazyRoute
@@ -919,6 +938,7 @@ export interface FileRouteTypes {
     | '/settings/appearance'
     | '/settings/display'
     | '/settings/notifications'
+    | '/upload'
     | '/viewer'
     | '/apps'
     | '/chats'
@@ -956,6 +976,7 @@ export interface FileRouteTypes {
     | '/settings/appearance'
     | '/settings/display'
     | '/settings/notifications'
+    | '/upload'
     | '/viewer'
     | '/apps'
     | '/chats'
@@ -996,6 +1017,7 @@ export interface FileRouteTypes {
     | '/_authenticated/settings/appearance'
     | '/_authenticated/settings/display'
     | '/_authenticated/settings/notifications'
+    | '/_authenticated/upload/'
     | '/_authenticated/viewer/'
     | '/_authenticated/apps/'
     | '/_authenticated/chats/'
@@ -1078,6 +1100,7 @@ export const routeTree = rootRoute
         "/_authenticated/bim-viewer-ut/ifc-loader",
         "/_authenticated/bim-viewer-ut/instanced-mesh",
         "/_authenticated/bim-viewer-ut/viewer",
+        "/_authenticated/upload/",
         "/_authenticated/viewer/",
         "/_authenticated/apps/",
         "/_authenticated/chats/",
@@ -1201,6 +1224,10 @@ export const routeTree = rootRoute
     "/_authenticated/settings/notifications": {
       "filePath": "_authenticated/settings/notifications.lazy.tsx",
       "parent": "/_authenticated/settings"
+    },
+    "/_authenticated/upload/": {
+      "filePath": "_authenticated/upload/index.tsx",
+      "parent": "/_authenticated"
     },
     "/_authenticated/viewer/": {
       "filePath": "_authenticated/viewer/index.tsx",

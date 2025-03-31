@@ -44,7 +44,7 @@ const UploadModel: React.FC<UploadModelProps> = ({ onToggle, isActive }) => {
                 };
             };
             reader.readAsArrayBuffer(file);
-            console.log("Selected file:", file);
+            // console.log("Selected file:", file);
 
         } else {
             console.log("No file selected");

@@ -28,6 +28,8 @@ import { useFreeControlElements } from "@/features/bim-viewer/useFreeControlElem
 import { usePlaneHover } from "@/features/bim-viewer/usePlaneHover";
 import { useSetViewPoint } from "@/features/bim-viewer/useSetViewPoint";
 import { useCoordinateSystem } from "@/features/bim-viewer/useCoordinateSystem";
+import LoadingOverlay from "./common/LoadingOverlay";
+import UploadModal from "./common/UploadModal";
 
 THREE.BufferGeometry.prototype.computeBoundsTree = computeBoundsTree;
 THREE.BufferGeometry.prototype.disposeBoundsTree = disposeBoundsTree;
@@ -87,11 +89,13 @@ const ModelIfc: React.FC<ModelIfcProps> = ({
     };
   }, [isOrthoPerspective]);
 
-  useEffect(() => {
-    if (isWorldReady && !selectedFile) {
-      useIfcLoader({ worldRef, componentRef, modelRef, boxHelperRef });
-    }
-  }, [isWorldReady]);
+  const loading = useIfcLoader({
+    worldRef,
+    componentRef,
+    modelRef,
+    boxHelperRef,
+    selectedFile,
+  });
 
   useEffect(() => {
     useHighlightSetup({ isHighlightEnabled, componentRef, worldRef });
@@ -150,12 +154,25 @@ const ModelIfc: React.FC<ModelIfcProps> = ({
   useSetViewPoint({isFitView,  componentRef, worldRef, ifcContainerRef, modelRef });
   useCoordinateSystem({coordinateSysActive, worldRef});
 
+  const showUploadModal = !selectedFile; 
   
-  
-
-  
-  return (
+   return (
     <div className="relative w-screen h-screen">
+      {/* Upload Modal */}
+      {/* {showUploadModal && (
+        <UploadModal
+          worldRef={worldRef}
+          componentRef={componentRef}
+          modelRef={modelRef}
+          boxHelperRef={boxHelperRef}
+          file={selectedFile}
+        />
+      )} */}
+
+      {/* Loading Overlay */}
+      {/* {selectedFile && <LoadingOverlay loading={true} />} */}
+
+      {/* Viewer Container */}
       <div ref={ifcContainerRef} className="w-full h-full" />
     </div>
   );
