@@ -82,9 +82,6 @@ export function drawTrianglesFromFaces(
   }
 
 
-
-// util.ts
-
 export function highlightTriangleFace(intersect: THREE.Intersection, scene: THREE.Scene, color = 0x00FF00) {
   if (!intersect.face || !intersect.object) return;
 
@@ -128,11 +125,11 @@ export function highlightTriangleFace(intersect: THREE.Intersection, scene: THRE
 
 
 export function highlightRectangleOnSurface(
-  intersect: THREE.Intersection, 
-  scene: THREE.Scene, 
-  previousHighlight: THREE.Mesh | null, 
-  color = 0xff0000, 
-  size = 0.2
+  intersect: THREE.Intersection,
+  scene: THREE.Scene,
+  previousHighlight: THREE.Mesh | null,
+  size = 0.2,
+  color = 0x00FF00
 ) {
   if (!intersect.face || !intersect.object) return previousHighlight;
 
@@ -157,10 +154,14 @@ export function highlightRectangleOnSurface(
   const vertexB = new THREE.Vector3().fromBufferAttribute(positionAttribute, intersect.face.b);
   const vertexC = new THREE.Vector3().fromBufferAttribute(positionAttribute, intersect.face.c);
 
-  // Chuyển sang world space trước khi tính toán
-  const matrixWorld = intersect.object instanceof THREE.InstancedMesh && intersect.instanceId !== undefined
-    ? intersect.object.getMatrixAt(intersect.instanceId, new THREE.Matrix4()).multiply(intersect.object.matrixWorld)
-    : intersect.object.matrixWorld;
+  // Tạo matrix world chuẩn xác cho InstancedMesh hoặc Mesh thường
+  const matrixWorld = new THREE.Matrix4();
+  if (intersect.instanceId !== undefined && intersect.object instanceof THREE.InstancedMesh) {
+    intersect.object.getMatrixAt(intersect.instanceId, matrixWorld);
+    matrixWorld.multiply(intersect.object.matrixWorld);
+  } else {
+    matrixWorld.copy(intersect.object.matrixWorld);
+  }
 
   vertexA.applyMatrix4(matrixWorld);
   vertexB.applyMatrix4(matrixWorld);
