@@ -27,6 +27,7 @@ import FreeControlElements from "../bim-viewer/FreeControlElements";
 const HeaderViewer: React.FC<ModelIfcProps> = (
   {
     onToggle,
+    selectedFile,
     sectionActive,
     coordinateSysActive,
     handleFileSelect,
@@ -70,12 +71,12 @@ const HeaderViewer: React.FC<ModelIfcProps> = (
       <FaUserCog className="text-lg" />
     </Button>
     <Separator orientation="vertical" className="h-6" />
-    <UploadModel onToggle={handleFileSelect} isActive={coordinateSysActive} />
+    <UploadModel onToggle={handleFileSelect} isActive={handleFileSelect} />
     <Separator orientation="vertical" className="h-6" />
     <ViewFit onToggle={() => onToggle("isFitView")} isActive={isFitView} />
+    <CoordinateSystem onToggle={() => onToggle("coordinateSysActive")} isActive={coordinateSysActive} />
     <CameraSetting onToggle={() => onToggle("isOrthoPerspective")} isActive={isOrthoPerspective} />
     {/* <SectionBox onToggle={() => onToggle("sectionActive")} isActive={sectionActive} /> */}
-    <CoordinateSystem onToggle={() => onToggle("coordinateSysActive")} isActive={coordinateSysActive} />
     {/* <HighlightElement onToggle={() => onToggle("isHighlightEnabled")} isActive={isHighlightEnabled} /> */}
     <ClippingEdges onToggle={() => onToggle("isClippingEdges")} isActive={isClippingEdges} />
     <EdgeMeasurement onToggle={() => onToggle("isEdgeMeasurement")} isActive={isEdgeMeasurement} />

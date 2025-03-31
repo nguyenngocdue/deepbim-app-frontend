@@ -64,7 +64,6 @@ const MainViewer: React.FC = () => {
                 isFitView={states.isFitView}
                 isOrthoPerspective={states.isOrthoPerspective}
                 sectionActive={states.sectionActive}
-                coordinateSyssActive={states.coordinateSyssActive}
                 handleFileSelect={handleFileSelect}
                 coordinateSysActive={states.coordinateSysActive}
                 isHighlightEnabled={states.isHighlightEnabled}
@@ -86,7 +85,6 @@ const MainViewer: React.FC = () => {
           <ModelIfc 
             sectionActive={states.sectionActive} 
             isFitView={states.isFitView}
-            coordinateSyssActive={states.coordinateSyssActive} 
             isOrthoPerspective={states.isOrthoPerspective}
             selectedFile={selectedFile} 
             onFileSelect={handleFileSelect}

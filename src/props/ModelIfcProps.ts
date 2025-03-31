@@ -6,7 +6,6 @@ export interface ModelIfcProps {
     onFileSelect: (filePath: Uint8Array | null) => void;
     sectionActive: boolean;
     isOrthoPerspective: boolean;
-    coordinateSyssActive: boolean;
     coordinateSysActive: boolean;
     isHighlightEnabled: boolean;
     isClippingEdges: boolean;

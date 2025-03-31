@@ -71,19 +71,22 @@ export const addAxesWithTextLabelsToScene = async (
     // Add text labels to the scene
     for (const { text, position, color } of labels) {
         const label = await createTextLabel(text, position, color, textSize);
+        label.name = "coordinateAxisLabel";
         world.scene.three.add(label);
     }
 };
 
-export const removeAxesWithTextLabelsFromScene = (scene: THREE.Scene) => {
-    const axesHelper = scene.getObjectByName("axesHelper");
+export const removeAxesWithTextLabelsFromScene = (world: THREE.Scene) => {
+    if(!world) return;
+    const scene = world.scene.three;
+    const axesHelper = world.scene.three.children.find(child => child instanceof THREE.AxesHelper);
     if (axesHelper) {
         scene.remove(axesHelper);
     }
-
+console.log(scene)
     // Xóa các nhãn văn bản (text labels)
     scene.children.forEach((child) => {
-        if (child.name.startsWith("axisLabel")) {
+        if (child.name.startsWith("coordinateAxisLabel")) {
             scene.remove(child);
         }
     });

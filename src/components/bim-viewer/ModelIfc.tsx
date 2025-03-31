@@ -27,6 +27,7 @@ import { useSectionBox } from "@/features/bim-viewer/useSectionBox";
 import { useFreeControlElements } from "@/features/bim-viewer/useFreeControlElements";
 import { usePlaneHover } from "@/features/bim-viewer/usePlaneHover";
 import { useSetViewPoint } from "@/features/bim-viewer/useSetViewPoint";
+import { useCoordinateSystem } from "@/features/bim-viewer/useCoordinateSystem";
 
 THREE.BufferGeometry.prototype.computeBoundsTree = computeBoundsTree;
 THREE.BufferGeometry.prototype.disposeBoundsTree = disposeBoundsTree;
@@ -35,7 +36,7 @@ THREE.Mesh.prototype.raycast = acceleratedRaycast;
 
 const ModelIfc: React.FC<ModelIfcProps> = ({
   isOrthoPerspective,
-  navigationMode,
+  coordinateSysActive,
   selectedFile,
   isHighlightEnabled,
   isClippingEdges,
@@ -128,8 +129,6 @@ const ModelIfc: React.FC<ModelIfcProps> = ({
     useAreaMeasurements({ haveAreaMeasureElements, componentRef, worldRef, ifcContainerRef, modelRef });
   }, [isWorldReady, haveAreaMeasureElements]);
 
-
-
   useEffect(() => {
     useAngleMeasurements({ haveAngleMeasurements, componentRef, worldRef, ifcContainerRef, modelRef });
   }, [isWorldReady, haveAngleMeasurements]);
@@ -149,6 +148,7 @@ const ModelIfc: React.FC<ModelIfcProps> = ({
 
   usePlaneHover({isPlaneHover , componentRef, worldRef, ifcContainerRef, modelRef });
   useSetViewPoint({isFitView,  componentRef, worldRef, ifcContainerRef, modelRef });
+  useCoordinateSystem({coordinateSysActive, worldRef});
 
   
   

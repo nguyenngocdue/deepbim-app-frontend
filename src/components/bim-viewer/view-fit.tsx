@@ -19,7 +19,7 @@ const ViewFit: React.FC<ViewFitProps> = ({ onToggle, isActive }) => {
                 showActiveColor={false}
                 inactiveColor=""
                 className=""
-                hoverTitle="ViewFit"
+                hoverTitle="View Fit"
             />
         </>
     )
