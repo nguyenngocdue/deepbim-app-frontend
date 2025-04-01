@@ -28,8 +28,8 @@ import { useFreeControlElements } from "@/features/bim-viewer/useFreeControlElem
 import { usePlaneHover } from "@/features/bim-viewer/usePlaneHover";
 import { useSetViewPoint } from "@/features/bim-viewer/useSetViewPoint";
 import { useCoordinateSystem } from "@/features/bim-viewer/useCoordinateSystem";
-import LoadingOverlay from "./common/LoadingOverlay";
-import UploadModal from "./common/UploadModal";
+import { useLocation } from "@tanstack/react-router";
+import IfcLoaderV2 from "./IfcLoaderV2";
 
 THREE.BufferGeometry.prototype.computeBoundsTree = computeBoundsTree;
 THREE.BufferGeometry.prototype.disposeBoundsTree = disposeBoundsTree;
@@ -64,6 +64,11 @@ const ModelIfc: React.FC<ModelIfcProps> = ({
   const transformControlsRef = useRef<TransformControls[]>([]);
   const gridRef= useRef<any | null>(null);
 
+  // define state of model
+  const location = useLocation();
+  let stateModel = location.state.state;
+
+
   const [isWorldReady, setIsWorldReady] = useState(false);
 
   useEffect(() => {
@@ -89,13 +94,6 @@ const ModelIfc: React.FC<ModelIfcProps> = ({
     };
   }, [isOrthoPerspective]);
 
-  const loading = useIfcLoader({
-    worldRef,
-    componentRef,
-    modelRef,
-    boxHelperRef,
-    selectedFile,
-  });
 
   useEffect(() => {
     useHighlightSetup({ isHighlightEnabled, componentRef, worldRef });
@@ -154,26 +152,21 @@ const ModelIfc: React.FC<ModelIfcProps> = ({
   useSetViewPoint({isFitView,  componentRef, worldRef, ifcContainerRef, modelRef });
   useCoordinateSystem({coordinateSysActive, worldRef});
 
-  const showUploadModal = !selectedFile; 
-  
    return (
     <div className="relative w-screen h-screen">
-      {/* Upload Modal */}
-      {/* {showUploadModal && (
-        <UploadModal
+      <div ref={ifcContainerRef} className="w-full h-full" />
+      {
+       stateModel == 'example' && 
+       <IfcLoaderV2
+          urlFile='/ifc/Archicad.ifc'
+          state={{ example: true }}
           worldRef={worldRef}
           componentRef={componentRef}
           modelRef={modelRef}
-          boxHelperRef={boxHelperRef}
-          file={selectedFile}
         />
-      )} */}
+      }
 
-      {/* Loading Overlay */}
-      {/* {selectedFile && <LoadingOverlay loading={true} />} */}
 
-      {/* Viewer Container */}
-      <div ref={ifcContainerRef} className="w-full h-full" />
     </div>
   );
 };

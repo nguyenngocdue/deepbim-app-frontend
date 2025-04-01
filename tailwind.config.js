@@ -65,12 +65,48 @@ export default {
   			},
   			primary: {
   				DEFAULT: 'hsl(var(--primary))',
-  				foreground: 'hsl(var(--primary-foreground))'
+  				foreground: 'hsl(var(--primary-foreground))',
+				50: 'var(--color-primary-50)',
+				100: 'var(--color-primary-100)',
+				200: 'var(--color-primary-200)',
+				300: 'var(--color-primary-300)',
+				400: 'var(--color-primary-400)',
+				500: 'var(--color-primary-500)',
+				600: 'var(--color-primary-600)',
+				700: 'var(--color-primary-700)',
+				800: 'var(--color-primary-800)',
+				900: 'var(--color-primary-900)',
   			},
   			secondary: {
   				DEFAULT: 'hsl(var(--secondary))',
-  				foreground: 'hsl(var(--secondary-foreground))'
+  				foreground: 'hsl(var(--secondary-foreground))',
+				50: 'var(--color-secondary-50)',
+				100: 'var(--color-secondary-100)',
+				200: 'var(--color-secondary-200)',
+				300: 'var(--color-secondary-300)',
+				400: 'var(--color-secondary-400)',
+				500: 'var(--color-secondary-500)',
+				600: 'var(--color-secondary-600)',
+				700: 'var(--color-secondary-700)',
+				800: 'var(--color-secondary-800)',
+				900: 'var(--color-secondary-900)',
   			},
+			logo: {
+				50:'var(--color-logo-50)'
+			},
+			  // Neutral Colors
+			  neutral: {
+				50: 'var(--color-neutral-50)',
+				100: 'var(--color-neutral-100)',
+				200: 'var(--color-neutral-200)',
+				300: 'var(--color-neutral-300)',
+				400: 'var(--color-neutral-400)',
+				500: 'var(--color-neutral-500)',
+				600: 'var(--color-neutral-600)',
+				700: 'var(--color-neutral-700)',
+				800: 'var(--color-neutral-800)',
+				900: 'var(--color-neutral-900)',
+			  },
   			muted: {
   				DEFAULT: 'hsl(var(--muted))',
   				foreground: 'hsl(var(--muted-foreground))'
@@ -105,6 +141,10 @@ export default {
   			}
   		},
   		keyframes: {
+			'spinSlow': {
+				'0%': { transform: 'rotate(0deg)' },
+				'100%': { transform: 'rotate(360deg)' },
+			  },
   			'accordion-down': {
   				from: {
   					height: '0'
@@ -123,8 +163,9 @@ export default {
   			}
   		},
   		animation: {
+			'spin-slow': 'spinSlow 2s linear infinite',
   			'accordion-down': 'accordion-down 0.2s ease-out',
-  			'accordion-up': 'accordion-up 0.2s ease-out'
+  			'accordion-up': 'accordion-up 0.2s ease-out',
   		}
   	}
   },

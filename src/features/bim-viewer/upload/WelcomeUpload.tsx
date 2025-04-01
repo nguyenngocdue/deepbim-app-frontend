@@ -1,12 +1,14 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { ModalHeader } from "./ModalHeader";
 import { Button } from "@/components/ui/button";
 import { Header } from "./Header";
 import HelpForm from "./HelpForm";
+import { useNavigate } from "@tanstack/react-router";
 
 const WelcomeUpload = () => {
     const [theme, setTheme] = useState<"light" | "dark">("light");
     const [showHelpForm, setShowHelpForm] = useState(false);
+    const navigate = useNavigate({ from: "/" });
 
     useEffect(() => {
         const savedTheme = localStorage.getItem("theme") || "light";
@@ -32,6 +34,13 @@ const WelcomeUpload = () => {
         }
     };
 
+    const handleNavigate = (path: string, state?: any) => {
+        navigate({ 
+            to: path,
+            state: state,
+        });
+      };
+
     return (
         <div className={`relative h-screen flex flex-col ${theme === "dark" ? "bg-gray-900" : "bg-gray-200"}`}>
             <Header onToggleTheme={toggleTheme} className={theme === "dark" ? "bg-gray-800" : "bg-gray-100"} />
@@ -49,7 +58,9 @@ const WelcomeUpload = () => {
                         <Button className="mt-4">View your 3D model</Button>
                     </div>
                     <div className="grid grid-cols-2 gap-4 mt-6">
-                        <Button className="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 py-2 px-4 rounded-lg transition hover:bg-gray-300 dark:hover:bg-gray-600">Try IFC (.ifc)</Button>
+                        <Button className="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 py-2 px-4 rounded-lg transition hover:bg-gray-300 dark:hover:bg-gray-600"
+                            onClick={() => handleNavigate("/example-model/ifc", { state: "example" })}
+                        >Try IFC (.ifc)</Button>
                         <Button className="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 py-2 px-4 rounded-lg transition hover:bg-gray-300 dark:hover:bg-gray-600">Try BIM + PointCloud (.ifc + .xkt)</Button>
                         <Button className="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 py-2 px-4 rounded-lg transition hover:bg-gray-300 dark:hover:bg-gray-600">Try LiDAR Scan (.laz)</Button>
                         <Button className="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 py-2 px-4 rounded-lg transition hover:bg-gray-300 dark:hover:bg-gray-600">Try Textured (.glb)</Button>
@@ -58,12 +69,12 @@ const WelcomeUpload = () => {
             </div>
 
 
-            <button
-                className="fixed bottom-6 left-6 rounded-full p-4 shadow-lg transition bg-purple-600 hover:bg-purple-800 text-white"
+            <Button
+                className="fixed bottom-6 left-6 rounded-full p-4 shadow-lg transition bg-logo-50 hover:bg-purple-800 text-white"
                 onClick={() => setShowHelpForm(true)}
             >
-                {!showHelpForm  ? "Need help" : ""}
-            </button>
+                {!showHelpForm  ? <span>Need help</span> : ""}
+            </Button>
 
             {showHelpForm && <HelpForm onClose={() => setShowHelpForm(false)} />}
 

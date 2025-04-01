@@ -17,6 +17,7 @@ import { Route as AuthenticatedRouteImport } from './routes/_authenticated/route
 import { Route as authSignInImport } from './routes/(auth)/sign-in'
 import { Route as authOtpImport } from './routes/(auth)/otp'
 import { Route as auth500Import } from './routes/(auth)/500'
+import { Route as ExampleModelIfcIndexImport } from './routes/example-model/ifc/index'
 import { Route as AuthenticatedViewerIndexImport } from './routes/_authenticated/viewer/index'
 import { Route as AuthenticatedUploadIndexImport } from './routes/_authenticated/upload/index'
 import { Route as AuthenticatedBimViewerUtWebglClippingV2Import } from './routes/_authenticated/bim-viewer-ut/webgl-clipping-v2'
@@ -250,6 +251,12 @@ const AuthenticatedAppsIndexLazyRoute = AuthenticatedAppsIndexLazyImport.update(
 ).lazy(() =>
   import('./routes/_authenticated/apps/index.lazy').then((d) => d.Route),
 )
+
+const ExampleModelIfcIndexRoute = ExampleModelIfcIndexImport.update({
+  id: '/example-model/ifc/',
+  path: '/example-model/ifc/',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const AuthenticatedViewerIndexRoute = AuthenticatedViewerIndexImport.update({
   id: '/viewer/',
@@ -644,6 +651,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedViewerIndexImport
       parentRoute: typeof AuthenticatedRouteImport
     }
+    '/example-model/ifc/': {
+      id: '/example-model/ifc/'
+      path: '/example-model/ifc'
+      fullPath: '/example-model/ifc'
+      preLoaderRoute: typeof ExampleModelIfcIndexImport
+      parentRoute: typeof rootRoute
+    }
     '/_authenticated/apps/': {
       id: '/_authenticated/apps/'
       path: '/apps'
@@ -815,6 +829,7 @@ export interface FileRoutesByFullPath {
   '/settings/notifications': typeof AuthenticatedSettingsNotificationsLazyRoute
   '/upload': typeof AuthenticatedUploadIndexRoute
   '/viewer': typeof AuthenticatedViewerIndexRoute
+  '/example-model/ifc': typeof ExampleModelIfcIndexRoute
   '/apps': typeof AuthenticatedAppsIndexLazyRoute
   '/chats': typeof AuthenticatedChatsIndexLazyRoute
   '/help-center': typeof AuthenticatedHelpCenterIndexLazyRoute
@@ -854,6 +869,7 @@ export interface FileRoutesByTo {
   '/settings/notifications': typeof AuthenticatedSettingsNotificationsLazyRoute
   '/upload': typeof AuthenticatedUploadIndexRoute
   '/viewer': typeof AuthenticatedViewerIndexRoute
+  '/example-model/ifc': typeof ExampleModelIfcIndexRoute
   '/apps': typeof AuthenticatedAppsIndexLazyRoute
   '/chats': typeof AuthenticatedChatsIndexLazyRoute
   '/help-center': typeof AuthenticatedHelpCenterIndexLazyRoute
@@ -897,6 +913,7 @@ export interface FileRoutesById {
   '/_authenticated/settings/notifications': typeof AuthenticatedSettingsNotificationsLazyRoute
   '/_authenticated/upload/': typeof AuthenticatedUploadIndexRoute
   '/_authenticated/viewer/': typeof AuthenticatedViewerIndexRoute
+  '/example-model/ifc/': typeof ExampleModelIfcIndexRoute
   '/_authenticated/apps/': typeof AuthenticatedAppsIndexLazyRoute
   '/_authenticated/chats/': typeof AuthenticatedChatsIndexLazyRoute
   '/_authenticated/help-center/': typeof AuthenticatedHelpCenterIndexLazyRoute
@@ -940,6 +957,7 @@ export interface FileRouteTypes {
     | '/settings/notifications'
     | '/upload'
     | '/viewer'
+    | '/example-model/ifc'
     | '/apps'
     | '/chats'
     | '/help-center'
@@ -978,6 +996,7 @@ export interface FileRouteTypes {
     | '/settings/notifications'
     | '/upload'
     | '/viewer'
+    | '/example-model/ifc'
     | '/apps'
     | '/chats'
     | '/help-center'
@@ -1019,6 +1038,7 @@ export interface FileRouteTypes {
     | '/_authenticated/settings/notifications'
     | '/_authenticated/upload/'
     | '/_authenticated/viewer/'
+    | '/example-model/ifc/'
     | '/_authenticated/apps/'
     | '/_authenticated/chats/'
     | '/_authenticated/help-center/'
@@ -1041,6 +1061,7 @@ export interface RootRouteChildren {
   errors404LazyRoute: typeof errors404LazyRoute
   errors500LazyRoute: typeof errors500LazyRoute
   errors503LazyRoute: typeof errors503LazyRoute
+  ExampleModelIfcIndexRoute: typeof ExampleModelIfcIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -1056,6 +1077,7 @@ const rootRouteChildren: RootRouteChildren = {
   errors404LazyRoute: errors404LazyRoute,
   errors500LazyRoute: errors500LazyRoute,
   errors503LazyRoute: errors503LazyRoute,
+  ExampleModelIfcIndexRoute: ExampleModelIfcIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -1079,7 +1101,8 @@ export const routeTree = rootRoute
         "/(errors)/403",
         "/(errors)/404",
         "/(errors)/500",
-        "/(errors)/503"
+        "/(errors)/503",
+        "/example-model/ifc/"
       ]
     },
     "/_authenticated": {
@@ -1232,6 +1255,9 @@ export const routeTree = rootRoute
     "/_authenticated/viewer/": {
       "filePath": "_authenticated/viewer/index.tsx",
       "parent": "/_authenticated"
+    },
+    "/example-model/ifc/": {
+      "filePath": "example-model/ifc/index.ts"
     },
     "/_authenticated/apps/": {
       "filePath": "_authenticated/apps/index.lazy.tsx",
