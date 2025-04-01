@@ -48,13 +48,13 @@ const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({
       };
 
       // Chạy mô phỏng tiến trình song song với việc tải file
-      const loadingPromise = simulateProgress();
+      // const loadingPromise = simulateProgress();
 
       // Load model thực tế
       const model = await fragmentIfcLoader.load(buffer);
 
       // Đợi mô phỏng tiến trình hoàn tất
-      await loadingPromise;
+      // await loadingPromise;
 
       // Hoàn tất loading
       model.position.set(0, 0, 0);

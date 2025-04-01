@@ -40,7 +40,7 @@ export function useGrids({
     // Điều chỉnh fade dựa trên chế độ camera
     if (worldRef.current) {
       const camera = worldRef.current.camera as OBC.BaseCamera;
-      if (camera) grid.fade = camera.projection.current === "Perspective";
+      // if (camera) grid.fade = camera.projection.current === "Perspective";
     }
   }
 
