@@ -30,6 +30,7 @@ import { useSetViewPoint } from "@/features/bim-viewer/useSetViewPoint";
 import { useCoordinateSystem } from "@/features/bim-viewer/useCoordinateSystem";
 import { useLocation } from "@tanstack/react-router";
 import IfcLoaderV2 from "./IfcLoaderV2";
+import { UploadState } from "@/props/UploadState";
 
 THREE.BufferGeometry.prototype.computeBoundsTree = computeBoundsTree;
 THREE.BufferGeometry.prototype.disposeBoundsTree = disposeBoundsTree;
@@ -39,7 +40,6 @@ THREE.Mesh.prototype.raycast = acceleratedRaycast;
 const ModelIfc: React.FC<ModelIfcProps> = ({
   isOrthoPerspective,
   coordinateSysActive,
-  selectedFile,
   isHighlightEnabled,
   isClippingEdges,
   isEdgeMeasurement,
@@ -60,14 +60,14 @@ const ModelIfc: React.FC<ModelIfcProps> = ({
   const worldRef = useRef<any>(null);
   const componentRef = useRef<any>(null);
   const modelRef = useRef<THREE.Object3D | null>(null);
-  const boxHelperRef = useRef<THREE.BoxHelper | null>(null);
   const transformControlsRef = useRef<TransformControls[]>([]);
   const gridRef= useRef<any | null>(null);
 
   // define state of model
   const location = useLocation();
-  let stateModel = location.state.state;
-
+  const state = location.state as unknown as UploadState;
+  const file = state.file;
+  let statusUpload = state.status;
 
   const [isWorldReady, setIsWorldReady] = useState(false);
 
@@ -151,22 +151,30 @@ const ModelIfc: React.FC<ModelIfcProps> = ({
   usePlaneHover({isPlaneHover , componentRef, worldRef, ifcContainerRef, modelRef });
   useSetViewPoint({isFitView,  componentRef, worldRef, ifcContainerRef, modelRef });
   useCoordinateSystem({coordinateSysActive, worldRef});
-
+console.log(state)
    return (
     <div className="relative w-screen h-screen">
-      <div ref={ifcContainerRef} className="w-full h-full" />
       {
-       stateModel == 'example' && 
+       statusUpload == 'example' && 
        <IfcLoaderV2
-          urlFile='/ifc/Archicad.ifc'
+          source='/ifc/small.ifc'
           state={{ example: true }}
           worldRef={worldRef}
           componentRef={componentRef}
           modelRef={modelRef}
         />
       }
-
-
+      {
+        statusUpload == 'upload_by_user' &&
+        <IfcLoaderV2
+          source={file}
+          state={{ example: true }}
+          worldRef={worldRef}
+          componentRef={componentRef}
+          modelRef={modelRef}
+        />
+      }
+      <div ref={ifcContainerRef} className="w-full h-full" />
     </div>
   );
 };

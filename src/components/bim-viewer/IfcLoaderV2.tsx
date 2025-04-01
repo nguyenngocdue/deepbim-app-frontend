@@ -5,13 +5,18 @@ import LoadingSpinner from "@/components/bim-viewer/loading-spinner";
 
 interface IfcLoaderV2Props {
   state?: any; // Truyền trạng thái tùy chỉnh
-  urlFile?: string; // Đường dẫn đến file IFC
-  worldRef: React.MutableRefObject<OBC.World | null>; // Ref đến world chính
-  componentRef: React.MutableRefObject<OBC.Components | null>; // Ref đến components chính
-  modelRef: React.MutableRefObject<THREE.Object3D | null>; // Ref đến model
+  source?: string | File; // Một prop duy nhất: có thể là URL (string) hoặc File
+  worldRef: React.RefObject<OBC.World | null>; // Ref đến world chính
+  componentRef: React.RefObject<OBC.Components | null>; // Ref đến components chính
+  modelRef: React.RefObject<THREE.Object3D | null>; // Ref đến model
 }
 
-const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({ urlFile, state, worldRef, componentRef, modelRef }) => {
+const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({
+  source,
+  worldRef,
+  componentRef,
+  modelRef,
+}) => {
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0); // Phần trăm tiến trình
 
@@ -84,15 +89,28 @@ const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({ urlFile, state, worldRef, com
     }
   }
 
-  /** Tải file IFC từ URL nếu có */
+  /** Tải file IFC từ source (URL hoặc File) */
   useEffect(() => {
-    if (urlFile) {
-      fetch(urlFile)
+    if (!source) return; // Không làm gì nếu source không có giá trị
+    // Trường hợp 1: source là File
+    if (source instanceof File) {
+      source
+        .arrayBuffer()
+        .then((buffer) => loadIfc(new Uint8Array(buffer)))
+        .catch((error) => console.error("Failed to read file:", error));
+    }
+    // Trường hợp 2: source là string (URL)
+    else if (typeof source === "string") {
+      fetch(source)
         .then((response) => response.arrayBuffer())
         .then((buffer) => loadIfc(new Uint8Array(buffer)))
         .catch((error) => console.error("Failed to load IFC file:", error));
     }
-  }, [urlFile]);
+    // Trường hợp khác: không làm gì hoặc báo lỗi
+    else {
+      console.warn("Invalid source type. Expected string (URL) or File.");
+    }
+  }, [source]); // Chỉ phụ thuộc vào source
 
   return (
     <>

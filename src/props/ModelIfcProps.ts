@@ -2,8 +2,6 @@ export interface ModelIfcProps {
     onToggle:any,
     handleFileSelect:any,
     navigationMode: "Orbit" | "FirstPerson" | "Plan";
-    selectedFile: Uint8Array | null;
-    onFileSelect: (filePath: Uint8Array | null) => void;
     sectionActive: boolean;
     isOrthoPerspective: boolean;
     coordinateSysActive: boolean;
