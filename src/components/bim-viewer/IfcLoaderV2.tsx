@@ -43,7 +43,7 @@ const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({
               }
               return prev + Math.random() * 10; // Tăng ngẫu nhiên
             });
-          }, 300);
+          }, 0); //300
         });
       };
 
