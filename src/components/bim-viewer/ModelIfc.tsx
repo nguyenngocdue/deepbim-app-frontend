@@ -68,7 +68,6 @@ const ModelIfc: React.FC<ModelIfcProps> = ({
   const state = location.state as unknown as UploadState;
   const file = state.file;
   let statusUpload = state.status;
-
   const [isWorldReady, setIsWorldReady] = useState(false);
 
   useEffect(() => {
@@ -78,21 +77,23 @@ const ModelIfc: React.FC<ModelIfcProps> = ({
     worldRef.current = world;
     gridRef.current = grid;
     setIsWorldReady(true);
-
+    
     const animate = () => {
       if (!worldRef.current || !worldRef.current.renderer) return;
       requestAnimationFrame(animate);
       worldRef.current.renderer.update();
     };
     animate();
-
+    
     // Cleanup
+    console.log(components)
     return () => {
       transformControlsRef.current.forEach((c) => c.dispose());
-      components.dispose();
+      // components.dispose();
       worldRef.current = null;
+      setIsWorldReady(false);
     };
-  }, [isOrthoPerspective]);
+  }, [isOrthoPerspective, haveGrids]);
 
 
   useEffect(() => {
@@ -151,7 +152,6 @@ const ModelIfc: React.FC<ModelIfcProps> = ({
   usePlaneHover({isPlaneHover , componentRef, worldRef, ifcContainerRef, modelRef });
   useSetViewPoint({isFitView,  componentRef, worldRef, ifcContainerRef, modelRef });
   useCoordinateSystem({coordinateSysActive, worldRef});
-console.log(state)
    return (
     <div className="relative w-screen h-screen">
       {

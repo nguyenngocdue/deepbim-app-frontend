@@ -40,19 +40,6 @@ const MainViewer: React.FC = () => {
     }));
 };
 
- // State và hàm xử lý file path
- const [selectedFile, setselectedFile] = useState<Uint8Array | null>(null);
- const handleFileSelect = (filePath: Uint8Array | null) => {
-     if (filePath) {
-         setselectedFile(filePath);
-         console.log("File path received:", filePath);
-     } else {
-         console.log("No file selected");
-     }
- };
-
-
-
   return (
     <ViewCubeProvider>
       <ViewCubeProvider2>
@@ -64,7 +51,6 @@ const MainViewer: React.FC = () => {
                 isFitView={states.isFitView}
                 isOrthoPerspective={states.isOrthoPerspective}
                 sectionActive={states.sectionActive}
-                handleFileSelect={handleFileSelect}
                 coordinateSysActive={states.coordinateSysActive}
                 isHighlightEnabled={states.isHighlightEnabled}
                 isClippingEdges={states.isClippingEdges}
@@ -86,8 +72,6 @@ const MainViewer: React.FC = () => {
             sectionActive={states.sectionActive} 
             isFitView={states.isFitView}
             isOrthoPerspective={states.isOrthoPerspective}
-            selectedFile={selectedFile} 
-            onFileSelect={handleFileSelect}
             coordinateSysActive={states.coordinateSysActive}
             isHighlightEnabled={states.isHighlightEnabled}
             isClippingEdges={states.isClippingEdges}

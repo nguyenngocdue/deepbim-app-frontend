@@ -28,7 +28,6 @@ import LogoSection from "./LogoSection";
 const HeaderViewer: React.FC<ModelIfcProps> = (
   {
     onToggle,
-    selectedFile,
     sectionActive,
     coordinateSysActive,
     handleFileSelect,
