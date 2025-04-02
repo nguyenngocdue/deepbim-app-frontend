@@ -1,6 +1,6 @@
 import React from 'react'
 import ElementToggle from './common/ElementToggle';
-import { RxDimensions } from "react-icons/rx";
+import { IoTabletLandscape } from "react-icons/io5";
 
 interface ClippingEdgesProps {
     onToggle: () => void; // Callback function to toggle the Section Box
@@ -13,12 +13,12 @@ const FaceMeasurement:React.FC<ClippingEdgesProps> = ({onToggle, isActive}) => {
          <ElementToggle
             onToggle={onToggle}
             isActive={isActive}
-            icon={isActive ? <RxDimensions  /> : <RxDimensions  />}
-            label={isActive ? "FaceMeasurement": "FaceMeasurement"}
+            icon={isActive ? <IoTabletLandscape  /> : <IoTabletLandscape  />}
+            label={isActive ? "": ""}
             activeColor="bg-gray-800 text-white bg-blue-400"
             inactiveColor=""
             className=""
-            hoverTitle="FaceMeasurement"
+            hoverTitle="Face Measurement"
          /> 
         </>
     )

@@ -69,18 +69,18 @@ const HeaderViewer: React.FC<ModelIfcProps> = (
     {/* <Separator orientation="vertical" className="h-6" /> */}
     <ViewFit onToggle={() => onToggle("isFitView")} isActive={isFitView} />
     <CoordinateSystem onToggle={() => onToggle("coordinateSysActive")} isActive={coordinateSysActive} />
-    <CameraSetting onToggle={() => onToggle("isOrthoPerspective")} isActive={isOrthoPerspective} />
-    {/* <SectionBox onToggle={() => onToggle("sectionActive")} isActive={sectionActive} /> */}
-    {/* <HighlightElement onToggle={() => onToggle("isHighlightEnabled")} isActive={isHighlightEnabled} /> */}
     <ClippingEdges onToggle={() => onToggle("isClippingEdges")} isActive={isClippingEdges} />
     <EdgeMeasurement onToggle={() => onToggle("isEdgeMeasurement")} isActive={isEdgeMeasurement} />
     <FaceMeasurement onToggle={() => onToggle("isFaceMeasurement")} isActive={isFaceMeasurement} />
-    <Grids onToggle={() => onToggle("haveGrids")} isActive={haveGrids} />
     <VolumeMeasurement onToggle={() => onToggle("hasVolumeMeasurement")} isActive={hasVolumeMeasurement} />
-    <PlansViews onToggle={() => onToggle("havePlansViews")} isActive={havePlansViews} />
     <LengthMeasurements onToggle={() => onToggle("haveLengthMeasurements")} isActive={haveLengthMeasurements} />
     <AreaMeasurements onToggle={() => onToggle("haveAreaMeasureElements")} isActive={haveAreaMeasureElements} />
     <AngleMeasurements onToggle={() => onToggle("haveAngleMeasurements")} isActive={haveAngleMeasurements} />
+    <CameraSetting onToggle={() => onToggle("isOrthoPerspective")} isActive={isOrthoPerspective} />
+    <Grids onToggle={() => onToggle("haveGrids")} isActive={haveGrids} />
+    {/* <SectionBox onToggle={() => onToggle("sectionActive")} isActive={sectionActive} /> */}
+    {/* <HighlightElement onToggle={() => onToggle("isHighlightEnabled")} isActive={isHighlightEnabled} /> */}
+    <PlansViews onToggle={() => onToggle("havePlansViews")} isActive={havePlansViews} />
     <WorldSettings onToggle={() => onToggle("haveWorldSettings")} isActive={haveWorldSettings} />
     {/* <OriginalWorldCamera onToggle={() => onToggle("isOriginalWorldCamera")} isActive={isOriginalWorldCamera} /> */}
     <FreeControlElements onToggle={() => onToggle("isFreeControlElements")} isActive={isFreeControlElements} />

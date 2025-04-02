@@ -1,13 +1,15 @@
 import React, { useEffect, useCallback, useRef } from "react";
 import * as OBC from "@thatopen/components";
 import * as OBF from "@thatopen/components-front";
-import { Box3, Vector3 } from "three";
+import * as THREE from 'three';
+
 
 interface IfcLoaderV2Props {
   source?: string | File; // URL (string) hoặc File
   worldRef: React.RefObject<OBC.World | null>;
   componentRef: React.RefObject<OBC.Components | null>;
   container: HTMLElement | null;
+  haveGrids: boolean;
 }
 
 const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({
@@ -15,6 +17,7 @@ const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({
   worldRef,
   componentRef,
   container,
+  haveGrids,
 }) => {
   // Tải và xử lý IFC Model
   const loadIfc = useCallback(
@@ -27,6 +30,18 @@ const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({
       try {
         const components = componentRef.current;
         const world = worldRef.current;
+
+
+        const worldGrid = components.get(OBC.Grids).create(world);
+        if(haveGrids) {
+          worldGrid.material.uniforms.uColor.value = new THREE.Color(0x999999);
+          worldGrid.material.uniforms.uSize1.value = 2;
+          worldGrid.material.uniforms.uSize2.value = 8;
+          worldGrid.visible = true;
+        }else{
+          worldGrid.visible = false;
+        }
+        
 
         // Khởi tạo Fragment Loader
         const fragmentIfcLoader = components.get(OBC.IfcLoader);
@@ -86,6 +101,8 @@ const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({
           }
         });
         await fragmentIfcLoader.load(buffer);
+
+        
 
         // Load model
       } catch (error) {

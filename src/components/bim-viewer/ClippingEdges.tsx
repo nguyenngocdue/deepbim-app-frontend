@@ -14,7 +14,7 @@ const ClippingEdges:React.FC<ClippingEdgesProps> = ({onToggle, isActive}) => {
             onToggle={onToggle}
             isActive={isActive}
             icon={isActive ? <GiCardboardBoxClosed /> : <GiCardboardBoxClosed />}
-            label={isActive ? "Clipping Edges": "Clipping Edges"}
+            label={isActive ? "": ""}
             activeColor="bg-gray-800 text-white bg-blue-400"
             inactiveColor=""
             className=""

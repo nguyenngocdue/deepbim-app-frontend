@@ -6,8 +6,7 @@ import { useHighlightSetup } from "@/features/bim-viewer/useHighlightSetup";
 
 export function InitializeWorld(
   container: HTMLDivElement,
-  // haveGrids: true,
-  // isOrthoPerspective: boolean = false
+  haveGrids: boolean,
 ) {
   const components = new OBC.Components();
   const worlds = components.get(OBC.Worlds);
@@ -29,17 +28,13 @@ export function InitializeWorld(
   //   orthoPerspectiveCamera.controls.setLookAt(30, 20, 30, 0, 0, 0);
   // }
 
-  const worldGrid = components.get(OBC.Grids).create(world);
-  worldGrid.material.uniforms.uColor.value = new THREE.Color(0x999999);
-  worldGrid.material.uniforms.uSize1.value = 2;
-  worldGrid.material.uniforms.uSize2.value = 8;
   // Thiết lập Scene
   world.scene.setup();
   world.renderer.postproduction.enabled = true;
   components.init();
 
+
   const isHighlightEnabled = true;
   useHighlightSetup({isHighlightEnabled, components, world})
-
   return { world, components };
 }

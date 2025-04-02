@@ -33,6 +33,10 @@ export function useClippingEdges({
       console.warn("FragmentsGroup not found");
       return;
     }    
+
+    const highlighter = component.get(OBCF.Highlighter);
+    highlighter.zoomToSelection=false;
+
     const casters = component.get(OBC.Raycasters);
     casters.enabled = true;
     const box3 = new THREE.Box3().setFromObject(fragmentsGroup);

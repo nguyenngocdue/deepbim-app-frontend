@@ -2,6 +2,7 @@ import * as OBCF from "@thatopen/components-front";
 import * as OBC from "@thatopen/components";
 import React from "react";
 import * as THREE from 'three'
+import { GetFragmentsGroup } from "@/lib/FragmentUtils";
 
 interface LengthMeasurementsProps {
   haveLengthMeasurements: boolean;
@@ -16,39 +17,39 @@ export function useLengthMeasurements({
   componentRef,
   worldRef,
   ifcContainerRef,
-  modelRef,
 }: LengthMeasurementsProps): void {
   const components = componentRef.current;
   const world = worldRef.current;
   const container = ifcContainerRef.current;
-  const model = modelRef.current;
 
-  if (!components || !world || !container || !model) return;
+  if (!components || !world || !container) return;
 
+  const dimensions = components.get(OBCF.LengthMeasurement);
   if (haveLengthMeasurements) {
-    for (const child of model.children) {
+    const fragmentsGroup = GetFragmentsGroup(world)
+    const highlighter = components.get(OBCF.Highlighter);
+    highlighter.enabled = false;
+
+    for (const child of fragmentsGroup!.children) {
       if (child instanceof THREE.Mesh) {
         world.meshes.add(child);
       }
     }
 
-    const dimensions = components.get(OBCF.LengthMeasurement);
     dimensions.world = world;
     dimensions.enabled = true;
     dimensions.snapDistance = 1;
-
     container.ondblclick = () => dimensions.create();
-    
     window.onkeydown = (event) => {
       if (event.code === "Delete" || event.code === "Backspace") {
         dimensions.delete();
       }
     };
 
-    
+
   } else {
-    const dimensions = components.get(OBCF.LengthMeasurement);
-      dimensions.enabled = false;
-      dimensions.deleteAll();
+    dimensions.world = world;
+    dimensions.enabled = false;
+    dimensions.deleteAll();
   }
 }

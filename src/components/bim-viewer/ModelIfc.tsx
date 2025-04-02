@@ -41,6 +41,7 @@ const ModelIfc: React.FC<ModelIfcProps> = ({
   const worldRef = useRef<any>(null);
   const componentRef = useRef<any>(null);
   const modelRef = useRef<THREE.Object3D | null>(null);
+  const worldGridRef = useRef<any>(null);
 
   // Location & file state
   const location = useLocation();
@@ -90,7 +91,7 @@ const ModelIfc: React.FC<ModelIfcProps> = ({
   useEffect(() => {
     if (!ifcContainerRef.current) return;
 
-    const { world, components } = InitializeWorld(ifcContainerRef.current);
+    const { world, components } = InitializeWorld(ifcContainerRef.current, haveGrids);
     worldRef.current = world;
     componentRef.current = components;
 
@@ -99,7 +100,6 @@ const ModelIfc: React.FC<ModelIfcProps> = ({
 
     return () => {
       world?.dispose();
-      components?.dispose();
       setIsWorldReady(false);
     };
   }, [haveGrids]); // Re-init when grid changes
@@ -133,6 +133,7 @@ const ModelIfc: React.FC<ModelIfcProps> = ({
           worldRef={worldRef}
           componentRef={componentRef}
           container={ifcContainerRef.current}
+          haveGrids={haveGrids}
         />
       )}
       <div ref={ifcContainerRef} className="w-full h-full" />

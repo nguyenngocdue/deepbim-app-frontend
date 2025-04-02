@@ -16,23 +16,22 @@ export function useVolumeMeasurement({
   componentRef,
   worldRef,
   ifcContainerRef,
-  modelRef,
 }: VolumeMeasurementProps): void {
   const components = componentRef.current;
   const world = worldRef.current;
   const container = ifcContainerRef.current;
-  const model = modelRef.current;
 
-  if (!components || !world || !container || !model) return;
+  if (!components || !world || !container) return;
 
+  const dimensions = components.get(OBCF.VolumeMeasurement);
   if (hasVolumeMeasurement) {
-    const dimensions = components.get(OBCF.VolumeMeasurement);
+    
     dimensions.world = world;
     dimensions.enabled = true;
     container.ondblclick = () => dimensions.create();
 
     const highlighter = components.get(OBCF.Highlighter);
-    highlighter.setup({ world });
+    highlighter.zoomToSelection=false;
 
     highlighter.events.select.onHighlight.add((event) => {
       const volume = dimensions.getVolumeFromFragments(event);
@@ -46,7 +45,7 @@ export function useVolumeMeasurement({
     
     
   } else {
-    const dimensions = components.get(OBCF.VolumeMeasurement);
+      dimensions.world = world;
       dimensions.enabled = false;
       dimensions.deleteAll();
   }

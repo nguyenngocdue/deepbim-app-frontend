@@ -11,11 +11,11 @@ export function useViewerEnhancements({
   modelRef,
   featureFlags,
 }: any) {
-  const { haveGrids, havePlansViews, haveWorldSettings, isClippingEdges } = featureFlags;
+  const { haveGrids, havePlansViews, haveWorldSettings, isClippingEdges} = featureFlags;
 
   useEffect(() => {
     if (!isWorldReady) return;
-    // useGrids({ haveGrids, worldRef });
+    // useGrids({ haveGrids, worldGridRef });
     usePlaneViews({ havePlansViews, componentRef, worldRef, ifcContainerRef, modelRef });
     useWorldSettings({ haveWorldSettings, componentRef, worldRef, ifcContainerRef, modelRef });
     useClippingEdges({isClippingEdges , componentRef, worldRef, ifcContainerRef });

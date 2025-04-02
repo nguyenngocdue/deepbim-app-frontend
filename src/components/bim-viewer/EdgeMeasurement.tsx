@@ -14,11 +14,11 @@ const EdgeMeasurement:React.FC<ClippingEdgesProps> = ({onToggle, isActive}) => {
             onToggle={onToggle}
             isActive={isActive}
             icon={isActive ? <RxDimensions  /> : <RxDimensions  />}
-            label={isActive ? "EdgeMeasurement": "EdgeMeasurement"}
+            label={isActive ? "": ""}
             activeColor="bg-gray-800 text-white bg-blue-400"
             inactiveColor=""
             className=""
-            hoverTitle="EdgeMeasurement"
+            hoverTitle="Edge Measurement"
          /> 
         </>
     )

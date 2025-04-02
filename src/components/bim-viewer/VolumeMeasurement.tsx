@@ -14,11 +14,11 @@ const VolumeMeasurement:React.FC<VolumeMeasurementProps> = ({onToggle, isActive}
             onToggle={onToggle}
             isActive={isActive}
             icon={isActive ? <PiCubeFocusFill  /> : <PiCubeFocusFill  />}
-            label={isActive ? "VolumeMeasurement": "VolumeMeasurement"}
+            label={isActive ? "": ""}
             activeColor="bg-gray-800 text-white bg-blue-400"
             inactiveColor=""
             className=""
-            hoverTitle="VolumeMeasurement"
+            hoverTitle="Volume Measurement"
          /> 
         </>
     )
