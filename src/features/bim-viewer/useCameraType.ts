@@ -10,12 +10,10 @@ export  function useCameraType({
     
     const world = worldManager.getWorld();
     if ( !world ) return;
-    const projection = world.camera.projection; 
     if (isOrthoPerspective) {
-        // projection.set("Orthographic")
+        worldManager.changeCameraType(true);
     } else {
-        // worldManager.changeCameraType(true);
-        // projection.set("Perspective")
+        worldManager.changeCameraType(false);
     }
 
 }

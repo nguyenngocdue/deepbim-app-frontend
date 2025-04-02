@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as OBC from "@thatopen/components";
 import * as THREE from "three";
-import LoadingSpinner from "@/components/bim-viewer/loading-spinner";
+import LoadingSpinner from "@/components/bim-viewer/LoadingSpinner";
 import { OrbitControls } from "three/examples/jsm/Addons.js";
 import ViewCube from "./common/ViewCube";
 

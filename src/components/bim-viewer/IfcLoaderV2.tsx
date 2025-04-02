@@ -1,9 +1,7 @@
-import React, { useEffect, useCallback, useRef } from "react";
+import React, { useEffect, useCallback, useRef, useState } from "react";
 import * as OBC from "@thatopen/components";
 import * as OBF from "@thatopen/components-front";
-import * as THREE from 'three';
-import { gridManager } from "@/services/GridManager";
-
+import LoadingSpinner from "./LoadingSpinner"; // Import LoadingSpinner
 
 interface IfcLoaderV2Props {
   source?: string | File; // URL (string) hoặc File
@@ -20,6 +18,8 @@ const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({
   container,
   haveGrids,
 }) => {
+  const [isLoading, setIsLoading] = useState(false); // State để quản lý trạng thái loading
+
   // Tải và xử lý IFC Model
   const loadIfc = useCallback(
     async (buffer: Uint8Array, parsedData?: any) => {
@@ -31,8 +31,6 @@ const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({
       try {
         const components = componentRef.current;
         const world = worldRef.current;
-
-        // gridManager.createGrid(components, world);
 
         // Khởi tạo Fragment Loader
         const fragmentIfcLoader = components.get(OBC.IfcLoader);
@@ -47,10 +45,9 @@ const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({
         // Cấu hình IfcStreamer
         const tilesLoader = components.get(OBF.IfcStreamer);
         tilesLoader.world = world;
-        tilesLoader.culler.threshold = 50; // Tăng ngưỡng để giảm số lượng fragment render cùng lúc
-        tilesLoader.culler.maxHiddenTime = 5000; // Tăng thời gian giữ fragment trong bộ nhớ (5 giây)
-        tilesLoader.culler.maxLostTime = 20000; // Giảm thời gian giữ dữ liệu không dùng (20 giây)
-
+        tilesLoader.culler.threshold = 50;
+        tilesLoader.culler.maxHiddenTime = 5000;
+        tilesLoader.culler.maxLostTime = 20000;
 
         // Tạo culler
         const culler = components.get(OBC.Cullers).create(world);
@@ -61,30 +58,28 @@ const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({
           tilesLoader.culler.needsUpdate = true;
         });
 
-
         // Xử lý khi fragments được load
         fragments.onFragmentsLoaded.add(async (model) => {
           if (model.hasProperties) {
             await indexer.process(model);
             classifier.byEntity(model);
           }
-        
+
           if (!model.isStreamed) {
             for (const fragment of model.items) {
               world.meshes.add(fragment.mesh);
               culler.add(fragment.mesh);
             }
           }
-        
+
           if (!model.isStreamed) {
             setTimeout(async () => {
               world.camera.fit(world.meshes, 0.8);
             }, 50);
           }
-        world.scene.three.add(model);
-
+          world.scene.three.add(model);
         });
-        
+
         fragments.onFragmentsDisposed.add(({ fragmentIDs }) => {
           for (const fragmentID of fragmentIDs) {
             const mesh = [...world.meshes].find((mesh) => mesh.uuid === fragmentID);
@@ -93,13 +88,12 @@ const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({
             }
           }
         });
+
         await fragmentIfcLoader.load(buffer);
-
-        
-
-        // Load model
       } catch (error) {
         console.error("Failed to load IFC file:", error);
+      } finally {
+        setIsLoading(false); // Kết thúc loading
       }
     },
     [worldRef, componentRef, container]
@@ -111,8 +105,9 @@ const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({
       console.log("Skipping IFC load: Missing source, container, world, or components.");
       return;
     }
-    
+
     const loadFile = async () => {
+      setIsLoading(true); // Bắt đầu loading
       try {
         const buffer = await (source instanceof File
           ? source.arrayBuffer()
@@ -121,13 +116,15 @@ const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({
         await loadIfc(buffer);
       } catch (error) {
         console.error("Error loading IFC file:", error);
+      } finally {
+        setIsLoading(false); // Kết thúc loading
       }
     };
 
     loadFile();
   }, [source, container, worldRef, componentRef, loadIfc]);
 
-  return null; // Không cần render gì cả
+  return isLoading ? <LoadingSpinner /> : null; // Hiển thị LoadingSpinner khi đang tải
 };
 
 export default IfcLoaderV2;

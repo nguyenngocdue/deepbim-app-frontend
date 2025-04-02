@@ -63,9 +63,11 @@ const HeaderViewer: React.FC<ModelIfcProps> = (
               </Button>
               <Separator orientation="vertical" className="h-6" />
               <ViewFit onToggle={() => onToggle("isFitView")} isActive={isFitView} />
+              <CameraSetting onToggle={() => onToggle("isOrthoPerspective")} isActive={isOrthoPerspective} />
+              <CoordinateSystem onToggle={() => onToggle("coordinateSysActive")} isActive={coordinateSysActive} />
+              <Grids onToggle={() => onToggle("haveGrids")} isActive={haveGrids} />
 
               <Separator orientation="vertical" className="h-6" />
-              <CoordinateSystem onToggle={() => onToggle("coordinateSysActive")} isActive={coordinateSysActive} />
               <FreeControlElements onToggle={() => onToggle("isFreeControlElements")} isActive={isFreeControlElements} />
               <ClippingEdges onToggle={() => onToggle("isClippingEdges")} isActive={isClippingEdges} />
 
@@ -81,8 +83,6 @@ const HeaderViewer: React.FC<ModelIfcProps> = (
               <AngleMeasurements onToggle={() => onToggle("haveAngleMeasurements")} isActive={haveAngleMeasurements} />
 
               <Separator orientation="vertical" className="h-6" />
-              <CameraSetting onToggle={() => onToggle("isOrthoPerspective")} isActive={isOrthoPerspective} />
-              <Grids onToggle={() => onToggle("haveGrids")} isActive={haveGrids} />
               {/* <SectionBox onToggle={() => onToggle("sectionActive")} isActive={sectionActive} /> */}
               {/* <HighlightElement onToggle={() => onToggle("isHighlightEnabled")} isActive={isHighlightEnabled} /> */}
               <PlansViews onToggle={() => onToggle("havePlansViews")} isActive={havePlansViews} />

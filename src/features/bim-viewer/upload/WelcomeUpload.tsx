@@ -182,7 +182,9 @@ const WelcomeUpload = () => {
         {!showHelpForm ? <span>Need help</span> : ""}
       </Button>
 
-      {showHelpForm && <HelpForm onClose={() => setShowHelpForm(false)} />}
+      {showHelpForm && 
+        <HelpForm onClose={() => setShowHelpForm(false)} />
+      }
     </div>
   );
 };

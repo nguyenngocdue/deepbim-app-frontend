@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import LoadingSpinner from "@/components/bim-viewer/loading-spinner";
+import LoadingSpinner from "@/components/bim-viewer/LoadingSpinner";
 import { useIfcLoader } from "@/hooks/use-ifc-loader";
 import * as THREE from "three";
 

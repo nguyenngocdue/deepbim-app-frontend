@@ -1,5 +1,6 @@
 import * as OBC from "@thatopen/components";
 import * as OBCF from "@thatopen/components-front";
+import * as THREE from 'three';
 
 // Singleton class để quản lý world và components
 class WorldManager {
@@ -7,7 +8,7 @@ class WorldManager {
   public components: OBC.Components | null = null;
   public world: any | null = null;
 
-  private constructor() {}
+  private constructor() { }
 
   // Phương thức để lấy instance duy nhất của WorldManager
   public static getInstance(): WorldManager {
@@ -41,8 +42,55 @@ class WorldManager {
     this.world.scene.setup();
     this.world.renderer.postproduction.enabled = true;
     this.components.init();
+    // console.log("World and components have been initialized globally.");
+  }
 
-    console.log("World and components have been initialized globally.");
+  public changeCameraType(isOrthographic: boolean): void {
+    if (!this.world || !this.world.camera) {
+      console.error("World or camera is not initialized.");
+      return;
+    }
+
+    const currentCamera = this.world.camera;
+
+    // Lưu trạng thái hiện tại của camera
+    const savedState = {
+      position: currentCamera.threePersp.position.clone(),
+      target: new THREE.Vector3(),
+    };
+    if (currentCamera.controls && typeof currentCamera.controls.getTarget === "function") {
+      currentCamera.controls.getTarget(savedState.target);
+    } else {
+      console.warn("Camera controls or getTarget() is not available.");
+    }
+
+    // Thay đổi chế độ chiếu
+    if (isOrthographic) {
+      currentCamera.projection.set("Orthographic");
+      console.log("Switched to Orthographic mode.");
+    } else {
+      currentCamera.projection.set("Perspective");
+      // console.log("Switched to Perspective mode.");
+    }
+
+    // Khôi phục trạng thái
+    if (currentCamera.threePersp && currentCamera.threePersp.position) {
+      currentCamera.threePersp.position.copy(savedState.position);
+    }
+
+    if (currentCamera.controls && typeof currentCamera.controls.setLookAt === "function") {
+      currentCamera.controls.setLookAt(
+        savedState.position.x,
+        savedState.position.y,
+        savedState.position.z,
+        savedState.target.x,
+        savedState.target.y,
+        savedState.target.z,
+        true // Kích hoạt animation nếu cần
+      );
+    } else {
+      console.warn("Camera controls or setLookAt() is not available.");
+    }
   }
 
   // Phương thức để lấy world

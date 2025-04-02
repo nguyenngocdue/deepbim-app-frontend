@@ -16,6 +16,7 @@ interface FreeControlElementsProps {
 }
 
 export function useFreeControlElements({
+  isFreeControlElements,
   componentRef,
   worldRef,
   ifcContainerRef,
@@ -23,14 +24,14 @@ export function useFreeControlElements({
   const components = componentRef.current;
   const world = worldRef.current;
   const container = ifcContainerRef.current;
-
+  if (!isFreeControlElements) return;
   if (!components || !world || !container) return;
 
   const fragmentsGroup = GetFragmentsGroup(world)
-  if(!fragmentsGroup) return;
+  if (!fragmentsGroup) return;
 
   const highlighter = components.get(OBCF.Highlighter);
-  highlighter.enabled = true;
+  highlighter.enabled = false;
   highlighter.zoomToSelection = false;
 
   const allControls: THREE.Object3D[] = [];

@@ -3,7 +3,7 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
 import { useIfcLoader } from "@/hooks/use-ifc-loader";
-import LoadingSpinner from "./loading-spinner";
+import LoadingSpinner from "./LoadingSpinner";
 
 const WebglClippingCube: React.FC = () => {
   const initializedRef = useRef(false);
