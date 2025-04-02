@@ -60,8 +60,7 @@ const ModelIfc: React.FC<ModelIfcProps> = ({
   const worldRef = useRef<any>(null);
   const componentRef = useRef<any>(null);
   const modelRef = useRef<THREE.Object3D | null>(null);
-  const transformControlsRef = useRef<TransformControls[]>([]);
-  const gridRef= useRef<any | null>(null);
+  const gridRef = useRef<any | null>(null);
 
   // define state of model
   const location = useLocation();
@@ -72,28 +71,25 @@ const ModelIfc: React.FC<ModelIfcProps> = ({
 
   useEffect(() => {
     if (!ifcContainerRef.current) return;
-    const { world, components, grid } = InitializeWorld(ifcContainerRef.current,haveGrids, isOrthoPerspective );
-    componentRef.current = components;
+    const { world, components } = InitializeWorld(ifcContainerRef.current, false, false);
     worldRef.current = world;
-    gridRef.current = grid;
+    componentRef.current = components;
+
     setIsWorldReady(true);
-    
+
     const animate = () => {
       if (!worldRef.current || !worldRef.current.renderer) return;
       requestAnimationFrame(animate);
       worldRef.current.renderer.update();
     };
     animate();
-    
-    // Cleanup
-    console.log(components)
+
     return () => {
-      transformControlsRef.current.forEach((c) => c.dispose());
-      // components.dispose();
-      worldRef.current = null;
+      worldRef.current?.dispose();
+      componentRef.current?.dispose();
       setIsWorldReady(false);
     };
-  }, [isOrthoPerspective, haveGrids]);
+  }, []);
 
 
   useEffect(() => {
@@ -113,7 +109,7 @@ const ModelIfc: React.FC<ModelIfcProps> = ({
   }, [isWorldReady, isFaceMeasurement]);
 
   useEffect(() => {
-    useGrids({ haveGrids, worldRef, gridRef});
+    useGrids({ haveGrids, worldRef, gridRef });
   }, [isWorldReady, haveGrids]);
 
   useEffect(() => {
@@ -142,36 +138,25 @@ const ModelIfc: React.FC<ModelIfcProps> = ({
 
 
   useEffect(() => {
-    useSectionBox({sectionActive , componentRef, worldRef, ifcContainerRef, modelRef });
+    useSectionBox({ sectionActive, componentRef, worldRef, ifcContainerRef, modelRef });
   }, [isWorldReady, sectionActive]);
 
   useEffect(() => {
-    useFreeControlElements({isFreeControlElements , componentRef, worldRef, ifcContainerRef, modelRef });
+    useFreeControlElements({ isFreeControlElements, componentRef, worldRef, ifcContainerRef, modelRef });
   }, [isWorldReady, isFreeControlElements]);
 
-  usePlaneHover({isPlaneHover , componentRef, worldRef, ifcContainerRef, modelRef });
-  useSetViewPoint({isFitView,  componentRef, worldRef, ifcContainerRef, modelRef });
-  useCoordinateSystem({coordinateSysActive, worldRef});
-   return (
+  usePlaneHover({ isPlaneHover, componentRef, worldRef, ifcContainerRef, modelRef });
+  useSetViewPoint({ isFitView, componentRef, worldRef, ifcContainerRef, modelRef });
+  useCoordinateSystem({ coordinateSysActive, worldRef });
+  return (
     <div className="relative w-screen h-screen">
       {
-       statusUpload == 'example' && 
-       <IfcLoaderV2
-          source='/ifc/small.ifc'
-          state={{ example: true }}
-          worldRef={worldRef}
-          componentRef={componentRef}
-          modelRef={modelRef}
-        />
-      }
-      {
-        statusUpload == 'upload_by_user' &&
+        isWorldReady && statusUpload == 'upload_by_user' &&
         <IfcLoaderV2
           source={file}
-          state={{ example: true }}
           worldRef={worldRef}
           componentRef={componentRef}
-          modelRef={modelRef}
+          container={ifcContainerRef.current}
         />
       }
       <div ref={ifcContainerRef} className="w-full h-full" />

@@ -2,9 +2,14 @@ import * as OBC from "@thatopen/components";
 import * as OBCF from "@thatopen/components-front";
 import * as THREE from 'three';
 
-export function InitializeWorld(container: HTMLDivElement, haveGrids: boolean = false, isOrthoPerspective: boolean) {
+export function InitializeWorld(
+  container: HTMLDivElement,
+  haveGrids: boolean = false,
+  isOrthoPerspective: boolean = false
+) {
   const components = new OBC.Components();
   const worlds = components.get(OBC.Worlds);
+
   // Tạo world
   const world = worlds.create<
     OBC.SimpleScene,
@@ -16,33 +21,19 @@ export function InitializeWorld(container: HTMLDivElement, haveGrids: boolean = 
   world.renderer = new OBCF.PostproductionRenderer(components, container);
   const simpleCamera = new OBC.SimpleCamera(components);
   world.camera = simpleCamera;
-  simpleCamera.controls.setLookAt(24, 12, 16, 0, 0, -10); 
+  simpleCamera.controls.setLookAt(24, 12, 16, 0, 0, -10);
 
-
-  if(isOrthoPerspective) {
-    // // Khởi tạo Camera và gán vào world.camera
+  if (isOrthoPerspective) {
     const orthoPerspectiveCamera = new OBC.OrthoPerspectiveCamera(components);
     world.camera = orthoPerspectiveCamera;
-    // Cấu hình camera
     orthoPerspectiveCamera.controls.setLookAt(30, 20, 30, 0, 0, 0);
     orthoPerspectiveCamera.projection.set("Orthographic");
   }
 
-
   // Thiết lập Scene
   world.scene.setup();
-
   world.renderer.postproduction.enabled = true;
   components.init();
 
-  // Thêm Grid
-  const grids = components.get(OBC.Grids);
-  const grid = grids.create(world);
-  
-
-    // configuration
-    world.scene.config.backgroundColor="#28d765"
-    world.scene.config.directionalLight.intensity=5
-    world.scene.config.ambientLight.intensity = 1
-  return { world, components, grid };
+  return { world, components };
 }

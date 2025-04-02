@@ -1,127 +1,110 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useCallback } from "react";
 import * as OBC from "@thatopen/components";
-import * as THREE from "three";
-import LoadingSpinner from "@/components/bim-viewer/loading-spinner";
+import * as OBF from "@thatopen/components-front";
 
 interface IfcLoaderV2Props {
-  state?: any; // Truyền trạng thái tùy chỉnh
-  source?: string | File; // Một prop duy nhất: có thể là URL (string) hoặc File
-  worldRef: React.RefObject<OBC.World | null>; // Ref đến world chính
-  componentRef: React.RefObject<OBC.Components | null>; // Ref đến components chính
-  modelRef: React.RefObject<THREE.Object3D | null>; // Ref đến model
+  source?: string | File; // URL (string) hoặc File
+  worldRef: React.RefObject<OBC.World | null>;
+  componentRef: React.RefObject<OBC.Components | null>;
+  container: HTMLElement | null;
 }
 
 const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({
   source,
   worldRef,
   componentRef,
-  modelRef,
+  container,
 }) => {
-  const [loading, setLoading] = useState(false);
-  const [progress, setProgress] = useState(0); // Phần trăm tiến trình
+  // Tải và xử lý IFC Model
+  const loadIfc = useCallback(
+    async (buffer: Uint8Array) => {
+      if (!worldRef.current || !componentRef.current || !container) {
+        console.warn("Cannot load IFC: World, components, or container not ready.");
+        return;
+      }
 
-  /** Loads an IFC Model */
-  async function loadIfc(buffer?: Uint8Array) {
-    if (!worldRef.current || !componentRef.current) return;
+      try {
+        const components = componentRef.current;
+        const world = worldRef.current;
 
-    setLoading(true); // Bắt đầu loading
-    setProgress(0); // Reset progress
+        // Khởi tạo Fragment Loader
+        const fragmentIfcLoader = components.get(OBC.IfcLoader);
+        await fragmentIfcLoader.setup();
 
-    try {
-      const fragmentIfcLoader = componentRef.current.get(OBC.IfcLoader);
-      await fragmentIfcLoader.setup();
+        // Thiết lập FragmentsManager và các thành phần liên quan
+        const fragments = components.get(OBC.FragmentsManager);
+        const indexer = components.get(OBC.IfcRelationsIndexer);
+        const classifier = components.get(OBC.Classifier);
+        classifier.list.CustomSelections = {};
 
-      // Mô phỏng tiến trình tải (có thể thay bằng logic thực tế nếu có)
-      const simulateProgress = () => {
-        return new Promise<void>((resolve) => {
-          const interval = setInterval(() => {
-            setProgress((prev) => {
-              if (prev >= 90) {
-                clearInterval(interval);
-                resolve();
-                return 90; // Dừng ở 90% để đợi hoàn tất
-              }
-              return prev + Math.random() * 10; // Tăng ngẫu nhiên
-            });
-          }, 0); //300
+        // Cấu hình IfcStreamer
+        const tilesLoader = components.get(OBF.IfcStreamer);
+        tilesLoader.world = world;
+        tilesLoader.culler.threshold = 50; // Tăng ngưỡng để giảm số lượng fragment render cùng lúc
+        tilesLoader.culler.maxHiddenTime = 5000; // Tăng thời gian giữ fragment trong bộ nhớ (5 giây)
+        tilesLoader.culler.maxLostTime = 20000; // Giảm thời gian giữ dữ liệu không dùng (20 giây)
+
+        // Tạo culler
+        const culler = components.get(OBC.Cullers).create(world);
+        world.camera.controls.restThreshold = 0.25;
+        world.camera.controls.addEventListener("rest", () => {
+          culler.needsUpdate = true;
+          tilesLoader.cancel = true;
+          tilesLoader.culler.needsUpdate = true;
         });
-      };
 
-      // Chạy mô phỏng tiến trình song song với việc tải file
-      // const loadingPromise = simulateProgress();
+        // Xử lý khi fragments được load
+        fragments.onFragmentsLoaded.add(async (model) => {
+          if (model.hasProperties) {
+            await indexer.process(model);
+            classifier.byEntity(model);
+          }
+        
+          if (!model.isStreamed) {
+            const visibleFragments = model.items.filter((fragment) => fragment.mesh.visible); // Chỉ thêm fragment hiển thị
+            for (const fragment of visibleFragments) {
+              world.meshes.add(fragment.mesh);
+              culler.add(fragment.mesh);
+            }
+          }
+        
+          world.scene.three.add(model);
+          world.renderer.update();
+        });
 
-      // Load model thực tế
-      const model = await fragmentIfcLoader.load(buffer);
-
-      // Đợi mô phỏng tiến trình hoàn tất
-      // await loadingPromise;
-
-      // Hoàn tất loading
-      model.position.set(0, 0, 0);
-      model.scale.set(1, 1, 1);
-      model.visible = true;
-      modelRef.current = model;
-
-      worldRef.current.scene.three.add(model);
-
-      // Auto-center model in view
-      const bbox = new THREE.Box3().setFromObject(model);
-      const center = bbox.getCenter(new THREE.Vector3());
-      const size = bbox.getSize(new THREE.Vector3());
-      const maxDimension = Math.max(size.x, size.y, size.z);
-      const cameraDistance = maxDimension * 2;
-
-      worldRef.current.camera.controls.setLookAt(
-        center.x + cameraDistance,
-        center.y + cameraDistance,
-        center.z + cameraDistance,
-        center.x,
-        center.y,
-        center.z
-      );
-
-      // Cập nhật tiến trình lên 100%
-      setProgress(100);
-    } catch (error) {
-      console.error("Failed to load IFC file:", error);
-    } finally {
-      setTimeout(() => setLoading(false), 500); // Ẩn spinner sau 500ms
-    }
-  }
-
-  /** Tải file IFC từ source (URL hoặc File) */
-  useEffect(() => {
-    if (!source) return; // Không làm gì nếu source không có giá trị
-    // Trường hợp 1: source là File
-    if (source instanceof File) {
-      source
-        .arrayBuffer()
-        .then((buffer) => loadIfc(new Uint8Array(buffer)))
-        .catch((error) => console.error("Failed to read file:", error));
-    }
-    // Trường hợp 2: source là string (URL)
-    else if (typeof source === "string") {
-      fetch(source)
-        .then((response) => response.arrayBuffer())
-        .then((buffer) => loadIfc(new Uint8Array(buffer)))
-        .catch((error) => console.error("Failed to load IFC file:", error));
-    }
-    // Trường hợp khác: không làm gì hoặc báo lỗi
-    else {
-      console.warn("Invalid source type. Expected string (URL) or File.");
-    }
-  }, [source]); // Chỉ phụ thuộc vào source
-
-  return (
-    <>
-      {loading && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center bg-white bg-opacity-80 z-50">
-          {/* Spinner */}
-          <LoadingSpinner />
-        </div>
-      )}
-    </>
+        // Load model
+        await fragmentIfcLoader.load(buffer);
+      } catch (error) {
+        console.error("Failed to load IFC file:", error);
+      }
+    },
+    [worldRef, componentRef, container]
   );
+
+  // Tải file IFC từ source
+  useEffect(() => {
+    if (!source || !container || !worldRef.current || !componentRef.current) {
+      console.log("Skipping IFC load: Missing source, container, world, or components.");
+      return;
+    }
+
+    const loadFile = async () => {
+      try {
+        const buffer = await (source instanceof File
+          ? source.arrayBuffer()
+          : fetch(source).then((res) => res.arrayBuffer())
+        ).then((arrayBuffer) => new Uint8Array(arrayBuffer));
+
+        await loadIfc(buffer);
+      } catch (error) {
+        console.error("Error loading IFC file:", error);
+      }
+    };
+
+    loadFile();
+  }, [source, container, worldRef, componentRef, loadIfc]);
+
+  return null; // Không cần render gì cả
 };
 
 export default IfcLoaderV2;
