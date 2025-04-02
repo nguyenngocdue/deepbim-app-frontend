@@ -11,7 +11,10 @@ export default defineConfig({
     port: 3003,      // Thay đổi port mặc định từ 5173 sang 3003 (hoặc port bạn muốn)
     strictPort: true, // Nếu port đã được sử dụng, Vite sẽ báo lỗi thay vì tự chọn port khác
   },
-  plugins: [react(), TanStackRouterVite()],
+  plugins: [react({}), TanStackRouterVite()],
+  worker: {
+    format: "es", // Đảm bảo worker dùng ES Module
+  },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),

@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect, useCallback, useRef } from "react";
 import * as OBC from "@thatopen/components";
 import * as OBF from "@thatopen/components-front";
 
@@ -17,7 +17,7 @@ const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({
 }) => {
   // Tải và xử lý IFC Model
   const loadIfc = useCallback(
-    async (buffer: Uint8Array) => {
+    async (buffer: Uint8Array, parsedData?: any) => {
       if (!worldRef.current || !componentRef.current || !container) {
         console.warn("Cannot load IFC: World, components, or container not ready.");
         return;
@@ -87,14 +87,14 @@ const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({
       console.log("Skipping IFC load: Missing source, container, world, or components.");
       return;
     }
-
+    
     const loadFile = async () => {
+      console.log(source)
       try {
         const buffer = await (source instanceof File
           ? source.arrayBuffer()
           : fetch(source).then((res) => res.arrayBuffer())
         ).then((arrayBuffer) => new Uint8Array(arrayBuffer));
-
         await loadIfc(buffer);
       } catch (error) {
         console.error("Error loading IFC file:", error);
