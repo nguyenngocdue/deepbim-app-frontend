@@ -22,6 +22,7 @@ THREE.Mesh.prototype.raycast = acceleratedRaycast;
 const ModelIfc: React.FC<ModelIfcProps> = ({
   coordinateSysActive,
   isClippingEdges,
+  isOrthoPerspective,
   isEdgeMeasurement,
   isFaceMeasurement,
   haveGrids,
@@ -41,7 +42,6 @@ const ModelIfc: React.FC<ModelIfcProps> = ({
   const worldRef = useRef<any>(null);
   const componentRef = useRef<any>(null);
   const modelRef = useRef<THREE.Object3D | null>(null);
-  const worldGridRef = useRef<any>(null);
 
   // Location & file state
   const location = useLocation();
@@ -51,12 +51,12 @@ const ModelIfc: React.FC<ModelIfcProps> = ({
 
   // Viewer state
   const [isWorldReady, setIsWorldReady] = useState(false);
-
   // Feature flags (memoized for performance)
   const featureFlags: FeatureFlags = useMemo(() => ({
     isClippingEdges,
     isEdgeMeasurement,
     isFaceMeasurement,
+    isOrthoPerspective,
     haveGrids,
     hasVolumeMeasurement,
     havePlansViews,
@@ -73,6 +73,7 @@ const ModelIfc: React.FC<ModelIfcProps> = ({
     isClippingEdges,
     isEdgeMeasurement,
     isFaceMeasurement,
+    isOrthoPerspective,
     haveGrids,
     hasVolumeMeasurement,
     havePlansViews,
@@ -102,7 +103,7 @@ const ModelIfc: React.FC<ModelIfcProps> = ({
       world?.dispose();
       setIsWorldReady(false);
     };
-  }, [haveGrids]); // Re-init when grid changes
+  }, []); // Re-init when grid changes
 
   // Start render loop
   const startRenderLoop = () => {

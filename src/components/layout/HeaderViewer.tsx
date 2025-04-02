@@ -7,7 +7,6 @@ import {
 import ViewFit from "../bim-viewer/view-fit";
 import CameraSetting from "../bim-viewer/CameraSetting";
 import CoordinateSystem from "../bim-viewer/CoordinateSystem";
-import UploadModel from "../bim-viewer/UploadModel";
 import ClippingEdges from "../bim-viewer/ClippingEdges";
 import EdgeMeasurement from "../bim-viewer/EdgeMeasurement";
 import FaceMeasurement from "../bim-viewer/FaceMeasurement";
@@ -21,8 +20,6 @@ import WorldSettings from "../bim-viewer/WorldSettings";
 import { ModelIfcProps } from "@/props/ModelIfcProps";
 import FreeControlElements from "../bim-viewer/FreeControlElements";
 import LogoSection from "./LogoSection";
-
-
 
 
 const HeaderViewer: React.FC<ModelIfcProps> = (
@@ -53,50 +50,52 @@ const HeaderViewer: React.FC<ModelIfcProps> = (
   return (
     <>
       <header className="z-50 absolute top-0 left-10 right-10 w-[calc(100%-5rem)] bg-black/50 backdrop-blur-md text-white px-4 md:px-6 py-2 shadow-md">
-  <div className="flex flex-col gap-2">
-    
-    {/* Logo Section */}
-    <LogoSection/>
+        <div className="flex flex-col gap-2">
 
-{/* Toolbar Section */}
-<div className="max-h-48 overflow-y-auto overflow-x-hidden">
-  <div className="flex flex-wrap gap-2 items-center">
-    <Button variant="ghost" size="icon">
-      <FaUserCog className="text-lg" />
-    </Button>
-    <Separator orientation="vertical" className="h-6" />
-    <ViewFit onToggle={() => onToggle("isFitView")} isActive={isFitView} />
+          {/* Logo Section */}
+          <LogoSection />
 
-    <Separator orientation="vertical" className="h-6" />
-    <CoordinateSystem onToggle={() => onToggle("coordinateSysActive")} isActive={coordinateSysActive} />
-    <FreeControlElements onToggle={() => onToggle("isFreeControlElements")} isActive={isFreeControlElements} />
-    <ClippingEdges onToggle={() => onToggle("isClippingEdges")} isActive={isClippingEdges} />
-    
-    {/* <UploadModel onToggle={handleFileSelect} isActive={handleFileSelect} /> */}
-    {/* <Separator orientation="vertical" className="h-6" /> */}
+          {/* Toolbar Section */}
+          <div className="max-h-48 overflow-y-auto overflow-x-hidden">
+            <div className="flex flex-wrap gap-2 items-center">
+              <Button variant="ghost" size="icon">
+                <FaUserCog className="text-lg" />
+              </Button>
+              <Separator orientation="vertical" className="h-6" />
+              <ViewFit onToggle={() => onToggle("isFitView")} isActive={isFitView} />
 
-    <Separator orientation="vertical" className="h-6" />
-    <EdgeMeasurement onToggle={() => onToggle("isEdgeMeasurement")} isActive={isEdgeMeasurement} />
-    <FaceMeasurement onToggle={() => onToggle("isFaceMeasurement")} isActive={isFaceMeasurement} />
-    <VolumeMeasurement onToggle={() => onToggle("hasVolumeMeasurement")} isActive={hasVolumeMeasurement} />
-    <LengthMeasurements onToggle={() => onToggle("haveLengthMeasurements")} isActive={haveLengthMeasurements} />
-    <AreaMeasurements onToggle={() => onToggle("haveAreaMeasureElements")} isActive={haveAreaMeasureElements} />
-    <AngleMeasurements onToggle={() => onToggle("haveAngleMeasurements")} isActive={haveAngleMeasurements} />
+              <Separator orientation="vertical" className="h-6" />
+              <CoordinateSystem onToggle={() => onToggle("coordinateSysActive")} isActive={coordinateSysActive} />
+              <FreeControlElements onToggle={() => onToggle("isFreeControlElements")} isActive={isFreeControlElements} />
+              <ClippingEdges onToggle={() => onToggle("isClippingEdges")} isActive={isClippingEdges} />
 
-    <Separator orientation="vertical" className="h-6" />
-    <CameraSetting onToggle={() => onToggle("isOrthoPerspective")} isActive={isOrthoPerspective} />
-    <Grids onToggle={() => onToggle("haveGrids")} isActive={haveGrids} />
-    {/* <SectionBox onToggle={() => onToggle("sectionActive")} isActive={sectionActive} /> */}
-    {/* <HighlightElement onToggle={() => onToggle("isHighlightEnabled")} isActive={isHighlightEnabled} /> */}
-    <PlansViews onToggle={() => onToggle("havePlansViews")} isActive={havePlansViews} />
-    <WorldSettings onToggle={() => onToggle("haveWorldSettings")} isActive={haveWorldSettings} />
-    {/* <OriginalWorldCamera onToggle={() => onToggle("isOriginalWorldCamera")} isActive={isOriginalWorldCamera} /> */}
-    {/* <PlaneHover onToggle={() => onToggle("isPlaneHover")} isActive={isPlaneHover} /> */}
-  </div>
-</div>
+              {/* <UploadModel onToggle={handleFileSelect} isActive={handleFileSelect} /> */}
+              {/* <Separator orientation="vertical" className="h-6" /> */}
 
-  </div>
-</header>
+              <Separator orientation="vertical" className="h-6" />
+              <EdgeMeasurement onToggle={() => onToggle("isEdgeMeasurement")} isActive={isEdgeMeasurement} />
+              <FaceMeasurement onToggle={() => onToggle("isFaceMeasurement")} isActive={isFaceMeasurement} />
+              <VolumeMeasurement onToggle={() => onToggle("hasVolumeMeasurement")} isActive={hasVolumeMeasurement} />
+              <LengthMeasurements onToggle={() => onToggle("haveLengthMeasurements")} isActive={haveLengthMeasurements} />
+              <AreaMeasurements onToggle={() => onToggle("haveAreaMeasureElements")} isActive={haveAreaMeasureElements} />
+              <AngleMeasurements onToggle={() => onToggle("haveAngleMeasurements")} isActive={haveAngleMeasurements} />
+
+              <Separator orientation="vertical" className="h-6" />
+              <CameraSetting onToggle={() => onToggle("isOrthoPerspective")} isActive={isOrthoPerspective} />
+              <Grids onToggle={() => onToggle("haveGrids")} isActive={haveGrids} />
+              {/* <SectionBox onToggle={() => onToggle("sectionActive")} isActive={sectionActive} /> */}
+              {/* <HighlightElement onToggle={() => onToggle("isHighlightEnabled")} isActive={isHighlightEnabled} /> */}
+              <PlansViews onToggle={() => onToggle("havePlansViews")} isActive={havePlansViews} />
+              
+              <Separator orientation="vertical" className="h-6" />              
+              <WorldSettings onToggle={() => onToggle("haveWorldSettings")} isActive={haveWorldSettings} />
+              {/* <OriginalWorldCamera onToggle={() => onToggle("isOriginalWorldCamera")} isActive={isOriginalWorldCamera} /> */}
+              {/* <PlaneHover onToggle={() => onToggle("isPlaneHover")} isActive={isPlaneHover} /> */}
+            </div>
+          </div>
+
+        </div>
+      </header>
 
     </>
   );

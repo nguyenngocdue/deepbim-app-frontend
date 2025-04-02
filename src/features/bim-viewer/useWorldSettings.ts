@@ -6,31 +6,22 @@ interface WorldSettingsProps {
   haveWorldSettings: boolean;
   componentRef: React.RefObject<OBC.Components | null>;
   worldRef: React.RefObject<OBC.World | null>;
-  ifcContainerRef: React.RefObject<HTMLDivElement | null>;
-  modelRef: React.RefObject<THREE.Object3D | null>;
 }
 
 export function useWorldSettings({
   haveWorldSettings,
   componentRef,
   worldRef,
-  ifcContainerRef,
-  modelRef,
 }: WorldSettingsProps): void {
   const components = componentRef.current;
   const world = worldRef.current;
-  const container = ifcContainerRef.current;
-  const model = modelRef.current;
 
-  if (!components || !world || !container || !model) return;
+  if (!components || !world) return;
 
   if (haveWorldSettings) {
-     // configuration
-    world.scene.config.backgroundColor="#28d765"
-    world.scene.config.directionalLight.intensity=0.5
-    world.scene.config.ambientLight.intensity = 5
+    world.scene.three.background = new THREE.Color(0xE4F2DE);
   } else {
-    world.scene.config.directionalLight.intensity=5
-    world.scene.config.ambientLight.intensity = 1
+    world.scene.three.background = new THREE.Color(0x020817);
   }
+  world.renderer?.update();
 }

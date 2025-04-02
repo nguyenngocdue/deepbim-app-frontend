@@ -14,7 +14,7 @@ const Grids:React.FC<GridProps> = ({onToggle, isActive}) => {
             onToggle={onToggle}
             isActive={isActive}
             icon={isActive ? <MdOutlineGrid4X4  /> : <MdOutlineGrid4X4  />}
-            label={isActive ? "Grids": "Grids"}
+            label={isActive ? "": ""}
             activeColor="bg-gray-800 text-white bg-blue-400"
             inactiveColor=""
             className=""

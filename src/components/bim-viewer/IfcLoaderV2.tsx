@@ -2,6 +2,7 @@ import React, { useEffect, useCallback, useRef } from "react";
 import * as OBC from "@thatopen/components";
 import * as OBF from "@thatopen/components-front";
 import * as THREE from 'three';
+import { gridManager } from "@/services/GridManager";
 
 
 interface IfcLoaderV2Props {
@@ -31,17 +32,7 @@ const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({
         const components = componentRef.current;
         const world = worldRef.current;
 
-
-        const worldGrid = components.get(OBC.Grids).create(world);
-        if(haveGrids) {
-          worldGrid.material.uniforms.uColor.value = new THREE.Color(0x999999);
-          worldGrid.material.uniforms.uSize1.value = 2;
-          worldGrid.material.uniforms.uSize2.value = 8;
-          worldGrid.visible = true;
-        }else{
-          worldGrid.visible = false;
-        }
-        
+        // gridManager.createGrid(components, world);
 
         // Khởi tạo Fragment Loader
         const fragmentIfcLoader = components.get(OBC.IfcLoader);
@@ -60,14 +51,16 @@ const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({
         tilesLoader.culler.maxHiddenTime = 5000; // Tăng thời gian giữ fragment trong bộ nhớ (5 giây)
         tilesLoader.culler.maxLostTime = 20000; // Giảm thời gian giữ dữ liệu không dùng (20 giây)
 
+
         // Tạo culler
         const culler = components.get(OBC.Cullers).create(world);
-        world.camera.controls.restThreshold = 0.25;
+        world.camera.controls.restThreshold = 0.1;
         world.camera.controls.addEventListener("rest", () => {
           culler.needsUpdate = true;
           tilesLoader.cancel = true;
           tilesLoader.culler.needsUpdate = true;
         });
+
 
         // Xử lý khi fragments được load
         fragments.onFragmentsLoaded.add(async (model) => {

@@ -5,32 +5,22 @@ import * as THREE from "three";
 
 interface useCameraType {
     isOrthoPerspective: boolean;
-    componentRef: React.RefObject<OBC.Components | null>;
     worldRef: React.RefObject<OBC.World | null>;
-    ifcContainerRef: React.RefObject<HTMLDivElement | null>;
-    modelRef: React.RefObject<THREE.Object3D | null>;
 }
 
-export async function useCameraType({
+export  function useCameraType({
     isOrthoPerspective,
-    componentRef,
     worldRef,
-    ifcContainerRef,
-    modelRef,
-}: useCameraType): Promise<void> {
-    const components = componentRef.current;
-    const world = worldRef.current;
-    const container = ifcContainerRef.current;
-    const model = modelRef.current;
+}: useCameraType): void {
+    if ( !worldRef ) return;
 
-    if (!components || !world || !container || !model) return;
-
+    
+    const projection = worldRef.current.camera.projection; 
     if (isOrthoPerspective) {
-        for (const child of model.children) {
-            if (child instanceof THREE.Mesh) {
-                world.meshes.add(child);
-            }
-        }
+        projection.set("Orthographic")
+    } else {
+        projection.set("Perspective")
+
     }
 
 }

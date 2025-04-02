@@ -31,7 +31,7 @@ const ElementToggle: React.FC<ElementToggleProps> = ({
                 // Call the onToggle function to update the state
                 onToggle();
             }}
-            className={`  ${isActive ? (showActiveColor ? activeColor : inactiveColor) : inactiveColor} ${className}`}
+            className={`button-transition  ${isActive ?  (showActiveColor ? activeColor : inactiveColor) : inactiveColor} ${className}`}
         >
             {icon && <div className="text-lg">{icon}</div>}
             {label &&  <span className="ml-1">{label}</span>}

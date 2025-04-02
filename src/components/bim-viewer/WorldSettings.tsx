@@ -1,6 +1,7 @@
 import React from 'react'
 import ElementToggle from './common/ElementToggle';
-import { IoIosSettings } from "react-icons/io";
+import { MdOutlineDarkMode } from "react-icons/md";
+import { CiDark } from "react-icons/ci";
 
 interface WorldSettingProps {
     onToggle: () => void; // Callback function to toggle the Section Box
@@ -13,9 +14,9 @@ const WorldSettings:React.FC<WorldSettingProps> = ({onToggle, isActive}) => {
          <ElementToggle
             onToggle={onToggle}
             isActive={isActive}
-            icon={isActive ? <IoIosSettings  /> : <IoIosSettings  />}
-            label={isActive ? "WorldSettings": "WorldSettings"}
-            activeColor="bg-gray-800 text-white bg-blue-400"
+            icon={isActive ? <MdOutlineDarkMode  /> : <CiDark  />}
+            label={isActive ? "": ""}
+            activeColor="bg-gray-800 text-white"
             inactiveColor=""
             className=""
             hoverTitle="WorldSettings"
