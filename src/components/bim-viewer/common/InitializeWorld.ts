@@ -34,6 +34,7 @@ export function InitializeWorld(
   components.init();
 
 
+
   const isHighlightEnabled = true;
   useHighlightSetup({isHighlightEnabled, components, world})
   return { world, components };

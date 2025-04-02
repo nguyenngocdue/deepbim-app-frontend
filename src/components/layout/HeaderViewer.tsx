@@ -65,17 +65,25 @@ const HeaderViewer: React.FC<ModelIfcProps> = (
       <FaUserCog className="text-lg" />
     </Button>
     <Separator orientation="vertical" className="h-6" />
+    <ViewFit onToggle={() => onToggle("isFitView")} isActive={isFitView} />
+
+    <Separator orientation="vertical" className="h-6" />
+    <CoordinateSystem onToggle={() => onToggle("coordinateSysActive")} isActive={coordinateSysActive} />
+    <FreeControlElements onToggle={() => onToggle("isFreeControlElements")} isActive={isFreeControlElements} />
+    <ClippingEdges onToggle={() => onToggle("isClippingEdges")} isActive={isClippingEdges} />
+    
     {/* <UploadModel onToggle={handleFileSelect} isActive={handleFileSelect} /> */}
     {/* <Separator orientation="vertical" className="h-6" /> */}
-    <ViewFit onToggle={() => onToggle("isFitView")} isActive={isFitView} />
-    <CoordinateSystem onToggle={() => onToggle("coordinateSysActive")} isActive={coordinateSysActive} />
-    <ClippingEdges onToggle={() => onToggle("isClippingEdges")} isActive={isClippingEdges} />
+
+    <Separator orientation="vertical" className="h-6" />
     <EdgeMeasurement onToggle={() => onToggle("isEdgeMeasurement")} isActive={isEdgeMeasurement} />
     <FaceMeasurement onToggle={() => onToggle("isFaceMeasurement")} isActive={isFaceMeasurement} />
     <VolumeMeasurement onToggle={() => onToggle("hasVolumeMeasurement")} isActive={hasVolumeMeasurement} />
     <LengthMeasurements onToggle={() => onToggle("haveLengthMeasurements")} isActive={haveLengthMeasurements} />
     <AreaMeasurements onToggle={() => onToggle("haveAreaMeasureElements")} isActive={haveAreaMeasureElements} />
     <AngleMeasurements onToggle={() => onToggle("haveAngleMeasurements")} isActive={haveAngleMeasurements} />
+
+    <Separator orientation="vertical" className="h-6" />
     <CameraSetting onToggle={() => onToggle("isOrthoPerspective")} isActive={isOrthoPerspective} />
     <Grids onToggle={() => onToggle("haveGrids")} isActive={haveGrids} />
     {/* <SectionBox onToggle={() => onToggle("sectionActive")} isActive={sectionActive} /> */}
@@ -83,7 +91,6 @@ const HeaderViewer: React.FC<ModelIfcProps> = (
     <PlansViews onToggle={() => onToggle("havePlansViews")} isActive={havePlansViews} />
     <WorldSettings onToggle={() => onToggle("haveWorldSettings")} isActive={haveWorldSettings} />
     {/* <OriginalWorldCamera onToggle={() => onToggle("isOriginalWorldCamera")} isActive={isOriginalWorldCamera} /> */}
-    <FreeControlElements onToggle={() => onToggle("isFreeControlElements")} isActive={isFreeControlElements} />
     {/* <PlaneHover onToggle={() => onToggle("isPlaneHover")} isActive={isPlaneHover} /> */}
   </div>
 </div>

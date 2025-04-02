@@ -1,10 +1,11 @@
 import { createBoundingBoxMesh } from "@/lib/BoudingBox";
+import { GetFragmentsGroup } from "@/lib/FragmentUtils";
 import * as OBC from "@thatopen/components";
 import React from "react";
 import * as THREE from 'three';
 import * as FreeformControls from 'three-freeform-controls';
 import { EVENTS } from 'three-freeform-controls';
-import { ANCHOR_MODE } from "three-freeform-controls";
+import * as OBCF from "@thatopen/components-front";
 
 interface FreeControlElementsProps {
   isFreeControlElements: boolean;
@@ -15,18 +16,22 @@ interface FreeControlElementsProps {
 }
 
 export function useFreeControlElements({
-  isFreeControlElements,
   componentRef,
   worldRef,
   ifcContainerRef,
-  modelRef,
-}: FreeControlElementsProps): () => void {
+}: FreeControlElementsProps): void {
   const components = componentRef.current;
   const world = worldRef.current;
   const container = ifcContainerRef.current;
-  const model = modelRef.current;
 
-  if (!components || !world || !container || !model) return;
+  if (!components || !world || !container) return;
+
+  const fragmentsGroup = GetFragmentsGroup(world)
+  if(!fragmentsGroup) return;
+
+  const highlighter = components.get(OBCF.Highlighter);
+  highlighter.enabled = true;
+  highlighter.zoomToSelection = false;
 
   const allControls: THREE.Object3D[] = [];
 
@@ -38,7 +43,7 @@ export function useFreeControlElements({
     scale: THREE.Vector3;
   }>();
 
-  model.traverse((child) => {
+  fragmentsGroup!.traverse((child) => {
     if (child instanceof THREE.Object3D) {
       child.updateMatrixWorld(true);
       originalTransforms.set(child, {
@@ -49,7 +54,7 @@ export function useFreeControlElements({
     }
   });
 
-  model.updateMatrixWorld(true);
+  fragmentsGroup!.updateMatrixWorld(true);
 
   const raycaster = new THREE.Raycaster();
   const mouse = new THREE.Vector2();
@@ -80,7 +85,7 @@ export function useFreeControlElements({
 
     // Perform raycasting
     raycaster.setFromCamera(mouse, world.camera.three);
-    const intersects = raycaster.intersectObjects(model.children, true);
+    const intersects = raycaster.intersectObjects(fragmentsGroup!.children, true);
 
     if (intersects.length === 0) return;
 
@@ -127,7 +132,7 @@ export function useFreeControlElements({
         // Step 1: Remove object from proxy and reattach to original model if needed
         if (parent && parent.name === "Proxy") {
           parent.remove(object);
-          model.add(object);
+          fragmentsGroup!.add(object);
         }
 
         if (!object.parent) return;

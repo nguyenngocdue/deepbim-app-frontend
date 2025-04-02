@@ -14,11 +14,11 @@ const AreaMeasurements:React.FC<AreaMeasurementProps> = ({onToggle, isActive}) =
             onToggle={onToggle}
             isActive={isActive}
             icon={isActive ? <RxBorderNone  /> : <RxBorderNone  />}
-            label={isActive ? "AreaMeasurement": "AreaMeasurement"}
+            label={isActive ? "": ""}
             activeColor="bg-gray-800 text-white bg-blue-400"
             inactiveColor=""
             className=""
-            hoverTitle="AreaMeasurement"
+            hoverTitle="Area Measurement"
          /> 
         </>
     )

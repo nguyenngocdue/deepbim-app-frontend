@@ -2,6 +2,7 @@ import * as OBCF from "@thatopen/components-front";
 import * as OBC from "@thatopen/components";
 import React from "react";
 import * as THREE from 'three'
+import { GetFragmentsGroup } from "@/lib/FragmentUtils";
 
 interface AngleMeasurementsProps {
   haveAngleMeasurements: boolean;
@@ -16,24 +17,25 @@ export function useAngleMeasurements({
   componentRef,
   worldRef,
   ifcContainerRef,
-  modelRef,
 }: AngleMeasurementsProps): void {
   const components = componentRef.current;
   const world = worldRef.current;
   const container = ifcContainerRef.current;
-  const model = modelRef.current;
 
-  if (!components || !world || !container || !model) return;
+  if (!components || !world || !container) return;
 
+  const angles = components.get(OBCF.AngleMeasurement);
+  angles.world = world;
   if (haveAngleMeasurements) {
-    for (const child of model.children) {
+    const fragmentsGroup = GetFragmentsGroup(world)
+    const highlighter = components.get(OBCF.Highlighter);
+    highlighter.enabled = false;
+    for (const child of fragmentsGroup!.children) {
       if (child instanceof THREE.Mesh) {
         world.meshes.add(child);
       }
     }
 
-    const angles = components.get(OBCF.AngleMeasurement);
-    angles.world = world;
     angles.enabled = true;
 
     container.ondblclick = () => angles.create();
@@ -43,9 +45,8 @@ export function useAngleMeasurements({
       }
     };
 
-    
+
   } else {
-    const angles = components.get(OBCF.AngleMeasurement);
     angles.enabled = false;
     angles.deleteAll();
   }

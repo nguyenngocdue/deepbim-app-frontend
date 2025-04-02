@@ -2,6 +2,7 @@ import * as OBCF from "@thatopen/components-front";
 import * as OBC from "@thatopen/components";
 import React from "react";
 import * as THREE from 'three'
+import { GetFragmentsGroup } from "@/lib/FragmentUtils";
 
 interface AreaMeasurementProps {
   haveAreaMeasureElements: boolean;
@@ -16,26 +17,25 @@ export function useAreaMeasurements({
   componentRef,
   worldRef,
   ifcContainerRef,
-  modelRef,
 }: AreaMeasurementProps): void {
   const components = componentRef.current;
   const world = worldRef.current;
   const container = ifcContainerRef.current;
-  const model = modelRef.current;
 
-  if (!components || !world || !container || !model) return;
-
+  
+  if (!components || !world || !container) return;
+  const areaDims = components.get(OBCF.AreaMeasurement);
+  areaDims.world = world;
   if (haveAreaMeasureElements) {
-    for (const child of model.children) {
+    const fragmentsGroup = GetFragmentsGroup(world)
+    const highlighter = components.get(OBCF.Highlighter);
+    highlighter.enabled = false;
+    for (const child of fragmentsGroup!.children) {
       if (child instanceof THREE.Mesh) {
         world.meshes.add(child);
       }
     }
-
-    const areaDims = components.get(OBCF.AreaMeasurement);
-    areaDims.world = world;
     areaDims.enabled = true;
-
     container.ondblclick = () => areaDims.create();
     container.oncontextmenu = () => areaDims.endCreation();
 
@@ -45,9 +45,8 @@ export function useAreaMeasurements({
       }
     };
 
-    
+
   } else {
-    const areaDims = components.get(OBCF.AreaMeasurement);
     areaDims.enabled = false;
     areaDims.deleteAll();
   }

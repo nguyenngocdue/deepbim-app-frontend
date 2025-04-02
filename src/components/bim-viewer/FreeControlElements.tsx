@@ -14,11 +14,11 @@ const FreeControlElements:React.FC<OriginalWorldCameraProps> = ({onToggle, isAct
             onToggle={onToggle}
             isActive={isActive}
             icon={isActive ? <MdOutlineControlCamera  /> : <MdOutlineControlCamera  />}
-            label={isActive ? "FreeControlElements": "FreeControlElements"}
+            label={isActive ? "": ""}
             activeColor="bg-gray-800 text-white bg-blue-400"
             inactiveColor=""
             className=""
-            hoverTitle="Original World Camera"
+            hoverTitle="Free Control Elements"
          /> 
         </>
     )

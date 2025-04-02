@@ -14,11 +14,11 @@ const AngleMeasurements:React.FC<AngleMeasurementProps> = ({onToggle, isActive})
             onToggle={onToggle}
             isActive={isActive}
             icon={isActive ? <RxAngle  /> : <RxAngle  />}
-            label={isActive ? "AngleMeasurements": "AngleMeasurements"}
+            label={isActive ? "": ""}
             activeColor="bg-gray-800 text-white bg-blue-400"
             inactiveColor=""
             className=""
-            hoverTitle="AngleMeasurements"
+            hoverTitle="Angle Measurements"
          /> 
         </>
     )
