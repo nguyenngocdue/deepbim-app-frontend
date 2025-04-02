@@ -4,6 +4,7 @@ import * as OBC from "@thatopen/components";
 import React from "react";
 import * as THREE from 'three'
 import { FragmentsGroup } from "@thatopen/fragments";
+import { CreateCutStyleTransparent } from "@/config/CreateCutStyleTransparent";
 
 interface UseClippingEdgesProps {
   isClippingEdges: boolean;
@@ -44,7 +45,7 @@ export function useClippingEdges({
     geometry.translate(center.x, center.y, center.z);
 
     const material = new THREE.MeshBasicMaterial({
-      color: 0xF2B5D5,
+      color: 0x59F7F7,
       transparent: true,
       opacity: 0.2,
       depthWrite: false,
@@ -64,6 +65,7 @@ export function useClippingEdges({
 
     const edges = component.get(OBCF.ClipEdges);
     edges.enabled = true;
+    // CreateCutStyleTransparent("CutEdges", cube, world, edges);
 
     container.ondblclick = () => {
       if (clipper.enabled) {
@@ -100,6 +102,7 @@ export function useClippingEdges({
 
     const edges = component.get(OBCF.ClipEdges);
     edges.enabled = false;
+    
 
     const cube = world.scene.three.getObjectByName("BoundingCube");
     if (cube) {
