@@ -1,61 +1,26 @@
-// src/features/useHighlightSetup.ts
 import * as OBCF from "@thatopen/components-front";
-import * as THREE from "three";
+
 
 interface UseHighlightSetupProps {
   isHighlightEnabled: boolean;
-  componentRef: React.RefObject<any>;
-  worldRef: React.RefObject<any>;
+  components: React.RefObject<any>;
+  world: React.RefObject<any>;
 }
+
+
 
 export function useHighlightSetup({
   isHighlightEnabled,
-  componentRef,
-  worldRef,
+  components,
+  world,
 }: UseHighlightSetupProps): void {
-  if (!componentRef.current || !worldRef.current) return;
-
-  const components = componentRef.current;
-  const world = worldRef.current;
+  if (!components || !world) return;
 
   const highlighter = components.get(OBCF.Highlighter);
-  if (!highlighter) return;
-
-  const outliner = components.get(OBCF.Outliner);
-  outliner.world = world;
-  outliner.enabled = true;
-
-  if (isHighlightEnabled) {
-    try {
-      highlighter.setup({ world });
-      highlighter.zoomToSelection = true;
-
-      // outliner.create(
-      //   "example",
-      //   new THREE.MeshBasicMaterial({
-      //     color: 0xbcf124,
-      //     transparent: true,
-      //     opacity: 0.5,
-      //   })
-      // );
-
-      // highlighter.events.select.onHighlight.add((data) => {
-      //   outliner.clear("example");
-      //   outliner.add("example", data);
-      // });
-
-      // highlighter.events.select.onClear.add(() => {
-      //   outliner.clear("example");
-      // });
-    } catch (error) {
-      if ((error as Error).message.includes("already exists")) {
-        console.warn("Highlight selection already exists. Skipping setup.");
-      } else {
-        console.error("Highlight setup failed:", error);
-      }
-    }
-  } else {
-    highlighter.zoomToSelection = false;
-   
-  }
+  highlighter.zoomToSelection = true;
+  highlighter.config.edgeThreshold = 0.1;
+  highlighter.config.fillColor = 0xff0000;
+  highlighter.config.edgeColor = 0x000000
+  highlighter.setup({ world: world });
+  
 }

@@ -71,7 +71,7 @@ const ModelIfc: React.FC<ModelIfcProps> = ({
 
   useEffect(() => {
     if (!ifcContainerRef.current) return;
-    const { world, components } = InitializeWorld(ifcContainerRef.current, haveGrids, false);
+    const { world, components } = InitializeWorld(ifcContainerRef.current);
     worldRef.current = world;
     componentRef.current = components;
 
@@ -92,9 +92,9 @@ const ModelIfc: React.FC<ModelIfcProps> = ({
   }, [haveGrids]);
 
 
-  useEffect(() => {
-    useHighlightSetup({ isHighlightEnabled, componentRef, worldRef });
-  }, [isWorldReady, isHighlightEnabled]);
+  // useEffect(() => {
+  //   useHighlightSetup({ isHighlightEnabled, componentRef, worldRef });
+  // }, [isWorldReady, isHighlightEnabled]);
 
   useEffect(() => {
     useEdgeMeasurement({ isEdgeMeasurement, componentRef, worldRef, ifcContainerRef, modelRef });

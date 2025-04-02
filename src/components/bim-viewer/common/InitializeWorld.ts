@@ -2,11 +2,12 @@ import * as OBC from "@thatopen/components";
 import * as OBCF from "@thatopen/components-front";
 import * as THREE from 'three';
 import * as OBF from "@thatopen/components-front";
+import { useHighlightSetup } from "@/features/bim-viewer/useHighlightSetup";
 
 export function InitializeWorld(
   container: HTMLDivElement,
-  haveGrids: true,
-  isOrthoPerspective: boolean = false
+  // haveGrids: true,
+  // isOrthoPerspective: boolean = false
 ) {
   const components = new OBC.Components();
   const worlds = components.get(OBC.Worlds);
@@ -37,6 +38,8 @@ export function InitializeWorld(
   world.renderer.postproduction.enabled = true;
   components.init();
 
+  const isHighlightEnabled = true;
+  useHighlightSetup({isHighlightEnabled, components, world})
 
   return { world, components };
 }
