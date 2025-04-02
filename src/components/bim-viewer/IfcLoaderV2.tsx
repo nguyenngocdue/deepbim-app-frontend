@@ -1,6 +1,7 @@
 import React, { useEffect, useCallback, useRef } from "react";
 import * as OBC from "@thatopen/components";
 import * as OBF from "@thatopen/components-front";
+import { Box3, Vector3 } from "three";
 
 interface IfcLoaderV2Props {
   source?: string | File; // URL (string) hoặc File
@@ -61,19 +62,38 @@ const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({
           }
         
           if (!model.isStreamed) {
-            const visibleFragments = model.items.filter((fragment) => fragment.mesh.visible); // Chỉ thêm fragment hiển thị
-            for (const fragment of visibleFragments) {
+            for (const fragment of model.items) {
               world.meshes.add(fragment.mesh);
               culler.add(fragment.mesh);
             }
           }
         
-          world.scene.three.add(model);
-          world.renderer.update();
+          const box = new Box3().setFromObject(model); // hoặc scene nếu cần
+          const center = new Vector3();
+          box.getCenter(center);
+
+          if (!model.isStreamed) {
+            console.log(world)
+            setTimeout(async () => {
+              world.camera.fit(world.meshes, 0.8);
+            }, 50);
+          }
+
+        world.scene.three.add(model);
+
         });
+        
+        fragments.onFragmentsDisposed.add(({ fragmentIDs }) => {
+          for (const fragmentID of fragmentIDs) {
+            const mesh = [...world.meshes].find((mesh) => mesh.uuid === fragmentID);
+            if (mesh) {
+              world.meshes.delete(mesh);
+            }
+          }
+        });
+        await fragmentIfcLoader.load(buffer);
 
         // Load model
-        await fragmentIfcLoader.load(buffer);
       } catch (error) {
         console.error("Failed to load IFC file:", error);
       }
@@ -89,7 +109,6 @@ const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({
     }
     
     const loadFile = async () => {
-      console.log(source)
       try {
         const buffer = await (source instanceof File
           ? source.arrayBuffer()

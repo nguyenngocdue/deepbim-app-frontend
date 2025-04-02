@@ -71,7 +71,7 @@ const ModelIfc: React.FC<ModelIfcProps> = ({
 
   useEffect(() => {
     if (!ifcContainerRef.current) return;
-    const { world, components } = InitializeWorld(ifcContainerRef.current, false, false);
+    const { world, components } = InitializeWorld(ifcContainerRef.current, haveGrids, false);
     worldRef.current = world;
     componentRef.current = components;
 
@@ -89,7 +89,7 @@ const ModelIfc: React.FC<ModelIfcProps> = ({
       componentRef.current?.dispose();
       setIsWorldReady(false);
     };
-  }, []);
+  }, [haveGrids]);
 
 
   useEffect(() => {
