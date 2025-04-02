@@ -1,26 +1,21 @@
-import * as OBCF from "@thatopen/components-front";
-import * as OBC from "@thatopen/components";
-import React from "react";
-import * as THREE from "three";
+import { worldManager } from "@/services/WorldManager";
 
 interface useCameraType {
     isOrthoPerspective: boolean;
-    worldRef: React.RefObject<OBC.World | null>;
 }
 
 export  function useCameraType({
     isOrthoPerspective,
-    worldRef,
 }: useCameraType): void {
-    if ( !worldRef ) return;
-
     
-    const projection = worldRef.current.camera.projection; 
+    const world = worldManager.getWorld();
+    if ( !world ) return;
+    const projection = world.camera.projection; 
     if (isOrthoPerspective) {
-        projection.set("Orthographic")
+        // projection.set("Orthographic")
     } else {
-        projection.set("Perspective")
-
+        // worldManager.changeCameraType(true);
+        // projection.set("Perspective")
     }
 
 }

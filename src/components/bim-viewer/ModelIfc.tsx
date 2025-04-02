@@ -13,6 +13,9 @@ import {
 import { UploadState } from "@/props/UploadState";
 import { ModelIfcProps } from "@/props/ModelIfcProps";
 import { useBimViewerFeatures, FeatureFlags } from "@/features/bim-viewer/useBimViewerFeatures";
+import { worldManager } from "@/services/WorldManager";
+import { useHighlightSetup } from "@/features/bim-viewer/useHighlightSetup";
+import { gridManager } from "@/services/GridManager";
 
 // Extend three.js geometry for BVH
 THREE.BufferGeometry.prototype.computeBoundsTree = computeBoundsTree;
@@ -91,8 +94,16 @@ const ModelIfc: React.FC<ModelIfcProps> = ({
   // Initialize viewer
   useEffect(() => {
     if (!ifcContainerRef.current) return;
-
-    const { world, components } = InitializeWorld(ifcContainerRef.current, haveGrids);
+    worldManager.initialize(ifcContainerRef.current);
+    
+    const world = worldManager.getWorld();
+    const components = worldManager.getComponents();
+    if(!components) return;
+    gridManager.createGrid(components, world);
+    
+    const isHighlightEnabled = true;
+    useHighlightSetup({isHighlightEnabled, components, world})
+    
     worldRef.current = world;
     componentRef.current = components;
 

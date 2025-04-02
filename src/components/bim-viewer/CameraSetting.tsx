@@ -1,6 +1,7 @@
 import React from 'react'
 import ElementToggle from './common/ElementToggle';
-import { MdDraw } from "react-icons/md";
+import { TbPerspective } from "react-icons/tb";
+import { GiPerspectiveDiceSixFacesTwo } from "react-icons/gi";
 
 interface CameraSettingProps {
     onToggle: () => void; // Callback function to toggle the Section Box
@@ -13,8 +14,8 @@ const CameraSetting: React.FC<CameraSettingProps> = ({ onToggle, isActive }) => 
             <ElementToggle
                 onToggle={onToggle}
                 isActive={isActive}
-                icon={isActive ? <MdDraw /> : <MdDraw />}
-                label={isActive ? "Ortho" : "Perspec"}
+                icon={isActive ? <GiPerspectiveDiceSixFacesTwo /> : <TbPerspective />}
+                label={isActive ? "O" : "P"}
                 activeColor="bg-gray-800 text-white bg-blue-400"
                 inactiveColor=""
                 className=""

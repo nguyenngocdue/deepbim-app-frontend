@@ -21,6 +21,6 @@ export function useViewerEnhancements({
     usePlaneViews({ havePlansViews, componentRef, worldRef, ifcContainerRef, modelRef });
     useWorldSettings({ haveWorldSettings, componentRef, worldRef });
     useClippingEdges({isClippingEdges , componentRef, worldRef, ifcContainerRef });
-    useCameraType({isOrthoPerspective, worldRef});
+    useCameraType({isOrthoPerspective});
   }, [isWorldReady, haveGrids, havePlansViews, haveWorldSettings, isClippingEdges, isOrthoPerspective]);
 }

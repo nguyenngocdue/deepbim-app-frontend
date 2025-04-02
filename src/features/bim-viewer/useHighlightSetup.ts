@@ -1,9 +1,10 @@
 import * as OBCF from "@thatopen/components-front";
+import * as OBC from "@thatopen/components";
 
 
 interface UseHighlightSetupProps {
   isHighlightEnabled: boolean;
-  components: React.RefObject<any>;
+  components: React.RefObject<OBC.Components>;
   world: React.RefObject<any>;
 }
 
