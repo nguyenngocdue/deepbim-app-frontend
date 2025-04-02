@@ -92,9 +92,6 @@ const ModelIfc: React.FC<ModelIfcProps> = ({
   }, [haveGrids]);
 
 
-  // useEffect(() => {
-  //   useHighlightSetup({ isHighlightEnabled, componentRef, worldRef });
-  // }, [isWorldReady, isHighlightEnabled]);
 
   useEffect(() => {
     useEdgeMeasurement({ isEdgeMeasurement, componentRef, worldRef, ifcContainerRef, modelRef });
@@ -146,8 +143,9 @@ const ModelIfc: React.FC<ModelIfcProps> = ({
   }, [isWorldReady, isFreeControlElements]);
 
   usePlaneHover({ isPlaneHover, componentRef, worldRef, ifcContainerRef, modelRef });
-  useSetViewPoint({ isFitView, componentRef, worldRef, ifcContainerRef, modelRef });
+  useSetViewPoint({ isFitView, worldRef });
   useCoordinateSystem({ coordinateSysActive, worldRef });
+
   return (
     <div className="relative w-screen h-screen">
       {
