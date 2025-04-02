@@ -73,7 +73,6 @@ const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({
           box.getCenter(center);
 
           if (!model.isStreamed) {
-            console.log(world)
             setTimeout(async () => {
               world.camera.fit(world.meshes, 0.8);
             }, 50);

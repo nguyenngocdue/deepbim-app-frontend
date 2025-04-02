@@ -2,7 +2,7 @@
 import * as THREE from "three";
 import { FontLoader } from "three/examples/jsm/loaders/FontLoader.js";
 import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry.js";
-
+import * as OBC from "@thatopen/components";
 /**
  * Creates a 3D text label for an axis.
  * @param text - The label text (e.g., "X", "Y", "Z").
@@ -76,18 +76,15 @@ export const addAxesWithTextLabelsToScene = async (
     }
 };
 
-export const removeAxesWithTextLabelsFromScene = (world: THREE.Scene) => {
-    if(!world) return;
+export const removeAxesWithTextLabelsFromScene = (world: OBC.World) => {
+    if (!world) return;
     const scene = world.scene.three;
-    const axesHelper = world.scene.three.children.find(child => child instanceof THREE.AxesHelper);
-    if (axesHelper) {
-        scene.remove(axesHelper);
-    }
-console.log(scene)
-    // Xóa các nhãn văn bản (text labels)
-    scene.children.forEach((child) => {
-        if (child.name.startsWith("coordinateAxisLabel")) {
-            scene.remove(child);
-        }
-    });
-};
+    // Remove all AxesHelper objects from the scene
+    const axesHelpers = scene.children.filter(child => child instanceof THREE.AxesHelper);
+    axesHelpers.forEach(helper => scene.remove(helper));
+    // Remove all text labels starting with "coordinateAxisLabel"
+    const textLabels = scene.children.filter(child => child.name.startsWith("coordinateAxisLabel"));
+    textLabels.forEach(label => scene.remove(label));
+  };
+  
+  
