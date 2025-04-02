@@ -29,7 +29,7 @@ export function useMeasurementFeatures({
     useEffect(() => {
         if (!isWorldReady) return;
         useEdgeMeasurement({ isEdgeMeasurement, componentRef, worldRef, ifcContainerRef });
-        useFaceMeasurement({ isFaceMeasurement, componentRef, worldRef, ifcContainerRef, modelRef });
+        useFaceMeasurement({ isFaceMeasurement, componentRef, worldRef, ifcContainerRef });
         useVolumeMeasurement({ hasVolumeMeasurement, componentRef, worldRef, ifcContainerRef, modelRef });
         useLengthMeasurements({ haveLengthMeasurements, componentRef, worldRef, ifcContainerRef, modelRef });
         useAreaMeasurements({ haveAreaMeasureElements, componentRef, worldRef, ifcContainerRef, modelRef });
