@@ -24,12 +24,11 @@ export function useEdgeMeasurement({
 
   if (!components || !world || !container) return;
   
-  
+  const dimensions = components.get(OBCF.EdgeMeasurement);
   if (isEdgeMeasurement && world) {
     const fragmentsGroup = GetFragmentsGroup(world)
     const highlighter = components.get(OBCF.Highlighter);
     highlighter.enabled = false;
-    const dimensions = components.get(OBCF.EdgeMeasurement);
     dimensions.world = world;
     dimensions.enabled = true;
 
@@ -55,7 +54,8 @@ export function useEdgeMeasurement({
 
     container.ondblclick = () => dimensions.create();
   } else {
-    const dimensions = components.get(OBCF.EdgeMeasurement);
+    dimensions.world = world;
+    dimensions.enabled= false
     dimensions.deleteAll();
   }
 }
