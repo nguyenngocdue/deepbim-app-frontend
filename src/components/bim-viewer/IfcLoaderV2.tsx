@@ -68,16 +68,11 @@ const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({
             }
           }
         
-          const box = new Box3().setFromObject(model); // hoặc scene nếu cần
-          const center = new Vector3();
-          box.getCenter(center);
-
           if (!model.isStreamed) {
             setTimeout(async () => {
               world.camera.fit(world.meshes, 0.8);
             }, 50);
           }
-
         world.scene.three.add(model);
 
         });

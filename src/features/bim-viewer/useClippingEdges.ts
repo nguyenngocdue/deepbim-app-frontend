@@ -3,13 +3,13 @@ import * as OBCF from "@thatopen/components-front";
 import * as OBC from "@thatopen/components";
 import React from "react";
 import * as THREE from 'three'
+import { FragmentsGroup } from "@thatopen/fragments";
 
 interface UseClippingEdgesProps {
   isClippingEdges: boolean;
   componentRef: React.RefObject<OBC.Components | null>;
   worldRef: React.RefObject<OBC.World | null>;
   ifcContainerRef: React.RefObject<HTMLDivElement | null>;
-  modelRef: React.RefObject<THREE.Object3D | null>;
 }
 
 export function useClippingEdges({
@@ -17,20 +17,24 @@ export function useClippingEdges({
   componentRef,
   worldRef,
   ifcContainerRef,
-  modelRef,
 }: UseClippingEdgesProps): void {
   const component = componentRef.current;
   const world = worldRef.current;
   const container = ifcContainerRef.current;
-  const model = modelRef.current;
+  if (!component || !world || !container) return;
 
-  if (!component || !world || !container || !model) return;
-
+  
   if (isClippingEdges) {
+    const fragmentsGroup = world.scene.three.children.find(
+      (child): child is FragmentsGroup => child instanceof FragmentsGroup
+    );
+    if (!fragmentsGroup) {
+      console.warn("FragmentsGroup not found");
+      return;
+    }    
     const casters = component.get(OBC.Raycasters);
     casters.enabled = true;
-
-    const box3 = new THREE.Box3().setFromObject(model);
+    const box3 = new THREE.Box3().setFromObject(fragmentsGroup);
     const size = new THREE.Vector3();
     box3.getSize(size);
     const center = new THREE.Vector3();
@@ -40,7 +44,7 @@ export function useClippingEdges({
     geometry.translate(center.x, center.y, center.z);
 
     const material = new THREE.MeshBasicMaterial({
-      color: 0x00ff00,
+      color: 0xF2B5D5,
       transparent: true,
       opacity: 0.2,
       depthWrite: false,
@@ -56,7 +60,7 @@ export function useClippingEdges({
     const clipper = component.get(OBC.Clipper);
     clipper.enabled = true;
     clipper.Type = OBCF.EdgesPlane;
-    clipper.size = (size.x + size.y + size.z) / 6;
+    clipper.size = (size.x + size.y + size.z) / 12;
 
     const edges = component.get(OBCF.ClipEdges);
     edges.enabled = true;
