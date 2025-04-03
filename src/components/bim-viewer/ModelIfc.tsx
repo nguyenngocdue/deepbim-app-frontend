@@ -3,6 +3,7 @@ import * as THREE from "three";
 import { useLocation } from "@tanstack/react-router";
 import IfcLoaderV2 from "./IfcLoaderV2";
 import { InitializeWorld } from "./common/InitializeWorld";
+import * as CUI from "@thatopen/ui-obc";
 
 import {
   computeBoundsTree,
@@ -16,6 +17,7 @@ import { useBimViewerFeatures, FeatureFlags } from "@/features/bim-viewer/useBim
 import { worldManager } from "@/services/WorldManager";
 import { useHighlightSetup } from "@/features/bim-viewer/useHighlightSetup";
 import { gridManager } from "@/services/GridManager";
+import { containerManager } from "@/services/ContainerManager";
 
 // Extend three.js geometry for BVH
 THREE.BufferGeometry.prototype.computeBoundsTree = computeBoundsTree;
@@ -94,10 +96,12 @@ const ModelIfc: React.FC<ModelIfcProps> = ({
   // Initialize viewer
   useEffect(() => {
     if (!ifcContainerRef.current) return;
-    worldManager.initialize(ifcContainerRef.current);
-    
+    containerManager.setRef(ifcContainerRef.current);
+    worldManager.initialize();
+  
     const world = worldManager.getWorld();
     const components = worldManager.getComponents();
+
     if(!components) return;
     gridManager.createGrid(components, world);
     
@@ -138,7 +142,7 @@ const ModelIfc: React.FC<ModelIfcProps> = ({
   const shouldLoadModel = isWorldReady && statusUpload === "upload_by_user";
 
   return (
-    <div className="relative w-screen h-screen">
+    <div className="relative w-screen h-screen" id="deepbim-mainviewer">
       {shouldLoadModel && (
         <IfcLoaderV2
           source={file}

@@ -1,12 +1,15 @@
 import * as OBC from "@thatopen/components";
 import * as OBCF from "@thatopen/components-front";
+import { Ref } from "react";
 import * as THREE from 'three';
+import { containerManager } from "./ContainerManager";
 
 // Singleton class để quản lý world và components
 class WorldManager {
   private static instance: WorldManager; // Biến static để lưu instance
   public components: OBC.Components | null = null;
   public world: any | null = null;
+  public container: any | null = null;
 
   private constructor() { }
 
@@ -19,7 +22,7 @@ class WorldManager {
   }
 
   // Phương thức để khởi tạo world và components
-  public initialize(container: HTMLDivElement): void {
+  public initialize(): void {
     // Khởi tạo components
     this.components = new OBC.Components();
 
@@ -35,6 +38,7 @@ class WorldManager {
 
     // Thiết lập scene, camera, và renderer
     this.world.scene = new OBC.SimpleScene(this.components);
+    const container = containerManager.getRefOrThrow();
     this.world.renderer = new OBCF.PostproductionRenderer(this.components, container);
     this.world.camera = new OBC.OrthoPerspectiveCamera(this.components);
 
@@ -43,6 +47,7 @@ class WorldManager {
     this.world.renderer.postproduction.enabled = true;
     this.components.init();
     // console.log("World and components have been initialized globally.");
+    this.container = container;
   }
 
   public changeCameraType(isOrthographic: boolean): void {
@@ -107,6 +112,13 @@ class WorldManager {
       console.error("Components are not initialized. Call initialize() first.");
     }
     return this.components;
+  }
+
+  public getContainer(): any {
+    if(!this.container){
+      console.error('Container are not initialized. Call initialize first.');
+    }
+    return this.container;
   }
 }
 
