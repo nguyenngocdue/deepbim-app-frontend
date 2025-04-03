@@ -2,6 +2,7 @@ import * as React from "react";
 import * as OBC from "@thatopen/components";
 import * as BUI from "@thatopen/ui";
 import { worldManager } from "@/services/WorldManager";
+import { toggleGroupItemVisibility } from "@/features/bim-viewer/toggleGroupItemVisibility";
 
 // Component hiển thị cây phân loại tùy chỉnh
 function ClassificationTreeCustom({
@@ -37,25 +38,7 @@ function ClassificationTreeCustom({
 
 
   const handleToggle = (groupItem: any, visible: boolean) => {
-    const uuids = Object.keys(groupItem.map || {});
-    uuids.forEach((uuid) => {
-      const [groupEntry] = fragmentsManager.groups.entries();
-      const [, fragmentsGroup2] = groupEntry;
-      const { keyFragments, items } = fragmentsGroup2;
-      keyFragments.forEach((keyF: string, index: number) => {
-        if (keyF == uuid) {
-          const fragment = items[index];
-          const fragmentIds = fragment.ids
-          const isHidden = fragment.hiddenItems.has(fragmentIds);
-          if (visible) {
-            fragment.setVisibility(true);
-          } else {
-            fragment.setVisibility(isHidden, fragmentIds);
-          }
-
-        }
-      });
-    });
+    toggleGroupItemVisibility(groupItem, visible, fragmentsManager);
   };
 
 
