@@ -1,56 +1,130 @@
 import * as React from "react";
 import * as OBC from "@thatopen/components";
 import * as BUI from "@thatopen/ui";
-import * as BUIC from "@thatopen/ui-obc";
 import { worldManager } from "@/services/WorldManager";
 
+// Component hiển thị cây phân loại tùy chỉnh
+function ClassificationTreeCustom({
+  classifierData,
+  fragmentsManager,
+}: {
+  classifierData: any;
+  fragmentsManager: any;
+}) {
+  const [groups, setGroups] = React.useState<
+    { label: string; items: any[] }[]
+  >([]);
+
+  React.useEffect(() => {
+    if (!classifierData?.list) return;
+
+    const entitiesRaw = classifierData.list.entities || {};
+    const predefinedRaw = classifierData.list.predefinedTypes || {};
+
+    const entities = Array.isArray(entitiesRaw)
+      ? entitiesRaw
+      : Object.values(entitiesRaw);
+
+    const predefined = Array.isArray(predefinedRaw)
+      ? predefinedRaw
+      : Object.values(predefinedRaw);
+
+    setGroups([
+      { label: "Entities", items: entities },
+      { label: "Predefined Types", items: predefined },
+    ]);
+  }, [classifierData]);
+
+
+  const handleToggle = (groupItem: any, visible: boolean) => {
+    const uuids = Object.keys(groupItem.map || {});
+    uuids.forEach((uuid) => {
+      const [groupEntry] = fragmentsManager.groups.entries();
+      const [, fragmentsGroup2] = groupEntry;
+      const { keyFragments, items } = fragmentsGroup2;
+      keyFragments.forEach((keyF: string, index: number) => {
+        if (keyF == uuid) {
+          const fragment = items[index];
+          const fragmentIds = fragment.ids
+          const isHidden = fragment.hiddenItems.has(fragmentIds);
+          if (visible) {
+            fragment.setVisibility(true);
+          } else {
+            fragment.setVisibility(isHidden, fragmentIds);
+          }
+
+        }
+      });
+    });
+  };
+
+
+
+  return (
+    <div className="text-white p-4">
+      <h2 className="text-lg font-semibold mb-4">Classification Tree</h2>
+      {groups.map((group) => (
+        <div key={group.label} className="mb-4">
+          <h3 className="font-bold mb-2">{group.label}</h3>
+          <ul className="pl-2">
+            {group.items.map((item: any, index: number) => {
+              const key = item.id || item.name || `${group.label}-${index}`;
+              return (
+                <li key={key} className="flex items-center gap-2 mb-1">
+                  <input
+                    type="checkbox"
+                    defaultChecked
+                    onChange={(e) =>
+                      handleToggle(item, e.target.checked)
+                    }
+                  />
+                  <label className="select-none cursor-pointer">
+                    {item.name}
+                  </label>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export default function ClassificationsTreeApp() {
-  const viewportRef = React.useRef<HTMLDivElement>(null);
-  const treeContainerRef = React.useRef<HTMLDivElement>(null);
   const [classifierData, setClassifierData] = React.useState<any>(null);
+  const [fragmentsManager, setFragmentsManager] = React.useState<any>(null);
 
   React.useEffect(() => {
     BUI.Manager.init();
 
     const components = worldManager.getComponents();
-
     const ifcLoader = components.get(OBC.IfcLoader);
+    const classifier = components.get(OBC.Classifier);
+    const fragments = components.get(OBC.FragmentsManager);
+
     ifcLoader.setup();
 
-    const fragmentsManager = components.get(OBC.FragmentsManager);
-    const classifier = components.get(OBC.Classifier);
-
-    const [classificationsTree, updateClassificationsTree] =
-      BUIC.tables.classificationTree({
-        components,
-        classifications: [],
-      });
-
-    fragmentsManager.onFragmentsLoaded.add(async (model) => {
-      classifier.byEntity(model);
+    fragments.onFragmentsLoaded.add(async (model) => {
+      await classifier.byEntity(model);
       await classifier.byPredefinedType(model);
 
-      const classifications = [
-        { system: "entities", label: "Entities" },
-        { system: "predefinedTypes", label: "Predefined Types" },
-      ];
-
-      updateClassificationsTree({ classifications });
+      setClassifierData(classifier);
+      setFragmentsManager(fragments);
     });
-
-    setClassifierData(classifier);
-
-    if (treeContainerRef.current) {
-      treeContainerRef.current.appendChild(classificationsTree);
-    }
   }, []);
-  console.log(treeContainerRef);
 
   return (
-    <div className="h-full">
-      <div className="h-full w-80 bg-zinc-900 text-white p-4 overflow-auto" ref={treeContainerRef}>
-        <h2 className="text-lg font-semibold mb-2">Classification Tree</h2>
+    <div className="flex w-full h-screen">
+      <div className="w-80 bg-zinc-900 overflow-auto">
+        {classifierData && fragmentsManager && (
+          <ClassificationTreeCustom
+            classifierData={classifierData}
+            fragmentsManager={fragmentsManager}
+          />
+        )}
       </div>
+      <div className="flex-1" id="viewport" />
     </div>
   );
 }
