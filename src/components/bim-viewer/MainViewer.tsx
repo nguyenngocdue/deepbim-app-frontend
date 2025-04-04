@@ -87,6 +87,7 @@ const MainViewer: React.FC = () => {
                 maxSize={40}
                 collapsed={isLeftCollapsed}
                 collapsible
+                hidden={isLeftCollapsed}
               >
                 <div
                   className={`
@@ -150,6 +151,7 @@ const MainViewer: React.FC = () => {
                 maxSize={40}
                 collapsed={isRightCollapsed}
                 collapsible
+                hidden={isRightCollapsed}
               >
                 <div
                   className={`
