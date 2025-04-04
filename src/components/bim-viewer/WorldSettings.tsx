@@ -18,7 +18,7 @@ const WorldSettings:React.FC<WorldSettingProps> = ({onToggle, isActive}) => {
             label={isActive ? "": ""}
             activeColor="bg-gray-800 text-white"
             inactiveColor=""
-            className="bg-green-700"
+            className="bg-green-500"
             hoverTitle="WorldSettings"
          /> 
         </>

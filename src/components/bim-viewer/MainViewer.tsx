@@ -85,7 +85,7 @@ const MainViewer: React.FC = () => {
                 defaultSize={20}
                 minSize={10}
                 maxSize={40}
-                collapsed={isLeftCollapsed}
+                collapsed={isLeftCollapsed.toString()}
                 collapsible
                 hidden={isLeftCollapsed}
               >
@@ -149,7 +149,7 @@ const MainViewer: React.FC = () => {
                 defaultSize={20}
                 minSize={10}
                 maxSize={40}
-                collapsed={isRightCollapsed}
+                collapsed={isRightCollapsed.toString()}
                 collapsible
                 hidden={isRightCollapsed}
               >
