@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as OBC from "@thatopen/components";
-import * as BUIC from "@thatopen/ui-obc";
 import { worldManager } from "@/services/WorldManager";
 import { modelManager } from "@/services/ModelManager";
 import { processPropertySets } from "./helpers/ProcessPropertySets";
@@ -47,7 +46,7 @@ const TreeItem: React.FC<{ node: TreeNode; parentKey: string }> = ({ node, paren
   if (isLeafGroup) {
     return (
       <AccordionItem value={id}>
-        <AccordionTrigger className="text-white text-sm font-semibold">
+        <AccordionTrigger className="uppercase text-xs  text-zinc-400 tracking-wide font-bold ">
           {node.name}
         </AccordionTrigger>
         <AccordionContent>
@@ -56,10 +55,10 @@ const TreeItem: React.FC<{ node: TreeNode; parentKey: string }> = ({ node, paren
               {node.children!.map((child, index) => (
                 <tr
                   key={index}
-                  className="border-b border-zinc-800 hover:bg-zinc-800 transition-colors"
+                  className="  hover:bg-zinc-800 transition-colors"
                 >
-                  <td className="px-3 py-2 font-medium text-white w-1/3">{child.name}</td>
-                  <td className="px-3 py-2 text-zinc-300">{child.value ?? "-"}</td>
+                  <td className="px-3 py-2 font-medium text-white w-1/3 border-r border-zinc-600">{child.name}</td>
+                  <td className="px-3 py-2 text-zinc-300  ">{child.value ?? "-"}</td>
                 </tr>
               ))}
             </tbody>
@@ -72,7 +71,7 @@ const TreeItem: React.FC<{ node: TreeNode; parentKey: string }> = ({ node, paren
   if (node.children && node.children.length > 0) {
     return (
       <AccordionItem value={id}>
-        <AccordionTrigger className="text-white text-sm font-semibold">
+        <AccordionTrigger className="uppercase text-xs  text-zinc-400 tracking-wide font-bold">
           {node.name}
         </AccordionTrigger>
         <AccordionContent>
@@ -115,7 +114,6 @@ const getAllNodeIds = (nodes: TreeNode[], prefix = "node"): string[] => {
 
 
 const ElementProperties: React.FC = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
   const [treeData, setTreeData] = useState<TreeNode[]>([]);
 
   useEffect(() => {
@@ -157,8 +155,8 @@ const ElementProperties: React.FC = () => {
   }, []);
 
   return (
-    <div className="flex w-full h-screen">
-      <div className="w-80 overflow-auto p-3 text-white text-sm bg-zinc-900 border-r border-zinc-800">
+    <div className="flex w-full h-screen ">
+      <div className="w-full overflow-auto p-3 text-white text-sm bg-panel-50">
         {treeData.length > 0 ? (
           <TreeAccordion data={treeData} />
         ) : (

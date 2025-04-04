@@ -45,20 +45,23 @@ function ClassificationTreeCustom({
   };
 
   return (
-    <ScrollArea className="h-full w-full pr-4">
+    <ScrollArea className="h-full w-full">
       <div className="text-white text-sm p-4 space-y-6">
-        <h2 className="text-xl font-semibold pb-2 border-b border-zinc-700">Classification Tree</h2>
+        <h2 className="text-xl  pb-2 border-b border-zinc-700">Classification Tree</h2>
         {groups.map((group) => (
           <div key={group.label} className="space-y-3">
-            <h3 className="uppercase text-xs font-semibold text-zinc-400 tracking-wide">
+            <h3 className="uppercase text-xs  text-zinc-400 tracking-wide">
               {group.label}
             </h3>
 
-            <div className="space-y-2">
+            <div className="space-y-2 ">
               {group.items.map((item: any, index: number) => {
                 const key = item.id || item.name || `${group.label}-${index}`;
                 return (
-                  <div key={key} className="flex items-center space-x-3">
+                  <div
+                    key={key}
+                    className="flex items-center space-x-3 px-2 py-1 rounded-md hover:bg-zinc-800 transition-colors"
+                  >
                     <Checkbox
                       id={key}
                       defaultChecked
@@ -108,7 +111,7 @@ export default function ClassificationsTreeApp() {
   }, []);
 
   return (
-    <div className="w-80 h-full bg-zinc-900 border-r border-zinc-800">
+    <div className="w-full h-full">
       {classifierData && fragmentsManager && (
         <ClassificationTreeCustom
           classifierData={classifierData}

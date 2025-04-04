@@ -94,6 +94,9 @@ export default {
 			logo: {
 				50:'var(--color-logo-50)'
 			},
+			panel:{
+				50:'var(--color-panel-50)'
+			},
 			  // Neutral Colors
 			  neutral: {
 				50: 'var(--color-neutral-50)',

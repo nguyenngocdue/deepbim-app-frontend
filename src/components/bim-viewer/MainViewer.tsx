@@ -89,7 +89,7 @@ const MainViewer: React.FC = () => {
             <PanelGroup direction="horizontal">
               {/* Left Panel */}
               <Panel defaultSize={20} minSize={10} maxSize={40}>
-                <div className="h-full overflow-auto bg-zinc-900 border-r border-zinc-800 p-4">
+                <div className="h-full overflow-auto bg-panel-50">
                   {isModelReady && <ClassificationsTree />}
                 </div>
               </Panel>
@@ -112,7 +112,7 @@ const MainViewer: React.FC = () => {
   
               {/* Right Panel */}
               <Panel defaultSize={20} minSize={10} maxSize={40}>
-                <div className="h-full overflow-auto bg-zinc-900 border-l border-zinc-800 p-4">
+                <div className="h-full overflow-auto bg-panel-50">
                   {isModelReady && <ElementProperties />}
                 </div>
               </Panel>
