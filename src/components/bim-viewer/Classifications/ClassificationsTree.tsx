@@ -7,7 +7,6 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import { FragmentIdMap } from "@thatopen/fragments";
 import * as THREE from 'three';
 
 // Component hiển thị cây phân loại tùy chỉnh
@@ -113,6 +112,7 @@ export default function ClassificationsTreeApp() {
   React.useEffect(() => {
     BUI.Manager.init();
     const components = worldManager.getComponents();
+    if(!components) return;
     const ifcLoader = components.get(OBC.IfcLoader);
     const classifier = components.get(OBC.Classifier);
     const fragments = components.get(OBC.FragmentsManager);
