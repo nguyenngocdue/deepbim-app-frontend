@@ -61,27 +61,31 @@ const MainViewer: React.FC = () => {
         <div className="h-screen flex flex-col bg-black text-white">
           {/* Header cố định */}
           <div className="border-b border-zinc-800 bg-zinc-900">
-            <HeaderViewer
-              onToggle={toggleState}
-              isFitView={states.isFitView}
-              isOrthoPerspective={states.isOrthoPerspective}
-              sectionActive={states.sectionActive}
-              coordinateSysActive={states.coordinateSysActive}
-              isHighlightEnabled={states.isHighlightEnabled}
-              isClippingEdges={states.isClippingEdges}
-              isEdgeMeasurement={states.isEdgeMeasurement}
-              isFaceMeasurement={states.isFaceMeasurement}
-              haveGrids={states.haveGrids}
-              hasVolumeMeasurement={states.hasVolumeMeasurement}
-              havePlansViews={states.havePlansViews}
-              haveLengthMeasurements={states.haveLengthMeasurements}
-              haveAreaMeasureElements={states.haveAreaMeasureElements}
-              haveAngleMeasurements={states.haveAngleMeasurements}
-              haveWorldSettings={states.haveWorldSettings}
-              isOriginalWorldCamera={states.isOriginalWorldCamera}
-              isFreeControlElements={states.isFreeControlElements}
-              isPlaneHover={states.isPlaneHover}
-            />
+          <PanelGroup direction="horizontal">
+              <Panel defaultSize={20} minSize={10} maxSize={40}>
+                <HeaderViewer
+                  onToggle={toggleState}
+                  isFitView={states.isFitView}
+                  isOrthoPerspective={states.isOrthoPerspective}
+                  sectionActive={states.sectionActive}
+                  coordinateSysActive={states.coordinateSysActive}
+                  isHighlightEnabled={states.isHighlightEnabled}
+                  isClippingEdges={states.isClippingEdges}
+                  isEdgeMeasurement={states.isEdgeMeasurement}
+                  isFaceMeasurement={states.isFaceMeasurement}
+                  haveGrids={states.haveGrids}
+                  hasVolumeMeasurement={states.hasVolumeMeasurement}
+                  havePlansViews={states.havePlansViews}
+                  haveLengthMeasurements={states.haveLengthMeasurements}
+                  haveAreaMeasureElements={states.haveAreaMeasureElements}
+                  haveAngleMeasurements={states.haveAngleMeasurements}
+                  haveWorldSettings={states.haveWorldSettings}
+                  isOriginalWorldCamera={states.isOriginalWorldCamera}
+                  isFreeControlElements={states.isFreeControlElements}
+                  isPlaneHover={states.isPlaneHover}
+                />
+              </Panel>
+          </PanelGroup>
           </div>
   
           {/* Resizable PanelGroup bên dưới */}

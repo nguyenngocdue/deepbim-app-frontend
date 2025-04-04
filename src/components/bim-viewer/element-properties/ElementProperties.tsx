@@ -57,8 +57,8 @@ const TreeItem: React.FC<{ node: TreeNode; parentKey: string }> = ({ node, paren
                   key={index}
                   className="  hover:bg-zinc-800 transition-colors"
                 >
-                  <td className="px-3 py-2 font-medium text-white w-1/3 border-r border-zinc-600">{child.name}</td>
-                  <td className="px-3 py-2 text-zinc-300  ">{child.value ?? "-"}</td>
+                  <td className="px-3 py-2 font-medium text-white w-1/3 border border-zinc-600">{child.name}</td>
+                  <td className="px-3 py-2 text-zinc-300 border border-zinc-600 ">{child.value ?? "-"}</td>
                 </tr>
               ))}
             </tbody>

@@ -7,6 +7,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+import { FragmentIdMap } from "@thatopen/fragments";
+import * as THREE from 'three';
 
 // Component hiển thị cây phân loại tùy chỉnh
 function ClassificationTreeCustom({
@@ -19,7 +21,6 @@ function ClassificationTreeCustom({
   const [groups, setGroups] = React.useState<
     { label: string; items: any[] }[]
   >([]);
-
   React.useEffect(() => {
     if (!classifierData?.list) return;
 
@@ -44,6 +45,21 @@ function ClassificationTreeCustom({
     toggleGroupItemVisibility(groupItem, visible, fragmentsManager);
   };
 
+
+  const highlighter = worldManager.getHighlightSetup();
+  if (!highlighter.selection["hovering"]) {
+    highlighter.add("hovering", new THREE.Color(0xFF00FF)); // Cyan màu hover
+  }
+  
+  const handleHover = (item: any) => {
+    highlighter.highlightByID("hovering",item.map);
+  };
+  
+  const clearHover = () => {
+    highlighter?.clear("hovering");
+  };
+  
+
   return (
     <ScrollArea className="h-full w-full">
       <div className="text-white text-sm p-4 space-y-6">
@@ -59,6 +75,8 @@ function ClassificationTreeCustom({
                 const key = item.id || item.name || `${group.label}-${index}`;
                 return (
                   <div
+                    onMouseEnter={() => handleHover(item)}
+                    onMouseLeave={clearHover}
                     key={key}
                     className="flex items-center space-x-3 px-2 py-1 rounded-md hover:bg-zinc-800 transition-colors"
                   >
