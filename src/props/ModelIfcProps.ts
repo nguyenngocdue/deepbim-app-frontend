@@ -20,4 +20,5 @@ export interface ModelIfcProps {
     isFreeControlElements:boolean;
     isPlaneHover:boolean;
     isFitView:boolean;
+    onModelReady:()=>void;
 }

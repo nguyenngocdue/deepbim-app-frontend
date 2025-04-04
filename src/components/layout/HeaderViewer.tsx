@@ -49,7 +49,7 @@ const HeaderViewer: React.FC<ModelIfcProps> = (
 
   return (
     <>
-      <header className="z-50 absolute top-0 left-10 right-10 w-[calc(100%-5rem)] bg-black/50 backdrop-blur-md text-white px-4 md:px-6 py-2 shadow-md">
+      <header className="z-50  bg-black/50 backdrop-blur-md text-white  md:px-6 py-2 shadow-md">
         <div className="flex flex-col gap-2">
 
           {/* Logo Section */}

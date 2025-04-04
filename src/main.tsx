@@ -20,6 +20,7 @@ import "./index.css"
 import "./styles/global.css";
 import "./styles/tokens.css";
 
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {

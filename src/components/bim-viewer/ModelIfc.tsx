@@ -41,6 +41,7 @@ const ModelIfc: React.FC<ModelIfcProps> = ({
   isFreeControlElements,
   isPlaneHover,
   isFitView,
+  onModelReady,
 }) => {
   // Refs
   const ifcContainerRef = useRef<HTMLDivElement | null>(null);
@@ -96,23 +97,24 @@ const ModelIfc: React.FC<ModelIfcProps> = ({
   // Initialize viewer
   useEffect(() => {
     if (!ifcContainerRef.current) return;
-    containerManager.setRef(ifcContainerRef.current);
-    worldManager.initialize();
+    const init = async () => {
+      containerManager.setRef(ifcContainerRef.current);
+      await worldManager.initialize();
+      onModelReady?.();
+      const world = worldManager.getWorld();
+      const components = worldManager.getComponents();
+      if(!components) return;
+      gridManager.createGrid(components, world);
+      worldRef.current = world;
+      componentRef.current = components;
+      
   
-    const world = worldManager.getWorld();
-    const components = worldManager.getComponents();
+      startRenderLoop();
+      setIsWorldReady(true);
+    };
+    init();
 
-    if(!components) return;
-    gridManager.createGrid(components, world);
     
-    // const isHighlightEnabled = true;
-    // useHighlightSetup({isHighlightEnabled, components, world})
-    
-    worldRef.current = world;
-    componentRef.current = components;
-
-    startRenderLoop();
-    setIsWorldReady(true);
 
     return () => {
       world?.dispose();
@@ -142,7 +144,7 @@ const ModelIfc: React.FC<ModelIfcProps> = ({
   const shouldLoadModel = isWorldReady && statusUpload === "upload_by_user";
 
   return (
-    <div className="relative w-screen h-screen" id="deepbim-mainviewer">
+    <div className="relative w-full h-full" id="deepbim-mainviewer">
       {shouldLoadModel && (
         <IfcLoaderV2
           source={file}

@@ -3,6 +3,10 @@ import * as OBC from "@thatopen/components";
 import * as BUI from "@thatopen/ui";
 import { worldManager } from "@/services/WorldManager";
 import { toggleGroupItemVisibility } from "@/features/bim-viewer/toggleGroupItemVisibility";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 
 // Component hiển thị cây phân loại tùy chỉnh
 function ClassificationTreeCustom({
@@ -36,41 +40,48 @@ function ClassificationTreeCustom({
     ]);
   }, [classifierData]);
 
-
   const handleToggle = (groupItem: any, visible: boolean) => {
     toggleGroupItemVisibility(groupItem, visible, fragmentsManager);
   };
 
-
-
   return (
-    <div className="text-white p-4">
-      <h2 className="text-lg font-semibold mb-4">Classification Tree</h2>
-      {groups.map((group) => (
-        <div key={group.label} className="mb-4">
-          <h3 className="font-bold mb-2">{group.label}</h3>
-          <ul className="pl-2">
-            {group.items.map((item: any, index: number) => {
-              const key = item.id || item.name || `${group.label}-${index}`;
-              return (
-                <li key={key} className="flex items-center gap-2 mb-1">
-                  <input
-                    type="checkbox"
-                    defaultChecked
-                    onChange={(e) =>
-                      handleToggle(item, e.target.checked)
-                    }
-                  />
-                  <label className="select-none cursor-pointer">
-                    {item.name}
-                  </label>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      ))}
-    </div>
+    <ScrollArea className="h-full w-full pr-4">
+      <div className="text-white text-sm p-4 space-y-6">
+        <h2 className="text-xl font-semibold pb-2 border-b border-zinc-700">Classification Tree</h2>
+        {groups.map((group) => (
+          <div key={group.label} className="space-y-3">
+            <h3 className="uppercase text-xs font-semibold text-zinc-400 tracking-wide">
+              {group.label}
+            </h3>
+
+            <div className="space-y-2">
+              {group.items.map((item: any, index: number) => {
+                const key = item.id || item.name || `${group.label}-${index}`;
+                return (
+                  <div key={key} className="flex items-center space-x-3">
+                    <Checkbox
+                      id={key}
+                      defaultChecked
+                      onCheckedChange={(checked) =>
+                        handleToggle(item, !!checked)
+                      }
+                    />
+                    <Label
+                      htmlFor={key}
+                      className="text-zinc-100 cursor-pointer truncate"
+                    >
+                      {item.name}
+                    </Label>
+                  </div>
+                );
+              })}
+            </div>
+
+            <Separator className="bg-zinc-700" />
+          </div>
+        ))}
+      </div>
+    </ScrollArea>
   );
 }
 
@@ -80,7 +91,6 @@ export default function ClassificationsTreeApp() {
 
   React.useEffect(() => {
     BUI.Manager.init();
-
     const components = worldManager.getComponents();
     const ifcLoader = components.get(OBC.IfcLoader);
     const classifier = components.get(OBC.Classifier);
@@ -98,16 +108,13 @@ export default function ClassificationsTreeApp() {
   }, []);
 
   return (
-    <div className="flex w-full h-screen">
-      <div className="w-80 bg-zinc-900 overflow-auto">
-        {classifierData && fragmentsManager && (
-          <ClassificationTreeCustom
-            classifierData={classifierData}
-            fragmentsManager={fragmentsManager}
-          />
-        )}
-      </div>
-      <div className="flex-1" id="viewport" />
+    <div className="w-80 h-full bg-zinc-900 border-r border-zinc-800">
+      {classifierData && fragmentsManager && (
+        <ClassificationTreeCustom
+          classifierData={classifierData}
+          fragmentsManager={fragmentsManager}
+        />
+      )}
     </div>
   );
 }

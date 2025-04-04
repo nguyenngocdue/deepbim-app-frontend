@@ -1,16 +1,26 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import HeaderViewer from "../layout/HeaderViewer";
 import { ViewCubeProvider } from "@/context/view-cube-context";
 import { ViewCubeProvider2 } from "@/context/view-cube-context2";
 import ModelIfc from "./ModelIfc";
 import FaceMeasurementGuide from "./guides/FaceMeasurementGuide";
-import '../../App.css'
+import '../../App.css';
 import ClassificationsTree from "./Classifications/ClassificationsTree";
 import ElementProperties from "./element-properties/ElementProperties";
+import { containerManager } from "@/services/ContainerManager";
+import { worldManager } from "@/services/WorldManager";
+import { ProSidebar, Menu, MenuItem, SubMenu, Sidebar } from "react-pro-sidebar";
+import { FaBoxes, FaCube } from "react-icons/fa";
 
+import {
+  Panel,
+  PanelGroup,
+  PanelResizeHandle,
+} from "react-resizable-panels";
 
 const MainViewer: React.FC = () => {
-
+  const ifcContainerRef = useRef<HTMLDivElement | null>(null);
+  const [isModelReady, setIsModelReady] = useState(false);
   // State quản lý các trạng thái toggle
   const [states, setStates] = useState({
     sectionActive: false,
@@ -42,12 +52,15 @@ const MainViewer: React.FC = () => {
     }));
   };
 
+
+
+  
   return (
     <ViewCubeProvider>
       <ViewCubeProvider2>
-        <div className="relative">
-          <div className="absolute top-[10px] right-0 left-0">
-            {/* ✅ Ensure function exists before calling */}
+        <div className="h-screen flex flex-col bg-black text-white">
+          {/* Header cố định */}
+          <div className="border-b border-zinc-800 bg-zinc-900">
             <HeaderViewer
               onToggle={toggleState}
               isFitView={states.isFitView}
@@ -70,42 +83,47 @@ const MainViewer: React.FC = () => {
               isPlaneHover={states.isPlaneHover}
             />
           </div>
-          <div className="">
-            <ModelIfc
-              sectionActive={states.sectionActive}
-              isFitView={states.isFitView}
-              isOrthoPerspective={states.isOrthoPerspective}
-              coordinateSysActive={states.coordinateSysActive}
-              isHighlightEnabled={states.isHighlightEnabled}
-              isClippingEdges={states.isClippingEdges}
-              isEdgeMeasurement={states.isEdgeMeasurement}
-              isFaceMeasurement={states.isFaceMeasurement}
-              haveGrids={states.haveGrids}
-              hasVolumeMeasurement={states.hasVolumeMeasurement}
-              havePlansViews={states.havePlansViews}
-              haveLengthMeasurements={states.haveLengthMeasurements}
-              haveAreaMeasureElements={states.haveAreaMeasureElements}
-              haveAngleMeasurements={states.haveAngleMeasurements}
-              haveWorldSettings={states.haveWorldSettings}
-              isOriginalWorldCamera={states.isOriginalWorldCamera}
-              isFreeControlElements={states.isFreeControlElements}
-              isPlaneHover={states.isPlaneHover}
-            />
-            <FaceMeasurementGuide
-              isEnabled={states.isFaceMeasurement}
-            />
-             <div className="absolute h-[85%] p-4 top-[10%]  left-0 z-50">
-              <ClassificationsTree/>
-            </div>
-            <div className="absolute h-[85%] p-4 top-[10%]  right-0 z-50">
-              <ElementProperties/>
-            </div>
+  
+          {/* Resizable PanelGroup bên dưới */}
+          <div className="flex-1 overflow-hidden">
+            <PanelGroup direction="horizontal">
+              {/* Left Panel */}
+              <Panel defaultSize={20} minSize={10} maxSize={40}>
+                <div className="h-full overflow-auto bg-zinc-900 border-r border-zinc-800 p-4">
+                  {isModelReady && <ClassificationsTree />}
+                </div>
+              </Panel>
+  
+              {/* Handle trái */}
+              <PanelResizeHandle className="w-1 bg-zinc-700 cursor-ew-resize" />
+  
+              {/* Center Panel */}
+              <Panel defaultSize={60} minSize={30}>
+                <div className="h-full w-full bg-black relative">
+                  <ModelIfc
+                    onModelReady={() => setIsModelReady(true)}
+                    {...states}
+                  />
+                </div>
+              </Panel>
+  
+              {/* Handle phải */}
+              <PanelResizeHandle className="w-1 bg-zinc-700 cursor-ew-resize" />
+  
+              {/* Right Panel */}
+              <Panel defaultSize={20} minSize={10} maxSize={40}>
+                <div className="h-full overflow-auto bg-zinc-900 border-l border-zinc-800 p-4">
+                  {isModelReady && <ElementProperties />}
+                </div>
+              </Panel>
+            </PanelGroup>
           </div>
-
         </div>
       </ViewCubeProvider2>
     </ViewCubeProvider>
   );
+  
+
 };
 
 export default MainViewer;

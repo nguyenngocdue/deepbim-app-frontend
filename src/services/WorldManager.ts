@@ -24,7 +24,7 @@ class WorldManager {
   }
 
   // Phương thức để khởi tạo world và components
-  public initialize(): void {
+  public async initialize():  Promise<void> {
     // Khởi tạo components
     this.components = new OBC.Components();
 
@@ -139,4 +139,4 @@ class WorldManager {
 }
 
 // Export instance duy nhất của WorldManager
-export const worldManager = WorldManager.getInstance();
+export const  worldManager = WorldManager.getInstance();
