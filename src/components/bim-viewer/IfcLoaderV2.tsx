@@ -2,6 +2,8 @@ import React, { useEffect, useCallback, useRef, useState } from "react";
 import * as OBC from "@thatopen/components";
 import * as OBF from "@thatopen/components-front";
 import LoadingSpinner from "./LoadingSpinner"; // Import LoadingSpinner
+import { modelManager } from "@/services/ModelManager";
+import { worldManager } from "@/services/WorldManager";
 
 interface IfcLoaderV2Props {
   source?: string | File; // URL (string) hoặc File
@@ -16,7 +18,6 @@ const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({
   worldRef,
   componentRef,
   container,
-  haveGrids,
 }) => {
   const [isLoading, setIsLoading] = useState(false); // State để quản lý trạng thái loading
 
@@ -32,13 +33,12 @@ const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({
         const components = componentRef.current;
         const world = worldRef.current;
 
-        // Khởi tạo Fragment Loader
-        const fragmentIfcLoader = components.get(OBC.IfcLoader);
-        await fragmentIfcLoader.setup();
-
+        const ifcLoader = components.get(OBC.IfcLoader);
+        await ifcLoader.setup();
+      
         // Thiết lập FragmentsManager và các thành phần liên quan
         const fragments = components.get(OBC.FragmentsManager);
-        const indexer = components.get(OBC.IfcRelationsIndexer);
+        
         const classifier = components.get(OBC.Classifier);
         classifier.list.CustomSelections = {};
 
@@ -60,6 +60,9 @@ const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({
 
         // Xử lý khi fragments được load
         fragments.onFragmentsLoaded.add(async (model) => {
+          const indexer = components.get(OBC.IfcRelationsIndexer);
+          await indexer.process(model);
+          
           if (model.hasProperties) {
             await indexer.process(model);
             classifier.byEntity(model);
@@ -88,8 +91,15 @@ const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({
             }
           }
         });
+        modelManager.setModel(buffer, components);
+        // const model = await  fragmentIfcLoader.load(buffer);
+        // const indexer = components.get(OBC.IfcRelationsIndexer);
+        // await indexer.process(model);
 
-        await fragmentIfcLoader.load(buffer);
+
+
+
+
       } catch (error) {
         console.error("Failed to load IFC file:", error);
       } finally {

@@ -105,8 +105,8 @@ const ModelIfc: React.FC<ModelIfcProps> = ({
     if(!components) return;
     gridManager.createGrid(components, world);
     
-    const isHighlightEnabled = true;
-    useHighlightSetup({isHighlightEnabled, components, world})
+    // const isHighlightEnabled = true;
+    // useHighlightSetup({isHighlightEnabled, components, world})
     
     worldRef.current = world;
     componentRef.current = components;

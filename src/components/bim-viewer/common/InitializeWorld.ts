@@ -7,7 +7,6 @@ import { gridManager } from "@/services/GridManager";
 
 export function InitializeWorld(
   container: HTMLDivElement,
-  haveGrids: boolean,
 ) {
   const components = new OBC.Components();
   const worlds = components.get(OBC.Worlds);

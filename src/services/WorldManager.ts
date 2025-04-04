@@ -3,6 +3,7 @@ import * as OBCF from "@thatopen/components-front";
 import { Ref } from "react";
 import * as THREE from 'three';
 import { containerManager } from "./ContainerManager";
+import { useHighlightSetup } from "@/features/bim-viewer/useHighlightSetup";
 
 // Singleton class để quản lý world và components
 class WorldManager {
@@ -10,6 +11,7 @@ class WorldManager {
   public components: OBC.Components | null = null;
   public world: any | null = null;
   public container: any | null = null;
+  public highlight:any | null = null;
 
   private constructor() { }
 
@@ -48,8 +50,22 @@ class WorldManager {
     this.components.init();
     // console.log("World and components have been initialized globally.");
     this.container = container;
+    const isHighlightEnabled = true;
+    const components = this.components;
+    const world = this.world;
+
+    
+    this.highlight = useHighlightSetup({isHighlightEnabled, components, world})
+    
+
   }
 
+  public getHighlightSetup(){
+    if (!this.highlight) {
+      console.error("Highlight is not initialized. Call initialize() first.");
+    }
+    return this.highlight;
+  }
   public changeCameraType(isOrthographic: boolean): void {
     if (!this.world || !this.world.camera) {
       console.error("World or camera is not initialized.");

@@ -14,7 +14,12 @@
     "generate": "tanstack-router generate"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
     "@hookform/resolvers": "^3.9.1",
+    "@mui/material": "^7.0.1",
+    "@mui/styled-engine-sc": "^7.0.1",
+    "@mui/x-tree-view": "^7.28.1",
     "@radix-ui/react-accordion": "^1.2.3",
     "@radix-ui/react-alert-dialog": "^1.1.2",
     "@radix-ui/react-avatar": "^1.1.1",
@@ -67,6 +72,7 @@
     "recharts": "^2.14.1",
     "stats": "^1.0.0",
     "stats.js": "^0.17.0",
+    "styled-components": "^6.1.17",
     "tailwind-merge": "^2.5.5",
     "tailwindcss-animate": "^1.0.7",
     "three": "^0.160.1",

@@ -6,6 +6,7 @@ import ModelIfc from "./ModelIfc";
 import FaceMeasurementGuide from "./guides/FaceMeasurementGuide";
 import '../../App.css'
 import ClassificationsTree from "./Classifications/ClassificationsTree";
+import ElementProperties from "./element-properties/ElementProperties";
 
 
 const MainViewer: React.FC = () => {
@@ -95,6 +96,9 @@ const MainViewer: React.FC = () => {
             />
              <div className="absolute h-[85%] p-4 top-[10%]  left-0 z-50">
               <ClassificationsTree/>
+            </div>
+            <div className="absolute h-[85%] p-4 top-[10%]  right-0 z-50">
+              <ElementProperties/>
             </div>
           </div>
 
