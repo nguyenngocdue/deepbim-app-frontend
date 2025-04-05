@@ -2,8 +2,6 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import { useLocation } from "@tanstack/react-router";
 import IfcLoaderV2 from "./IfcLoaderV2";
-import { InitializeWorld } from "./common/InitializeWorld";
-import * as CUI from "@thatopen/ui-obc";
 
 import {
   computeBoundsTree,
@@ -15,11 +13,9 @@ import { UploadState } from "@/props/UploadState";
 import { ModelIfcProps } from "@/props/ModelIfcProps";
 import { useBimViewerFeatures, FeatureFlags } from "@/features/bim-viewer/useBimViewerFeatures";
 import { worldManager } from "@/services/WorldManager";
-import { useHighlightSetup } from "@/features/bim-viewer/useHighlightSetup";
 import { gridManager } from "@/services/GridManager";
 import { containerManager } from "@/services/ContainerManager";
 
-// Extend three.js geometry for BVH
 THREE.BufferGeometry.prototype.computeBoundsTree = computeBoundsTree;
 THREE.BufferGeometry.prototype.disposeBoundsTree = disposeBoundsTree;
 THREE.Mesh.prototype.raycast = acceleratedRaycast;
@@ -43,21 +39,20 @@ const ModelIfc: React.FC<ModelIfcProps> = ({
   isFitView,
   onModelReady,
 }) => {
-  // Refs
   const ifcContainerRef = useRef<HTMLDivElement | null>(null);
   const worldRef = useRef<any>(null);
   const componentRef = useRef<any>(null);
   const modelRef = useRef<THREE.Object3D | null>(null);
+  const animationIdRef = useRef<number | null>(null);
+  const needsUpdateRef = useRef(true);
+  const isLoopRunningRef = useRef(false);
 
-  // Location & file state
   const location = useLocation();
   const state = location.state as unknown as UploadState | undefined;
   const file = state?.file;
   const statusUpload = state?.status;
-
-  // Viewer state
   const [isWorldReady, setIsWorldReady] = useState(false);
-  // Feature flags (memoized for performance)
+
   const featureFlags: FeatureFlags = useMemo(() => ({
     isClippingEdges,
     isEdgeMeasurement,
@@ -94,44 +89,75 @@ const ModelIfc: React.FC<ModelIfcProps> = ({
     coordinateSysActive,
   ]);
 
-  // Initialize viewer
+  const animate = () => {
+    if (!needsUpdateRef.current || !worldRef.current?.renderer) {
+      isLoopRunningRef.current = false;
+      return;
+    }
+
+    const t0 = performance.now();
+    worldRef.current.renderer.update();
+    const t1 = performance.now();
+
+    if (t1 - t0 > 16) {
+      console.warn(`[Perf] Frame took ${Math.round(t1 - t0)}ms`);
+    }
+
+    needsUpdateRef.current = false;
+    animationIdRef.current = requestAnimationFrame(animate);
+  };
+
+  const markDirty = () => {
+    needsUpdateRef.current = true;
+    if (!isLoopRunningRef.current) {
+      isLoopRunningRef.current = true;
+      animationIdRef.current = requestAnimationFrame(animate);
+    }
+  };
+
   useEffect(() => {
-    if (!ifcContainerRef.current) return;
+    const handleInteraction = () => markDirty();
+    window.addEventListener("mousemove", handleInteraction);
+    window.addEventListener("wheel", handleInteraction);
+
+    return () => {
+      window.removeEventListener("mousemove", handleInteraction);
+      window.removeEventListener("wheel", handleInteraction);
+    };
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+
     const init = async () => {
+      if (!ifcContainerRef.current) return;
       containerManager.setRef(ifcContainerRef.current);
       await worldManager.initialize();
+      if (cancelled) return;
+
       onModelReady?.();
       const world = worldManager.getWorld();
       const components = worldManager.getComponents();
-      if(!components) return;
+      if (!components) return;
+
       gridManager.createGrid(components, world);
       worldRef.current = world;
       componentRef.current = components;
-      
-  
-      startRenderLoop();
+
+      markDirty();
       setIsWorldReady(true);
     };
+
     init();
 
-    
-
     return () => {
-      world?.dispose();
+      cancelled = true;
+      if (animationIdRef.current) cancelAnimationFrame(animationIdRef.current);
+      worldRef.current?.dispose();
       setIsWorldReady(false);
     };
-  }, []); // Re-init when grid changes
+  }, []);
 
-  // Start render loop
-  const startRenderLoop = () => {
-    const animate = () => {
-      if (!worldRef.current?.renderer) return;
-      requestAnimationFrame(animate);
-      worldRef.current.renderer.update();
-    };
-    animate();
-  };
-  // Hook for viewer features
   useBimViewerFeatures({
     worldRef,
     componentRef,

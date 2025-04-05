@@ -80,35 +80,7 @@ const MainViewer: React.FC = () => {
           {/* Body Panels */}
           <div className="flex-1 overflow-hidden">
             <PanelGroup direction="horizontal">
-              {/* LEFT PANEL */}
-              <Panel
-                defaultSize={20}
-                minSize={10}
-                maxSize={40}
-                collapsed={isLeftCollapsed.toString()}
-                collapsible
-                hidden={isLeftCollapsed}
-              >
-                <div
-                  className={`
-                    h-full overflow-auto bg-zinc-900 border-r border-zinc-800 relative
-                    ${isLeftCollapsed ? "hidden" : "block"}
-                  `}
-                >
-                  <button
-                    onClick={() => setIsLeftCollapsed(true)}
-                    className="absolute top-2 right-2 z-50 p-1 bg-zinc-700 hover:bg-zinc-600 rounded"
-                    title="Collapse left"
-                  >
-                    <FiChevronLeft className="text-white" />
-                  </button>
-
-                  {isModelReady && <ClassificationsTree />}
-                </div>
-              </Panel>
-
-              <PanelResizeHandle className="w-1 bg-zinc-700 cursor-ew-resize" />
-
+             
               {/* CENTER PANEL */}
               <Panel defaultSize={60} minSize={30}>
                 <div className="h-full w-full bg-black relative">
@@ -122,7 +94,7 @@ const MainViewer: React.FC = () => {
                   {isLeftCollapsed && (
                     <button
                       onClick={() => setIsLeftCollapsed(false)}
-                      className="absolute top-2 left-2 z-50 p-1 bg-zinc-700 hover:bg-zinc-600 rounded"
+                      className="absolute top-2 right-2 z-50 p-1 bg-zinc-700 hover:bg-zinc-600 rounded"
                       title="Expand left"
                     >
                       <FiChevronRight className="text-white" />
@@ -141,6 +113,34 @@ const MainViewer: React.FC = () => {
                   )}
                 </div>
               </Panel>
+              <PanelResizeHandle className="w-1 bg-zinc-700 cursor-ew-resize" />
+               {/* LEFT PANEL */}
+               <Panel
+                defaultSize={20}
+                minSize={10}
+                maxSize={40}
+                collapsed={isLeftCollapsed.toString()}
+                collapsible
+                hidden={isLeftCollapsed}
+              >
+                <div
+                  className={`
+                    h-full overflow-auto bg-zinc-900 border-r border-zinc-800 relative
+                    ${isLeftCollapsed ? "hidden" : "block"}
+                  `}
+                >
+                  <button
+                    onClick={() => setIsLeftCollapsed(true)}
+                    className="absolute top-2 left-2 z-50 p-1 bg-zinc-700 hover:bg-zinc-600 rounded"
+                    title="Collapse right"
+                  >
+                    <FiChevronLeft className="text-white" />
+                  </button>
+
+                  {isModelReady && <ClassificationsTree />}
+                </div>
+              </Panel>
+
 
               <PanelResizeHandle className="w-1 bg-zinc-700 cursor-ew-resize" />
 

@@ -1,8 +1,7 @@
 import * as React from "react";
 import * as OBC from "@thatopen/components";
-import * as BUI from "@thatopen/ui";
 import { worldManager } from "@/services/WorldManager";
-import { toggleGroupItemVisibility } from "@/features/bim-viewer/toggleGroupItemVisibility";
+import { toggleClassificationTreeVisibility } from "@/features/bim-viewer/toggleClassificationTreeVisibility";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -34,14 +33,15 @@ function ClassificationTreeCustom({
       ? predefinedRaw
       : Object.values(predefinedRaw);
 
+
     setGroups([
       { label: "Entities", items: entities },
       { label: "Predefined Types", items: predefined },
     ]);
   }, [classifierData]);
 
-  const handleToggle = (groupItem: any, visible: boolean) => {
-    toggleGroupItemVisibility(groupItem, visible, fragmentsManager);
+const handleToggle = (groupItem: any, visible: boolean) => {
+    toggleClassificationTreeVisibility(groupItem, visible, fragmentsManager);
   };
 
 
@@ -110,14 +110,12 @@ export default function ClassificationsTreeApp() {
   const [fragmentsManager, setFragmentsManager] = React.useState<any>(null);
 
   React.useEffect(() => {
-    BUI.Manager.init();
     const components = worldManager.getComponents();
     if(!components) return;
-    const ifcLoader = components.get(OBC.IfcLoader);
     const classifier = components.get(OBC.Classifier);
     const fragments = components.get(OBC.FragmentsManager);
+    console.log(fragments)
 
-    ifcLoader.setup();
 
     fragments.onFragmentsLoaded.add(async (model) => {
       await classifier.byEntity(model);

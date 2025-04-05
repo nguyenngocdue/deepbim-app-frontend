@@ -19,7 +19,7 @@ const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({
   componentRef,
   container,
 }) => {
-  const [isLoading, setIsLoading] = useState(false); // State để quản lý trạng thái loading
+  // const [isLoading, setIsLoading] = useState(false); // State để quản lý trạng thái loading
 
   // Tải và xử lý IFC Model
   const loadIfc = useCallback(
@@ -33,8 +33,8 @@ const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({
         const components = componentRef.current;
         const world = worldRef.current;
 
-        const ifcLoader = components.get(OBC.IfcLoader);
-        await ifcLoader.setup();
+        // const ifcLoader = components.get(OBC.IfcLoader);
+        // await ifcLoader.setup();
       
         // Thiết lập FragmentsManager và các thành phần liên quan
         const fragments = components.get(OBC.FragmentsManager);
@@ -60,26 +60,26 @@ const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({
 
         // Xử lý khi fragments được load
         fragments.onFragmentsLoaded.add(async (model) => {
-          const indexer = components.get(OBC.IfcRelationsIndexer);
-          await indexer.process(model);
+          // const indexer = components.get(OBC.IfcRelationsIndexer);
+          // // await indexer.process(model);
           
-          if (model.hasProperties) {
-            await indexer.process(model);
-            classifier.byEntity(model);
-          }
+          // if (model.hasProperties) {
+          //   await indexer.process(model);
+          //   classifier.byEntity(model);
+          // }
 
-          if (!model.isStreamed) {
-            for (const fragment of model.items) {
-              world.meshes.add(fragment.mesh);
-              culler.add(fragment.mesh);
-            }
-          }
+          // if (!model.isStreamed) {
+          //   for (const fragment of model.items) {
+          //     world.meshes.add(fragment.mesh);
+          //     culler.add(fragment.mesh);
+          //   }
+          // }
 
-          if (!model.isStreamed) {
-            setTimeout(async () => {
-              world.camera.fit(world.meshes, 0.8);
-            }, 50);
-          }
+          // if (!model.isStreamed) {
+          //   setTimeout(async () => {
+          //     world.camera.fit(world.meshes, 18);
+          //   }, 50);
+          // }
           world.scene.three.add(model);
         });
 
@@ -103,7 +103,7 @@ const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({
       } catch (error) {
         console.error("Failed to load IFC file:", error);
       } finally {
-        setIsLoading(false); // Kết thúc loading
+        // setIsLoading(false); // Kết thúc loading
       }
     },
     [worldRef, componentRef, container]
@@ -117,7 +117,7 @@ const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({
     }
 
     const loadFile = async () => {
-      setIsLoading(true); // Bắt đầu loading
+      // setIsLoading(true); // Bắt đầu loading
       try {
         const buffer = await (source instanceof File
           ? source.arrayBuffer()
@@ -127,14 +127,14 @@ const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({
       } catch (error) {
         console.error("Error loading IFC file:", error);
       } finally {
-        setIsLoading(false); // Kết thúc loading
+        // setIsLoading(false); // Kết thúc loading
       }
     };
 
     loadFile();
   }, [source, container, worldRef, componentRef, loadIfc]);
 
-  return isLoading ? <LoadingSpinner /> : null; // Hiển thị LoadingSpinner khi đang tải
+  // return isLoading ? <LoadingSpinner /> : null; // Hiển thị LoadingSpinner khi đang tải
 };
 
 export default IfcLoaderV2;
