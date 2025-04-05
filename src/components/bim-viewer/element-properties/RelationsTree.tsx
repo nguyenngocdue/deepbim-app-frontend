@@ -2,12 +2,20 @@ import React, { useEffect, useRef, useState } from "react";
 import * as OBC from "@thatopen/components";
 import { worldManager } from "@/services/WorldManager";
 import * as WEBIFC from "web-ifc";
-import * as BUI from "@thatopen/ui";
 import * as FRAGS from "@thatopen/fragments";
 import { TreeNode } from "./TreeNode";
 
 
-
+// Define the shape of a node in the property tree
+export interface PropertyNode {
+    data: {
+        Entity: string;
+        Name?: string;
+        modelID: string;
+        expressID: number;
+    };
+    children?: PropertyNode[];
+}
 
 
 const RelationsTree: React.FC = () => {
@@ -22,16 +30,22 @@ const RelationsTree: React.FC = () => {
             const fragmentsManager = components.get(OBC.FragmentsManager);
             const ifcLoader = components.get(OBC.IfcLoader);
             await ifcLoader.setup();
-
+            // Wait until fragments are loaded before building tree
             fragmentsManager.onFragmentsLoaded.add(async (model) => {
-                const projectProps = await model.getAllPropertiesOfType(WEBIFC.IFCPROJECT);
-                const rootID = projectProps[119].expressID;
-                await indexer.process(model);
+                try {
+                    const projectProps = await model.getAllPropertiesOfType(WEBIFC.IFCPROJECT);
+                    if (!projectProps) return;
+                    // Use first project element
+                    const rootID = projectProps[119].expressID;
+                    await indexer.process(model);
 
-                const inverseAttributes = ["IsDecomposedBy", "ContainsElements"];
-                const data = await getDecompositionTree(components, model, rootID, inverseAttributes);
+                    const inverseAttributes = ["IsDecomposedBy", "ContainsElements"];
+                    const data = await getDecompositionTree(components, model, rootID, inverseAttributes);
 
-                setTreeData(data); // 👈 set vào state để render
+                    setTreeData(data); // 👈 set vào state để render
+                } catch (error) {
+                    console.error("Error building tree:", error);
+                }
             });
         };
 
@@ -53,17 +67,15 @@ const RelationsTree: React.FC = () => {
 export default RelationsTree;
 
 
-
-
 const getDecompositionTree = async (
     components: OBC.Components,
     model: FRAGS.FragmentsGroup,
     expressID: number,
     inverseAttributes: OBC.InverseAttribute[],
-    visited = new Set<number>() // 👈 Add visited set
-): Promise<BUI.TableGroupData[]> => {
+    visited = new Set<number>() //Track visited nodes to prevent infinite loops
+): Promise<PropertyNode[]> => {
     const indexer = components.get(OBC.IfcRelationsIndexer);
-    const rows: BUI.TableGroupData[] = [];
+    const rows: PropertyNode[] = [];
 
     if (visited.has(expressID)) return rows; // ❌ Đã xử lý, bỏ qua
     visited.add(expressID); // ✅ Ghi nhớ đã duyệt
@@ -72,7 +84,7 @@ const getDecompositionTree = async (
     if (!entityAttrs) return rows;
 
     const { type } = entityAttrs;
-    const row: BUI.TableGroupData = {
+    const row: PropertyNode = {
         data: {
             Entity: OBC.IfcCategoryMap[type],
             Name: entityAttrs.Name?.value,

@@ -105,7 +105,7 @@ const MainViewer: React.FC = () => {
                   {isLeftCollapsed && (
                     <button
                       onClick={() => setIsLeftCollapsed(false)}
-                      className="absolute top-2 left-2 z-50 p-1 bg-zinc-700 hover:bg-zinc-600 rounded"
+                      className="absolute top-2 right-2 z-50 p-1 bg-zinc-700 hover:bg-zinc-600 rounded"
                       title="Expand left"
                     >
                       <FiChevronRight className="text-white" />
@@ -126,21 +126,21 @@ const MainViewer: React.FC = () => {
               </Panel>
 
               <PanelResizeHandle className="w-1 bg-zinc-700 cursor-ew-resize" />
-              {/* RIGHT PANEL */}
-              <DataSiderBar
-                isCollapsed={isRightCollapsed}
-                onCollapse={() => setIsLeftCollapsed(true)}
-                isModelReady={isModelReady}
-              >
-                <RelationsTree />
-              </DataSiderBar>
-              <DataSiderBar
+              {/* ATTRIBUTES */}
+               {/* <DataSiderBar
                 isCollapsed={isRightCollapsed}
                 onCollapse={() => setIsLeftCollapsed(true)}
                 isModelReady={isModelReady}
               >
                 <ElementProperties />
-              </DataSiderBar>
+              </DataSiderBar> */}
+              <DataSiderBar
+                isCollapsed={isRightCollapsed}
+                onCollapse={() => setIsLeftCollapsed(true)}
+                isModelReady={isModelReady}
+              >
+                <RelationsTree/>
+              </DataSiderBar> 
 
 
 
