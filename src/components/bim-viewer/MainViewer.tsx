@@ -132,16 +132,16 @@ const MainViewer: React.FC = () => {
                 onCollapse={() => setIsLeftCollapsed(true)}
                 isModelReady={isModelReady}
               >
-                <ElementProperties />
+                <RelationsTree />
               </DataSiderBar>
-
               <DataSiderBar
                 isCollapsed={isRightCollapsed}
                 onCollapse={() => setIsLeftCollapsed(true)}
                 isModelReady={isModelReady}
               >
-                <RelationsTree />
+                <ElementProperties />
               </DataSiderBar>
+
 
 
 

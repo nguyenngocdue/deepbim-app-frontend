@@ -4,12 +4,15 @@ import { worldManager } from "@/services/WorldManager";
 import * as WEBIFC from "web-ifc";
 import * as BUI from "@thatopen/ui";
 import * as FRAGS from "@thatopen/fragments";
+import { TreeNode } from "./TreeNode";
 
 
 
 
 
 const RelationsTree: React.FC = () => {
+    const [treeData, setTreeData] = useState<PropertyNode[]>([]);
+
     useEffect(() => {
         const init = async () => {
             const components = worldManager.getComponents();
@@ -17,11 +20,8 @@ const RelationsTree: React.FC = () => {
 
             const indexer = components.get(OBC.IfcRelationsIndexer);
             const fragmentsManager = components.get(OBC.FragmentsManager);
-
             const ifcLoader = components.get(OBC.IfcLoader);
             await ifcLoader.setup();
-
-            // Setup bảng
 
             fragmentsManager.onFragmentsLoaded.add(async (model) => {
                 const projectProps = await model.getAllPropertiesOfType(WEBIFC.IFCPROJECT);
@@ -30,11 +30,9 @@ const RelationsTree: React.FC = () => {
 
                 const inverseAttributes = ["IsDecomposedBy", "ContainsElements"];
                 const data = await getDecompositionTree(components, model, rootID, inverseAttributes);
-                console.log(data);
 
-
+                setTreeData(data); // 👈 set vào state để render
             });
-
         };
 
         init();
@@ -43,11 +41,12 @@ const RelationsTree: React.FC = () => {
     return (
         <div className="flex w-full h-screen ">
             <div className="w-full overflow-auto p-3 text-white text-sm bg-panel-50">
-
+                {treeData.map((node, i) => (
+                    <TreeNode key={i} node={node} />
+                ))}
             </div>
             <div className="flex-1" id="viewport" />
         </div>
-
     );
 };
 
