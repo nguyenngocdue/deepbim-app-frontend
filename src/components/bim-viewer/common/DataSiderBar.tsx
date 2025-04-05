@@ -1,16 +1,16 @@
-// ClassificationsTreeLayout.tsx
+// DataSiderBar.tsx
 import React, { ReactNode } from 'react';
 import { FiChevronLeft } from 'react-icons/fi';
 import { Panel } from 'react-resizable-panels';
 
-interface ClassificationsTreeLayoutProps {
+interface DataSiderBarProps {
   isCollapsed: boolean;
   onCollapse: () => void;
   isModelReady: boolean;
   children: ReactNode;
 }
 
-const ClassificationsTreeLayout: React.FC<ClassificationsTreeLayoutProps> = ({
+const DataSiderBar: React.FC<DataSiderBarProps> = ({
   isCollapsed,
   onCollapse,
   isModelReady,
@@ -45,4 +45,4 @@ const ClassificationsTreeLayout: React.FC<ClassificationsTreeLayoutProps> = ({
   );
 };
 
-export default ClassificationsTreeLayout;
+export default DataSiderBar;

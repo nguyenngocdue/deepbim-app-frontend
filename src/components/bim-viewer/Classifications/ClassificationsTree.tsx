@@ -114,8 +114,6 @@ export default function ClassificationsTreeApp() {
     if(!components) return;
     const classifier = components.get(OBC.Classifier);
     const fragments = components.get(OBC.FragmentsManager);
-    console.log(fragments)
-
 
     fragments.onFragmentsLoaded.add(async (model) => {
       await classifier.byEntity(model);

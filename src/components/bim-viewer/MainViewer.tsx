@@ -13,7 +13,8 @@ import {
   PanelResizeHandle,
 } from "react-resizable-panels";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
-import ClassificationsTreeLayout from "./Classifications/ClassificationsTreeLayout";
+import DataSiderBar from "./common/DataSiderBar";
+import RelationsTree from "./element-properties/RelationsTree";
 
 const MainViewer: React.FC = () => {
   const [isModelReady, setIsModelReady] = useState(false);
@@ -82,13 +83,13 @@ const MainViewer: React.FC = () => {
           <div className="flex-1 overflow-hidden">
             <PanelGroup direction="horizontal">
               {/* LEFT PANEL */}
-              <ClassificationsTreeLayout
+              <DataSiderBar
                 isCollapsed={isLeftCollapsed}
                 onCollapse={() => setIsLeftCollapsed(true)}
                 isModelReady={isModelReady}
               >
                 <ClassificationsTree />
-              </ClassificationsTreeLayout>
+              </DataSiderBar>
 
               <PanelResizeHandle className="w-1 bg-zinc-700 cursor-ew-resize" />
               {/* CENTER PANEL */}
@@ -126,13 +127,25 @@ const MainViewer: React.FC = () => {
 
               <PanelResizeHandle className="w-1 bg-zinc-700 cursor-ew-resize" />
               {/* RIGHT PANEL */}
-              <ClassificationsTreeLayout
+              <DataSiderBar
                 isCollapsed={isRightCollapsed}
                 onCollapse={() => setIsLeftCollapsed(true)}
                 isModelReady={isModelReady}
               >
                 <ElementProperties />
-              </ClassificationsTreeLayout>
+              </DataSiderBar>
+
+              <DataSiderBar
+                isCollapsed={isRightCollapsed}
+                onCollapse={() => setIsLeftCollapsed(true)}
+                isModelReady={isModelReady}
+              >
+                <RelationsTree />
+              </DataSiderBar>
+
+
+
+
             </PanelGroup>
           </div>
         </div>

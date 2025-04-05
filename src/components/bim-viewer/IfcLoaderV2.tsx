@@ -126,9 +126,7 @@ const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({
         await loadIfc(buffer);
       } catch (error) {
         console.error("Error loading IFC file:", error);
-      } finally {
-        // setIsLoading(false); // Kết thúc loading
-      }
+      } 
     };
 
     loadFile();
