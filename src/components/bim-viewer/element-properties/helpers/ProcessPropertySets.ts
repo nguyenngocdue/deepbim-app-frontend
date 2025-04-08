@@ -89,7 +89,7 @@ export async function processPropertySets(
 
     for (const qset of qsets) {
       const qsetRow: TableGroupData = {
-        name : qset.Name?.value || "Unnamed QuantitySet" ,
+        name : qset.Name?.value || "Unnamed QuantitySet",
         children: [],
       };
 

@@ -1,5 +1,4 @@
 import * as FRAGS from "@thatopen/fragments";
-import * as BUI from "@thatopen/ui";
 
 type Attributes = string | ((name: string) => boolean);
 

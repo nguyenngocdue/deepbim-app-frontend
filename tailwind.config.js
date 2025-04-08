@@ -110,6 +110,12 @@ export default {
 				800: 'var(--color-neutral-800)',
 				900: 'var(--color-neutral-900)',
 			  },
+			card: {
+				50: 'var(--color-card-50)',
+				100: 'var(--color-card-100)',
+				200: 'var(--color-card-200)',
+				300: 'var(--color-card-300)',
+			},
   			muted: {
   				DEFAULT: 'hsl(var(--muted))',
   				foreground: 'hsl(var(--muted-foreground))'

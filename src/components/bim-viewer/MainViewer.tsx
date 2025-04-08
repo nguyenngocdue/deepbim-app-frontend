@@ -42,6 +42,7 @@ const MainViewer: React.FC = () => {
     isFreeControlElements: false,
     isPlaneHover: false,
     isFitView: false,
+    isIsolation: false,
   });
 
   const toggleState = (stateName: keyof typeof states) => {
@@ -64,8 +65,8 @@ const MainViewer: React.FC = () => {
         <div className={`h-screen ${themeClass}`}>
           <PanelGroup direction="vertical" className="h-full">
             {/* HEADER */}
-            <Panel defaultSize={10} minSize={5} maxSize={20} className={themeClass}>
-              <div className="h-full border-b border-zinc-800">
+            <Panel defaultSize={15} minSize={5} maxSize={40} className={themeClass}>
+              <div className="h-full">
                 <HeaderViewer
                   onToggle={toggleState}
                   onToggleTheme={toggleTheme}

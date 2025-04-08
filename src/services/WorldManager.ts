@@ -8,10 +8,11 @@ import { useHighlightSetup } from "@/features/bim-viewer/useHighlightSetup";
 // Singleton class để quản lý world và components
 class WorldManager {
   private static instance: WorldManager; // Biến static để lưu instance
-  public components: OBC.Components | null = null;
-  public world: any | null = null;
-  public container: any | null = null;
-  public highlight:any | null = null;
+  private components: OBC.Components | null = null;
+  private world: any | null = null;
+  private container: any | null = null;
+  private highlight:any | null = null;
+  private fragments: any | null = null;
 
   private constructor() { }
 
@@ -50,13 +51,19 @@ class WorldManager {
     this.components.init();
     // console.log("World and components have been initialized globally.");
     this.container = container;
-    const isHighlightEnabled = true;
+    
     const components = this.components;
     const world = this.world;
+    const fragments = components.get(OBC.FragmentsManager);
+    this.fragments = fragments;
 
-    
-    this.highlight = useHighlightSetup({isHighlightEnabled, components, world})
-    
+     const highlighter = components.get(OBCF.Highlighter);
+      highlighter.zoomToSelection = false;
+      highlighter.config.edgeThreshold = 0.1;
+      highlighter.config.fillColor = 0xff0000;
+      highlighter.config.edgeColor = 0x000000
+      highlighter.setup({ world: world });
+      this.highlight = highlighter;
 
   }
 
@@ -125,16 +132,23 @@ class WorldManager {
   // Phương thức để lấy components
   public getComponents(): OBC.Components | null {
     if (!this.components) {
-      console.error("Components are not initialized. Call initialize() first.");
+      console.error("World are not initialized. Call initialize() first.");
     }
     return this.components;
   }
 
   public getContainer(): any {
     if(!this.container){
-      console.error('Container are not initialized. Call initialize first.');
+      console.error('World are not initialized. Call initialize() first.');
     }
     return this.container;
+  }
+
+  public getFragments(): any {
+    if(!this.fragments){
+      console.error('World is not initialized. Call initialize() first.');
+    }
+    return this.fragments;
   }
 }
 

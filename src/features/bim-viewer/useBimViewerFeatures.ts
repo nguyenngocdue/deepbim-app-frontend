@@ -38,4 +38,5 @@ export type FeatureFlags = {
   isPlaneHover: boolean;
   isFitView: boolean;
   coordinateSysActive: boolean;
+  isIsolation: boolean;
 };

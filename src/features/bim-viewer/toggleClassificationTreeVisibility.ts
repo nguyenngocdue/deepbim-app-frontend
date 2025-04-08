@@ -18,7 +18,6 @@ export function toggleClassificationTreeVisibility(
 ) {
   const uuids = groupItem.map;
   
-  
   for (const [uuid, elementIds] of Object.entries(uuids)) {
     const [groupEntry] = fragmentsManager.groups.entries();
     const [, fragmentsGroup2] = groupEntry;

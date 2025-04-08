@@ -20,6 +20,7 @@ import WorldSettings from "../bim-viewer/WorldSettings";
 import { ModelIfcProps } from "@/props/ModelIfcProps";
 import FreeControlElements from "../bim-viewer/FreeControlElements";
 import LogoSection from "./LogoSection";
+import Isolation from "../bim-viewer/Isolation";
 
 
 const HeaderViewer: React.FC<ModelIfcProps> = (
@@ -44,6 +45,7 @@ const HeaderViewer: React.FC<ModelIfcProps> = (
     isFreeControlElements,
     isPlaneHover,
     isFitView,
+    isIsolation,
 
     onToggleTheme,
     currentTheme,
@@ -93,12 +95,17 @@ const HeaderViewer: React.FC<ModelIfcProps> = (
               <Separator orientation="vertical" className="h-6" />
               {/* <SectionBox onToggle={() => onToggle("sectionActive")} isActive={sectionActive} /> */}
               {/* <HighlightElement onToggle={() => onToggle("isHighlightEnabled")} isActive={isHighlightEnabled} /> */}
+              {/* <Isolation onToggle={() => onToggle("isIsolation")} isActive={isIsolation} /> */}
               <PlansViews onToggle={() => onToggle("havePlansViews")} isActive={havePlansViews} />
               
               <Separator orientation="vertical" className="h-6" />              
+
               <WorldSettings onToggle={() => onToggle("haveWorldSettings")} isActive={haveWorldSettings} />
               {/* <OriginalWorldCamera onToggle={() => onToggle("isOriginalWorldCamera")} isActive={isOriginalWorldCamera} /> */}
               {/* <PlaneHover onToggle={() => onToggle("isPlaneHover")} isActive={isPlaneHover} /> */}
+
+
+
             </div>
           </div>
         </div>
