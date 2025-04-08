@@ -26,8 +26,8 @@ const tabs = [
 
 export default function ViewerFooterTabs( { themeClass }: { themeClass: string }) {
   return (
-    <Tabs defaultValue={tabs[0].value} className={`w-full border-t `} >
-      <TabsList className={`w-full p-0 justify-start border-b rounded-none bg-slate-900`}>
+    <Tabs defaultValue={tabs[0].value} className={`w-full border-t border-slate-800 px-4`} >
+      <TabsList className={`w-full p-0 justify-start  rounded-none bg-slate-900`}>
         {tabs.map((tab) => (
           <TabsTrigger
             key={tab.value}
