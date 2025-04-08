@@ -21,4 +21,7 @@ export interface ModelIfcProps {
     isPlaneHover:boolean;
     isFitView:boolean;
     onModelReady:()=>void;
+
+    onToggleTheme: () => void;
+    currentTheme: "light" | "dark";
 }

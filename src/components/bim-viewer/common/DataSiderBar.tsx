@@ -26,10 +26,7 @@ const DataSiderBar: React.FC<DataSiderBarProps> = ({
       hidden={isCollapsed}
     >
       <div
-        className={`
-          h-full overflow-auto bg-zinc-900 border-r border-zinc-800 relative
-          ${isCollapsed ? 'hidden' : 'block'}
-        `}
+        className={` h-full overflow-auto bg-slate-900 border-r border-slate-800 relative ${isCollapsed ? 'hidden' : 'block'} border-l border-zinc-800`}
       >
         <button
           onClick={onCollapse}

@@ -43,17 +43,25 @@ const HeaderViewer: React.FC<ModelIfcProps> = (
     isOriginalWorldCamera,
     isFreeControlElements,
     isPlaneHover,
-    isFitView
+    isFitView,
+
+    onToggleTheme,
+    currentTheme,
   }
 ) => {
 
   return (
     <>
-      <header className="z-50  bg-black/50 backdrop-blur-md text-white  md:px-6 py-2 shadow-md">
+      <header className={`z-50 backdrop-blur-md text-white  md:px-6 py-2 shadow-md`}>
         <div className="flex flex-col gap-2">
 
           {/* Logo Section */}
-          <LogoSection />
+          <div className="flex items-center justify-between">
+            <LogoSection />
+            <Button onClick={onToggleTheme} variant="outline">
+              {currentTheme === "dark" ? "🌞 Light" : "🌙 Dark"}
+            </Button>
+          </div>
 
           {/* Toolbar Section */}
           <div className="max-h-48 overflow-y-auto overflow-x-hidden">
@@ -93,7 +101,6 @@ const HeaderViewer: React.FC<ModelIfcProps> = (
               {/* <PlaneHover onToggle={() => onToggle("isPlaneHover")} isActive={isPlaneHover} /> */}
             </div>
           </div>
-
         </div>
       </header>
 

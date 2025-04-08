@@ -4,7 +4,7 @@ import { ViewCubeProvider } from "@/context/view-cube-context";
 import { ViewCubeProvider2 } from "@/context/view-cube-context2";
 import ModelIfc from "./ModelIfc";
 import FaceMeasurementGuide from "./guides/FaceMeasurementGuide";
-import ClassificationsTree from "./Classifications/ClassificationsTree";
+import ClassificationsTree from "./classifications/ClassificationsTree";
 import ElementProperties from "./element-properties/ElementProperties";
 
 import {
@@ -15,6 +15,7 @@ import {
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import DataSiderBar from "./common/DataSiderBar";
 import RelationsTree from "./element-properties/RelationsTree";
+import ViewerFooterTabs from "../layout/ViewerFooterTabs";
 
 const MainViewer: React.FC = () => {
   const [isModelReady, setIsModelReady] = useState(false);
@@ -50,108 +51,97 @@ const MainViewer: React.FC = () => {
     }));
   };
 
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === "light" ? "dark" : "light"));
+  };
+  const [theme, setTheme] = useState<"light" | "dark">("dark");
+  const themeClass = theme === "dark" ? "bg-slate-900 text-white" : "bg-gray-100 text-black";
+  
+
   return (
     <ViewCubeProvider>
       <ViewCubeProvider2>
-        <div className="h-screen flex flex-col bg-black text-white">
-          {/* Header */}
-          <div className="border-b border-zinc-800 bg-zinc-900">
-            <HeaderViewer
-              onToggle={toggleState}
-              isFitView={states.isFitView}
-              isOrthoPerspective={states.isOrthoPerspective}
-              sectionActive={states.sectionActive}
-              coordinateSysActive={states.coordinateSysActive}
-              isHighlightEnabled={states.isHighlightEnabled}
-              isClippingEdges={states.isClippingEdges}
-              isEdgeMeasurement={states.isEdgeMeasurement}
-              isFaceMeasurement={states.isFaceMeasurement}
-              haveGrids={states.haveGrids}
-              hasVolumeMeasurement={states.hasVolumeMeasurement}
-              havePlansViews={states.havePlansViews}
-              haveLengthMeasurements={states.haveLengthMeasurements}
-              haveAreaMeasureElements={states.haveAreaMeasureElements}
-              haveAngleMeasurements={states.haveAngleMeasurements}
-              haveWorldSettings={states.haveWorldSettings}
-              isOriginalWorldCamera={states.isOriginalWorldCamera}
-              isFreeControlElements={states.isFreeControlElements}
-              isPlaneHover={states.isPlaneHover}
-            />
-          </div>
+        <div className={`h-screen ${themeClass}`}>
+          <PanelGroup direction="vertical" className="h-full">
+            {/* HEADER */}
+            <Panel defaultSize={10} minSize={5} maxSize={20} className={themeClass}>
+              <div className="h-full border-b border-zinc-800">
+                <HeaderViewer
+                  onToggle={toggleState}
+                  onToggleTheme={toggleTheme}
+                  currentTheme={theme}
+                  {...states}
+                />
+              </div>
+            </Panel>
+            <PanelResizeHandle className={`h-1 ${themeClass} cursor-ns-resize border-b border-zinc-800`} />
 
-          {/* Body Panels */}
-          <div className="flex-1 overflow-hidden">
-            <PanelGroup direction="horizontal">
-              {/* LEFT PANEL */}
-              <DataSiderBar
-                isCollapsed={isLeftCollapsed}
-                onCollapse={() => setIsLeftCollapsed(true)}
-                isModelReady={isModelReady}
-              >
-                <ClassificationsTree />
-              </DataSiderBar>
+            {/* MAIN */}
+            <Panel defaultSize={80} className={themeClass}>
+              <PanelGroup direction="horizontal" className="h-full">
+                {/* LEFT */}
+                <DataSiderBar
+                  isCollapsed={isLeftCollapsed}
+                  onCollapse={() => setIsLeftCollapsed(true)}
+                  isModelReady={isModelReady}
+                >
+                  <ClassificationsTree />
+                </DataSiderBar>
 
-              <PanelResizeHandle className="w-1 bg-zinc-700 cursor-ew-resize" />
-              {/* CENTER PANEL */}
-              <Panel defaultSize={60} minSize={30}>
-                <div className="h-full w-full bg-black relative">
-                  <ModelIfc
-                    onModelReady={() => setIsModelReady(true)}
-                    {...states}
-                  />
-                  <FaceMeasurementGuide isEnabled={states.isFaceMeasurement} />
+                <PanelResizeHandle className={`w-1 ${themeClass} cursor-ns-resize`} />
+                {/* CENTER */}
+                <Panel defaultSize={60} minSize={30} className={themeClass}>
+                  <div className="h-full w-full bg-black relative">
+                    <ModelIfc
+                      onModelReady={() => setIsModelReady(true)}
+                      {...states}
+                    />
+                    <FaceMeasurementGuide isEnabled={states.isFaceMeasurement} />
+                    {isLeftCollapsed && (
+                      <button
+                        onClick={() => setIsLeftCollapsed(false)}
+                        className="absolute top-2 right-2 z-50 p-1 bg-zinc-700 hover:bg-zinc-600 rounded"
+                        title="Expand left"
+                      >
+                        <FiChevronRight className="text-white" />
+                      </button>
+                    )}
+                    {isRightCollapsed && (
+                      <button
+                        onClick={() => setIsRightCollapsed(false)}
+                        className="absolute top-2 right-2 z-50 p-1 bg-zinc-700 hover:bg-zinc-600 rounded"
+                        title="Expand right"
+                      >
+                        <FiChevronLeft className="text-white" />
+                      </button>
+                    )}
+                  </div>
+                </Panel>
 
-                  {/* Mở trái */}
-                  {isLeftCollapsed && (
-                    <button
-                      onClick={() => setIsLeftCollapsed(false)}
-                      className="absolute top-2 right-2 z-50 p-1 bg-zinc-700 hover:bg-zinc-600 rounded"
-                      title="Expand left"
-                    >
-                      <FiChevronRight className="text-white" />
-                    </button>
-                  )}
+                <PanelResizeHandle className={`w-1 ${themeClass} cursor-ns-resize`} />
+                {/* RIGHT */}
+                <DataSiderBar
+                  isCollapsed={isRightCollapsed}
+                  onCollapse={() => setIsRightCollapsed(true)}
+                  isModelReady={isModelReady}
+                >
+                  <RelationsTree />
+                </DataSiderBar>
+              </PanelGroup>
+            </Panel>
 
-                  {/* Mở phải */}
-                  {isRightCollapsed && (
-                    <button
-                      onClick={() => setIsRightCollapsed(false)}
-                      className="absolute top-2 right-2  z-50 p-1 bg-zinc-700 hover:bg-zinc-600 rounded"
-                      title="Expand right"
-                    >
-                      <FiChevronLeft className="text-white" />
-                    </button>
-                  )}
-                </div>
+            <PanelResizeHandle className={`h-2 ${themeClass} cursor-ns-resize`} />
+              {/* FOOTER */}
+              <Panel defaultSize={10} minSize={5} maxSize={20} className={themeClass}>
+                  <ViewerFooterTabs themeClass={themeClass}/>
               </Panel>
+          </PanelGroup>
 
-              <PanelResizeHandle className="w-1 bg-zinc-700 cursor-ew-resize" />
-              {/* ATTRIBUTES */}
-               {/* <DataSiderBar
-                isCollapsed={isRightCollapsed}
-                onCollapse={() => setIsLeftCollapsed(true)}
-                isModelReady={isModelReady}
-              >
-                <ElementProperties />
-              </DataSiderBar> */}
-              <DataSiderBar
-                isCollapsed={isRightCollapsed}
-                onCollapse={() => setIsLeftCollapsed(true)}
-                isModelReady={isModelReady}
-              >
-                <RelationsTree/>
-              </DataSiderBar> 
-
-
-
-
-
-            </PanelGroup>
-          </div>
         </div>
       </ViewCubeProvider2>
     </ViewCubeProvider>
   );
+ 
 };
 
 export default MainViewer;

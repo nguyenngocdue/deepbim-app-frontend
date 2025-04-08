@@ -41,5 +41,5 @@
     --color-neutral-900: #18181b;
 
     /* Panel */
-    --color-panel-50: #18181B
+    --color-panel-50: bg-slate-900;
   }
