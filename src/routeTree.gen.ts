@@ -29,7 +29,6 @@ import { Route as AuthenticatedBimViewerUtViewCubeImport } from './routes/_authe
 import { Route as AuthenticatedBimViewerUtIfcViewerSelectionFamilyImport } from './routes/_authenticated/bim-viewer-ut/ifc-viewer-selection-family'
 import { Route as AuthenticatedBimViewerUtGeometrySceneViewcubeImport } from './routes/_authenticated/bim-viewer-ut/geometry-scene-viewcube'
 import { Route as AuthenticatedBimViewerUtIfcViewerSelectionImport } from './routes/_authenticated/bim-viewer-ut/Ifc-viewer-selection'
-import { Route as AuthenticatedAppsHomeImport } from './routes/_authenticated/apps/home'
 
 // Create Virtual Routes
 
@@ -61,9 +60,6 @@ const AuthenticatedHelpCenterIndexLazyImport = createFileRoute(
 )()
 const AuthenticatedChatsIndexLazyImport = createFileRoute(
   '/_authenticated/chats/',
-)()
-const AuthenticatedAppsIndexLazyImport = createFileRoute(
-  '/_authenticated/apps/',
 )()
 const AuthenticatedSettingsNotificationsLazyImport = createFileRoute(
   '/_authenticated/settings/notifications',
@@ -236,16 +232,6 @@ const AuthenticatedChatsIndexLazyRoute =
     import('./routes/_authenticated/chats/index.lazy').then((d) => d.Route),
   )
 
-const AuthenticatedAppsIndexLazyRoute = AuthenticatedAppsIndexLazyImport.update(
-  {
-    id: '/apps/',
-    path: '/apps/',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any,
-).lazy(() =>
-  import('./routes/_authenticated/apps/index.lazy').then((d) => d.Route),
-)
-
 const ExampleModelIfcIndexRoute = ExampleModelIfcIndexImport.update({
   id: '/example-model/ifc/',
   path: '/example-model/ifc/',
@@ -411,12 +397,6 @@ const AuthenticatedBimViewerUtIfcViewerSelectionRoute =
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 
-const AuthenticatedAppsHomeRoute = AuthenticatedAppsHomeImport.update({
-  id: '/apps/home',
-  path: '/apps/home',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -510,13 +490,6 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof AuthenticatedIndexLazyImport
-      parentRoute: typeof AuthenticatedRouteImport
-    }
-    '/_authenticated/apps/home': {
-      id: '/_authenticated/apps/home'
-      path: '/apps/home'
-      fullPath: '/apps/home'
-      preLoaderRoute: typeof AuthenticatedAppsHomeImport
       parentRoute: typeof AuthenticatedRouteImport
     }
     '/_authenticated/bim-viewer-ut/Ifc-viewer-selection': {
@@ -659,13 +632,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ExampleModelIfcIndexImport
       parentRoute: typeof rootRoute
     }
-    '/_authenticated/apps/': {
-      id: '/_authenticated/apps/'
-      path: '/apps'
-      fullPath: '/apps'
-      preLoaderRoute: typeof AuthenticatedAppsIndexLazyImport
-      parentRoute: typeof AuthenticatedRouteImport
-    }
     '/_authenticated/chats/': {
       id: '/_authenticated/chats/'
       path: '/chats'
@@ -735,7 +701,6 @@ const AuthenticatedSettingsRouteLazyRouteWithChildren =
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedSettingsRouteLazyRoute: typeof AuthenticatedSettingsRouteLazyRouteWithChildren
   AuthenticatedIndexLazyRoute: typeof AuthenticatedIndexLazyRoute
-  AuthenticatedAppsHomeRoute: typeof AuthenticatedAppsHomeRoute
   AuthenticatedBimViewerUtIfcViewerSelectionRoute: typeof AuthenticatedBimViewerUtIfcViewerSelectionRoute
   AuthenticatedBimViewerUtGeometrySceneViewcubeRoute: typeof AuthenticatedBimViewerUtGeometrySceneViewcubeRoute
   AuthenticatedBimViewerUtIfcViewerSelectionFamilyRoute: typeof AuthenticatedBimViewerUtIfcViewerSelectionFamilyRoute
@@ -751,7 +716,6 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedBimViewerUtViewerLazyRoute: typeof AuthenticatedBimViewerUtViewerLazyRoute
   AuthenticatedUploadIndexRoute: typeof AuthenticatedUploadIndexRoute
   AuthenticatedViewerIndexRoute: typeof AuthenticatedViewerIndexRoute
-  AuthenticatedAppsIndexLazyRoute: typeof AuthenticatedAppsIndexLazyRoute
   AuthenticatedChatsIndexLazyRoute: typeof AuthenticatedChatsIndexLazyRoute
   AuthenticatedHelpCenterIndexLazyRoute: typeof AuthenticatedHelpCenterIndexLazyRoute
   AuthenticatedTasksIndexLazyRoute: typeof AuthenticatedTasksIndexLazyRoute
@@ -762,7 +726,6 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedSettingsRouteLazyRoute:
     AuthenticatedSettingsRouteLazyRouteWithChildren,
   AuthenticatedIndexLazyRoute: AuthenticatedIndexLazyRoute,
-  AuthenticatedAppsHomeRoute: AuthenticatedAppsHomeRoute,
   AuthenticatedBimViewerUtIfcViewerSelectionRoute:
     AuthenticatedBimViewerUtIfcViewerSelectionRoute,
   AuthenticatedBimViewerUtGeometrySceneViewcubeRoute:
@@ -789,7 +752,6 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
     AuthenticatedBimViewerUtViewerLazyRoute,
   AuthenticatedUploadIndexRoute: AuthenticatedUploadIndexRoute,
   AuthenticatedViewerIndexRoute: AuthenticatedViewerIndexRoute,
-  AuthenticatedAppsIndexLazyRoute: AuthenticatedAppsIndexLazyRoute,
   AuthenticatedChatsIndexLazyRoute: AuthenticatedChatsIndexLazyRoute,
   AuthenticatedHelpCenterIndexLazyRoute: AuthenticatedHelpCenterIndexLazyRoute,
   AuthenticatedTasksIndexLazyRoute: AuthenticatedTasksIndexLazyRoute,
@@ -812,7 +774,6 @@ export interface FileRoutesByFullPath {
   '/404': typeof errors404LazyRoute
   '/503': typeof errors503LazyRoute
   '/': typeof AuthenticatedIndexLazyRoute
-  '/apps/home': typeof AuthenticatedAppsHomeRoute
   '/bim-viewer-ut/Ifc-viewer-selection': typeof AuthenticatedBimViewerUtIfcViewerSelectionRoute
   '/bim-viewer-ut/geometry-scene-viewcube': typeof AuthenticatedBimViewerUtGeometrySceneViewcubeRoute
   '/bim-viewer-ut/ifc-viewer-selection-family': typeof AuthenticatedBimViewerUtIfcViewerSelectionFamilyRoute
@@ -833,7 +794,6 @@ export interface FileRoutesByFullPath {
   '/upload': typeof AuthenticatedUploadIndexRoute
   '/viewer': typeof AuthenticatedViewerIndexRoute
   '/example-model/ifc': typeof ExampleModelIfcIndexRoute
-  '/apps': typeof AuthenticatedAppsIndexLazyRoute
   '/chats': typeof AuthenticatedChatsIndexLazyRoute
   '/help-center': typeof AuthenticatedHelpCenterIndexLazyRoute
   '/settings/': typeof AuthenticatedSettingsIndexLazyRoute
@@ -852,7 +812,6 @@ export interface FileRoutesByTo {
   '/404': typeof errors404LazyRoute
   '/503': typeof errors503LazyRoute
   '/': typeof AuthenticatedIndexLazyRoute
-  '/apps/home': typeof AuthenticatedAppsHomeRoute
   '/bim-viewer-ut/Ifc-viewer-selection': typeof AuthenticatedBimViewerUtIfcViewerSelectionRoute
   '/bim-viewer-ut/geometry-scene-viewcube': typeof AuthenticatedBimViewerUtGeometrySceneViewcubeRoute
   '/bim-viewer-ut/ifc-viewer-selection-family': typeof AuthenticatedBimViewerUtIfcViewerSelectionFamilyRoute
@@ -873,7 +832,6 @@ export interface FileRoutesByTo {
   '/upload': typeof AuthenticatedUploadIndexRoute
   '/viewer': typeof AuthenticatedViewerIndexRoute
   '/example-model/ifc': typeof ExampleModelIfcIndexRoute
-  '/apps': typeof AuthenticatedAppsIndexLazyRoute
   '/chats': typeof AuthenticatedChatsIndexLazyRoute
   '/help-center': typeof AuthenticatedHelpCenterIndexLazyRoute
   '/settings': typeof AuthenticatedSettingsIndexLazyRoute
@@ -896,7 +854,6 @@ export interface FileRoutesById {
   '/(errors)/500': typeof errors500LazyRoute
   '/(errors)/503': typeof errors503LazyRoute
   '/_authenticated/': typeof AuthenticatedIndexLazyRoute
-  '/_authenticated/apps/home': typeof AuthenticatedAppsHomeRoute
   '/_authenticated/bim-viewer-ut/Ifc-viewer-selection': typeof AuthenticatedBimViewerUtIfcViewerSelectionRoute
   '/_authenticated/bim-viewer-ut/geometry-scene-viewcube': typeof AuthenticatedBimViewerUtGeometrySceneViewcubeRoute
   '/_authenticated/bim-viewer-ut/ifc-viewer-selection-family': typeof AuthenticatedBimViewerUtIfcViewerSelectionFamilyRoute
@@ -917,7 +874,6 @@ export interface FileRoutesById {
   '/_authenticated/upload/': typeof AuthenticatedUploadIndexRoute
   '/_authenticated/viewer/': typeof AuthenticatedViewerIndexRoute
   '/example-model/ifc/': typeof ExampleModelIfcIndexRoute
-  '/_authenticated/apps/': typeof AuthenticatedAppsIndexLazyRoute
   '/_authenticated/chats/': typeof AuthenticatedChatsIndexLazyRoute
   '/_authenticated/help-center/': typeof AuthenticatedHelpCenterIndexLazyRoute
   '/_authenticated/settings/': typeof AuthenticatedSettingsIndexLazyRoute
@@ -940,7 +896,6 @@ export interface FileRouteTypes {
     | '/404'
     | '/503'
     | '/'
-    | '/apps/home'
     | '/bim-viewer-ut/Ifc-viewer-selection'
     | '/bim-viewer-ut/geometry-scene-viewcube'
     | '/bim-viewer-ut/ifc-viewer-selection-family'
@@ -961,7 +916,6 @@ export interface FileRouteTypes {
     | '/upload'
     | '/viewer'
     | '/example-model/ifc'
-    | '/apps'
     | '/chats'
     | '/help-center'
     | '/settings/'
@@ -979,7 +933,6 @@ export interface FileRouteTypes {
     | '/404'
     | '/503'
     | '/'
-    | '/apps/home'
     | '/bim-viewer-ut/Ifc-viewer-selection'
     | '/bim-viewer-ut/geometry-scene-viewcube'
     | '/bim-viewer-ut/ifc-viewer-selection-family'
@@ -1000,7 +953,6 @@ export interface FileRouteTypes {
     | '/upload'
     | '/viewer'
     | '/example-model/ifc'
-    | '/apps'
     | '/chats'
     | '/help-center'
     | '/settings'
@@ -1021,7 +973,6 @@ export interface FileRouteTypes {
     | '/(errors)/500'
     | '/(errors)/503'
     | '/_authenticated/'
-    | '/_authenticated/apps/home'
     | '/_authenticated/bim-viewer-ut/Ifc-viewer-selection'
     | '/_authenticated/bim-viewer-ut/geometry-scene-viewcube'
     | '/_authenticated/bim-viewer-ut/ifc-viewer-selection-family'
@@ -1042,7 +993,6 @@ export interface FileRouteTypes {
     | '/_authenticated/upload/'
     | '/_authenticated/viewer/'
     | '/example-model/ifc/'
-    | '/_authenticated/apps/'
     | '/_authenticated/chats/'
     | '/_authenticated/help-center/'
     | '/_authenticated/settings/'
@@ -1110,7 +1060,6 @@ export const routeTree = rootRoute
       "children": [
         "/_authenticated/settings",
         "/_authenticated/",
-        "/_authenticated/apps/home",
         "/_authenticated/bim-viewer-ut/Ifc-viewer-selection",
         "/_authenticated/bim-viewer-ut/geometry-scene-viewcube",
         "/_authenticated/bim-viewer-ut/ifc-viewer-selection-family",
@@ -1126,7 +1075,6 @@ export const routeTree = rootRoute
         "/_authenticated/bim-viewer-ut/viewer",
         "/_authenticated/upload/",
         "/_authenticated/viewer/",
-        "/_authenticated/apps/",
         "/_authenticated/chats/",
         "/_authenticated/help-center/",
         "/_authenticated/tasks/",
@@ -1176,10 +1124,6 @@ export const routeTree = rootRoute
     },
     "/_authenticated/": {
       "filePath": "_authenticated/index.lazy.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/apps/home": {
-      "filePath": "_authenticated/apps/home.tsx",
       "parent": "/_authenticated"
     },
     "/_authenticated/bim-viewer-ut/Ifc-viewer-selection": {
@@ -1260,10 +1204,6 @@ export const routeTree = rootRoute
     },
     "/example-model/ifc/": {
       "filePath": "example-model/ifc/index.ts"
-    },
-    "/_authenticated/apps/": {
-      "filePath": "_authenticated/apps/index.lazy.tsx",
-      "parent": "/_authenticated"
     },
     "/_authenticated/chats/": {
       "filePath": "_authenticated/chats/index.lazy.tsx",
