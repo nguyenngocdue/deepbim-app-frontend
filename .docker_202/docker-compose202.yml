@@ -1,3 +1,4 @@
+version: "3"
 services:
   frontend:
     build:
@@ -5,7 +6,7 @@ services:
       dockerfile: .docker_202/Dockerfile
     container_name: frontend_container_202
     ports:
-      - "3003:5173" 
+      - "3003:3003"
     networks:
       - beta_network
     restart: always
