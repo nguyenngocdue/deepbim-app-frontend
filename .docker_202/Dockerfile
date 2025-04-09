@@ -6,7 +6,8 @@ COPY package.json package-lock.json ./
 RUN npm install --legacy-peer-deps
 
 COPY . .
-RUN npm run build --legacy-peer-deps
+RUN NODE_OPTIONS="--max-old-space-size=2048" npm run build
+
 
 # Stage 2: Serve with Nginx
 FROM nginx:alpine AS production
