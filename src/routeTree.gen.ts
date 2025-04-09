@@ -43,9 +43,6 @@ const authSignIn2LazyImport = createFileRoute('/(auth)/sign-in-2')()
 const authForgotPasswordLazyImport = createFileRoute(
   '/(auth)/forgot-password',
 )()
-const AuthenticatedUsersIndexLazyImport = createFileRoute(
-  '/_authenticated/users/',
-)()
 const AuthenticatedBimViewerUtViewerLazyImport = createFileRoute(
   '/_authenticated/bim-viewer-ut/viewer',
 )()
@@ -148,15 +145,6 @@ const auth500Route = auth500Import.update({
   path: '/500',
   getParentRoute: () => rootRoute,
 } as any)
-
-const AuthenticatedUsersIndexLazyRoute =
-  AuthenticatedUsersIndexLazyImport.update({
-    id: '/users/',
-    path: '/users/',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any).lazy(() =>
-    import('./routes/_authenticated/users/index.lazy').then((d) => d.Route),
-  )
 
 const ExampleModelIfcIndexRoute = ExampleModelIfcIndexImport.update({
   id: '/example-model/ifc/',
@@ -479,13 +467,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ExampleModelIfcIndexImport
       parentRoute: typeof rootRoute
     }
-    '/_authenticated/users/': {
-      id: '/_authenticated/users/'
-      path: '/users'
-      fullPath: '/users'
-      preLoaderRoute: typeof AuthenticatedUsersIndexLazyImport
-      parentRoute: typeof AuthenticatedRouteImport
-    }
   }
 }
 
@@ -508,7 +489,6 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedBimViewerUtViewerLazyRoute: typeof AuthenticatedBimViewerUtViewerLazyRoute
   AuthenticatedUploadIndexRoute: typeof AuthenticatedUploadIndexRoute
   AuthenticatedViewerIndexRoute: typeof AuthenticatedViewerIndexRoute
-  AuthenticatedUsersIndexLazyRoute: typeof AuthenticatedUsersIndexLazyRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
@@ -539,7 +519,6 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
     AuthenticatedBimViewerUtViewerLazyRoute,
   AuthenticatedUploadIndexRoute: AuthenticatedUploadIndexRoute,
   AuthenticatedViewerIndexRoute: AuthenticatedViewerIndexRoute,
-  AuthenticatedUsersIndexLazyRoute: AuthenticatedUsersIndexLazyRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
@@ -573,7 +552,6 @@ export interface FileRoutesByFullPath {
   '/upload': typeof AuthenticatedUploadIndexRoute
   '/viewer': typeof AuthenticatedViewerIndexRoute
   '/example-model/ifc': typeof ExampleModelIfcIndexRoute
-  '/users': typeof AuthenticatedUsersIndexLazyRoute
 }
 
 export interface FileRoutesByTo {
@@ -603,7 +581,6 @@ export interface FileRoutesByTo {
   '/upload': typeof AuthenticatedUploadIndexRoute
   '/viewer': typeof AuthenticatedViewerIndexRoute
   '/example-model/ifc': typeof ExampleModelIfcIndexRoute
-  '/users': typeof AuthenticatedUsersIndexLazyRoute
 }
 
 export interface FileRoutesById {
@@ -636,7 +613,6 @@ export interface FileRoutesById {
   '/_authenticated/upload/': typeof AuthenticatedUploadIndexRoute
   '/_authenticated/viewer/': typeof AuthenticatedViewerIndexRoute
   '/example-model/ifc/': typeof ExampleModelIfcIndexRoute
-  '/_authenticated/users/': typeof AuthenticatedUsersIndexLazyRoute
 }
 
 export interface FileRouteTypes {
@@ -669,7 +645,6 @@ export interface FileRouteTypes {
     | '/upload'
     | '/viewer'
     | '/example-model/ifc'
-    | '/users'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/500'
@@ -698,7 +673,6 @@ export interface FileRouteTypes {
     | '/upload'
     | '/viewer'
     | '/example-model/ifc'
-    | '/users'
   id:
     | '__root__'
     | '/_authenticated'
@@ -729,7 +703,6 @@ export interface FileRouteTypes {
     | '/_authenticated/upload/'
     | '/_authenticated/viewer/'
     | '/example-model/ifc/'
-    | '/_authenticated/users/'
   fileRoutesById: FileRoutesById
 }
 
@@ -805,8 +778,7 @@ export const routeTree = rootRoute
         "/_authenticated/bim-viewer-ut/instanced-mesh",
         "/_authenticated/bim-viewer-ut/viewer",
         "/_authenticated/upload/",
-        "/_authenticated/viewer/",
-        "/_authenticated/users/"
+        "/_authenticated/viewer/"
       ]
     },
     "/(auth)/500": {
@@ -905,10 +877,6 @@ export const routeTree = rootRoute
     },
     "/example-model/ifc/": {
       "filePath": "example-model/ifc/index.ts"
-    },
-    "/_authenticated/users/": {
-      "filePath": "_authenticated/users/index.lazy.tsx",
-      "parent": "/_authenticated"
     }
   }
 }
