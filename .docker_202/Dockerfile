@@ -21,7 +21,7 @@ COPY .docker_202/nginx-frontend.conf /etc/nginx/conf.d/default.conf
 # Copy thư mục build từ Stage 1 vào thseư mục web root của Nginx
 COPY --from=build /usr/src/app/dist /usr/share/nginx/html
 
-EXPOSE 5173
+EXPOSE 3003
 
 # Khởi động ứng dụng trên cổng 3003
 CMD ["npm", "run", "dev"]
