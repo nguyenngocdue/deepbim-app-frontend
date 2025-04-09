@@ -24,7 +24,7 @@ const tabs = [
   },
 ];
 
-export default function ViewerFooterTabs( { themeClass }: { themeClass: string }) {
+export default function FooterTabViewer( { themeClass }: { themeClass: string }) {
   return (
     <Tabs defaultValue={tabs[0].value} className={`w-full border-t border-slate-800 px-4`} >
       <TabsList className={`w-full p-0 justify-start  rounded-none bg-slate-900`}>

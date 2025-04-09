@@ -45,7 +45,8 @@ export default {
 				manrope: [
 					'Manrope',
 					...fontFamily.sans
-				]
+				],
+				heading: ["Lexend", "sans-serif"],
 			},
 			borderRadius: {
 				lg: 'var(--radius)',

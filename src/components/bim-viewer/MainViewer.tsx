@@ -15,7 +15,8 @@ import {
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import DataSiderBar from "./common/DataSiderBar";
 import RelationsTree from "./element-properties/RelationsTree";
-import ViewerFooterTabs from "../layout/ViewerFooterTabs";
+import FooterTabViewer from "../layout/FooterTabViewer";
+import RightSidebarViewer from "../layout/RightSidebarViewer";
 
 const MainViewer: React.FC = () => {
   const [isModelReady, setIsModelReady] = useState(false);
@@ -65,7 +66,7 @@ const MainViewer: React.FC = () => {
         <div className={`h-screen ${themeClass}`}>
           <PanelGroup direction="vertical" className="h-full">
             {/* HEADER */}
-            <Panel defaultSize={15} minSize={5} maxSize={40} className={themeClass}>
+            <Panel defaultSize={11} minSize={5} maxSize={12} className={themeClass}>
               <div className="h-full">
                 <HeaderViewer
                   onToggle={toggleState}
@@ -121,20 +122,24 @@ const MainViewer: React.FC = () => {
 
                 <PanelResizeHandle className={`w-1 ${themeClass} cursor-ns-resize`} />
                 {/* RIGHT */}
-                <DataSiderBar
+                {/* <DataSiderBar
                   isCollapsed={isRightCollapsed}
                   onCollapse={() => setIsRightCollapsed(true)}
                   isModelReady={isModelReady}
                 >
                   <RelationsTree />
-                </DataSiderBar>
+                </DataSiderBar> */}
+                <Panel defaultSize={20} minSize={5} maxSize={50} className={themeClass}>
+                <RightSidebarViewer themeClass="h-full" />
+
+                </Panel>
               </PanelGroup>
             </Panel>
 
             <PanelResizeHandle className={`h-2 ${themeClass} cursor-ns-resize`} />
               {/* FOOTER */}
               <Panel defaultSize={10} minSize={5} maxSize={20} className={themeClass}>
-                  <ViewerFooterTabs themeClass={themeClass}/>
+                  <FooterTabViewer themeClass={themeClass}/>
               </Panel>
           </PanelGroup>
 
