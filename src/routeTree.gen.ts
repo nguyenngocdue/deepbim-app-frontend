@@ -43,35 +43,8 @@ const authSignIn2LazyImport = createFileRoute('/(auth)/sign-in-2')()
 const authForgotPasswordLazyImport = createFileRoute(
   '/(auth)/forgot-password',
 )()
-const AuthenticatedSettingsRouteLazyImport = createFileRoute(
-  '/_authenticated/settings',
-)()
 const AuthenticatedUsersIndexLazyImport = createFileRoute(
   '/_authenticated/users/',
-)()
-const AuthenticatedTasksIndexLazyImport = createFileRoute(
-  '/_authenticated/tasks/',
-)()
-const AuthenticatedSettingsIndexLazyImport = createFileRoute(
-  '/_authenticated/settings/',
-)()
-const AuthenticatedHelpCenterIndexLazyImport = createFileRoute(
-  '/_authenticated/help-center/',
-)()
-const AuthenticatedChatsIndexLazyImport = createFileRoute(
-  '/_authenticated/chats/',
-)()
-const AuthenticatedSettingsNotificationsLazyImport = createFileRoute(
-  '/_authenticated/settings/notifications',
-)()
-const AuthenticatedSettingsDisplayLazyImport = createFileRoute(
-  '/_authenticated/settings/display',
-)()
-const AuthenticatedSettingsAppearanceLazyImport = createFileRoute(
-  '/_authenticated/settings/appearance',
-)()
-const AuthenticatedSettingsAccountLazyImport = createFileRoute(
-  '/_authenticated/settings/account',
 )()
 const AuthenticatedBimViewerUtViewerLazyImport = createFileRoute(
   '/_authenticated/bim-viewer-ut/viewer',
@@ -164,15 +137,6 @@ const authForgotPasswordLazyRoute = authForgotPasswordLazyImport
     import('./routes/(auth)/forgot-password.lazy').then((d) => d.Route),
   )
 
-const AuthenticatedSettingsRouteLazyRoute =
-  AuthenticatedSettingsRouteLazyImport.update({
-    id: '/settings',
-    path: '/settings',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any).lazy(() =>
-    import('./routes/_authenticated/settings/route.lazy').then((d) => d.Route),
-  )
-
 const authSignInRoute = authSignInImport.update({
   id: '/(auth)/sign-in',
   path: '/sign-in',
@@ -194,44 +158,6 @@ const AuthenticatedUsersIndexLazyRoute =
     import('./routes/_authenticated/users/index.lazy').then((d) => d.Route),
   )
 
-const AuthenticatedTasksIndexLazyRoute =
-  AuthenticatedTasksIndexLazyImport.update({
-    id: '/tasks/',
-    path: '/tasks/',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any).lazy(() =>
-    import('./routes/_authenticated/tasks/index.lazy').then((d) => d.Route),
-  )
-
-const AuthenticatedSettingsIndexLazyRoute =
-  AuthenticatedSettingsIndexLazyImport.update({
-    id: '/',
-    path: '/',
-    getParentRoute: () => AuthenticatedSettingsRouteLazyRoute,
-  } as any).lazy(() =>
-    import('./routes/_authenticated/settings/index.lazy').then((d) => d.Route),
-  )
-
-const AuthenticatedHelpCenterIndexLazyRoute =
-  AuthenticatedHelpCenterIndexLazyImport.update({
-    id: '/help-center/',
-    path: '/help-center/',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any).lazy(() =>
-    import('./routes/_authenticated/help-center/index.lazy').then(
-      (d) => d.Route,
-    ),
-  )
-
-const AuthenticatedChatsIndexLazyRoute =
-  AuthenticatedChatsIndexLazyImport.update({
-    id: '/chats/',
-    path: '/chats/',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any).lazy(() =>
-    import('./routes/_authenticated/chats/index.lazy').then((d) => d.Route),
-  )
-
 const ExampleModelIfcIndexRoute = ExampleModelIfcIndexImport.update({
   id: '/example-model/ifc/',
   path: '/example-model/ifc/',
@@ -249,50 +175,6 @@ const AuthenticatedUploadIndexRoute = AuthenticatedUploadIndexImport.update({
   path: '/upload/',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-
-const AuthenticatedSettingsNotificationsLazyRoute =
-  AuthenticatedSettingsNotificationsLazyImport.update({
-    id: '/notifications',
-    path: '/notifications',
-    getParentRoute: () => AuthenticatedSettingsRouteLazyRoute,
-  } as any).lazy(() =>
-    import('./routes/_authenticated/settings/notifications.lazy').then(
-      (d) => d.Route,
-    ),
-  )
-
-const AuthenticatedSettingsDisplayLazyRoute =
-  AuthenticatedSettingsDisplayLazyImport.update({
-    id: '/display',
-    path: '/display',
-    getParentRoute: () => AuthenticatedSettingsRouteLazyRoute,
-  } as any).lazy(() =>
-    import('./routes/_authenticated/settings/display.lazy').then(
-      (d) => d.Route,
-    ),
-  )
-
-const AuthenticatedSettingsAppearanceLazyRoute =
-  AuthenticatedSettingsAppearanceLazyImport.update({
-    id: '/appearance',
-    path: '/appearance',
-    getParentRoute: () => AuthenticatedSettingsRouteLazyRoute,
-  } as any).lazy(() =>
-    import('./routes/_authenticated/settings/appearance.lazy').then(
-      (d) => d.Route,
-    ),
-  )
-
-const AuthenticatedSettingsAccountLazyRoute =
-  AuthenticatedSettingsAccountLazyImport.update({
-    id: '/account',
-    path: '/account',
-    getParentRoute: () => AuthenticatedSettingsRouteLazyRoute,
-  } as any).lazy(() =>
-    import('./routes/_authenticated/settings/account.lazy').then(
-      (d) => d.Route,
-    ),
-  )
 
 const AuthenticatedBimViewerUtViewerLazyRoute =
   AuthenticatedBimViewerUtViewerLazyImport.update({
@@ -421,13 +303,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/sign-in'
       preLoaderRoute: typeof authSignInImport
       parentRoute: typeof rootRoute
-    }
-    '/_authenticated/settings': {
-      id: '/_authenticated/settings'
-      path: '/settings'
-      fullPath: '/settings'
-      preLoaderRoute: typeof AuthenticatedSettingsRouteLazyImport
-      parentRoute: typeof AuthenticatedRouteImport
     }
     '/(auth)/forgot-password': {
       id: '/(auth)/forgot-password'
@@ -583,34 +458,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedBimViewerUtViewerLazyImport
       parentRoute: typeof AuthenticatedRouteImport
     }
-    '/_authenticated/settings/account': {
-      id: '/_authenticated/settings/account'
-      path: '/account'
-      fullPath: '/settings/account'
-      preLoaderRoute: typeof AuthenticatedSettingsAccountLazyImport
-      parentRoute: typeof AuthenticatedSettingsRouteLazyImport
-    }
-    '/_authenticated/settings/appearance': {
-      id: '/_authenticated/settings/appearance'
-      path: '/appearance'
-      fullPath: '/settings/appearance'
-      preLoaderRoute: typeof AuthenticatedSettingsAppearanceLazyImport
-      parentRoute: typeof AuthenticatedSettingsRouteLazyImport
-    }
-    '/_authenticated/settings/display': {
-      id: '/_authenticated/settings/display'
-      path: '/display'
-      fullPath: '/settings/display'
-      preLoaderRoute: typeof AuthenticatedSettingsDisplayLazyImport
-      parentRoute: typeof AuthenticatedSettingsRouteLazyImport
-    }
-    '/_authenticated/settings/notifications': {
-      id: '/_authenticated/settings/notifications'
-      path: '/notifications'
-      fullPath: '/settings/notifications'
-      preLoaderRoute: typeof AuthenticatedSettingsNotificationsLazyImport
-      parentRoute: typeof AuthenticatedSettingsRouteLazyImport
-    }
     '/_authenticated/upload/': {
       id: '/_authenticated/upload/'
       path: '/upload'
@@ -632,34 +479,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ExampleModelIfcIndexImport
       parentRoute: typeof rootRoute
     }
-    '/_authenticated/chats/': {
-      id: '/_authenticated/chats/'
-      path: '/chats'
-      fullPath: '/chats'
-      preLoaderRoute: typeof AuthenticatedChatsIndexLazyImport
-      parentRoute: typeof AuthenticatedRouteImport
-    }
-    '/_authenticated/help-center/': {
-      id: '/_authenticated/help-center/'
-      path: '/help-center'
-      fullPath: '/help-center'
-      preLoaderRoute: typeof AuthenticatedHelpCenterIndexLazyImport
-      parentRoute: typeof AuthenticatedRouteImport
-    }
-    '/_authenticated/settings/': {
-      id: '/_authenticated/settings/'
-      path: '/'
-      fullPath: '/settings/'
-      preLoaderRoute: typeof AuthenticatedSettingsIndexLazyImport
-      parentRoute: typeof AuthenticatedSettingsRouteLazyImport
-    }
-    '/_authenticated/tasks/': {
-      id: '/_authenticated/tasks/'
-      path: '/tasks'
-      fullPath: '/tasks'
-      preLoaderRoute: typeof AuthenticatedTasksIndexLazyImport
-      parentRoute: typeof AuthenticatedRouteImport
-    }
     '/_authenticated/users/': {
       id: '/_authenticated/users/'
       path: '/users'
@@ -672,34 +491,7 @@ declare module '@tanstack/react-router' {
 
 // Create and export the route tree
 
-interface AuthenticatedSettingsRouteLazyRouteChildren {
-  AuthenticatedSettingsAccountLazyRoute: typeof AuthenticatedSettingsAccountLazyRoute
-  AuthenticatedSettingsAppearanceLazyRoute: typeof AuthenticatedSettingsAppearanceLazyRoute
-  AuthenticatedSettingsDisplayLazyRoute: typeof AuthenticatedSettingsDisplayLazyRoute
-  AuthenticatedSettingsNotificationsLazyRoute: typeof AuthenticatedSettingsNotificationsLazyRoute
-  AuthenticatedSettingsIndexLazyRoute: typeof AuthenticatedSettingsIndexLazyRoute
-}
-
-const AuthenticatedSettingsRouteLazyRouteChildren: AuthenticatedSettingsRouteLazyRouteChildren =
-  {
-    AuthenticatedSettingsAccountLazyRoute:
-      AuthenticatedSettingsAccountLazyRoute,
-    AuthenticatedSettingsAppearanceLazyRoute:
-      AuthenticatedSettingsAppearanceLazyRoute,
-    AuthenticatedSettingsDisplayLazyRoute:
-      AuthenticatedSettingsDisplayLazyRoute,
-    AuthenticatedSettingsNotificationsLazyRoute:
-      AuthenticatedSettingsNotificationsLazyRoute,
-    AuthenticatedSettingsIndexLazyRoute: AuthenticatedSettingsIndexLazyRoute,
-  }
-
-const AuthenticatedSettingsRouteLazyRouteWithChildren =
-  AuthenticatedSettingsRouteLazyRoute._addFileChildren(
-    AuthenticatedSettingsRouteLazyRouteChildren,
-  )
-
 interface AuthenticatedRouteRouteChildren {
-  AuthenticatedSettingsRouteLazyRoute: typeof AuthenticatedSettingsRouteLazyRouteWithChildren
   AuthenticatedIndexLazyRoute: typeof AuthenticatedIndexLazyRoute
   AuthenticatedBimViewerUtIfcViewerSelectionRoute: typeof AuthenticatedBimViewerUtIfcViewerSelectionRoute
   AuthenticatedBimViewerUtGeometrySceneViewcubeRoute: typeof AuthenticatedBimViewerUtGeometrySceneViewcubeRoute
@@ -716,15 +508,10 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedBimViewerUtViewerLazyRoute: typeof AuthenticatedBimViewerUtViewerLazyRoute
   AuthenticatedUploadIndexRoute: typeof AuthenticatedUploadIndexRoute
   AuthenticatedViewerIndexRoute: typeof AuthenticatedViewerIndexRoute
-  AuthenticatedChatsIndexLazyRoute: typeof AuthenticatedChatsIndexLazyRoute
-  AuthenticatedHelpCenterIndexLazyRoute: typeof AuthenticatedHelpCenterIndexLazyRoute
-  AuthenticatedTasksIndexLazyRoute: typeof AuthenticatedTasksIndexLazyRoute
   AuthenticatedUsersIndexLazyRoute: typeof AuthenticatedUsersIndexLazyRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
-  AuthenticatedSettingsRouteLazyRoute:
-    AuthenticatedSettingsRouteLazyRouteWithChildren,
   AuthenticatedIndexLazyRoute: AuthenticatedIndexLazyRoute,
   AuthenticatedBimViewerUtIfcViewerSelectionRoute:
     AuthenticatedBimViewerUtIfcViewerSelectionRoute,
@@ -752,9 +539,6 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
     AuthenticatedBimViewerUtViewerLazyRoute,
   AuthenticatedUploadIndexRoute: AuthenticatedUploadIndexRoute,
   AuthenticatedViewerIndexRoute: AuthenticatedViewerIndexRoute,
-  AuthenticatedChatsIndexLazyRoute: AuthenticatedChatsIndexLazyRoute,
-  AuthenticatedHelpCenterIndexLazyRoute: AuthenticatedHelpCenterIndexLazyRoute,
-  AuthenticatedTasksIndexLazyRoute: AuthenticatedTasksIndexLazyRoute,
   AuthenticatedUsersIndexLazyRoute: AuthenticatedUsersIndexLazyRoute,
 }
 
@@ -765,7 +549,6 @@ export interface FileRoutesByFullPath {
   '': typeof AuthenticatedRouteRouteWithChildren
   '/500': typeof errors500LazyRoute
   '/sign-in': typeof authSignInRoute
-  '/settings': typeof AuthenticatedSettingsRouteLazyRouteWithChildren
   '/forgot-password': typeof authForgotPasswordLazyRoute
   '/sign-in-2': typeof authSignIn2LazyRoute
   '/sign-up': typeof authSignUpLazyRoute
@@ -787,17 +570,9 @@ export interface FileRoutesByFullPath {
   '/bim-viewer-ut/ifc-loader': typeof AuthenticatedBimViewerUtIfcLoaderLazyRoute
   '/bim-viewer-ut/instanced-mesh': typeof AuthenticatedBimViewerUtInstancedMeshLazyRoute
   '/bim-viewer-ut/viewer': typeof AuthenticatedBimViewerUtViewerLazyRoute
-  '/settings/account': typeof AuthenticatedSettingsAccountLazyRoute
-  '/settings/appearance': typeof AuthenticatedSettingsAppearanceLazyRoute
-  '/settings/display': typeof AuthenticatedSettingsDisplayLazyRoute
-  '/settings/notifications': typeof AuthenticatedSettingsNotificationsLazyRoute
   '/upload': typeof AuthenticatedUploadIndexRoute
   '/viewer': typeof AuthenticatedViewerIndexRoute
   '/example-model/ifc': typeof ExampleModelIfcIndexRoute
-  '/chats': typeof AuthenticatedChatsIndexLazyRoute
-  '/help-center': typeof AuthenticatedHelpCenterIndexLazyRoute
-  '/settings/': typeof AuthenticatedSettingsIndexLazyRoute
-  '/tasks': typeof AuthenticatedTasksIndexLazyRoute
   '/users': typeof AuthenticatedUsersIndexLazyRoute
 }
 
@@ -825,17 +600,9 @@ export interface FileRoutesByTo {
   '/bim-viewer-ut/ifc-loader': typeof AuthenticatedBimViewerUtIfcLoaderLazyRoute
   '/bim-viewer-ut/instanced-mesh': typeof AuthenticatedBimViewerUtInstancedMeshLazyRoute
   '/bim-viewer-ut/viewer': typeof AuthenticatedBimViewerUtViewerLazyRoute
-  '/settings/account': typeof AuthenticatedSettingsAccountLazyRoute
-  '/settings/appearance': typeof AuthenticatedSettingsAppearanceLazyRoute
-  '/settings/display': typeof AuthenticatedSettingsDisplayLazyRoute
-  '/settings/notifications': typeof AuthenticatedSettingsNotificationsLazyRoute
   '/upload': typeof AuthenticatedUploadIndexRoute
   '/viewer': typeof AuthenticatedViewerIndexRoute
   '/example-model/ifc': typeof ExampleModelIfcIndexRoute
-  '/chats': typeof AuthenticatedChatsIndexLazyRoute
-  '/help-center': typeof AuthenticatedHelpCenterIndexLazyRoute
-  '/settings': typeof AuthenticatedSettingsIndexLazyRoute
-  '/tasks': typeof AuthenticatedTasksIndexLazyRoute
   '/users': typeof AuthenticatedUsersIndexLazyRoute
 }
 
@@ -844,7 +611,6 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/(auth)/500': typeof auth500Route
   '/(auth)/sign-in': typeof authSignInRoute
-  '/_authenticated/settings': typeof AuthenticatedSettingsRouteLazyRouteWithChildren
   '/(auth)/forgot-password': typeof authForgotPasswordLazyRoute
   '/(auth)/sign-in-2': typeof authSignIn2LazyRoute
   '/(auth)/sign-up': typeof authSignUpLazyRoute
@@ -867,17 +633,9 @@ export interface FileRoutesById {
   '/_authenticated/bim-viewer-ut/ifc-loader': typeof AuthenticatedBimViewerUtIfcLoaderLazyRoute
   '/_authenticated/bim-viewer-ut/instanced-mesh': typeof AuthenticatedBimViewerUtInstancedMeshLazyRoute
   '/_authenticated/bim-viewer-ut/viewer': typeof AuthenticatedBimViewerUtViewerLazyRoute
-  '/_authenticated/settings/account': typeof AuthenticatedSettingsAccountLazyRoute
-  '/_authenticated/settings/appearance': typeof AuthenticatedSettingsAppearanceLazyRoute
-  '/_authenticated/settings/display': typeof AuthenticatedSettingsDisplayLazyRoute
-  '/_authenticated/settings/notifications': typeof AuthenticatedSettingsNotificationsLazyRoute
   '/_authenticated/upload/': typeof AuthenticatedUploadIndexRoute
   '/_authenticated/viewer/': typeof AuthenticatedViewerIndexRoute
   '/example-model/ifc/': typeof ExampleModelIfcIndexRoute
-  '/_authenticated/chats/': typeof AuthenticatedChatsIndexLazyRoute
-  '/_authenticated/help-center/': typeof AuthenticatedHelpCenterIndexLazyRoute
-  '/_authenticated/settings/': typeof AuthenticatedSettingsIndexLazyRoute
-  '/_authenticated/tasks/': typeof AuthenticatedTasksIndexLazyRoute
   '/_authenticated/users/': typeof AuthenticatedUsersIndexLazyRoute
 }
 
@@ -887,7 +645,6 @@ export interface FileRouteTypes {
     | ''
     | '/500'
     | '/sign-in'
-    | '/settings'
     | '/forgot-password'
     | '/sign-in-2'
     | '/sign-up'
@@ -909,17 +666,9 @@ export interface FileRouteTypes {
     | '/bim-viewer-ut/ifc-loader'
     | '/bim-viewer-ut/instanced-mesh'
     | '/bim-viewer-ut/viewer'
-    | '/settings/account'
-    | '/settings/appearance'
-    | '/settings/display'
-    | '/settings/notifications'
     | '/upload'
     | '/viewer'
     | '/example-model/ifc'
-    | '/chats'
-    | '/help-center'
-    | '/settings/'
-    | '/tasks'
     | '/users'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -946,24 +695,15 @@ export interface FileRouteTypes {
     | '/bim-viewer-ut/ifc-loader'
     | '/bim-viewer-ut/instanced-mesh'
     | '/bim-viewer-ut/viewer'
-    | '/settings/account'
-    | '/settings/appearance'
-    | '/settings/display'
-    | '/settings/notifications'
     | '/upload'
     | '/viewer'
     | '/example-model/ifc'
-    | '/chats'
-    | '/help-center'
-    | '/settings'
-    | '/tasks'
     | '/users'
   id:
     | '__root__'
     | '/_authenticated'
     | '/(auth)/500'
     | '/(auth)/sign-in'
-    | '/_authenticated/settings'
     | '/(auth)/forgot-password'
     | '/(auth)/sign-in-2'
     | '/(auth)/sign-up'
@@ -986,17 +726,9 @@ export interface FileRouteTypes {
     | '/_authenticated/bim-viewer-ut/ifc-loader'
     | '/_authenticated/bim-viewer-ut/instanced-mesh'
     | '/_authenticated/bim-viewer-ut/viewer'
-    | '/_authenticated/settings/account'
-    | '/_authenticated/settings/appearance'
-    | '/_authenticated/settings/display'
-    | '/_authenticated/settings/notifications'
     | '/_authenticated/upload/'
     | '/_authenticated/viewer/'
     | '/example-model/ifc/'
-    | '/_authenticated/chats/'
-    | '/_authenticated/help-center/'
-    | '/_authenticated/settings/'
-    | '/_authenticated/tasks/'
     | '/_authenticated/users/'
   fileRoutesById: FileRoutesById
 }
@@ -1058,7 +790,6 @@ export const routeTree = rootRoute
     "/_authenticated": {
       "filePath": "_authenticated/route.tsx",
       "children": [
-        "/_authenticated/settings",
         "/_authenticated/",
         "/_authenticated/bim-viewer-ut/Ifc-viewer-selection",
         "/_authenticated/bim-viewer-ut/geometry-scene-viewcube",
@@ -1075,9 +806,6 @@ export const routeTree = rootRoute
         "/_authenticated/bim-viewer-ut/viewer",
         "/_authenticated/upload/",
         "/_authenticated/viewer/",
-        "/_authenticated/chats/",
-        "/_authenticated/help-center/",
-        "/_authenticated/tasks/",
         "/_authenticated/users/"
       ]
     },
@@ -1086,17 +814,6 @@ export const routeTree = rootRoute
     },
     "/(auth)/sign-in": {
       "filePath": "(auth)/sign-in.tsx"
-    },
-    "/_authenticated/settings": {
-      "filePath": "_authenticated/settings/route.lazy.tsx",
-      "parent": "/_authenticated",
-      "children": [
-        "/_authenticated/settings/account",
-        "/_authenticated/settings/appearance",
-        "/_authenticated/settings/display",
-        "/_authenticated/settings/notifications",
-        "/_authenticated/settings/"
-      ]
     },
     "/(auth)/forgot-password": {
       "filePath": "(auth)/forgot-password.lazy.tsx"
@@ -1178,22 +895,6 @@ export const routeTree = rootRoute
       "filePath": "_authenticated/bim-viewer-ut/viewer.lazy.tsx",
       "parent": "/_authenticated"
     },
-    "/_authenticated/settings/account": {
-      "filePath": "_authenticated/settings/account.lazy.tsx",
-      "parent": "/_authenticated/settings"
-    },
-    "/_authenticated/settings/appearance": {
-      "filePath": "_authenticated/settings/appearance.lazy.tsx",
-      "parent": "/_authenticated/settings"
-    },
-    "/_authenticated/settings/display": {
-      "filePath": "_authenticated/settings/display.lazy.tsx",
-      "parent": "/_authenticated/settings"
-    },
-    "/_authenticated/settings/notifications": {
-      "filePath": "_authenticated/settings/notifications.lazy.tsx",
-      "parent": "/_authenticated/settings"
-    },
     "/_authenticated/upload/": {
       "filePath": "_authenticated/upload/index.tsx",
       "parent": "/_authenticated"
@@ -1204,22 +905,6 @@ export const routeTree = rootRoute
     },
     "/example-model/ifc/": {
       "filePath": "example-model/ifc/index.ts"
-    },
-    "/_authenticated/chats/": {
-      "filePath": "_authenticated/chats/index.lazy.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/help-center/": {
-      "filePath": "_authenticated/help-center/index.lazy.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/settings/": {
-      "filePath": "_authenticated/settings/index.lazy.tsx",
-      "parent": "/_authenticated/settings"
-    },
-    "/_authenticated/tasks/": {
-      "filePath": "_authenticated/tasks/index.lazy.tsx",
-      "parent": "/_authenticated"
     },
     "/_authenticated/users/": {
       "filePath": "_authenticated/users/index.lazy.tsx",
