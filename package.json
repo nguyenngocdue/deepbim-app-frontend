@@ -56,10 +56,7 @@
     "three": "^0.160.1",
     "three-freeform-controls": "^0.3.0",
     "three-viewport-gizmo": "^2.1.1",
-    "three.meshline": "^1.4.0",
-    "web-ifc": "^0.0.66",
-    "zod": "^3.23.8",
-    "zustand": "^5.0.2"
+    "web-ifc": "^0.0.66"
   },
   "devDependencies": {
     "@eslint/js": "^9.16.0",
