@@ -1,4 +1,4 @@
-# Stage 1: Build Vite app
+# Stage 1: Build Vite App
 FROM node:20 AS build
 WORKDIR /usr/src/app
 
@@ -15,5 +15,4 @@ COPY .docker_202/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /usr/src/app/dist /usr/share/nginx/html
 
 EXPOSE 3003
-
 CMD ["nginx", "-g", "daemon off;"]
