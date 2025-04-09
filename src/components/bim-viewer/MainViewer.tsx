@@ -123,14 +123,13 @@ const MainViewer: React.FC = () => {
                 </DataSiderBar> */}
                 <Panel defaultSize={20} minSize={5} maxSize={50} className={themeClass}>
                 <RightSidebarViewer themeClass="h-full" />
-
                 </Panel>
               </PanelGroup>
             </Panel>
 
-            <PanelResizeHandle className={`h-2 ${themeClass} cursor-ns-resize`} />
+            <PanelResizeHandle className={` ${themeClass} cursor-ns-resize`} />
               {/* FOOTER */}
-              <Panel defaultSize={10} minSize={5} maxSize={20} className={themeClass}>
+              <Panel defaultSize={10} minSize={5} maxSize={100} className={themeClass}>
                   <FooterTabViewer themeClass={themeClass}/>
               </Panel>
           </PanelGroup>

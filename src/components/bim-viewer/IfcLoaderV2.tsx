@@ -69,7 +69,7 @@ const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({ source, worldRef, componentRe
           }
 
           world.scene.three.add(model);
-          
+
           setTimeout(() => {
             if (world.camera.controls && world.meshes.size > 0) {
               const boundingBox = new THREE.Box3().setFromObject(

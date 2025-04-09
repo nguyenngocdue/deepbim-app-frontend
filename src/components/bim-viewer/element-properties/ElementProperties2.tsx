@@ -35,9 +35,8 @@ const ElementProperties2: React.FC = () => {
         const modelID = Object.keys(fragmentIdMap)[0];
         const model = await modelManager.waitForModel();
         const expressID  = Array.from(fragmentIdMap[modelID])[0] as number;
-
-        console.log();
-
+        const props = await model.getProperties(expressID, true);
+        console.log(props);
       });
     };
 
@@ -47,7 +46,7 @@ const ElementProperties2: React.FC = () => {
   return (
     <div className="flex w-full h-screen ">
       <div className="w-full overflow-auto p-3 text-white text-sm bg-panel-50">
-       
+       AAAA
       </div>
       <div className="flex-1" id="viewport" />
     </div>
