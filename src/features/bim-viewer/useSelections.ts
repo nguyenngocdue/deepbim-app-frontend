@@ -5,8 +5,6 @@ import * as OBC from "@thatopen/components";
 import * as THREE from "three";
 import * as OBF from "@thatopen/components-front";
 import { modelManager } from "@/services/ModelManager";
-import { processEntityAttributes } from "@/components/bim-viewer/element-properties/helpers/ProcessAttribbutes";
-import { processPropertySets } from "@/components/bim-viewer/element-properties/helpers/ProcessPropertySets";
 
 
 export function useSelections() {
@@ -206,29 +204,138 @@ export function useSelections() {
   }
 
 
-  const onHideByCategory = async () => {
+  const onHideByIFCType = async () => {
     const components = worldManager.getComponents();
     if (!components) return;
   
     const fragments = components.get(OBC.FragmentsManager);
-  
     const selection = highlighter.selection.select;
+  
+    // Exit if there's no selected element
     if (Object.keys(selection).length === 0) return;
   
+    // Get fragment ID and express ID of the selected element
     const [fragmentID, expressIDs] = Object.entries(selection)[0];
-    const expressID = Array.from(expressIDs)[0];
+    const selectedExpressID = Array.from(expressIDs as Set<number>)[0];
+  
+    // Get the model and properties of the selected element
     const model = await modelManager.waitForModel();
-    const entityAttrs = await model.getProperties(expressID);
-   
-    if (Object.keys(selection).length === 0) return;
-
+    const selectedProps = await model.getProperties(selectedExpressID);
+    const selectedType = selectedProps.type; // e.g. "IfcWall", "IfcDoor", etc.
+    if (!selectedType) return;
+  
+    // Loop through all fragments in the scene
     for (const [, fragment] of fragments.list) {
-     
-      console.log(selection, entityAttrs, fragment);
+      for (const expressID of fragment.ids) {
+        const props = await model.getProperties(expressID);
+        console.log(props, selectedType);
+  
+        // Hide the fragment if it belongs to the same IFC type
+        if (props.type === selectedType) {
+          fragment.setVisibility(false);
+        }
+      }
     }
+  };
+  
+  const onIsolateByIFCType = async ()  => {
+    const components = worldManager.getComponents();
+    if (!components) return;
+  
+    const fragments = components.get(OBC.FragmentsManager);
+    const selection = highlighter.selection.select;
+  
+    // Exit if there's no selected element
+    if (Object.keys(selection).length === 0) return;
+  
+    // Get fragment ID and express ID of the selected element
+    const [fragmentID, expressIDs] = Object.entries(selection)[0];
+    const selectedExpressID = Array.from(expressIDs as Set<number>)[0];
+  
+    // Get the model and properties of the selected element
+    const model = await modelManager.waitForModel();
+    const selectedProps = await model.getProperties(selectedExpressID);
+    const selectedType = selectedProps.type; // e.g. "IfcWall", "IfcDoor", etc.
+    if (!selectedType) return;
+  
+    // Loop through all fragments in the scene
+    for (const [, fragment] of fragments.list) {
+      for (const expressID of fragment.ids) {
+        const props = await model.getProperties(expressID);
+        console.log(props, selectedType);
+        // Hide the fragment if it belongs to the same IFC type
+        if (props.type !== selectedType) {
+          fragment.setVisibility(false);
+        }
+      }
+
+      }
+    }
+  
+  const onFocusSelection = async () => {
+    const world = worldManager.getWorld();
+    if (!world) return;
+    if (!world.camera.hasCameraControls()) return;
+    const components = worldManager.getComponents();
+    if (!components) return;
+    const bbox = components.get(OBC.BoundingBoxer);
+    const fragments = components.get(OBC.FragmentsManager);
+    bbox.reset();
+
+    const selected = highlighter.selection.select;
+    if (!Object.keys(selected).length) return;
+
+    for (const fragID in selected) {
+      const fragment = fragments.list.get(fragID);
+      if (!fragment) continue;
+      const ids = selected[fragID];
+      bbox.addMesh(fragment.mesh, ids);
+    }
+
+    const sphere = bbox.getSphere();
+    const i = Infinity;
+    const mi = -Infinity;
+    const { x, y, z } = sphere.center;
+    const isInf = sphere.radius === i || x === i || y === i || z === i;
+    const isMInf = sphere.radius === mi || x === mi || y === mi || z === mi;
+    const isZero = sphere.radius === 0;
+    if (isInf || isMInf || isZero) {
+      return;
+    }
+
+    sphere.radius *= 1.2;
+    const camera = world.camera;
+    await camera.controls.fitToSphere(sphere, true);
+  };
+
+  const onShowProperties = async () => {
+    const components = worldManager.getComponents();
+    if (!components) return;
+  
+    const fragments = components.get(OBC.FragmentsManager);
+    const selection = highlighter.selection.select;
+    const [uuid, expressIDs] = Object.entries(selection)[0];
+    const fragment = fragments.list.get(uuid);
+    if (!fragment) return;
+    const props = await modelManager.waitForModel();
+    const properties = await props.getProperties(Array.from(expressIDs as Set<number>));
+
+    console.log(properties);
 
   }
 
 
-  return { isolate, onToggleVisibility, onShowAll, onHide, onHideByCategory };
+
+
+
+  return { 
+    isolate,
+    onToggleVisibility,
+    onShowAll,
+    onHide,
+    onHideByIFCType,
+    onFocusSelection,
+    onIsolateByIFCType,
+    onShowProperties
+   };
 }

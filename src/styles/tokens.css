@@ -41,7 +41,6 @@
     --color-neutral-900: #18181b;
 
     /* Panel */
-    --color-panel-50: bg-slate-900;
 
     /* Card */
     --color-card-50: bg-slate-700;
@@ -49,4 +48,6 @@
     --color-card-200: bg-slate-900;
     --color-card-300: bg-slate-950;
     --color-card-400: bg-slate-950;
+
+
   }

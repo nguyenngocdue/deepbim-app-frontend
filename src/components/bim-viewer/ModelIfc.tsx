@@ -41,11 +41,14 @@ const ModelIfc: React.FC<ModelIfcProps> = (props) => {
   const { isWorldReady, world, components } = useInitWorld(ifcContainerRef, onModelReady);
 
   // Selection by a right click
-  const selections = useSelections({ worldRef });
+  const selections = useSelections();
   const isolate = selections?.isolate || (() => { });
   const onShowAll = selections?.onShowAll || (() => { });
   const onHide = selections?.onHide || (() => { });
-  const onHideByCategory = selections?.onHideByCategory || (() => { });
+  const onHideByIFCType = selections?.onHideByIFCType || (() => { });
+  const onFocusSelection = selections?.onFocusSelection || (() => { });
+  const onIsolateByIFCType = selections?.onIsolateByIFCType || (() => { });
+  const onShowProperties = selections?.onShowProperties || (() => { });
   const { contextMenu, setContextMenu, openContextMenu } = useContextMenu();
 
   worldRef.current = world;
@@ -100,11 +103,17 @@ const ModelIfc: React.FC<ModelIfcProps> = (props) => {
               case "hide":
                 onHide();
                 break;
-              case "hideByCategory":
-                onHideByCategory();
+              case "hideByIFCType":
+                onHideByIFCType();
                 break;
-              case "properties":
-                console.log("📋 Show properties");
+              case "focusSelection":
+                onFocusSelection();
+                break;
+              case "onIsolateByIFCType":
+                onIsolateByIFCType();
+                break;
+              case "onShowProperties":
+                onShowProperties();
                 break;
               default:
                 break;

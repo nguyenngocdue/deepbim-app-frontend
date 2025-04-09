@@ -1,4 +1,11 @@
 import React from "react";
+import { MdApps } from "react-icons/md";
+import { BiBorderInner } from "react-icons/bi";
+import { VscEyeClosed } from 'react-icons/vsc';
+import { FiMaximize } from 'react-icons/fi';
+import { AiOutlineInfoCircle } from 'react-icons/ai';
+import { GrFormViewHide } from "react-icons/gr";
+import { MdOutlineHideSource } from "react-icons/md";
 
 interface ContextMenuProps {
   x: number;
@@ -14,14 +21,15 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ x, y, onAction, onClose }) =>
       style={{ top: y, left: x }}
       onContextMenu={(e) => e.preventDefault()}
     >
-      <ul className="text-sm p-2 space-y-1 w-48 font-medium">
+      <ul className="text-sm p-2 space-y-1 w-48">
         {[
-          { label: "Show all elements", action: "showAll" },
-          { label: "Isolate", action: "isolate" },
-          { label: "Hide", action: "hide" },
-          { label: "Hide by category", action: "hideByCategory" },
-          { label: "Focus", action: "focus" },
-          { label: "Properties", action: "properties" },
+          { icon: <MdApps/>, label: "Show all elements", action: "showAll" },
+          { icon: <BiBorderInner />, label: "Isolate", action: "isolate" },
+          { icon: <GrFormViewHide/>, label: "Isolate by IFC type", action: "onIsolateByIFCType" },
+          { icon: <VscEyeClosed />, label: "Hide", action: "hide" },
+          { icon: <MdOutlineHideSource/>, label: "Hide by IFC type", action: "hideByIFCType" },
+          { icon: <FiMaximize/>, label: "Focus on selection", action: "focusSelection" },
+          { icon: <AiOutlineInfoCircle/>, label: "Properties", action: "onShowProperties" },
         ].map((item) => (
           <li
             key={item.action}
@@ -31,6 +39,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ x, y, onAction, onClose }) =>
             }}
             className="flex items-center space-x-2 px-3 py-2 rounded hover:bg-gray-100 cursor-pointer"
           >
+            {item.icon && <span className="text-lg">{item.icon}</span>}
             <span>{item.label}</span>
           </li>
         ))}
