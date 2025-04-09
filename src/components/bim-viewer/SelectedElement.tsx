@@ -3,8 +3,7 @@ import * as OBC from "@thatopen/components";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { TransformControls } from "three/examples/jsm/controls/TransformControls.js";
-import { addKeyPointsToScene } from "@/lib/PointUtils";
-import { removeBoxHelperFromScene, updateBoundingBoxByArrow } from "@/lib/BoudingBox";
+import { removeBoxHelperFromScene } from "@/lib/BoudingBox";
 import { resetModelToOriginalState } from "@/lib/ModelUtils";
 
 

@@ -105,7 +105,7 @@ const handleToggle = (groupItem: any, visible: boolean) => {
   );
 }
 
-export default function ClassificationsTreeApp() {
+export default function ClassificationsTree() {
   const [classifierData, setClassifierData] = React.useState<any>(null);
   const [fragmentsManager, setFragmentsManager] = React.useState<any>(null);
 
@@ -116,6 +116,7 @@ export default function ClassificationsTreeApp() {
     const fragments = components.get(OBC.FragmentsManager);
 
     fragments.onFragmentsLoaded.add(async (model) => {
+      console.log(model)
       await classifier.byEntity(model);
       await classifier.byPredefinedType(model);
 
@@ -123,6 +124,7 @@ export default function ClassificationsTreeApp() {
       setFragmentsManager(fragments);
     });
   }, []);
+  console.log(classifierData);
 
   return (
     <div className="w-full h-full">

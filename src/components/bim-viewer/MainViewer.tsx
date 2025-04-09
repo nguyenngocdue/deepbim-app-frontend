@@ -82,14 +82,6 @@ const MainViewer: React.FC = () => {
             <Panel defaultSize={80} className={themeClass}>
               <PanelGroup direction="horizontal" className="h-full">
                 {/* LEFT */}
-                <DataSiderBar
-                  isCollapsed={isLeftCollapsed}
-                  onCollapse={() => setIsLeftCollapsed(true)}
-                  isModelReady={isModelReady}
-                >
-                  <ClassificationsTree />
-                </DataSiderBar>
-
                 <PanelResizeHandle className={`w-1 ${themeClass} cursor-ns-resize`} />
                 {/* CENTER */}
                 <Panel defaultSize={60} minSize={30} className={themeClass}>
