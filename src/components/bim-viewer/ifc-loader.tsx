@@ -3,7 +3,7 @@ import * as OBC from "@thatopen/components";
 import * as THREE from "three";
 import LoadingSpinner from "@/components/bim-viewer/LoadingSpinner";
 import { OrbitControls } from "three/examples/jsm/Addons.js";
-import ViewCube from "./common/ViewCube";
+// import ViewCube from "./common/ViewCube";
 
 const IfcLoader: React.FC = () => {
     const gridContainerRef = useRef<HTMLDivElement | null>(null);
@@ -165,14 +165,14 @@ const IfcLoader: React.FC = () => {
 
     return (
         <div className="w-full h-full relative">
-            {isReady && cameraRef.current && rendererRef.current && controlsRef.current && modelRef.current && (
+            {/* {isReady && cameraRef.current && rendererRef.current && controlsRef.current && modelRef.current && (
                 <ViewCube
                     camera={cameraRef.current}
                     renderer={rendererRef.current}
                     controls={controlsRef.current}
                     model={modelRef.current} // Pass the model reference
                 />
-            )}
+            )} */}
             <div ref={ifcContainerRef} className="absolute inset-0" />
             {loading && (
                 <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-50 z-50">

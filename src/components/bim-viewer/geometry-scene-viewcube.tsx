@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { useViewCube } from "@/context/view-cube-context2";
-import ViewCube from "./common/ViewCube";
+// import ViewCube from "./common/ViewCube";
 
 const GeometrySceneViewCube: React.FC = () => {
   const mountRef = useRef<HTMLDivElement | null>(null);
