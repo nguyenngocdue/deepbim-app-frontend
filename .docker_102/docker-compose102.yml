@@ -5,7 +5,7 @@ services:
       dockerfile: .docker_102/Dockerfile
     container_name: frontend_container_102
     ports:
-      - "3000:3000"
+      - "3000:3003"
     networks:
       - prod_network
     restart: always
