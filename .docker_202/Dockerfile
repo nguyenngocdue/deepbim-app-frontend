@@ -14,7 +14,8 @@ RUN npm install --legacy-peer-deps
 COPY . .
 
 # Build Vite app with increased memory limit
-RUN npm run build
+RUN NODE_OPTIONS="--max-old-space-size=8192" npm run build
+
 
 # ------------------------------
 # Stage 2: Serve with Nginx
