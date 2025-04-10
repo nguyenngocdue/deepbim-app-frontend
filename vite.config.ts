@@ -27,4 +27,18 @@ export default defineConfig({
   define: {
     "import.meta.env.MODE": JSON.stringify(process.env.NODE_ENV || "development"),
   },
+  optimizeDeps: {
+    exclude: [
+      'three/examples/jsm/libs/lottie_canvas.module.js',
+      'three/examples/jsm/libs/chevrotain.module.min.js'
+    ]
+  },
+  build: {
+    rollupOptions: {
+      external: [
+        'three/examples/jsm/libs/lottie_canvas.module.js',
+        'three/examples/jsm/libs/chevrotain.module.min.js'
+      ]
+    }
+  }  
 })
