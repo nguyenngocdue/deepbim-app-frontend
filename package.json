@@ -73,7 +73,7 @@
     "styled-components": "^6.1.17",
     "tailwind-merge": "^2.5.5",
     "tailwindcss-animate": "^1.0.7",
-    "three": "^0.160.1",
+    "three": "^0.162.0",
     "three-freeform-controls": "^0.3.0",
     "three-viewport-gizmo": "^2.1.1",
     "web-ifc": "^0.0.66"
