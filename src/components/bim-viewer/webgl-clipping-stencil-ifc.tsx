@@ -5,7 +5,7 @@ import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
 import { useIfcLoader } from "@/hooks/use-ifc-loader";
 import { IfcLoader } from "@thatopen/components";
 import LoadingSpinner from "./LoadingSpinner";
-import ViewCube from "./common/ViewCube";
+// import ViewCube from "./common/ViewCube";
 
 const WebglClippingStencil: React.FC = () => {
     const initializedRef = useRef(false);
@@ -366,9 +366,9 @@ const WebglClippingStencil: React.FC = () => {
                 </button>
             </div>
 
-            {isReady && cameraRef.current && rendererRef.current && controlsRef.current && (
+            {/* {isReady && cameraRef.current && rendererRef.current && controlsRef.current && (
                 <ViewCube camera={cameraRef.current} renderer={rendererRef.current} controls={controlsRef.current} />
-            )}
+            )} */}
         </div>
     );
 };
