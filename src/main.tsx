@@ -7,7 +7,6 @@ import {
   QueryClientProvider,
 } from '@tanstack/react-query'
 import { RouterProvider, createRouter } from '@tanstack/react-router'
-import { useAuthStore } from '@/stores/authStore'
 import { handleServerError } from '@/utils/handle-server-error'
 import { toast } from '@/hooks/use-toast'
 import { FontProvider } from './context/font-context'
@@ -15,6 +14,11 @@ import { ThemeProvider } from './context/theme-context'
 import './index.css'
 import { routeTree } from './routeTree.gen'
 // Generated Routes
+import "./i18n/i18n"; // ĐẢM BẢO import đúng `i18n`
+import "./index.css"
+import "./styles/global.css";
+import "./styles/tokens.css";
+
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -57,7 +61,6 @@ const queryClient = new QueryClient({
             variant: 'destructive',
             title: 'Session expired!',
           })
-          useAuthStore.getState().auth.reset()
           const redirect = `${router.history.location.href}`
           router.navigate({ to: '/sign-in', search: { redirect } })
         }
@@ -96,7 +99,7 @@ const rootElement = document.getElementById('root')!
 if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement)
   root.render(
-    <StrictMode>
+    // <StrictMode>
       <QueryClientProvider client={queryClient}>
         <ThemeProvider defaultTheme='light' storageKey='vite-ui-theme'>
           <FontProvider>
@@ -104,6 +107,6 @@ if (!rootElement.innerHTML) {
           </FontProvider>
         </ThemeProvider>
       </QueryClientProvider>
-    </StrictMode>
+    // </StrictMode>
   )
 }

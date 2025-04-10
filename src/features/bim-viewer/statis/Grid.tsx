@@ -77,10 +77,10 @@ const Grid: React.FC = () => {
     // Tạo Button để toggle panel
     const button = BUI.Component.create<BUI.PanelSection>(() => {
       return BUI.html`
-          <bim-button class="phone-menu-toggler" icon="solar:settings-bold"
+          < class="phone-menu-toggler" icon="solar:settings-bold"
             @click="${() => {
               panel.classList.toggle("options-menu-visible");
-            }}"></bim-button>
+            }}"></>
         `;
     });
 

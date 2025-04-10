@@ -1,0 +1,489 @@
+import React, { useEffect, useRef, useState } from "react";
+import * as OBC from "@thatopen/components";
+import * as THREE from "three";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { TransformControls } from "three/examples/jsm/controls/TransformControls.js";
+import { removeBoxHelperFromScene } from "@/lib/BoudingBox";
+import { resetModelToOriginalState } from "@/lib/ModelUtils";
+
+
+declare module "three" {
+    interface BufferGeometry {
+        computeBoundsTree?: () => void;
+        disposeBoundsTree?: () => void;
+    }
+}
+
+declare module "three" {
+    interface Mesh {
+        raycast: (raycaster: THREE.Raycaster, intersects: Array<THREE.Intersection>) => void;
+    }
+}
+import { computeBoundsTree, disposeBoundsTree, acceleratedRaycast } from "three-mesh-bvh";
+
+// Gán các phương thức BVH vào prototype của BufferGeometry và Mesh
+THREE.BufferGeometry.prototype.computeBoundsTree = computeBoundsTree;
+THREE.BufferGeometry.prototype.disposeBoundsTree = disposeBoundsTree;
+THREE.Mesh.prototype.raycast = acceleratedRaycast;
+
+interface ModelIfcProps {
+    sectionActive: boolean; // Trạng thái Section Box từ component cha
+    coordinateSyssActive: boolean;
+    selectedFile: string | null; // Selected file path
+    onFileSelect: (filePath: Uint8Array | null) => void; // File selection handler
+}
+
+
+const ModelIfc: React.FC<ModelIfcProps> = ({ sectionActive, coordinateSyssActive, selectedFile, onFileSelect }) => {
+    const ifcContainerRef = useRef<HTMLDivElement | null>(null);
+    const worldRef = useRef<OBC.World | null>(null);
+    const controlsRef = useRef<OrbitControls | null>(null);
+    const transformControlsRef = useRef<TransformControls[]>([]);
+    const planesRef = useRef<THREE.Plane[]>([]);
+    const arrowsRef = useRef<THREE.ArrowHelper[]>([]);
+    const materialsRef = useRef<{ original: THREE.Material | THREE.Material[], clipping: THREE.Material }[]>([]);
+    const boxHelperRef = useRef<THREE.BoxHelper | null>(null);
+    const modelRef = useRef<THREE.Object3D | null>(null);
+    const initialPositionsRef = useRef<THREE.Vector3[]>([]);
+    const initialPlaneRef = useRef<THREE.Plane[]>([]);
+    const selectedMeshRef = useRef<THREE.Mesh | null>(null);
+
+    let globalScene: THREE.Scene | null = null;
+
+    const [isRaycastingMode, setIsRaycastingMode] = useState(false);
+
+    useEffect(() => {
+        if (selectedFile) {
+            loadIfcModel()
+        }
+    }, [selectedFile]);
+
+
+    useEffect(() => {
+        if (!ifcContainerRef.current || !worldRef.current) return;
+    
+        const handleCanvasClick = (event: MouseEvent) => {
+            if (!isRaycastingMode || !worldRef.current || !modelRef.current) return;
+    
+            const mouse = new THREE.Vector2();
+            const raycaster = new THREE.Raycaster();
+    
+            // Convert mouse position to normalized device coordinates (-1 to +1)
+            const rect = ifcContainerRef.current.getBoundingClientRect();
+            mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+            mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+    
+            // Update the raycaster with the camera and mouse position
+            raycaster.setFromCamera(mouse, worldRef.current.camera.three);
+    
+            // Ensure the model's geometry has BVH computed
+            modelRef.current.traverse((child) => {
+                if (child instanceof THREE.Mesh && child.geometry instanceof THREE.BufferGeometry) {
+                    if (!child.geometry.boundsTree) {
+                        child.geometry.computeBoundsTree(); // Tính toán BVH nếu chưa có
+                    }
+                }
+            });
+    
+            // Perform raycasting on the model's children
+            const intersects = raycaster.intersectObject(modelRef.current, true); // `true` để kiểm tra đệ quy
+    
+            if (intersects.length > 0) {
+                const intersection = intersects[0];
+                console.log(intersection)
+                selectElement(intersection.object as THREE.Mesh);
+            } else {
+                deselectElement();
+            }
+        };
+    
+        const container = ifcContainerRef.current;
+        container.addEventListener("click", handleCanvasClick);
+    
+        return () => {
+            container.removeEventListener("click", handleCanvasClick);
+        };
+    }, [sectionActive, isRaycastingMode]);
+    const selectElement = (mesh: THREE.Mesh) => {
+        if (!worldRef.current || !mesh) return;
+    
+        // Remove previous selection highlight
+        deselectElement();
+    
+        // Change the material of the selected mesh
+        const originalMaterial = mesh.material;
+        const selectedMaterial = new THREE.MeshBasicMaterial({
+            color: 0xff0000, // Màu đỏ cho phần tử được chọn
+            side: THREE.DoubleSide,
+        });
+    
+        // Store the original material
+        mesh.userData.originalMaterial = originalMaterial;
+    
+        // Apply the selected material
+        mesh.material = selectedMaterial;
+    
+        // Keep track of the selected mesh
+        selectedMeshRef.current = mesh;
+    };
+    
+    const deselectElement = () => {
+        if (!worldRef.current || !selectedMeshRef.current) return;
+    
+        // Restore the original material
+        const originalMaterial = selectedMeshRef.current?.userData.originalMaterial;
+        if (originalMaterial) {
+            selectedMeshRef.current.material = originalMaterial;
+        }
+    
+        // Reset the reference
+        selectedMeshRef.current = null;
+    };
+   
+
+
+    useEffect(() => {
+        if (!ifcContainerRef.current) return;
+        toggleSectionBox()
+    }, [sectionActive ]);
+
+
+    useEffect(() => {
+        if (!ifcContainerRef.current) return;
+
+        // Initialize components
+        const components = new OBC.Components();
+        const world = components.get(OBC.Worlds).create<
+            OBC.SimpleScene,
+            OBC.SimpleCamera,
+            OBC.SimpleRenderer
+        >();
+
+        world.scene = new OBC.SimpleScene(components);
+        world.renderer = new OBC.SimpleRenderer(components, ifcContainerRef.current);
+        world.camera = new OBC.SimpleCamera(components);
+
+        world.scene.three.background = new THREE.Color(0xcccccc);
+        world.scene.setup();
+
+        // Setup Orbit Controls
+        const controls = new OrbitControls(world.camera.three, world.renderer.three.domElement);
+        controls.enableDamping = false;
+        controls.dampingFactor = 0.1;
+        controlsRef.current = controls;
+
+
+        worldRef.current = world;
+        loadIfcModel();
+
+        const animate = () => {
+            if (!worldRef.current || !worldRef.current.renderer) return;
+
+            requestAnimationFrame(animate);
+            controls.update();
+            worldRef.current.renderer.update();
+        };
+        animate();
+
+        return () => {
+            controls.dispose();
+            transformControlsRef.current.forEach(control => control.dispose());
+            components.dispose();
+            worldRef.current = null; // Reset worldRef khi unmount
+        };
+    }, []);
+
+    const loadIfcModel = async () => {
+        if (!worldRef.current) return;
+
+        try {
+            const ifcLoader = worldRef.current.components.get(OBC.IfcLoader);
+            await ifcLoader.setup();
+            // API
+            const response = await fetch("/ifc/small.ifc");
+            // const response = await fetch("/ifc/Archicad.ifc");
+            if (!response.ok) throw new Error("Can't upload IFC");
+            const buffer = await response.arrayBuffer();
+            const model = await ifcLoader.load(new Uint8Array(buffer));
+
+            // console.log(selectedFile);
+            // const model = await ifcLoader.load(selectedFile);
+
+
+            materialsRef.current = [];
+            model.traverse((child: { isMesh: boolean; material: THREE.Material | THREE.Material[]; }) => {
+                if (!child.isMesh) return;
+
+                const originalMaterial = Array.isArray(child.material)
+                    ? child.material.map((mat: { clone: () => any; }) => mat.clone())
+                    : child.material.clone();
+                const applyClipping = (mat: THREE.Material) => {
+                    mat = mat.clone();
+                    Object.assign(mat, {
+                        clippingPlanes: planesRef.current,
+                        clipShadows: true,
+                        stencilWrite: true,
+                        stencilRef: 1,
+                        stencilZPass: THREE.ReplaceStencilOp,
+                        side: THREE.DoubleSide
+                    });
+                    return mat;
+                };
+
+                const clippingMaterial = Array.isArray(originalMaterial)
+                    ? originalMaterial.map(applyClipping)
+                    : applyClipping(originalMaterial);
+
+
+                child.material = clippingMaterial;
+
+                materialsRef.current.push({
+                    original: originalMaterial,
+                    clipping: Array.isArray(clippingMaterial) ? clippingMaterial[0] : clippingMaterial
+                });
+            });
+
+            // 2. Store the model in modelRef
+            modelRef.current = model;
+
+            // Add model to the scene
+            if (model) {
+                worldRef.current.scene.three.add(model);
+            }
+            createClippingPlanes(model);
+
+            if (boxHelperRef.current) {
+                worldRef.current!.scene.three.remove(boxHelperRef.current);
+            }
+
+
+        } catch (error) {
+            console.error("Error loading IFC:", error);
+        }
+    };
+
+    const createClippingPlanes = (model: THREE.Object3D) => {
+        if (!worldRef.current) return;
+
+        const bbox = new THREE.Box3().setFromObject(model);
+        const center = bbox.getCenter(new THREE.Vector3());
+
+        planesRef.current = [
+            new THREE.Plane(new THREE.Vector3(-1, 0, 0), bbox.max.x),   // X-
+            new THREE.Plane(new THREE.Vector3(1, 0, 0), -bbox.min.x),  // X+
+            new THREE.Plane(new THREE.Vector3(0, -1, 0), bbox.max.y),   // Y-
+            new THREE.Plane(new THREE.Vector3(0, 1, 0), -bbox.min.y),  // Y+
+            new THREE.Plane(new THREE.Vector3(0, 0, -1), bbox.max.z),   // Z-
+            new THREE.Plane(new THREE.Vector3(0, 0, 1), -bbox.min.z),  // Z+
+        ];
+
+        // Store the initial state of the planes
+        initialPlaneRef.current = planesRef.current.map(plane => {
+            return new THREE.Plane().copy(plane); // Create a deep copy of each plane
+        });
+        // addPlaneHelpersToScene(worldRef.current!, planesRef.current, false)
+        createArrowHelpers(bbox, center);
+    };
+
+    const createArrowHelpers = (bbox: THREE.Box3, center: THREE.Vector3) => {
+        if (!worldRef.current) return;
+
+        const positions = [
+            new THREE.Vector3(bbox.max.x, center.y, center.z), // X+
+            new THREE.Vector3(bbox.min.x, center.y, center.z), // X-
+            new THREE.Vector3(center.x, bbox.max.y, center.z), // Y+
+            new THREE.Vector3(center.x, bbox.min.y, center.z), // Y-
+            new THREE.Vector3(center.x, center.y, bbox.max.z), // Z+
+            new THREE.Vector3(center.x, center.y, bbox.min.z), // Z-
+        ];
+
+        // save first postions of arrows
+        initialPositionsRef.current = positions;
+
+        // Add key points to the scene
+        // const vectorOnElements = addKeyPointsToScene(worldRef.current!, positions);
+
+        const directions = [
+            new THREE.Vector3(-1, 0, 0),  // X+ (phải)
+            new THREE.Vector3(1, 0, 0),   // X- (trái)
+            new THREE.Vector3(0, -1, 0),  // Y+ (xuống)
+            new THREE.Vector3(0, 1, 0),   // Y- (lên)
+            new THREE.Vector3(0, 0, -1),  // Z+ (vào)
+            new THREE.Vector3(0, 0, 1),   // Z- (ra)
+        ];
+
+        arrowsRef.current = [];
+        transformControlsRef.current = [];
+
+        directions.forEach((dir, index) => {
+            const arrow = new THREE.ArrowHelper(dir.normalize(), positions[index], 0.5, 0xff0000);
+            arrow.visible = false; // Ban đầu ẩn tất cả mũi tên
+            arrowsRef.current.push(arrow);
+
+            const control = new TransformControls(
+                worldRef.current!.camera.three,
+                worldRef.current!.renderer.three.domElement
+            );
+            control.attach(arrow);
+            control.setMode("translate");
+            control.setSpace("local");
+            control.visible = false; // Hidden TransformControls axes
+
+            // Set default visibility of TransformControls axes
+            control.showX = false;
+            control.showY = false;
+            control.showZ = false;
+            // Check if the arrow direction is parallel to any axis of TransformControls
+            if ((dir.x === 1 || dir.x === -1) && dir.y === 0 && dir.z === 0) {
+                control.showY = true; // Show X-axis
+                control.children.forEach((child, index) => {
+                    if (child.object instanceof THREE.ArrowHelper) {
+                        // console.log(child.axis);
+                        child.visible = index % 2 === 0;
+                    }
+                });
+            }
+            if ((dir.y === 1 || dir.y === -1) && dir.x === 0 && dir.z === 0) {
+                control.showY = true; // Show Y-axis
+            }
+            if ((dir.z === 1 || dir.z === -1) && dir.x === 0 && dir.y === 0) {
+                control.showY = true; // Show Z-axis
+            }
+
+            control.addEventListener("dragging-changed", (event) => {
+                controlsRef.current!.enabled = !event.value;
+                if (event.value) {
+                    // Khi kéo, ẩn các mũi tên khác
+                    arrowsRef.current.forEach((otherArrow, otherIndex) => {
+                        if (otherIndex !== index) {
+                            otherArrow.visible = false;
+                        }
+                    });
+
+                } else {
+                    // Khi thả, hiển thị lại tất cả nếu sectionActive = true
+                    arrowsRef.current.forEach(arrow => {
+                        arrow.visible = sectionActive;
+                    });
+                }
+            });
+
+
+            control.addEventListener("objectChange", () => {
+                const arrowPosition = arrow.position.clone();
+                // Cập nhật vị trí của mũi tên
+                arrow.position.copy(arrowPosition);
+                updateClippingPlane(index);
+                // updateBoundingBoxByArrow(arrowsRef.current, planesRef.current, boxHelperRef, worldRef.current.scene.three);
+                // if (vectorOnElements) {
+                //     const newPoint = anchorVector(vectorOnElements[index], arrow.position);
+                //     vectorOnElements.forEach((vector) => {
+                //         worldRef.current?.scene.three.remove(vector);
+                //     });
+                //     const p = addKeyPointsToScene(worldRef.current!, [newPoint]);
+                // }
+
+            });
+
+            worldRef.current!.scene.three.add(arrow, control);
+            transformControlsRef.current.push(control);
+        });
+
+    };
+
+    const updateClippingPlane = (index: number) => {
+        const arrow = arrowsRef.current[index];
+        const plane = planesRef.current[index];
+
+        plane.constant = -arrow.position.dot(plane.normal); // Cập nhật constant dựa trên vị trí mũi tên
+        // console.log(`Updated plane ${index}:`, plane, ', Position:', arrow.position);
+    };
+
+
+    const updateClipping = (isActive: boolean = sectionActive) => {
+        if (!worldRef.current) return;
+        const renderer = worldRef.current.renderer.three;
+        renderer.localClippingEnabled = isActive;
+        // console.log("updateClipping", isActive)
+        if (isActive) {
+            materialsRef.current.forEach(({ clipping }) => {
+                clipping.clippingPlanes = planesRef.current;
+                clipping.needsUpdate = true;
+            });
+        } else {
+            materialsRef.current.forEach(({ clipping }) => {
+                clipping.clippingPlanes = [];
+                clipping.needsUpdate = true;
+            });
+            removeBoxHelperFromScene(worldRef.current?.scene.three)
+        }
+    };
+
+    useEffect(() => {
+        if (!worldRef.current) return;
+        if (sectionActive) {
+            // updateClipping(sectionActive);
+        } else {
+            updateClipping(false);
+        }
+    }, [sectionActive])
+
+    const toggleSectionBox = () => {
+        // If we are activating the section box (newState is true)
+        if (sectionActive) {
+
+            // Show arrows and TransformControls
+            // arrowsRef.current.forEach((arrow) => {
+            //     arrow.visible = false;
+            //     worldRef.current?.scene.three.add(arrow);
+            // });
+
+            // transformControlsRef.current.forEach((control) => {
+            //     control.visible = false;
+            //     worldRef.current?.scene.three.add(control);
+            // });
+
+            // Add BoxHelper for the model (if it exists)
+            // if (modelRef.current) {
+            //     boxHelperRef.current = new THREE.BoxHelper(modelRef.current, 0xff0000);
+            //     worldRef.current?.scene.three.add(boxHelperRef.current)
+            // }
+
+            // Enable raycasting mode when section box is deactivated
+            setIsRaycastingMode(true);
+
+        } else {
+            // If we are deactivating the section box (newState is false), hide arrows and controls
+            arrowsRef.current.forEach((arrow) => {
+                worldRef.current?.scene.three.remove(arrow);
+            });
+
+            transformControlsRef.current.forEach((control) => {
+                control.visible = false;
+                worldRef.current?.scene.three.remove(control);
+            });
+            // Reset model
+            if (modelRef.current) {
+                resetModelToOriginalState(
+                    modelRef.current,
+                    materialsRef,
+                    planesRef,
+                    initialPlaneRef,
+                    arrowsRef,
+                    initialPositionsRef
+                )
+            }
+            // Turn off clipping planes
+            updateClipping(false);
+        }
+        return sectionActive;
+    };
+
+    return (
+        <div className="relative w-screen h-screen">
+            <div ref={ifcContainerRef} className="w-full h-full" />
+        </div>
+    );
+};
+
+export default ModelIfc;

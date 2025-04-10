@@ -1,0 +1,16 @@
+services:
+  frontend:
+    build:
+      context: ..
+      dockerfile: .docker_202/Dockerfile
+    container_name: frontend_container_202
+    ports:
+      - "3003:3003"
+    networks:
+      - beta_network
+    restart: always
+
+networks:
+  beta_network:
+    name: beta_network
+    external: true

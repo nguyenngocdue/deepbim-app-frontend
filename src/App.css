@@ -8,3 +8,11 @@ body,
   height: 100%;
   position: relative;
 }
+
+.selectBox {
+  border: 1px dashed #2196f3;
+  background-color: rgba(33, 150, 243, 0.1);
+  position: absolute;
+  z-index: 1000;
+  pointer-events: none;
+}

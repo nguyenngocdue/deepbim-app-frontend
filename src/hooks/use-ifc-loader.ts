@@ -5,6 +5,7 @@ export function useIfcLoader() {
     const ifcContainerRef = useRef<HTMLDivElement | null>(null);
     const ifcWorldRef = useRef<OBC.World | null>(null);
     const [loading, setLoading] = useState(false);
+    const [model, setModel] = useState<OBC.FragmentsGroup | null>(null);
 
     const loadIfc = useCallback(async (buffer?: Uint8Array) => {
         if (!ifcContainerRef.current) return;
@@ -39,11 +40,14 @@ export function useIfcLoader() {
         model.scale.set(1, 1, 1);
         model.visible = true;
 
+        
+        setModel(model);
+
         ifcWorld.scene.three.add(model);
         ifcWorld.renderer.update();
         ifcWorldRef.current = ifcWorld;
 
         setLoading(false);
     }, []);
-    return { ifcContainerRef, loadIfc, loading, ifcWorldRef };
+    return { ifcContainerRef, loadIfc, loading, ifcWorldRef, model  };
 }

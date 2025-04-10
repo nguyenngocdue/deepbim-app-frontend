@@ -1,0 +1,16 @@
+services:
+  frontend:
+    build:
+      context: ..
+      dockerfile: .docker_prod/Dockerfile
+    container_name: frontend_container_102
+    ports:
+      - "3000:3000"
+    networks:
+      - prod_network
+    restart: always
+
+networks:
+  prod_network:
+    name: prod_network
+    external: true

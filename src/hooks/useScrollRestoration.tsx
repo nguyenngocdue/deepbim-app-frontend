@@ -1,0 +1,23 @@
+import { useEffect } from "react";
+
+const useScrollRestoration = () => {
+  useEffect(() => {
+    // Restore scroll position on page load
+    const savedPosition = sessionStorage.getItem("scrollPosition");
+    if (savedPosition) {
+      window.scrollTo(0, parseInt(savedPosition, 10));
+    }
+
+    // Save scroll position before reload
+    const handleScroll = () => {
+      sessionStorage.setItem("scrollPosition", window.scrollY.toString());
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+};
+
+export default useScrollRestoration;

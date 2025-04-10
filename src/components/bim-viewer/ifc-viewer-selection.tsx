@@ -1,8 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
-import * as OBC from "@thatopen/components";
 import * as THREE from "three";
-import LoadingSpinner from "@/components/bim-viewer/loading-spinner";
-import { useIfcSelection } from "@/hooks/use-ifc-selection";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { ViewportGizmo } from "three-viewport-gizmo";
 
 const IfcViewerSelection: React.FC = () => {
     const gridContainerRef = useRef<HTMLDivElement | null>(null);
@@ -117,7 +115,7 @@ const IfcViewerSelection: React.FC = () => {
 
             <div className="absolute top-4 left-4 bg-white p-2 rounded shadow-lg z-20">
                 <input type="file" ref={fileInputRef} accept=".ifc" onChange={handleFileChange} className="hidden" />
-                <button className="bim-button" onClick={() => fileInputRef.current?.click()}>Upload IFC</button>
+                <button className="" onClick={() => fileInputRef.current?.click()}>Upload IFC</button>
             </div>
 
             {selectedElement && (
