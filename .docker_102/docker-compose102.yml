@@ -2,7 +2,7 @@ services:
   frontend:
     build:
       context: ..
-      dockerfile: .docker_prod/Dockerfile
+      dockerfile: .docker_102/Dockerfile
     container_name: frontend_container_102
     ports:
       - "3000:3000"

@@ -23,7 +23,7 @@ RUN NODE_OPTIONS="--max-old-space-size=8192" npm run build
 FROM nginx:alpine AS production
 
 # Copy nginx config (remember: context is `..`)
-COPY .docker_202/nginx.conf /etc/nginx/conf.d/default.conf
+COPY .docker_102/nginx.conf /etc/nginx/conf.d/default.conf
 
 # Copy built app from previous stage
 COPY --from=build /usr/src/app/dist /usr/share/nginx/html
