@@ -134,14 +134,14 @@ const GeometrySceneViewCube: React.FC = () => {
   
 
   return <div ref={mountRef} className="relative bg-gray-900 z-10">
-          {isReady && cameraRef.current && rendererRef.current && controlsRef.current && (
+          {/* {isReady && cameraRef.current && rendererRef.current && controlsRef.current && (
           <ViewCube 
             camera={cameraRef.current}
             renderer={rendererRef.current}
             controls={controlsRef.current}
             model={modelRef.current} // Pass the model reference
           />
-        )}
+        )} */}
   </div>;
 };
 
