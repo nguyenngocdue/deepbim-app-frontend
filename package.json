@@ -73,9 +73,8 @@
     "styled-components": "^6.1.17",
     "tailwind-merge": "^2.5.5",
     "tailwindcss-animate": "^1.0.7",
-    "three": "^0.162.0",
+    "three": "^0.160.1",
     "three-freeform-controls": "^0.3.0",
-    "three-viewport-gizmo": "^2.1.1",
     "web-ifc": "^0.0.66"
   },
   "devDependencies": {
@@ -102,6 +101,7 @@
     "postcss": "^8.4.49",
     "prettier": "^3.4.2",
     "prettier-plugin-tailwindcss": "^0.6.9",
+    "rollup-plugin-ignore": "^1.0.10",
     "tailwindcss": "^3.4.16",
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.17.0",

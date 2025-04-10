@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 import { TanStackRouterVite } from '@tanstack/router-plugin/vite'
+import ignore from 'rollup-plugin-ignore';
 
 import path from 'path';
 
@@ -11,7 +12,16 @@ export default defineConfig({
     port: 3003,      // Thay đổi port mặc định từ 5173 sang 3003 (hoặc port bạn muốn)
     strictPort: true, // Nếu port đã được sử dụng, Vite sẽ báo lỗi thay vì tự chọn port khác
   },
-  plugins: [react({}), TanStackRouterVite()],
+  plugins: [react({}), TanStackRouterVite(), 
+    {
+      ...ignore([
+        'three/examples/jsm/libs/lottie_canvas.module.js',
+        'three/examples/jsm/libs/chevrotain.module.min.js'
+      ]),
+      enforce: 'pre',
+      apply: 'build',
+    }
+  ],
   worker: {
     format: "es", // Đảm bảo worker dùng ES Module
   },
@@ -27,18 +37,5 @@ export default defineConfig({
   define: {
     "import.meta.env.MODE": JSON.stringify(process.env.NODE_ENV || "development"),
   },
-  optimizeDeps: {
-    exclude: [
-      'three/examples/jsm/libs/lottie_canvas.module.js',
-      'three/examples/jsm/libs/chevrotain.module.min.js'
-    ]
-  },
-  build: {
-    rollupOptions: {
-      external: [
-        'three/examples/jsm/libs/lottie_canvas.module.js',
-        'three/examples/jsm/libs/chevrotain.module.min.js'
-      ]
-    }
-  }  
+  
 })
