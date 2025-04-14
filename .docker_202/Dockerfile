@@ -14,7 +14,7 @@ RUN npm install --legacy-peer-deps
 COPY . .
 
 # 🧠 Giới hạn bộ nhớ Node.js để tránh lỗi "heap out of memory"
-RUN NODE_OPTIONS="--max-old-space-size=3072" npm run build
+# RUN NODE_OPTIONS="--max-old-space-size=3072" npm run build
 
 # Build Vite app with increased memory limit
 RUN  npm run build
