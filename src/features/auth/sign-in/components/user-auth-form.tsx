@@ -16,6 +16,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { PasswordInput } from '@/components/password-input'
+import { FaGoogle } from 'react-icons/fa'
 
 type UserAuthFormProps = HTMLAttributes<HTMLDivElement>
 
@@ -47,9 +48,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
 
   function onSubmit(data: z.infer<typeof formSchema>) {
     setIsLoading(true)
-    // eslint-disable-next-line no-console
     console.log(data)
-
     setTimeout(() => {
       setIsLoading(false)
     }, 3000)
@@ -124,8 +123,19 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                 type='button'
                 disabled={isLoading}
               >
-                <IconBrandFacebook className='h-4 w-4' /> Facebook
+                <FaGoogle className='h-4 w-4' /> Google
               </Button>
+            </div>
+
+            {/* Sign up redirect */}
+            <div className="mt-4 text-center text-sm text-muted-foreground">
+              Don't have an account?{' '}
+              <Link
+                to="/sign-up"
+                className="font-medium text-primary hover:underline"
+              >
+                Sign up
+              </Link>
             </div>
           </div>
         </form>
