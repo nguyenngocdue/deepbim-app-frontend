@@ -4,6 +4,8 @@ services:
       context: ..
       dockerfile: .docker_202/Dockerfile
     container_name: frontend_container_202
+    volumes:
+      - ../src:/usr/src/app/src 
     ports:
       - "3003:3003"
     networks:
