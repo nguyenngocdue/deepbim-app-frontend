@@ -2,7 +2,7 @@ import { HTMLAttributes, useState } from 'react'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { IconBrandFacebook, IconBrandGithub } from '@tabler/icons-react'
+import { IconBrandGithub } from '@tabler/icons-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import {
@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { PasswordInput } from '@/components/password-input'
+import { FaGoogle } from "react-icons/fa";
 
 type SignUpFormProps = HTMLAttributes<HTMLDivElement>
 
@@ -135,7 +136,7 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
                 type='button'
                 disabled={isLoading}
               >
-                <IconBrandFacebook className='h-4 w-4' /> Facebook
+                <FaGoogle className='h-4 w-4' /> Google
               </Button>
             </div>
           </div>
