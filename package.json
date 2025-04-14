@@ -46,7 +46,7 @@
     "@thatopen/ui": "^2.4.2",
     "@thatopen/ui-obc": "^2.4.1",
     "@types/d3": "^7.4.3",
-    "axios": "^1.7.9",
+    "axios": "^1.8.4",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "1.0.4",

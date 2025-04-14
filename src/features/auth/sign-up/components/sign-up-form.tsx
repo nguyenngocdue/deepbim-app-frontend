@@ -2,7 +2,11 @@ import { HTMLAttributes, useState } from 'react'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import axios from 'axios'
+
 import { IconBrandGithub } from '@tabler/icons-react'
+import { FaGoogle } from 'react-icons/fa'
+
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import {
@@ -15,11 +19,11 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { PasswordInput } from '@/components/password-input'
-import { FaGoogle } from "react-icons/fa";
+import { useNavigate } from '@tanstack/react-router'
 
 type SignUpFormProps = HTMLAttributes<HTMLDivElement>
 
-// ✅ Updated Schema: Added `username`
+// ✅ Zod schema with validation
 const formSchema = z
   .object({
     username: z
@@ -43,6 +47,7 @@ const formSchema = z
 
 export function SignUpForm({ className, ...props }: SignUpFormProps) {
   const [isLoading, setIsLoading] = useState(false)
+  const navigate = useNavigate()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -54,13 +59,36 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
     },
   })
 
-  function onSubmit(data: z.infer<typeof formSchema>) {
+  async function onSubmit(data: z.infer<typeof formSchema>) {
     setIsLoading(true)
-    console.log(data)
 
-    setTimeout(() => {
+    try {
+      const payload = new URLSearchParams({
+        email: data.email,
+        username: data.username,
+        password: data.password,
+      })
+
+      const response = await axios.post(
+        'https://api.deepbim.net/users/create',
+        payload,
+        {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+        }
+      )
+
+      console.log('User created ✅:', response.data)
+
+      // 🔁 Redirect to sign-in page after successful signup
+      navigate({ to: '/sign-in' })
+    } catch (error: any) {
+      console.error('User creation error ❌:', error.response?.data || error.message)
+      alert('Signup failed! Please try again.')
+    } finally {
       setIsLoading(false)
-    }, 3000)
+    }
   }
 
   return (
@@ -69,7 +97,7 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className='grid gap-2'>
 
-            {/* ✅ Username Field */}
+            {/* Username */}
             <FormField
               control={form.control}
               name='username'
@@ -84,6 +112,7 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
               )}
             />
 
+            {/* Email */}
             <FormField
               control={form.control}
               name='email'
@@ -98,6 +127,7 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
               )}
             />
 
+            {/* Password */}
             <FormField
               control={form.control}
               name='password'
@@ -112,6 +142,7 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
               )}
             />
 
+            {/* Confirm Password */}
             <FormField
               control={form.control}
               name='confirmPassword'
@@ -127,9 +158,10 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
             />
 
             <Button className='mt-2' disabled={isLoading}>
-              Create Account
+              {isLoading ? 'Creating...' : 'Create Account'}
             </Button>
 
+            {/* Social login */}
             <div className='relative my-2'>
               <div className='absolute inset-0 flex items-center'>
                 <span className='w-full border-t' />
