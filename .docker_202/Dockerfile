@@ -13,9 +13,15 @@
     # Copy source code
     COPY . .
     
+
     # 🧠 Set heap limit to prevent memory crash
     ENV NODE_OPTIONS="--max-old-space-size=4096"
-    RUN npm run build
+
+    # Step 4: specify build mode (beta/prod)
+    ARG VITE_MODE=beta
+    ENV VITE_MODE=$VITE_MODE
+
+    RUN npm run build -- --mode $VITE_MODE
     
     # ------------------------------
     # Stage 2: Serve with Nginx
