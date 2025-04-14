@@ -20,6 +20,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { PasswordInput } from '@/components/password-input'
 import { useNavigate } from '@tanstack/react-router'
+import api from '@/lib/AxiosInstance'
 
 type SignUpFormProps = HTMLAttributes<HTMLDivElement>
 
@@ -61,7 +62,6 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
     setIsLoading(true)
-
     try {
       const payload = new URLSearchParams({
         email: data.email,
@@ -69,16 +69,11 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
         password: data.password,
       })
 
-      const response = await axios.post(
-        'https://api.deepbim.net/users/create',
+      const response = await api.post(
+        '/users/create',
         payload,
-        {
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-        }
+        
       )
-
       console.log('User created ✅:', response.data)
 
       // 🔁 Redirect to sign-in page after successful signup
