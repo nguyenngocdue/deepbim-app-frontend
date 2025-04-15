@@ -29,7 +29,7 @@
     FROM nginx:alpine AS production
     
     # Copy nginx config
-    COPY .docker_102/nginx.conf /etc/nginx/conf.d/default.conf
+    COPY .docker_202/nginx.conf /etc/nginx/conf.d/default.conf
     
     # Copy built app from previous stage
     COPY --from=build /usr/src/app/dist /usr/share/nginx/html

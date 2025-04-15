@@ -1,19 +1,42 @@
-FROM node:20 AS build
-WORKDIR /app
-COPY package.json package-lock.json ./
-RUN npm install
-COPY . .
+# ------------------------------
+# Stage 1: Build Vite App
+# ------------------------------
+    FROM node:20 AS build
+    WORKDIR /usr/src/app
+    
+    # Copy only dependency files first for layer cache
+    COPY package.json package-lock.json ./
+    
+    # Install deps with compatibility for legacy
+    RUN npm install --legacy-peer-deps
+    
+    # Copy source code
+    COPY . .
+    
 
-# Step 4: specify build mode (beta/prod)
-ARG VITE_MODE=production
-ENV VITE_MODE=$VITE_MODE
+    # 🧠 Set heap limit to prevent memory crash
+    ENV NODE_OPTIONS="--max-old-space-size=4096"
 
-# Step 6: build Vite app with the correct mode
-RUN npm run build -- --mode $VITE_MODE
+    # Step 4: specify build mode (beta/prod)
+    ARG VITE_MODE=beta
+    ENV VITE_MODE=$VITE_MODE
 
-FROM node:20-alpine
-RUN npm install -g serve
-WORKDIR /app
-COPY --from=build /app/dist .
-EXPOSE 3003
-CMD ["serve", "-s", ".", "-l", "3000"]
+    RUN npm run build -- --mode $VITE_MODE
+    
+    # ------------------------------
+    # Stage 2: Serve with Nginx
+    # ------------------------------
+    FROM nginx:alpine AS production
+    
+    # Copy nginx config
+    COPY .docker_102/nginx.conf /etc/nginx/conf.d/default.conf
+    
+    # Copy built app from previous stage
+    COPY --from=build /usr/src/app/dist /usr/share/nginx/html
+    
+    # Expose the port
+    EXPOSE 3003
+    
+    # Start Nginx
+    CMD ["nginx", "-g", "daemon off;"]
+    
