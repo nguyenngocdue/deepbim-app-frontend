@@ -6,10 +6,10 @@ import { SignUpForm } from './components/sign-up-form'
 export default function SignUp() {
   return (
     <AuthLayout>
-      <Card className='p-6 bg-green-600'>
+      <Card className='p-6'>
         <div className='mb-2 flex flex-col space-y-2 text-left'>
           <h1 className='text-lg font-semibold tracking-tight'>
-            Create an accounttttttttttttt
+            Create an account
           </h1>
           <p className='text-sm text-muted-foreground'>
             Enter your email and password to create an account. <br />
