@@ -18,7 +18,7 @@
     ENV NODE_OPTIONS="--max-old-space-size=4096"
 
     # Step 4: specify build mode (beta/prod)
-    ARG VITE_MODE=beta
+    ARG VITE_MODE=production
     ENV VITE_MODE=$VITE_MODE
 
     RUN npm run build -- --mode $VITE_MODE
