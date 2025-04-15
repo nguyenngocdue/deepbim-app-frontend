@@ -1,7 +1,11 @@
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/context/LanguageContext";
+import { ProfileDropdown } from "@/components/ProfileDropdown";
+
+
 
 const Header = () => {
+  
   const { t } = useTranslation();
   const { language, toggleLanguage } = useLanguage(); // Nhận giá trị từ context
   return (
@@ -34,6 +38,7 @@ const Header = () => {
           >
             {language.toUpperCase()}
           </button>
+          <ProfileDropdown/>
         </div>
       </div>
     </header>

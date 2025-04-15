@@ -3,6 +3,8 @@
 :root {
     /* logo */
     --color-logo-50: #22c55e;
+    --color-logo-100: bg-green-100;
+    --color-logo-150: bg-green-150;
     
     /* Primary Colors */
     --color-primary-50: #f3e8ff;

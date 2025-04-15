@@ -93,7 +93,9 @@ export default {
 					900: 'var(--color-secondary-900)',
 				},
 				logo: {
-					50: 'var(--color-logo-50)'
+					50: 'var(--color-logo-50)',
+					100: 'var(--color-logo-100)',
+					150: 'var(--color-logo-150)',
 				},
 
 				// Neutral Colors
