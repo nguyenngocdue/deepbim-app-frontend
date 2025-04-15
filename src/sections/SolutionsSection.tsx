@@ -25,7 +25,7 @@ const SolutionsSection = () => {
   ];
 
   return (
-    <section className="px-6 md:px-10 py-20 bg-gray-100 text-center relative overflow-hidden">
+    <section className="px-6 md:px-10 py-20 text-center  relative overflow-hidden">
       {/* Background Gradient */}
       <h2 className="text-4xl font-extrabold text-gray-800">{t("solutions.title")}</h2>
       <p className="mt-4 text-gray-600 max-w-xl mx-auto">{t("solutions.description")}</p>

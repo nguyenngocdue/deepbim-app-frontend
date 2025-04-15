@@ -1,4 +1,3 @@
-
 // Interface định nghĩa response từ API xác thực (auth)
 interface AuthResponse {
   access_token: string;          // JWT token dùng để truy cập các API bảo vệ
@@ -128,4 +127,27 @@ export async function fetchUserProfile(): Promise<UserProfile> {
   return fetchWithAuth(`${import.meta.env.VITE_API_BASE_URL}/users/${currentUser.id}`, {
     method: 'GET',
   });
+}
+
+export async function handleSignout(): Promise<void> {
+  try {
+    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/auth/signout`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+      },
+    });
+
+    const result = await response.json();
+    if (response.ok) {
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('refresh_token');
+    } else {
+      throw new Error(result.message || 'Signout failed');
+    }
+  } catch (error) {
+    console.error('Signout error:', error);
+    throw error; // Ném lỗi để component có thể xử lý
+  }
 }

@@ -3,12 +3,13 @@ import { UserAuthForm } from './components/user-auth-form'
 
 export default function SignIn2() {
   return (
-    <div className='container relative grid h-svh flex-col items-center justify-center lg:max-w-none lg:grid-cols-2 lg:px-0'>
+    <div className='container relative grid h-svh flex-col items-center justify-center lg:max-w-none lg:grid-cols-2 lg:px-0 bg-page-50 '>
       <div className='relative hidden h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex'>
-        <div className="absolute inset-0 bg-gradient-to-br from-emerald-500 via-emerald-200 to-green-500" />
+        {/* Thay đổi gradient từ emerald sang blue/indigo */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#334155]" />
         <div className='relative z-20 flex items-center text-lg font-medium'>
-          <img src='logo/logo.png' alt='Logo' className='mr-2 h-8 w-8' />
-          Deep Bim
+          <img src='logo/logo.png' alt='Logo' className='mr-2 h-8 w-8 ' />
+          <span className='px-2 text-white'>Deep Bim</span>
         </div>
         <img
           src={ViteLogo}
@@ -31,13 +32,6 @@ export default function SignIn2() {
       </div>
       <div className='lg:p-8'>
         <div className='mx-auto flex w-full flex-col justify-center space-y-2 sm:w-[350px]'>
-          <div className='flex flex-col space-y-2 text-left'>
-            <h1 className='text-2xl font-semibold tracking-tight'>Login</h1>
-            <p className='text-sm text-muted-foreground'>
-              Enter your email and password below <br />
-              to log into your account
-            </p>
-          </div>
           <UserAuthForm />
           <p className='px-8 text-center text-sm text-muted-foreground'>
             By clicking login, you agree to our{' '}

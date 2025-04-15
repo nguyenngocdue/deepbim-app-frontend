@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/context/LanguageContext";
+import { ProfileDropdown } from "@/components/ProfileDropdown";
 
 const Header = () => {
   const { t } = useTranslation();
@@ -34,6 +35,7 @@ const Header = () => {
           >
             {language.toUpperCase()}
           </button>
+          <ProfileDropdown/>
         </div>
       </div>
     </header>

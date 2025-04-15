@@ -23,7 +23,6 @@ import api from '@/lib/AxiosInstance'
 
 type SignUpFormProps = HTMLAttributes<HTMLDivElement>
 
-// ✅ Zod schema with validation
 const formSchema = z
   .object({
     username: z
@@ -68,39 +67,58 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
         password: data.password,
       })
 
-      const response = await api.post(
-        '/users/create',
-        payload,
-        
-      )
-
+      const response = await api.post('/users/create', payload)
       console.log('User created ✅:', response.data)
-
-      // 🔁 Redirect to sign-in page after successful signup
       navigate({ to: '/sign-in' })
     } catch (error: any) {
-      console.error('User creation error ❌:', error.response?.data || error.message)
-      alert('Signup failed! Please try again.')
+      const message = error.response?.data?.message
+      const apiErrors = error.response?.data?.errors
+
+      if (apiErrors && typeof apiErrors === 'object') {
+        for (const key in apiErrors) {
+          if (form.getValues().hasOwnProperty(key)) {
+            form.setError(key as typeof formSchema.shape, {
+              message: apiErrors[key],
+            })
+          }
+        }
+      } else if (message) {
+        if (message.toLowerCase().includes('email')) {
+          form.setError('email', { message })
+        } else if (message.toLowerCase().includes('username')) {
+          form.setError('username', { message })
+        } else if (message.toLowerCase().includes('password')) {
+          form.setError('password', { message })
+        } else {
+          form.setError('confirmPassword', { message })
+        }
+      } else {
+        alert('Signup failed! Please try again.')
+      }
     } finally {
       setIsLoading(false)
     }
   }
 
   return (
-    <div className={cn('grid gap-6', className)} {...props}>
+    <div className={cn('grid gap-6 text-slate-300', className)} {...props}>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className='grid gap-2'>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="text-left">
+          <div className='grid gap-4'>
 
             {/* Username */}
             <FormField
               control={form.control}
               name='username'
               render={({ field }) => (
-                <FormItem className='space-y-1'>
-                  <FormLabel>Username</FormLabel>
+                <FormItem className='text-left'>
+                  <FormLabel className='text-sm text-left'>Username</FormLabel>
                   <FormControl>
-                    <Input placeholder='username' {...field} />
+                    <Input
+                      placeholder='username'
+                      className='bg-[#161B22] border border-slate-600 text-slate-100 focus-visible:ring-indigo-500'
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -112,10 +130,14 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
               control={form.control}
               name='email'
               render={({ field }) => (
-                <FormItem className='space-y-1'>
-                  <FormLabel>Email</FormLabel>
+                <FormItem className='text-left'>
+                  <FormLabel className='text-sm text-left'>Email</FormLabel>
                   <FormControl>
-                    <Input placeholder='name@example.com' {...field} />
+                    <Input
+                      placeholder='name@example.com'
+                      className='bg-[#161B22] border border-slate-600 text-slate-100 focus-visible:ring-indigo-500'
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -127,10 +149,14 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
               control={form.control}
               name='password'
               render={({ field }) => (
-                <FormItem className='space-y-1'>
-                  <FormLabel>Password</FormLabel>
+                <FormItem className='text-left'>
+                  <FormLabel className='text-sm text-left'>Password</FormLabel>
                   <FormControl>
-                    <PasswordInput placeholder='********' {...field} />
+                    <PasswordInput
+                      placeholder='********'
+                      className='bg-[#161B22] border border-slate-600 text-slate-100 focus-visible:ring-indigo-500'
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -142,36 +168,44 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
               control={form.control}
               name='confirmPassword'
               render={({ field }) => (
-                <FormItem className='space-y-1'>
-                  <FormLabel>Confirm Password</FormLabel>
+                <FormItem className='text-left'>
+                  <FormLabel className='text-sm text-left'>Confirm Password</FormLabel>
                   <FormControl>
-                    <PasswordInput placeholder='********' {...field} />
+                    <PasswordInput
+                      placeholder='********'
+                      className='bg-[#161B22] border border-slate-600 text-slate-100 focus-visible:ring-indigo-500'
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
 
-            <Button className='mt-2' disabled={isLoading}>
+            <Button
+              className='mt-2 w-full bg-gradient-to-r from-indigo-500 to-blue-500 text-white hover:opacity-90'
+              disabled={isLoading}
+            >
               {isLoading ? 'Creating...' : 'Create Account'}
             </Button>
 
-            {/* Social login */}
-            <div className='relative my-2'>
+            {/* Social login divider */}
+            <div className='relative my-4'>
               <div className='absolute inset-0 flex items-center'>
-                <span className='w-full border-t' />
+                <span className='w-full border-t border-slate-700' />
               </div>
               <div className='relative flex justify-center text-xs uppercase'>
-                <span className='bg-background px-2 text-muted-foreground'>
-                  Or continue with
+                <span className='bg-[#0d1117] px-2 text-slate-500'>
+                  OR CONTINUE WITH
                 </span>
               </div>
             </div>
 
+            {/* Social Buttons */}
             <div className='flex items-center gap-2'>
               <Button
                 variant='outline'
-                className='w-full'
+                className='w-full border-slate-600 bg-[#161B22] text-slate-100 hover:bg-slate-800'
                 type='button'
                 disabled={isLoading}
               >
@@ -179,7 +213,7 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
               </Button>
               <Button
                 variant='outline'
-                className='w-full'
+                className='w-full border-slate-600 bg-[#161B22] text-slate-100 hover:bg-slate-800'
                 type='button'
                 disabled={isLoading}
               >

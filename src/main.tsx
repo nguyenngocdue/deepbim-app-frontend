@@ -17,6 +17,8 @@ import "./i18n/i18n"; // ĐẢM BẢO import đúng `i18n`
 import "./index.css"
 import "./styles/global.css";
 import "./styles/tokens.css";
+import { Provider } from 'react-redux';
+import { store } from './store';
 
 console.log("VITE_API_BASE_URL from main",import.meta.env.VITE_API_BASE_URL)
 
@@ -101,6 +103,7 @@ if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement)
   root.render(
     // <StrictMode>
+    <Provider store={store}>
       <QueryClientProvider client={queryClient}>
         <ThemeProvider defaultTheme='light' storageKey='vite-ui-theme'>
           <FontProvider>
@@ -108,6 +111,7 @@ if (!rootElement.innerHTML) {
           </FontProvider>
         </ThemeProvider>
       </QueryClientProvider>
+    </Provider>
     // </StrictMode>
   )
 }

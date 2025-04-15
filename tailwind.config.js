@@ -16,6 +16,7 @@ export default {
 			}
 		},
 		extend: {
+			
 			animation: {
 				"spin-slow": "spin 4s linear infinite",
 				"spin-medium": "spin 2s linear infinite",
@@ -93,7 +94,9 @@ export default {
 					900: 'var(--color-secondary-900)',
 				},
 				logo: {
-					50: 'var(--color-logo-50)'
+					50: 'var(--color-logo-50)',
+					100: 'var(--color-logo-100)',
+					150: 'var(--color-logo-150)',
 				},
 
 				// Neutral Colors
@@ -147,7 +150,9 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-
+				page:{
+					50: 'var(--color-bg-50)',
+				},
 			},
 			keyframes: {
 				'spinSlow': {
