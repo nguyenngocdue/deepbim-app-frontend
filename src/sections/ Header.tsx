@@ -5,6 +5,7 @@ import { ProfileDropdown } from "@/components/ProfileDropdown";
 import { Button } from "@/components/ui/button";
 import { CiDark, CiLight } from "react-icons/ci";
 import { MdDarkMode, MdOutlineDarkMode } from "react-icons/md";
+import { Separator } from "@/components/ui/separator";
 
 const Header = () => {
   const { t } = useTranslation();
@@ -36,8 +37,8 @@ const Header = () => {
         </div>
 
         {/* Navigation + Language/Theme Switcher */}
-        <div className="flex items-center gap-6">
-          <nav className="hidden md:flex gap-6">
+        <div className="flex items-center gap-4">
+          <nav className="hidden md:flex gap-4">
             <a
               className={`text-sm font-medium hover:${
                 theme === "dark" ? "text-green-400" : "text-secondary-700"
@@ -67,11 +68,12 @@ const Header = () => {
               {t("navbar.contact")}
             </a>
           </nav>
+          <Separator orientation="vertical" className="bg-zinc-500 h-4" />
           {/* Language Switcher */}
           <Button
             variant='ghost'
             onClick={toggleLanguage}
-            className="text-sm px-2  transition icon-text-color"
+            className="text-sm px-1 transition icon-text-color"
           >
             {language.toUpperCase()}
           </Button>
@@ -80,7 +82,7 @@ const Header = () => {
           <Button
             variant='ghost'
             onClick={toggleTheme}
-            className="text-sm px-2  transition icon-text-color"
+            className="text-sm px-1  transition icon-text-color"
           >
             {theme === "light" ? <CiLight /> : <MdOutlineDarkMode />}
           </Button>
