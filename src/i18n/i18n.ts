@@ -6,10 +6,10 @@ const resources = {
   en: {
     translation: {
       navbar: {
-        connect: "Connection",
+        connect: "Connectors",
         features: "Features",
         how_it_works: "How it works",
-        contact: "Contact",
+        contact: "Contact Us",
         start: "Get Started",
         auth:"Sign In",
       },

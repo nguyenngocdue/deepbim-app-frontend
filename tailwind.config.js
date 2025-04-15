@@ -5,7 +5,7 @@ import { fonts } from './src/config/fonts'
 /** @type {import('tailwindcss').Config} */
 export default {
 	darkMode: ['class'],
-	content: ['./index.html', './src/**/*.{ts,tsx,js,jsx}'],
+	content: ['./public/index.html', './src/**/*.{ts,tsx,js,jsx}'],
 	safelist: fonts.map((font) => `font-${font}`),
 	theme: {
 		container: {

@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/context/LanguageContext";
 import { ProfileDropdown } from "@/components/ProfileDropdown";
+import { Button } from "@/components/ui/button";
 
 const Header = () => {
   const { t } = useTranslation();
@@ -17,24 +18,24 @@ const Header = () => {
         {/* Navigation + Language Switcher */}
         <div className="flex items-center gap-6">
           <nav className="hidden md:flex gap-6">
-            <a className="hover:text-green-600 transition">{t("navbar.connect")}</a>
-            <a className="hover:text-green-600 transition">{t("navbar.features")}</a>
-            <a className="hover:text-green-600 transition">{t("navbar.how_it_works")}</a>
-            <a className="hover:text-green-600 transition">{t("navbar.contact")}</a>
+            <a className="text-sm font-medium hover:text-secondary-700 cursor-pointer transition-colors hidden md:block">{t("navbar.connect")}</a>
+            <a className="text-sm font-medium hover:text-secondary-700 cursor-pointer transition-colors hidden md:block">{t("navbar.features")}</a>
+            <a className="text-sm font-medium hover:text-secondary-700 cursor-pointer transition-colors hidden md:block">{t("navbar.how_it_works")}</a>
+            <a className="text-sm font-medium hover:text-secondary-700 cursor-pointer transition-colors hidden md:block">{t("navbar.contact")}</a>
           </nav>
 
           {/* Bắt đầu Button */}
-          <button className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition">
+          <Button className="px-4 text-neutral-800 bg-green-600 text-white rounded hover:bg-green-700 transition">
             {t("navbar.start")}
-          </button>
+          </Button>
 
           {/* Language Switcher */}
-          <button
+          <Button
             onClick={toggleLanguage}
-            className="px-3 py-1 border border-gray-300 rounded hover:bg-gray-100 transition"
+            className="text-sm px-2 border border-gray-300 rounded  transition"
           >
             {language.toUpperCase()}
-          </button>
+          </Button>
           <ProfileDropdown/>
         </div>
       </div>
