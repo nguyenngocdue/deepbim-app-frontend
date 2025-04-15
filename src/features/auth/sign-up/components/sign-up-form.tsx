@@ -74,6 +74,7 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
         payload,
         
       )
+
       console.log('User created ✅:', response.data)
 
       // 🔁 Redirect to sign-in page after successful signup

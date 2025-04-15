@@ -12,7 +12,7 @@ const HeroSection = () => {
   // Dynamically update subtitle based on language
   const subtitle = useMemo(() => t("hero.subtitle") || "", [t, language]);
 
-  console.log(language, subtitle); // Debugging output
+  // console.log(language, subtitle); // Debugging output
 
   return (
     <motion.section
