@@ -4,6 +4,8 @@ services:
       context: ..
       dockerfile: .docker_102/Dockerfile
     container_name: frontend_container_102
+    env_file:
+      - ../.env.production
     volumes:
       - ../src:/usr/src/app/src 
     ports:

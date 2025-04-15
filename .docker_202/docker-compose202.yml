@@ -8,6 +8,8 @@ services:
       - ../src:/usr/src/app/src 
     ports:
       - "3003:3003"
+    env_file:
+      - ../.env.beta
     networks:
       - beta_network
     restart: always
