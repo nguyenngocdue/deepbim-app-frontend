@@ -1,3 +1,4 @@
+const API_BASE_URL = 'https://api.deepbim.net';
 
 // Interface định nghĩa response từ API xác thực (auth)
 interface AuthResponse {
@@ -78,7 +79,7 @@ async function refreshAccessToken(): Promise<void> {
   }
 
   // Gửi yêu cầu refresh token tới backend
-  const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/auth/refresh-token`, {
+  const response = await fetch(`${API_BASE_URL}/auth/refresh-token`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -114,7 +115,7 @@ async function refreshAccessToken(): Promise<void> {
  * API này sẽ trả về thông tin cơ bản như userId.
  */
 export async function fetchCurrentUser(): Promise<{ id: number }> {
-  return fetchWithAuth(`${import.meta.env.VITE_API_BASE_URL}/auth/me`, {
+  return fetchWithAuth(`${API_BASE_URL}/auth/me`, {
     method: 'GET',
   });
 }
@@ -125,14 +126,14 @@ export async function fetchCurrentUser(): Promise<{ id: number }> {
  */
 export async function fetchUserProfile(): Promise<UserProfile> {
   const currentUser = await fetchCurrentUser(); // lấy ID người dùng hiện tại
-  return fetchWithAuth(`${import.meta.env.VITE_API_BASE_URL}/users/${currentUser.id}`, {
+  return fetchWithAuth(`${API_BASE_URL}/users/${currentUser.id}`, {
     method: 'GET',
   });
 }
 
 export async function handleSignout(): Promise<void> {
   try {
-    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/auth/signout`, {
+    const response = await fetch(`${API_BASE_URL}/auth/signout`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
