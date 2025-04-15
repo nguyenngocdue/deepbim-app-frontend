@@ -12,7 +12,7 @@ export const Route = createRootRouteWithContext<{
     return (
       <>
         <Outlet />
-        {import.meta.env.MODE === 'development' && (
+        {import.meta.env.MODE === 'beta' && (
           <>
             <ReactQueryDevtools buttonPosition='bottom-left' />
             <TanStackRouterDevtools position='bottom-right' />
