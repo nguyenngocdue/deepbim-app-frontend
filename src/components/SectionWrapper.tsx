@@ -12,9 +12,9 @@ const SectionWrapper = ({ children, className }: SectionWrapperProps) => {
   const isInView = useInView(ref, { once: false, margin: "-100px" });
 
   const animationVariants = {
-    hidden: { opacity: 0, y: 50 },
+    hidden: { opacity: 1, y: 50 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
-    exit: { opacity: 0, y: -50, transition: { duration: 0.5, ease: "easeInOut" } },
+    exit: { opacity: 1, y: -50, transition: { duration: 0.6, ease: "easeInOut" } },
   };
 
   return (

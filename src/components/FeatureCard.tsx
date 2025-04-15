@@ -12,7 +12,7 @@ interface FeatureCardProps {
 const FeatureCard = ({ icon, title, description, image }: FeatureCardProps) => {
   return (
     <motion.div 
-      className="flex flex-col items-center gap-6 py-10"
+      className="flex flex-col items-center gap-6 py-10 border-0"
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
