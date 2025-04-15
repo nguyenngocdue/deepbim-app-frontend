@@ -8,7 +8,7 @@ const ProblemsSection = () => {
 
   return (
     <section className="px-6 md:px-10 py-20 text-center">
-      <h2 className="text-3xl font-bold">{t("problems.title")}</h2>
+      <h2 className="text-4xl font-bold">{t("problems.title")}</h2>
       <p className="mt-4 text-gray-600">{t("problems.description")}</p>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
 
