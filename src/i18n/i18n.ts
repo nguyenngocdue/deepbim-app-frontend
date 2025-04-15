@@ -11,8 +11,12 @@ const resources = {
         how_it_works: "How it works",
         contact: "Contact",
         start: "Get Started",
+        auth:"Sign In",
       },
-
+      panel_alert: {
+        message: "You are currently browsing as a guest. Sign in to access advanced features.",
+        action_text: "Sign In"
+      },
       hero: {
         welcome: "Optimize and accelerate your project ",
         subtitle: "seamlessly",
@@ -131,8 +135,12 @@ const resources = {
         how_it_works: "Cách thức hoạt động",
         contact: "Liên hệ",
         start: "Bắt đầu",
+        auth:"Đăng nhập",
       },
-
+      panel_alert: {
+        message: "Bạn đang dùng chế độ khách. Đăng nhập để truy cập các chức năng nâng cao",
+        action_text: "Đăng nhập",
+      },
       hero: {
         welcome: "Tăng tốc dự án của bạn một",
         subtitle: "cách đơn giản",

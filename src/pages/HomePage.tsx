@@ -16,6 +16,7 @@ import Header from '@/sections/ Header';
 import { useAppDispatch } from '@/hooks/reduxHooks';
 import { setCurentUser } from '@/store/slices/AuthSlice';
 import { GuestAccessPanel } from '@/components/GuestAccessPanel';
+import { useTranslation } from 'react-i18next';
 
 interface UserProfile {
   id: number;
@@ -32,6 +33,7 @@ const HomePage: React.FC = () => {
   const [user, setUser] = useState<UserProfile | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useAppDispatch();
+  const { t } = useTranslation();
 
   useEffect(() => {
     async function loadUserProfile() {
@@ -59,7 +61,7 @@ const HomePage: React.FC = () => {
     loadUserProfile();
   }, [dispatch]);
   
-
+  
   return (
     <div className="min-h-screen bg-gray-50">
       <LanguageProvider>
@@ -67,8 +69,8 @@ const HomePage: React.FC = () => {
         <div className='realative'>
           {!user && (
               <GuestAccessPanel
-                message="Bạn đang dùng chế độ khách. Đăng nhập để truy cập các chức năng nâng cao."
-                actionText="Đăng nhập"
+                message={t("panel_alert.message")}
+                actionText={t("panel_alert.action_text")}
                 onAction={() => navigate({ to: '/sign-in' })}
                 className=" mt-14 w-full"
                 dismissable

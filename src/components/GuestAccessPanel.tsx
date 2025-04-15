@@ -1,6 +1,7 @@
 import { ReactNode, useState } from 'react'
 import { Info } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { IoMdCloseCircle } from "react-icons/io"
 
 interface GuestAccessPanelProps {
   message?: string
@@ -11,8 +12,8 @@ interface GuestAccessPanelProps {
 }
 
 export const GuestAccessPanel = ({
-  message = 'Bạn đang truy cập với tư cách khách. Đăng nhập để trải nghiệm đầy đủ tính năng!',
-  actionText = 'Đăng nhập',
+  message = 'You are currently browsing as a guest. Log in to access all features.',
+  actionText = 'Sign In',
   onAction,
   className,
   dismissable = false,
@@ -24,19 +25,19 @@ export const GuestAccessPanel = ({
   return (
     <div
       className={cn(
-        'bg-yellow-50 border border-yellow-300 px-4 py-3 text-sm text-yellow-900 flex justify-between items-center shadow-sm',
+        'bg-blue-50 border border-blue-200 px-4 py-2 text-sm text-blue-900 flex justify-between items-center shadow-sm rounded-md',
         className
       )}
     >
       <div className="flex items-center gap-2">
-        <Info className="w-4 h-4 text-yellow-500" />
+        <Info className="w-4 h-4 text-blue-500" />
         <span>{message}</span>
       </div>
       <div className="flex items-center gap-2">
         {onAction && (
           <button
             onClick={onAction}
-            className="px-3 py-1 text-sm font-medium text-white bg-yellow-500 rounded hover:bg-yellow-600 transition"
+            className="px-3 py-1 text-sm font-medium text-white bg-blue-500 rounded hover:bg-blue-600 transition"
           >
             {actionText}
           </button>
@@ -44,9 +45,9 @@ export const GuestAccessPanel = ({
         {dismissable && (
           <button
             onClick={() => setVisible(false)}
-            className="text-xs text-yellow-700 hover:underline"
+            className="text-xl text-blue-700 hover:opacity-75"
           >
-            Đóng
+            <IoMdCloseCircle />
           </button>
         )}
       </div>

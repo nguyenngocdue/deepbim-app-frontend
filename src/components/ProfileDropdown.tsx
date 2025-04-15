@@ -8,19 +8,20 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { useAppSelector } from '@/hooks/reduxHooks'
+import { useTranslation } from 'react-i18next'
 
 export function ProfileDropdown() {
-  
   const user = useAppSelector(state => state.auth.user);
+  const { t } = useTranslation();
+  
   if (!user) {
     return (
       <Link to='/sign-in'>
         <Button variant='ghost' className='relative text-blue-500'>
-            Sign In
+            {t('navbar.auth')}
         </Button>
       </Link>
     )
