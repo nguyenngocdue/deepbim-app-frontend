@@ -16,7 +16,7 @@ const HeroSection = () => {
 
   return (
     <motion.section
-      className="px-6 md:px-16 py-20 flex flex-col md:flex-row items-center justify-between gap-12 bg-gray-50"
+      className="px-6 md:px-16 py-20 flex flex-col md:flex-row items-center justify-between gap-12"
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 1, ease: "easeOut" }}

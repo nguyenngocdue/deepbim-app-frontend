@@ -63,7 +63,7 @@ const HomePage: React.FC = () => {
 
   
   return (
-    <div className="min-h-screen">
+    <div className="max-h-screen">
       <LanguageProvider>
         <Header/>
         <div className='realative'>
