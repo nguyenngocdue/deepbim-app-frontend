@@ -11,7 +11,8 @@
     "build:production": "vite build --mode production",
     "lint": "eslint .",
     "preview": "vite preview",
-    "generate": "tanstack-router generate"
+    "generate": "tanstack-router generate",
+    "watch": "tailwindcss -i ./src/input.css -o ./dist/output.css --watch"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",

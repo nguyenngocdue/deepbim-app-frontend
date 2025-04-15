@@ -6,7 +6,7 @@ const HowItWorksSection = () => {
   const { t } = useTranslation();
 
   return (
-    <section className="px-6 md:px-10 py-20 bg-white text-center">
+    <section className="section-wrapper px-6 md:px-10 py-20 bg-white text-center">
       <h2 className="text-3xl font-bold">{t("how_it_works.title")}</h2>
       <p className="mt-4 text-gray-600">{t("how_it_works.description")}</p>
 

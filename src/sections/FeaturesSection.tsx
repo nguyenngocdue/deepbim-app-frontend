@@ -7,7 +7,7 @@ const FeaturesSection = () => {
   const { t } = useTranslation();
 
   return (
-    <section className="px-6 md:px-10 py-20 bg-white text-center">
+    <section className="px-6 md:px-10 py-20 section-wrapper text-center">
       <h2 className="text-3xl font-bold">{t("features.title")}</h2>
       <div className="mt-10 space-y-16">
         <SectionWrapper>

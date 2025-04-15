@@ -10,7 +10,6 @@ const resources = {
         features: "Features",
         how_it_works: "How it works",
         contact: "Contact Us",
-        start: "Get Started",
         auth:"Sign In",
       },
       panel_alert: {
@@ -134,7 +133,6 @@ const resources = {
         features: "Tính năng",
         how_it_works: "Cách thức hoạt động",
         contact: "Liên hệ",
-        start: "Bắt đầu",
         auth:"Đăng nhập",
       },
       panel_alert: {

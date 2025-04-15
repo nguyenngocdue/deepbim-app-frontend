@@ -1,17 +1,183 @@
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;700&display=swap');
 
 body {
-    font-family: 'Poppins', sans-serif;
-    font-weight: 300;
-    text-align: center;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 300;
+  text-align: center;
 }
 
 h1 {
-    font-weight: 700;
-    font-size: 32px;
+  font-weight: 700;
+  font-size: 32px;
 }
 
 p {
-    font-size: 18px;
+  font-size: 18px;
 }
 
+.light {
+  --primary-text: #000000;
+  --primary-bg: rgba(255, 255, 255, 0.8);
+  --header-bg: rgba(255, 255, 255, 0.8);
+  --header-text: #000000;
+  --text-primary: #000000;
+  --primary: #16a34a;
+  --primary-hover: #15803d;
+  --border: #d1d5db;
+  --link-hover: #047857;
+  --section-bg: #ffffff;  
+  --hover-bg: #ffffff;
+  --section-text: #1f2937;
+  --section-border: #e5e7eb;
+  --footer-bg: #f3f4f6;
+  --footer-text: #4b5563;
+  --footer-link-hover: #1f2937;
+  --hero-bg: #ffffff;
+  --hero-text: #1f2937;
+  --hero-subtitle: #16a34a;
+  --hero-desc: #4b5563;
+  --button-text: #ffffff;
+  --button-outline-text: #1f2937;
+}
+
+.dark {
+  --primary-text: #ffffff;
+  --primary-bg: #1f2937;
+  --header-bg: #1f2937;
+  --header-text: #ffffff;
+  --text-primary: #ffffff;
+  --primary: #22c55e;
+  --primary-hover: #16a34a;
+  --border: #4b5563;
+  --link-hover: #86efac;
+  --section-bg: #111827;  
+  --hover-bg: rgb(26, 41, 73);
+  --section-text: #d1d5db;
+  --section-border: #374151;
+  --footer-bg: #1f2937;
+  --footer-text: #9ca3af;
+  --footer-link-hover: #e5e7eb;
+  --hero-bg: #111827;
+  --hero-text: #d1d5db;
+  --hero-subtitle: #22c55e;
+  --hero-desc: #9ca3af;
+  --button-text: #ffffff;
+  --button-outline-text: #d1d5db;
+}
+
+section.hero {
+  background: var(--hero-bg);
+  color: var(--hero-text);
+}
+
+section.hero h1 {
+  color: var(--hero-text);
+}
+
+section.hero .subtitle {
+  color: var(--hero-subtitle);
+}
+
+section.hero p {
+  color: var(--hero-desc);
+}
+
+button.primary-button {
+  background: var(--primary);
+  color: var(--button-text);
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  transition: background 0.3s ease;
+}
+
+button.primary-button:hover {
+  background: var(--primary-hover);
+}
+
+button.outline-button {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--button-outline-text);
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+button.outline-button:hover {
+  background: var(--hover-bg);
+  color: var(--primary);
+}
+
+button.no-outline-button {
+  background: transparent;
+  color: var(--button-outline-text);
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+button.no-outline-button:hover {
+  background: var(--hover-bg);
+  color: var(--primary);
+}
+
+header {
+  background: var(--header-bg);
+  color: var(--header-text);
+}
+
+header h1 {
+  color: var(--primary);
+}
+
+header nav a {
+  color: var(--header-text);
+}
+
+header nav a:hover {
+  color: var(--link-hover);
+}
+
+header .start-button {
+  background: var(--primary);
+  color: #ffffff;
+}
+
+header .start-button:hover {
+  background: var(--primary-hover);
+}
+
+header .switcher-button {
+  border-color: var(--border);
+  color: var(--header-text);
+}
+
+.section-wrapper {
+  background: var(--section-bg);
+  color: var(--section-text);
+  padding: 2rem;
+}
+
+footer {
+  background: var(--footer-bg);
+  color: var(--footer-text);
+}
+
+footer p {
+  color: var(--footer-text);
+}
+
+footer nav a {
+  color: var(--footer-text);
+}
+
+footer nav a:hover {
+  color: var(--footer-link-hover);
+}
+
+.icon-text-color {
+  color: var(--text-primary);
+}

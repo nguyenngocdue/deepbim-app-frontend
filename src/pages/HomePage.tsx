@@ -72,7 +72,7 @@ const HomePage: React.FC = () => {
                 message={t("panel_alert.message")}
                 actionText={t("panel_alert.action_text")}
                 onAction={() => navigate({ to: '/sign-in' })}
-                className=" mt-14 w-full"
+                className="absolute mt-14 w-1/2"
                 dismissable
               />
             )}
