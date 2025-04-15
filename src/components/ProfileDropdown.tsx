@@ -1,4 +1,4 @@
-import { Link } from '@tanstack/react-router'
+import { Link, useRouter } from '@tanstack/react-router'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import {
@@ -12,11 +12,14 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { useAppSelector } from '@/hooks/reduxHooks'
 import { useTranslation } from 'react-i18next'
+import { handleSignout } from '@/api'
+import { toast } from 'react-toastify';
 
 export function ProfileDropdown() {
   const user = useAppSelector(state => state.auth.user);
   const { t } = useTranslation();
-  
+  const { navigate } = useRouter();
+
   if (!user) {
     return (
       <Link to='/sign-in'>
@@ -37,6 +40,15 @@ export function ProfileDropdown() {
       .join('')
       .toUpperCase()
   }
+
+  const onSignout = async () => {
+    try {
+      await handleSignout();
+      navigate({ to: '/sign-in' });
+    } catch (error) {
+      toast.error(error.message || 'Failed to sign out');
+    }
+  };
 
   return (
     <DropdownMenu modal={false}>
@@ -65,7 +77,9 @@ export function ProfileDropdown() {
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-          <Link to='/sign-in'>Log out</Link>
+          <DropdownMenuItem onClick={onSignout} className="cursor-pointer">
+            Sign out
+          </DropdownMenuItem>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
