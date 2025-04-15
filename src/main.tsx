@@ -18,7 +18,7 @@ import "./index.css"
 import "./styles/global.css";
 import "./styles/tokens.css";
 
-console.log(import.meta.env.VITE_API_BASE_URL)
+console.log("VITE_API_BASE_URL from main",import.meta.env.VITE_API_BASE_URL)
 
 const queryClient = new QueryClient({
   defaultOptions: {
