@@ -9,7 +9,7 @@ export default function SignUp() {
       <Card className='p-6 bg-green-600'>
         <div className='mb-2 flex flex-col space-y-2 text-left'>
           <h1 className='text-lg font-semibold tracking-tight'>
-            Create an account
+            Create an accounttttttttttttt
           </h1>
           <p className='text-sm text-muted-foreground'>
             Enter your email and password to create an account. <br />
