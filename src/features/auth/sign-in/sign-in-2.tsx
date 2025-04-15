@@ -8,8 +8,8 @@ export default function SignIn2() {
         {/* Thay đổi gradient từ emerald sang blue/indigo */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#334155]" />
         <div className='relative z-20 flex items-center text-lg font-medium'>
-          <img src='logo/logo.png' alt='Logo' className='mr-2 h-8 w-8' />
-          Deep Bim
+          <img src='logo/logo.png' alt='Logo' className='mr-2 h-8 w-8 ' />
+          <span className='px-2 text-white'>Deep Bim</span>
         </div>
         <img
           src={ViteLogo}

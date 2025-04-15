@@ -16,6 +16,7 @@ export default {
 			}
 		},
 		extend: {
+			
 			animation: {
 				"spin-slow": "spin 4s linear infinite",
 				"spin-medium": "spin 2s linear infinite",
@@ -151,8 +152,7 @@ export default {
 				},
 				page:{
 					50: 'var(--color-bg-50)',
-				}
-
+				},
 			},
 			keyframes: {
 				'spinSlow': {

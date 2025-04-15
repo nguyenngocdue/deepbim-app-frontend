@@ -10,14 +10,16 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { useAppSelector } from '@/hooks/reduxHooks'
+import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks'
 import { useTranslation } from 'react-i18next'
 import { handleSignout } from '@/api'
 import { toast } from 'react-toastify';
+import { clearUser } from '@/store/slices/AuthSlice'
 
 export function ProfileDropdown() {
   const user = useAppSelector(state => state.auth.user);
   const { t } = useTranslation();
+  const dispatch = useAppDispatch();
   const { navigate } = useRouter();
 
   if (!user) {
@@ -44,6 +46,7 @@ export function ProfileDropdown() {
   const onSignout = async () => {
     try {
       await handleSignout();
+      dispatch(clearUser());// Reset auth state trong Redux
       navigate({ to: '/sign-in' });
     } catch (error) {
       toast.error(error.message || 'Failed to sign out');

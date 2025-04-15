@@ -14,7 +14,7 @@ import useScrollRestoration from '@/hooks/useScrollRestoration';
 import { fetchUserProfile } from '../api';
 import Header from '@/sections/ Header';
 import { useAppDispatch } from '@/hooks/reduxHooks';
-import { setCurentUser } from '@/store/slices/AuthSlice';
+import { clearUser, setCurentUser } from '@/store/slices/AuthSlice';
 import { GuestAccessPanel } from '@/components/GuestAccessPanel';
 import { useTranslation } from 'react-i18next';
 
@@ -40,7 +40,7 @@ const HomePage: React.FC = () => {
       const token = localStorage.getItem('access_token');
       if (!token) {
         setUser(null);
-        dispatch(setCurentUser(null));
+        dispatch(clearUser());
         return;
       }
   
@@ -52,7 +52,7 @@ const HomePage: React.FC = () => {
       } catch (err: any) {
         console.error(err.message);
         setUser(null);
-        dispatch(setCurentUser(null));
+        dispatch(clearUser());
       } finally {
         setIsLoading(false);
       }
@@ -60,7 +60,7 @@ const HomePage: React.FC = () => {
   
     loadUserProfile();
   }, [dispatch]);
-  
+
   
   return (
     <div className="min-h-screen bg-gray-50">
