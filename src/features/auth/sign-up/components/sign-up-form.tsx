@@ -2,7 +2,6 @@ import { HTMLAttributes, useState } from 'react'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import axios from 'axios'
 
 import { IconBrandGithub } from '@tabler/icons-react'
 import { FaGoogle } from 'react-icons/fa'
