@@ -78,7 +78,7 @@ async function refreshAccessToken(): Promise<void> {
   }
 
   // Gửi yêu cầu refresh token tới backend
-  const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/auth/refresh`, {
+  const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/auth/refresh-token`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
