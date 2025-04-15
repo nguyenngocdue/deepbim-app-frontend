@@ -17,7 +17,7 @@ const BenefitsSection = () => {
 
   return (
     <motion.section
-      className="px-6 md:px-10 py-20 bg-gray-100 text-center"
+      className="px-6 md:px-10 py-20  text-center"
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 1, ease: "easeOut" }}
