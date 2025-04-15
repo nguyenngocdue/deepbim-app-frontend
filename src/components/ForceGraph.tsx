@@ -24,7 +24,7 @@ const nodes: GraphNode[] = [
   { id: "LAS", text: "LAS", group: "input" },
   { id: "LAZ", text: "LAZ", group: "input" },
   { id: "Revit", icon: "/extensions/revit.png", group: "input" },
-  { id: "Deepbim", icon: "/logo/logo.png", group: "process" }, // Main processing node
+  { id: "Deepbim", icon: "/images/logo.png", group: "process" }, // Main processing node
   { id: "User", icon: "/icons/user.svg", group: "output" },
 ];
 

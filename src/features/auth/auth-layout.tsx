@@ -8,7 +8,7 @@ export default function AuthLayout({ children }: Props) {
       <div className='mx-auto flex w-full flex-col justify-center space-y-2 sm:w-[480px] lg:p-8'>
         <div className='mb-4 flex items-center justify-center'>
           <img
-            src='./logo/logo.png'
+            src='./images/logo.png'
             alt='Logo'
             className='h-12 w-12 rounded-full'
           />
