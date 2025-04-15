@@ -205,7 +205,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                 to="/sign-up"
                 className="font-medium text-blue-400 hover:text-blue-300 transition-colors duration-200"
               >
-                Sign up
+                Sign Up
               </Link>
             </div>
           </div>
