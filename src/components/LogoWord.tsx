@@ -7,7 +7,7 @@ export const LogoWord = ({ isHiddenText = false }: LogoWordProps) => {
     <div className="flex text-center items-center">
       <img src="/images/logo.png" className="h-12 w-12" alt="Logo" />
       <h1 className={`text-xl font-bold text-green-600 ${isHiddenText ? "hidden" : ""}`}>
-        DeepBIM
+        <span className="px-2">DeepBIM</span> 
       </h1>
     </div>
   );

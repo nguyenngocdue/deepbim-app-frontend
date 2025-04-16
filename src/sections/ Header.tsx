@@ -3,9 +3,10 @@ import { useLanguage } from "@/context/LanguageContext";
 import { useTheme } from "@/context/theme-context";
 import { ProfileDropdown } from "@/components/ProfileDropdown";
 import { Button } from "@/components/ui/button";
-import { CiDark, CiLight } from "react-icons/ci";
-import { MdDarkMode, MdOutlineDarkMode } from "react-icons/md";
+import { CiLight } from "react-icons/ci";
+import { MdOutlineDarkMode } from "react-icons/md";
 import { Separator } from "@/components/ui/separator";
+import { LogoWord } from "@/components/LogoWord";
 
 const Header = () => {
   const { t } = useTranslation();
@@ -26,14 +27,7 @@ const Header = () => {
       <div className="flex justify-between items-center px-10 py-1">
         {/* Logo */}
         <div className="flex text-center items-center">
-          <img src="/images/logo.png" className="h-12 w-12" alt="Logo" />
-          <h1
-            className={`text-xl font-bold ${
-              theme === "dark" ? "text-green-400" : "text-green-600"
-            }`}
-          >
-            DeepBIM
-          </h1>
+          <LogoWord />
         </div>
 
         {/* Navigation + Language/Theme Switcher */}

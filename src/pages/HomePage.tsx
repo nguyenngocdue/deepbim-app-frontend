@@ -61,7 +61,6 @@ const HomePage: React.FC = () => {
     loadUserProfile();
   }, [dispatch]);
 
-  
   return (
     <div className="max-h-screen">
       <LanguageProvider>
@@ -72,7 +71,7 @@ const HomePage: React.FC = () => {
                 message={t("panel_alert.message")}
                 actionText={t("panel_alert.action_text")}
                 onAction={() => navigate({ to: '/sign-in' })}
-                className="absolute mt-14 w-1/2"
+                className="fixed right-4 bottom-4  w-5/12 z-50 bg-yellow-500"
                 dismissable
               />
             )}

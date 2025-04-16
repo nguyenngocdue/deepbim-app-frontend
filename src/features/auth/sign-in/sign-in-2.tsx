@@ -1,15 +1,15 @@
 import ViteLogo from '@/assets/vite.svg'
 import { UserAuthForm } from './components/user-auth-form'
+import { LogoWord } from '@/components/LogoWord'
 
 export default function SignIn2() {
   return (
     <div className='container relative grid h-svh flex-col items-center justify-center lg:max-w-none lg:grid-cols-2 lg:px-0 bg-page-50 '>
-      <div className='relative hidden h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex'>
+      <div className='relative hidden h-full flex-col bg-muted p-10 text-white lg:flex'>
         {/* Thay đổi gradient từ emerald sang blue/indigo */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#334155]" />
         <div className='relative z-20 flex items-center text-lg font-medium'>
-          <img src='logo/logo.png' alt='Logo' className='mr-2 h-8 w-8 ' />
-          <span className='px-2 text-white'>Deep Bim</span>
+          <LogoWord/>
         </div>
         <img
           src={ViteLogo}

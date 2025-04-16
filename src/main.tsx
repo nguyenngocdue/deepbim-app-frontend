@@ -19,6 +19,7 @@ import "./styles/global.css";
 import "./styles/tokens.css";
 import { Provider } from 'react-redux';
 import { store } from './store';
+import { Toaster } from 'sonner';
 
 console.log("VITE_API_BASE_URL from main",import.meta.env.VITE_API_BASE_URL)
 
@@ -107,6 +108,7 @@ if (!rootElement.innerHTML) {
       <QueryClientProvider client={queryClient}>
         <ThemeProvider defaultTheme='light' storageKey='vite-ui-theme'>
           <FontProvider>
+            <Toaster richColors closeButton />
             <RouterProvider router={router} />
           </FontProvider>
         </ThemeProvider>
