@@ -7,8 +7,22 @@ const resources = {
     translation: {
       connector: {
         title: 'Connectors',
-        subtitle: "Upload BIM Model to Viralution through our connectors.",
-      },
+        subtitle: "Bridge your design tools with Viralution by uploading BIM models through our dedicated connectors.",
+        items: {
+          item_1: {
+            title: "Revit",
+            subtitles: "Revit Connector enables direct BIM data transfer from Autodesk Revit to Viralution, streamlining your workflow and centralizing project collaboration in the cloud."
+          },
+          item_2: {
+            title: "Tekla Structures (Coming soon)",
+            subtitles: "Tekla Connector allows you to upload detailed structural BIM models and metadata from Tekla Structures to Viralution, supporting seamless integration and data continuity."
+          },
+          item_3: {
+            title: "Archicad (Coming soon)",
+            subtitles: "With the Archicad Connector, architects and designers will be able to send BIM models and design data directly from Graphisoft Archicad to Viralution for centralized project access."
+          }
+        }
+      },      
       navbar: {
         connect: "Connectors",
         features: "Features",
@@ -133,10 +147,23 @@ const resources = {
   vi: {
     translation: {
       connector: {
-        title: 'Trình kết nối',
-        subtitle: "Nâng tầm quy trình làm việc với mô hình 3D, toàn quyền sở hữu dữ liệu và phân tích mô hình BIM mạnh mẽ. Bảo mật, sẵn sàng cho cộng tác không giới hạn. Viral - hay 'lan tỏa' là tính từ biểu hiện sự hiệu quả trong việc truyền đạt thông tin.",
-
-      },
+        title: 'Trình Kết nối',
+        subtitle: "Kết nối các công cụ thiết kế của bạn với Viralution bằng cách tải mô hình BIM thông qua các trình kết nối chuyên dụng.",
+        items: {
+          item_1: {
+            title: "Revit",
+            subtitles: "Revit Connector cho phép truyền dữ liệu BIM trực tiếp từ Autodesk Revit lên Viralution, giúp tối ưu quy trình làm việc và tập trung hợp tác dự án trên nền tảng đám mây."
+          },
+          item_2: {
+            title: "Tekla Structures (Sắp ra mắt)",
+            subtitles: "Tekla Connector giúp bạn tải mô hình kết cấu chi tiết và dữ liệu từ Tekla Structures lên Viralution, hỗ trợ tích hợp liền mạch và duy trì tính liên tục của dữ liệu."
+          },
+          item_3: {
+            title: "Archicad (Sắp ra mắt)",
+            subtitles: "Với Archicad Connector, các kiến trúc sư và nhà thiết kế sẽ có thể gửi mô hình BIM và dữ liệu thiết kế trực tiếp từ Graphisoft Archicad lên Viralution để truy cập dự án tập trung."
+          }
+        }
+      },      
       navbar: {
         connect: "Trình kết nối",
         features: "Tính năng",

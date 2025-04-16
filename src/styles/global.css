@@ -20,7 +20,8 @@ p {
   --primary-bg: rgba(255, 255, 255, 0.8);
   --header-bg: rgba(255, 255, 255, 0.8);
   --header-text: #000000;
-  --text-primary: #000000;
+  --text-primary: #000000;  
+  --text-subtitle: #ffffff;
   --primary: #16a34a;
   --primary-hover: #15803d;
   --border: #d1d5db;
@@ -45,7 +46,8 @@ p {
   --primary-bg: #1f2937;
   --header-bg: #1f2937;
   --header-text: #ffffff;
-  --text-primary: #ffffff;
+  --text-primary: #ffffff;  
+  --text-subtitle: #000000;
   --primary: #22c55e;
   --primary-hover: #16a34a;
   --border: #4b5563;
@@ -184,4 +186,8 @@ footer nav a:hover {
 
 .text-50 {
   color: var(--text-primary);
+}
+
+.text-100 {
+  color: var(--text-subtitle);
 }

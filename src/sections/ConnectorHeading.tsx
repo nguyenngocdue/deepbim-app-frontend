@@ -6,7 +6,7 @@ import { useLanguage } from "@/context/LanguageContext";
 import AnimatedBorderImage3 from "@/components/ui/animated-border-image3";
 
 // Tách các class Tailwind để dễ đọc và bảo trì
-const sectionClasses = "hero px-6 md:px-16 py-20 flex flex-col md:flex-row items-center justify-between gap-12";
+const sectionClasses = "hero px-6 md:px-16 pt-20 flex flex-col md:flex-row items-center justify-between gap-12";
 const textContainerClasses = "w-full md:w-1/2 text-center md:text-left";
 const titleClasses = "text-6xl md:text-6xl font-bold leading-tight bg-gradient-to-r from-green-900 via-green-500 to-green-300 bg-clip-text text-transparent";
 const subtitleClasses = "text-zinc-300 text-xl"; // Điều chỉnh kích thước chữ để cân đối
