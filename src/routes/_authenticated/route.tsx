@@ -1,18 +1,13 @@
-import Cookies from 'js-cookie'
 import { createFileRoute, Outlet } from '@tanstack/react-router'
 import { cn } from '@/lib/utils'
-import SkipToMain from '@/components/skip-to-main'
 
 export const Route = createFileRoute('/_authenticated')({
   component: RouteComponent,
 })
 
 function RouteComponent() {
-  const defaultOpen = Cookies.get('sidebar:state') !== 'false'
   return (
     <>
-        <SkipToMain />
-        {/* <AppSidebar />  */}
         <div
           id='content'
           className={cn(

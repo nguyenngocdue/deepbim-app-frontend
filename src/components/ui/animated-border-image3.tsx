@@ -3,10 +3,11 @@ import { motion } from "framer-motion";
 
 interface AnimatedBorderImageProps {
   imgUrl: string;
+  alt: string;
 }
 
 
-const AnimatedBorderImage3 = ({imgUrl } : AnimatedBorderImageProps) => {
+const AnimatedBorderImage3 = ({imgUrl, alt } : AnimatedBorderImageProps) => {
   const divRef = useRef<HTMLDivElement>(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0, perimeter: 0 });
 
@@ -28,7 +29,7 @@ const AnimatedBorderImage3 = ({imgUrl } : AnimatedBorderImageProps) => {
       <div ref={divRef} className="relative">
         <img
           src={imgUrl}
-          alt="3D Model"
+          alt={alt}
           className="w-full max-w-2xl md:max-w-3xl lg:max-w-4xl shadow-xl rounded-xl relative z-10"
         />
 

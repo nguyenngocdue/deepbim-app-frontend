@@ -181,3 +181,7 @@ footer nav a:hover {
 .icon-text-color {
   color: var(--text-primary);
 }
+
+.text-50 {
+  color: var(--text-primary);
+}

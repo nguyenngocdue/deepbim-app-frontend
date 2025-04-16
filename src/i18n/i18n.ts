@@ -5,6 +5,10 @@ import LanguageDetector from "i18next-browser-languagedetector";
 const resources = {
   en: {
     translation: {
+      connector: {
+        title: 'Connectors',
+        subtitle: "Upload BIM Model to Viralution through our connectors.",
+      },
       navbar: {
         connect: "Connectors",
         features: "Features",
@@ -128,6 +132,11 @@ const resources = {
 
   vi: {
     translation: {
+      connector: {
+        title: 'Trình kết nối',
+        subtitle: "Nâng tầm quy trình làm việc với mô hình 3D, toàn quyền sở hữu dữ liệu và phân tích mô hình BIM mạnh mẽ. Bảo mật, sẵn sàng cho cộng tác không giới hạn. Viral - hay 'lan tỏa' là tính từ biểu hiện sự hiệu quả trong việc truyền đạt thông tin.",
+
+      },
       navbar: {
         connect: "Trình kết nối",
         features: "Tính năng",
