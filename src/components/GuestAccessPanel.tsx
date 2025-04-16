@@ -28,7 +28,7 @@ export const GuestAccessPanel = ({
           <div className="w-full bg-blue-50 border border-blue-200 px-4 py-3 text-sm text-blue-900 rounded-md shadow-md flex items-start justify-between gap-4">
             <div className="flex items-start gap-2">
               <Info className="w-4 h-4 mt-[2px] text-blue-500" />
-              <span className="leading-relaxed">
+              <span className="text-sm leading-relaxed font-semibold">
                 {message}
               </span>
             </div>
