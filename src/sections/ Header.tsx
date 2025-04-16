@@ -9,6 +9,7 @@ import { LogoWord } from "@/components/LogoWord";
 import { CiLight } from "react-icons/ci";
 import { MdOutlineDarkMode } from "react-icons/md";
 import { FaPlug, FaStar, FaQuestionCircle, FaEnvelope } from "react-icons/fa";
+import { CLASS_NAME_DEFAULT } from "@/utils/class";
 
 const Header = () => {
   const { t } = useTranslation();
@@ -66,11 +67,11 @@ const Header = () => {
     <>
       {/* Fixed Header */}
       <header
-        className={`fixed top-0 left-0 w-full z-50 backdrop-blur-md shadow-md text-center ${
+        className={` ${CLASS_NAME_DEFAULT.CLASS_NAME_3} fixed top-0 left-0 w-full z-50 backdrop-blur-md px-6 shadow-md text-center ${
           theme === "dark" ? "bg-gray-900 text-white" : "bg-white bg-opacity-80 text-black"
         }`}
       >
-        <div className="flex justify-between items-center px-4 md:px-10 py-2">
+        <div className="flex justify-between items-center py-2">
           {/* Logo */}
           <div className="flex items-center">
             <LogoWord />

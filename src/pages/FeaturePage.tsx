@@ -15,6 +15,7 @@ import HowItWorksSection from '@/sections/HowItWorksSection';
 import CallToActionSection from '@/sections/CallToActionSection';
 import Footer from '@/sections/Footer';
 import Header from '@/sections/ Header';
+import { CLASS_NAME_DEFAULT } from '@/utils/class';
 
 interface UserProfile {
   id: number;
@@ -54,10 +55,10 @@ const FeaturePage: React.FC = () => {
   }, [dispatch]);
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className={`bg-behind`}>
       <LanguageProvider>
         <Header />
-        <main className="flex-1 pt-16 md:pt-20 pb-16 md:pb-0">
+        <main className="flex-1 pt-16 md:pt-20 md:pb-0 pb-0">
           {!user && (
             <GuestAccessPanel
               message={t("panel_alert.message")}
@@ -66,16 +67,18 @@ const FeaturePage: React.FC = () => {
               dismissable
             />
           )}
-          <HeroSection />
-          <SectionWrapper>
-            <BenefitsSection />
-          </SectionWrapper>
-          <SectionWrapper>
-            <FeaturesSection />
-          </SectionWrapper>
-          <SectionWrapper>
-            <HowItWorksSection />
-          </SectionWrapper>
+          <div className={`${CLASS_NAME_DEFAULT.CLASS_NAME_3}`}>
+            <HeroSection />
+            <SectionWrapper>
+              <BenefitsSection />
+            </SectionWrapper>
+            <SectionWrapper>
+              <FeaturesSection />
+            </SectionWrapper>
+            <SectionWrapper>
+              <HowItWorksSection />
+            </SectionWrapper>
+          </div>
           <CallToActionSection />
         </main>
         <Footer />

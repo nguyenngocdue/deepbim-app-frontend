@@ -5,6 +5,7 @@ import { useMemo, useState, useEffect } from "react";
 import { useLanguage } from "@/context/LanguageContext";
 import AnimatedBorderImage3 from "@/components/ui/animated-border-image3";
 import { Button } from "@/components/ui/button";
+import { CLASS_NAME_DEFAULT } from "@/utils/class";
 
 const HeroSection = () => {
   const { t } = useTranslation();
@@ -25,7 +26,7 @@ const HeroSection = () => {
 
   return (
     <motion.section
-      className="hero px-4 sm:px-6 md:px-16 py-12 sm:py-16 md:py-20 flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12"
+      className={CLASS_NAME_DEFAULT.CLASS_NAME_1}
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 1, ease: "easeOut" }}
@@ -40,7 +41,7 @@ const HeroSection = () => {
           {t("hero.welcome")}{" "}
           {subtitle && (
             isSmallScreen ? (
-              <span className="subtitle">{subtitle}</span>
+              <span className="subtitle text-green-500">{subtitle}</span>
             ) : (
               <TypeAnimation
                 key={language}
@@ -48,7 +49,7 @@ const HeroSection = () => {
                 wrapper="span"
                 speed={40}
                 repeat={Infinity}
-                className="subtitle"
+                className="subtitle text-green-500"
               />
             )
           )}
@@ -71,7 +72,7 @@ const HeroSection = () => {
         </div>
       </motion.div>
       <div className="w-full md:w-1/2 flex justify-center">
-        <AnimatedBorderImage3 imgUrl="https://viralution.io/app.png" alt="3D" />
+        <AnimatedBorderImage3 imgUrl="https://viralution.io/app.png" alt="3D" className=""/>
       </div>
     </motion.section>
   );

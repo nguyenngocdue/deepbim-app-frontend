@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 import FeatureCard from "../components/FeatureCard";
 import { FaDatabase, FaHistory, FaSyncAlt, FaProjectDiagram } from "react-icons/fa";
 import SectionWrapper from "@/components/SectionWrapper";
+import { CLASS_NAME_DEFAULT } from "@/utils/class";
 
 const FeaturesSection = () => {
   const { t } = useTranslation();
@@ -34,7 +35,7 @@ const FeaturesSection = () => {
   ];
 
   return (
-    <section className="px-4 sm:px-6 md:px-10 lg:px-16 py-12 sm:py-16 lg:py-20 section-wrapper text-center">
+    <section className={CLASS_NAME_DEFAULT.CLASS_NAME_2}>
       <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 sm:mb-8">
         {t("features.title")}
       </h2>

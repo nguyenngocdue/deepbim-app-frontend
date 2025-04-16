@@ -1,9 +1,10 @@
 import { useTranslation } from "react-i18next";
 import { motion, useReducedMotion } from "framer-motion";
 import { TypeAnimation } from "react-type-animation";
-import { useMemo } from "react";
+import { useMemo, useState, useEffect } from "react";
 import ForceGraph from "@/components/ForceGraph";
 import DownloadButton from "@/components/ui/download-button";
+import { CLASS_NAME_DEFAULT } from "@/utils/class";
 
 const sectionVariants = {
   hidden: { opacity: 0, y: 50 },
@@ -16,16 +17,28 @@ const textVariants = {
 };
 
 const sectionClasses = "hero px-6 md:px-16 pt-20 pb-10 bg-white";
-const titleClasses ="text-6xl md:text-6xl font-bold leading-tight bg-gradient-to-r from-green-900 via-green-500 to-green-300 bg-clip-text text-transparent";
+const titleClasses = CLASS_NAME_DEFAULT.CLASS_NAME_4;
+const subtitleClasses = CLASS_NAME_DEFAULT.CLASS_NAME_5;
 
 const HowItWorksMain = () => {
   const { t, i18n } = useTranslation();
   const shouldReduceMotion = useReducedMotion();
+  const [isSmallScreen, setIsSmallScreen] = useState<boolean>(false);
+
+  // Kiểm tra kích thước màn hình
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsSmallScreen(window.innerWidth < 768);
+    };
+    checkScreenSize();
+    window.addEventListener("resize", checkScreenSize);
+    return () => window.removeEventListener("resize", checkScreenSize);
+  }, []);
 
   const title = useMemo(() => t("how_it_works.title"), [t, i18n.language]);
   const subtitle = useMemo(() => t("how_it_works.description"), [t, i18n.language]);
 
-  const animationSequence = shouldReduceMotion
+  const animationSequence = shouldReduceMotion || isSmallScreen
     ? [subtitle]
     : [subtitle, 2000, "", 500, subtitle];
 
@@ -48,17 +61,25 @@ const HowItWorksMain = () => {
             <span className={titleClasses}>{title}</span>
           </h1>
 
-          <div className="relative min-h-[56px]">
-            <p className="invisible absolute text-xl">{subtitle}</p>
-            <TypeAnimation
-              key={i18n.language}
-              sequence={animationSequence}
-              wrapper="p"
-              speed={50}
-              repeat={shouldReduceMotion ? 0 : Infinity}
-              className="text-xl text-zinc-600 relative"
-              aria-live="polite"
-            />
+          <div className="relative h-[56px]">
+            {isSmallScreen ? (
+              <p className={subtitleClasses} aria-live="polite">
+                {subtitle}
+              </p>
+            ) : (
+              <>
+                <p className="invisible absolute text-xl">{subtitle}</p>
+                <TypeAnimation
+                  key={i18n.language}
+                  sequence={animationSequence}
+                  wrapper="p"
+                  speed={50}
+                  repeat={shouldReduceMotion ? 0 : Infinity}
+                  className={subtitleClasses}
+                  aria-live="polite"
+                />
+              </>
+            )}
           </div>
         </motion.div>
 
@@ -78,4 +99,4 @@ const HowItWorksMain = () => {
   );
 };
 
-export default HowItWorksMain;
+export default HowItWorksMain

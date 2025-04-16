@@ -51,7 +51,7 @@ const HowItWorkPage: React.FC = () => {
   }, [dispatch]);
 
   return (
-    <div className="max-h-screen">
+    <div className="bg-behind">
       <LanguageProvider>
         <Header />
         {!user && (

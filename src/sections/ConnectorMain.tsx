@@ -1,8 +1,7 @@
 import { useTranslation } from "react-i18next";
-import BenefitCard from "../components/BenefitCard";
-import { FaCubes, FaShieldAlt, FaDatabase } from "react-icons/fa";
 import { motion } from "framer-motion";
 import BenefitCardDownload from "@/components/BenefitCardDowload";
+import { CLASS_NAME_DEFAULT } from "@/utils/class";
 
 const cardVariants = {
   hidden: { opacity: 0, y: 50 },
@@ -17,12 +16,12 @@ const ConnectorMain = () => {
   const { t } = useTranslation();
   return (
     <motion.section
-      className="hero px-6 md:px-16 flex flex-col md:flex-row items-center justify-between gap-12"
+      className={`${CLASS_NAME_DEFAULT.CLASS_NAME_3} flex flex-col md:flex-row items-center justify-between gap-12`}
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 1, ease: "easeOut" }}
     >
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-10 auto-rows-fr ">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr mt-10 sm:mt-40 lg:mt-40 mb-4 ">
         {[
           { src: '/images/revit_word.png', title: t("connector.items.item_1.title"), subtitles: t("connector.items.item_1.subtitles") , disable:true},
           { src: '/images/tekla.png', title: t("connector.items.item_2.title"), subtitles: t("connector.items.item_2.subtitles") , disable:false},

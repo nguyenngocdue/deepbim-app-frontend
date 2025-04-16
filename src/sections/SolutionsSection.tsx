@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import SolutionCard from "@/components/SolutionCard";
+import { CLASS_NAME_DEFAULT } from "@/utils/class";
 
 const SolutionsSection = () => {
   const { t } = useTranslation();
@@ -25,7 +26,7 @@ const SolutionsSection = () => {
   ];
 
   return (
-    <section className="px-6 md:px-10 py-20 text-center  relative overflow-hidden">
+    <section className={`${CLASS_NAME_DEFAULT.CLASS_NAME_2} relative overflow-hidden`}>
       {/* Background Gradient */}
       <h2 className="text-4xl font-bold">{t("solutions.title")}</h2>
       <p className="mt-4 text-gray-600 max-w-xl mx-auto">{t("solutions.description")}</p>

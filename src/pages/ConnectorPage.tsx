@@ -48,7 +48,7 @@ const ConnectorPage: React.FC = () => {
   }, [dispatch]);
 
   return (
-    <div className="max-h-screen">
+    <div className="bg-behind h-svh">
       <LanguageProvider>
         <Header/>
         <div className='realative'>

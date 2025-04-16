@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 import BenefitCard from "../components/BenefitCard";
 import { FaCubes, FaShieldAlt, FaDatabase } from "react-icons/fa";
 import { motion } from "framer-motion";
+import { CLASS_NAME_DEFAULT } from "@/utils/class";
 
 const cardVariants = {
   hidden: { opacity: 0, y: 50 },
@@ -17,7 +18,7 @@ const BenefitsSection = () => {
 
   return (
     <motion.section
-      className="px-4 sm:px-6 md:px-10 lg:px-16 py-12 sm:py-16 md:py-20 text-center"
+      className={CLASS_NAME_DEFAULT.CLASS_NAME_2}
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 1, ease: "easeOut" }}
