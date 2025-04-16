@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
-import ProblemCard from "../components/ProblemCard";
 import { FaExclamationCircle, FaComments, FaClock } from "react-icons/fa";
 import SectionWrapper from "@/components/SectionWrapper";
+import GenericCard from "@/components/GenericCard";
 
 const ProblemsSection = () => {
   const { t } = useTranslation();
@@ -13,28 +13,39 @@ const ProblemsSection = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
 
         <SectionWrapper>
-          <ProblemCard
-            icon={<FaExclamationCircle />}
-            title={t("problems.items.platform_dependency.title")}
-            description={t("problems.items.platform_dependency.desc")}
-            color="text-red-500"
-          />
+        <GenericCard
+          icon={<FaExclamationCircle />}
+          title={t("problems.items.platform_dependency.title")}
+          description={t("problems.items.platform_dependency.desc")}
+          backgroundColor="bg-white"
+          textColor="text-yellow-800"
+          shadowColor="shadow-zinc-600"
+          className="shadow-zinc-700" 
+        />
+
+
         </SectionWrapper>
         <SectionWrapper>
-          <ProblemCard
-            icon={<FaComments />}
-            title={t("problems.items.communication_challenges.title")}
-            description={t("problems.items.communication_challenges.desc")}
-            color="text-yellow-500"
-          />
+        <GenericCard
+          icon={<FaComments />}
+          title={t("problems.items.platform_dependency.title")}
+          description={t("problems.items.platform_dependency.desc")}
+          backgroundColor="bg-white"
+          textColor="text-yellow-500"
+          shadowColor="shadow-zinc-600"
+          className="shadow-zinc-700" 
+        />
         </SectionWrapper>
         <SectionWrapper>
-          <ProblemCard
-            icon={<FaClock />}
-            title={t("problems.items.downtime_disruptions.title")}
-            description={t("problems.items.downtime_disruptions.desc")}
-            color="text-blue-500"
-          />
+        <GenericCard
+          icon={<FaClock />}
+          title={t("problems.items.downtime_disruptions.title")}
+          description={t("problems.items.downtime_disruptions.desc")}
+          textColor="text-blue-500"
+          backgroundColor="bg-white"
+          shadowColor="shadow-zinc-600"
+          className="shadow-zinc-700" 
+        />
         </SectionWrapper>
       </div>
     </section>
