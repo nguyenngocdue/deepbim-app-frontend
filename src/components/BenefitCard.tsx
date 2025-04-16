@@ -28,7 +28,7 @@ const BenefitCard = ({ icon, title, description }: BenefitCardProps) => {
 
       {/* Title with Underline Effect */}
       <motion.div className="relative mt-4">
-        <h4 className="text-xl font-bold transition-all">{title}</h4>
+        <h4 className="text-xl font-bold transition-all text-zinc-700">{title}</h4>
 
         {/* Underline Animation */}
         <motion.div

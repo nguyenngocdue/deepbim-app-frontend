@@ -11,7 +11,7 @@ const HowItWorksSection = () => {
       <p className="mt-4 text-gray-600">{t("how_it_works.description")}</p>
 
       {/* Image Diagram */}
-      <div className="flex justify-center mt-10">
+      <div className="flex justify-center mt-2">
         <ForceGraph/>
       </div>
       {/* Download Button */}

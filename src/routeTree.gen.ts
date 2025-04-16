@@ -14,6 +14,8 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated/route'
+import { Route as AuthenticatedHowItWorksImport } from './routes/_authenticated/how-it-works'
+import { Route as AuthenticatedFeaturesImport } from './routes/_authenticated/features'
 import { Route as AuthenticatedConnectorsImport } from './routes/_authenticated/connectors'
 import { Route as authSignInImport } from './routes/(auth)/sign-in'
 import { Route as auth500Import } from './routes/(auth)/500'
@@ -134,6 +136,18 @@ const authForgotPasswordLazyRoute = authForgotPasswordLazyImport
   .lazy(() =>
     import('./routes/(auth)/forgot-password.lazy').then((d) => d.Route),
   )
+
+const AuthenticatedHowItWorksRoute = AuthenticatedHowItWorksImport.update({
+  id: '/how-it-works',
+  path: '/how-it-works',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+
+const AuthenticatedFeaturesRoute = AuthenticatedFeaturesImport.update({
+  id: '/features',
+  path: '/features',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 
 const AuthenticatedConnectorsRoute = AuthenticatedConnectorsImport.update({
   id: '/connectors',
@@ -304,6 +318,20 @@ declare module '@tanstack/react-router' {
       path: '/connectors'
       fullPath: '/connectors'
       preLoaderRoute: typeof AuthenticatedConnectorsImport
+      parentRoute: typeof AuthenticatedRouteImport
+    }
+    '/_authenticated/features': {
+      id: '/_authenticated/features'
+      path: '/features'
+      fullPath: '/features'
+      preLoaderRoute: typeof AuthenticatedFeaturesImport
+      parentRoute: typeof AuthenticatedRouteImport
+    }
+    '/_authenticated/how-it-works': {
+      id: '/_authenticated/how-it-works'
+      path: '/how-it-works'
+      fullPath: '/how-it-works'
+      preLoaderRoute: typeof AuthenticatedHowItWorksImport
       parentRoute: typeof AuthenticatedRouteImport
     }
     '/(auth)/forgot-password': {
@@ -488,6 +516,8 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedConnectorsRoute: typeof AuthenticatedConnectorsRoute
+  AuthenticatedFeaturesRoute: typeof AuthenticatedFeaturesRoute
+  AuthenticatedHowItWorksRoute: typeof AuthenticatedHowItWorksRoute
   AuthenticatedIndexLazyRoute: typeof AuthenticatedIndexLazyRoute
   AuthenticatedBimViewerUtIfcViewerSelectionRoute: typeof AuthenticatedBimViewerUtIfcViewerSelectionRoute
   AuthenticatedBimViewerUtGeometrySceneViewcubeRoute: typeof AuthenticatedBimViewerUtGeometrySceneViewcubeRoute
@@ -508,6 +538,8 @@ interface AuthenticatedRouteRouteChildren {
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedConnectorsRoute: AuthenticatedConnectorsRoute,
+  AuthenticatedFeaturesRoute: AuthenticatedFeaturesRoute,
+  AuthenticatedHowItWorksRoute: AuthenticatedHowItWorksRoute,
   AuthenticatedIndexLazyRoute: AuthenticatedIndexLazyRoute,
   AuthenticatedBimViewerUtIfcViewerSelectionRoute:
     AuthenticatedBimViewerUtIfcViewerSelectionRoute,
@@ -545,6 +577,8 @@ export interface FileRoutesByFullPath {
   '/500': typeof errors500LazyRoute
   '/sign-in': typeof authSignInRoute
   '/connectors': typeof AuthenticatedConnectorsRoute
+  '/features': typeof AuthenticatedFeaturesRoute
+  '/how-it-works': typeof AuthenticatedHowItWorksRoute
   '/forgot-password': typeof authForgotPasswordLazyRoute
   '/sign-in-2': typeof authSignIn2LazyRoute
   '/sign-up': typeof authSignUpLazyRoute
@@ -575,6 +609,8 @@ export interface FileRoutesByTo {
   '/500': typeof errors500LazyRoute
   '/sign-in': typeof authSignInRoute
   '/connectors': typeof AuthenticatedConnectorsRoute
+  '/features': typeof AuthenticatedFeaturesRoute
+  '/how-it-works': typeof AuthenticatedHowItWorksRoute
   '/forgot-password': typeof authForgotPasswordLazyRoute
   '/sign-in-2': typeof authSignIn2LazyRoute
   '/sign-up': typeof authSignUpLazyRoute
@@ -607,6 +643,8 @@ export interface FileRoutesById {
   '/(auth)/500': typeof auth500Route
   '/(auth)/sign-in': typeof authSignInRoute
   '/_authenticated/connectors': typeof AuthenticatedConnectorsRoute
+  '/_authenticated/features': typeof AuthenticatedFeaturesRoute
+  '/_authenticated/how-it-works': typeof AuthenticatedHowItWorksRoute
   '/(auth)/forgot-password': typeof authForgotPasswordLazyRoute
   '/(auth)/sign-in-2': typeof authSignIn2LazyRoute
   '/(auth)/sign-up': typeof authSignUpLazyRoute
@@ -641,6 +679,8 @@ export interface FileRouteTypes {
     | '/500'
     | '/sign-in'
     | '/connectors'
+    | '/features'
+    | '/how-it-works'
     | '/forgot-password'
     | '/sign-in-2'
     | '/sign-up'
@@ -670,6 +710,8 @@ export interface FileRouteTypes {
     | '/500'
     | '/sign-in'
     | '/connectors'
+    | '/features'
+    | '/how-it-works'
     | '/forgot-password'
     | '/sign-in-2'
     | '/sign-up'
@@ -700,6 +742,8 @@ export interface FileRouteTypes {
     | '/(auth)/500'
     | '/(auth)/sign-in'
     | '/_authenticated/connectors'
+    | '/_authenticated/features'
+    | '/_authenticated/how-it-works'
     | '/(auth)/forgot-password'
     | '/(auth)/sign-in-2'
     | '/(auth)/sign-up'
@@ -786,6 +830,8 @@ export const routeTree = rootRoute
       "filePath": "_authenticated/route.tsx",
       "children": [
         "/_authenticated/connectors",
+        "/_authenticated/features",
+        "/_authenticated/how-it-works",
         "/_authenticated/",
         "/_authenticated/bim-viewer-ut/Ifc-viewer-selection",
         "/_authenticated/bim-viewer-ut/geometry-scene-viewcube",
@@ -812,6 +858,14 @@ export const routeTree = rootRoute
     },
     "/_authenticated/connectors": {
       "filePath": "_authenticated/connectors.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/features": {
+      "filePath": "_authenticated/features.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/how-it-works": {
+      "filePath": "_authenticated/how-it-works.tsx",
       "parent": "/_authenticated"
     },
     "/(auth)/forgot-password": {

@@ -9,7 +9,7 @@ const FeaturesSection = () => {
   return (
     <section className="px-6 md:px-10 py-20 section-wrapper text-center">
       <h2 className="text-4xl font-bold">{t("features.title")}</h2>
-      <div className="mt-10 space-y-16">
+      <div className="mt-2 space-y-4">
         <SectionWrapper>
           <FeatureCard
             icon={<FaDatabase />}

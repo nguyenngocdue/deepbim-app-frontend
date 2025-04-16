@@ -1,14 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from '@tanstack/react-router';
-import HeroSection from '../sections/HeroSection';
-import BenefitsSection from '../sections/BenefitsSection';
-import FeaturesSection from '../sections/FeaturesSection';
-import ProblemsSection from '@/sections/ProblemsSection';
-import SolutionsSection from '@/sections/SolutionsSection';
-import HowItWorksSection from '@/sections/HowItWorksSection';
-import CallToActionSection from '@/sections/CallToActionSection';
-import Footer from '@/sections/Footer';
-import SectionWrapper from '@/components/SectionWrapper';
 import { LanguageProvider } from '@/context/LanguageContext';
 import useScrollRestoration from '@/hooks/useScrollRestoration';
 import { fetchUserProfile } from '../api';
@@ -17,7 +8,6 @@ import { useAppDispatch } from '@/hooks/reduxHooks';
 import { clearUser, setCurentUser } from '@/store/slices/AuthSlice';
 import { GuestAccessPanel } from '@/components/GuestAccessPanel';
 import { useTranslation } from 'react-i18next';
-import Connectors from '@/sections/ConnectorMain';
 import ConnectorHeading from '@/sections/ConnectorHeading';
 import ConnectorMain from '@/sections/ConnectorMain';
 

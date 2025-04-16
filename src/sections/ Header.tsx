@@ -20,9 +20,8 @@ const Header = () => {
 
   return (
     <header
-      className={`fixed top-0 left-0 w-full backdrop-blur-md shadow-md z-50 text-center ${
-        theme === "dark" ? "bg-gray-900 text-white" : "bg-white bg-opacity-80 text-black"
-      }`}
+      className={`fixed top-0 left-0 w-full backdrop-blur-md shadow-md z-50 text-center ${theme === "dark" ? "bg-gray-900 text-white" : "bg-white bg-opacity-80 text-black"
+        }`}
     >
       <div className="flex justify-between items-center px-10 py-1">
         {/* Logo */}
@@ -34,30 +33,28 @@ const Header = () => {
         <div className="flex items-center gap-4">
           <nav className="hidden md:flex gap-4">
             <a
-              className={`text-sm font-medium hover:${
-                theme === "dark" ? "text-green-400" : "text-secondary-700"
-              } cursor-pointer transition-colors hidden md:block`}
+              href="/connectors"
+              className={`text-sm font-medium hover:${theme === "dark" ? "text-green-400" : "text-secondary-700"
+                } cursor-pointer transition-colors hidden md:block`}
             >
               {t("navbar.connect")}
             </a>
             <a
-              className={`text-sm font-medium hover:${
-                theme === "dark" ? "text-green-400" : "text-secondary-700"
-              } cursor-pointer transition-colors hidden md:block`}
-            >
-              {t("navbar.features")}
+              href="/features"
+              className={`text-sm font-medium hover:${theme === "dark" ? "text-green-400" : "text-secondary-700"
+                } cursor-pointer transition-colors hidden md:block`}
+            > {t("navbar.features")}
             </a>
             <a
-              className={`text-sm font-medium hover:${
-                theme === "dark" ? "text-green-400" : "text-secondary-700"
-              } cursor-pointer transition-colors hidden md:block`}
+              href="/how-it-works"
+              className={`text-sm font-medium hover:${theme === "dark" ? "text-green-400" : "text-secondary-700"
+                } cursor-pointer transition-colors hidden md:block`}
             >
               {t("navbar.how_it_works")}
             </a>
             <a
-              className={`text-sm font-medium hover:${
-                theme === "dark" ? "text-green-400" : "text-secondary-700"
-              } cursor-pointer transition-colors hidden md:block`}
+              className={`text-sm font-medium hover:${theme === "dark" ? "text-green-400" : "text-secondary-700"
+                } cursor-pointer transition-colors hidden md:block`}
             >
               {t("navbar.contact")}
             </a>
