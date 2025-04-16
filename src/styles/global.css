@@ -162,7 +162,6 @@ header .switcher-button {
 .section-wrapper {
   background: var(--section-bg);
   color: var(--section-text);
-  padding: 2rem;
 }
 
 footer {

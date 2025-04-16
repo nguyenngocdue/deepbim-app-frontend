@@ -71,7 +71,7 @@ const HeroSection = () => {
         </div>
       </motion.div>
       <div className="w-full md:w-1/2 flex justify-center">
-        <AnimatedBorderImage3 imgUrl="https://viralution.io/app.png" />
+        <AnimatedBorderImage3 imgUrl="https://viralution.io/app.png" alt="3D" />
       </div>
     </motion.section>
   );

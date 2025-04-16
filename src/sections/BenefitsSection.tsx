@@ -8,7 +8,7 @@ const cardVariants = {
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
-    transition: { delay: i * 0.2, duration: 0.6, ease: "easeOut" },
+    transition: { delay: i * 0.15, duration: 0.6, ease: "easeOut" },
   }),
 };
 
@@ -17,21 +17,48 @@ const BenefitsSection = () => {
 
   return (
     <motion.section
-      className="px-6 md:px-10 py-20  text-center"
+      className="px-4 sm:px-6 md:px-10 lg:px-16 py-12 sm:py-16 md:py-20 text-center"
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 1, ease: "easeOut" }}
     >
-      <h2 className="text-4xl font-bold">{t("benefits.title")}</h2>
-      <p className="mt-4 text-gray-600">{t("benefits.description")}</p>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-10 auto-rows-fr">
+      <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold">
+        {t("benefits.title")}
+      </h2>
+      <p className="mt-3 sm:mt-4 text-sm sm:text-base md:text-lg text-gray-600">
+        {t("benefits.description")}
+      </p>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8 mt-6 sm:mt-8 md:mt-10 auto-rows-fr">
         {[
-          { icon: <FaCubes />, title: t("benefits.items.visualization.title"), desc: t("benefits.items.visualization.desc") },
-          { icon: <FaShieldAlt />, title: t("benefits.items.data_ownership.title"), desc: t("benefits.items.data_ownership.desc") },
-          { icon: <FaDatabase />, title: t("benefits.items.bim_utilization.title"), desc: t("benefits.items.bim_utilization.desc") },
+          {
+            icon: <FaCubes />,
+            title: t("benefits.items.visualization.title"),
+            desc: t("benefits.items.visualization.desc"),
+          },
+          {
+            icon: <FaShieldAlt />,
+            title: t("benefits.items.data_ownership.title"),
+            desc: t("benefits.items.data_ownership.desc"),
+          },
+          {
+            icon: <FaDatabase />,
+            title: t("benefits.items.bim_utilization.title"),
+            desc: t("benefits.items.bim_utilization.desc"),
+          },
         ].map((item, index) => (
-          <motion.div key={index} custom={index} variants={cardVariants} initial="hidden" animate="visible" className="h-full">
-            <BenefitCard icon={item.icon} title={item.title} description={item.desc} />
+          <motion.div
+            key={index}
+            custom={index}
+            variants={cardVariants}
+            initial="hidden"
+            animate="visible"
+            className="h-full"
+          >
+            <BenefitCard
+              icon={item.icon}
+              title={item.title}
+              description={item.desc}
+            />
           </motion.div>
         ))}
       </div>

@@ -3,11 +3,12 @@ import { motion } from "framer-motion";
 
 interface AnimatedBorderImageProps {
   imgUrl: string;
+  className: string,
   alt: string;
 }
 
 
-const AnimatedBorderImage3 = ({imgUrl, alt } : AnimatedBorderImageProps) => {
+const AnimatedBorderImage3 = ({imgUrl, className, alt } : AnimatedBorderImageProps) => {
   const divRef = useRef<HTMLDivElement>(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0, perimeter: 0 });
 
@@ -24,7 +25,7 @@ const AnimatedBorderImage3 = ({imgUrl, alt } : AnimatedBorderImageProps) => {
   }, []);
 
   return (
-    <div className="relative flex justify-center items-center">
+    <div className={`relative flex justify-center items-center max-w-full h-auto sm:max-w-md md:max-w-lg ${className}`}>
       {/* Image Container */}
       <div ref={divRef} className="relative">
         <img
