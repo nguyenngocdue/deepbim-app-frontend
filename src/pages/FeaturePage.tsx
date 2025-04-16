@@ -3,7 +3,6 @@ import { useRouter } from '@tanstack/react-router';
 import { LanguageProvider } from '@/context/LanguageContext';
 import useScrollRestoration from '@/hooks/useScrollRestoration';
 import { fetchUserProfile } from '../api';
-import Header from '@/sections/ Header';
 import { useAppDispatch } from '@/hooks/reduxHooks';
 import { clearUser, setCurentUser } from '@/store/slices/AuthSlice';
 import { GuestAccessPanel } from '@/components/GuestAccessPanel';
@@ -15,6 +14,7 @@ import HeroSection from '@/sections/HeroSection';
 import HowItWorksSection from '@/sections/HowItWorksSection';
 import CallToActionSection from '@/sections/CallToActionSection';
 import Footer from '@/sections/Footer';
+import Header from '@/sections/ Header';
 
 interface UserProfile {
   id: number;
@@ -30,6 +30,7 @@ const FeaturePage: React.FC = () => {
   const [user, setUser] = useState<UserProfile | null>(null);
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
+
   useEffect(() => {
     async function loadUserProfile() {
       const token = localStorage.getItem('access_token');
@@ -53,10 +54,10 @@ const FeaturePage: React.FC = () => {
   }, [dispatch]);
 
   return (
-    <div className="max-h-screen">
+    <div className="min-h-screen flex flex-col">
       <LanguageProvider>
         <Header />
-        <div className='realative'>
+        <main className="flex-1 pt-16 md:pt-20 pb-16 md:pb-0">
           {!user && (
             <GuestAccessPanel
               message={t("panel_alert.message")}
@@ -65,18 +66,18 @@ const FeaturePage: React.FC = () => {
               dismissable
             />
           )}
-        </div>
-        <HeroSection />
-        <SectionWrapper>
-          <BenefitsSection />
-        </SectionWrapper>
-        <SectionWrapper>
-          <FeaturesSection />
-        </SectionWrapper>
-        <SectionWrapper>
-          <HowItWorksSection />
-        </SectionWrapper>
-        <CallToActionSection />
+          <HeroSection />
+          <SectionWrapper>
+            <BenefitsSection />
+          </SectionWrapper>
+          <SectionWrapper>
+            <FeaturesSection />
+          </SectionWrapper>
+          <SectionWrapper>
+            <HowItWorksSection />
+          </SectionWrapper>
+          <CallToActionSection />
+        </main>
         <Footer />
       </LanguageProvider>
     </div>

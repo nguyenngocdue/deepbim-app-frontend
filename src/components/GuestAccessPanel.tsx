@@ -10,8 +10,8 @@ interface GuestAccessPanelProps {
 }
 
 export const GuestAccessPanel = ({
-  message = 'You are currently browsing as a guest. Log in to access all features.',
-  actionText = 'Sign In',
+  message = 'Bạn đang dùng chế độ khách. Đăng nhập để truy cập các chức năng cao cấp.',
+  actionText = 'Đăng nhập',
   onAction,
   dismissable = false,
 }: GuestAccessPanelProps) => {
@@ -25,27 +25,27 @@ export const GuestAccessPanel = ({
     if (!isLoggedIn && !toastShown) {
       setTimeout(() => {
         toast.custom((t) => (
-          <div className="w-full bg-blue-50 border border-blue-200 px-4 py-3 text-sm text-blue-900 rounded-md shadow-md flex items-start justify-between gap-4">
-            <div className="flex items-start gap-2">
-              <Info className="w-4 h-4 mt-[2px] text-blue-500" />
-              <span className="text-sm leading-relaxed font-semibold">
+          <div className="w-full max-w-[calc(100vw-1rem)] mx-auto bg-blue-50 border border-blue-200 px-2 py-2 text-blue-900 rounded-md shadow-md flex flex-col items-start gap-2">
+            <div className="flex items-start gap-1.5 flex-1">
+              <Info className="w-3.5 h-3.5 mt-0.5 text-blue-500 flex-shrink-0" />
+              <span className="text-xs leading-relaxed font-semibold break-words">
                 {message}
               </span>
             </div>
-            <div className="flex gap-1 items-end flex-1">
+            <div className="flex gap-1.5 items-center w-full">
               <button
                 onClick={() => {
                   onAction?.();
-                  toast.dismiss(t); // tắt khi người dùng nhấn
+                  toast.dismiss(t);
                 }}
-                className="text-sm font-medium text-white bg-blue-500 px-4 py-1 rounded hover:bg-blue-600 transition text-nowrap"
+                className="text-xs font-medium text-white bg-blue-500 px-2 py-1 rounded hover:bg-blue-600 transition text-nowrap"
               >
-                {actionText}
+                {actionText} {/* Đăng nhập */}
               </button>
               {dismissable && (
                 <button
                   onClick={() => toast.dismiss(t)}
-                  className="text-blue-600 text-lg hover:opacity-75 -mt-1"
+                  className="text-blue-600 text-sm hover:opacity-75"
                 >
                   ×
                 </button>
@@ -53,7 +53,8 @@ export const GuestAccessPanel = ({
             </div>
           </div>
         ), {
-          duration: Infinity, // 👈 Không tự tắt
+          duration: Infinity,
+          className: 'mt-16 mb-16', // Avoid overlap with header and bottom nav
         });
         setToastShown(true);
         setIsAuthenticated(false);
