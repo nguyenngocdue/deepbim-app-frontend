@@ -13,6 +13,7 @@ const HeroSection = () => {
   const [isSmallScreen, setIsSmallScreen] = useState(false);
 
   const subtitle = useMemo(() => t("hero.subtitle") || "", [t, language]);
+  const subtitleClasses = CLASS_NAME_DEFAULT.CLASS_NAME_6;
 
   // Detect screen size to disable TypeAnimation on small screens
   useEffect(() => {
@@ -49,7 +50,7 @@ const HeroSection = () => {
                 wrapper="span"
                 speed={40}
                 repeat={Infinity}
-                className="subtitle text-green-500"
+                className={`subtitle text-green-500 ${subtitleClasses}`}
               />
             )
           )}
