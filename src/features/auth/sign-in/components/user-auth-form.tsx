@@ -17,6 +17,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { PasswordInput } from '@/components/password-input';
 import { FaGoogle } from 'react-icons/fa';
+import { LogoWord } from '@/components/LogoWord';
 
 type UserAuthFormProps = HTMLAttributes<HTMLDivElement>;
 
@@ -92,8 +93,11 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
           <div className="grid gap-4">
             {/* Tích hợp h1 và p */}
             <div className="flex flex-col space-y-2 text-left">
+              <div className='m-auto pb-2'>
+                <LogoWord/>
+              </div>
               <h1 className="text-2xl font-semibold tracking-tight text-white">
-                Login
+                Sign In
               </h1>
               <p className="text-sm text-gray-300">
                 Enter your email and password below <br />

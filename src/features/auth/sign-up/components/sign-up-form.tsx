@@ -223,6 +223,7 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
           </div>
         </form>
       </Form>
+      
     </div>
   )
 }
