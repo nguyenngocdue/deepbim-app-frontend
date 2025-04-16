@@ -5,6 +5,15 @@ import LanguageDetector from "i18next-browser-languagedetector";
 const resources = {
   en: {
     translation: {
+      contact_us:{
+        title: 'Contact Us',
+        subtitle: "We’re always happy to hear from you. Whether you have a question, need assistance, or want to share feedback, our team is ready to support you. Feel free to connect with us through any of the channels below.",
+        contact_info: {
+          phone: "+84 339 001 600",
+          email: "deepbim@gmail.com",
+          address: "HO CHI MINH CITY, VietNam"
+        }
+      },
       connector: {
         title: 'Connectors',
         subtitle: "Bridge your design tools with Viralution by uploading BIM models through our dedicated connectors.",
@@ -146,6 +155,15 @@ const resources = {
 
   vi: {
     translation: {
+      contact_us: {
+        title: 'Liên hệ với chúng tôi',
+        subtitle: "Chúng tôi luôn sẵn sàng lắng nghe bạn. Dù bạn có câu hỏi, cần hỗ trợ hay muốn đóng góp ý kiến, đội ngũ của chúng tôi luôn ở đây để đồng hành cùng bạn. Đừng ngần ngại liên hệ qua bất kỳ kênh nào bên dưới.",
+        contact_info: {
+          phone: "+84 339 001 600",
+          email: "deepbim@gmail.com",
+          address: "TP. Hồ Chí Minh, Việt Nam"
+        }
+      },      
       connector: {
         title: 'Trình Kết nối',
         subtitle: "Kết nối các công cụ thiết kế của bạn với Viralution bằng cách tải mô hình BIM thông qua các trình kết nối chuyên dụng.",

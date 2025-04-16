@@ -8,9 +8,9 @@ const Footer = () => {
       <div className="container mx-auto flex flex-col md:flex-row items-center justify-between px-6">
         <p className="text-sm">© 2025 {t("footer.copyright")}</p>
         <nav className="flex gap-6 text-sm mt-2 md:mt-0">
-          <a href="/terms" className="hover:text-gray-900">{t("footer.terms")}</a>
-          <a href="/privacy" className="hover:text-gray-900">{t("footer.privacy")}</a>
-          <a href="/contact" className="hover:text-gray-900">{t("footer.contact")}</a>
+          <a href="/" className="text-primary hover">{t("footer.terms")}</a>
+          <a href="/" className="text-primary hover">{t("footer.privacy")}</a>
+          <a href="/contact-us" className="text-primary hover">{t("footer.contact")}</a>
         </nav>
       </div>
     </footer>

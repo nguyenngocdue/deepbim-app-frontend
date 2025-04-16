@@ -53,6 +53,7 @@ const Header = () => {
               {t("navbar.how_it_works")}
             </a>
             <a
+              href="/contact-us"
               className={`text-sm font-medium hover:${theme === "dark" ? "text-green-400" : "text-secondary-700"
                 } cursor-pointer transition-colors hidden md:block`}
             >

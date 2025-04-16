@@ -16,6 +16,7 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated/route'
 import { Route as AuthenticatedHowItWorksImport } from './routes/_authenticated/how-it-works'
 import { Route as AuthenticatedFeaturesImport } from './routes/_authenticated/features'
+import { Route as AuthenticatedContactUsImport } from './routes/_authenticated/contact-us'
 import { Route as AuthenticatedConnectorsImport } from './routes/_authenticated/connectors'
 import { Route as authSignInImport } from './routes/(auth)/sign-in'
 import { Route as auth500Import } from './routes/(auth)/500'
@@ -146,6 +147,12 @@ const AuthenticatedHowItWorksRoute = AuthenticatedHowItWorksImport.update({
 const AuthenticatedFeaturesRoute = AuthenticatedFeaturesImport.update({
   id: '/features',
   path: '/features',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+
+const AuthenticatedContactUsRoute = AuthenticatedContactUsImport.update({
+  id: '/contact-us',
+  path: '/contact-us',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 
@@ -318,6 +325,13 @@ declare module '@tanstack/react-router' {
       path: '/connectors'
       fullPath: '/connectors'
       preLoaderRoute: typeof AuthenticatedConnectorsImport
+      parentRoute: typeof AuthenticatedRouteImport
+    }
+    '/_authenticated/contact-us': {
+      id: '/_authenticated/contact-us'
+      path: '/contact-us'
+      fullPath: '/contact-us'
+      preLoaderRoute: typeof AuthenticatedContactUsImport
       parentRoute: typeof AuthenticatedRouteImport
     }
     '/_authenticated/features': {
@@ -516,6 +530,7 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedConnectorsRoute: typeof AuthenticatedConnectorsRoute
+  AuthenticatedContactUsRoute: typeof AuthenticatedContactUsRoute
   AuthenticatedFeaturesRoute: typeof AuthenticatedFeaturesRoute
   AuthenticatedHowItWorksRoute: typeof AuthenticatedHowItWorksRoute
   AuthenticatedIndexLazyRoute: typeof AuthenticatedIndexLazyRoute
@@ -538,6 +553,7 @@ interface AuthenticatedRouteRouteChildren {
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedConnectorsRoute: AuthenticatedConnectorsRoute,
+  AuthenticatedContactUsRoute: AuthenticatedContactUsRoute,
   AuthenticatedFeaturesRoute: AuthenticatedFeaturesRoute,
   AuthenticatedHowItWorksRoute: AuthenticatedHowItWorksRoute,
   AuthenticatedIndexLazyRoute: AuthenticatedIndexLazyRoute,
@@ -577,6 +593,7 @@ export interface FileRoutesByFullPath {
   '/500': typeof errors500LazyRoute
   '/sign-in': typeof authSignInRoute
   '/connectors': typeof AuthenticatedConnectorsRoute
+  '/contact-us': typeof AuthenticatedContactUsRoute
   '/features': typeof AuthenticatedFeaturesRoute
   '/how-it-works': typeof AuthenticatedHowItWorksRoute
   '/forgot-password': typeof authForgotPasswordLazyRoute
@@ -609,6 +626,7 @@ export interface FileRoutesByTo {
   '/500': typeof errors500LazyRoute
   '/sign-in': typeof authSignInRoute
   '/connectors': typeof AuthenticatedConnectorsRoute
+  '/contact-us': typeof AuthenticatedContactUsRoute
   '/features': typeof AuthenticatedFeaturesRoute
   '/how-it-works': typeof AuthenticatedHowItWorksRoute
   '/forgot-password': typeof authForgotPasswordLazyRoute
@@ -643,6 +661,7 @@ export interface FileRoutesById {
   '/(auth)/500': typeof auth500Route
   '/(auth)/sign-in': typeof authSignInRoute
   '/_authenticated/connectors': typeof AuthenticatedConnectorsRoute
+  '/_authenticated/contact-us': typeof AuthenticatedContactUsRoute
   '/_authenticated/features': typeof AuthenticatedFeaturesRoute
   '/_authenticated/how-it-works': typeof AuthenticatedHowItWorksRoute
   '/(auth)/forgot-password': typeof authForgotPasswordLazyRoute
@@ -679,6 +698,7 @@ export interface FileRouteTypes {
     | '/500'
     | '/sign-in'
     | '/connectors'
+    | '/contact-us'
     | '/features'
     | '/how-it-works'
     | '/forgot-password'
@@ -710,6 +730,7 @@ export interface FileRouteTypes {
     | '/500'
     | '/sign-in'
     | '/connectors'
+    | '/contact-us'
     | '/features'
     | '/how-it-works'
     | '/forgot-password'
@@ -742,6 +763,7 @@ export interface FileRouteTypes {
     | '/(auth)/500'
     | '/(auth)/sign-in'
     | '/_authenticated/connectors'
+    | '/_authenticated/contact-us'
     | '/_authenticated/features'
     | '/_authenticated/how-it-works'
     | '/(auth)/forgot-password'
@@ -830,6 +852,7 @@ export const routeTree = rootRoute
       "filePath": "_authenticated/route.tsx",
       "children": [
         "/_authenticated/connectors",
+        "/_authenticated/contact-us",
         "/_authenticated/features",
         "/_authenticated/how-it-works",
         "/_authenticated/",
@@ -858,6 +881,10 @@ export const routeTree = rootRoute
     },
     "/_authenticated/connectors": {
       "filePath": "_authenticated/connectors.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/contact-us": {
+      "filePath": "_authenticated/contact-us.tsx",
       "parent": "/_authenticated"
     },
     "/_authenticated/features": {
