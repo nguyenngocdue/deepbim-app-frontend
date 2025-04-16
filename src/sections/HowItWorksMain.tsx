@@ -63,7 +63,7 @@ const HowItWorksMain = () => {
         </motion.div>
 
         {/* Right: Graph */}
-        <div className="md:col-span-7 flex justify-center">
+        <div className="md:col-span-7 flex justify-start">
           <div className="w-full max-w-[480px]">
             <ForceGraph />
           </div>
