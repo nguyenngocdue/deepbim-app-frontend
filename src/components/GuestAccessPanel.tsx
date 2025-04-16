@@ -25,14 +25,14 @@ export const GuestAccessPanel = ({
     if (!isLoggedIn && !toastShown) {
       setTimeout(() => {
         toast.custom((t) => (
-          <div className="w-full max-w-[calc(100vw-1rem)] mx-auto bg-blue-50 border border-blue-200 px-2 py-2 text-blue-900 rounded-md shadow-md flex flex-col items-start gap-2">
-            <div className="flex items-start gap-1.5 flex-1">
+          <div className=" max-w-[calc(100vw-1rem)] mx-auto bg-blue-50 border border-blue-200 px-2 py-2 text-blue-900 rounded-md shadow-md flex gap-2">
+            <div className="flex items-start gap-1.5">
               <Info className="w-3.5 h-3.5 mt-0.5 text-blue-500 flex-shrink-0" />
               <span className="text-xs leading-relaxed font-semibold break-words">
                 {message}
               </span>
             </div>
-            <div className="flex gap-1.5 items-center w-full">
+            <div className="flex gap-1.5 items-center">
               <button
                 onClick={() => {
                   onAction?.();
