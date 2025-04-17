@@ -92,6 +92,8 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const handleGoogleLogin = async (credentialResponse: any) => {
     setIsLoading(true);
     setError('');
+
+    console.log(credentialResponse);
   
     try {
       const apiUrl = import.meta.env.VITE_API_BASE_URL;
@@ -100,6 +102,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       if (!credential) {
         throw new Error('Google login failed: missing credential');
       }
+
   
       const response = await fetch(`${apiUrl}/auth/google/token`, {
         method: 'POST',
@@ -108,22 +111,21 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         },
         body: JSON.stringify({ credential }),
       });
-  
+      
+      console.log("credential",credential, response);
+      
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message || 'Google login failed');
       }
-  
+      
       const result = await response.json();
-  
       if (!result.access_token || !result.refresh_token) {
         throw new Error('Invalid response from server: Missing tokens');
-      }
-  
+      }  
       // Lưu token
       localStorage.setItem('access_token', result.access_token);
       localStorage.setItem('refresh_token', result.refresh_token);
-  
       // Navigate tới home
       await navigate({ to: '/' });
     } catch (err) {
