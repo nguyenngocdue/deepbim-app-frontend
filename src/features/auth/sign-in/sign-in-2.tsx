@@ -30,7 +30,7 @@ export default function SignIn2() {
           </blockquote>
         </div>
       </div>
-      <div className='lg:p-8'>
+      <div className='lg:p-8  h-full bg-behind'>
         <div className='mx-auto flex w-full flex-col justify-center space-y-2 sm:w-[350px]'>
           <UserAuthForm />
           <p className='px-8 text-center text-sm text-muted-foreground'>

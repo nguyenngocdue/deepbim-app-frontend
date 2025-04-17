@@ -24,8 +24,8 @@ export function ProfileDropdown() {
 
   const username = user?.username || 'guest'
   const email = user?.email || 'anonymous'
-  const avatarUrl =
-    user?.picture || `https://api.dicebear.com/7.x/adventurer/svg?seed=${username}`
+  const avatarUrl: string =
+  String(user?.picture || `https://api.dicebear.com/7.x/adventurer/svg?seed=${username}`)
 
   const getInitials = (name: string) =>
     name
