@@ -19,6 +19,7 @@ import { Route as AuthenticatedFeaturesImport } from './routes/_authenticated/fe
 import { Route as AuthenticatedContactUsImport } from './routes/_authenticated/contact-us'
 import { Route as AuthenticatedConnectorsImport } from './routes/_authenticated/connectors'
 import { Route as authSignInImport } from './routes/(auth)/sign-in'
+import { Route as authCallbackImport } from './routes/(auth)/callback'
 import { Route as auth500Import } from './routes/(auth)/500'
 import { Route as ExampleModelIfcIndexImport } from './routes/example-model/ifc/index'
 import { Route as AuthenticatedViewerIndexImport } from './routes/_authenticated/viewer/index'
@@ -168,6 +169,12 @@ const authSignInRoute = authSignInImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const authCallbackRoute = authCallbackImport.update({
+  id: '/(auth)/callback',
+  path: '/callback',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const auth500Route = auth500Import.update({
   id: '/(auth)/500',
   path: '/500',
@@ -311,6 +318,13 @@ declare module '@tanstack/react-router' {
       path: '/500'
       fullPath: '/500'
       preLoaderRoute: typeof auth500Import
+      parentRoute: typeof rootRoute
+    }
+    '/(auth)/callback': {
+      id: '/(auth)/callback'
+      path: '/callback'
+      fullPath: '/callback'
+      preLoaderRoute: typeof authCallbackImport
       parentRoute: typeof rootRoute
     }
     '/(auth)/sign-in': {
@@ -591,6 +605,7 @@ const AuthenticatedRouteRouteWithChildren =
 export interface FileRoutesByFullPath {
   '': typeof AuthenticatedRouteRouteWithChildren
   '/500': typeof errors500LazyRoute
+  '/callback': typeof authCallbackRoute
   '/sign-in': typeof authSignInRoute
   '/connectors': typeof AuthenticatedConnectorsRoute
   '/contact-us': typeof AuthenticatedContactUsRoute
@@ -624,6 +639,7 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '/500': typeof errors500LazyRoute
+  '/callback': typeof authCallbackRoute
   '/sign-in': typeof authSignInRoute
   '/connectors': typeof AuthenticatedConnectorsRoute
   '/contact-us': typeof AuthenticatedContactUsRoute
@@ -659,6 +675,7 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/(auth)/500': typeof auth500Route
+  '/(auth)/callback': typeof authCallbackRoute
   '/(auth)/sign-in': typeof authSignInRoute
   '/_authenticated/connectors': typeof AuthenticatedConnectorsRoute
   '/_authenticated/contact-us': typeof AuthenticatedContactUsRoute
@@ -696,6 +713,7 @@ export interface FileRouteTypes {
   fullPaths:
     | ''
     | '/500'
+    | '/callback'
     | '/sign-in'
     | '/connectors'
     | '/contact-us'
@@ -728,6 +746,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/500'
+    | '/callback'
     | '/sign-in'
     | '/connectors'
     | '/contact-us'
@@ -761,6 +780,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/_authenticated'
     | '/(auth)/500'
+    | '/(auth)/callback'
     | '/(auth)/sign-in'
     | '/_authenticated/connectors'
     | '/_authenticated/contact-us'
@@ -797,6 +817,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   auth500Route: typeof auth500Route
+  authCallbackRoute: typeof authCallbackRoute
   authSignInRoute: typeof authSignInRoute
   authForgotPasswordLazyRoute: typeof authForgotPasswordLazyRoute
   authSignIn2LazyRoute: typeof authSignIn2LazyRoute
@@ -812,6 +833,7 @@ export interface RootRouteChildren {
 const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   auth500Route: auth500Route,
+  authCallbackRoute: authCallbackRoute,
   authSignInRoute: authSignInRoute,
   authForgotPasswordLazyRoute: authForgotPasswordLazyRoute,
   authSignIn2LazyRoute: authSignIn2LazyRoute,
@@ -836,6 +858,7 @@ export const routeTree = rootRoute
       "children": [
         "/_authenticated",
         "/(auth)/500",
+        "/(auth)/callback",
         "/(auth)/sign-in",
         "/(auth)/forgot-password",
         "/(auth)/sign-in-2",
@@ -875,6 +898,9 @@ export const routeTree = rootRoute
     },
     "/(auth)/500": {
       "filePath": "(auth)/500.tsx"
+    },
+    "/(auth)/callback": {
+      "filePath": "(auth)/callback.tsx"
     },
     "/(auth)/sign-in": {
       "filePath": "(auth)/sign-in.tsx"

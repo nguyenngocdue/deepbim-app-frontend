@@ -18,6 +18,7 @@ import { Input } from '@/components/ui/input';
 import { PasswordInput } from '@/components/password-input';
 import { FaGoogle } from 'react-icons/fa';
 import { LogoWord } from '@/components/LogoWord';
+import { GoogleLogin } from '@react-oauth/google';
 
 type UserAuthFormProps = HTMLAttributes<HTMLDivElement>;
 
@@ -31,6 +32,7 @@ const formSchema = z.object({
     .min(1, { message: 'Please enter your password' })
     .min(7, { message: 'Password must be at least 7 characters long' }),
 });
+
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const [isLoading, setIsLoading] = useState(false);
@@ -86,6 +88,54 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     }
   }
 
+
+  const handleGoogleLogin = async (credentialResponse: any) => {
+    setIsLoading(true);
+    setError('');
+  
+    try {
+      const apiUrl = import.meta.env.VITE_API_BASE_URL;
+      const credential = credentialResponse?.credential;
+
+      if (!credential) {
+        throw new Error('Google login failed: missing credential');
+      }
+  
+      const response = await fetch(`${apiUrl}/auth/google/token`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ credential }),
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Google login failed');
+      }
+  
+      const result = await response.json();
+  
+      if (!result.access_token || !result.refresh_token) {
+        throw new Error('Invalid response from server: Missing tokens');
+      }
+  
+      // Lưu token
+      localStorage.setItem('access_token', result.access_token);
+      localStorage.setItem('refresh_token', result.refresh_token);
+  
+      // Navigate tới home
+      await navigate({ to: '/' });
+    } catch (err) {
+      console.error('Google login error:', err);
+      const errorMessage =
+        err instanceof Error ? err.message : 'Google login failed';
+      setError(errorMessage);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className={cn('grid gap-8', className)} {...props}>
       <Form {...form}>
@@ -94,10 +144,10 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
             {/* Tích hợp h1 và p */}
             <div className="flex flex-col space-y-2 text-left">
               <div className='m-auto pb-2'>
-                <LogoWord/>
+                <LogoWord />
               </div>
               <h1 className="text-2xl font-semibold tracking-tight text-white">
-                Sign In
+                Sign in
               </h1>
               <p className="text-sm text-gray-300">
                 Enter your email and password below <br />
@@ -167,7 +217,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               className="mt-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow-lg hover:shadow-xl"
               disabled={isLoading}
             >
-              {isLoading ? 'Logging in...' : 'Login'}
+              {isLoading ? 'Sigining in...' : 'Sign In'}
             </Button>
 
             {/* Phân cách "Or continue with" */}
@@ -192,14 +242,39 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               >
                 <IconBrandGithub className="h-5 w-5 mr-2" /> GitHub
               </Button>
-              <Button
+
+
+              {/* <Button
                 variant="outline"
                 className="w-full rounded-lg border-gray-600 bg-gray-800 text-gray-200 hover:bg-gray-700 hover:text-white transition-all duration-300 shadow-sm hover:shadow-md"
                 type="button"
                 disabled={isLoading}
               >
                 <FaGoogle className="h-5 w-5 mr-2" /> Google
-              </Button>
+              </Button> */}
+
+              <GoogleLogin
+                onSuccess={handleGoogleLogin}
+                onError={() => {
+                  setError('Google login failed');
+                  setIsLoading(false);
+                }}
+                render={(renderProps) => (
+                  <Button
+                    variant="outline"
+                    className="w-full ..."
+                    type="button"
+                    disabled={isLoading || renderProps.disabled}
+                    onClick={renderProps.onClick}
+                  >
+                    <FaGoogle className="h-5 w-5 mr-2" /> Google
+                  </Button>
+                )}
+              />
+
+
+
+
             </div>
 
             {/* Liên kết Sign Up */}
