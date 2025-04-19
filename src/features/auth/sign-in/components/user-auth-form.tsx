@@ -112,7 +112,6 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         body: JSON.stringify({ credential }),
       });
       
-      console.log("credential",credential, response);
       
       if (!response.ok) {
         const errorData = await response.json();
@@ -126,6 +125,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       // Lưu token
       localStorage.setItem('access_token', result.access_token);
       localStorage.setItem('refresh_token', result.refresh_token);
+      console.log("localStorage",localStorage);
       // Navigate tới home
       await navigate({ to: '/' });
     } catch (err) {
