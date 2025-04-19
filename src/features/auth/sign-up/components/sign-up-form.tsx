@@ -20,8 +20,8 @@ import { Input } from '@/components/ui/input'
 import { PasswordInput } from '@/components/password-input'
 import { useNavigate } from '@tanstack/react-router'
 import api from '@/lib/AxiosInstance'
-
-type SignUpFormProps = HTMLAttributes<HTMLDivElement>
+import { GoogleLogin, CredentialResponse } from '@react-oauth/google'
+import { useGoogleLoginHandler } from '@/hooks/useGoogleLogin'
 
 const formSchema = z
   .object({
@@ -44,8 +44,7 @@ const formSchema = z
     path: ['confirmPassword'],
   })
 
-export function SignUpForm({ className, ...props }: SignUpFormProps) {
-  const [isLoading, setIsLoading] = useState(false)
+export function SignUpForm({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
   const navigate = useNavigate()
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -77,7 +76,7 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
       if (apiErrors && typeof apiErrors === 'object') {
         for (const key in apiErrors) {
           if (form.getValues().hasOwnProperty(key)) {
-            form.setError(key as typeof formSchema.shape, {
+            form.setError(key as keyof typeof formSchema.shape, {
               message: apiErrors[key],
             })
           }
@@ -100,25 +99,22 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
     }
   }
 
+  const { isLoading, error, handleGoogleLogin } = useGoogleLoginHandler()
+
   return (
     <div className={cn('grid gap-6 text-slate-300', className)} {...props}>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="text-left">
-          <div className='grid gap-4'>
-
+          <div className="grid gap-4">
             {/* Username */}
             <FormField
               control={form.control}
-              name='username'
+              name="username"
               render={({ field }) => (
-                <FormItem className='text-left'>
-                  <FormLabel className='text-sm text-left'>Username</FormLabel>
+                <FormItem>
+                  <FormLabel>Username</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder='username'
-                      className='bg-[#161B22] border border-slate-600 text-slate-100 focus-visible:ring-indigo-500'
-                      {...field}
-                    />
+                    <Input placeholder="username" className="bg-[#161B22] border border-slate-600 text-slate-100" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -128,16 +124,12 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
             {/* Email */}
             <FormField
               control={form.control}
-              name='email'
+              name="email"
               render={({ field }) => (
-                <FormItem className='text-left'>
-                  <FormLabel className='text-sm text-left'>Email</FormLabel>
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder='name@example.com'
-                      className='bg-[#161B22] border border-slate-600 text-slate-100 focus-visible:ring-indigo-500'
-                      {...field}
-                    />
+                    <Input placeholder="name@example.com" className="bg-[#161B22] border border-slate-600 text-slate-100" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -147,16 +139,12 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
             {/* Password */}
             <FormField
               control={form.control}
-              name='password'
+              name="password"
               render={({ field }) => (
-                <FormItem className='text-left'>
-                  <FormLabel className='text-sm text-left'>Password</FormLabel>
+                <FormItem>
+                  <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <PasswordInput
-                      placeholder='********'
-                      className='bg-[#161B22] border border-slate-600 text-slate-100 focus-visible:ring-indigo-500'
-                      {...field}
-                    />
+                    <PasswordInput placeholder="********" className="bg-[#161B22] border border-slate-600 text-slate-100" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -166,16 +154,12 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
             {/* Confirm Password */}
             <FormField
               control={form.control}
-              name='confirmPassword'
+              name="confirmPassword"
               render={({ field }) => (
-                <FormItem className='text-left'>
-                  <FormLabel className='text-sm text-left'>Confirm Password</FormLabel>
+                <FormItem>
+                  <FormLabel>Confirm Password</FormLabel>
                   <FormControl>
-                    <PasswordInput
-                      placeholder='********'
-                      className='bg-[#161B22] border border-slate-600 text-slate-100 focus-visible:ring-indigo-500'
-                      {...field}
-                    />
+                    <PasswordInput placeholder="********" className="bg-[#161B22] border border-slate-600 text-slate-100" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -183,47 +167,42 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
             />
 
             <Button
-              className='mt-2 w-full bg-gradient-to-r from-indigo-500 to-blue-500 text-white hover:opacity-90'
+              className="mt-2 w-full bg-gradient-to-r from-indigo-500 to-blue-500 text-white"
               disabled={isLoading}
             >
               {isLoading ? 'Creating...' : 'Create Account'}
             </Button>
 
-            {/* Social login divider */}
-            <div className='relative my-4'>
-              <div className='absolute inset-0 flex items-center'>
-                <span className='w-full border-t border-slate-700' />
+            {/* Divider */}
+            <div className="relative my-4">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t border-slate-700" />
               </div>
-              <div className='relative flex justify-center text-xs uppercase'>
-                <span className='bg-[#0d1117] px-2 text-slate-500'>
-                  OR CONTINUE WITH
-                </span>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-[#0d1117] px-2 text-slate-500">OR CONTINUE WITH</span>
               </div>
             </div>
 
-            {/* Social Buttons */}
-            <div className='flex items-center gap-2'>
+            <div className="flex items-center gap-2">
               <Button
-                variant='outline'
-                className='w-full border-slate-600 bg-[#161B22] text-slate-100 hover:bg-slate-800'
-                type='button'
+                variant="outline"
+                className="w-full border-slate-600 bg-[#161B22] text-slate-100"
+                type="button"
                 disabled={isLoading}
               >
-                <IconBrandGithub className='h-4 w-4' /> GitHub
+                <IconBrandGithub className="h-4 w-4" /> GitHub
               </Button>
-              <Button
-                variant='outline'
-                className='w-full border-slate-600 bg-[#161B22] text-slate-100 hover:bg-slate-800'
-                type='button'
-                disabled={isLoading}
-              >
-                <FaGoogle className='h-4 w-4' /> Google
-              </Button>
+
+              <GoogleLogin
+                onSuccess={handleGoogleLogin}
+                onError={() => {
+                  handleGoogleLogin({ credential: '' }) // hoặc tạo 1 function `handleGoogleError()`
+                }}
+              />
             </div>
           </div>
         </form>
       </Form>
-      
     </div>
   )
 }

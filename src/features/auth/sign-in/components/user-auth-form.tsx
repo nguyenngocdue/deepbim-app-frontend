@@ -19,6 +19,7 @@ import { PasswordInput } from '@/components/password-input';
 import { FaGoogle } from 'react-icons/fa';
 import { LogoWord } from '@/components/LogoWord';
 import { GoogleLogin } from '@react-oauth/google';
+import { useGoogleLoginHandler } from '@/hooks/useGoogleLogin';
 
 type UserAuthFormProps = HTMLAttributes<HTMLDivElement>;
 
@@ -35,9 +36,8 @@ const formSchema = z.object({
 
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
   const { navigate } = useRouter();
+  const { isLoading, error, handleGoogleLogin } = useGoogleLoginHandler()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -48,8 +48,6 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   });
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
-    setIsLoading(true);
-    setError('');
     try {
       const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/auth/login`, {
         method: 'POST',
@@ -76,7 +74,6 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     } catch (err) {
       console.error('Login error:', err);
       const errorMessage = err instanceof Error ? err.message : 'Something went wrong';
-      setError(errorMessage);
 
       if (errorMessage.toLowerCase().includes('email')) {
         form.setError('email', { message: errorMessage });
@@ -84,62 +81,11 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         form.setError('password', { message: errorMessage });
       }
     } finally {
-      setIsLoading(false);
     }
   }
 
-
-  const handleGoogleLogin = async (credentialResponse: any) => {
-    setIsLoading(true);
-    setError('');
-
-    console.log(credentialResponse);
-  
-    try {
-      const apiUrl = import.meta.env.VITE_API_BASE_URL;
-      const credential = credentialResponse?.credential;
-
-      if (!credential) {
-        throw new Error('Google login failed: missing credential');
-      }
-
-  
-      const response = await fetch(`${apiUrl}/auth/google/token`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ credential }),
-      });
-      
-      
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Google login failed');
-      }
-      
-      const result = await response.json();
-      if (!result.access_token || !result.refresh_token) {
-        throw new Error('Invalid response from server: Missing tokens');
-      }  
-      // Lưu token
-      localStorage.setItem('access_token', result.access_token);
-      localStorage.setItem('refresh_token', result.refresh_token);
-      console.log("localStorage",localStorage);
-      // Navigate tới home
-      await navigate({ to: '/' });
-    } catch (err) {
-      console.error('Google login error:', err);
-      const errorMessage =
-        err instanceof Error ? err.message : 'Google login failed';
-      setError(errorMessage);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   return (
-    <div className={cn('grid gap-8 h-full', className)} {...props}>
+    <div className={cn('grid gap-8 h-full bg-behind w-full', className)} {...props}>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="grid gap-4">
@@ -148,10 +94,10 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               <div className='m-auto pb-2'>
                 <LogoWord />
               </div>
-              <h1 className="text-2xl font-semibold tracking-tight text-white">
+              <h1 className="text-2xl font-semibold tracking-tight text-50">
                 Sign in
               </h1>
-              <p className="text-sm text-gray-300">
+              <p className="text-sm text-50">
                 Enter your email and password below <br />
                 to log into your account
               </p>
@@ -197,7 +143,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                     </FormLabel>
                     <Link
                       to="/forgot-password"
-                      className="text-sm font-medium text-gray-300 hover:text-blue-400 transition-colors duration-200"
+                      className="text-sm font-medium text-50 hover:text-blue-400 transition-colors duration-200"
                     >
                       Forgot password?
                     </Link>
@@ -258,20 +204,8 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               <GoogleLogin
                 onSuccess={handleGoogleLogin}
                 onError={() => {
-                  setError('Google login failed');
-                  setIsLoading(false);
+                  handleGoogleLogin({ credential: '' }) // hoặc tạo 1 function `handleGoogleError()`
                 }}
-                render={(renderProps) => (
-                  <Button
-                    variant="outline"
-                    className="w-full ..."
-                    type="button"
-                    disabled={isLoading || renderProps.disabled}
-                    onClick={renderProps.onClick}
-                  >
-                    <FaGoogle className="h-5 w-5 mr-2" /> Google
-                  </Button>
-                )}
               />
 
 
