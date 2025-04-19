@@ -1,73 +1,66 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 import { Info } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { IoMdCloseCircle } from 'react-icons/io';
 
 interface GuestAccessPanelProps {
   message?: string;
   actionText?: string;
   onAction?: () => void;
-  className?: string;
   dismissable?: boolean;
 }
 
 export const GuestAccessPanel = ({
-  message = 'You are currently browsing as a guest. Log in to access all features.',
-  actionText = 'Sign In',
+  message = 'Bạn đang dùng chế độ khách. Đăng nhập để truy cập các chức năng cao cấp.',
+  actionText = 'Đăng nhập',
   onAction,
-  className,
   dismissable = false,
 }: GuestAccessPanelProps) => {
-  const [visible, setVisible] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const [toastShown, setToastShown] = useState(false);
 
   useEffect(() => {
-    const checkAuthStatus = () => {
-      const accessToken = localStorage.getItem('access_token');
-      const isLoggedIn = !!accessToken;
+    const accessToken = localStorage.getItem('access_token');
+    const isLoggedIn = !!accessToken;
 
-      if (!isLoggedIn) {
-        setTimeout(() => {
-          setVisible(true);
-          setIsAuthenticated(false);
-        }, 5000);
-      }
-    };
+    if (!isLoggedIn && !toastShown) {
+      setTimeout(() => {
+        toast.custom((t) => (
+          <div className=" max-w-[calc(100vw-1rem)] mx-auto bg-blue-50 border border-blue-200 px-2 py-2 text-blue-900 rounded-md shadow-md flex gap-2">
+            <div className="flex items-start gap-1.5">
+              <Info className="w-3.5 h-3.5 mt-0.5 text-blue-500 flex-shrink-0" />
+              <span className="text-xs leading-relaxed font-semibold break-words">
+                {message}
+              </span>
+            </div>
+            <div className="flex gap-1.5 items-center">
+              <button
+                onClick={() => {
+                  onAction?.();
+                  toast.dismiss(t);
+                }}
+                className="text-xs font-medium text-white bg-blue-500 px-2 py-1 rounded hover:bg-blue-600 transition text-nowrap"
+              >
+                {actionText} {/* Đăng nhập */}
+              </button>
+              {dismissable && (
+                <button
+                  onClick={() => toast.dismiss(t)}
+                  className="text-blue-600 text-sm hover:opacity-75"
+                >
+                  ×
+                </button>
+              )}
+            </div>
+          </div>
+        ), {
+          duration: Infinity,
+          className: 'mt-16 mb-16', // Avoid overlap with header and bottom nav
+        });
+        setToastShown(true);
+        setIsAuthenticated(false);
+      }, 5000);
+    }
+  }, [toastShown, onAction, actionText, message, dismissable]);
 
-    checkAuthStatus();
-  }, []);
-
-  if (!visible || isAuthenticated) return null;
-
-  return (
-    <div
-      className={cn(
-        'bg-blue-50 border border-blue-200 px-4 py-2 text-sm text-blue-900 flex justify-between items-center shadow-sm rounded-md animate-fadeIn',
-        className
-      )}
-    >
-      <div className="flex items-center gap-2">
-        <Info className="w-4 h-4 text-blue-500" />
-        <span>{message}</span>
-      </div>
-      <div className="flex items-center gap-2">
-        {onAction && (
-          <button
-            onClick={onAction}
-            className="px-3 py-1 text-sm font-medium text-white bg-blue-500 rounded hover:bg-blue-600 transition duration-300"
-          >
-            {actionText}
-          </button>
-        )}
-        {dismissable && (
-          <button
-            onClick={() => setVisible(false)}
-            className="text-xl text-blue-700 hover:opacity-75 transition duration-300"
-          >
-            <IoMdCloseCircle />
-          </button>
-        )}
-      </div>
-    </div>
-  );
+  return null;
 };

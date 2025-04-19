@@ -9,7 +9,7 @@ interface BenefitCardProps {
 const BenefitCard = ({ icon, title, description }: BenefitCardProps) => {
   return (
     <motion.div
-      className="relative p-6 bg-white shadow-lg rounded-lg flex flex-col items-center text-center transition-all overflow-hidden h-full border border-transparent"
+      className="relative p-6 bg-white shadow-lg shadow-zinc-600 rounded-lg flex flex-col items-center text-center transition-all overflow-hidden h-full border border-transparent "
       whileHover={{
         scale: 1.05, // Slight zoom effect on hover
         borderColor: "#22c55e", // Green border on hover
@@ -28,7 +28,7 @@ const BenefitCard = ({ icon, title, description }: BenefitCardProps) => {
 
       {/* Title with Underline Effect */}
       <motion.div className="relative mt-4">
-        <h4 className="text-xl font-bold transition-all">{title}</h4>
+        <h4 className="text-xl font-bold transition-all text-zinc-700">{title}</h4>
 
         {/* Underline Animation */}
         <motion.div

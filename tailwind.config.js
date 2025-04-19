@@ -4,8 +4,8 @@ import { fonts } from './src/config/fonts'
 
 /** @type {import('tailwindcss').Config} */
 export default {
-	darkMode: ['class'],
-	content: ['./index.html', './src/**/*.{ts,tsx,js,jsx}'],
+	darkMode: 'class',
+	content: ['./public/index.html', './src/**/*.{ts,tsx,js,jsx}'],
 	safelist: fonts.map((font) => `font-${font}`),
 	theme: {
 		container: {
@@ -27,6 +27,10 @@ export default {
 					"0%": { transform: "rotate(0deg)" },
 					"100%": { transform: "rotate(360deg)" },
 				},
+				slideIn: {
+					'0%': { transform: 'translateX(100%)', opacity: '0' },
+					'100%': { transform: 'translateX(0)', opacity: '1' },
+				  },
 			},
 
 
@@ -180,6 +184,7 @@ export default {
 				'spin-slow': 'spinSlow 2s linear infinite',
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
+				'slide-in': 'slideIn 0.7s ease-out',
 			}
 		}
 	},

@@ -11,7 +11,7 @@ interface ProblemCardProps {
 const ProblemCard = ({ icon, title, description, color }: ProblemCardProps) => {
   return (
     <motion.div
-      className="relative bg-white p-6 rounded-lg shadow-lg text-center flex flex-col items-center transition-transform overflow-hidden"
+      className="relative bg-white p-6 rounded-lg shadow-lg  text-center flex flex-col items-center transition-transform overflow-hidden"
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       whileHover={{

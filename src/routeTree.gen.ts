@@ -14,7 +14,12 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated/route'
+import { Route as AuthenticatedHowItWorksImport } from './routes/_authenticated/how-it-works'
+import { Route as AuthenticatedFeaturesImport } from './routes/_authenticated/features'
+import { Route as AuthenticatedContactUsImport } from './routes/_authenticated/contact-us'
+import { Route as AuthenticatedConnectorsImport } from './routes/_authenticated/connectors'
 import { Route as authSignInImport } from './routes/(auth)/sign-in'
+import { Route as authCallbackImport } from './routes/(auth)/callback'
 import { Route as auth500Import } from './routes/(auth)/500'
 import { Route as ExampleModelIfcIndexImport } from './routes/example-model/ifc/index'
 import { Route as AuthenticatedViewerIndexImport } from './routes/_authenticated/viewer/index'
@@ -134,9 +139,39 @@ const authForgotPasswordLazyRoute = authForgotPasswordLazyImport
     import('./routes/(auth)/forgot-password.lazy').then((d) => d.Route),
   )
 
+const AuthenticatedHowItWorksRoute = AuthenticatedHowItWorksImport.update({
+  id: '/how-it-works',
+  path: '/how-it-works',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+
+const AuthenticatedFeaturesRoute = AuthenticatedFeaturesImport.update({
+  id: '/features',
+  path: '/features',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+
+const AuthenticatedContactUsRoute = AuthenticatedContactUsImport.update({
+  id: '/contact-us',
+  path: '/contact-us',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+
+const AuthenticatedConnectorsRoute = AuthenticatedConnectorsImport.update({
+  id: '/connectors',
+  path: '/connectors',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+
 const authSignInRoute = authSignInImport.update({
   id: '/(auth)/sign-in',
   path: '/sign-in',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const authCallbackRoute = authCallbackImport.update({
+  id: '/(auth)/callback',
+  path: '/callback',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -285,12 +320,47 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof auth500Import
       parentRoute: typeof rootRoute
     }
+    '/(auth)/callback': {
+      id: '/(auth)/callback'
+      path: '/callback'
+      fullPath: '/callback'
+      preLoaderRoute: typeof authCallbackImport
+      parentRoute: typeof rootRoute
+    }
     '/(auth)/sign-in': {
       id: '/(auth)/sign-in'
       path: '/sign-in'
       fullPath: '/sign-in'
       preLoaderRoute: typeof authSignInImport
       parentRoute: typeof rootRoute
+    }
+    '/_authenticated/connectors': {
+      id: '/_authenticated/connectors'
+      path: '/connectors'
+      fullPath: '/connectors'
+      preLoaderRoute: typeof AuthenticatedConnectorsImport
+      parentRoute: typeof AuthenticatedRouteImport
+    }
+    '/_authenticated/contact-us': {
+      id: '/_authenticated/contact-us'
+      path: '/contact-us'
+      fullPath: '/contact-us'
+      preLoaderRoute: typeof AuthenticatedContactUsImport
+      parentRoute: typeof AuthenticatedRouteImport
+    }
+    '/_authenticated/features': {
+      id: '/_authenticated/features'
+      path: '/features'
+      fullPath: '/features'
+      preLoaderRoute: typeof AuthenticatedFeaturesImport
+      parentRoute: typeof AuthenticatedRouteImport
+    }
+    '/_authenticated/how-it-works': {
+      id: '/_authenticated/how-it-works'
+      path: '/how-it-works'
+      fullPath: '/how-it-works'
+      preLoaderRoute: typeof AuthenticatedHowItWorksImport
+      parentRoute: typeof AuthenticatedRouteImport
     }
     '/(auth)/forgot-password': {
       id: '/(auth)/forgot-password'
@@ -473,6 +543,10 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedConnectorsRoute: typeof AuthenticatedConnectorsRoute
+  AuthenticatedContactUsRoute: typeof AuthenticatedContactUsRoute
+  AuthenticatedFeaturesRoute: typeof AuthenticatedFeaturesRoute
+  AuthenticatedHowItWorksRoute: typeof AuthenticatedHowItWorksRoute
   AuthenticatedIndexLazyRoute: typeof AuthenticatedIndexLazyRoute
   AuthenticatedBimViewerUtIfcViewerSelectionRoute: typeof AuthenticatedBimViewerUtIfcViewerSelectionRoute
   AuthenticatedBimViewerUtGeometrySceneViewcubeRoute: typeof AuthenticatedBimViewerUtGeometrySceneViewcubeRoute
@@ -492,6 +566,10 @@ interface AuthenticatedRouteRouteChildren {
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedConnectorsRoute: AuthenticatedConnectorsRoute,
+  AuthenticatedContactUsRoute: AuthenticatedContactUsRoute,
+  AuthenticatedFeaturesRoute: AuthenticatedFeaturesRoute,
+  AuthenticatedHowItWorksRoute: AuthenticatedHowItWorksRoute,
   AuthenticatedIndexLazyRoute: AuthenticatedIndexLazyRoute,
   AuthenticatedBimViewerUtIfcViewerSelectionRoute:
     AuthenticatedBimViewerUtIfcViewerSelectionRoute,
@@ -527,7 +605,12 @@ const AuthenticatedRouteRouteWithChildren =
 export interface FileRoutesByFullPath {
   '': typeof AuthenticatedRouteRouteWithChildren
   '/500': typeof errors500LazyRoute
+  '/callback': typeof authCallbackRoute
   '/sign-in': typeof authSignInRoute
+  '/connectors': typeof AuthenticatedConnectorsRoute
+  '/contact-us': typeof AuthenticatedContactUsRoute
+  '/features': typeof AuthenticatedFeaturesRoute
+  '/how-it-works': typeof AuthenticatedHowItWorksRoute
   '/forgot-password': typeof authForgotPasswordLazyRoute
   '/sign-in-2': typeof authSignIn2LazyRoute
   '/sign-up': typeof authSignUpLazyRoute
@@ -556,7 +639,12 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '/500': typeof errors500LazyRoute
+  '/callback': typeof authCallbackRoute
   '/sign-in': typeof authSignInRoute
+  '/connectors': typeof AuthenticatedConnectorsRoute
+  '/contact-us': typeof AuthenticatedContactUsRoute
+  '/features': typeof AuthenticatedFeaturesRoute
+  '/how-it-works': typeof AuthenticatedHowItWorksRoute
   '/forgot-password': typeof authForgotPasswordLazyRoute
   '/sign-in-2': typeof authSignIn2LazyRoute
   '/sign-up': typeof authSignUpLazyRoute
@@ -587,7 +675,12 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/(auth)/500': typeof auth500Route
+  '/(auth)/callback': typeof authCallbackRoute
   '/(auth)/sign-in': typeof authSignInRoute
+  '/_authenticated/connectors': typeof AuthenticatedConnectorsRoute
+  '/_authenticated/contact-us': typeof AuthenticatedContactUsRoute
+  '/_authenticated/features': typeof AuthenticatedFeaturesRoute
+  '/_authenticated/how-it-works': typeof AuthenticatedHowItWorksRoute
   '/(auth)/forgot-password': typeof authForgotPasswordLazyRoute
   '/(auth)/sign-in-2': typeof authSignIn2LazyRoute
   '/(auth)/sign-up': typeof authSignUpLazyRoute
@@ -620,7 +713,12 @@ export interface FileRouteTypes {
   fullPaths:
     | ''
     | '/500'
+    | '/callback'
     | '/sign-in'
+    | '/connectors'
+    | '/contact-us'
+    | '/features'
+    | '/how-it-works'
     | '/forgot-password'
     | '/sign-in-2'
     | '/sign-up'
@@ -648,7 +746,12 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/500'
+    | '/callback'
     | '/sign-in'
+    | '/connectors'
+    | '/contact-us'
+    | '/features'
+    | '/how-it-works'
     | '/forgot-password'
     | '/sign-in-2'
     | '/sign-up'
@@ -677,7 +780,12 @@ export interface FileRouteTypes {
     | '__root__'
     | '/_authenticated'
     | '/(auth)/500'
+    | '/(auth)/callback'
     | '/(auth)/sign-in'
+    | '/_authenticated/connectors'
+    | '/_authenticated/contact-us'
+    | '/_authenticated/features'
+    | '/_authenticated/how-it-works'
     | '/(auth)/forgot-password'
     | '/(auth)/sign-in-2'
     | '/(auth)/sign-up'
@@ -709,6 +817,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   auth500Route: typeof auth500Route
+  authCallbackRoute: typeof authCallbackRoute
   authSignInRoute: typeof authSignInRoute
   authForgotPasswordLazyRoute: typeof authForgotPasswordLazyRoute
   authSignIn2LazyRoute: typeof authSignIn2LazyRoute
@@ -724,6 +833,7 @@ export interface RootRouteChildren {
 const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   auth500Route: auth500Route,
+  authCallbackRoute: authCallbackRoute,
   authSignInRoute: authSignInRoute,
   authForgotPasswordLazyRoute: authForgotPasswordLazyRoute,
   authSignIn2LazyRoute: authSignIn2LazyRoute,
@@ -748,6 +858,7 @@ export const routeTree = rootRoute
       "children": [
         "/_authenticated",
         "/(auth)/500",
+        "/(auth)/callback",
         "/(auth)/sign-in",
         "/(auth)/forgot-password",
         "/(auth)/sign-in-2",
@@ -763,6 +874,10 @@ export const routeTree = rootRoute
     "/_authenticated": {
       "filePath": "_authenticated/route.tsx",
       "children": [
+        "/_authenticated/connectors",
+        "/_authenticated/contact-us",
+        "/_authenticated/features",
+        "/_authenticated/how-it-works",
         "/_authenticated/",
         "/_authenticated/bim-viewer-ut/Ifc-viewer-selection",
         "/_authenticated/bim-viewer-ut/geometry-scene-viewcube",
@@ -784,8 +899,27 @@ export const routeTree = rootRoute
     "/(auth)/500": {
       "filePath": "(auth)/500.tsx"
     },
+    "/(auth)/callback": {
+      "filePath": "(auth)/callback.tsx"
+    },
     "/(auth)/sign-in": {
       "filePath": "(auth)/sign-in.tsx"
+    },
+    "/_authenticated/connectors": {
+      "filePath": "_authenticated/connectors.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/contact-us": {
+      "filePath": "_authenticated/contact-us.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/features": {
+      "filePath": "_authenticated/features.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/how-it-works": {
+      "filePath": "_authenticated/how-it-works.tsx",
+      "parent": "/_authenticated"
     },
     "/(auth)/forgot-password": {
       "filePath": "(auth)/forgot-password.lazy.tsx"

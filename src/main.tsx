@@ -19,6 +19,8 @@ import "./styles/global.css";
 import "./styles/tokens.css";
 import { Provider } from 'react-redux';
 import { store } from './store';
+import { Toaster } from 'sonner';
+import { GoogleOAuthProvider } from '@react-oauth/google'
 
 console.log("VITE_API_BASE_URL from main",import.meta.env.VITE_API_BASE_URL)
 
@@ -103,15 +105,18 @@ if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement)
   root.render(
     // <StrictMode>
-    <Provider store={store}>
-      <QueryClientProvider client={queryClient}>
-        <ThemeProvider defaultTheme='light' storageKey='vite-ui-theme'>
-          <FontProvider>
-            <RouterProvider router={router} />
-          </FontProvider>
-        </ThemeProvider>
-      </QueryClientProvider>
-    </Provider>
+    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+      <Provider store={store}>
+        <QueryClientProvider client={queryClient}>
+          <ThemeProvider defaultTheme='light' storageKey='vite-ui-theme'>
+            <FontProvider>
+              <Toaster richColors closeButton />
+              <RouterProvider router={router} />
+            </FontProvider>
+          </ThemeProvider>
+        </QueryClientProvider>
+      </Provider>
+    </GoogleOAuthProvider>
     // </StrictMode>
   )
 }

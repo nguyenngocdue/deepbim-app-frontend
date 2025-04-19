@@ -17,6 +17,7 @@ import { useAppDispatch } from '@/hooks/reduxHooks';
 import { clearUser, setCurentUser } from '@/store/slices/AuthSlice';
 import { GuestAccessPanel } from '@/components/GuestAccessPanel';
 import { useTranslation } from 'react-i18next';
+import { CLASS_NAME_DEFAULT } from '@/utils/class';
 
 interface UserProfile {
   id: number;
@@ -61,46 +62,44 @@ const HomePage: React.FC = () => {
     loadUserProfile();
   }, [dispatch]);
 
-  
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="bg-behind">
       <LanguageProvider>
-        <Header/>
-        <div className='realative'>
-          {!user && (
-              <GuestAccessPanel
-                message={t("panel_alert.message")}
-                actionText={t("panel_alert.action_text")}
-                onAction={() => navigate({ to: '/sign-in' })}
-                className=" mt-14 w-full"
-                dismissable
-              />
-            )}
+        <div className={CLASS_NAME_DEFAULT.CLASS_NAME_3}>
+          <Header/>
+          <div className='realative'>
+            {!user && (
+                <GuestAccessPanel
+                  message={t("panel_alert.message")}
+                  actionText={t("panel_alert.action_text")}
+                  onAction={() => navigate({ to: '/sign-in' })}
+                  dismissable
+                />
+              )}
+          </div>
+          <HeroSection />
+          <SectionWrapper>
+            <BenefitsSection />
+          </SectionWrapper>
+
+          <SectionWrapper>
+            <FeaturesSection />
+          </SectionWrapper>
+
+          <SectionWrapper className="mb-0">
+            <ProblemsSection />
+          </SectionWrapper>
+
+          <SectionWrapper>
+            <SolutionsSection />
+          </SectionWrapper>
+
+          <SectionWrapper>
+            <HowItWorksSection />
+          </SectionWrapper>
+
         </div>
-        <HeroSection />
-        <SectionWrapper>
-          <BenefitsSection />
-        </SectionWrapper>
-
-        <SectionWrapper>
-          <FeaturesSection />
-        </SectionWrapper>
-
-        <SectionWrapper className="mb-0">
-          <ProblemsSection />
-        </SectionWrapper>
-
-        <SectionWrapper>
-          <SolutionsSection />
-        </SectionWrapper>
-
-        <SectionWrapper>
-          <HowItWorksSection />
-        </SectionWrapper>
-
-        <SectionWrapper className="mb-0">
-          <CallToActionSection />
-        </SectionWrapper>
+        <CallToActionSection />
       </LanguageProvider>
       <Footer />
     </div>

@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import SolutionCard from "@/components/SolutionCard";
+import { CLASS_NAME_DEFAULT } from "@/utils/class";
 
 const SolutionsSection = () => {
   const { t } = useTranslation();
@@ -25,15 +26,15 @@ const SolutionsSection = () => {
   ];
 
   return (
-    <section className="px-6 md:px-10 py-20 text-center  relative overflow-hidden">
+    <section className={`${CLASS_NAME_DEFAULT.CLASS_NAME_2} relative overflow-hidden`}>
       {/* Background Gradient */}
-      <h2 className="text-4xl font-extrabold text-gray-800">{t("solutions.title")}</h2>
+      <h2 className="text-4xl font-bold">{t("solutions.title")}</h2>
       <p className="mt-4 text-gray-600 max-w-xl mx-auto">{t("solutions.description")}</p>
 
       {/* Wrapper chứa Slider + Card Cố Định */}
       <div className="flex flex-col md:flex-row justify-center items-center gap-10 mt-10">
         {/* Slider Container */}
-        <div className="relative w-full max-w-2xl overflow-hidden p-10 border rounded-2xl">
+        <div className="relative w-full max-w-2xl overflow-hidden p-5 border rounded-2xl border-zinc-600 ">
           <motion.div
             className="flex gap-6"
             animate={{ x: ["0%", "-100%"] }}

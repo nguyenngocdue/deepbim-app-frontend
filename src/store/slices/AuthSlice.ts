@@ -4,6 +4,10 @@ export interface UserProfile {
   id: number
   username: string | null
   email: string
+  firstName: String
+  lastName : String
+  picture  : String
+  birthday : String
   createdAt: string
   updatedAt: string
 }

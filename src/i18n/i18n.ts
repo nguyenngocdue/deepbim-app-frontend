@@ -5,12 +5,38 @@ import LanguageDetector from "i18next-browser-languagedetector";
 const resources = {
   en: {
     translation: {
+      contact_us:{
+        title: 'Contact Us',
+        subtitle: "We’re always happy to hear from you. Whether you have a question, need assistance, or want to share feedback, our team is ready to support you. Feel free to connect with us through any of the channels below.",
+        contact_info: {
+          phone: "+84 339 001 600",
+          email: "deepbim@gmail.com",
+          address: "HO CHI MINH CITY, VietNam"
+        }
+      },
+      connector: {
+        title: 'Connectors',
+        subtitle: "Bridge your design tools with Viralution by uploading BIM models through our dedicated connectors.",
+        items: {
+          item_1: {
+            title: "Revit",
+            subtitles: "Revit Connector enables direct BIM data transfer from Autodesk Revit to Viralution, streamlining your workflow and centralizing project collaboration in the cloud."
+          },
+          item_2: {
+            title: "Tekla Structures (Coming soon)",
+            subtitles: "Tekla Connector allows you to upload detailed structural BIM models and metadata from Tekla Structures to Viralution, supporting seamless integration and data continuity."
+          },
+          item_3: {
+            title: "Archicad (Coming soon)",
+            subtitles: "With the Archicad Connector, architects and designers will be able to send BIM models and design data directly from Graphisoft Archicad to Viralution for centralized project access."
+          }
+        }
+      },      
       navbar: {
-        connect: "Connection",
+        connect: "Connectors",
         features: "Features",
         how_it_works: "How it works",
-        contact: "Contact",
-        start: "Get Started",
+        contact: "Contact Us",
         auth:"Sign In",
       },
       panel_alert: {
@@ -129,12 +155,38 @@ const resources = {
 
   vi: {
     translation: {
+      contact_us: {
+        title: 'Liên hệ với chúng tôi',
+        subtitle: "Chúng tôi luôn sẵn sàng lắng nghe bạn. Dù bạn có câu hỏi, cần hỗ trợ hay muốn đóng góp ý kiến, đội ngũ của chúng tôi luôn ở đây để đồng hành cùng bạn. Đừng ngần ngại liên hệ qua bất kỳ kênh nào bên dưới.",
+        contact_info: {
+          phone: "+84 339 001 600",
+          email: "deepbim@gmail.com",
+          address: "TP. Hồ Chí Minh, Việt Nam"
+        }
+      },      
+      connector: {
+        title: 'Trình Kết nối',
+        subtitle: "Kết nối các công cụ thiết kế của bạn với Viralution bằng cách tải mô hình BIM thông qua các trình kết nối chuyên dụng.",
+        items: {
+          item_1: {
+            title: "Revit",
+            subtitles: "Revit Connector cho phép truyền dữ liệu BIM trực tiếp từ Autodesk Revit lên Viralution, giúp tối ưu quy trình làm việc và tập trung hợp tác dự án trên nền tảng đám mây."
+          },
+          item_2: {
+            title: "Tekla Structures (Sắp ra mắt)",
+            subtitles: "Tekla Connector giúp bạn tải mô hình kết cấu chi tiết và dữ liệu từ Tekla Structures lên Viralution, hỗ trợ tích hợp liền mạch và duy trì tính liên tục của dữ liệu."
+          },
+          item_3: {
+            title: "Archicad (Sắp ra mắt)",
+            subtitles: "Với Archicad Connector, các kiến trúc sư và nhà thiết kế sẽ có thể gửi mô hình BIM và dữ liệu thiết kế trực tiếp từ Graphisoft Archicad lên Viralution để truy cập dự án tập trung."
+          }
+        }
+      },      
       navbar: {
         connect: "Trình kết nối",
         features: "Tính năng",
         how_it_works: "Cách thức hoạt động",
         contact: "Liên hệ",
-        start: "Bắt đầu",
         auth:"Đăng nhập",
       },
       panel_alert: {
