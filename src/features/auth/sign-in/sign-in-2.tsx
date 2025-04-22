@@ -4,7 +4,7 @@ import { LogoWord } from '@/components/LogoWord'
 
 export default function SignIn2() {
   return (
-    <div className=' container relative grid h-svh flex-col items-center justify-center lg:max-w-none lg:grid-cols-2 lg:px-0 w-full '>
+    <div className=' container relative grid h-svh flex-col items-center justify-center lg:max-w-none lg:grid-cols-2 lg:px-0 w-full  bg-behind'>
       <div className='relative hidden h-full flex-col bg-muted p-10 text-white lg:flex'>
         {/* Thay đổi gradient từ emerald sang blue/indigo */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#334155]" />

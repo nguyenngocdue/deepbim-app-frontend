@@ -103,7 +103,6 @@ export function SignUpForm({ className, ...props }: HTMLAttributes<HTMLDivElemen
   }
 
   const { isLoading, error, handleGoogleLogin } = useGoogleLoginHandler();
-
   const { isLoadingGitHub, errorGitHub, handleGitHubLogin } = useGitHubLoginHandler();
 
   if (error) {

@@ -96,7 +96,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   }
 
   return (
-    <div className={cn('grid gap-8 h-full bg-behind w-full', className)} {...props}>
+    <div className={cn('grid gap-8 h-full bg-behind w-full p-4', className)} {...props}>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="grid gap-4">
@@ -192,14 +192,14 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
             </div>
 
             {/* Nút GitHub và Google */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 flex-col sm:flex-row md:flex-row lg:flex-row w-full">
               <GitHubLoginButton  isLoading={isLoadingGitHub} onClick={handleGitHubLogin}/>
-              <GoogleLogin
-                onSuccess={handleGoogleLogin}
-                onError={() => {
-                  handleGoogleLogin({ credential: '' }) // hoặc tạo 1 function `handleGoogleError()`
-                }}
-              />
+              <div style={{ width: '100%' }}>
+                <GoogleLogin
+                  onSuccess={handleGoogleLogin}
+                  onError={() => handleGoogleLogin({ credential: '' })}
+                />
+              </div>
             </div>
 
             {/* Liên kết Sign Up */}
