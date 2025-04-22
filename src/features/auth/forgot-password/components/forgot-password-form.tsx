@@ -42,6 +42,7 @@ export function ForgotForm({ className }: { className?: string }) {
         body: JSON.stringify(data),
         credentials: 'include'
       })
+      console.log(res);
       if (!res.ok) {
         const errorData = await res.json()
         throw new Error(errorData.message || 'Failed to send email')
