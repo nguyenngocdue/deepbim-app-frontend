@@ -19,6 +19,7 @@ import { Route as AuthenticatedFeaturesImport } from './routes/_authenticated/fe
 import { Route as AuthenticatedContactUsImport } from './routes/_authenticated/contact-us'
 import { Route as AuthenticatedConnectorsImport } from './routes/_authenticated/connectors'
 import { Route as authSignInImport } from './routes/(auth)/sign-in'
+import { Route as authResetPasswordImport } from './routes/(auth)/reset-password'
 import { Route as authCallbackImport } from './routes/(auth)/callback'
 import { Route as auth500Import } from './routes/(auth)/500'
 import { Route as ExampleModelIfcIndexImport } from './routes/example-model/ifc/index'
@@ -166,6 +167,12 @@ const AuthenticatedConnectorsRoute = AuthenticatedConnectorsImport.update({
 const authSignInRoute = authSignInImport.update({
   id: '/(auth)/sign-in',
   path: '/sign-in',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const authResetPasswordRoute = authResetPasswordImport.update({
+  id: '/(auth)/reset-password',
+  path: '/reset-password',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -325,6 +332,13 @@ declare module '@tanstack/react-router' {
       path: '/callback'
       fullPath: '/callback'
       preLoaderRoute: typeof authCallbackImport
+      parentRoute: typeof rootRoute
+    }
+    '/(auth)/reset-password': {
+      id: '/(auth)/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof authResetPasswordImport
       parentRoute: typeof rootRoute
     }
     '/(auth)/sign-in': {
@@ -606,6 +620,7 @@ export interface FileRoutesByFullPath {
   '': typeof AuthenticatedRouteRouteWithChildren
   '/500': typeof errors500LazyRoute
   '/callback': typeof authCallbackRoute
+  '/reset-password': typeof authResetPasswordRoute
   '/sign-in': typeof authSignInRoute
   '/connectors': typeof AuthenticatedConnectorsRoute
   '/contact-us': typeof AuthenticatedContactUsRoute
@@ -640,6 +655,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/500': typeof errors500LazyRoute
   '/callback': typeof authCallbackRoute
+  '/reset-password': typeof authResetPasswordRoute
   '/sign-in': typeof authSignInRoute
   '/connectors': typeof AuthenticatedConnectorsRoute
   '/contact-us': typeof AuthenticatedContactUsRoute
@@ -676,6 +692,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/(auth)/500': typeof auth500Route
   '/(auth)/callback': typeof authCallbackRoute
+  '/(auth)/reset-password': typeof authResetPasswordRoute
   '/(auth)/sign-in': typeof authSignInRoute
   '/_authenticated/connectors': typeof AuthenticatedConnectorsRoute
   '/_authenticated/contact-us': typeof AuthenticatedContactUsRoute
@@ -714,6 +731,7 @@ export interface FileRouteTypes {
     | ''
     | '/500'
     | '/callback'
+    | '/reset-password'
     | '/sign-in'
     | '/connectors'
     | '/contact-us'
@@ -747,6 +765,7 @@ export interface FileRouteTypes {
   to:
     | '/500'
     | '/callback'
+    | '/reset-password'
     | '/sign-in'
     | '/connectors'
     | '/contact-us'
@@ -781,6 +800,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/(auth)/500'
     | '/(auth)/callback'
+    | '/(auth)/reset-password'
     | '/(auth)/sign-in'
     | '/_authenticated/connectors'
     | '/_authenticated/contact-us'
@@ -818,6 +838,7 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   auth500Route: typeof auth500Route
   authCallbackRoute: typeof authCallbackRoute
+  authResetPasswordRoute: typeof authResetPasswordRoute
   authSignInRoute: typeof authSignInRoute
   authForgotPasswordLazyRoute: typeof authForgotPasswordLazyRoute
   authSignIn2LazyRoute: typeof authSignIn2LazyRoute
@@ -834,6 +855,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   auth500Route: auth500Route,
   authCallbackRoute: authCallbackRoute,
+  authResetPasswordRoute: authResetPasswordRoute,
   authSignInRoute: authSignInRoute,
   authForgotPasswordLazyRoute: authForgotPasswordLazyRoute,
   authSignIn2LazyRoute: authSignIn2LazyRoute,
@@ -859,6 +881,7 @@ export const routeTree = rootRoute
         "/_authenticated",
         "/(auth)/500",
         "/(auth)/callback",
+        "/(auth)/reset-password",
         "/(auth)/sign-in",
         "/(auth)/forgot-password",
         "/(auth)/sign-in-2",
@@ -901,6 +924,9 @@ export const routeTree = rootRoute
     },
     "/(auth)/callback": {
       "filePath": "(auth)/callback.tsx"
+    },
+    "/(auth)/reset-password": {
+      "filePath": "(auth)/reset-password.tsx"
     },
     "/(auth)/sign-in": {
       "filePath": "(auth)/sign-in.tsx"

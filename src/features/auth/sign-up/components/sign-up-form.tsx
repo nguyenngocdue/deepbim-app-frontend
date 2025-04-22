@@ -3,7 +3,6 @@ import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 
-import { IconBrandGithub } from '@tabler/icons-react'
 
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -110,7 +109,7 @@ export function SignUpForm({ className, ...props }: HTMLAttributes<HTMLDivElemen
   }
 
   return (
-    <div className={cn('grid gap-6 text-slate-300', className)} {...props}>
+    <div className={cn('grid gap-6 pt-2 text-slate-300', className)} {...props}>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="text-left">
           <div className="grid gap-4">

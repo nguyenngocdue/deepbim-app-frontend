@@ -2,6 +2,7 @@ import { Link } from '@tanstack/react-router'
 import { Card } from '@/components/ui/card'
 import AuthLayout from '../auth-layout'
 import { ForgotForm } from './components/forgot-password-form'
+import { Separator } from '@/components/ui/separator'
 
 export default function ForgotPassword() {
   return (
@@ -16,6 +17,7 @@ export default function ForgotPassword() {
             reset your password.
           </p>
         </div>
+        <Separator orientation='horizontal' className='bg-zinc-500'/>
         <ForgotForm />
         <p className='mt-4 px-8 text-center text-sm text-muted-foreground'>
           Don't have an account?{' '}

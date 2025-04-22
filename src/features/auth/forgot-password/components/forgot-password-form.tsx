@@ -1,4 +1,4 @@
-import { HTMLAttributes, useState } from 'react'
+import { useState } from 'react'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -13,8 +13,8 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-
-type ForgotFormProps = HTMLAttributes<HTMLDivElement>
+import { toast } from 'sonner'
+import { useRouter } from '@tanstack/react-router'
 
 const formSchema = z.object({
   email: z
@@ -23,46 +23,66 @@ const formSchema = z.object({
     .email({ message: 'Invalid email address' }),
 })
 
-export function ForgotForm({ className, ...props }: ForgotFormProps) {
+export function ForgotForm({ className }: { className?: string }) {
   const [isLoading, setIsLoading] = useState(false)
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: { email: '' },
   })
 
-  function onSubmit(data: z.infer<typeof formSchema>) {
-    setIsLoading(true)
-    // eslint-disable-next-line no-console
-    console.log(data)
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    try {
+      setIsLoading(true)
+  
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/auth/forgot-password`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      })
+      if (!res.ok) {
+        const errorData = await res.json()
+        throw new Error(errorData.message || 'Failed to send email')
+      }else {
+        toast.success('A password reset link has been sent to your email.');
+        await router.navigate({ to: '/reset-password' })
+      }
+  
 
-    setTimeout(() => {
+    } catch (error) {
+      toast.error((error as Error).message)
+    } finally {
       setIsLoading(false)
-    }, 3000)
+    }
   }
 
   return (
-    <div className={cn('grid gap-6', className)} {...props}>
+    <div className={cn('grid gap-6', className)}>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className='grid gap-2'>
-            <FormField
-              control={form.control}
-              name='email'
-              render={({ field }) => (
-                <FormItem className='space-y-1'>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input placeholder='name@example.com' {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button className='mt-2' disabled={isLoading}>
-              Continue
-            </Button>
-          </div>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className='text-sm text-muted-foreground text-left block pt-2'>Email</FormLabel>
+                <FormControl>
+                  <Input
+                    type="email"
+                    placeholder="you@example.com"
+                    disabled={isLoading}
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <Button type="submit" className="w-full mt-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow-lg hover:shadow-xl" disabled={isLoading}>
+            {isLoading ? 'Sending...' : 'Send Reset Link'}
+          </Button>
         </form>
       </Form>
     </div>

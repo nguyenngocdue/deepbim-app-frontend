@@ -12,7 +12,7 @@ const ForgotPasswordForm: React.FC = () => {
       </p>
 
       <form className="space-y-4">
-        <Input type="email" label="Email Address" placeholder="Enter your email" required />
+        <Input type="email" label="Email Address" placeholder="Enter your email" required className="text-muted-foreground" />
         <Button className="w-full">Send Reset Link</Button>
       </form>
 

@@ -3,7 +3,6 @@ import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Link, useRouter } from '@tanstack/react-router';
-import { IconBrandGithub } from '@tabler/icons-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import {
@@ -24,6 +23,7 @@ import { useGitHubLoginHandler } from '@/hooks/useGiiHubLogin';
 import { fetchUserProfile } from '@/api';
 import { useAppDispatch } from '@/hooks/reduxHooks';
 import { setCurentUser, UserProfile } from '@/store/slices/AuthSlice';
+import { Separator } from '@/components/ui/separator';
 
 type UserAuthFormProps = HTMLAttributes<HTMLDivElement>;
 
@@ -108,7 +108,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               <h1 className="text-2xl font-semibold tracking-tight text-50">
                 Sign in
               </h1>
-              <p className="text-sm text-50">
+              <p className="text-sm text-muted-foreground">
                 Enter your email and password below <br />
                 to log into your account
               </p>
@@ -120,20 +120,20 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                 {error}
               </p>
             )}
-
+           <Separator orientation='horizontal' className='bg-zinc-500'/>
             {/* Trường Email */}
             <FormField
               control={form.control}
               name="email"
               render={({ field }) => (
                 <FormItem className="space-y-2">
-                  <FormLabel className="text-white font-medium text-left block">
+                  <FormLabel className=" font-medium text-left block text-muted-foreground">
                     Email
                   </FormLabel>
                   <FormControl>
                     <Input
                       placeholder="name@example.com"
-                      className="rounded-lg border-gray-600 bg-gray-800 text-white placeholder-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50 transition-all duration-300"
+                      className="rounded-lg border-gray-600 bg-gray-800  placeholder-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50 transition-all duration-300"
                       {...field}
                     />
                   </FormControl>
@@ -149,12 +149,12 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               render={({ field }) => (
                 <FormItem className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <FormLabel className="text-white font-medium text-left block">
+                    <FormLabel className=" font-medium text-left block text-muted-foreground">
                       Password
                     </FormLabel>
                     <Link
                       to="/forgot-password"
-                      className="text-sm font-medium text-50 hover:text-blue-400 transition-colors duration-200"
+                      className="text-sm  text-50 hover:text-blue-400 transition-colors duration-200 text-muted-foreground"
                     >
                       Forgot password?
                     </Link>
@@ -162,7 +162,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                   <FormControl>
                     <PasswordInput
                       placeholder="********"
-                      className="rounded-lg border-gray-600 bg-gray-800 text-white placeholder-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50 transition-all duration-300"
+                      className="rounded-lg border-gray-600 bg-gray-800 placeholder-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50 transition-all duration-300"
                       {...field}
                     />
                   </FormControl>
