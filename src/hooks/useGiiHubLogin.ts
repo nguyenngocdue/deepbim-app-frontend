@@ -10,7 +10,6 @@ export function useGitHubLoginHandler() {
     try {
       const apiUrl = import.meta.env.VITE_API_BASE_URL
       const githubOAuthURL = `${apiUrl}/auth/github`;
-
       window.location.href = githubOAuthURL;
     } catch (err) {
       console.error('GitHub redirect error:', err)

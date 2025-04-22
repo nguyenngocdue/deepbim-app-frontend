@@ -16,10 +16,14 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { PasswordInput } from '@/components/password-input';
-import { FaGoogle } from 'react-icons/fa';
 import { LogoWord } from '@/components/LogoWord';
 import { GoogleLogin } from '@react-oauth/google';
 import { useGoogleLoginHandler } from '@/hooks/useGoogleLogin';
+import { GitHubLoginButton } from '@/components/GitHubLoginButton';
+import { useGitHubLoginHandler } from '@/hooks/useGiiHubLogin';
+import { fetchUserProfile } from '@/api';
+import { useAppDispatch } from '@/hooks/reduxHooks';
+import { setCurentUser, UserProfile } from '@/store/slices/AuthSlice';
 
 type UserAuthFormProps = HTMLAttributes<HTMLDivElement>;
 
@@ -38,6 +42,8 @@ const formSchema = z.object({
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const { navigate } = useRouter();
   const { isLoading, error, handleGoogleLogin } = useGoogleLoginHandler()
+  const { isLoadingGitHub, errorGitHub, handleGitHubLogin } = useGitHubLoginHandler();
+  const dispatch = useAppDispatch();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -63,13 +69,18 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       }
 
       const result = await response.json();
-
       if (!result.access_token || !result.refresh_token) {
         throw new Error('Invalid response from server: Missing tokens');
       }
 
       localStorage.setItem('access_token', result.access_token);
       localStorage.setItem('refresh_token', result.refresh_token);
+
+      const userData = await fetchUserProfile();
+      if(userData.id) {
+        dispatch(setCurentUser(userData as UserProfile));
+      }
+
       await navigate({ to: '/' });
     } catch (err) {
       console.error('Login error:', err);
@@ -182,35 +193,13 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
 
             {/* Nút GitHub và Google */}
             <div className="flex items-center gap-3">
-              <Button
-                variant="outline"
-                className="w-full rounded-lg border-gray-600 bg-gray-800 text-gray-200 hover:bg-gray-700 hover:text-white transition-all duration-300 shadow-sm hover:shadow-md"
-                type="button"
-                disabled={isLoading}
-              >
-                <IconBrandGithub className="h-5 w-5 mr-2" /> GitHub
-              </Button>
-
-
-              {/* <Button
-                variant="outline"
-                className="w-full rounded-lg border-gray-600 bg-gray-800 text-gray-200 hover:bg-gray-700 hover:text-white transition-all duration-300 shadow-sm hover:shadow-md"
-                type="button"
-                disabled={isLoading}
-              >
-                <FaGoogle className="h-5 w-5 mr-2" /> Google
-              </Button> */}
-
+              <GitHubLoginButton  isLoading={isLoadingGitHub} onClick={handleGitHubLogin}/>
               <GoogleLogin
                 onSuccess={handleGoogleLogin}
                 onError={() => {
                   handleGoogleLogin({ credential: '' }) // hoặc tạo 1 function `handleGoogleError()`
                 }}
               />
-
-
-
-
             </div>
 
             {/* Liên kết Sign Up */}

@@ -22,6 +22,7 @@ import api from '@/lib/AxiosInstance'
 import { GoogleLogin, CredentialResponse } from '@react-oauth/google'
 import { useGoogleLoginHandler } from '@/hooks/useGoogleLogin'
 import { useGitHubLoginHandler } from '@/hooks/useGiiHubLogin'
+import { GitHubLoginButton } from '@/components/GitHubLoginButton'
 
 
 const formSchema = z
@@ -192,16 +193,7 @@ export function SignUpForm({ className, ...props }: HTMLAttributes<HTMLDivElemen
             </div>
 
             <div className="flex items-center gap-2">
-              <Button
-                variant="outline"
-                className="w-full border-slate-600 bg-[#161B22] text-slate-100"
-                type="button"
-                disabled={isLoading}
-                onClick={handleGitHubLogin}
-              >
-                <IconBrandGithub className="h-4 w-4" /> {isLoadingGitHub ? 'Signing in ...' : 'GitHub'}
-              </Button>
-
+              <GitHubLoginButton isLoading={isLoadingGitHub} onClick={handleGitHubLogin} />
               <GoogleLogin
                 onSuccess={handleGoogleLogin}
                 onError={() => {

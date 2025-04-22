@@ -4,10 +4,10 @@ export interface UserProfile {
   id: number
   username: string | null
   email: string
-  firstName: String
-  lastName : String
-  picture  : String
-  birthday : String
+  firstName: string
+  lastName : string
+  picture  : string
+  birthday : string
   createdAt: string
   updatedAt: string
 }
@@ -35,3 +35,4 @@ const AuthSlice = createSlice({
 
 export const { setCurentUser, clearUser } = AuthSlice.actions
 export default AuthSlice.reducer
+

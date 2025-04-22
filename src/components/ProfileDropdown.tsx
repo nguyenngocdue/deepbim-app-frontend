@@ -17,15 +17,15 @@ import { toast } from 'react-toastify'
 import { clearUser } from '@/store/slices/AuthSlice'
 
 export function ProfileDropdown() {
-  const user = useAppSelector((state) => state.auth.user)
-  const { t } = useTranslation()
-  const dispatch = useAppDispatch()
-  const { navigate } = useRouter()
+  const user = useAppSelector((state) => state.auth.user);
 
-  const username = user?.username || 'guest'
-  const email = user?.email || 'anonymous'
-  const avatarUrl: string =
-  String(user?.picture || `https://api.dicebear.com/7.x/adventurer/svg?seed=${username}`)
+  const { t } = useTranslation();
+  const dispatch = useAppDispatch();
+  const { navigate } = useRouter();
+
+  const username = user?.username || 'guest';
+  const email = user?.email || 'anonymous';
+  const avatarUrl: string = String(user?.picture || `https://api.dicebear.com/7.x/adventurer/svg?seed=${username}`);
 
   const getInitials = (name: string) =>
     name
@@ -46,6 +46,7 @@ export function ProfileDropdown() {
       )
     }
   }
+
 
   // Nếu chưa đăng nhập, hiện nút đăng nhập
   if (!user) {
@@ -81,7 +82,7 @@ export function ProfileDropdown() {
 
         <DropdownMenuGroup>
           <DropdownMenuItem asChild>
-            <Link to="/settings">Profile</Link>
+            <Link to="/">Profile</Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
 

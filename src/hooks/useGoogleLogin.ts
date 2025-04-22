@@ -1,11 +1,14 @@
 import { useState } from 'react'
 import { useNavigate } from '@tanstack/react-router'
 import { CredentialResponse } from '@react-oauth/google'
+import { useAppDispatch } from './reduxHooks'
+import { clearUser, setCurentUser } from '@/store/slices/AuthSlice'
 
 export function useGoogleLoginHandler() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
   const navigate = useNavigate()
+  const dispatch = useAppDispatch();
 
   const handleGoogleLogin = async (credentialResponse: CredentialResponse) => {
     setIsLoading(true)
@@ -38,6 +41,13 @@ export function useGoogleLoginHandler() {
 
       localStorage.setItem('access_token', result.access_token)
       localStorage.setItem('refresh_token', result.refresh_token)
+      if(result.user){
+        dispatch(setCurentUser(result.user))
+      } else {
+        dispatch(clearUser())
+        await navigate({ to: '/sign-in' })
+      }
+
       await navigate({ to: '/' })
     } catch (err) {
       console.error('Google login error:', err)

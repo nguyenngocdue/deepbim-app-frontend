@@ -1,5 +1,6 @@
 import { SunIcon } from "lucide-react";
 import LogoSection from "@/components/layout/LogoSection";
+import { useAppSelector } from "@/hooks/reduxHooks";
 
 interface HeaderProps {
   onToggleTheme: () => void;
@@ -7,6 +8,10 @@ interface HeaderProps {
 }
 
 export const Header = ({ onToggleTheme, className }: HeaderProps) => {
+   
+
+
+
   return (
     <header
       className={`fixed w-[calc(100%-1.5rem)] flex h-16 items-center gap-4 z-50 backdrop-blur-md rounded-[21px] m-3 p-3 shadow-md transition-colors ${className}`}

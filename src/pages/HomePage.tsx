@@ -36,47 +36,37 @@ const HomePage: React.FC = () => {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
 
-  useEffect(() => {
-    async function loadUserProfile() {
-      const token = localStorage.getItem('access_token');
-      if (!token) {
-        setUser(null);
-        dispatch(clearUser());
-        return;
-      }
+  // useEffect(() => {
+  //   async function loadUserProfile() {
+  //     const token = localStorage.getItem('access_token');
+  //     if (!token) {
+  //       setUser(null);
+  //       dispatch(clearUser());
+  //       return;
+  //     }
   
-      setIsLoading(true);
-      try {
-        const userData = await fetchUserProfile();
-        setUser(userData);
-        dispatch(setCurentUser(userData));
-      } catch (err: any) {
-        console.error(err.message);
-        setUser(null);
-        dispatch(clearUser());
-      } finally {
-        setIsLoading(false);
-      }
-    }
+  //     setIsLoading(true);
+  //     try {
+  //       const userData = await fetchUserProfile();
+  //       setUser(userData);
+  //       dispatch(setCurentUser(userData));
+  //     } catch (err: any) {
+  //       console.error(err.message);
+  //       setUser(null);
+  //       dispatch(clearUser());
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   }
   
-    loadUserProfile();
-  }, [dispatch]);
+  //   loadUserProfile();
+  // }, [dispatch]);
 
   return (
     <div className="bg-behind">
       <LanguageProvider>
         <div className={CLASS_NAME_DEFAULT.CLASS_NAME_3}>
           <Header/>
-          <div className='realative'>
-            {!user && (
-                <GuestAccessPanel
-                  message={t("panel_alert.message")}
-                  actionText={t("panel_alert.action_text")}
-                  onAction={() => navigate({ to: '/sign-in' })}
-                  dismissable
-                />
-              )}
-          </div>
           <HeroSection />
           <SectionWrapper>
             <BenefitsSection />
@@ -86,7 +76,7 @@ const HomePage: React.FC = () => {
             <FeaturesSection />
           </SectionWrapper>
 
-          <SectionWrapper className="mb-0">
+          <SectionWrapper>
             <ProblemsSection />
           </SectionWrapper>
 

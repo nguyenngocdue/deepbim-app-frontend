@@ -10,6 +10,7 @@ import { CiLight } from "react-icons/ci";
 import { MdOutlineDarkMode } from "react-icons/md";
 import { FaPlug, FaStar, FaQuestionCircle, FaEnvelope } from "react-icons/fa";
 import { CLASS_NAME_DEFAULT } from "@/utils/class";
+import { useAppSelector } from "@/hooks/reduxHooks";
 
 const Header = () => {
   const { t } = useTranslation();
@@ -17,6 +18,10 @@ const Header = () => {
   const { theme, setTheme } = useTheme();
   const [showBottomNav, setShowBottomNav] = useState(false);
   const [scrollTimeout, setScrollTimeout] = useState<NodeJS.Timeout | null>(null);
+
+
+  const user = useAppSelector((state) => state.auth.user);
+
 
   const toggleTheme = () => {
     setTheme(theme === "light" ? "dark" : "light");
@@ -65,6 +70,16 @@ const Header = () => {
 
   return (
     <>
+    {/* <div className='realative'>
+            {!user && (
+                <GuestAccessPanel
+                  message={t("panel_alert.message")}
+                  actionText={t("panel_alert.action_text")}
+                  onAction={() => navigate({ to: '/sign-in' })}
+                  dismissable
+                />
+              )}
+          </div> */}
       {/* Fixed Header */}
       <header
         className={` ${CLASS_NAME_DEFAULT.CLASS_NAME_3} fixed top-0 left-0 w-full z-50 backdrop-blur-md px-6 shadow-md text-center ${
