@@ -4,7 +4,6 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import { IconBrandGithub } from '@tabler/icons-react'
-import { FaGoogle } from 'react-icons/fa'
 
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -45,7 +44,8 @@ const formSchema = z
   })
 
 export function SignUpForm({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
-  const navigate = useNavigate()
+  const [isLoadingCreator, setIsLoadingCreator] = useState(false);
+  const navigate = useNavigate();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -55,10 +55,10 @@ export function SignUpForm({ className, ...props }: HTMLAttributes<HTMLDivElemen
       password: '',
       confirmPassword: '',
     },
-  })
+  });
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
-    setIsLoading(true)
+    setIsLoadingCreator(true);
     try {
       const payload = new URLSearchParams({
         email: data.email,
@@ -76,7 +76,7 @@ export function SignUpForm({ className, ...props }: HTMLAttributes<HTMLDivElemen
       if (apiErrors && typeof apiErrors === 'object') {
         for (const key in apiErrors) {
           if (form.getValues().hasOwnProperty(key)) {
-            form.setError(key as keyof typeof formSchema.shape, {
+            form.setError(key as 'username' | 'email' | 'password' | 'confirmPassword', {
               message: apiErrors[key],
             })
           }
@@ -94,12 +94,15 @@ export function SignUpForm({ className, ...props }: HTMLAttributes<HTMLDivElemen
       } else {
         alert('Signup failed! Please try again.')
       }
-    } finally {
-      setIsLoading(false)
+    }finally {
+      setIsLoadingCreator(false)
     }
   }
 
-  const { isLoading, error, handleGoogleLogin } = useGoogleLoginHandler()
+  const { isLoading, error, handleGoogleLogin } = useGoogleLoginHandler();
+  if(error) {
+    console.log(error);
+  }
 
   return (
     <div className={cn('grid gap-6 text-slate-300', className)} {...props}>
@@ -168,9 +171,9 @@ export function SignUpForm({ className, ...props }: HTMLAttributes<HTMLDivElemen
 
             <Button
               className="mt-2 w-full bg-gradient-to-r from-indigo-500 to-blue-500 text-white"
-              disabled={isLoading}
+              disabled={isLoadingCreator}
             >
-              {isLoading ? 'Creating...' : 'Create Account'}
+              {isLoadingCreator ? 'Creating...' : 'Create Account'}
             </Button>
 
             {/* Divider */}
