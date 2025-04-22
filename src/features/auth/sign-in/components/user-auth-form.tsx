@@ -192,15 +192,18 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
             </div>
 
             {/* Nút GitHub và Google */}
-            <div className="flex items-center gap-3 flex-col sm:flex-row md:flex-row lg:flex-row w-full">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-4">
               <GitHubLoginButton  isLoading={isLoadingGitHub} onClick={handleGitHubLogin}/>
               <div style={{ width: '100%' }}>
                 <GoogleLogin
+                 text="signin"
+                 locale="en"
                   onSuccess={handleGoogleLogin}
                   onError={() => handleGoogleLogin({ credential: '' })}
                 />
               </div>
             </div>
+
 
             {/* Liên kết Sign Up */}
             <div className="mt-6 text-center text-sm text-gray-400">
