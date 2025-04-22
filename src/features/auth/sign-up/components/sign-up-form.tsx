@@ -21,6 +21,8 @@ import { useNavigate } from '@tanstack/react-router'
 import api from '@/lib/AxiosInstance'
 import { GoogleLogin, CredentialResponse } from '@react-oauth/google'
 import { useGoogleLoginHandler } from '@/hooks/useGoogleLogin'
+import { useGitHubLoginHandler } from '@/hooks/useGiiHubLogin'
+
 
 const formSchema = z
   .object({
@@ -94,13 +96,16 @@ export function SignUpForm({ className, ...props }: HTMLAttributes<HTMLDivElemen
       } else {
         alert('Signup failed! Please try again.')
       }
-    }finally {
+    } finally {
       setIsLoadingCreator(false)
     }
   }
 
   const { isLoading, error, handleGoogleLogin } = useGoogleLoginHandler();
-  if(error) {
+
+  const { isLoadingGitHub, errorGitHub, handleGitHubLogin } = useGitHubLoginHandler();
+
+  if (error) {
     console.log(error);
   }
 
@@ -192,8 +197,9 @@ export function SignUpForm({ className, ...props }: HTMLAttributes<HTMLDivElemen
                 className="w-full border-slate-600 bg-[#161B22] text-slate-100"
                 type="button"
                 disabled={isLoading}
+                onClick={handleGitHubLogin}
               >
-                <IconBrandGithub className="h-4 w-4" /> GitHub
+                <IconBrandGithub className="h-4 w-4" /> {isLoadingGitHub ? 'Signing in ...' : 'GitHub'}
               </Button>
 
               <GoogleLogin
