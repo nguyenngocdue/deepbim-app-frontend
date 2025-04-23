@@ -165,6 +165,7 @@ header .switcher-button {
 .section-wrapper {
   background: var(--section-bg);
   color: var(--section-text);
+  background-color: transparent;
 }
 
 footer {

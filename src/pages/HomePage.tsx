@@ -19,34 +19,36 @@ const HomePage: React.FC = () => {
 
   return (
     <div className="bg-behind">
-          {/* <ParticlesContainer/> */}
-      <LanguageProvider>
-        <div className={CLASS_NAME_DEFAULT.CLASS_NAME_3}>
-          <Header/>
-          <HeroSection />
-          <SectionWrapper>
-            <BenefitsSection />
-          </SectionWrapper>
+      <div className="relative z-10">
+        <ParticlesContainer/>
+        <LanguageProvider>
+          <div className={CLASS_NAME_DEFAULT.CLASS_NAME_3}>
+            <Header/>
+            <HeroSection />
+            <SectionWrapper>
+              <BenefitsSection />
+            </SectionWrapper>
 
-          <SectionWrapper>
-            <FeaturesSection />
-          </SectionWrapper>
+            <SectionWrapper>
+              <FeaturesSection />
+            </SectionWrapper>
 
-          <SectionWrapper>
-            <ProblemsSection />
-          </SectionWrapper>
+            <SectionWrapper>
+              <ProblemsSection />
+            </SectionWrapper>
 
-          <SectionWrapper>
-            <SolutionsSection />
-          </SectionWrapper>
+            <SectionWrapper>
+              <SolutionsSection />
+            </SectionWrapper>
 
-          <SectionWrapper>
-            <HowItWorksSection />
-          </SectionWrapper>
+            <SectionWrapper>
+              <HowItWorksSection />
+            </SectionWrapper>
 
-        </div>
-        <CallToActionSection />
-      </LanguageProvider>
+          </div>
+          <CallToActionSection />
+        </LanguageProvider>
+      </div>
       <Footer />
     </div>
   );
