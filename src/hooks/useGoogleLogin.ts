@@ -1,62 +1,60 @@
-import { useState } from 'react'
-import { useNavigate } from '@tanstack/react-router'
-import { CredentialResponse } from '@react-oauth/google'
-import { useAppDispatch } from './reduxHooks'
-import { clearUser, setCurentUser } from '@/store/slices/AuthSlice'
+import { useState } from 'react';
+import { useNavigate } from '@tanstack/react-router';
+import { CredentialResponse } from '@react-oauth/google';
+import { useAppDispatch } from './reduxHooks';
+import { setCurentUser, clearUser } from '@/store/slices/AuthSlice';
 
 export function useGoogleLoginHandler() {
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState('')
-  const navigate = useNavigate()
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
   const handleGoogleLogin = async (credentialResponse: CredentialResponse) => {
-    setIsLoading(true)
-    setError('')
+    setIsLoading(true);
+    setError('');
+
     try {
-      const apiUrl = import.meta.env.VITE_API_BASE_URL
-      const credential = credentialResponse?.credential
-
+      const credential = credentialResponse?.credential;
       if (!credential) {
-        throw new Error('Google login failed: missing credential')
+        throw new Error('Google login failed: Missing credential');
       }
 
-      const response = await fetch(`${apiUrl}/auth/google/token`, {
+      const apiUrl = import.meta.env.VITE_API_BASE_URL;
+      const res = await fetch(`${apiUrl}/auth/google/token`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ credential }),
-      })
+      });
 
-      if (!response.ok) {
-        const errorData = await response.json()
-        throw new Error(errorData.message || 'Google login failed')
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.message || 'Google login failed');
       }
 
-      const result = await response.json()
-      if (!result.access_token || !result.refresh_token) {
-        throw new Error('Invalid response from server: Missing tokens')
+      const { access_token, refresh_token, user } = data;
+      if (!access_token || !refresh_token) {
+        throw new Error('Invalid server response: Missing tokens');
       }
 
-      localStorage.setItem('access_token', result.access_token)
-      localStorage.setItem('refresh_token', result.refresh_token)
-      if(result.user){
-        dispatch(setCurentUser(result.user))
+      localStorage.setItem('access_token', access_token);
+      localStorage.setItem('refresh_token', refresh_token);
+
+      if (user) {
+        dispatch(setCurentUser(user));
+        await navigate({ to: '/' });
       } else {
-        dispatch(clearUser())
-        await navigate({ to: '/sign-in' })
+        dispatch(clearUser());
+        await navigate({ to: '/sign-in' });
       }
-
-      await navigate({ to: '/' })
     } catch (err) {
-      console.error('Google login error:', err)
-      const errorMessage = err instanceof Error ? err.message : 'Google login failed'
-      setError(errorMessage)
+      const errorMessage = err instanceof Error ? err.message : 'Google login failed';
+      console.error('[Google Login Error]', errorMessage);
+      setError(errorMessage);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
-  return { isLoading, error, handleGoogleLogin }
+  return { isLoading, error, handleGoogleLogin };
 }

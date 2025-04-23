@@ -24,6 +24,7 @@ import { fetchUserProfile } from '@/api';
 import { useAppDispatch } from '@/hooks/reduxHooks';
 import { setCurentUser, UserProfile } from '@/store/slices/AuthSlice';
 import { Separator } from '@/components/ui/separator';
+import { GoogleLoginButton } from '@/components/GoogleLoginButton';
 
 type UserAuthFormProps = HTMLAttributes<HTMLDivElement>;
 
@@ -194,14 +195,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
             {/* Nút GitHub và Google */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-4">
               <GitHubLoginButton  isLoading={isLoadingGitHub} onClick={handleGitHubLogin}/>
-              <div style={{ width: '100%' }}>
-                <GoogleLogin
-                 text="signin"
-                 locale="en"
-                  onSuccess={handleGoogleLogin}
-                  onError={() => handleGoogleLogin({ credential: '' })}
-                />
-              </div>
+              <GoogleLoginButton />
             </div>
 
 
