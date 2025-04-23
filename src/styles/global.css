@@ -42,6 +42,8 @@ p {
   --text-hover-primary: #334155;
   --bg-behind: #ffffff;
   --text-nav: #172220;
+  --text-subtitle2: #172220;
+
 }
 
 .dark {
@@ -51,6 +53,7 @@ p {
   --header-text: #ffffff;
   --text-primary: #ffffff;  
   --text-subtitle: #000000;
+  --text-subtitle2: #9ca3af;
   --primary: #22c55e;
   --primary-hover: #16a34a;
   --border: #4b5563;
@@ -202,6 +205,11 @@ footer nav a:hover {
 .text-100 {
   color: var(--text-subtitle);
 }
+
+.text-subtitle2 {
+  color: var(--text-subtitle2);
+}
+
 
 .text-nav {
   color: var(--text-nav);
