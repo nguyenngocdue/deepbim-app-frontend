@@ -58,7 +58,7 @@ const Header = () => {
     };
   }, [scrollTimeout]);
 
-  const navLinkStyle = `text-sm font-medium cursor-pointer transition-colors`;
+  const navLinkStyle = `text-lg sm:text-sm md:text-md lg:text-md font-heading cursor-pointer transition-colors text-nav`;
   const hoverColor = theme === "dark" ? "hover:text-green-400" : "hover:text-secondary-700";
 
   const links = [
@@ -93,7 +93,7 @@ const Header = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-4">
+          <nav className="hidden md:flex items-center gap-4 ">
             {links.map((link) => (
               <a key={link.href} href={link.href} className={`${navLinkStyle} ${hoverColor}`}>
                 {link.label}

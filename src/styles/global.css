@@ -41,6 +41,7 @@ p {
   --button-outline-text: #1f2937;
   --text-hover-primary: #334155;
   --bg-behind: #ffffff;
+  --text-nav: #172220;
 }
 
 .dark {
@@ -69,6 +70,7 @@ p {
   --button-outline-text: #d1d5db;
   --text-hover-primary: #4ade80;
   --bg-behind: #020817;
+  --text-nav: #8ff1db;
 }
 
 section.hero {
@@ -199,6 +201,10 @@ footer nav a:hover {
 
 .text-100 {
   color: var(--text-subtitle);
+}
+
+.text-nav {
+  color: var(--text-nav);
 }
 
 .text-primary:hover {
