@@ -126,7 +126,7 @@ const RoomModel = () => {
       <primitive object={pcScreen.scene} position={[0, 0, 0]} />
       <primitive object={macScreen.scene} position={[0, 0, 0]} />
       <primitive object={topChair.scene} position={[0, 0, 0]} />
-      <primitive object={coffeeSteam.scene} position={[0.4, 1.0, 0.2]} />
+      {/* <primitive object={coffeeSteam.scene} position={[0, 0, 0]} /> */}
       <primitive object={elgatoLight.scene} position={[1.0, 1.1, -1.5]} />
       <primitive object={googleLeds.scene} position={[-0.5, 0.95, -0.8]} />
       <primitive object={loupedeck.scene} position={[0.2, 0.85, -1.0]} />
