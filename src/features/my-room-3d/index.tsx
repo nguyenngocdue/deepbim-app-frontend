@@ -1,4 +1,3 @@
-import React from 'react'
 import MyRoom from './components/MyRoom'
 
 const MyRoom3D = () => {

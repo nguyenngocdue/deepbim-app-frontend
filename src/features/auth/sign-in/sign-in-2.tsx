@@ -2,6 +2,7 @@ import ViteLogo from '@/assets/vite.svg'
 import { UserAuthForm } from './components/user-auth-form'
 import { LogoWord } from '@/components/LogoWord'
 import ParticlesContainer from '@/components/ParticlesContainer'
+import MyRoom from '@/features/my-room-3d/components/MyRoom'
 
 export default function SignIn2() {
   return (
@@ -14,13 +15,11 @@ export default function SignIn2() {
           <div className='relative z-20 flex items-center text-lg font-medium'>
             <LogoWord/>
           </div>
-          <img
-            src={ViteLogo}
-            className='relative m-auto'
-            width={301}
-            height={60}
-            alt='Vite'
-          />
+          {/* My room 3D */}
+          <div>
+            <MyRoom/>
+          </div>
+          
           <div className='relative z-20 mt-auto'>
             <blockquote className='space-y-2'>
               <p className='text-sm font-heading text-subtitle2'>
