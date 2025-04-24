@@ -14,10 +14,9 @@ interface ExperienceCanvasProps {
 const ExperienceCanvas = ({ showFakeLights }: ExperienceCanvasProps) => {
   return (
     <Canvas camera={{ position: [2, 5, 20], fov: 45 }} shadows>
-        {showFakeLights && <FakeLights />}
       <directionalLight position={[5, 5, 5]} intensity={1} />
       <Suspense fallback={null}>
-        <RoomModel />
+        <RoomModel/>
         {
           showFakeLights && <FakeLights/>
         }

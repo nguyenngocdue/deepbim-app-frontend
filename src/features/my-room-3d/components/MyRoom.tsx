@@ -56,7 +56,7 @@ const MyRoom: React.FC<MyRoomProps> = ({ showFakeLights = true }) => {
         />
       )}
 
-      <ExperienceCanvas showFakeLights={showFakeLights} />
+      <ExperienceCanvas showFakeLights={showLeva} />
     </div>
   )
 }
