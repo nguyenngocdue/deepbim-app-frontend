@@ -6,21 +6,15 @@ import MyRoom from '@/features/my-room-3d/components/MyRoom'
 
 export default function SignIn2() {
   return (
-    <div className='relative z-10'>
+    <div className='relative z-10 h-screen overflow-hidden'>
       <ParticlesContainer/>
-      <div className='relative grid h-svh flex-col items-center justify-center lg:max-w-none lg:grid-cols-2 lg:px-0 w-full'>
-        <div className='relative hidden h-full flex-col bg-muted p-10 text-white lg:flex bg-transparent'>
+      <div className='relative grid flex-col h-full w-full items-center justify-center lg:max-w-none lg:grid-cols-2 lg:px-0'>
+        <div className='relative h-full flex-col lg:flex'>
           {/* Thay đổi gradient từ emerald sang blue/indigo */}
-          <div className="absolute  " />
-          <div className='relative z-20 flex items-center text-lg font-medium'>
+          <div className='relative z-20 p-10 flex items-center text-lg font-medium'>
             <LogoWord/>
           </div>
-          {/* My room 3D */}
-          <div>
-            <MyRoom showFakeLights={true}/>
-          </div>
-          
-          <div className='relative z-20 mt-auto'>
+          <div className='absolute bottom-10 left-0 right-0 px-10 z-20'>
             <blockquote className='space-y-2'>
               <p className='text-sm font-heading text-subtitle2'>
                 "Deep Bim is a powerful tool for BIM professionals, providing
@@ -31,6 +25,11 @@ export default function SignIn2() {
               <footer className='text-sm'>Nissan</footer>
             </blockquote>
           </div>
+          {/* My room 3D */}
+          <div className='w-full h-hull'>
+            <MyRoom showFakeLights={true}/>
+          </div>
+          
         </div>
         <div className='lg:p-8  h-full bg-transparent'>
           <div className='mx-auto flex w-full flex-col justify-center space-y-2 sm:w-[500px]'>

@@ -12,63 +12,28 @@ import fragmentShader from './shaders/baked/fragment.glsl?raw'
 import vertexShader from './shaders/baked/vertex.glsl?raw'
 import TopChair from './TopChair'
 import Experience from './utils/Experience'
+import { useShaderMaterial } from './utils/ShaderMaterial'
+import CoffeeSteam from './CoffeeSteam'
 
 const RoomModel = () => {
   const room = useGLTF('/my-room-3d/assets/roomModel.glb')
   const pcScreen = useGLTF('/my-room-3d/assets/pcScreenModel.glb')
   const macScreen = useGLTF('/my-room-3d/assets/macScreenModel.glb')
-  const topChair = useGLTF('/my-room-3d/assets/topChairModel.glb')
-  const coffeeSteam = useGLTF('/my-room-3d/assets/coffeeSteamModel.glb')
   const elgatoLight = useGLTF('/my-room-3d/assets/elgatoLightModel.glb')
   const googleLeds = useGLTF('/my-room-3d/assets/googleHomeLedsModel.glb')
   const loupedeck = useGLTF('/my-room-3d/assets/loupedeckButtonsModel.glb')
 
 
   const groupRef = useRef<Group>(null)
-  const topChairRef = useRef<Group>(null)
-
-  const [bakedDay, bakedNight, bakedNeutral, lightMap] = useLoader(TextureLoader, [
-    '/my-room-3d/assets/bakedDay.jpg',
-    '/my-room-3d/assets/bakedNight.jpg',
-    '/my-room-3d/assets/bakedNeutral.jpg',
-    '/my-room-3d/assets/lightMap.jpg'
-  ])
-
-  useEffect(() => {
-    bakedDay.flipY = false
-    bakedNight.flipY = false
-    bakedNeutral.flipY = false
-    lightMap.flipY = false
-  }, [bakedDay, bakedNight, bakedNeutral, lightMap])
-
-  const shaderMaterial = useMemo(() => new THREE.ShaderMaterial({
-    vertexShader,
-    fragmentShader,
-    uniforms: {
-      uBakedDayTexture: { value: bakedDay },
-      uBakedNightTexture: { value: bakedNight },
-      uBakedNeutralTexture: { value: bakedNeutral },
-      uLightMapTexture: { value: lightMap },
-      uNightMix: { value: 0.67 },
-      uNeutralMix: { value: 0.0 },
-      uLightTvColor: { value: new THREE.Color('#ff115e') },
-      uLightTvStrength: { value: 1.99 },
-      uLightDeskColor: { value: new THREE.Color('#ff6700') },
-      uLightDeskStrength: { value: 1.47 },
-      uLightPcColor: { value: new THREE.Color('#0082ff') },
-      uLightPcStrength: { value: 1.47 },
-    },
-    side: THREE.DoubleSide,
-  }), [bakedDay, bakedNight, bakedNeutral, lightMap])
 
   useEffect(() => {
     room.scene.traverse((child) => {
       if ((child as THREE.Mesh).isMesh) {
         const mesh = child as THREE.Mesh
-        mesh.material = shaderMaterial
+        mesh.material = useShaderMaterial();
       }
     })
-  }, [room.scene, shaderMaterial])
+  }, [room.scene])
 
   const video1 = useMemo(() => Object.assign(document.createElement('video'), {
     src: '/my-room-3d/assets/videoStream.mp4',
@@ -98,11 +63,13 @@ const RoomModel = () => {
 
   const { xoy, xoz, yoz, posX, posY, posZ } = useLevaControls('Model Transform', {
     xoy: { value: 0.21, min: -Math.PI, max: Math.PI, step: 0.01 },
-    xoz: { value: -0.05, min: -Math.PI, max: Math.PI, step: 0.01 },
-    yoz: { value: 1.01, min: -Math.PI, max: Math.PI, step: 0.01 },
-    posX: { value: -4.49, min: -5, max: 5, step: 0.01 },
-    posY: { value: -0.01, min: -5, max: 5, step: 0.01 },
-    posZ: { value: 3.06, min: -5, max: 5, step: 0.01 },
+    xoz: { value: -0.15, min: -Math.PI, max: Math.PI, step: 0.01 },
+    yoz: { value: 1.28, min: -Math.PI, max: Math.PI, step: 0.01 },
+    posX: { value: -5.00, min: -15, max: 15, step: 0.01 },
+    posY: { value: -1.53, min: -15, max: 15, step: 0.01 },
+    posZ: { value: 1.11, min: -15, max: 15, step: 0.01 },
+  }, {
+    collapsed: true
   })
 
   useEffect(() => {
@@ -143,8 +110,8 @@ const RoomModel = () => {
       <primitive object={room.scene} />
       <primitive object={pcScreen.scene} position={[0, 0, 0]} />
       <primitive object={macScreen.scene} position={[0, 0, 0]} />
-      <TopChair time={time}/>
-      {/* <primitive object={coffeeSteam.scene} position={[0, 0, 0]} /> */}
+      <TopChair time={time} />
+      <CoffeeSteam time={time} />
       <primitive object={elgatoLight.scene} position={[1.0, 1.1, -1.5]} />
       <primitive object={googleLeds.scene} position={[-0.5, 0.95, -0.8]} />
       <primitive object={loupedeck.scene} position={[0.2, 0.85, -1.0]} />

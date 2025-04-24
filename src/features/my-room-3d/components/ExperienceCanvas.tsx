@@ -19,7 +19,7 @@ const ExperienceCanvas = ({ showFakeLights }: ExperienceCanvasProps) => {
       <Suspense fallback={null}>
         <RoomModel />
         {
-          showFakeLights && <FakeLights  visible={showFakeLights}/>
+          showFakeLights && <FakeLights/>
         }
       </Suspense>
       <OrbitControls />

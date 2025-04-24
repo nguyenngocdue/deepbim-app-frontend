@@ -1,17 +1,14 @@
 // ✅ File: src/components/FakeLights.tsx
 import * as THREE from 'three'
+import { useControls } from 'leva'
 import { useEffect } from 'react'
 import { useThree } from '@react-three/fiber'
-import { useControls } from 'leva'
 
-interface Props {
-  visible?: boolean
-}
-
-const FakeLights = ({ visible = true }: Props) => {
+const FakeLights = () => {
   const { scene } = useThree()
-
+  const config = { collapsed: true }
   const {
+    enabled,
     tvColor,
     tvStrength,
     deskColor,
@@ -21,6 +18,7 @@ const FakeLights = ({ visible = true }: Props) => {
     nightMix,
     neutralMix,
   } = useControls('Fake Lights', {
+    enabled: true,
     tvColor: '#ff115e',
     tvStrength: { value: 3.0, min: 0, max: 10, step: 0.01 },
     deskColor: '#ff6700',
@@ -29,27 +27,44 @@ const FakeLights = ({ visible = true }: Props) => {
     pcStrength: { value: 2.5, min: 0, max: 10, step: 0.01 },
     nightMix: { value: 0.67, min: 0, max: 1, step: 0.01 },
     neutralMix: { value: 0.0, min: 0, max: 1, step: 0.01 },
-  })
+  }, config)
 
   useEffect(() => {
-    if (!visible) return
+    if (!enabled) return
 
     scene.traverse((child) => {
-      if (child instanceof THREE.Mesh && child.material instanceof THREE.ShaderMaterial) {
-        child.material.uniforms.uNightMix.value = nightMix
-        child.material.uniforms.uNeutralMix.value = neutralMix
+      if (
+        child instanceof THREE.Mesh &&
+        child.material instanceof THREE.ShaderMaterial &&
+        child.material.uniforms
+      ) {
+        const uniforms = child.material.uniforms
 
-        child.material.uniforms.uLightTvColor.value.set(tvColor)
-        child.material.uniforms.uLightTvStrength.value = tvStrength
+        if (
+          uniforms.uNightMix &&
+          uniforms.uNeutralMix &&
+          uniforms.uLightTvColor &&
+          uniforms.uLightTvStrength &&
+          uniforms.uLightDeskColor &&
+          uniforms.uLightDeskStrength &&
+          uniforms.uLightPcColor &&
+          uniforms.uLightPcStrength
+        ) {
+          uniforms.uNightMix.value = nightMix
+          uniforms.uNeutralMix.value = neutralMix
 
-        child.material.uniforms.uLightDeskColor.value.set(deskColor)
-        child.material.uniforms.uLightDeskStrength.value = deskStrength
+          uniforms.uLightTvColor.value.set(tvColor)
+          uniforms.uLightTvStrength.value = tvStrength
 
-        child.material.uniforms.uLightPcColor.value.set(pcColor)
-        child.material.uniforms.uLightPcStrength.value = pcStrength
+          uniforms.uLightDeskColor.value.set(deskColor)
+          uniforms.uLightDeskStrength.value = deskStrength
+
+          uniforms.uLightPcColor.value.set(pcColor)
+          uniforms.uLightPcStrength.value = pcStrength
+        }
       }
     })
-  }, [visible, scene, tvColor, tvStrength, deskColor, deskStrength, pcColor, pcStrength, nightMix, neutralMix])
+  }, [enabled, scene, tvColor, tvStrength, deskColor, deskStrength, pcColor, pcStrength, nightMix, neutralMix])
 
   return null
 }
