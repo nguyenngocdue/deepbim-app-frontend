@@ -97,13 +97,13 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   }
 
   return (
-    <div className={cn('grid gap-8 h-full bg-behind w-full p-4', className)} {...props}>
+    <div className={cn('grid gap-8 h-full bg-behind w-full p-4 z-50 bg-transparent', className)} {...props}>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="grid gap-4">
             {/* Tích hợp h1 và p */}
             <div className="flex flex-col space-y-2 text-left">
-              <div className='m-auto pb-2'>
+              <div className='m-auto pb-2 hidden'>
                 <LogoWord />
               </div>
               <h1 className="text-2xl font-semibold tracking-tight text-50">

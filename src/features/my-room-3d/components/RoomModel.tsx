@@ -1,7 +1,7 @@
 // ✅ File: src/components/RoomModel.tsx
 import { useGLTF } from '@react-three/drei'
-import { useLoader, useFrame } from '@react-three/fiber'
-import { TextureLoader, VideoTexture, MeshBasicMaterial } from 'three'
+import { useFrame, useLoader } from '@react-three/fiber'
+import { TextureLoader, VideoTexture, MeshBasicMaterial, Group, Euler } from 'three'
 import * as THREE from 'three'
 import { useEffect, useMemo, useRef } from 'react'
 import { useControls as useLevaControls } from 'leva'
@@ -10,6 +10,8 @@ import { useControls as useLevaControls } from 'leva'
 import fragmentShader from './shaders/baked/fragment.glsl?raw'
 // @ts-ignore
 import vertexShader from './shaders/baked/vertex.glsl?raw'
+import TopChair from './TopChair'
+import Experience from './utils/Experience'
 
 const RoomModel = () => {
   const room = useGLTF('/my-room-3d/assets/roomModel.glb')
@@ -20,6 +22,10 @@ const RoomModel = () => {
   const elgatoLight = useGLTF('/my-room-3d/assets/elgatoLightModel.glb')
   const googleLeds = useGLTF('/my-room-3d/assets/googleHomeLedsModel.glb')
   const loupedeck = useGLTF('/my-room-3d/assets/loupedeckButtonsModel.glb')
+
+
+  const groupRef = useRef<Group>(null)
+  const topChairRef = useRef<Group>(null)
 
   const [bakedDay, bakedNight, bakedNeutral, lightMap] = useLoader(TextureLoader, [
     '/my-room-3d/assets/bakedDay.jpg',
@@ -43,16 +49,12 @@ const RoomModel = () => {
       uBakedNightTexture: { value: bakedNight },
       uBakedNeutralTexture: { value: bakedNeutral },
       uLightMapTexture: { value: lightMap },
-
       uNightMix: { value: 0.67 },
       uNeutralMix: { value: 0.0 },
-
       uLightTvColor: { value: new THREE.Color('#ff115e') },
       uLightTvStrength: { value: 1.99 },
-
       uLightDeskColor: { value: new THREE.Color('#ff6700') },
       uLightDeskStrength: { value: 1.47 },
-
       uLightPcColor: { value: new THREE.Color('#0082ff') },
       uLightPcStrength: { value: 1.47 },
     },
@@ -68,7 +70,6 @@ const RoomModel = () => {
     })
   }, [room.scene, shaderMaterial])
 
-  // ✅ VIDEO TEXTURES
   const video1 = useMemo(() => Object.assign(document.createElement('video'), {
     src: '/my-room-3d/assets/videoStream.mp4',
     crossOrigin: 'anonymous',
@@ -95,10 +96,23 @@ const RoomModel = () => {
   const videoMaterial1 = useMemo(() => new MeshBasicMaterial({ map: videoTexture1, toneMapped: false }), [videoTexture1])
   const videoMaterial2 = useMemo(() => new MeshBasicMaterial({ map: videoTexture2, toneMapped: false }), [videoTexture2])
 
-  const { rotationY } = useLevaControls('Model Transform', {
-    rotationY: { value: 1.13, min: -Math.PI, max: Math.PI, step: 0.01 },
+  const { xoy, xoz, yoz, posX, posY, posZ } = useLevaControls('Model Transform', {
+    xoy: { value: 0.21, min: -Math.PI, max: Math.PI, step: 0.01 },
+    xoz: { value: -0.05, min: -Math.PI, max: Math.PI, step: 0.01 },
+    yoz: { value: 1.01, min: -Math.PI, max: Math.PI, step: 0.01 },
+    posX: { value: -4.49, min: -5, max: 5, step: 0.01 },
+    posY: { value: -0.01, min: -5, max: 5, step: 0.01 },
+    posZ: { value: 3.06, min: -5, max: 5, step: 0.01 },
   })
-  
+
+  useEffect(() => {
+    if (groupRef.current) {
+      const euler = new Euler(xoy, yoz, xoz, 'XYZ')
+      groupRef.current.rotation.copy(euler)
+      groupRef.current.position.set(posX, posY, posZ)
+    }
+  }, [xoy, xoz, yoz, posX, posY, posZ])
+
   useEffect(() => {
     video1.load()
     video1.play().catch((e) => console.warn('videoStream.mp4 play failed:', e))
@@ -120,12 +134,16 @@ const RoomModel = () => {
     })
   }, [pcScreen.scene, macScreen.scene, videoMaterial1, videoMaterial2])
 
+  const experience = new Experience()
+  const time = experience.time;
+
+
   return (
-    <group rotation={[0, rotationY, 0]}>
+    <group ref={groupRef} name="room">
       <primitive object={room.scene} />
       <primitive object={pcScreen.scene} position={[0, 0, 0]} />
       <primitive object={macScreen.scene} position={[0, 0, 0]} />
-      <primitive object={topChair.scene} position={[0, 0, 0]} />
+      <TopChair time={time}/>
       {/* <primitive object={coffeeSteam.scene} position={[0, 0, 0]} /> */}
       <primitive object={elgatoLight.scene} position={[1.0, 1.1, -1.5]} />
       <primitive object={googleLeds.scene} position={[-0.5, 0.95, -0.8]} />

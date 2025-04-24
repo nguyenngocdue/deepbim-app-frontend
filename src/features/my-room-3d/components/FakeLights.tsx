@@ -1,10 +1,14 @@
 // ✅ File: src/components/FakeLights.tsx
 import * as THREE from 'three'
-import { useControls } from 'leva'
 import { useEffect } from 'react'
 import { useThree } from '@react-three/fiber'
+import { useControls } from 'leva'
 
-const FakeLights = () => {
+interface Props {
+  visible?: boolean
+}
+
+const FakeLights = ({ visible = true }: Props) => {
   const { scene } = useThree()
 
   const {
@@ -28,6 +32,8 @@ const FakeLights = () => {
   })
 
   useEffect(() => {
+    if (!visible) return
+
     scene.traverse((child) => {
       if (child instanceof THREE.Mesh && child.material instanceof THREE.ShaderMaterial) {
         child.material.uniforms.uNightMix.value = nightMix
@@ -43,7 +49,7 @@ const FakeLights = () => {
         child.material.uniforms.uLightPcStrength.value = pcStrength
       }
     })
-  }, [scene, tvColor, tvStrength, deskColor, deskStrength, pcColor, pcStrength, nightMix, neutralMix])
+  }, [visible, scene, tvColor, tvStrength, deskColor, deskStrength, pcColor, pcStrength, nightMix, neutralMix])
 
   return null
 }

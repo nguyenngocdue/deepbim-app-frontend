@@ -17,7 +17,7 @@ export default function SignIn2() {
           </div>
           {/* My room 3D */}
           <div>
-            <MyRoom/>
+            <MyRoom showFakeLights={true}/>
           </div>
           
           <div className='relative z-20 mt-auto'>

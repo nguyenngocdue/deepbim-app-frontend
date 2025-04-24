@@ -5,14 +5,22 @@ import RoomModel from './RoomModel'
 import FakeLights from './FakeLights'
 import { Suspense } from 'react'
 
-const ExperienceCanvas = () => {
+
+
+interface ExperienceCanvasProps {
+  showFakeLights: boolean;
+}
+
+const ExperienceCanvas = ({ showFakeLights }: ExperienceCanvasProps) => {
   return (
     <Canvas camera={{ position: [2, 5, 20], fov: 45 }} shadows>
-      <ambientLight intensity={0.3} />
+        {showFakeLights && <FakeLights />}
       <directionalLight position={[5, 5, 5]} intensity={1} />
       <Suspense fallback={null}>
         <RoomModel />
-        <FakeLights />
+        {
+          showFakeLights && <FakeLights  visible={showFakeLights}/>
+        }
       </Suspense>
       <OrbitControls />
     </Canvas>
