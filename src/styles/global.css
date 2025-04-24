@@ -219,3 +219,6 @@ footer nav a:hover {
   color: var(--text-hover-primary)
 }
 
+body.signin-page #leva__root {
+  display: none !important;
+}

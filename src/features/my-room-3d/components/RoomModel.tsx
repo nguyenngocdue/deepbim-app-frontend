@@ -29,7 +29,7 @@ const RoomModel = () => {
 
   
   // ✅ Dùng controls đã tách
-  const { enabled: showRoomControls, xoy, xoz, yoz, posX, posY, posZ } = useRoomModelControls()
+  const {  xoy, xoz, yoz, posX, posY, posZ } = useRoomModelControls()
 
   // ✅ Cập nhật transform group theo controls
   useEffect(() => {
@@ -41,7 +41,6 @@ const RoomModel = () => {
   }, [xoy, xoz, yoz, posX, posY, posZ])
 
   const time = new Experience().time
-
   return (
     <group ref={groupRef} name="room">
       <primitive object={room.scene} />

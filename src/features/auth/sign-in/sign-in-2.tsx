@@ -3,8 +3,17 @@ import { UserAuthForm } from './components/user-auth-form'
 import { LogoWord } from '@/components/LogoWord'
 import ParticlesContainer from '@/components/ParticlesContainer'
 import MyRoom from '@/features/my-room-3d/components/MyRoom'
+import { useEffect } from 'react'
 
 export default function SignIn2() {
+
+  useEffect(() => {
+    document.body.classList.add("signin-page")
+    return () => {
+      document.body.classList.remove("signin-page")
+    }
+  }, [])
+
   return (
     <div className='relative z-10 h-screen overflow-hidden'>
       <ParticlesContainer/>
