@@ -1,4 +1,3 @@
-import ViteLogo from '@/assets/vite.svg'
 import { UserAuthForm } from './components/user-auth-form'
 import { LogoWord } from '@/components/LogoWord'
 import ParticlesContainer from '@/components/ParticlesContainer'
@@ -20,10 +19,11 @@ export default function SignIn2() {
       <div className='relative grid flex-col h-full w-full items-center justify-center lg:max-w-none lg:grid-cols-2 lg:px-0'>
         <div className='relative h-full flex-col lg:flex'>
           {/* Thay đổi gradient từ emerald sang blue/indigo */}
-          <div className='relative z-20 p-10 flex items-center text-lg font-medium'>
+          <div className='relative z-20 p-10 flex flex-1  sm:flex-none justify-center sm:justify-start items-center text-lg font-medium '>
             <LogoWord/>
           </div>
-          <div className='absolute bottom-10 left-0 right-0 px-10 z-20'>
+          
+          <div className='absolute bottom-10 left-0 right-0 px-10 z-20 invisible sm:invisible lg:visible'>
             <blockquote className='space-y-2'>
               <p className='text-sm font-heading text-subtitle2'>
                 "Deep Bim is a powerful tool for BIM professionals, providing
@@ -35,7 +35,7 @@ export default function SignIn2() {
             </blockquote>
           </div>
           {/* My room 3D */}
-          <div className='w-full h-hull'>
+          <div className='w-full h-hull invisible sm:invisible lg:visible'>
             <MyRoom showFakeLights={true}/>
           </div>
           

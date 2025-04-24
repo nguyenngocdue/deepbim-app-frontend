@@ -29,6 +29,7 @@ const MyRoom: React.FC<MyRoomProps> = ({ showFakeLights = true }) => {
   const levaPosition = useMemo(() => ({
     x: -screenSize.width + 340,
     y: screenSize.height - 760,
+  
   }), [screenSize])
 
   return (
