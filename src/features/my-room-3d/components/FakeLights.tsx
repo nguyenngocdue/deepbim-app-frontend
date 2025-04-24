@@ -19,7 +19,7 @@ const FakeLights = () => {
     neutralMix,
   } = useControls('Fake Lights', {
     enabled: true,
-    tvColor: '#ff115e',
+    tvColor: '#22bbc7',
     tvStrength: { value: 3.0, min: 0, max: 10, step: 0.01 },
     deskColor: '#ff6700',
     deskStrength: { value: 2.5, min: 0, max: 10, step: 0.01 },
