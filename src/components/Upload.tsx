@@ -1,13 +1,14 @@
 import React, { useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store';
 
 const Upload: React.FC = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
   const [message, setMessage] = useState("");
 
-  const isLoggedIn = !!localStorage.getItem("accessToken"); 
-  console.log(isLoggedIn)
+  const isLoggedIn = useSelector((state: RootState) => !!state.auth.user)
 
   const handleButtonClick = () => {
     if (!isLoggedIn) {
