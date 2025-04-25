@@ -21,7 +21,7 @@ const ParticlesContainer: React.FC = () => {
   // Định nghĩa callback để trả về tùy chọn particles
   const particlesLoaded = useCallback(
     async (container: Container | undefined): Promise<void> => {
-      console.log("Particles container loaded", container);
+      // console.log("Particles container loaded", container);
     },
     []
   );

@@ -1,17 +1,14 @@
 import React from 'react'
 import ModelTable from './components/ModelTable';
-import BreadcrumbsWithIconAndLabel from './components/BreadcrumbsWithIconAndLabel';
-import SidebarLayout from '@/components/layout/SidebarLayout';
+import Upload from '@/components/Upload';
 
-const ProjectManangementByMe: React.FC = () => {
+const UserProjectsPage: React.FC = () => {
   return (
     <>
-      <SidebarLayout>
-        <BreadcrumbsWithIconAndLabel />
-        <ModelTable />
-      </SidebarLayout>
+            <Upload/>
+            <ModelTable />
     </>
   )
 }
 
-export default ProjectManangementByMe;
+export default UserProjectsPage;

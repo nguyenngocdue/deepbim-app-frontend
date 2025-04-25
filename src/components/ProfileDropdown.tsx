@@ -16,9 +16,7 @@ import { handleSignout } from '@/api'
 import { toast } from 'react-toastify'
 import { clearUser } from '@/store/slices/AuthSlice'
 
-export function ProfileDropdown() {
-  const user = useAppSelector((state) => state.auth.user);
-
+export function ProfileDropdown({user} : any) {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { navigate } = useRouter();

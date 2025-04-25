@@ -2,15 +2,13 @@ import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/context/LanguageContext";
 import { useTheme } from "@/context/theme-context";
-import { ProfileDropdown } from "@/components/ProfileDropdown";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import { LogoWord } from "@/components/LogoWord";
-import { CiLight } from "react-icons/ci";
-import { MdOutlineDarkMode } from "react-icons/md";
 import { FaPlug, FaStar, FaQuestionCircle, FaEnvelope } from "react-icons/fa";
 import { CLASS_NAME_DEFAULT } from "@/utils/class";
 import { useAppSelector } from "@/hooks/reduxHooks";
+import LeftHeader from "./LeftHeader";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
 
 const Header = () => {
   const { t } = useTranslation();
@@ -18,10 +16,6 @@ const Header = () => {
   const { theme, setTheme } = useTheme();
   const [showBottomNav, setShowBottomNav] = useState(false);
   const [scrollTimeout, setScrollTimeout] = useState<NodeJS.Timeout | null>(null);
-
-
-  const user = useAppSelector((state) => state.auth.user);
-
 
   const toggleTheme = () => {
     setTheme(theme === "light" ? "dark" : "light");
@@ -102,26 +96,12 @@ const Header = () => {
           </nav>
 
           {/* Actions (Always in Header) */}
-          <div className="flex items-center gap-2">
-            <Separator orientation="vertical" className="bg-zinc-500 h-4 hidden md:block" />
-            <Button
-              variant="ghost"
-              onClick={toggleLanguage}
-              className="text-sm px-1 transition icon-text-color"
-            >
-              {language.toUpperCase()}
-            </Button>
-            <Button
-              variant="ghost"
-              onClick={toggleTheme}
-              className="text-sm px-1 transition icon-text-color"
-            >
-              {theme === "light" ? <CiLight /> : <MdOutlineDarkMode />}
-            </Button>
-
-            {/* Profile dropdown */}
-            <ProfileDropdown />
-          </div>
+            <LeftHeader 
+              toggleLanguage={toggleLanguage}
+              language={language.toUpperCase()}
+              toggleTheme={toggleTheme}
+              theme={theme}
+            />
         </div>
       </header>
 

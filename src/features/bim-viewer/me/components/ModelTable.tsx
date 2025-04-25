@@ -12,11 +12,11 @@ import {
 } from "@tanstack/react-table"
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import { Pencil, Trash2, ExternalLink, ArrowUpDown } from "lucide-react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import Upload from "@/components/Upload"
 
 type Model = {
   name: string
@@ -155,17 +155,6 @@ export default function ModelTable() {
 
   return (
     <div className="space-y-4">
-      {/* Header */}
-      <div className="flex justify-between items-center">
-        <Button className="bg-green-900 hover:bg-green-800 text-white">Upload new Model</Button>
-        <Input
-          placeholder="Search model..."
-          value={globalFilter ?? ""}
-          onChange={(e) => setGlobalFilter(e.target.value)}
-          className="w-[300px]"
-        />
-      </div>
-
       {/* Table */}
       <div className="rounded-md border overflow-auto">
         <Table className="bg-slate-900 text-white border-collapse w-full">

@@ -1,14 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from '@tanstack/react-router';
 import { CredentialResponse } from '@react-oauth/google';
-import { useAppDispatch } from './reduxHooks';
-import { setCurentUser, clearUser } from '@/store/slices/AuthSlice';
 
 export function useGoogleLoginHandler() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
 
   const handleGoogleLogin = async (credentialResponse: CredentialResponse) => {
     setIsLoading(true);
@@ -25,6 +22,7 @@ export function useGoogleLoginHandler() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ credential }),
+        credentials: 'include',
       });
 
       const data = await res.json();
@@ -40,11 +38,10 @@ export function useGoogleLoginHandler() {
       localStorage.setItem('access_token', access_token);
       localStorage.setItem('refresh_token', refresh_token);
 
+
       if (user) {
-        dispatch(setCurentUser(user));
         await navigate({ to: '/' });
       } else {
-        dispatch(clearUser());
         await navigate({ to: '/sign-in' });
       }
     } catch (err) {
