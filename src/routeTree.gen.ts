@@ -24,8 +24,8 @@ import { Route as authCallbackImport } from './routes/(auth)/callback'
 import { Route as auth500Import } from './routes/(auth)/500'
 import { Route as ExampleModelIfcIndexImport } from './routes/example-model/ifc/index'
 import { Route as AuthenticatedViewerIndexImport } from './routes/_authenticated/viewer/index'
-import { Route as AuthenticatedUploadIndexImport } from './routes/_authenticated/upload/index'
 import { Route as AuthenticatedMyRoom3dIndexImport } from './routes/_authenticated/my-room-3d/index'
+import { Route as AuthenticatedMeIndexImport } from './routes/_authenticated/me/index'
 import { Route as AuthenticatedViewerFileCodeImport } from './routes/_authenticated/viewer/$fileCode'
 import { Route as AuthenticatedBimViewerUtWebglClippingV2Import } from './routes/_authenticated/bim-viewer-ut/webgl-clipping-v2'
 import { Route as AuthenticatedBimViewerUtWebglClippingV1Import } from './routes/_authenticated/bim-viewer-ut/webgl-clipping-v1'
@@ -36,6 +36,7 @@ import { Route as AuthenticatedBimViewerUtViewCubeImport } from './routes/_authe
 import { Route as AuthenticatedBimViewerUtIfcViewerSelectionFamilyImport } from './routes/_authenticated/bim-viewer-ut/ifc-viewer-selection-family'
 import { Route as AuthenticatedBimViewerUtGeometrySceneViewcubeImport } from './routes/_authenticated/bim-viewer-ut/geometry-scene-viewcube'
 import { Route as AuthenticatedBimViewerUtIfcViewerSelectionImport } from './routes/_authenticated/bim-viewer-ut/Ifc-viewer-selection'
+import { Route as AuthenticatedViewerUploadIndexImport } from './routes/_authenticated/viewer/upload/index'
 
 // Create Virtual Routes
 
@@ -201,12 +202,6 @@ const AuthenticatedViewerIndexRoute = AuthenticatedViewerIndexImport.update({
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 
-const AuthenticatedUploadIndexRoute = AuthenticatedUploadIndexImport.update({
-  id: '/upload/',
-  path: '/upload/',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-
 const AuthenticatedMyRoom3dIndexRoute = AuthenticatedMyRoom3dIndexImport.update(
   {
     id: '/my-room-3d/',
@@ -214,6 +209,12 @@ const AuthenticatedMyRoom3dIndexRoute = AuthenticatedMyRoom3dIndexImport.update(
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any,
 )
+
+const AuthenticatedMeIndexRoute = AuthenticatedMeIndexImport.update({
+  id: '/me/',
+  path: '/me/',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 
 const AuthenticatedBimViewerUtViewerLazyRoute =
   AuthenticatedBimViewerUtViewerLazyImport.update({
@@ -315,6 +316,13 @@ const AuthenticatedBimViewerUtIfcViewerSelectionRoute =
   AuthenticatedBimViewerUtIfcViewerSelectionImport.update({
     id: '/bim-viewer-ut/Ifc-viewer-selection',
     path: '/bim-viewer-ut/Ifc-viewer-selection',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+
+const AuthenticatedViewerUploadIndexRoute =
+  AuthenticatedViewerUploadIndexImport.update({
+    id: '/viewer/upload/',
+    path: '/viewer/upload/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 
@@ -539,18 +547,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedBimViewerUtViewerLazyImport
       parentRoute: typeof AuthenticatedRouteImport
     }
+    '/_authenticated/me/': {
+      id: '/_authenticated/me/'
+      path: '/me'
+      fullPath: '/me'
+      preLoaderRoute: typeof AuthenticatedMeIndexImport
+      parentRoute: typeof AuthenticatedRouteImport
+    }
     '/_authenticated/my-room-3d/': {
       id: '/_authenticated/my-room-3d/'
       path: '/my-room-3d'
       fullPath: '/my-room-3d'
       preLoaderRoute: typeof AuthenticatedMyRoom3dIndexImport
-      parentRoute: typeof AuthenticatedRouteImport
-    }
-    '/_authenticated/upload/': {
-      id: '/_authenticated/upload/'
-      path: '/upload'
-      fullPath: '/upload'
-      preLoaderRoute: typeof AuthenticatedUploadIndexImport
       parentRoute: typeof AuthenticatedRouteImport
     }
     '/_authenticated/viewer/': {
@@ -566,6 +574,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/example-model/ifc'
       preLoaderRoute: typeof ExampleModelIfcIndexImport
       parentRoute: typeof rootRoute
+    }
+    '/_authenticated/viewer/upload/': {
+      id: '/_authenticated/viewer/upload/'
+      path: '/viewer/upload'
+      fullPath: '/viewer/upload'
+      preLoaderRoute: typeof AuthenticatedViewerUploadIndexImport
+      parentRoute: typeof AuthenticatedRouteImport
     }
   }
 }
@@ -591,9 +606,10 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedBimViewerUtIfcLoaderLazyRoute: typeof AuthenticatedBimViewerUtIfcLoaderLazyRoute
   AuthenticatedBimViewerUtInstancedMeshLazyRoute: typeof AuthenticatedBimViewerUtInstancedMeshLazyRoute
   AuthenticatedBimViewerUtViewerLazyRoute: typeof AuthenticatedBimViewerUtViewerLazyRoute
+  AuthenticatedMeIndexRoute: typeof AuthenticatedMeIndexRoute
   AuthenticatedMyRoom3dIndexRoute: typeof AuthenticatedMyRoom3dIndexRoute
-  AuthenticatedUploadIndexRoute: typeof AuthenticatedUploadIndexRoute
   AuthenticatedViewerIndexRoute: typeof AuthenticatedViewerIndexRoute
+  AuthenticatedViewerUploadIndexRoute: typeof AuthenticatedViewerUploadIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
@@ -626,9 +642,10 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
     AuthenticatedBimViewerUtInstancedMeshLazyRoute,
   AuthenticatedBimViewerUtViewerLazyRoute:
     AuthenticatedBimViewerUtViewerLazyRoute,
+  AuthenticatedMeIndexRoute: AuthenticatedMeIndexRoute,
   AuthenticatedMyRoom3dIndexRoute: AuthenticatedMyRoom3dIndexRoute,
-  AuthenticatedUploadIndexRoute: AuthenticatedUploadIndexRoute,
   AuthenticatedViewerIndexRoute: AuthenticatedViewerIndexRoute,
+  AuthenticatedViewerUploadIndexRoute: AuthenticatedViewerUploadIndexRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
@@ -665,10 +682,11 @@ export interface FileRoutesByFullPath {
   '/bim-viewer-ut/ifc-loader': typeof AuthenticatedBimViewerUtIfcLoaderLazyRoute
   '/bim-viewer-ut/instanced-mesh': typeof AuthenticatedBimViewerUtInstancedMeshLazyRoute
   '/bim-viewer-ut/viewer': typeof AuthenticatedBimViewerUtViewerLazyRoute
+  '/me': typeof AuthenticatedMeIndexRoute
   '/my-room-3d': typeof AuthenticatedMyRoom3dIndexRoute
-  '/upload': typeof AuthenticatedUploadIndexRoute
   '/viewer': typeof AuthenticatedViewerIndexRoute
   '/example-model/ifc': typeof ExampleModelIfcIndexRoute
+  '/viewer/upload': typeof AuthenticatedViewerUploadIndexRoute
 }
 
 export interface FileRoutesByTo {
@@ -701,10 +719,11 @@ export interface FileRoutesByTo {
   '/bim-viewer-ut/ifc-loader': typeof AuthenticatedBimViewerUtIfcLoaderLazyRoute
   '/bim-viewer-ut/instanced-mesh': typeof AuthenticatedBimViewerUtInstancedMeshLazyRoute
   '/bim-viewer-ut/viewer': typeof AuthenticatedBimViewerUtViewerLazyRoute
+  '/me': typeof AuthenticatedMeIndexRoute
   '/my-room-3d': typeof AuthenticatedMyRoom3dIndexRoute
-  '/upload': typeof AuthenticatedUploadIndexRoute
   '/viewer': typeof AuthenticatedViewerIndexRoute
   '/example-model/ifc': typeof ExampleModelIfcIndexRoute
+  '/viewer/upload': typeof AuthenticatedViewerUploadIndexRoute
 }
 
 export interface FileRoutesById {
@@ -740,10 +759,11 @@ export interface FileRoutesById {
   '/_authenticated/bim-viewer-ut/ifc-loader': typeof AuthenticatedBimViewerUtIfcLoaderLazyRoute
   '/_authenticated/bim-viewer-ut/instanced-mesh': typeof AuthenticatedBimViewerUtInstancedMeshLazyRoute
   '/_authenticated/bim-viewer-ut/viewer': typeof AuthenticatedBimViewerUtViewerLazyRoute
+  '/_authenticated/me/': typeof AuthenticatedMeIndexRoute
   '/_authenticated/my-room-3d/': typeof AuthenticatedMyRoom3dIndexRoute
-  '/_authenticated/upload/': typeof AuthenticatedUploadIndexRoute
   '/_authenticated/viewer/': typeof AuthenticatedViewerIndexRoute
   '/example-model/ifc/': typeof ExampleModelIfcIndexRoute
+  '/_authenticated/viewer/upload/': typeof AuthenticatedViewerUploadIndexRoute
 }
 
 export interface FileRouteTypes {
@@ -779,10 +799,11 @@ export interface FileRouteTypes {
     | '/bim-viewer-ut/ifc-loader'
     | '/bim-viewer-ut/instanced-mesh'
     | '/bim-viewer-ut/viewer'
+    | '/me'
     | '/my-room-3d'
-    | '/upload'
     | '/viewer'
     | '/example-model/ifc'
+    | '/viewer/upload'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/500'
@@ -814,10 +835,11 @@ export interface FileRouteTypes {
     | '/bim-viewer-ut/ifc-loader'
     | '/bim-viewer-ut/instanced-mesh'
     | '/bim-viewer-ut/viewer'
+    | '/me'
     | '/my-room-3d'
-    | '/upload'
     | '/viewer'
     | '/example-model/ifc'
+    | '/viewer/upload'
   id:
     | '__root__'
     | '/_authenticated'
@@ -851,10 +873,11 @@ export interface FileRouteTypes {
     | '/_authenticated/bim-viewer-ut/ifc-loader'
     | '/_authenticated/bim-viewer-ut/instanced-mesh'
     | '/_authenticated/bim-viewer-ut/viewer'
+    | '/_authenticated/me/'
     | '/_authenticated/my-room-3d/'
-    | '/_authenticated/upload/'
     | '/_authenticated/viewer/'
     | '/example-model/ifc/'
+    | '/_authenticated/viewer/upload/'
   fileRoutesById: FileRoutesById
 }
 
@@ -939,9 +962,10 @@ export const routeTree = rootRoute
         "/_authenticated/bim-viewer-ut/ifc-loader",
         "/_authenticated/bim-viewer-ut/instanced-mesh",
         "/_authenticated/bim-viewer-ut/viewer",
+        "/_authenticated/me/",
         "/_authenticated/my-room-3d/",
-        "/_authenticated/upload/",
-        "/_authenticated/viewer/"
+        "/_authenticated/viewer/",
+        "/_authenticated/viewer/upload/"
       ]
     },
     "/(auth)/500": {
@@ -1052,12 +1076,12 @@ export const routeTree = rootRoute
       "filePath": "_authenticated/bim-viewer-ut/viewer.lazy.tsx",
       "parent": "/_authenticated"
     },
-    "/_authenticated/my-room-3d/": {
-      "filePath": "_authenticated/my-room-3d/index.tsx",
+    "/_authenticated/me/": {
+      "filePath": "_authenticated/me/index.tsx",
       "parent": "/_authenticated"
     },
-    "/_authenticated/upload/": {
-      "filePath": "_authenticated/upload/index.tsx",
+    "/_authenticated/my-room-3d/": {
+      "filePath": "_authenticated/my-room-3d/index.tsx",
       "parent": "/_authenticated"
     },
     "/_authenticated/viewer/": {
@@ -1066,6 +1090,10 @@ export const routeTree = rootRoute
     },
     "/example-model/ifc/": {
       "filePath": "example-model/ifc/index.ts"
+    },
+    "/_authenticated/viewer/upload/": {
+      "filePath": "_authenticated/viewer/upload/index.tsx",
+      "parent": "/_authenticated"
     }
   }
 }
