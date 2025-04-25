@@ -65,7 +65,7 @@ const HeroSection = () => {
         </motion.p>
         <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
           <Button className="primary-button hover" aria-label={t("hero.start")}>
-            <a href="/apps/home">{t("hero.start")}</a>
+            <a href="/managements/me">{t("hero.start")}</a>
           </Button>
           <Button className="outline-button hover" aria-label={t("hero.deploy")}>
             {t("hero.deploy")}

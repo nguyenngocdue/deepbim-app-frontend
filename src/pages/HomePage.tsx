@@ -8,15 +8,9 @@ import CallToActionSection from '@/sections/CallToActionSection';
 import Footer from '@/sections/Footer';
 import SectionWrapper from '@/components/SectionWrapper';
 import { LanguageProvider } from '@/context/LanguageContext';
-import useScrollRestoration from '@/hooks/useScrollRestoration';
 import Header from '@/sections/ Header';
 import { CLASS_NAME_DEFAULT } from '@/utils/class';
 import ParticlesContainer from '@/components/ParticlesContainer';
-import { useAppDispatch } from '@/hooks/reduxHooks';
-import { fetchCurrentUser, setCurentUser } from '@/store/slices/AuthSlice';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '@/store';
-import { useEffect } from 'react';
 
 
 const HomePage: React.FC = () => {

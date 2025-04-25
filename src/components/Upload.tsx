@@ -2,8 +2,14 @@ import React, { useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
+import { fetchWithAuth2 } from '@/api';
 
-const Upload: React.FC = () => {
+
+type UploadProps = {
+  onUploadSuccess?: () => void; // ✅ nhận callback props
+};
+
+const Upload: React.FC<UploadProps> = ({onUploadSuccess}) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
   const [message, setMessage] = useState("");
@@ -29,18 +35,19 @@ const Upload: React.FC = () => {
     formData.append('file', file);
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/upload`, {
-        method: 'POST',
+      const response = await fetchWithAuth2(`${import.meta.env.VITE_API_BASE_URL}/media/upload`, {
+        method: "POST",
         body: formData,
       });
-
       if (!response.ok) throw new Error("Upload failed");
-
-      const result = await response.json();
       setMessage("✅ Upload successful!");
-      console.log(result);
+
+      if (onUploadSuccess) {
+        onUploadSuccess(); // GỌI LẠI CHA
+      }
+
     } catch (error: any) {
-      setMessage("❌ Upload error: " + error.message);
+      setMessage("Upload error: " + error.message);
     } finally {
       setUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = ""; // Reset file input

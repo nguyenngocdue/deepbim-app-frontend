@@ -155,3 +155,72 @@ export async function handleSignout(): Promise<void> {
     throw error;
   }
 }
+
+
+// utils/apiClient.ts
+
+// Hàm tự động đính Bearer token, phân biệt FormData, và retry nếu 401
+export async function fetchWithAuth2(
+  url: string,
+  options: RequestInit = {},
+  retryCount = 0
+): Promise<Response> {
+  const token = localStorage.getItem("access_token");
+  const isFormData = options.body instanceof FormData;
+
+  const headers: HeadersInit = {
+    ...(token && { Authorization: `Bearer ${token}` }),
+    ...options.headers,
+  };
+
+  if (!isFormData && !(headers as Record<string, string>)["Content-Type"]) {
+    (headers as Record<string, string>)["Content-Type"] = "application/json";
+  }
+
+  const response = await fetch(url, {
+    ...options,
+    headers,
+    credentials: "include", // Nếu backend dùng cookie, nếu không thì có thể bỏ
+  });
+
+  if (response.status === 401 && retryCount < 1) {
+    try {
+      await refreshAccessToken(); // Hàm bạn cần định nghĩa riêng
+      return fetchWithAuth2(url, options, retryCount + 1);
+    } catch (err) {
+      localStorage.removeItem("access_token");
+      localStorage.removeItem("refresh_token");
+      throw new Error("Session expired. Please login again.");
+    }
+  }
+
+  return response;
+}
+
+// Hàm GET có đính kèm Authorization, tự build query, tự parse JSON
+export async function apiGet<T>(
+  endpoint: string,
+  params?: Record<string, any>
+): Promise<T> {
+  const baseUrl = import.meta.env.VITE_API_BASE_URL;
+  const url = new URL(`${baseUrl}${endpoint}`);
+
+  if (params) {
+    Object.keys(params).forEach((key) => {
+      if (params[key] !== undefined && params[key] !== null) {
+        url.searchParams.append(key, params[key]);
+      }
+    });
+  }
+
+  const response = await fetchWithAuth2(url.toString(), {
+    method: "GET",
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`HTTP error ${response.status}: ${errorText}`);
+  }
+
+  return response.json();
+}
