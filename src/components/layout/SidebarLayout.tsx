@@ -14,6 +14,9 @@ import { useLanguage } from "@/context/LanguageContext"
 import { useTheme } from "@/context/theme-context"
 import LeftHeader from "@/sections/LeftHeader"
 import { Button } from "../ui/button"
+import { IoPerson } from "react-icons/io5"
+import { MdWorkspaces } from "react-icons/md"
+import { HiHomeModern } from "react-icons/hi2"
 
 export default function SidebarLayout({ children }: { children: React.ReactNode }) {
     const [collapsed, setCollapsed] = useState(()=> {
@@ -71,9 +74,9 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
                         }}
                         >
                         {!collapsed && <div className="px-4 pt-2 pb-1 uppercase text-xs tracking-wide text-slate-400">General</div>}
-                        <MenuItem icon={<BarChart3 size={18} />} component={<Link to="/managements/home" />}>Home</MenuItem>
-                        <MenuItem icon={<Map size={18} />} component={<Link to="/managements/spaces" />}>Spaces</MenuItem>
-                        <MenuItem icon={<LayoutGrid size={18} />} component={<Link to="/managements/me" />}>Me</MenuItem>
+                        <MenuItem icon={<HiHomeModern size={18} />} component={<Link to="/managements/home" />}>Home</MenuItem>
+                        <MenuItem icon={<MdWorkspaces  size={18} />} component={<Link to="/managements/spaces" />}>Spaces</MenuItem>
+                        <MenuItem icon={<IoPerson  size={18} />} component={<Link to="/managements/me" />}>Me</MenuItem>
                         </Menu>
 
 
