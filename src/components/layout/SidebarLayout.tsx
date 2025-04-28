@@ -38,6 +38,7 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
                     collapsed={collapsed}
                     backgroundColor="#0b1120"
                     rootStyles={{ height: "100vh", backgroundImage: "url(/sidebar-bg.png)", backgroundSize: "cover" }}
+                    width="200px"
                 >
                     {/* Logo and Title */}
                     <div className="flex items-center justify-center gap-2 px-2 py-3 border-b border-[#1c1c2a] shadow-sm">
