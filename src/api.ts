@@ -226,22 +226,39 @@ export async function apiGet<T>(
 }
 
 
+
 export async function apiRequest<T>(
   endpoint: string,
-  method: "GET" | "DELETE" = "GET",
+  method: "GET" | "PATCH" | "DELETE" = "GET",
+  body?: any,
 ): Promise<T> {
   const baseUrl = import.meta.env.VITE_API_BASE_URL;
   const url = new URL(`${baseUrl}${endpoint}`);
 
-  const response = await fetchWithAuth2(url.toString(), {
-    method, 
-  });
+  const options: RequestInit = {
+    method,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  if (body) {
+    options.body = JSON.stringify(body);
+  }
+  const response = await fetchWithAuth2(url.toString(), options);
+
   if (!response.ok) {
     const errorText = await response.text();
     throw new Error(`HTTP error ${response.status}: ${errorText}`);
   }
+
+  // ✅ Xử lý toast cho DELETE và PATCH
   if (method === "DELETE") {
     toast.success("Deleted successfully!");
   }
+  if (method === "PATCH") {
+    toast.success("Updated successfully!");
+  }
   return response.json();
 }
+

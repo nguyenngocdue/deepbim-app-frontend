@@ -13,7 +13,7 @@ const UserProjectsPage: React.FC = () => {
   return (
     <div>
       <div className='flex justify-start'>
-        <Upload onUploadSuccess={handleUploadSuccess} />
+        <Upload onUploadSuccess={handleUploadSuccess} accept=".ifc"/>
       </div>
       <MediaPage key={refreshKey} />
     </div>

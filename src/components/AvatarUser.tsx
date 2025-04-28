@@ -23,7 +23,7 @@ export function AvatarUser({ img, name, size = "md", showName = true }: AvatarUs
         </AvatarFallback>
       </Avatar>
       {showName && (
-        <span className="text-sm font-medium text-foreground">
+        <span className="text-sm font-medium text-foreground italic">
           {name}
         </span>
       )}

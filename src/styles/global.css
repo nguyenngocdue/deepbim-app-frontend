@@ -40,10 +40,13 @@ p {
   --button-text: #ffffff;
   --button-outline-text: #1f2937;
   --text-hover-primary: #334155;
-  --bg-behind: #ffffff;
+  --bg-behind: #F5F5F5;
   --text-nav: #172220;
   --text-subtitle2: #172220;
   --border-dialog: #4b5563;
+  --bg-table-header: #4b5563;
+  --text-noted:#4b5563;
+
 }
 
 .dark {
@@ -75,6 +78,8 @@ p {
   --bg-behind: #020817;
   --text-nav: #8ff1db;
   --border-dialog: #4b5563;
+  --bg-table-header: #4b5563;
+  --text-noted:#4b5563;
 }
 
 section.hero {
@@ -207,6 +212,10 @@ footer nav a:hover {
   color: var(--text-subtitle);
 }
 
+.text-150 {
+  color: var(--text-noted); /* using to noted*/
+}
+
 .text-subtitle2 {
   color: var(--text-subtitle2);
 }
@@ -226,4 +235,8 @@ body.signin-page #leva__root {
 
 .border-dialog {
   border: var(--border-dialog); /*border-zinc-800*/
+}
+
+.table-header {
+  color: var(--bg-table-header);
 }

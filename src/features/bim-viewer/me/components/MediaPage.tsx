@@ -18,12 +18,14 @@ export default function MediaPage() {
       // Fetch media list
       const [mediaResponse] = await Promise.all([ apiGet<{ data: any[] }>(`/media/user/${userId}`)]);
       const mediaList = mediaResponse.data;
+      console.log(mediaList);
       const formatted: Model[] = mediaList
         .filter((item) => item.deletedBy === null) // ✅ Chỉ lấy những cái chưa bị xóa mềm
         .map((item) => ({
           id: item.id,
           name: item.filename,
           status: item.isPublic ? "Public" : "Private",
+          size: item.size*1/(1024 * 1024),
           uploader: {
             email: currentUser?.email || "Unknown",
             avatar: currentUser?.picture || "",
@@ -44,7 +46,7 @@ export default function MediaPage() {
 
   return (
     <div className="p-4">
-      <ModelTable data={data} onDeleteSuccess={fetchData} />
+      <ModelTable data={data} refeshData={fetchData} />
     </div>
   );
 }

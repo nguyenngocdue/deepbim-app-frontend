@@ -26,7 +26,7 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
     return (
         <div className="flex min-h-screen bg-behind text-white relative">
             {/* Sidebar section */}
-            <div className="relative group ">
+            <div className="relative group bg-behind ">
                 <Sidebar
                     collapsed={collapsed}
                     backgroundColor="#0b1120"
@@ -109,7 +109,7 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
                         />
                     </div>
                 </div>
-                <main className="bg-slate-900 rounded-lg p-4 shadow-inner overflow-auto">
+                <main className="bg-behind">
                     {children}
                 </main>
             </div>
