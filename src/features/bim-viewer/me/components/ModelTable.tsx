@@ -39,6 +39,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { AvatarUser } from "@/components/AvatarUser";
+import { LogoWord } from "@/components/LogoWord";
 
 export type Model = {
   name: string;
@@ -74,16 +75,23 @@ export function ModelTable({ data }: ModelTableProps) {
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       ),
-      cell: ({ row }) => <span>▶ {row.getValue("name")}</span>,
+      cell: ({ row }) => 
+        <div className="flex flex-nowrap items-center justify-start">
+          <LogoWord isHiddenText={true}  path="/images/logo_no_bg.png" size='sm'/>
+          <span> {row.getValue("name")}</span>
+        </div>
+         ,
       enableSorting: true,
     },
     {
       accessorKey: "status",
       header: "Status",
       cell: ({ row }) => (
-        <span className="text-orange-500 font-medium">
-          🔒 {row.getValue("status")}
-        </span>
+        <div className="flex flex-nowrap items-center justify-start">
+          <span className="text-orange-500 font-medium">
+            🔒 {row.getValue("status")}
+          </span>
+        </div>
       ),
     },
     {
@@ -92,17 +100,9 @@ export function ModelTable({ data }: ModelTableProps) {
       cell: ({ row }) => {
         const uploader = row.getValue("uploader") as Model["uploader"];
         return (
-          <div className="flex items-center gap-2">
-           
-
-            <AvatarUser img={uploader.avatar} name={uploader.email} size="sm"/>
-
-
+          <div className="flex flex-nowrap items-center justify-start">
+            <AvatarUser img={uploader.avatar} name={uploader.email} size="md"/>
           </div>
-
-
-
-
         );
       },
     },
@@ -149,8 +149,8 @@ export function ModelTable({ data }: ModelTableProps) {
 
   return (
     <div className="space-y-4">
-      <div className="rounded-md border overflow-auto">
-        <Table className="bg-slate-900 text-white border-collapse w-full">
+      <div className="rounded-md border border-zinc-500 overflow-auto">
+        <Table className="border-collapse w-full">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow
@@ -160,7 +160,7 @@ export function ModelTable({ data }: ModelTableProps) {
                 {headerGroup.headers.map((header) => (
                   <TableHead
                     key={header.id}
-                    className="text-white"
+                    className="text-white text-center"
                   >
                     {header.isPlaceholder
                       ? null
@@ -183,7 +183,7 @@ export function ModelTable({ data }: ModelTableProps) {
                   {row.getVisibleCells().map((cell) => (
                     <TableCell
                       key={cell.id}
-                      className="text-white"
+                      className="text-zinc-300"
                     >
                       {flexRender(
                         cell.column.columnDef.cell,

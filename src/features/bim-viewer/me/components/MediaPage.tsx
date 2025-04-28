@@ -32,7 +32,6 @@ export default function MediaPage() {
     fetchData();
   }, [currentUser]);
 
-console.log(data);
 
   return (
     <div className="p-4">

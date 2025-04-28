@@ -11,10 +11,12 @@ const UserProjectsPage: React.FC = () => {
   };
 
   return (
-    <>
-      <Upload onUploadSuccess={handleUploadSuccess} />
+    <div>
+      <div className='flex justify-start'>
+        <Upload onUploadSuccess={handleUploadSuccess} />
+      </div>
       <MediaPage key={refreshKey} />
-    </>
+    </div>
   );
 };
 
