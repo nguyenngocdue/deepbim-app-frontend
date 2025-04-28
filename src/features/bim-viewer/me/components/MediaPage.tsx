@@ -16,14 +16,8 @@ export default function MediaPage() {
       const userId = currentUser.id;
 
       // Fetch media list
-      const [mediaResponse, userResponse] = await Promise.all([
-        apiGet<{ data: any[] }>(`/media/user/${userId}`),
-        apiGet<{ data: any }>(`/users/${userId}`),
-      ]);
-
+      const [mediaResponse] = await Promise.all([ apiGet<{ data: any[] }>(`/media/user/${userId}`)]);
       const mediaList = mediaResponse.data;
-      const userData = userResponse.data;
-
       const formatted: Model[] = mediaList
         .filter((item) => item.deletedBy === null) // ✅ Chỉ lấy những cái chưa bị xóa mềm
         .map((item) => ({
@@ -31,8 +25,8 @@ export default function MediaPage() {
           name: item.filename,
           status: item.isPublic ? "Public" : "Private",
           uploader: {
-            email: userData?.email || "Unknown",
-            avatar: userData?.picture || "",
+            email: currentUser?.email || "Unknown",
+            avatar: currentUser?.picture || "",
           },
           modified: new Date(item.updatedAt).toLocaleDateString("en-GB"),
         }));
