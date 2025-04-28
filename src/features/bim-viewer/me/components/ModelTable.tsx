@@ -1,5 +1,3 @@
-"use client";
-
 import * as React from "react";
 import {
   ColumnDef,
@@ -20,30 +18,16 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/ui/avatar";
-import {
-  Pencil,
-  Trash2,
-  ExternalLink,
-  ArrowUpDown,
-} from "lucide-react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Pencil, Trash2, ExternalLink, ArrowUpDown } from "lucide-react";
 import { AvatarUser } from "@/components/AvatarUser";
 import { LogoWord } from "@/components/LogoWord";
-import { Row } from "react-day-picker";
 import { ConfirmDeleteDialog } from "@/components/ConfirmDeleteDialog";
+import { apiRequest } from "@/api";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
+// Kiểu Model
 export type Model = {
+  id: string;
   name: string;
   status: string;
   uploader: {
@@ -53,17 +37,18 @@ export type Model = {
   modified: string;
 };
 
+// Props của ModelTable
 type ModelTableProps = {
   data: Model[];
+  onDeleteSuccess: () => void; // ✅ thêm callback để sau khi xoá sẽ fetch lại
 };
 
-export function ModelTable({ data }: ModelTableProps) {
+export function ModelTable({ data, onDeleteSuccess }: ModelTableProps) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [pageSize, setPageSize] = React.useState<number>(10);
   const [globalFilter, setGlobalFilter] = React.useState("");
   const [openDeleteDialog, setOpenDeleteDialog] = React.useState(false);
   const [selectedRow, setSelectedRow] = React.useState<Model | null>(null);
-
 
   const columns: ColumnDef<Model>[] = [
     {
@@ -80,19 +65,19 @@ export function ModelTable({ data }: ModelTableProps) {
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       ),
-      cell: ({ row }) => 
-        <div className="flex flex-nowrap items-center justify-start">
-          <LogoWord isHiddenText={true}  path="/images/logo_no_bg.png" size='sm'/>
-          <span> {row.getValue("name")}</span>
+      cell: ({ row }) => (
+        <div className="flex flex-nowrap items-center gap-2">
+          <LogoWord isHiddenText={true} path="/images/logo_no_bg.png" size="sm" />
+          <span>{row.getValue("name")}</span>
         </div>
-         ,
+      ),
       enableSorting: true,
     },
     {
       accessorKey: "status",
       header: "Status",
       cell: ({ row }) => (
-        <div className="flex flex-nowrap items-center justify-start">
+        <div className="flex items-center">
           <span className="text-orange-500 font-medium">
             🔒 {row.getValue("status")}
           </span>
@@ -101,12 +86,12 @@ export function ModelTable({ data }: ModelTableProps) {
     },
     {
       accessorKey: "uploader",
-      header: "Upload By",
+      header: "Uploaded By",
       cell: ({ row }) => {
         const uploader = row.getValue("uploader") as Model["uploader"];
         return (
-          <div className="flex flex-nowrap items-center justify-start">
-            <AvatarUser img={uploader.avatar} name={uploader.email} size="md"/>
+          <div className="flex items-center">
+            <AvatarUser img={uploader.avatar} name={uploader.email} size="md" />
           </div>
         );
       },
@@ -118,18 +103,18 @@ export function ModelTable({ data }: ModelTableProps) {
     },
     {
       id: "actions",
-      header: "Action",
-      cell: ({row}) => (
+      header: "Actions",
+      cell: ({ row }) => (
         <div className="flex justify-center gap-2">
           <Pencil className="w-4 h-4 cursor-pointer hover:text-primary" />
           <ExternalLink className="w-4 h-4 cursor-pointer hover:text-yellow-600" />
-          <Trash2 
-            className="w-4 h-4 cursor-pointer text-red-500 hover:text-red-700" 
+          <Trash2
+            className="w-4 h-4 cursor-pointer text-red-500 hover:text-red-700"
             onClick={() => {
               setSelectedRow(row.original);
               setOpenDeleteDialog(true);
             }}
-            />
+          />
         </div>
       ),
     },
@@ -164,21 +149,12 @@ export function ModelTable({ data }: ModelTableProps) {
         <Table className="border-collapse w-full">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow
-                key={headerGroup.id}
-                className="border-b border-slate-700"
-              >
+              <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
-                  <TableHead
-                    key={header.id}
-                    className="text-white text-center"
-                  >
+                  <TableHead key={header.id} className="text-center">
                     {header.isPlaceholder
                       ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                      : flexRender(header.column.columnDef.header, header.getContext())}
                   </TableHead>
                 ))}
               </TableRow>
@@ -187,29 +163,17 @@ export function ModelTable({ data }: ModelTableProps) {
           <TableBody>
             {table.getRowModel().rows.length ? (
               table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  className="border-b border-slate-800"
-                >
+                <TableRow key={row.id}>
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell
-                      key={cell.id}
-                      className="text-zinc-300"
-                    >
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
+                    <TableCell key={cell.id} className="text-zinc-300" title={`ID: ${row.original.id}`}>
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
                   ))}
                 </TableRow>
               ))
             ) : (
               <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="text-center py-8"
-                >
+                <TableCell colSpan={columns.length} className="text-center py-8">
                   No results.
                 </TableCell>
               </TableRow>
@@ -218,18 +182,18 @@ export function ModelTable({ data }: ModelTableProps) {
         </Table>
       </div>
 
-
+      {/* Delete Dialog */}
       <ConfirmDeleteDialog
         open={openDeleteDialog}
         onClose={() => setOpenDeleteDialog(false)}
-        onConfirm={() => {
-          console.log("Deleting:", selectedRow);
+        onConfirm={async () => {
+          if (!selectedRow) return;
+          await apiRequest(`/media/${selectedRow.id}`, "DELETE");
           setOpenDeleteDialog(false);
-          // TODO: Xử lý API delete model tại đây
+          onDeleteSuccess(); // ✅ sau khi xoá thì gọi refresh
         }}
         itemName={selectedRow?.name}
       />
-
 
       {/* Footer */}
       <div className="flex justify-between items-center text-sm text-muted-foreground">
@@ -237,19 +201,14 @@ export function ModelTable({ data }: ModelTableProps) {
           <span>Rows per page:</span>
           <Select
             value={pageSize.toString()}
-            onValueChange={(value) =>
-              setPageSize(Number(value))
-            }
+            onValueChange={(value) => setPageSize(Number(value))}
           >
             <SelectTrigger className="w-[80px]">
               <SelectValue placeholder="10" />
             </SelectTrigger>
             <SelectContent>
               {[10, 20, 30, 40, 50].map((size) => (
-                <SelectItem
-                  key={size}
-                  value={size.toString()}
-                >
+                <SelectItem key={size} value={size.toString()}>
                   {size}
                 </SelectItem>
               ))}
@@ -257,50 +216,23 @@ export function ModelTable({ data }: ModelTableProps) {
           </Select>
         </div>
         <div>
-          Page {table.getState().pagination.pageIndex + 1} of{" "}
-          {table.getPageCount()}
+          Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
         </div>
         <div className="flex gap-1">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => table.setPageIndex(0)}
-            disabled={!table.getCanPreviousPage()}
-          >
+          <Button variant="ghost" size="icon" onClick={() => table.setPageIndex(0)} disabled={!table.getCanPreviousPage()}>
             {"<<"}
           </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
+          <Button variant="ghost" size="icon" onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>
             {"<"}
           </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
+          <Button variant="ghost" size="icon" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
             {">"}
           </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() =>
-              table.setPageIndex(table.getPageCount() - 1)
-            }
-            disabled={!table.getCanNextPage()}
-          >
+          <Button variant="ghost" size="icon" onClick={() => table.setPageIndex(table.getPageCount() - 1)} disabled={!table.getCanNextPage()}>
             {">>"}
           </Button>
         </div>
       </div>
     </div>
-
-
-
-
   );
 }

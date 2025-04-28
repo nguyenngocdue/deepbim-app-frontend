@@ -1,3 +1,5 @@
+import { toast } from "sonner";
+
 // Interface định nghĩa response từ API xác thực (auth)
 interface AuthResponse {
   access_token: string;          // JWT token dùng để truy cập các API bảo vệ
@@ -212,7 +214,6 @@ export async function apiGet<T>(
       }
     });
   }
-
   const response = await fetchWithAuth2(url.toString(), {
     method: "GET",
   });
@@ -221,6 +222,26 @@ export async function apiGet<T>(
     const errorText = await response.text();
     throw new Error(`HTTP error ${response.status}: ${errorText}`);
   }
+  return response.json();
+}
 
+
+export async function apiRequest<T>(
+  endpoint: string,
+  method: "GET" | "DELETE" = "GET",
+): Promise<T> {
+  const baseUrl = import.meta.env.VITE_API_BASE_URL;
+  const url = new URL(`${baseUrl}${endpoint}`);
+
+  const response = await fetchWithAuth2(url.toString(), {
+    method, 
+  });
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`HTTP error ${response.status}: ${errorText}`);
+  }
+  if (method === "DELETE") {
+    toast.success("Deleted successfully!");
+  }
   return response.json();
 }

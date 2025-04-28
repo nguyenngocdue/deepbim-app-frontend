@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
 import { fetchWithAuth2 } from '@/api';
+import { toast } from "sonner";
 
 
 type UploadProps = {
@@ -41,13 +42,14 @@ const Upload: React.FC<UploadProps> = ({onUploadSuccess}) => {
       });
       if (!response.ok) throw new Error("Upload failed");
       setMessage("✅ Upload successful!");
-
+      toast.success("Upload successful!");
       if (onUploadSuccess) {
         onUploadSuccess(); // GỌI LẠI CHA
       }
 
     } catch (error: any) {
       setMessage("Upload error: " + error.message);
+      toast.success("Upload error: " + error.message);
     } finally {
       setUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = ""; // Reset file input
