@@ -14,6 +14,7 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated/route'
+import { Route as IndexImport } from './routes/index'
 import { Route as AuthenticatedHowItWorksImport } from './routes/_authenticated/how-it-works'
 import { Route as AuthenticatedFeaturesImport } from './routes/_authenticated/features'
 import { Route as AuthenticatedContactUsImport } from './routes/_authenticated/contact-us'
@@ -26,7 +27,7 @@ import { Route as AuthenticatedViewerIndexImport } from './routes/_authenticated
 import { Route as AuthenticatedMyRoom3dIndexImport } from './routes/_authenticated/my-room-3d/index'
 import { Route as AuthenticatedAppIndexImport } from './routes/_authenticated/app/index'
 import { Route as AuthenticatedViewerFileCodeImport } from './routes/_authenticated/viewer/$fileCode'
-import { Route as AuthenticatedManagementsMeImport } from './routes/_authenticated/managements/me'
+import { Route as AuthenticatedManagementsLayoutImport } from './routes/_authenticated/managements/_layout'
 import { Route as AuthenticatedBimViewerUtWebglClippingV2Import } from './routes/_authenticated/bim-viewer-ut/webgl-clipping-v2'
 import { Route as AuthenticatedBimViewerUtWebglClippingV1Import } from './routes/_authenticated/bim-viewer-ut/webgl-clipping-v1'
 import { Route as AuthenticatedBimViewerUtWebglClippingStencilIfcImport } from './routes/_authenticated/bim-viewer-ut/webgl-clipping-stencil-ifc'
@@ -38,6 +39,9 @@ import { Route as AuthenticatedBimViewerUtGeometrySceneViewcubeImport } from './
 import { Route as AuthenticatedBimViewerUtIfcViewerSelectionImport } from './routes/_authenticated/bim-viewer-ut/Ifc-viewer-selection'
 import { Route as AuthenticatedAppLayoutImport } from './routes/_authenticated/app/_layout'
 import { Route as AuthenticatedViewerUploadIndexImport } from './routes/_authenticated/viewer/upload/index'
+import { Route as AuthenticatedManagementsLayoutSpacesImport } from './routes/_authenticated/managements/_layout/spaces'
+import { Route as AuthenticatedManagementsLayoutMeImport } from './routes/_authenticated/managements/_layout/me'
+import { Route as AuthenticatedManagementsLayoutHomeImport } from './routes/_authenticated/managements/_layout/home'
 import { Route as AuthenticatedAppLayoutHowItWorksImport } from './routes/_authenticated/app/_layout/how-it-works'
 import { Route as AuthenticatedAppLayoutFeaturesImport } from './routes/_authenticated/app/_layout/features'
 import { Route as AuthenticatedAppLayoutContactUsImport } from './routes/_authenticated/app/_layout/contact-us'
@@ -45,6 +49,9 @@ import { Route as AuthenticatedAppLayoutConnectorsImport } from './routes/_authe
 
 // Create Virtual Routes
 
+const AuthenticatedManagementsImport = createFileRoute(
+  '/_authenticated/managements',
+)()
 const AuthenticatedAppImport = createFileRoute('/_authenticated/app')()
 const errors503LazyImport = createFileRoute('/(errors)/503')()
 const errors500LazyImport = createFileRoute('/(errors)/500')()
@@ -71,6 +78,18 @@ const AuthenticatedBimViewerUtIfcLoaderLazyImport = createFileRoute(
 const AuthenticatedRouteRoute = AuthenticatedRouteImport.update({
   id: '/_authenticated',
   getParentRoute: () => rootRoute,
+} as any)
+
+const IndexRoute = IndexImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AuthenticatedManagementsRoute = AuthenticatedManagementsImport.update({
+  id: '/managements',
+  path: '/managements',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 
 const AuthenticatedAppRoute = AuthenticatedAppImport.update({
@@ -253,13 +272,11 @@ const AuthenticatedViewerFileCodeRoute =
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 
-const AuthenticatedManagementsMeRoute = AuthenticatedManagementsMeImport.update(
-  {
-    id: '/managements/me',
-    path: '/managements/me',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any,
-)
+const AuthenticatedManagementsLayoutRoute =
+  AuthenticatedManagementsLayoutImport.update({
+    id: '/_layout',
+    getParentRoute: () => AuthenticatedManagementsRoute,
+  } as any)
 
 const AuthenticatedBimViewerUtWebglClippingV2Route =
   AuthenticatedBimViewerUtWebglClippingV2Import.update({
@@ -336,6 +353,27 @@ const AuthenticatedViewerUploadIndexRoute =
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 
+const AuthenticatedManagementsLayoutSpacesRoute =
+  AuthenticatedManagementsLayoutSpacesImport.update({
+    id: '/spaces',
+    path: '/spaces',
+    getParentRoute: () => AuthenticatedManagementsLayoutRoute,
+  } as any)
+
+const AuthenticatedManagementsLayoutMeRoute =
+  AuthenticatedManagementsLayoutMeImport.update({
+    id: '/me',
+    path: '/me',
+    getParentRoute: () => AuthenticatedManagementsLayoutRoute,
+  } as any)
+
+const AuthenticatedManagementsLayoutHomeRoute =
+  AuthenticatedManagementsLayoutHomeImport.update({
+    id: '/home',
+    path: '/home',
+    getParentRoute: () => AuthenticatedManagementsLayoutRoute,
+  } as any)
+
 const AuthenticatedAppLayoutHowItWorksRoute =
   AuthenticatedAppLayoutHowItWorksImport.update({
     id: '/how-it-works',
@@ -368,6 +406,13 @@ const AuthenticatedAppLayoutConnectorsRoute =
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
     '/_authenticated': {
       id: '/_authenticated'
       path: ''
@@ -557,12 +602,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedBimViewerUtWebglClippingV2Import
       parentRoute: typeof AuthenticatedRouteImport
     }
-    '/_authenticated/managements/me': {
-      id: '/_authenticated/managements/me'
-      path: '/managements/me'
-      fullPath: '/managements/me'
-      preLoaderRoute: typeof AuthenticatedManagementsMeImport
+    '/_authenticated/managements': {
+      id: '/_authenticated/managements'
+      path: '/managements'
+      fullPath: '/managements'
+      preLoaderRoute: typeof AuthenticatedManagementsImport
       parentRoute: typeof AuthenticatedRouteImport
+    }
+    '/_authenticated/managements/_layout': {
+      id: '/_authenticated/managements/_layout'
+      path: '/managements'
+      fullPath: '/managements'
+      preLoaderRoute: typeof AuthenticatedManagementsLayoutImport
+      parentRoute: typeof AuthenticatedManagementsRoute
     }
     '/_authenticated/viewer/$fileCode': {
       id: '/_authenticated/viewer/$fileCode'
@@ -648,6 +700,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppLayoutHowItWorksImport
       parentRoute: typeof AuthenticatedAppLayoutImport
     }
+    '/_authenticated/managements/_layout/home': {
+      id: '/_authenticated/managements/_layout/home'
+      path: '/home'
+      fullPath: '/managements/home'
+      preLoaderRoute: typeof AuthenticatedManagementsLayoutHomeImport
+      parentRoute: typeof AuthenticatedManagementsLayoutImport
+    }
+    '/_authenticated/managements/_layout/me': {
+      id: '/_authenticated/managements/_layout/me'
+      path: '/me'
+      fullPath: '/managements/me'
+      preLoaderRoute: typeof AuthenticatedManagementsLayoutMeImport
+      parentRoute: typeof AuthenticatedManagementsLayoutImport
+    }
+    '/_authenticated/managements/_layout/spaces': {
+      id: '/_authenticated/managements/_layout/spaces'
+      path: '/spaces'
+      fullPath: '/managements/spaces'
+      preLoaderRoute: typeof AuthenticatedManagementsLayoutSpacesImport
+      parentRoute: typeof AuthenticatedManagementsLayoutImport
+    }
     '/_authenticated/viewer/upload/': {
       id: '/_authenticated/viewer/upload/'
       path: '/viewer/upload'
@@ -695,6 +768,42 @@ const AuthenticatedAppRouteChildren: AuthenticatedAppRouteChildren = {
 const AuthenticatedAppRouteWithChildren =
   AuthenticatedAppRoute._addFileChildren(AuthenticatedAppRouteChildren)
 
+interface AuthenticatedManagementsLayoutRouteChildren {
+  AuthenticatedManagementsLayoutHomeRoute: typeof AuthenticatedManagementsLayoutHomeRoute
+  AuthenticatedManagementsLayoutMeRoute: typeof AuthenticatedManagementsLayoutMeRoute
+  AuthenticatedManagementsLayoutSpacesRoute: typeof AuthenticatedManagementsLayoutSpacesRoute
+}
+
+const AuthenticatedManagementsLayoutRouteChildren: AuthenticatedManagementsLayoutRouteChildren =
+  {
+    AuthenticatedManagementsLayoutHomeRoute:
+      AuthenticatedManagementsLayoutHomeRoute,
+    AuthenticatedManagementsLayoutMeRoute:
+      AuthenticatedManagementsLayoutMeRoute,
+    AuthenticatedManagementsLayoutSpacesRoute:
+      AuthenticatedManagementsLayoutSpacesRoute,
+  }
+
+const AuthenticatedManagementsLayoutRouteWithChildren =
+  AuthenticatedManagementsLayoutRoute._addFileChildren(
+    AuthenticatedManagementsLayoutRouteChildren,
+  )
+
+interface AuthenticatedManagementsRouteChildren {
+  AuthenticatedManagementsLayoutRoute: typeof AuthenticatedManagementsLayoutRouteWithChildren
+}
+
+const AuthenticatedManagementsRouteChildren: AuthenticatedManagementsRouteChildren =
+  {
+    AuthenticatedManagementsLayoutRoute:
+      AuthenticatedManagementsLayoutRouteWithChildren,
+  }
+
+const AuthenticatedManagementsRouteWithChildren =
+  AuthenticatedManagementsRoute._addFileChildren(
+    AuthenticatedManagementsRouteChildren,
+  )
+
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedContactUsRoute: typeof AuthenticatedContactUsRoute
   AuthenticatedFeaturesRoute: typeof AuthenticatedFeaturesRoute
@@ -709,7 +818,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedBimViewerUtWebglClippingStencilIfcRoute: typeof AuthenticatedBimViewerUtWebglClippingStencilIfcRoute
   AuthenticatedBimViewerUtWebglClippingV1Route: typeof AuthenticatedBimViewerUtWebglClippingV1Route
   AuthenticatedBimViewerUtWebglClippingV2Route: typeof AuthenticatedBimViewerUtWebglClippingV2Route
-  AuthenticatedManagementsMeRoute: typeof AuthenticatedManagementsMeRoute
+  AuthenticatedManagementsRoute: typeof AuthenticatedManagementsRouteWithChildren
   AuthenticatedViewerFileCodeRoute: typeof AuthenticatedViewerFileCodeRoute
   AuthenticatedBimViewerUtIfcLoaderLazyRoute: typeof AuthenticatedBimViewerUtIfcLoaderLazyRoute
   AuthenticatedBimViewerUtInstancedMeshLazyRoute: typeof AuthenticatedBimViewerUtInstancedMeshLazyRoute
@@ -741,7 +850,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
     AuthenticatedBimViewerUtWebglClippingV1Route,
   AuthenticatedBimViewerUtWebglClippingV2Route:
     AuthenticatedBimViewerUtWebglClippingV2Route,
-  AuthenticatedManagementsMeRoute: AuthenticatedManagementsMeRoute,
+  AuthenticatedManagementsRoute: AuthenticatedManagementsRouteWithChildren,
   AuthenticatedViewerFileCodeRoute: AuthenticatedViewerFileCodeRoute,
   AuthenticatedBimViewerUtIfcLoaderLazyRoute:
     AuthenticatedBimViewerUtIfcLoaderLazyRoute,
@@ -758,6 +867,7 @@ const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
 export interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
   '': typeof AuthenticatedRouteRouteWithChildren
   '/500': typeof errors500LazyRoute
   '/callback': typeof authCallbackRoute
@@ -783,7 +893,7 @@ export interface FileRoutesByFullPath {
   '/bim-viewer-ut/webgl-clipping-stencil-ifc': typeof AuthenticatedBimViewerUtWebglClippingStencilIfcRoute
   '/bim-viewer-ut/webgl-clipping-v1': typeof AuthenticatedBimViewerUtWebglClippingV1Route
   '/bim-viewer-ut/webgl-clipping-v2': typeof AuthenticatedBimViewerUtWebglClippingV2Route
-  '/managements/me': typeof AuthenticatedManagementsMeRoute
+  '/managements': typeof AuthenticatedManagementsLayoutRouteWithChildren
   '/viewer/$fileCode': typeof AuthenticatedViewerFileCodeRoute
   '/bim-viewer-ut/ifc-loader': typeof AuthenticatedBimViewerUtIfcLoaderLazyRoute
   '/bim-viewer-ut/instanced-mesh': typeof AuthenticatedBimViewerUtInstancedMeshLazyRoute
@@ -796,10 +906,14 @@ export interface FileRoutesByFullPath {
   '/app/contact-us': typeof AuthenticatedAppLayoutContactUsRoute
   '/app/features': typeof AuthenticatedAppLayoutFeaturesRoute
   '/app/how-it-works': typeof AuthenticatedAppLayoutHowItWorksRoute
+  '/managements/home': typeof AuthenticatedManagementsLayoutHomeRoute
+  '/managements/me': typeof AuthenticatedManagementsLayoutMeRoute
+  '/managements/spaces': typeof AuthenticatedManagementsLayoutSpacesRoute
   '/viewer/upload': typeof AuthenticatedViewerUploadIndexRoute
 }
 
 export interface FileRoutesByTo {
+  '/': typeof IndexRoute
   '': typeof AuthenticatedRouteRouteWithChildren
   '/500': typeof errors500LazyRoute
   '/callback': typeof authCallbackRoute
@@ -825,7 +939,7 @@ export interface FileRoutesByTo {
   '/bim-viewer-ut/webgl-clipping-stencil-ifc': typeof AuthenticatedBimViewerUtWebglClippingStencilIfcRoute
   '/bim-viewer-ut/webgl-clipping-v1': typeof AuthenticatedBimViewerUtWebglClippingV1Route
   '/bim-viewer-ut/webgl-clipping-v2': typeof AuthenticatedBimViewerUtWebglClippingV2Route
-  '/managements/me': typeof AuthenticatedManagementsMeRoute
+  '/managements': typeof AuthenticatedManagementsLayoutRouteWithChildren
   '/viewer/$fileCode': typeof AuthenticatedViewerFileCodeRoute
   '/bim-viewer-ut/ifc-loader': typeof AuthenticatedBimViewerUtIfcLoaderLazyRoute
   '/bim-viewer-ut/instanced-mesh': typeof AuthenticatedBimViewerUtInstancedMeshLazyRoute
@@ -837,11 +951,15 @@ export interface FileRoutesByTo {
   '/app/contact-us': typeof AuthenticatedAppLayoutContactUsRoute
   '/app/features': typeof AuthenticatedAppLayoutFeaturesRoute
   '/app/how-it-works': typeof AuthenticatedAppLayoutHowItWorksRoute
+  '/managements/home': typeof AuthenticatedManagementsLayoutHomeRoute
+  '/managements/me': typeof AuthenticatedManagementsLayoutMeRoute
+  '/managements/spaces': typeof AuthenticatedManagementsLayoutSpacesRoute
   '/viewer/upload': typeof AuthenticatedViewerUploadIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
+  '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/(auth)/500': typeof auth500Route
   '/(auth)/callback': typeof authCallbackRoute
@@ -869,7 +987,8 @@ export interface FileRoutesById {
   '/_authenticated/bim-viewer-ut/webgl-clipping-stencil-ifc': typeof AuthenticatedBimViewerUtWebglClippingStencilIfcRoute
   '/_authenticated/bim-viewer-ut/webgl-clipping-v1': typeof AuthenticatedBimViewerUtWebglClippingV1Route
   '/_authenticated/bim-viewer-ut/webgl-clipping-v2': typeof AuthenticatedBimViewerUtWebglClippingV2Route
-  '/_authenticated/managements/me': typeof AuthenticatedManagementsMeRoute
+  '/_authenticated/managements': typeof AuthenticatedManagementsRouteWithChildren
+  '/_authenticated/managements/_layout': typeof AuthenticatedManagementsLayoutRouteWithChildren
   '/_authenticated/viewer/$fileCode': typeof AuthenticatedViewerFileCodeRoute
   '/_authenticated/bim-viewer-ut/ifc-loader': typeof AuthenticatedBimViewerUtIfcLoaderLazyRoute
   '/_authenticated/bim-viewer-ut/instanced-mesh': typeof AuthenticatedBimViewerUtInstancedMeshLazyRoute
@@ -882,12 +1001,16 @@ export interface FileRoutesById {
   '/_authenticated/app/_layout/contact-us': typeof AuthenticatedAppLayoutContactUsRoute
   '/_authenticated/app/_layout/features': typeof AuthenticatedAppLayoutFeaturesRoute
   '/_authenticated/app/_layout/how-it-works': typeof AuthenticatedAppLayoutHowItWorksRoute
+  '/_authenticated/managements/_layout/home': typeof AuthenticatedManagementsLayoutHomeRoute
+  '/_authenticated/managements/_layout/me': typeof AuthenticatedManagementsLayoutMeRoute
+  '/_authenticated/managements/_layout/spaces': typeof AuthenticatedManagementsLayoutSpacesRoute
   '/_authenticated/viewer/upload/': typeof AuthenticatedViewerUploadIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/'
     | ''
     | '/500'
     | '/callback'
@@ -913,7 +1036,7 @@ export interface FileRouteTypes {
     | '/bim-viewer-ut/webgl-clipping-stencil-ifc'
     | '/bim-viewer-ut/webgl-clipping-v1'
     | '/bim-viewer-ut/webgl-clipping-v2'
-    | '/managements/me'
+    | '/managements'
     | '/viewer/$fileCode'
     | '/bim-viewer-ut/ifc-loader'
     | '/bim-viewer-ut/instanced-mesh'
@@ -926,9 +1049,13 @@ export interface FileRouteTypes {
     | '/app/contact-us'
     | '/app/features'
     | '/app/how-it-works'
+    | '/managements/home'
+    | '/managements/me'
+    | '/managements/spaces'
     | '/viewer/upload'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/'
     | ''
     | '/500'
     | '/callback'
@@ -954,7 +1081,7 @@ export interface FileRouteTypes {
     | '/bim-viewer-ut/webgl-clipping-stencil-ifc'
     | '/bim-viewer-ut/webgl-clipping-v1'
     | '/bim-viewer-ut/webgl-clipping-v2'
-    | '/managements/me'
+    | '/managements'
     | '/viewer/$fileCode'
     | '/bim-viewer-ut/ifc-loader'
     | '/bim-viewer-ut/instanced-mesh'
@@ -966,9 +1093,13 @@ export interface FileRouteTypes {
     | '/app/contact-us'
     | '/app/features'
     | '/app/how-it-works'
+    | '/managements/home'
+    | '/managements/me'
+    | '/managements/spaces'
     | '/viewer/upload'
   id:
     | '__root__'
+    | '/'
     | '/_authenticated'
     | '/(auth)/500'
     | '/(auth)/callback'
@@ -996,7 +1127,8 @@ export interface FileRouteTypes {
     | '/_authenticated/bim-viewer-ut/webgl-clipping-stencil-ifc'
     | '/_authenticated/bim-viewer-ut/webgl-clipping-v1'
     | '/_authenticated/bim-viewer-ut/webgl-clipping-v2'
-    | '/_authenticated/managements/me'
+    | '/_authenticated/managements'
+    | '/_authenticated/managements/_layout'
     | '/_authenticated/viewer/$fileCode'
     | '/_authenticated/bim-viewer-ut/ifc-loader'
     | '/_authenticated/bim-viewer-ut/instanced-mesh'
@@ -1009,11 +1141,15 @@ export interface FileRouteTypes {
     | '/_authenticated/app/_layout/contact-us'
     | '/_authenticated/app/_layout/features'
     | '/_authenticated/app/_layout/how-it-works'
+    | '/_authenticated/managements/_layout/home'
+    | '/_authenticated/managements/_layout/me'
+    | '/_authenticated/managements/_layout/spaces'
     | '/_authenticated/viewer/upload/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   auth500Route: typeof auth500Route
   authCallbackRoute: typeof authCallbackRoute
@@ -1031,6 +1167,7 @@ export interface RootRouteChildren {
 }
 
 const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   auth500Route: auth500Route,
   authCallbackRoute: authCallbackRoute,
@@ -1057,6 +1194,7 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
+        "/",
         "/_authenticated",
         "/(auth)/500",
         "/(auth)/callback",
@@ -1072,6 +1210,9 @@ export const routeTree = rootRoute
         "/(errors)/503",
         "/example-model/ifc/"
       ]
+    },
+    "/": {
+      "filePath": "index.tsx"
     },
     "/_authenticated": {
       "filePath": "_authenticated/route.tsx",
@@ -1089,7 +1230,7 @@ export const routeTree = rootRoute
         "/_authenticated/bim-viewer-ut/webgl-clipping-stencil-ifc",
         "/_authenticated/bim-viewer-ut/webgl-clipping-v1",
         "/_authenticated/bim-viewer-ut/webgl-clipping-v2",
-        "/_authenticated/managements/me",
+        "/_authenticated/managements",
         "/_authenticated/viewer/$fileCode",
         "/_authenticated/bim-viewer-ut/ifc-loader",
         "/_authenticated/bim-viewer-ut/instanced-mesh",
@@ -1201,9 +1342,21 @@ export const routeTree = rootRoute
       "filePath": "_authenticated/bim-viewer-ut/webgl-clipping-v2.tsx",
       "parent": "/_authenticated"
     },
-    "/_authenticated/managements/me": {
-      "filePath": "_authenticated/managements/me.tsx",
-      "parent": "/_authenticated"
+    "/_authenticated/managements": {
+      "filePath": "_authenticated/managements",
+      "parent": "/_authenticated",
+      "children": [
+        "/_authenticated/managements/_layout"
+      ]
+    },
+    "/_authenticated/managements/_layout": {
+      "filePath": "_authenticated/managements/_layout.tsx",
+      "parent": "/_authenticated/managements",
+      "children": [
+        "/_authenticated/managements/_layout/home",
+        "/_authenticated/managements/_layout/me",
+        "/_authenticated/managements/_layout/spaces"
+      ]
     },
     "/_authenticated/viewer/$fileCode": {
       "filePath": "_authenticated/viewer/$fileCode.tsx",
@@ -1251,6 +1404,18 @@ export const routeTree = rootRoute
     "/_authenticated/app/_layout/how-it-works": {
       "filePath": "_authenticated/app/_layout/how-it-works.tsx",
       "parent": "/_authenticated/app/_layout"
+    },
+    "/_authenticated/managements/_layout/home": {
+      "filePath": "_authenticated/managements/_layout/home.tsx",
+      "parent": "/_authenticated/managements/_layout"
+    },
+    "/_authenticated/managements/_layout/me": {
+      "filePath": "_authenticated/managements/_layout/me.tsx",
+      "parent": "/_authenticated/managements/_layout"
+    },
+    "/_authenticated/managements/_layout/spaces": {
+      "filePath": "_authenticated/managements/_layout/spaces.tsx",
+      "parent": "/_authenticated/managements/_layout"
     },
     "/_authenticated/viewer/upload/": {
       "filePath": "_authenticated/viewer/upload/index.tsx",

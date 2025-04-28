@@ -13,9 +13,13 @@ import BreadcrumbsWithIconAndLabel from "@/components/BreadcrumbsWithIconAndLabe
 import { useLanguage } from "@/context/LanguageContext"
 import { useTheme } from "@/context/theme-context"
 import LeftHeader from "@/sections/LeftHeader"
+import { Button } from "../ui/button"
 
 export default function SidebarLayout({ children }: { children: React.ReactNode }) {
-    const [collapsed, setCollapsed] = useState(false);
+    const [collapsed, setCollapsed] = useState(()=> {
+        const stored = localStorage.getItem('sidebar-collapsed');
+        return stored === 'true';// localStorage lưu kiểu string, nên phải so sánh
+    });
     const { language, toggleLanguage } = useLanguage();
     const { theme, setTheme } = useTheme();
 
@@ -34,7 +38,7 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
                 >
                     {/* Logo and Title */}
                     <div className="flex items-center justify-center gap-2 px-2 py-3 border-b border-[#1c1c2a] shadow-sm">
-                        <LogoWord isHiddenText={true} />
+                        <LogoWord isHiddenText={true} path="/images/logo_no_bg.png" size="md"/>
                         {!collapsed && (
                             <h1 className="text-transparent text-white text-base font-semibold tracking-wider">
                                 DeepBIM
@@ -51,7 +55,7 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
                             color: "white",
                             [`&:hover`]: {
                                 backgroundColor: "#1d283a",
-                                color: "black", // text màu đen khi hover
+                                color: "#60a5fa", // text màu đen khi hover
                             },
                             [`&.active`]: {
                                 backgroundColor: "#1d283a",
@@ -61,14 +65,14 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
                                 transition: "color 0.3s ease",
                             },
                             [`&:hover svg`]: {
-                                color: "black", // icon chuyển sang đen khi hover
+                                color: "#60a5fa", // icon chuyển sang đen khi hover
                             },
                             },
                         }}
                         >
-                        <div className="px-4 pt-2 pb-1 uppercase text-xs tracking-wide text-slate-400">General</div>
-                        <MenuItem icon={<BarChart3 size={18} />} component={<Link to="/" />}>Home</MenuItem>
-                        <MenuItem icon={<Map size={18} />} component={<Link to="/" />}>Spaces</MenuItem>
+                        {!collapsed && <div className="px-4 pt-2 pb-1 uppercase text-xs tracking-wide text-slate-400">General</div>}
+                        <MenuItem icon={<BarChart3 size={18} />} component={<Link to="/managements/home" />}>Home</MenuItem>
+                        <MenuItem icon={<Map size={18} />} component={<Link to="/managements/spaces" />}>Spaces</MenuItem>
                         <MenuItem icon={<LayoutGrid size={18} />} component={<Link to="/managements/me" />}>Me</MenuItem>
                         </Menu>
 
@@ -79,7 +83,7 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
                             <div className="bg-gradient-to-br from-green-500 to-cyan-400 rounded-xl p-4 text-center">
                                 <div className="text-white font-semibold text-sm">Wellcome to DeepBim</div>
                                 <div className="text-xs text-slate-100">v1.1.0</div>
-                                <button className="mt-2 bg-white text-blue-600 text-xs font-bold py-1 px-3 rounded shadow">Hello</button>
+                                <Button className="mt-2 bg-white text-blue-600 text-xs font-bold py-1 px-3 rounded shadow">Hello</Button>
                             </div>
                         </div>
                     )}
@@ -87,12 +91,18 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
 
                 {/* Collapse Toggle Button */}
                 <div
-                    className="absolute top-4 -right-4 z-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                    onClick={() => setCollapsed(!collapsed)}
+                    className="absolute top-[50%] bottom-0 right-2 z-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    onClick={() => {
+                        setCollapsed(prev => {
+                          const newValue = !prev;
+                          localStorage.setItem('sidebar-collapsed', String(newValue));
+                          return newValue;
+                        });
+                      }}
                 >
-                    <button className="bg-slate-800 hover:bg-slate-700 text-white rounded-full px-2 py-1 shadow-md">
+                    <Button className="bg-transparent hover:bg-slate-700 text-white px-2 py-1 shadow-md">
                         {collapsed ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
-                    </button>
+                    </Button>
                 </div>
             </div>
 
