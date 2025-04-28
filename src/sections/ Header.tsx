@@ -5,10 +5,8 @@ import { useTheme } from "@/context/theme-context";
 import { LogoWord } from "@/components/LogoWord";
 import { FaPlug, FaStar, FaQuestionCircle, FaEnvelope } from "react-icons/fa";
 import { CLASS_NAME_DEFAULT } from "@/utils/class";
-import { useAppSelector } from "@/hooks/reduxHooks";
 import LeftHeader from "./LeftHeader";
-import { useSelector } from "react-redux";
-import { RootState } from "@/store";
+import { Link } from "@tanstack/react-router";
 
 const Header = () => {
   const { t } = useTranslation();
@@ -56,10 +54,10 @@ const Header = () => {
   const hoverColor = theme === "dark" ? "hover:text-green-400" : "hover:text-secondary-700";
 
   const links = [
-    { href: "/connectors", label: t("navbar.connect"), icon: <FaPlug />, ariaLabel: t("navbar.connect") },
-    { href: "/features", label: t("navbar.features"), icon: <FaStar />, ariaLabel: t("navbar.features") },
-    { href: "/how-it-works", label: t("navbar.how_it_works"), icon: <FaQuestionCircle />, ariaLabel: t("navbar.how_it_works") },
-    { href: "/contact-us", label: t("navbar.contact"), icon: <FaEnvelope />, ariaLabel: t("navbar.contact") },
+    { href: "/app/connectors", label: t("navbar.connect"), icon: <FaPlug />, ariaLabel: t("navbar.connect") },
+    { href: "/app/features", label: t("navbar.features"), icon: <FaStar />, ariaLabel: t("navbar.features") },
+    { href: "/app/how-it-works", label: t("navbar.how_it_works"), icon: <FaQuestionCircle />, ariaLabel: t("navbar.how_it_works") },
+    { href: "/app/contact-us", label: t("navbar.contact"), icon: <FaEnvelope />, ariaLabel: t("navbar.contact") },
   ];
 
   return (
@@ -89,9 +87,9 @@ const Header = () => {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-4 ">
             {links.map((link) => (
-              <a key={link.href} href={link.href} className={`${navLinkStyle} ${hoverColor}`}>
+              <Link key={link.href} to={link.href} className={`${navLinkStyle} ${hoverColor}`}>
                 {link.label}
-              </a>
+              </Link>
             ))}
           </nav>
 

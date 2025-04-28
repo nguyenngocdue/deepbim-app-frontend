@@ -1,71 +1,73 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 
 export interface UserProfile {
-  id: number
-  username: string | null
-  email: string
-  firstName: string
-  lastName : string
-  picture  : string
-  birthday : string
-  createdAt: string
-  updatedAt: string
+  id: number;
+  username: string | null;
+  email: string;
+  firstName: string;
+  lastName: string;
+  picture: string;
+  birthday: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 interface AuthState {
-  user: UserProfile | null
-  loading: boolean
+  user: UserProfile | null;
+  loading: boolean;
 }
 
 const initialState: AuthState = {
   user: null,
-  loading: false,
-}
+  loading: true, // ✅ Khi app load lần đầu, đang kiểm tra user
+};
 
-// ✅ Thunk: gọi API /me
-export const fetchCurrentUser = createAsyncThunk(
+// ✅ Thunk: gọi API /auth/me để lấy user hiện tại
+export const fetchCurrentUser = createAsyncThunk<UserProfile>(
   'auth/fetchCurrentUser',
   async (_, thunkAPI) => {
-    const token = localStorage.getItem('access_token')
-    if (!token) throw new Error('No token found')
+    const token = localStorage.getItem('access_token');
+    if (!token) throw new Error('No token found');
 
     const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/auth/me`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-    })
+    });
 
-    if (!res.ok) throw new Error('Failed to fetch user')
-    return await res.json() as UserProfile
+    if (!res.ok) throw new Error('Failed to fetch user');
+    return await res.json();
   }
-)
+);
 
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    setCurentUser(state, action: PayloadAction<UserProfile>) {
-      state.user = action.payload
+    setCurrentUser(state, action: PayloadAction<UserProfile>) {
+      state.user = action.payload;
+      state.loading = false;
     },
     clearUser(state) {
-      state.user = null
+      state.user = null;
+      state.loading = false;
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(fetchCurrentUser.pending, (state) => {
-        state.loading = true
+        state.loading = true;
       })
       .addCase(fetchCurrentUser.fulfilled, (state, action) => {
-        state.user = action.payload
-        state.loading = false
+        state.user = action.payload;
+        state.loading = false;
       })
       .addCase(fetchCurrentUser.rejected, (state) => {
-        state.user = null
-        state.loading = false
-      })
-  }
-})
+        state.user = null;
+        state.loading = false;
+      });
+  },
+});
 
-export const { setCurentUser, clearUser } = authSlice.actions
-export default authSlice.reducer
+export const { setCurrentUser, clearUser } = authSlice.actions;
+export default authSlice.reducer;

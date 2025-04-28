@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from '@tanstack/react-router';
 import { useAppDispatch } from '@/hooks/reduxHooks';
-import { clearUser, setCurentUser } from '@/store/slices/AuthSlice';
+import { clearUser, setCurrentUser } from '@/store/slices/AuthSlice';
 
 export function AuthCallback2() {
   const { navigate } = useRouter();
@@ -19,7 +19,7 @@ export function AuthCallback2() {
 
         const user = await res.json();
         if(user) {
-            dispatch(setCurentUser(user));
+            dispatch(setCurrentUser(user));
         } else {
           dispatch(clearUser());
         }

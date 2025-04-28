@@ -16,7 +16,7 @@ const textVariants = {
   visible: { opacity: 1, x: 0, transition: { duration: 1, ease: "easeOut", delay: 0.2 } },
 };
 
-const sectionClasses = "hero px-6 md:px-16 pt-20 pb-10 bg-white";
+const sectionClasses = "bg-behind px-6 md:px-16 pt-20 pb-10 bg-white";
 const titleClasses = CLASS_NAME_DEFAULT.CLASS_NAME_4;
 const subtitleClasses = CLASS_NAME_DEFAULT.CLASS_NAME_5;
 

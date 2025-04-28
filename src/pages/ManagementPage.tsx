@@ -10,7 +10,7 @@ const ManagementPage: React.FC = () => {
         <LanguageProvider>
             <ThemeProvider>
                 <SidebarLayout>
-                    {/* <Outlet />  */}
+                    <Outlet /> 
                     <UserProjectsPage/>
                 </SidebarLayout>
             </ThemeProvider>

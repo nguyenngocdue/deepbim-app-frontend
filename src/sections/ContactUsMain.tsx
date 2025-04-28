@@ -5,7 +5,7 @@ import { useLanguage } from "@/context/LanguageContext";
 import { FaPhoneAlt, FaEnvelope, FaMapMarkerAlt } from "react-icons/fa";
 
 // Tailwind class tách riêng
-const sectionClasses = "hero min-h-svh px-6 md:px-10 py-16 bg-white overflow-y-auto flex items-center";
+const sectionClasses = "bg-behind min-h-svh px-6 md:px-10 py-16 bg-white overflow-y-auto flex items-center";
 const contentWrapperClasses = "w-full max-w-[960px] mx-auto grid grid-cols-1 md:grid-cols-12 gap-8 items-start";
 const textContainerClasses = "md:col-span-7 text-center md:text-left";
 const titleClasses = "text-4xl md:text-6xl font-bold leading-tight bg-gradient-to-r from-green-900 via-green-500 to-green-300 bg-clip-text text-transparent";

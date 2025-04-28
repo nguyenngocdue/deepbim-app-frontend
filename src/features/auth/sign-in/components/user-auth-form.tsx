@@ -22,9 +22,9 @@ import { GitHubLoginButton } from '@/components/GitHubLoginButton';
 import { useGitHubLoginHandler } from '@/hooks/useGiiHubLogin';
 import { fetchUserProfile } from '@/api';
 import { useAppDispatch } from '@/hooks/reduxHooks';
-import { setCurentUser, UserProfile } from '@/store/slices/AuthSlice';
 import { Separator } from '@/components/ui/separator';
 import { GoogleLoginButton } from '@/components/GoogleLoginButton';
+import { setCurrentUser, UserProfile } from '@/store/slices/AuthSlice';
 
 type UserAuthFormProps = HTMLAttributes<HTMLDivElement>;
 
@@ -79,7 +79,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
 
       const userData = await fetchUserProfile();
       if(userData.id) {
-        dispatch(setCurentUser(userData as UserProfile));
+        dispatch(setCurrentUser(userData as UserProfile));
       }
 
       await navigate({ to: '/' });
