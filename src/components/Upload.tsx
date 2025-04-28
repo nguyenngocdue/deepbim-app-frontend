@@ -74,7 +74,6 @@ const Upload: React.FC<UploadProps> = ({onUploadSuccess}) => {
         onChange={handleFileChange}
         className="hidden"
       />
-
       {/* Upload status message */}
       {message && (
         <p className="text-sm text-muted-foreground">{message}</p>
