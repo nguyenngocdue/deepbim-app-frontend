@@ -43,7 +43,7 @@ p {
   --bg-behind: #ffffff;
   --text-nav: #172220;
   --text-subtitle2: #172220;
-
+  --border-dialog: #4b5563;
 }
 
 .dark {
@@ -74,6 +74,7 @@ p {
   --text-hover-primary: #4ade80;
   --bg-behind: #020817;
   --text-nav: #8ff1db;
+  --border-dialog: #4b5563;
 }
 
 section.hero {
@@ -221,4 +222,8 @@ footer nav a:hover {
 
 body.signin-page #leva__root {
   display: none !important;
+}
+
+.border-dialog {
+  border: var(--border-dialog); /*border-zinc-800*/
 }

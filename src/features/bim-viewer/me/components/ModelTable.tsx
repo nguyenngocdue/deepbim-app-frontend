@@ -40,6 +40,8 @@ import {
 } from "@/components/ui/select";
 import { AvatarUser } from "@/components/AvatarUser";
 import { LogoWord } from "@/components/LogoWord";
+import { Row } from "react-day-picker";
+import { ConfirmDeleteDialog } from "@/components/ConfirmDeleteDialog";
 
 export type Model = {
   name: string;
@@ -59,6 +61,9 @@ export function ModelTable({ data }: ModelTableProps) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [pageSize, setPageSize] = React.useState<number>(10);
   const [globalFilter, setGlobalFilter] = React.useState("");
+  const [openDeleteDialog, setOpenDeleteDialog] = React.useState(false);
+  const [selectedRow, setSelectedRow] = React.useState<Model | null>(null);
+
 
   const columns: ColumnDef<Model>[] = [
     {
@@ -114,11 +119,17 @@ export function ModelTable({ data }: ModelTableProps) {
     {
       id: "actions",
       header: "Action",
-      cell: () => (
+      cell: ({row}) => (
         <div className="flex justify-center gap-2">
           <Pencil className="w-4 h-4 cursor-pointer hover:text-primary" />
           <ExternalLink className="w-4 h-4 cursor-pointer hover:text-yellow-600" />
-          <Trash2 className="w-4 h-4 cursor-pointer text-red-500 hover:text-red-700" />
+          <Trash2 
+            className="w-4 h-4 cursor-pointer text-red-500 hover:text-red-700" 
+            onClick={() => {
+              setSelectedRow(row.original);
+              setOpenDeleteDialog(true);
+            }}
+            />
         </div>
       ),
     },
@@ -207,6 +218,19 @@ export function ModelTable({ data }: ModelTableProps) {
         </Table>
       </div>
 
+
+      <ConfirmDeleteDialog
+        open={openDeleteDialog}
+        onClose={() => setOpenDeleteDialog(false)}
+        onConfirm={() => {
+          console.log("Deleting:", selectedRow);
+          setOpenDeleteDialog(false);
+          // TODO: Xử lý API delete model tại đây
+        }}
+        itemName={selectedRow?.name}
+      />
+
+
       {/* Footer */}
       <div className="flex justify-between items-center text-sm text-muted-foreground">
         <div className="flex items-center gap-2">
@@ -274,5 +298,9 @@ export function ModelTable({ data }: ModelTableProps) {
         </div>
       </div>
     </div>
+
+
+
+
   );
 }

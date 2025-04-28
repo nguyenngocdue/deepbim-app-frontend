@@ -1,4 +1,3 @@
-import React from 'react';
 
 interface LogoWordProps {
   isHiddenText?: boolean; // Ẩn/hiện chữ "DeepBIM"
