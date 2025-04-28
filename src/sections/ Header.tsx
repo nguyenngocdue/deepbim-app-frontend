@@ -54,6 +54,7 @@ const Header = () => {
   const hoverColor = theme === "dark" ? "hover:text-green-400" : "hover:text-secondary-700";
 
   const links = [
+    { href: "/app", label: t("navbar.home"), icon: <FaPlug />, ariaLabel: t("navbar.home") },
     { href: "/app/connectors", label: t("navbar.connect"), icon: <FaPlug />, ariaLabel: t("navbar.connect") },
     { href: "/app/features", label: t("navbar.features"), icon: <FaStar />, ariaLabel: t("navbar.features") },
     { href: "/app/how-it-works", label: t("navbar.how_it_works"), icon: <FaQuestionCircle />, ariaLabel: t("navbar.how_it_works") },

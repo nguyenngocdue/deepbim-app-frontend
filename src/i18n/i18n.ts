@@ -33,6 +33,7 @@ const resources = {
         }
       },      
       navbar: {
+        home: "Home",
         connect: "Connectors",
         features: "Features",
         how_it_works: "How it works",
@@ -183,6 +184,7 @@ const resources = {
         }
       },      
       navbar: {
+        home: 'Trang Chủ',
         connect: "Trình kết nối",
         features: "Tính năng",
         how_it_works: "Cách thức hoạt động",

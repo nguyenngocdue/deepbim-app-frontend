@@ -1,11 +1,10 @@
 import { useDispatch, useSelector } from 'react-redux';
-import './App.css'
-import useScrollRestoration from './hooks/useScrollRestoration';
 import './index.css'
 import HomePage from './pages/HomePage'
-import { AppDispatch, RootState } from './store';
+import { AppDispatch } from './store';
 import { useEffect } from 'react';
 import { fetchCurrentUser } from './store/slices/AuthSlice';
+import useScrollRestoration from './hooks/useScrollRestoration';
 
 function App() {
   useScrollRestoration();

@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 
 interface LogoWordProps {
   isHiddenText?: boolean; // Ẩn/hiện chữ "DeepBIM"
@@ -18,7 +19,7 @@ export const LogoWord = ({ isHiddenText = false, path = "/images/logo.png", size
   const [imgSize, textSize] = selectedSize.split(' ');
 
   return (
-    <a href="/">
+    <Link to="/app">
       <div className="flex items-center space-x-2">
         <img src={path} className={`${imgSize} ${imgSize}`} alt="Logo" />
         {!isHiddenText && (
@@ -27,6 +28,6 @@ export const LogoWord = ({ isHiddenText = false, path = "/images/logo.png", size
           </h1>
         )}
       </div>
-    </a>
+    </Link>
   );
 };

@@ -1,12 +1,12 @@
-import HomePage from '@/pages/HomePage'
+import App from '@/App'
 import { createFileRoute } from '@tanstack/react-router'
 
-export const Route = createFileRoute('/app/')({
+export const Route = createFileRoute('/_authenticated/app/')({
   component: RouteComponent,
 })
 
 function RouteComponent() {
   return <>
-      <HomePage/>
+      <App/>
   </>
 }

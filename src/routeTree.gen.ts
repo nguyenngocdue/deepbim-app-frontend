@@ -14,8 +14,6 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated/route'
-import { Route as AppIndexImport } from './routes/app/index'
-import { Route as AppLayoutImport } from './routes/app/_layout'
 import { Route as AuthenticatedHowItWorksImport } from './routes/_authenticated/how-it-works'
 import { Route as AuthenticatedFeaturesImport } from './routes/_authenticated/features'
 import { Route as AuthenticatedContactUsImport } from './routes/_authenticated/contact-us'
@@ -26,10 +24,7 @@ import { Route as auth500Import } from './routes/(auth)/500'
 import { Route as ExampleModelIfcIndexImport } from './routes/example-model/ifc/index'
 import { Route as AuthenticatedViewerIndexImport } from './routes/_authenticated/viewer/index'
 import { Route as AuthenticatedMyRoom3dIndexImport } from './routes/_authenticated/my-room-3d/index'
-import { Route as AppLayoutHowItWorksImport } from './routes/app/_layout/how-it-works'
-import { Route as AppLayoutFeaturesImport } from './routes/app/_layout/features'
-import { Route as AppLayoutContactUsImport } from './routes/app/_layout/contact-us'
-import { Route as AppLayoutConnectorsImport } from './routes/app/_layout/connectors'
+import { Route as AuthenticatedAppIndexImport } from './routes/_authenticated/app/index'
 import { Route as AuthenticatedViewerFileCodeImport } from './routes/_authenticated/viewer/$fileCode'
 import { Route as AuthenticatedManagementsMeImport } from './routes/_authenticated/managements/me'
 import { Route as AuthenticatedBimViewerUtWebglClippingV2Import } from './routes/_authenticated/bim-viewer-ut/webgl-clipping-v2'
@@ -41,12 +36,16 @@ import { Route as AuthenticatedBimViewerUtViewCubeImport } from './routes/_authe
 import { Route as AuthenticatedBimViewerUtIfcViewerSelectionFamilyImport } from './routes/_authenticated/bim-viewer-ut/ifc-viewer-selection-family'
 import { Route as AuthenticatedBimViewerUtGeometrySceneViewcubeImport } from './routes/_authenticated/bim-viewer-ut/geometry-scene-viewcube'
 import { Route as AuthenticatedBimViewerUtIfcViewerSelectionImport } from './routes/_authenticated/bim-viewer-ut/Ifc-viewer-selection'
+import { Route as AuthenticatedAppLayoutImport } from './routes/_authenticated/app/_layout'
 import { Route as AuthenticatedViewerUploadIndexImport } from './routes/_authenticated/viewer/upload/index'
+import { Route as AuthenticatedAppLayoutHowItWorksImport } from './routes/_authenticated/app/_layout/how-it-works'
+import { Route as AuthenticatedAppLayoutFeaturesImport } from './routes/_authenticated/app/_layout/features'
+import { Route as AuthenticatedAppLayoutContactUsImport } from './routes/_authenticated/app/_layout/contact-us'
+import { Route as AuthenticatedAppLayoutConnectorsImport } from './routes/_authenticated/app/_layout/connectors'
 
 // Create Virtual Routes
 
-const AppImport = createFileRoute('/app')()
-const AuthenticatedIndexLazyImport = createFileRoute('/_authenticated/')()
+const AuthenticatedAppImport = createFileRoute('/_authenticated/app')()
 const errors503LazyImport = createFileRoute('/(errors)/503')()
 const errors500LazyImport = createFileRoute('/(errors)/500')()
 const errors404LazyImport = createFileRoute('/(errors)/404')()
@@ -69,29 +68,15 @@ const AuthenticatedBimViewerUtIfcLoaderLazyImport = createFileRoute(
 
 // Create/Update Routes
 
-const AppRoute = AppImport.update({
-  id: '/app',
-  path: '/app',
-  getParentRoute: () => rootRoute,
-} as any)
-
 const AuthenticatedRouteRoute = AuthenticatedRouteImport.update({
   id: '/_authenticated',
   getParentRoute: () => rootRoute,
 } as any)
 
-const AuthenticatedIndexLazyRoute = AuthenticatedIndexLazyImport.update({
-  id: '/',
-  path: '/',
+const AuthenticatedAppRoute = AuthenticatedAppImport.update({
+  id: '/app',
+  path: '/app',
   getParentRoute: () => AuthenticatedRouteRoute,
-} as any).lazy(() =>
-  import('./routes/_authenticated/index.lazy').then((d) => d.Route),
-)
-
-const AppIndexRoute = AppIndexImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => AppRoute,
 } as any)
 
 const errors503LazyRoute = errors503LazyImport
@@ -160,11 +145,6 @@ const authForgotPasswordLazyRoute = authForgotPasswordLazyImport
     import('./routes/(auth)/forgot-password.lazy').then((d) => d.Route),
   )
 
-const AppLayoutRoute = AppLayoutImport.update({
-  id: '/_layout',
-  getParentRoute: () => AppRoute,
-} as any)
-
 const AuthenticatedHowItWorksRoute = AuthenticatedHowItWorksImport.update({
   id: '/how-it-works',
   path: '/how-it-works',
@@ -227,6 +207,12 @@ const AuthenticatedMyRoom3dIndexRoute = AuthenticatedMyRoom3dIndexImport.update(
   } as any,
 )
 
+const AuthenticatedAppIndexRoute = AuthenticatedAppIndexImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthenticatedAppRoute,
+} as any)
+
 const AuthenticatedBimViewerUtViewerLazyRoute =
   AuthenticatedBimViewerUtViewerLazyImport.update({
     id: '/bim-viewer-ut/viewer',
@@ -259,30 +245,6 @@ const AuthenticatedBimViewerUtIfcLoaderLazyRoute =
       (d) => d.Route,
     ),
   )
-
-const AppLayoutHowItWorksRoute = AppLayoutHowItWorksImport.update({
-  id: '/how-it-works',
-  path: '/how-it-works',
-  getParentRoute: () => AppLayoutRoute,
-} as any)
-
-const AppLayoutFeaturesRoute = AppLayoutFeaturesImport.update({
-  id: '/features',
-  path: '/features',
-  getParentRoute: () => AppLayoutRoute,
-} as any)
-
-const AppLayoutContactUsRoute = AppLayoutContactUsImport.update({
-  id: '/contact-us',
-  path: '/contact-us',
-  getParentRoute: () => AppLayoutRoute,
-} as any)
-
-const AppLayoutConnectorsRoute = AppLayoutConnectorsImport.update({
-  id: '/connectors',
-  path: '/connectors',
-  getParentRoute: () => AppLayoutRoute,
-} as any)
 
 const AuthenticatedViewerFileCodeRoute =
   AuthenticatedViewerFileCodeImport.update({
@@ -362,11 +324,44 @@ const AuthenticatedBimViewerUtIfcViewerSelectionRoute =
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 
+const AuthenticatedAppLayoutRoute = AuthenticatedAppLayoutImport.update({
+  id: '/_layout',
+  getParentRoute: () => AuthenticatedAppRoute,
+} as any)
+
 const AuthenticatedViewerUploadIndexRoute =
   AuthenticatedViewerUploadIndexImport.update({
     id: '/viewer/upload/',
     path: '/viewer/upload/',
     getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+
+const AuthenticatedAppLayoutHowItWorksRoute =
+  AuthenticatedAppLayoutHowItWorksImport.update({
+    id: '/how-it-works',
+    path: '/how-it-works',
+    getParentRoute: () => AuthenticatedAppLayoutRoute,
+  } as any)
+
+const AuthenticatedAppLayoutFeaturesRoute =
+  AuthenticatedAppLayoutFeaturesImport.update({
+    id: '/features',
+    path: '/features',
+    getParentRoute: () => AuthenticatedAppLayoutRoute,
+  } as any)
+
+const AuthenticatedAppLayoutContactUsRoute =
+  AuthenticatedAppLayoutContactUsImport.update({
+    id: '/contact-us',
+    path: '/contact-us',
+    getParentRoute: () => AuthenticatedAppLayoutRoute,
+  } as any)
+
+const AuthenticatedAppLayoutConnectorsRoute =
+  AuthenticatedAppLayoutConnectorsImport.update({
+    id: '/connectors',
+    path: '/connectors',
+    getParentRoute: () => AuthenticatedAppLayoutRoute,
   } as any)
 
 // Populate the FileRoutesByPath interface
@@ -429,20 +424,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedHowItWorksImport
       parentRoute: typeof AuthenticatedRouteImport
     }
-    '/app': {
-      id: '/app'
-      path: '/app'
-      fullPath: '/app'
-      preLoaderRoute: typeof AppImport
-      parentRoute: typeof rootRoute
-    }
-    '/app/_layout': {
-      id: '/app/_layout'
-      path: '/app'
-      fullPath: '/app'
-      preLoaderRoute: typeof AppLayoutImport
-      parentRoute: typeof AppRoute
-    }
     '/(auth)/forgot-password': {
       id: '/(auth)/forgot-password'
       path: '/forgot-password'
@@ -499,19 +480,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof errors503LazyImport
       parentRoute: typeof rootRoute
     }
-    '/app/': {
-      id: '/app/'
-      path: '/'
-      fullPath: '/app/'
-      preLoaderRoute: typeof AppIndexImport
-      parentRoute: typeof AppImport
-    }
-    '/_authenticated/': {
-      id: '/_authenticated/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof AuthenticatedIndexLazyImport
+    '/_authenticated/app': {
+      id: '/_authenticated/app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AuthenticatedAppImport
       parentRoute: typeof AuthenticatedRouteImport
+    }
+    '/_authenticated/app/_layout': {
+      id: '/_authenticated/app/_layout'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AuthenticatedAppLayoutImport
+      parentRoute: typeof AuthenticatedAppRoute
     }
     '/_authenticated/bim-viewer-ut/Ifc-viewer-selection': {
       id: '/_authenticated/bim-viewer-ut/Ifc-viewer-selection'
@@ -590,34 +571,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedViewerFileCodeImport
       parentRoute: typeof AuthenticatedRouteImport
     }
-    '/app/_layout/connectors': {
-      id: '/app/_layout/connectors'
-      path: '/connectors'
-      fullPath: '/app/connectors'
-      preLoaderRoute: typeof AppLayoutConnectorsImport
-      parentRoute: typeof AppLayoutImport
-    }
-    '/app/_layout/contact-us': {
-      id: '/app/_layout/contact-us'
-      path: '/contact-us'
-      fullPath: '/app/contact-us'
-      preLoaderRoute: typeof AppLayoutContactUsImport
-      parentRoute: typeof AppLayoutImport
-    }
-    '/app/_layout/features': {
-      id: '/app/_layout/features'
-      path: '/features'
-      fullPath: '/app/features'
-      preLoaderRoute: typeof AppLayoutFeaturesImport
-      parentRoute: typeof AppLayoutImport
-    }
-    '/app/_layout/how-it-works': {
-      id: '/app/_layout/how-it-works'
-      path: '/how-it-works'
-      fullPath: '/app/how-it-works'
-      preLoaderRoute: typeof AppLayoutHowItWorksImport
-      parentRoute: typeof AppLayoutImport
-    }
     '/_authenticated/bim-viewer-ut/ifc-loader': {
       id: '/_authenticated/bim-viewer-ut/ifc-loader'
       path: '/bim-viewer-ut/ifc-loader'
@@ -638,6 +591,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/bim-viewer-ut/viewer'
       preLoaderRoute: typeof AuthenticatedBimViewerUtViewerLazyImport
       parentRoute: typeof AuthenticatedRouteImport
+    }
+    '/_authenticated/app/': {
+      id: '/_authenticated/app/'
+      path: '/'
+      fullPath: '/app/'
+      preLoaderRoute: typeof AuthenticatedAppIndexImport
+      parentRoute: typeof AuthenticatedAppImport
     }
     '/_authenticated/my-room-3d/': {
       id: '/_authenticated/my-room-3d/'
@@ -660,6 +620,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ExampleModelIfcIndexImport
       parentRoute: typeof rootRoute
     }
+    '/_authenticated/app/_layout/connectors': {
+      id: '/_authenticated/app/_layout/connectors'
+      path: '/connectors'
+      fullPath: '/app/connectors'
+      preLoaderRoute: typeof AuthenticatedAppLayoutConnectorsImport
+      parentRoute: typeof AuthenticatedAppLayoutImport
+    }
+    '/_authenticated/app/_layout/contact-us': {
+      id: '/_authenticated/app/_layout/contact-us'
+      path: '/contact-us'
+      fullPath: '/app/contact-us'
+      preLoaderRoute: typeof AuthenticatedAppLayoutContactUsImport
+      parentRoute: typeof AuthenticatedAppLayoutImport
+    }
+    '/_authenticated/app/_layout/features': {
+      id: '/_authenticated/app/_layout/features'
+      path: '/features'
+      fullPath: '/app/features'
+      preLoaderRoute: typeof AuthenticatedAppLayoutFeaturesImport
+      parentRoute: typeof AuthenticatedAppLayoutImport
+    }
+    '/_authenticated/app/_layout/how-it-works': {
+      id: '/_authenticated/app/_layout/how-it-works'
+      path: '/how-it-works'
+      fullPath: '/app/how-it-works'
+      preLoaderRoute: typeof AuthenticatedAppLayoutHowItWorksImport
+      parentRoute: typeof AuthenticatedAppLayoutImport
+    }
     '/_authenticated/viewer/upload/': {
       id: '/_authenticated/viewer/upload/'
       path: '/viewer/upload'
@@ -672,11 +660,46 @@ declare module '@tanstack/react-router' {
 
 // Create and export the route tree
 
+interface AuthenticatedAppLayoutRouteChildren {
+  AuthenticatedAppLayoutConnectorsRoute: typeof AuthenticatedAppLayoutConnectorsRoute
+  AuthenticatedAppLayoutContactUsRoute: typeof AuthenticatedAppLayoutContactUsRoute
+  AuthenticatedAppLayoutFeaturesRoute: typeof AuthenticatedAppLayoutFeaturesRoute
+  AuthenticatedAppLayoutHowItWorksRoute: typeof AuthenticatedAppLayoutHowItWorksRoute
+}
+
+const AuthenticatedAppLayoutRouteChildren: AuthenticatedAppLayoutRouteChildren =
+  {
+    AuthenticatedAppLayoutConnectorsRoute:
+      AuthenticatedAppLayoutConnectorsRoute,
+    AuthenticatedAppLayoutContactUsRoute: AuthenticatedAppLayoutContactUsRoute,
+    AuthenticatedAppLayoutFeaturesRoute: AuthenticatedAppLayoutFeaturesRoute,
+    AuthenticatedAppLayoutHowItWorksRoute:
+      AuthenticatedAppLayoutHowItWorksRoute,
+  }
+
+const AuthenticatedAppLayoutRouteWithChildren =
+  AuthenticatedAppLayoutRoute._addFileChildren(
+    AuthenticatedAppLayoutRouteChildren,
+  )
+
+interface AuthenticatedAppRouteChildren {
+  AuthenticatedAppLayoutRoute: typeof AuthenticatedAppLayoutRouteWithChildren
+  AuthenticatedAppIndexRoute: typeof AuthenticatedAppIndexRoute
+}
+
+const AuthenticatedAppRouteChildren: AuthenticatedAppRouteChildren = {
+  AuthenticatedAppLayoutRoute: AuthenticatedAppLayoutRouteWithChildren,
+  AuthenticatedAppIndexRoute: AuthenticatedAppIndexRoute,
+}
+
+const AuthenticatedAppRouteWithChildren =
+  AuthenticatedAppRoute._addFileChildren(AuthenticatedAppRouteChildren)
+
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedContactUsRoute: typeof AuthenticatedContactUsRoute
   AuthenticatedFeaturesRoute: typeof AuthenticatedFeaturesRoute
   AuthenticatedHowItWorksRoute: typeof AuthenticatedHowItWorksRoute
-  AuthenticatedIndexLazyRoute: typeof AuthenticatedIndexLazyRoute
+  AuthenticatedAppRoute: typeof AuthenticatedAppRouteWithChildren
   AuthenticatedBimViewerUtIfcViewerSelectionRoute: typeof AuthenticatedBimViewerUtIfcViewerSelectionRoute
   AuthenticatedBimViewerUtGeometrySceneViewcubeRoute: typeof AuthenticatedBimViewerUtGeometrySceneViewcubeRoute
   AuthenticatedBimViewerUtIfcViewerSelectionFamilyRoute: typeof AuthenticatedBimViewerUtIfcViewerSelectionFamilyRoute
@@ -700,7 +723,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedContactUsRoute: AuthenticatedContactUsRoute,
   AuthenticatedFeaturesRoute: AuthenticatedFeaturesRoute,
   AuthenticatedHowItWorksRoute: AuthenticatedHowItWorksRoute,
-  AuthenticatedIndexLazyRoute: AuthenticatedIndexLazyRoute,
+  AuthenticatedAppRoute: AuthenticatedAppRouteWithChildren,
   AuthenticatedBimViewerUtIfcViewerSelectionRoute:
     AuthenticatedBimViewerUtIfcViewerSelectionRoute,
   AuthenticatedBimViewerUtGeometrySceneViewcubeRoute:
@@ -734,36 +757,6 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
 const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
-interface AppLayoutRouteChildren {
-  AppLayoutConnectorsRoute: typeof AppLayoutConnectorsRoute
-  AppLayoutContactUsRoute: typeof AppLayoutContactUsRoute
-  AppLayoutFeaturesRoute: typeof AppLayoutFeaturesRoute
-  AppLayoutHowItWorksRoute: typeof AppLayoutHowItWorksRoute
-}
-
-const AppLayoutRouteChildren: AppLayoutRouteChildren = {
-  AppLayoutConnectorsRoute: AppLayoutConnectorsRoute,
-  AppLayoutContactUsRoute: AppLayoutContactUsRoute,
-  AppLayoutFeaturesRoute: AppLayoutFeaturesRoute,
-  AppLayoutHowItWorksRoute: AppLayoutHowItWorksRoute,
-}
-
-const AppLayoutRouteWithChildren = AppLayoutRoute._addFileChildren(
-  AppLayoutRouteChildren,
-)
-
-interface AppRouteChildren {
-  AppLayoutRoute: typeof AppLayoutRouteWithChildren
-  AppIndexRoute: typeof AppIndexRoute
-}
-
-const AppRouteChildren: AppRouteChildren = {
-  AppLayoutRoute: AppLayoutRouteWithChildren,
-  AppIndexRoute: AppIndexRoute,
-}
-
-const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
-
 export interface FileRoutesByFullPath {
   '': typeof AuthenticatedRouteRouteWithChildren
   '/500': typeof errors500LazyRoute
@@ -773,7 +766,6 @@ export interface FileRoutesByFullPath {
   '/contact-us': typeof AuthenticatedContactUsRoute
   '/features': typeof AuthenticatedFeaturesRoute
   '/how-it-works': typeof AuthenticatedHowItWorksRoute
-  '/app': typeof AppLayoutRouteWithChildren
   '/forgot-password': typeof authForgotPasswordLazyRoute
   '/sign-in-2': typeof authSignIn2LazyRoute
   '/sign-up': typeof authSignUpLazyRoute
@@ -781,8 +773,7 @@ export interface FileRoutesByFullPath {
   '/403': typeof errors403LazyRoute
   '/404': typeof errors404LazyRoute
   '/503': typeof errors503LazyRoute
-  '/app/': typeof AppIndexRoute
-  '/': typeof AuthenticatedIndexLazyRoute
+  '/app': typeof AuthenticatedAppLayoutRouteWithChildren
   '/bim-viewer-ut/Ifc-viewer-selection': typeof AuthenticatedBimViewerUtIfcViewerSelectionRoute
   '/bim-viewer-ut/geometry-scene-viewcube': typeof AuthenticatedBimViewerUtGeometrySceneViewcubeRoute
   '/bim-viewer-ut/ifc-viewer-selection-family': typeof AuthenticatedBimViewerUtIfcViewerSelectionFamilyRoute
@@ -794,20 +785,22 @@ export interface FileRoutesByFullPath {
   '/bim-viewer-ut/webgl-clipping-v2': typeof AuthenticatedBimViewerUtWebglClippingV2Route
   '/managements/me': typeof AuthenticatedManagementsMeRoute
   '/viewer/$fileCode': typeof AuthenticatedViewerFileCodeRoute
-  '/app/connectors': typeof AppLayoutConnectorsRoute
-  '/app/contact-us': typeof AppLayoutContactUsRoute
-  '/app/features': typeof AppLayoutFeaturesRoute
-  '/app/how-it-works': typeof AppLayoutHowItWorksRoute
   '/bim-viewer-ut/ifc-loader': typeof AuthenticatedBimViewerUtIfcLoaderLazyRoute
   '/bim-viewer-ut/instanced-mesh': typeof AuthenticatedBimViewerUtInstancedMeshLazyRoute
   '/bim-viewer-ut/viewer': typeof AuthenticatedBimViewerUtViewerLazyRoute
+  '/app/': typeof AuthenticatedAppIndexRoute
   '/my-room-3d': typeof AuthenticatedMyRoom3dIndexRoute
   '/viewer': typeof AuthenticatedViewerIndexRoute
   '/example-model/ifc': typeof ExampleModelIfcIndexRoute
+  '/app/connectors': typeof AuthenticatedAppLayoutConnectorsRoute
+  '/app/contact-us': typeof AuthenticatedAppLayoutContactUsRoute
+  '/app/features': typeof AuthenticatedAppLayoutFeaturesRoute
+  '/app/how-it-works': typeof AuthenticatedAppLayoutHowItWorksRoute
   '/viewer/upload': typeof AuthenticatedViewerUploadIndexRoute
 }
 
 export interface FileRoutesByTo {
+  '': typeof AuthenticatedRouteRouteWithChildren
   '/500': typeof errors500LazyRoute
   '/callback': typeof authCallbackRoute
   '/reset-password': typeof authResetPasswordRoute
@@ -815,7 +808,6 @@ export interface FileRoutesByTo {
   '/contact-us': typeof AuthenticatedContactUsRoute
   '/features': typeof AuthenticatedFeaturesRoute
   '/how-it-works': typeof AuthenticatedHowItWorksRoute
-  '/app': typeof AppIndexRoute
   '/forgot-password': typeof authForgotPasswordLazyRoute
   '/sign-in-2': typeof authSignIn2LazyRoute
   '/sign-up': typeof authSignUpLazyRoute
@@ -823,7 +815,7 @@ export interface FileRoutesByTo {
   '/403': typeof errors403LazyRoute
   '/404': typeof errors404LazyRoute
   '/503': typeof errors503LazyRoute
-  '/': typeof AuthenticatedIndexLazyRoute
+  '/app': typeof AuthenticatedAppIndexRoute
   '/bim-viewer-ut/Ifc-viewer-selection': typeof AuthenticatedBimViewerUtIfcViewerSelectionRoute
   '/bim-viewer-ut/geometry-scene-viewcube': typeof AuthenticatedBimViewerUtGeometrySceneViewcubeRoute
   '/bim-viewer-ut/ifc-viewer-selection-family': typeof AuthenticatedBimViewerUtIfcViewerSelectionFamilyRoute
@@ -835,16 +827,16 @@ export interface FileRoutesByTo {
   '/bim-viewer-ut/webgl-clipping-v2': typeof AuthenticatedBimViewerUtWebglClippingV2Route
   '/managements/me': typeof AuthenticatedManagementsMeRoute
   '/viewer/$fileCode': typeof AuthenticatedViewerFileCodeRoute
-  '/app/connectors': typeof AppLayoutConnectorsRoute
-  '/app/contact-us': typeof AppLayoutContactUsRoute
-  '/app/features': typeof AppLayoutFeaturesRoute
-  '/app/how-it-works': typeof AppLayoutHowItWorksRoute
   '/bim-viewer-ut/ifc-loader': typeof AuthenticatedBimViewerUtIfcLoaderLazyRoute
   '/bim-viewer-ut/instanced-mesh': typeof AuthenticatedBimViewerUtInstancedMeshLazyRoute
   '/bim-viewer-ut/viewer': typeof AuthenticatedBimViewerUtViewerLazyRoute
   '/my-room-3d': typeof AuthenticatedMyRoom3dIndexRoute
   '/viewer': typeof AuthenticatedViewerIndexRoute
   '/example-model/ifc': typeof ExampleModelIfcIndexRoute
+  '/app/connectors': typeof AuthenticatedAppLayoutConnectorsRoute
+  '/app/contact-us': typeof AuthenticatedAppLayoutContactUsRoute
+  '/app/features': typeof AuthenticatedAppLayoutFeaturesRoute
+  '/app/how-it-works': typeof AuthenticatedAppLayoutHowItWorksRoute
   '/viewer/upload': typeof AuthenticatedViewerUploadIndexRoute
 }
 
@@ -858,8 +850,6 @@ export interface FileRoutesById {
   '/_authenticated/contact-us': typeof AuthenticatedContactUsRoute
   '/_authenticated/features': typeof AuthenticatedFeaturesRoute
   '/_authenticated/how-it-works': typeof AuthenticatedHowItWorksRoute
-  '/app': typeof AppRouteWithChildren
-  '/app/_layout': typeof AppLayoutRouteWithChildren
   '/(auth)/forgot-password': typeof authForgotPasswordLazyRoute
   '/(auth)/sign-in-2': typeof authSignIn2LazyRoute
   '/(auth)/sign-up': typeof authSignUpLazyRoute
@@ -868,8 +858,8 @@ export interface FileRoutesById {
   '/(errors)/404': typeof errors404LazyRoute
   '/(errors)/500': typeof errors500LazyRoute
   '/(errors)/503': typeof errors503LazyRoute
-  '/app/': typeof AppIndexRoute
-  '/_authenticated/': typeof AuthenticatedIndexLazyRoute
+  '/_authenticated/app': typeof AuthenticatedAppRouteWithChildren
+  '/_authenticated/app/_layout': typeof AuthenticatedAppLayoutRouteWithChildren
   '/_authenticated/bim-viewer-ut/Ifc-viewer-selection': typeof AuthenticatedBimViewerUtIfcViewerSelectionRoute
   '/_authenticated/bim-viewer-ut/geometry-scene-viewcube': typeof AuthenticatedBimViewerUtGeometrySceneViewcubeRoute
   '/_authenticated/bim-viewer-ut/ifc-viewer-selection-family': typeof AuthenticatedBimViewerUtIfcViewerSelectionFamilyRoute
@@ -881,16 +871,17 @@ export interface FileRoutesById {
   '/_authenticated/bim-viewer-ut/webgl-clipping-v2': typeof AuthenticatedBimViewerUtWebglClippingV2Route
   '/_authenticated/managements/me': typeof AuthenticatedManagementsMeRoute
   '/_authenticated/viewer/$fileCode': typeof AuthenticatedViewerFileCodeRoute
-  '/app/_layout/connectors': typeof AppLayoutConnectorsRoute
-  '/app/_layout/contact-us': typeof AppLayoutContactUsRoute
-  '/app/_layout/features': typeof AppLayoutFeaturesRoute
-  '/app/_layout/how-it-works': typeof AppLayoutHowItWorksRoute
   '/_authenticated/bim-viewer-ut/ifc-loader': typeof AuthenticatedBimViewerUtIfcLoaderLazyRoute
   '/_authenticated/bim-viewer-ut/instanced-mesh': typeof AuthenticatedBimViewerUtInstancedMeshLazyRoute
   '/_authenticated/bim-viewer-ut/viewer': typeof AuthenticatedBimViewerUtViewerLazyRoute
+  '/_authenticated/app/': typeof AuthenticatedAppIndexRoute
   '/_authenticated/my-room-3d/': typeof AuthenticatedMyRoom3dIndexRoute
   '/_authenticated/viewer/': typeof AuthenticatedViewerIndexRoute
   '/example-model/ifc/': typeof ExampleModelIfcIndexRoute
+  '/_authenticated/app/_layout/connectors': typeof AuthenticatedAppLayoutConnectorsRoute
+  '/_authenticated/app/_layout/contact-us': typeof AuthenticatedAppLayoutContactUsRoute
+  '/_authenticated/app/_layout/features': typeof AuthenticatedAppLayoutFeaturesRoute
+  '/_authenticated/app/_layout/how-it-works': typeof AuthenticatedAppLayoutHowItWorksRoute
   '/_authenticated/viewer/upload/': typeof AuthenticatedViewerUploadIndexRoute
 }
 
@@ -905,7 +896,6 @@ export interface FileRouteTypes {
     | '/contact-us'
     | '/features'
     | '/how-it-works'
-    | '/app'
     | '/forgot-password'
     | '/sign-in-2'
     | '/sign-up'
@@ -913,8 +903,7 @@ export interface FileRouteTypes {
     | '/403'
     | '/404'
     | '/503'
-    | '/app/'
-    | '/'
+    | '/app'
     | '/bim-viewer-ut/Ifc-viewer-selection'
     | '/bim-viewer-ut/geometry-scene-viewcube'
     | '/bim-viewer-ut/ifc-viewer-selection-family'
@@ -926,19 +915,21 @@ export interface FileRouteTypes {
     | '/bim-viewer-ut/webgl-clipping-v2'
     | '/managements/me'
     | '/viewer/$fileCode'
+    | '/bim-viewer-ut/ifc-loader'
+    | '/bim-viewer-ut/instanced-mesh'
+    | '/bim-viewer-ut/viewer'
+    | '/app/'
+    | '/my-room-3d'
+    | '/viewer'
+    | '/example-model/ifc'
     | '/app/connectors'
     | '/app/contact-us'
     | '/app/features'
     | '/app/how-it-works'
-    | '/bim-viewer-ut/ifc-loader'
-    | '/bim-viewer-ut/instanced-mesh'
-    | '/bim-viewer-ut/viewer'
-    | '/my-room-3d'
-    | '/viewer'
-    | '/example-model/ifc'
     | '/viewer/upload'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | ''
     | '/500'
     | '/callback'
     | '/reset-password'
@@ -946,7 +937,6 @@ export interface FileRouteTypes {
     | '/contact-us'
     | '/features'
     | '/how-it-works'
-    | '/app'
     | '/forgot-password'
     | '/sign-in-2'
     | '/sign-up'
@@ -954,7 +944,7 @@ export interface FileRouteTypes {
     | '/403'
     | '/404'
     | '/503'
-    | '/'
+    | '/app'
     | '/bim-viewer-ut/Ifc-viewer-selection'
     | '/bim-viewer-ut/geometry-scene-viewcube'
     | '/bim-viewer-ut/ifc-viewer-selection-family'
@@ -966,16 +956,16 @@ export interface FileRouteTypes {
     | '/bim-viewer-ut/webgl-clipping-v2'
     | '/managements/me'
     | '/viewer/$fileCode'
-    | '/app/connectors'
-    | '/app/contact-us'
-    | '/app/features'
-    | '/app/how-it-works'
     | '/bim-viewer-ut/ifc-loader'
     | '/bim-viewer-ut/instanced-mesh'
     | '/bim-viewer-ut/viewer'
     | '/my-room-3d'
     | '/viewer'
     | '/example-model/ifc'
+    | '/app/connectors'
+    | '/app/contact-us'
+    | '/app/features'
+    | '/app/how-it-works'
     | '/viewer/upload'
   id:
     | '__root__'
@@ -987,8 +977,6 @@ export interface FileRouteTypes {
     | '/_authenticated/contact-us'
     | '/_authenticated/features'
     | '/_authenticated/how-it-works'
-    | '/app'
-    | '/app/_layout'
     | '/(auth)/forgot-password'
     | '/(auth)/sign-in-2'
     | '/(auth)/sign-up'
@@ -997,8 +985,8 @@ export interface FileRouteTypes {
     | '/(errors)/404'
     | '/(errors)/500'
     | '/(errors)/503'
-    | '/app/'
-    | '/_authenticated/'
+    | '/_authenticated/app'
+    | '/_authenticated/app/_layout'
     | '/_authenticated/bim-viewer-ut/Ifc-viewer-selection'
     | '/_authenticated/bim-viewer-ut/geometry-scene-viewcube'
     | '/_authenticated/bim-viewer-ut/ifc-viewer-selection-family'
@@ -1010,16 +998,17 @@ export interface FileRouteTypes {
     | '/_authenticated/bim-viewer-ut/webgl-clipping-v2'
     | '/_authenticated/managements/me'
     | '/_authenticated/viewer/$fileCode'
-    | '/app/_layout/connectors'
-    | '/app/_layout/contact-us'
-    | '/app/_layout/features'
-    | '/app/_layout/how-it-works'
     | '/_authenticated/bim-viewer-ut/ifc-loader'
     | '/_authenticated/bim-viewer-ut/instanced-mesh'
     | '/_authenticated/bim-viewer-ut/viewer'
+    | '/_authenticated/app/'
     | '/_authenticated/my-room-3d/'
     | '/_authenticated/viewer/'
     | '/example-model/ifc/'
+    | '/_authenticated/app/_layout/connectors'
+    | '/_authenticated/app/_layout/contact-us'
+    | '/_authenticated/app/_layout/features'
+    | '/_authenticated/app/_layout/how-it-works'
     | '/_authenticated/viewer/upload/'
   fileRoutesById: FileRoutesById
 }
@@ -1030,7 +1019,6 @@ export interface RootRouteChildren {
   authCallbackRoute: typeof authCallbackRoute
   authResetPasswordRoute: typeof authResetPasswordRoute
   authSignInRoute: typeof authSignInRoute
-  AppRoute: typeof AppRouteWithChildren
   authForgotPasswordLazyRoute: typeof authForgotPasswordLazyRoute
   authSignIn2LazyRoute: typeof authSignIn2LazyRoute
   authSignUpLazyRoute: typeof authSignUpLazyRoute
@@ -1048,7 +1036,6 @@ const rootRouteChildren: RootRouteChildren = {
   authCallbackRoute: authCallbackRoute,
   authResetPasswordRoute: authResetPasswordRoute,
   authSignInRoute: authSignInRoute,
-  AppRoute: AppRouteWithChildren,
   authForgotPasswordLazyRoute: authForgotPasswordLazyRoute,
   authSignIn2LazyRoute: authSignIn2LazyRoute,
   authSignUpLazyRoute: authSignUpLazyRoute,
@@ -1075,7 +1062,6 @@ export const routeTree = rootRoute
         "/(auth)/callback",
         "/(auth)/reset-password",
         "/(auth)/sign-in",
-        "/app",
         "/(auth)/forgot-password",
         "/(auth)/sign-in-2",
         "/(auth)/sign-up",
@@ -1093,7 +1079,7 @@ export const routeTree = rootRoute
         "/_authenticated/contact-us",
         "/_authenticated/features",
         "/_authenticated/how-it-works",
-        "/_authenticated/",
+        "/_authenticated/app",
         "/_authenticated/bim-viewer-ut/Ifc-viewer-selection",
         "/_authenticated/bim-viewer-ut/geometry-scene-viewcube",
         "/_authenticated/bim-viewer-ut/ifc-viewer-selection-family",
@@ -1137,23 +1123,6 @@ export const routeTree = rootRoute
       "filePath": "_authenticated/how-it-works.tsx",
       "parent": "/_authenticated"
     },
-    "/app": {
-      "filePath": "app",
-      "children": [
-        "/app/_layout",
-        "/app/"
-      ]
-    },
-    "/app/_layout": {
-      "filePath": "app/_layout.tsx",
-      "parent": "/app",
-      "children": [
-        "/app/_layout/connectors",
-        "/app/_layout/contact-us",
-        "/app/_layout/features",
-        "/app/_layout/how-it-works"
-      ]
-    },
     "/(auth)/forgot-password": {
       "filePath": "(auth)/forgot-password.lazy.tsx"
     },
@@ -1178,13 +1147,23 @@ export const routeTree = rootRoute
     "/(errors)/503": {
       "filePath": "(errors)/503.lazy.tsx"
     },
-    "/app/": {
-      "filePath": "app/index.tsx",
-      "parent": "/app"
+    "/_authenticated/app": {
+      "filePath": "_authenticated/app",
+      "parent": "/_authenticated",
+      "children": [
+        "/_authenticated/app/_layout",
+        "/_authenticated/app/"
+      ]
     },
-    "/_authenticated/": {
-      "filePath": "_authenticated/index.lazy.tsx",
-      "parent": "/_authenticated"
+    "/_authenticated/app/_layout": {
+      "filePath": "_authenticated/app/_layout.tsx",
+      "parent": "/_authenticated/app",
+      "children": [
+        "/_authenticated/app/_layout/connectors",
+        "/_authenticated/app/_layout/contact-us",
+        "/_authenticated/app/_layout/features",
+        "/_authenticated/app/_layout/how-it-works"
+      ]
     },
     "/_authenticated/bim-viewer-ut/Ifc-viewer-selection": {
       "filePath": "_authenticated/bim-viewer-ut/Ifc-viewer-selection.tsx",
@@ -1230,22 +1209,6 @@ export const routeTree = rootRoute
       "filePath": "_authenticated/viewer/$fileCode.tsx",
       "parent": "/_authenticated"
     },
-    "/app/_layout/connectors": {
-      "filePath": "app/_layout/connectors.tsx",
-      "parent": "/app/_layout"
-    },
-    "/app/_layout/contact-us": {
-      "filePath": "app/_layout/contact-us.tsx",
-      "parent": "/app/_layout"
-    },
-    "/app/_layout/features": {
-      "filePath": "app/_layout/features.tsx",
-      "parent": "/app/_layout"
-    },
-    "/app/_layout/how-it-works": {
-      "filePath": "app/_layout/how-it-works.tsx",
-      "parent": "/app/_layout"
-    },
     "/_authenticated/bim-viewer-ut/ifc-loader": {
       "filePath": "_authenticated/bim-viewer-ut/ifc-loader.lazy.tsx",
       "parent": "/_authenticated"
@@ -1258,6 +1221,10 @@ export const routeTree = rootRoute
       "filePath": "_authenticated/bim-viewer-ut/viewer.lazy.tsx",
       "parent": "/_authenticated"
     },
+    "/_authenticated/app/": {
+      "filePath": "_authenticated/app/index.tsx",
+      "parent": "/_authenticated/app"
+    },
     "/_authenticated/my-room-3d/": {
       "filePath": "_authenticated/my-room-3d/index.tsx",
       "parent": "/_authenticated"
@@ -1268,6 +1235,22 @@ export const routeTree = rootRoute
     },
     "/example-model/ifc/": {
       "filePath": "example-model/ifc/index.ts"
+    },
+    "/_authenticated/app/_layout/connectors": {
+      "filePath": "_authenticated/app/_layout/connectors.tsx",
+      "parent": "/_authenticated/app/_layout"
+    },
+    "/_authenticated/app/_layout/contact-us": {
+      "filePath": "_authenticated/app/_layout/contact-us.tsx",
+      "parent": "/_authenticated/app/_layout"
+    },
+    "/_authenticated/app/_layout/features": {
+      "filePath": "_authenticated/app/_layout/features.tsx",
+      "parent": "/_authenticated/app/_layout"
+    },
+    "/_authenticated/app/_layout/how-it-works": {
+      "filePath": "_authenticated/app/_layout/how-it-works.tsx",
+      "parent": "/_authenticated/app/_layout"
     },
     "/_authenticated/viewer/upload/": {
       "filePath": "_authenticated/viewer/upload/index.tsx",

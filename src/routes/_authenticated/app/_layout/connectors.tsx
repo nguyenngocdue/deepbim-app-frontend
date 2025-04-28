@@ -1,7 +1,7 @@
 import ConnectorPage from '@/pages/ConnectorPage';
 import { createFileRoute } from '@tanstack/react-router';
 
-export const Route = createFileRoute('/app/_layout/connectors')({
+export const Route = createFileRoute('/_authenticated/app/_layout/connectors')({
   component: () => {
     return (
       <>

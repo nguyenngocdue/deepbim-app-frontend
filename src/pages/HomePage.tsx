@@ -11,10 +11,11 @@ import { LanguageProvider } from '@/context/LanguageContext';
 import Header from '@/sections/ Header';
 import { CLASS_NAME_DEFAULT } from '@/utils/class';
 import ParticlesContainer from '@/components/ParticlesContainer';
+import useScrollRestoration from '@/hooks/useScrollRestoration';
 
 
 const HomePage: React.FC = () => {
-
+  useScrollRestoration();
   return (
     <div className="bg-behind">
       <div className="relative z-10">
