@@ -70,9 +70,11 @@ const HeroSection = () => {
               {t("hero.start")}
             </Button>
           </Link>
-          <Button className="outline-button hover" aria-label={t("hero.deploy")}>
-            {t("hero.deploy")}
-          </Button>
+          <Link to="/managements/me">
+            <Button className="outline-button hover" aria-label={t("hero.deploy")}>
+              {t("hero.deploy")}
+            </Button>
+          </Link>
         </div>
       </motion.div>
       <div className="w-full md:w-1/2 flex justify-center">

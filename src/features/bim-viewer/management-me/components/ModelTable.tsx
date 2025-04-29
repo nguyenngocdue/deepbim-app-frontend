@@ -96,7 +96,7 @@ export function ModelTable({ data, refeshData }: ModelTableProps) {
         const absoluteIndex = pageIndex * pageSize + indexOnPage + 1; // ✅ Tính đúng số thứ tự
         return (
           <div className="text-left font-medium">
-            <Heading level={7} className="text-zinc-400" >{absoluteIndex}</Heading> 
+            <Heading level={6} className="text-zinc-400" >{absoluteIndex}</Heading> 
           </div>
         );
       },

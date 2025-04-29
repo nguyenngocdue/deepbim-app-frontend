@@ -66,7 +66,7 @@ const MainViewer: React.FC = () => {
         <div className={`h-screen ${themeClass}`}>
           <PanelGroup direction="vertical" className="h-full">
             {/* HEADER */}
-            <Panel defaultSize={11} minSize={5} maxSize={12} className={themeClass}>
+            <Panel defaultSize={9} minSize={5} maxSize={10} className={themeClass}>
               <div className="h-full">
                 <HeaderViewer
                   onToggle={toggleState}

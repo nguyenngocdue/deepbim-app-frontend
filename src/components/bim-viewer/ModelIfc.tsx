@@ -25,17 +25,13 @@ THREE.BufferGeometry.prototype.disposeBoundsTree = disposeBoundsTree;
 THREE.Mesh.prototype.raycast = acceleratedRaycast;
 
 const ModelIfc: React.FC<ModelIfcProps> = (props) => {
-  const { onModelReady, ...flags } = props;
+  const { onModelReady, viewId, ...flags } = props;
 
   const ifcContainerRef = useRef<HTMLDivElement | null>(null);
   const worldRef = useRef<any>(null);
   const componentRef = useRef<any>(null);
   const modelRef = useRef<THREE.Object3D | null>(null);
 
-  const location = useLocation();
-  const state = location.state as UploadState | undefined;
-  const file = state?.file;
-  const statusUpload = state?.status;
 
   const featureFlags = useFeatureFlags(flags);
   const { isWorldReady, world, components } = useInitWorld(ifcContainerRef, onModelReady);
@@ -65,19 +61,15 @@ const ModelIfc: React.FC<ModelIfcProps> = (props) => {
   });
 
 
-  const shouldLoadModel = isWorldReady && statusUpload === "upload_by_user";
-
+  // const shouldLoadModel = isWorldReady && statusUpload === "upload_by_user";
   return (
     <div className="relative w-full h-full " id="deepbim-mainviewer">
-      {shouldLoadModel && (
         <IfcLoaderV2
-          source={file}
           worldRef={worldRef}
           componentRef={componentRef}
           container={ifcContainerRef.current}
           haveGrids={flags.haveGrids}
         />
-      )}
 
       {/* vùng 3D viewer */}
       <div

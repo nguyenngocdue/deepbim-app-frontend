@@ -15,6 +15,7 @@ export default function MediaPage() {
     try {
       const userId = currentUser.id;
 
+
       // Fetch media list
       const [mediaResponse] = await Promise.all([ apiGet<{ data: any[] }>(`/media/user/${userId}`)]);
       const mediaList = mediaResponse.data;

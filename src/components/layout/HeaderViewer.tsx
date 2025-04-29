@@ -21,6 +21,7 @@ import { ModelIfcProps } from "@/props/ModelIfcProps";
 import FreeControlElements from "../bim-viewer/FreeControlElements";
 import LogoSection from "./LogoSection";
 import Isolation from "../bim-viewer/Isolation";
+import LeftHeader from "@/sections/LeftHeader";
 
 
 const HeaderViewer: React.FC<ModelIfcProps> = (
@@ -58,9 +59,6 @@ const HeaderViewer: React.FC<ModelIfcProps> = (
           {/* Logo Section */}
           <div className="flex items-center justify-between">
             <LogoSection />
-            <Button onClick={onToggleTheme} variant="outline">
-              {currentTheme === "dark" ? "🌞 Light" : "🌙 Dark"}
-            </Button>
           </div>
 
           {/* Toolbar Section */}

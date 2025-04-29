@@ -2,7 +2,7 @@ import React from "react";
 import { cn } from "@/lib/utils";
 
 type HeadingProps = {
-  level?: 1 | 2 | 3 | 4 | 5 | 6 | 7;
+  level?: 1 | 2 | 3 | 4 | 5 | 6;
   children: React.ReactNode;
   className?: string;
   position?: "left" | "center" | "right"; // ✅ thêm position
@@ -23,7 +23,6 @@ export const Heading = ({
     4: "text-xl font-medium",
     5: "text-lg font-medium",
     6: "text-base font-medium",
-    7: "text-sm font-medium",
   };
 
   const positionClasses: Record<string, string> = {

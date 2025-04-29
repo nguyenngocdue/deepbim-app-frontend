@@ -3,6 +3,7 @@ import * as OBC from "@thatopen/components";
 import * as OBCF from "@thatopen/components-front";
 import { modelManager } from "@/services/ModelManager";
 import * as THREE from "three";
+import { useLocation } from "@tanstack/react-router";
 
 
 interface IfcLoaderV2Props {
@@ -13,7 +14,8 @@ interface IfcLoaderV2Props {
   haveGrids: boolean;
 }
 
-const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({ source, worldRef, componentRef, container }) => {
+const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({ worldRef, componentRef, container }) => {
+
   const loadIfc = useCallback(
     async (buffer: Uint8Array) => {
       if (!worldRef.current || !componentRef.current || !container) {
@@ -97,17 +99,19 @@ const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({ source, worldRef, componentRe
     [worldRef, componentRef, container]
   );
 
-  useEffect(() => {
-    if (!source || !container || !worldRef.current || !componentRef.current) {
-      console.log("Skipping IFC load: Missing source, container, world, or components.");
-      return;
-    }
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const viewId = searchParams.get('v');
 
+  useEffect(() => {
+    // if (!viewId || !container || !worldRef.current || !componentRef.current) {
+    //   console.log("Skipping IFC load: Missing source, container, world, or components.");
+    //   return;
+    // }
+    const modelUrl = `${import.meta.env.VITE_API_BASE_URL}/view?v=${viewId}`;
     const loadFile = async () => {
       try {
-        const buffer = await (source instanceof File
-          ? source.arrayBuffer()
-          : fetch(source).then((res) => res.arrayBuffer())
+        const buffer = await (fetch(modelUrl).then((res) => res.arrayBuffer())
         ).then((arrayBuffer) => new Uint8Array(arrayBuffer));
         await loadIfc(buffer);
       } catch (error) {
@@ -116,7 +120,7 @@ const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({ source, worldRef, componentRe
     };
 
     loadFile();
-  }, [source, container, worldRef, componentRef, loadIfc]);
+  }, [viewId, container, worldRef, componentRef, loadIfc]);
 
   return null;
 };

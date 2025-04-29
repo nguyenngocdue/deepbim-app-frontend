@@ -20,9 +20,7 @@ const BreadcrumbsWithIconAndLabel = () => {
       <BreadcrumbList>
         {/* Home */}
         <BreadcrumbItem>
-          <BreadcrumbLink href="/" className="pt-2">
             <LogoWord isHiddenText={true} size="sm" path="/images/logo_no_bg.png"  />
-          </BreadcrumbLink>
         </BreadcrumbItem>
 
         {/* Dynamic Segments */}

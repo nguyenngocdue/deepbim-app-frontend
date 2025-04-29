@@ -31,18 +31,21 @@ import { MdKeyboardDoubleArrowLeft } from "react-icons/md";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 import { Heading } from "@/components/common/Heading";
 import LinkMark from "@/components/auth/LinkMark";
+import { Link } from "@tanstack/react-router";
+import { IoEyeSharp } from "react-icons/io5";
 
 // Kiểu Model
 export type Model = {
   id: string;
   name: string;
   status: string;
-  size: number; 
+  size: number;
   uploader: {
     email: string;
     avatar: string;
   };
   modified: string;
+  viewId: string; // Add viewId property
 };
 
 // Props của ModelTable
@@ -96,7 +99,7 @@ export function ModelTable({ data, refeshData }: ModelTableProps) {
         const absoluteIndex = pageIndex * pageSize + indexOnPage + 1; // ✅ Tính đúng số thứ tự
         return (
           <div className="text-left font-medium">
-            <Heading level={7} className="text-zinc-400" >{absoluteIndex}</Heading> 
+            <Heading level={6} className="text-zinc-400" >{absoluteIndex}</Heading>
           </div>
         );
       },
@@ -167,29 +170,37 @@ export function ModelTable({ data, refeshData }: ModelTableProps) {
           </div>
         );
       },
-    },    
+    },
     {
       id: "actions",
       header: "Actions",
       cell: ({ row }) => (
         <div className="flex justify-start gap-2">
-          <Pencil
-            className="w-4 h-4 cursor-pointer hover:text-yellow-600 text-50"
-            onClick={
-              () => {
-                setSelectedRow(row.original);
-                setOpenModifiedDialog(true);
-              }
-            }
-          />
-          <ExternalLink className="w-4 h-4 cursor-pointer hover:text-blue-600 text-50" />
-          <Trash2
-            className="w-4 h-4 cursor-pointer text-red-500 hover:text-red-700"
-            onClick={() => {
-              setSelectedRow(row.original);
-              setOpenDeleteDialog(true);
-            }}
-          />
+          {
+            (import.meta.env.VITE_ENV !== 'production') &&
+            (
+              <>
+                <Pencil
+                  className="w-4 h-4 cursor-pointer hover:text-yellow-600 text-50"
+                  onClick={
+                    () => {
+                      setSelectedRow(row.original);
+                      setOpenModifiedDialog(true);
+                    }
+                  }
+                />
+                <Trash2
+                  className="w-4 h-4 cursor-pointer text-red-500 hover:text-red-700"
+                  onClick={() => {
+                    setSelectedRow(row.original);
+                    setOpenDeleteDialog(true);
+                  }}
+                />
+              </>
+            )}
+          <a href={`/view?v=${row.original.viewId}`} target="_blank" rel="noopener noreferrer">
+            <IoEyeSharp className="w-4 h-4 cursor-pointer hover:text-blue-600 text-50" />
+          </a>
         </div>
       ),
     },
