@@ -29,18 +29,18 @@ const BreadcrumbsWithIconAndLabel = () => {
           const isLast = index === paths.length - 1;
 
           return (
-            <div key={index} className="flex items-center shadow-md shadow-slate-700  ">
+            <div key={index} className="flex items-center shadow-md shadow-slate-700  rounded-sm ">
               <BreadcrumbSeparator>
-                <ChevronsRight className="h-4 w-4" />
+                <ChevronsRight className="h-4 w-4 " />
               </BreadcrumbSeparator>
 
               {isLast ? (
-                <BreadcrumbPage className="capitalize ">
-                  <span className="text-subtitle2 px-2">{decodeURIComponent(segment)}</span>
+                <BreadcrumbPage className="capitalize">
+                  <span className="text-subtitle2 px-2 ">{decodeURIComponent(segment)}</span>
                 </BreadcrumbPage>
               ) : (
                 <BreadcrumbItem>
-                  <BreadcrumbLink href={fullPath} className="capitalize">
+                  <BreadcrumbLink href={fullPath} className="capitalize ">
                   <span className="text-subtitle2 px-2">{decodeURIComponent(segment)}</span>
                   </BreadcrumbLink>
                 </BreadcrumbItem>

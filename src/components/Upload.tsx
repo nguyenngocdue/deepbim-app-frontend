@@ -14,7 +14,6 @@ type UploadProps = {
   maxSizeMB?: number;
 };
 
-type Step = 1 | 2 | 3;
 
 const Upload: React.FC<UploadProps> = ({
   onUploadSuccess,

@@ -17,6 +17,7 @@ import { Button } from "../ui/button"
 import { IoPerson } from "react-icons/io5"
 import { MdWorkspaces } from "react-icons/md"
 import { HiHomeModern } from "react-icons/hi2"
+import { Separator } from "../ui/separator"
 
 export default function SidebarLayout({ children }: { children: React.ReactNode }) {
     const [collapsed, setCollapsed] = useState(()=> {
@@ -58,7 +59,7 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
                             fontSize: "0.925rem",
                             color: "white",
                             [`&:hover`]: {
-                                backgroundColor: "#1d283a",
+                                backgroundColor: "#020817",
                                 color: "#60a5fa", // text màu đen khi hover
                             },
                             [`&.active`]: {
@@ -69,7 +70,7 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
                                 transition: "color 0.3s ease",
                             },
                             [`&:hover svg`]: {
-                                color: "#60a5fa", // icon chuyển sang đen khi hover
+                                color: "#0c5abb", // icon chuyển sang đen khi hover
                             },
                             },
                         }}
@@ -114,13 +115,13 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
             <div className="flex flex-col flex-1 p-4">
                 <div className="text-sm text-muted-foreground mb-4">
                     <div className="flex items-center justify-between">
-                        <BreadcrumbsWithIconAndLabel/>
-                        <LeftHeader 
-                            toggleLanguage={toggleLanguage}
-                            language={language.toUpperCase()}
-                            toggleTheme={toggleTheme}
-                            theme={theme}
-                        />
+                            <BreadcrumbsWithIconAndLabel/>
+                            <LeftHeader 
+                                toggleLanguage={toggleLanguage}
+                                language={language.toUpperCase()}
+                                toggleTheme={toggleTheme}
+                                theme={theme}
+                            />
                     </div>
                 </div>
                 <main className="bg-behind">

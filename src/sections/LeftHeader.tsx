@@ -2,7 +2,6 @@
 
 import { ProfileDropdown } from '@/components/ProfileDropdown';
 import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
 import React from 'react';
 import { CiLight } from 'react-icons/ci';
 import { MdOutlineDarkMode } from 'react-icons/md';
