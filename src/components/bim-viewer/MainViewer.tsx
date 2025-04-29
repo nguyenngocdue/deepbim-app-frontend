@@ -1,11 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import HeaderViewer from "../layout/HeaderViewer";
 import { ViewCubeProvider } from "@/context/view-cube-context";
 import { ViewCubeProvider2 } from "@/context/view-cube-context2";
 import ModelIfc from "./ModelIfc";
 import FaceMeasurementGuide from "./guides/FaceMeasurementGuide";
-import ClassificationsTree from "./classifications/ClassificationsTree";
-import ElementProperties from "./element-properties/ElementProperties";
 
 import {
   Panel,
@@ -13,15 +11,16 @@ import {
   PanelResizeHandle,
 } from "react-resizable-panels";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
-import DataSiderBar from "./common/DataSiderBar";
-import RelationsTree from "./element-properties/RelationsTree";
 import FooterTabViewer from "../layout/FooterTabViewer";
 import RightSidebarViewer from "../layout/RightSidebarViewer";
+import FullscreenLoader from "./common/FullscreenLoader";
 
 const MainViewer: React.FC = () => {
   const [isModelReady, setIsModelReady] = useState(false);
   const [isLeftCollapsed, setIsLeftCollapsed] = useState(false);
   const [isRightCollapsed, setIsRightCollapsed] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [modelActuallyReady, setModelActuallyReady] = useState(false);
 
   const [states, setStates] = useState({
     sectionActive: false,
@@ -58,12 +57,43 @@ const MainViewer: React.FC = () => {
   };
   const [theme, setTheme] = useState<"light" | "dark">("dark");
   const themeClass = theme === "dark" ? "bg-slate-900 text-white" : "bg-gray-100 text-black";
+
+  useEffect(() => {
+    if (!modelActuallyReady && progress < 95) {
+      const interval = setInterval(() => {
+        setProgress((prev) => Math.min(prev + 1, 95)); // dừng ở 95%
+      }, 100);
+      return () => clearInterval(interval);
+    }
   
+    // khi ModelIfc báo ready thì boost lên 100
+    if (modelActuallyReady && progress < 100) {
+      const boost = setInterval(() => {
+        setProgress((prev) => Math.min(prev + 5, 100)); // tăng nhanh phần cuối
+      }, 100);
+      return () => clearInterval(boost);
+    }
+  
+    if (modelActuallyReady && progress === 100) {
+      const timeout = setTimeout(() => {
+        setIsModelReady(true);
+      }, 1000);
+      return () => clearTimeout(timeout);
+    }
+  }, [progress, modelActuallyReady]);
+  
+  
+  
+
 
   return (
     <ViewCubeProvider>
       <ViewCubeProvider2>
         <div className={`h-screen ${themeClass}`}>
+
+        {!isModelReady && <FullscreenLoader progress={progress} message="Loading 3D model..." />}
+
+
           <PanelGroup direction="vertical" className="h-full">
             {/* HEADER */}
             <Panel defaultSize={9} minSize={5} maxSize={10} className={themeClass}>
@@ -87,7 +117,10 @@ const MainViewer: React.FC = () => {
                 <Panel defaultSize={60} minSize={30} className={themeClass}>
                   <div className="h-full w-full bg-black relative">
                     <ModelIfc
-                      onModelReady={() => setIsModelReady(true)}
+                      onModelReady={() => {
+                        setModelActuallyReady(true);
+                        }
+                      }
                       {...states}
                     />
                     <FaceMeasurementGuide isEnabled={states.isFaceMeasurement} />
