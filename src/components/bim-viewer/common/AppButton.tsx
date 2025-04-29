@@ -47,8 +47,9 @@ const AppButton: React.FC<AppButtonProps> = ({
   // Ngược lại render Button
   return (
     <Button
+      variant='ghost'
       onClick={onClick}
-      className={`transition-all duration-200 font-semibold shadow-md hover:shadow-lg ${className}`}
+      className={`transition-all duration-200 font-semibold shadow-md hover:shadow-lg hover:bg-green-900 ${className}`}
       disabled={isLoading || props.disabled}
       {...props}
     >

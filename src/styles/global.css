@@ -49,6 +49,9 @@ p {
   --text-reverse:#9ca3af;
   --text-reverse:#114611;
   --text-paragraph: #4b5563;
+  --bg-button-1:#22c55e;
+  --bg-button-2:#1f2937;
+  --text-button:#172220;
 
 }
 
@@ -60,7 +63,7 @@ p {
   --text-primary: #ffffff;  
   --text-subtitle: #000000;
   --text-subtitle2: #9ca3af;
-  --primary: #22c55e;
+  --primary: #1f2937;
   --primary-hover: #16a34a;
   --border: #4b5563;
   --link-hover: #86efac;
@@ -85,6 +88,10 @@ p {
   --text-noted:#4b5563;
   --text-reverse:#b8e6ee;
   --text-paragraph: #dee0e2;
+  --bg-button-1:#22c55e;
+  --text-button:#dee0e2;
+  --bg-button-2:#1f2937;
+
 }
 
 /* section.hero {
@@ -105,47 +112,7 @@ section.hero p {
   color: var(--hero-desc);
 }
 
-button.primary-button {
-  background: var(--primary);
-  color: var(--button-text);
-  font-weight: 600;
-  border-radius: 8px;
-  padding: 0.75rem 1.5rem;
-  transition: background 0.3s ease;
-}
 
-button.primary-button:hover {
-  background: var(--primary-hover);
-}
-
-button.outline-button {
-  background: transparent;
-  border: 1px solid var(--border);
-  color: var(--button-outline-text);
-  font-weight: 600;
-  border-radius: 8px;
-  padding: 0.75rem 1.5rem;
-  transition: background 0.3s ease, color 0.3s ease;
-}
-
-button.outline-button:hover {
-  background: var(--hover-bg);
-  color: var(--primary);
-}
-
-button.no-outline-button {
-  background: transparent;
-  color: var(--button-outline-text);
-  font-weight: 600;
-  border-radius: 8px;
-  padding: 0.75rem 1.5rem;
-  transition: background 0.3s ease, color 0.3s ease;
-}
-
-button.no-outline-button:hover {
-  background: var(--hover-bg);
-  color: var(--primary);
-}
 
 header {
   background: var(--header-bg);
@@ -253,4 +220,15 @@ body.signin-page #leva__root {
 
 .table-header {
   color: var(--bg-table-header);
+}
+
+.bg-button-1 {
+  background: var(--bg-button-1);
+}
+.bg-button-2 {
+  background: var(--bg-button-2);
+}
+
+.text-button {
+  color: var(--text-button);
 }

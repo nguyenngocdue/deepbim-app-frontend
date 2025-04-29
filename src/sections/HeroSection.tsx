@@ -7,6 +7,7 @@ import AnimatedBorderImage3 from "@/components/ui/animated-border-image3";
 import { Button } from "@/components/ui/button";
 import { CLASS_NAME_DEFAULT } from "@/utils/class";
 import { Link } from "@tanstack/react-router";
+import AppButton from "@/components/bim-viewer/common/AppButton";
 
 const HeroSection = () => {
   const { t } = useTranslation();
@@ -66,14 +67,20 @@ const HeroSection = () => {
         </motion.p>
         <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
           <Link to="/managements/home">
-            <Button className="primary-button hover" aria-label={t("hero.start")}>
+            <AppButton 
+              className="bg-button-1 text-white" 
+              falseName={t("hero.start")}
+              >
               {t("hero.start")}
-            </Button>
+            </AppButton>
           </Link>
           <Link to="/managements/me">
-            <Button className="outline-button hover" aria-label={t("hero.deploy")}>
+            <AppButton 
+              className="bg-button-2 text-white" 
+              falseName={t("hero.deploy")}
+              >
               {t("hero.deploy")}
-            </Button>
+            </AppButton>
           </Link>
         </div>
       </motion.div>
