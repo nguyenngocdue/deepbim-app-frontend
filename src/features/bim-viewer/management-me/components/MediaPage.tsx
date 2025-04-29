@@ -25,6 +25,7 @@ export default function MediaPage() {
         .map((item) => ({
           id: item.id,
           name: item.filename,
+          viewId: item.viewId,
           status: item.isPublic ? "Public" : "Private",
           size: item.size*1/(1024 * 1024),
           uploader: {

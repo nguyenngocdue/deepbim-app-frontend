@@ -31,6 +31,7 @@ import { MdKeyboardDoubleArrowLeft } from "react-icons/md";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 import { Heading } from "@/components/common/Heading";
 import LinkMark from "@/components/auth/LinkMark";
+import { IoEyeSharp } from "react-icons/io5";
 
 // Kiểu Model
 export type Model = {
@@ -182,7 +183,7 @@ export function ModelTable({ data, refeshData }: ModelTableProps) {
               }
             }
           />
-          <ExternalLink className="w-4 h-4 cursor-pointer hover:text-blue-600 text-50" />
+        
           <Trash2
             className="w-4 h-4 cursor-pointer text-red-500 hover:text-red-700"
             onClick={() => {
@@ -190,6 +191,11 @@ export function ModelTable({ data, refeshData }: ModelTableProps) {
               setOpenDeleteDialog(true);
             }}
           />
+
+          <a href={`/view?v=${row.original.viewId}`} target="_blank" rel="noopener noreferrer">
+            <IoEyeSharp className="w-4 h-4 cursor-pointer hover:text-blue-600 text-50" />
+          </a>
+
         </div>
       ),
     },
