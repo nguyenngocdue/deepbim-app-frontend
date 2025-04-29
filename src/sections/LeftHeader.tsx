@@ -17,16 +17,13 @@ interface LeftHeaderProps {
 const LeftHeader: React.FC<LeftHeaderProps> = ({ toggleLanguage, language, toggleTheme, theme }) => {
   return (
     <div className="flex items-center gap-2">
-      <Separator orientation="vertical" className="bg-zinc-500 h-4 hidden md:block" />
 
       <Button variant="ghost" onClick={toggleLanguage} className="text-sm px-1 transition icon-text-color">
         {language.toUpperCase()}
       </Button>
-
       <Button variant="ghost" onClick={toggleTheme} className="text-sm px-1 transition icon-text-color">
         {theme === 'light' ? <CiLight /> : <MdOutlineDarkMode />}
       </Button>
-
       <ProfileDropdown />
     </div>
   );
