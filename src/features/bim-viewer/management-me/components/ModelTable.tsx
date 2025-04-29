@@ -24,6 +24,7 @@ export function ModelTable({ data, refeshData }: ModelTableProps) {
   const [openModifiedDialog, setOpenModifiedDialog] = React.useState(false);
   const [selectedRow, setSelectedRow] = React.useState<Model | null>(null);
   const [isLoading, setIsLoading] = React.useState(true);
+  const [isInitialLoad, setIsInitialLoad] = React.useState(true);
 
   const columns = React.useMemo(
     () => getColumns(setSelectedRow, setOpenModifiedDialog, setOpenDeleteDialog),
@@ -47,17 +48,16 @@ export function ModelTable({ data, refeshData }: ModelTableProps) {
 
   React.useEffect(() => {
     const timeout = setTimeout(() => {
-      if (data.length > 0) {
-        setIsLoading(false);
-      }
-    }, 0); // ⏳ Giả lập nhẹ chỉ 1s
+      setIsLoading(false);
+      setIsInitialLoad(false);
+    }, 1000); // ⏳ giả lập delay tải dữ liệu
     return () => clearTimeout(timeout);
   }, [data]);
 
-  if (isLoading) {
+  // ✅ Hiển thị skeleton chỉ trong lần đầu và khi đang loading
+  if (isInitialLoad && isLoading) {
     return (
       <div className="space-y-4 animate-pulse">
-        {/* Table Skeleton */}
         <div className="rounded-md border border-zinc-400 overflow-hidden">
           <div className="p-4 space-y-4">
             {Array.from({ length: pageSize }).map((_, index) => (
@@ -78,9 +78,23 @@ export function ModelTable({ data, refeshData }: ModelTableProps) {
     <div className="space-y-4">
       <TableToolbar total={data.length} />
       <TableContent table={table} columns={columns} />
-      <DeleteDialog open={openDeleteDialog} onClose={() => setOpenDeleteDialog(false)} selectedRow={selectedRow} refeshData={refeshData} />
-      <ModifyDialog open={openModifiedDialog} onClose={() => setOpenModifiedDialog(false)} selectedRow={selectedRow} refeshData={refeshData} />
-      <TableFooter table={table} pageSize={pageSize} setPageSize={setPageSize} />
+      <DeleteDialog
+        open={openDeleteDialog}
+        onClose={() => setOpenDeleteDialog(false)}
+        selectedRow={selectedRow}
+        refeshData={refeshData}
+      />
+      <ModifyDialog
+        open={openModifiedDialog}
+        onClose={() => setOpenModifiedDialog(false)}
+        selectedRow={selectedRow}
+        refeshData={refeshData}
+      />
+      <TableFooter
+        table={table}
+        pageSize={pageSize}
+        setPageSize={setPageSize}
+      />
     </div>
   );
 }

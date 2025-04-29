@@ -42,7 +42,15 @@ const CircularProgress: React.FC<CircularProgressProps> = ({
         viewBox={`0 0 ${size} ${size}`}
         className="transform -rotate-90"
       >
-        {/* Base circle - nền */}
+        {/* Gradient Definition */}
+        <defs>
+          <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#3b82f6" />   {/* blue */}
+            <stop offset="100%" stopColor="#8b5cf6" /> {/* purple */}
+          </linearGradient>
+        </defs>
+
+        {/* Base Circle */}
         <circle
           cx={size / 2}
           cy={size / 2}
@@ -53,13 +61,13 @@ const CircularProgress: React.FC<CircularProgressProps> = ({
           className={className}
         />
 
-        {/* Progress circle */}
+        {/* Progress Circle */}
         <circle
           cx={size / 2}
           cy={size / 2}
           r={radius}
           fill="transparent"
-          stroke="#ffffff"
+          stroke="url(#progressGradient)" // ✅ dùng gradient
           strokeWidth={strokeWidth ?? progressStrokeWidth}
           strokeDasharray={circumference}
           strokeDashoffset={offset}
