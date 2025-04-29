@@ -6,7 +6,7 @@ import { LogoWord } from "@/components/LogoWord";
 import { FaPlug, FaStar, FaQuestionCircle, FaEnvelope } from "react-icons/fa";
 import { CLASS_NAME_DEFAULT } from "@/utils/class";
 import LeftHeader from "./LeftHeader";
-import { Link } from "@tanstack/react-router";
+import { Link, useRouterState } from "@tanstack/react-router";
 
 const Header = () => {
   const { t } = useTranslation();
@@ -14,6 +14,9 @@ const Header = () => {
   const { theme, setTheme } = useTheme();
   const [showBottomNav, setShowBottomNav] = useState(false);
   const [scrollTimeout, setScrollTimeout] = useState<NodeJS.Timeout | null>(null);
+
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const isActive = (href: string) => pathname === href;
 
   const toggleTheme = () => {
     setTheme(theme === "light" ? "dark" : "light");
@@ -50,7 +53,7 @@ const Header = () => {
     };
   }, [scrollTimeout]);
 
-  const navLinkStyle = `text-lg sm:text-sm md:text-md lg:text-md font-heading cursor-pointer transition-colors text-nav`;
+  const navLinkStyle = `sm:mt-4 text-sm sm:text-base md:text-lg  `;
   const hoverColor = theme === "dark" ? "hover:text-green-400" : "hover:text-secondary-700";
 
   const links = [
@@ -63,16 +66,6 @@ const Header = () => {
 
   return (
     <>
-    {/* <div className='realative'>
-            {!user && (
-                <GuestAccessPanel
-                  message={t("panel_alert.message")}
-                  actionText={t("panel_alert.action_text")}
-                  onAction={() => navigate({ to: '/sign-in' })}
-                  dismissable
-                />
-              )}
-          </div> */}
       {/* Fixed Header */}
       <header
         className={` ${CLASS_NAME_DEFAULT.CLASS_NAME_3} fixed top-0 left-0 w-full z-50 backdrop-blur-md px-6 shadow-md text-center ${
@@ -86,9 +79,13 @@ const Header = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-4 ">
+          <nav className="hidden md:flex items-center gap-4  ">
             {links.map((link) => (
-              <Link key={link.href} to={link.href} className={`${navLinkStyle} ${hoverColor}`}>
+              <Link key={link.href} to={link.href} 
+                    className={`${navLinkStyle} ${hoverColor} ${
+                      isActive(link.href) ?  `text-reverse ` : 'text-50'
+                    }`}
+                    >
                 {link.label}
               </Link>
             ))}
@@ -111,14 +108,14 @@ const Header = () => {
         } ${showBottomNav ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"}`}
       >
         {links.map((link) => (
-          <a
+          <Link
             key={link.href}
-            href={link.href}
+            to={link.href}
             className={`${navLinkStyle} ${hoverColor} text-xl p-2`}
             aria-label={link.ariaLabel}
           >
             {link.icon}
-          </a>
+          </Link>
         ))}
       </nav>
     </>
