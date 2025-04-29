@@ -1,7 +1,7 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+import { Link } from "@tanstack/react-router";
 
 const ForgotPasswordForm: React.FC = () => {
   return (

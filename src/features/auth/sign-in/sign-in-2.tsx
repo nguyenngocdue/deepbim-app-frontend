@@ -2,6 +2,7 @@ import { UserAuthForm } from './components/user-auth-form'
 import { LogoWord } from '@/components/LogoWord'
 import ParticlesContainer from '@/components/ParticlesContainer'
 import MyRoom from '@/features/my-room-3d/components/MyRoom'
+import { Link } from '@tanstack/react-router'
 import { useEffect } from 'react'
 
 export default function SignIn2() {
@@ -52,12 +53,12 @@ export default function SignIn2() {
                 Terms of Service
               </a>{' '}
               and{' '}
-              <a
-                href='/privacy'
+              <Link
+                to='/'
                 className='underline underline-offset-4 hover:text-primary'
               >
                 Privacy Policy
-              </a>
+              </Link>
               .
             </p>
           </div>

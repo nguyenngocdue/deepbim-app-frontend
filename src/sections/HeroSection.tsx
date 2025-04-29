@@ -65,16 +65,18 @@ const HeroSection = () => {
           {t("hero.description")}
         </motion.p>
         <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-          <Button className="primary-button hover" aria-label={t("hero.start")}>
-            <Link to="/managements/me">{t("hero.start")}</Link>
-          </Button>
+          <Link to="/managements/me">
+            <Button className="primary-button hover" aria-label={t("hero.start")}>
+              {t("hero.start")}
+            </Button>
+          </Link>
           <Button className="outline-button hover" aria-label={t("hero.deploy")}>
             {t("hero.deploy")}
           </Button>
         </div>
       </motion.div>
       <div className="w-full md:w-1/2 flex justify-center">
-        <AnimatedBorderImage3 imgUrl="https://viralution.io/app.png" alt="3D" className=""/>
+        <AnimatedBorderImage3 imgUrl="https://viralution.io/app.png" alt="3D" className="" />
       </div>
     </motion.section>
   );
