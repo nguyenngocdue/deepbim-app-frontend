@@ -1,11 +1,9 @@
+import ManagenentHome from '@/features/bim-viewer/management-home'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute(
   '/_authenticated/managements/_layout/home',
 )({
-  component: RouteComponent,
+  component: ManagenentHome,
 })
 
-function RouteComponent() {
-  return <div>Hello "/_authenticated/managements/_layout/home"!</div>
-}

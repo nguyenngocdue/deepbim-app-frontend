@@ -41,10 +41,10 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
                     width="200px"
                 >
                     {/* Logo and Title */}
-                    <div className="flex items-center justify-center gap-2 px-2 py-3 border-b border-[#1c1c2a] shadow-sm">
+                    <div className="flex items-center justify-center  px-2 py-3 border-b border-[#1c1c2a] shadow-sm">
                         <LogoWord isHiddenText={true} path="/images/logo_no_bg.png" size="md"/>
                         {!collapsed && (
-                            <h1 className="text-transparent text-white text-base font-semibold tracking-wider">
+                            <h1 className="text-transparent text-white text-base font-heading tracking-wider">
                                 DeepBIM
                             </h1>
                         )}

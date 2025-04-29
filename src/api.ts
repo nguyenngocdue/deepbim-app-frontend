@@ -118,6 +118,11 @@ export async function fetchCurrentUser(): Promise<{ id: number }> {
   });
 }
 
+export async function fetchNoSignAPI<T>(url : string) :Promise<T>{
+  const response = fetch(`${import.meta.env.VITE_API_BASE_URL}${url}`);
+  return  (await response).json()
+}
+
 /**
  * Fetch đầy đủ thông tin user profile dựa trên ID của user hiện tại.
  * Hàm này gọi 2 API: `/auth/me` để lấy ID, sau đó gọi `/users/:id` để lấy thông tin chi tiết.

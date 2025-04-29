@@ -1,33 +1,36 @@
 import { Link } from "@tanstack/react-router";
 
 interface LogoWordProps {
-  isHiddenText?: boolean; // Ẩn/hiện chữ "DeepBIM"
-  path?: string;          // Đường dẫn logo
-  size?: 'sm' | 'md' | 'lg'; // Kích thước: nhỏ, trung bình, lớn
+  isHiddenText?: boolean;
+  path?: string;
+  size?: 'sm' | 'md' | 'lg' | 'lg-wrap'; // thêm lg-wrap
 }
 
 export const LogoWord = ({ isHiddenText = false, path = "/images/logo.png", size = 'md' }: LogoWordProps) => {
-  // Map size thành kích thước Tailwind
   const sizeClasses = {
-    sm: 'h-8 w-8 text-lg',
-    md: 'h-12 w-12 text-xl',
-    lg: 'h-16 w-16 text-2xl',
+    sm: { img: 'h-8', text: 'text-lg', textClass: 'text-green-600 font-heading', layout: 'inline-flex items-center gap-x-1' },
+    md: { img: 'h-12', text: 'text-xl', textClass: 'text-green-600 font-heading', layout: 'inline-flex items-center gap-x-1' },
+    lg: { img: 'h-24', text: 'text-3xl', textClass: 'text-emerald-500 font-heading tracking-wide ml-[-18px]', layout: 'inline-flex items-center gap-x-1' },
+    'lg-wrap': { img: 'h-24', text: 'text-3xl', textClass: 'text-emerald-500 font-heading tracking-wide', layout: 'flex flex-col items-center' },
   };
 
   const selectedSize = sizeClasses[size] || sizeClasses['md'];
 
-  const [imgSize, textSize] = selectedSize.split(' ');
-
   return (
-    <Link to="/app">
-      <div className="flex items-center space-x-2">
-        <img src={path} className={`${imgSize} ${imgSize}`} alt="Logo" />
-        {!isHiddenText && (
-          <h1 className={`font-bold text-green-600 ${textSize}`}>
-            <span className="px-2">DeepBIM</span>
-          </h1>
-        )}
-      </div>
+    <Link to="/app" className={selectedSize.layout}>
+      {/* Logo */}
+      <img
+        src={path}
+        className={`${selectedSize.img} w-auto object-contain`}
+        alt="Logo"
+      />
+
+      {/* Text */}
+      {!isHiddenText && (
+        <h1 className={`${selectedSize.text} ${selectedSize.textClass}`}>
+          DeepBIM
+        </h1>
+      )}
     </Link>
   );
 };

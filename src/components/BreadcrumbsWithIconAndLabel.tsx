@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import { ChevronsRight, Home } from "lucide-react";
 import { useLocation } from '@tanstack/react-router'; // ✅ Dùng useLocation
+import { LogoWord } from "./LogoWord";
 
 const BreadcrumbsWithIconAndLabel = () => {
   const location = useLocation(); // ✅ lấy location đúng chuẩn
@@ -19,8 +20,8 @@ const BreadcrumbsWithIconAndLabel = () => {
       <BreadcrumbList>
         {/* Home */}
         <BreadcrumbItem>
-          <BreadcrumbLink href="/">
-            <Home className="h-4 w-4" />
+          <BreadcrumbLink href="/" className="pt-2">
+            <LogoWord isHiddenText={true} size="sm" path="/images/logo_no_bg.png"  />
           </BreadcrumbLink>
         </BreadcrumbItem>
 
@@ -30,19 +31,19 @@ const BreadcrumbsWithIconAndLabel = () => {
           const isLast = index === paths.length - 1;
 
           return (
-            <div key={index} className="flex items-center">
+            <div key={index} className="flex items-center shadow-md shadow-slate-700  ">
               <BreadcrumbSeparator>
                 <ChevronsRight className="h-4 w-4" />
               </BreadcrumbSeparator>
 
               {isLast ? (
                 <BreadcrumbPage className="capitalize ">
-                  <span className="text-subtitle2">{decodeURIComponent(segment)}</span>
+                  <span className="text-subtitle2 px-2">{decodeURIComponent(segment)}</span>
                 </BreadcrumbPage>
               ) : (
                 <BreadcrumbItem>
-                  <BreadcrumbLink href={fullPath} className="capitalize text-subtitle2">
-                  <span className="text-subtitle2">{decodeURIComponent(segment)}</span>
+                  <BreadcrumbLink href={fullPath} className="capitalize">
+                  <span className="text-subtitle2 px-2">{decodeURIComponent(segment)}</span>
                   </BreadcrumbLink>
                 </BreadcrumbItem>
               )}

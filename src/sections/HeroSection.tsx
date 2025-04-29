@@ -65,7 +65,7 @@ const HeroSection = () => {
           {t("hero.description")}
         </motion.p>
         <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-          <Link to="/managements/me">
+          <Link to="/managements/home">
             <Button className="primary-button hover" aria-label={t("hero.start")}>
               {t("hero.start")}
             </Button>
