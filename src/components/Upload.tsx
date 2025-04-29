@@ -1,12 +1,12 @@
 "use client";
 
 import React, { useRef, useState } from "react";
-import { Button } from "@/components/ui/button";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { fetchWithAuth2 } from "@/api";
 import { toast } from "sonner";
 import { UploadProgressModal } from "./common/UploadProgressModal";
+import AppButton from "./bim-viewer/common/AppButton";
 
 type UploadProps = {
   onUploadSuccess?: () => void;
@@ -23,7 +23,6 @@ const Upload: React.FC<UploadProps> = ({
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
-  const [currentStep, setCurrentStep] = useState<Step>(1);
   const [progress, setProgress] = useState(0);
   const [message, setMessage] = useState("");
 
@@ -52,7 +51,6 @@ const Upload: React.FC<UploadProps> = ({
 
     setUploading(true);
     setProgress(0);
-    setCurrentStep(1);
     setMessage("");
 
     const formData = new FormData();
@@ -68,10 +66,8 @@ const Upload: React.FC<UploadProps> = ({
 
       if (!response.ok) throw new Error("Upload failed");
 
-      setCurrentStep(2);
       await simulateProgress(40, 70, 1500);
 
-      setCurrentStep(3);
       await simulateProgress(70, 100, 1000);
 
       setMessage("✅ Upload successful!");
@@ -114,13 +110,14 @@ const Upload: React.FC<UploadProps> = ({
     <div className="space-y-6">
       {/* Upload Button */}
       <div className="flex gap-2 items-center">
-        <Button
+        <AppButton
           onClick={handleButtonClick}
-          disabled={uploading}
+          isLoading={uploading}
+          falseName="Upload Model"
+          trueName="Uploading..."
           className="bg-green-900 hover:bg-green-800 text-white"
         >
-          {uploading ? "Uploading..." : "Upload Model"}
-        </Button>
+        </AppButton>
 
         <input
           type="file"
@@ -136,7 +133,7 @@ const Upload: React.FC<UploadProps> = ({
       </div>
 
       {/* Upload Progress Modal */}
-      <UploadProgressModal open={uploading} currentStep={currentStep} progress={progress} />
+      <UploadProgressModal open={uploading}  progress={progress} />
     </div>
   );
 };

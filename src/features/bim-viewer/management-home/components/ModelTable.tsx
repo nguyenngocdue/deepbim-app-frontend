@@ -269,7 +269,7 @@ export function ModelTable({ data, refeshData }: ModelTableProps) {
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={columns.length} className="text-center py-8">
+                <TableCell colSpan={columns.length} className="text-sm text-center py-8 text-150 italic">
                   No data available. Please upload or <LinkMark to={'/sign-in'}>sig-in</LinkMark> again if you are a guest.
                 </TableCell>
               </TableRow>
