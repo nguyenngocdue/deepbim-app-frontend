@@ -21,7 +21,7 @@ export default function SignIn2() {
         <div className='relative h-full flex-col lg:flex'>
           {/* Thay đổi gradient từ emerald sang blue/indigo */}
           <div className='relative z-20 p-10 flex flex-1  sm:flex-none justify-center sm:justify-start items-center text-lg font-medium '>
-            <LogoWord/>
+            <LogoWord size='lg' path="/images/logo_no_bg.png"/>
           </div>
           
           <div className='absolute bottom-10 left-0 right-0 px-10 z-20 invisible sm:invisible lg:visible'>

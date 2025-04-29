@@ -27,8 +27,8 @@ const MyRoom: React.FC<MyRoomProps> = ({ showFakeLights = true }) => {
 
   // 🎯 Vị trí Leva panel
   const levaPosition = useMemo(() => ({
-    x: -screenSize.width + 340,
-    y: screenSize.height - 760,
+    x: -screenSize.width + 375,
+    y: screenSize.height - 850,
   
   }), [screenSize])
 
@@ -36,7 +36,7 @@ const MyRoom: React.FC<MyRoomProps> = ({ showFakeLights = true }) => {
     <div className="absolute top-0 left-0 right-0 bottom-0 w-screen h-screen">
       <button
         onClick={() => setShowLeva(prev => !prev)}
-        className="fixed top-24 left-8 z-50  px-3 py-2 rounded shadow"
+        className="fixed top-32 left-8 z-50  px-3 py-2 rounded shadow"
         title="Model Controls"
       >
         <PiGameControllerFill /> 

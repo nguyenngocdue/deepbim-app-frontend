@@ -5,7 +5,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 
 
 import { cn } from '@/lib/utils'
-import { Button } from '@/components/ui/button'
 import {
   Form,
   FormControl,
@@ -18,11 +17,13 @@ import { Input } from '@/components/ui/input'
 import { PasswordInput } from '@/components/password-input'
 import { useNavigate } from '@tanstack/react-router'
 import api from '@/lib/AxiosInstance'
-import { GoogleLogin, CredentialResponse } from '@react-oauth/google'
 import { useGoogleLoginHandler } from '@/hooks/useGoogleLogin'
 import { useGitHubLoginHandler } from '@/hooks/useGiiHubLogin'
 import { GitHubLoginButton } from '@/components/GitHubLoginButton'
 import { GoogleLoginButton } from '@/components/GoogleLoginButton'
+import { Loader2 } from 'lucide-react'
+import AppButton from '@/components/bim-viewer/common/AppButton'
+import { CLASS_NAME_DEFAULT } from '@/utils/class'
 
 
 const formSchema = z
@@ -174,12 +175,14 @@ export function SignUpForm({ className, ...props }: HTMLAttributes<HTMLDivElemen
               )}
             />
 
-            <Button
-              className="mt-2 w-full bg-gradient-to-r from-indigo-500 to-blue-500 text-white"
-              disabled={isLoadingCreator}
-            >
-              {isLoadingCreator ? 'Creating...' : 'Create Account'}
-            </Button>
+            <AppButton
+              isLoading={isLoadingCreator}
+              trueName="Creating..."
+              falseName="Create Account"
+              loadingIcon={<Loader2 className="w-4 h-4 animate-spin" />}
+              className={CLASS_NAME_DEFAULT.CLASS_APP_BUTTON}
+            />
+
 
             {/* Divider */}
             <div className="relative my-4">

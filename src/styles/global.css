@@ -46,6 +46,8 @@ p {
   --border-dialog: #4b5563;
   --bg-table-header: #4b5563;
   --text-noted:#4b5563;
+  --text-reverse:#9ca3af;
+  --text-reverse:#114611;
 
 }
 
@@ -80,6 +82,7 @@ p {
   --border-dialog: #4b5563;
   --bg-table-header: #4b5563;
   --text-noted:#4b5563;
+  --text-reverse:#b8e6ee;
 }
 
 /* section.hero {
@@ -214,6 +217,10 @@ footer nav a:hover {
 
 .text-150 {
   color: var(--text-noted); /* using to noted*/
+}
+
+.text-reverse {
+  color: var(--text-reverse); /* using to noted*/
 }
 
 .text-subtitle2 {

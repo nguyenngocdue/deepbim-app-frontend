@@ -25,6 +25,9 @@ import { useAppDispatch } from '@/hooks/reduxHooks';
 import { Separator } from '@/components/ui/separator';
 import { GoogleLoginButton } from '@/components/GoogleLoginButton';
 import { setCurrentUser, UserProfile } from '@/store/slices/AuthSlice';
+import AppButton from '@/components/bim-viewer/common/AppButton';
+import { Loader2 } from 'lucide-react';
+import { CLASS_NAME_DEFAULT } from '@/utils/class';
 
 type UserAuthFormProps = HTMLAttributes<HTMLDivElement>;
 
@@ -134,7 +137,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                   <FormControl>
                     <Input
                       placeholder="name@example.com"
-                      className="rounded-lg border-gray-600 bg-gray-800  placeholder-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50 transition-all duration-300"
+                      className="text-sm text-reverse rounded-lg border-gray-600   placeholder-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50 transition-all duration-300"
                       {...field}
                     />
                   </FormControl>
@@ -150,12 +153,12 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               render={({ field }) => (
                 <FormItem className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <FormLabel className=" font-medium text-left block text-muted-foreground">
+                    <FormLabel className=" font-medium text-left block text-muted-foreground ">
                       Password
                     </FormLabel>
                     <Link
                       to="/forgot-password"
-                      className="text-sm  text-50 hover:text-blue-400 transition-colors duration-200 text-muted-foreground"
+                      className="text-sm  hover:text-blue-400 transition-colors duration-200 text-muted-foreground"
                     >
                       Forgot password?
                     </Link>
@@ -163,7 +166,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                   <FormControl>
                     <PasswordInput
                       placeholder="********"
-                      className="rounded-lg border-gray-600 bg-gray-800 placeholder-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50 transition-all duration-300"
+                      className="rounded-lg text-reverse border-gray-600  placeholder-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50 transition-all duration-300"
                       {...field}
                     />
                   </FormControl>
@@ -172,13 +175,15 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               )}
             />
 
-            {/* Nút Login */}
-            <Button
-              className="mt-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow-lg hover:shadow-xl"
-              disabled={isLoading}
-            >
-              {isLoading ? 'Sigining in...' : 'Sign In'}
-            </Button>
+
+            <AppButton
+              isLoading={isLoading}
+              trueName="Sigining in..."
+              falseName="Sign in"
+              loadingIcon={<Loader2 className="w-4 h-4 animate-spin" />}
+              className={CLASS_NAME_DEFAULT.CLASS_APP_BUTTON}
+            />
+
 
             {/* Phân cách "Or continue with" */}
             <div className="relative my-4">
