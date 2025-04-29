@@ -18,7 +18,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Pencil, Trash2, ExternalLink, ArrowUpDown } from "lucide-react";
+import { Pencil, Trash2, ExternalLink, ArrowUpDown, Link2 } from "lucide-react";
 import { AvatarUser } from "@/components/AvatarUser";
 import { LogoWord } from "@/components/LogoWord";
 import { ConfirmDeleteDialog } from "@/components/ConfirmDeleteDialog";
@@ -30,6 +30,7 @@ import { IoIosArrowBack } from "react-icons/io";
 import { MdKeyboardDoubleArrowLeft } from "react-icons/md";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 import { Heading } from "@/components/common/Heading";
+import LinkMark from "@/components/auth/LinkMark";
 
 // Kiểu Model
 export type Model = {
@@ -258,7 +259,7 @@ export function ModelTable({ data, refeshData }: ModelTableProps) {
             ) : (
               <TableRow>
                 <TableCell colSpan={columns.length} className="text-center py-8">
-                  No data available. Please upload or add new items.
+                  No data available. Please upload or <LinkMark to={'/sign-in'}>sig-in</LinkMark> again if you are a guest.
                 </TableCell>
               </TableRow>
             )}
