@@ -48,6 +48,8 @@ const HowItWorksMain = () => {
       variants={sectionVariants}
       initial="hidden"
       animate="visible"
+      style={{background : 'transparent'}}
+
     >
       <div className="grid grid-cols-1 md:grid-cols-12 gap-8 max-w-[1400px] mx-auto items-center">
         {/* Left Text */}
@@ -68,7 +70,7 @@ const HowItWorksMain = () => {
               </p>
             ) : (
               <>
-                <p className="invisible absolute text-xl">{subtitle}</p>
+                <p className="invisible absolute text-xl ">{subtitle}</p>
                 <TypeAnimation
                   key={i18n.language}
                   sequence={animationSequence}

@@ -4,9 +4,7 @@ import { createFileRoute } from '@tanstack/react-router';
 export const Route = createFileRoute('/_authenticated/app/_layout/connectors')({
   component: () => {
     return (
-      <>
         <ConnectorPage/>
-      </>
     );
   },
 });

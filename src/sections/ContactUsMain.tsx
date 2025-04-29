@@ -5,11 +5,11 @@ import { useLanguage } from "@/context/LanguageContext";
 import { FaPhoneAlt, FaEnvelope, FaMapMarkerAlt } from "react-icons/fa";
 
 // Tailwind class tách riêng
-const sectionClasses = "bg-behind min-h-svh px-6 md:px-10 py-16 bg-white overflow-y-auto flex items-center";
-const contentWrapperClasses = "w-full max-w-[960px] mx-auto grid grid-cols-1 md:grid-cols-12 gap-8 items-start";
-const textContainerClasses = "md:col-span-7 text-center md:text-left";
+const sectionClasses = "bg-behind min-h-svh px-6 md:px-10 py-16 bg-white overflow-y-auto flex items-center ";
+const contentWrapperClasses = "w-full max-w-[960px] mx-auto grid grid-cols-1 md:grid-cols-12 gap-8 items-start ";
+const textContainerClasses = "md:col-span-7 text-center md:text-left ";
 const titleClasses = "text-4xl md:text-6xl font-bold leading-tight bg-gradient-to-r from-green-900 via-green-500 to-green-300 bg-clip-text text-transparent";
-const subtitleClasses = "text-zinc-600 text-lg md:text-xl";
+const subtitleClasses = "text-zinc-600 text-lg md:text-xl text-150";
 
 const sectionVariants = {
   hidden: { opacity: 0, y: 50 },
@@ -44,6 +44,7 @@ const ContactUsMain: React.FC<ContactUsMainProps> = ({
       animate="visible"
       role="region"
       aria-label="Contact Us Section"
+      style={{background : 'transparent'}}
     >
       <div className={contentWrapperClasses}>
         <motion.div
@@ -58,10 +59,10 @@ const ContactUsMain: React.FC<ContactUsMainProps> = ({
           </h1>
 
           {/* Subtitle tĩnh */}
-          <p className={`${subtitleClasses} mt-4`}>{subtitle}</p>
+          <p className={`${subtitleClasses} mt-4 text-subtitle2`}>{subtitle}</p>
 
           {/* Thông tin liên hệ */}
-          <div className="mt-8 space-y-4 text-base md:text-lg text-gray-700">
+          <div className="mt-8 space-y-4 text-base md:text-lg text-200">
             <div className="flex items-center gap-3 justify-center md:justify-start">
               <FaPhoneAlt className="text-green-600 min-w-[20px]" />
               <span>{t("contact_us.contact_info.phone")}</span>

@@ -48,6 +48,7 @@ p {
   --text-noted:#4b5563;
   --text-reverse:#9ca3af;
   --text-reverse:#114611;
+  --text-paragraph: #4b5563;
 
 }
 
@@ -83,6 +84,7 @@ p {
   --bg-table-header: #4b5563;
   --text-noted:#4b5563;
   --text-reverse:#b8e6ee;
+  --text-paragraph: #dee0e2;
 }
 
 /* section.hero {
@@ -218,6 +220,11 @@ footer nav a:hover {
 .text-150 {
   color: var(--text-noted); /* using to noted*/
 }
+
+.text-200 {
+  color: var(--text-paragraph); /* paragraph*/
+}
+
 
 .text-reverse {
   color: var(--text-reverse); /* using to noted*/

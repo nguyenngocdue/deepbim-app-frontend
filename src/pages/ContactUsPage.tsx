@@ -5,7 +5,7 @@ import ContactUsMain from '@/sections/ContactUsMain';
 const ContactUsPage: React.FC = () => {
   useScrollRestoration();
   return (
-    <ContactUsMain />
+        <ContactUsMain />
   );
 };
 

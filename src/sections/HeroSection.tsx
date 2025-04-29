@@ -57,7 +57,7 @@ const HeroSection = () => {
           )}
         </h1>
         <motion.p
-          className="mt-4 sm:mt-6 text-base sm:text-lg leading-relaxed"
+          className="mt-4 sm:mt-6 text-base sm:text-lg leading-relaxed text-200"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.6 }}
