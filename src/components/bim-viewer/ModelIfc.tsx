@@ -32,7 +32,7 @@ const ModelIfc: React.FC<ModelIfcProps> = (props) => {
 
 
   const featureFlags = useFeatureFlags(flags);
-
+  
   const { isWorldReady, world, components } = useInitWorld(ifcContainerRef, onModelReady);
 
   // Selection by a right click
@@ -64,19 +64,30 @@ const ModelIfc: React.FC<ModelIfcProps> = (props) => {
   // const shouldLoadModel = isWorldReady && statusUpload === "upload_by_user";
   return (
     <div className="relative w-full h-full " id="deepbim-mainviewer">
-        <IfcLoaderV2
+        {/* <IfcLoaderV2
           worldRef={worldRef}
           componentRef={componentRef}
           container={ifcContainerRef.current}
           haveGrids={flags.haveGrids}
-        />
+        /> */}
+
+<div   className="w-full h-full " ref={ifcContainerRef} onContextMenu={(e) => openContextMenu(e, ifcContainerRef.current)}>
+    {ifcContainerRef.current && (
+      <IfcLoaderV2
+        container={ifcContainerRef.current}
+        worldRef={worldRef}
+        componentRef={componentRef}
+        haveGrids={true}
+      />
+    )}
+  </div>
 
       {/* vùng 3D viewer */}
-      <div
+      {/* <div
         ref={ifcContainerRef}
         className="w-full h-full "
         onContextMenu={(e) => openContextMenu(e, ifcContainerRef.current)}
-      />
+      /> */}
 
       {/* context menu */}
       {contextMenu && (

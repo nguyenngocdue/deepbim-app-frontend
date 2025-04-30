@@ -5,6 +5,9 @@ import { modelManager } from "@/services/ModelManager";
 import * as THREE from "three";
 import { useLocation } from "@tanstack/react-router";
 import { fragmentManager } from "@/services/FragmentManager";
+import { SetupModelHighlighting } from "../../lib/SetupModelHighlighting";
+import { SetupRaycastHover } from "@/lib/SetupRaycastHover";
+import { SetupClickMarker } from "@/lib/SetupClickMarker";
 
 
 interface IfcLoaderV2Props {
@@ -19,6 +22,11 @@ const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({ worldRef, componentRef, conta
 
   const location = useLocation();
   const viewId = new URLSearchParams(location.search).get("v");
+  const containerRef = React.useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    containerRef.current = container;
+  }, [container]);
 
   const loadModel = useCallback(
     async (fragmentBytes: ArrayBuffer, fragments: FRAGS.FragmentsModels, world: OBC.World) => {
@@ -27,22 +35,56 @@ const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({ worldRef, componentRef, conta
         return;
       }
 
+      const component = componentRef.current;
       try {
         const model = await fragments.load(fragmentBytes, { modelId: "example" });
         model.useCamera(world.camera.three);
         world.scene.three.add(model.object);
 
-        const classifier = componentRef.current.get(OBC.Classifier);
+        const classifier = component.get(OBC.Classifier);
         classifier.list.CustomSelections = {};
 
         await modelManager.setModel(model);
         await fragments.update(true);
 
+        
+        // SetupRaycastHover({
+        //   container,
+        //   fragments,
+        //   world,
+        //   onHover: (result) => {
+        //     if (result) console.log("Hover:", result.localId);
+        //   },
+        // });
+
+        SetupModelHighlighting({
+          container: containerRef.current,
+          model,
+          fragments,
+          world,
+          onItemSelected: () => {
+            console.log("Item selected!");
+          },
+          onItemDeselected: () => {
+            console.log("Deselected.");
+          },
+        });
+
+        SetupClickMarker({
+          container,
+          model,
+          world,
+        });
+
+
+        
+      
+
       } catch (error) {
         console.error("Failed to load IFC file:", error);
       }
     },
-    [componentRef]
+    [componentRef, container, worldRef]
   );
 
 
