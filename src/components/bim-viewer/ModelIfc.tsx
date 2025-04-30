@@ -1,9 +1,7 @@
 import React, { use, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
-import { useLocation } from "@tanstack/react-router";
 
 import IfcLoaderV2 from "./IfcLoaderV2";
-import { UploadState } from "@/props/UploadState";
 import { ModelIfcProps } from "@/props/ModelIfcProps";
 
 import { useBimViewerFeatures } from "@/features/bim-viewer/useBimViewerFeatures";
@@ -34,6 +32,7 @@ const ModelIfc: React.FC<ModelIfcProps> = (props) => {
 
 
   const featureFlags = useFeatureFlags(flags);
+
   const { isWorldReady, world, components } = useInitWorld(ifcContainerRef, onModelReady);
 
   // Selection by a right click
@@ -49,6 +48,7 @@ const ModelIfc: React.FC<ModelIfcProps> = (props) => {
 
   worldRef.current = world;
   componentRef.current = components;
+
 
   useViewerLoop(worldRef);
   useBimViewerFeatures({

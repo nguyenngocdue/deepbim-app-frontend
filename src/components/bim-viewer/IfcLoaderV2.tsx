@@ -1,9 +1,10 @@
 import React, { useEffect, useCallback } from "react";
 import * as OBC from "@thatopen/components";
-import * as OBCF from "@thatopen/components-front";
+import * as FRAGS from "@thatopen/fragments";
 import { modelManager } from "@/services/ModelManager";
 import * as THREE from "three";
 import { useLocation } from "@tanstack/react-router";
+import { fragmentManager } from "@/services/FragmentManager";
 
 
 interface IfcLoaderV2Props {
@@ -16,111 +17,72 @@ interface IfcLoaderV2Props {
 
 const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({ worldRef, componentRef, container }) => {
 
-  const loadIfc = useCallback(
-    async (buffer: Uint8Array) => {
-      if (!worldRef.current || !componentRef.current || !container) {
+  const location = useLocation();
+  const viewId = new URLSearchParams(location.search).get("v");
+
+  const loadModel = useCallback(
+    async (fragmentBytes: ArrayBuffer, fragments: FRAGS.FragmentsModels, world: OBC.World) => {
+      if (  !componentRef.current) {
         console.warn("Cannot load IFC: World, components, or container not ready.");
         return;
       }
 
       try {
-        const components = componentRef.current;
-        const world = worldRef.current;
+        const model = await fragments.load(fragmentBytes, { modelId: "example" });
+        model.useCamera(world.camera.three);
+        world.scene.three.add(model.object);
 
-        const fragments = components.get(OBC.FragmentsManager);
-        const classifier = components.get(OBC.Classifier);
+        const classifier = componentRef.current.get(OBC.Classifier);
         classifier.list.CustomSelections = {};
 
-        const loader = components.get(OBCF.IfcStreamer);
-        loader.world = world;
-        loader.useCache = true;
-        loader.culler.threshold = 10;
-        loader.culler.maxHiddenTime = 1000;
-        loader.culler.maxLostTime = 3000;
-
-        const culler = components.get(OBC.Cullers).create(world);
-        // @ts-ignore
-        world.camera.controls.restThreshold = 0.1;
-        // @ts-ignore
-        world.camera.controls.addEventListener("rest", () => {
-          culler.needsUpdate = true;
-          loader.cancel = true;
-          loader.culler.needsUpdate = true;
-          loader.culler.onViewUpdated.reset();
-
-          loader.culler.onViewUpdated.add(async ({ toLoad, toShow }) => {
-            // @ts-ignore
-            await loader.loadFoundGeometries(toLoad);
-            // @ts-ignore
-            loader.setMeshVisibility(toShow, true);
-          });
-        });
-        // @ts-ignore
-        world.camera.controls.addEventListener("sleep", () => {
-          loader.culler.needsUpdate = true;
-        });
-
-        // Khi fragment được stream và gắn vào scene
-        fragments.onFragmentsLoaded.add(async (model) => {
-          const indexer = components.get(OBC.IfcRelationsIndexer);
-          await indexer.process(model);
-
-          if (model.hasProperties) {
-            await indexer.process(model);
-            classifier.byEntity(model);
-          }
-
-          world.scene.three.add(model);
-
-          setTimeout(() => {
-            if (world.camera.controls && world.meshes.size > 0) {
-              const boundingBox = new THREE.Box3().setFromObject(
-                new THREE.Group().add(...world.meshes)
-              );
-              world.camera.controls.fitToBox(boundingBox, true);
-            }
-          }, 50);
-        });
-        await modelManager.setModel(buffer, components);
-
-        fragments.onFragmentsDisposed.add(({ fragmentIDs }) => {
-          for (const fragmentID of fragmentIDs) {
-            const mesh = [...world.meshes].find((mesh) => mesh.uuid === fragmentID);
-            if (mesh) {
-              world.meshes.delete(mesh);
-            }
-          }
-        });
+        await modelManager.setModel(model);
+        await fragments.update(true);
 
       } catch (error) {
         console.error("Failed to load IFC file:", error);
       }
     },
-    [worldRef, componentRef, container]
+    [componentRef]
   );
 
-  const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
-  const viewId = searchParams.get('v');
+
+  const convertIFC = async (ifcPath: string, fragments:any, world:any) => {
+    const ifcRes = await fetch(ifcPath);
+    const ifcBytes = new Uint8Array(await ifcRes.arrayBuffer());
+    const importer = new FRAGS.IfcImporter();
+    importer.wasm = { absolute: true, path: "https://unpkg.com/web-ifc@0.0.68/" };
+    const fragmentBytes = await importer.process({ bytes: ifcBytes });
+    fragmentManager.setFragment(fragmentBytes);
+    loadModel(fragmentBytes, fragments, world); 
+      
+  };
+
 
   useEffect(() => {
-    // if (!viewId || !container || !worldRef.current || !componentRef.current) {
-    //   console.log("Skipping IFC load: Missing source, container, world, or components.");
-    //   return;
-    // }
-    const modelUrl = `${import.meta.env.VITE_API_BASE_URL}/view?v=${viewId}`;
-    const loadFile = async () => {
+    const fetchWorker = async () => {
       try {
-        const buffer = await (fetch(modelUrl).then((res) => res.arrayBuffer())
-        ).then((arrayBuffer) => new Uint8Array(arrayBuffer));
-        await loadIfc(buffer);
+        const modelUrl = `${import.meta.env.VITE_API_BASE_URL}/view?v=${viewId}`;
+        const fetchedWorker = await fetch( "https://thatopen.github.io/engine_fragment/resources/worker.mjs");
+        const workerText = await fetchedWorker.text();
+        const workerFile = new File([new Blob([workerText])], "worker.mjs", {
+          type: "text/javascript",
+        });
+        const url = URL.createObjectURL(workerFile);
+        const fragments = new FRAGS.FragmentsModels(url);
+        const world = worldRef.current;
+        world.camera.controls.addEventListener("rest", () => fragments.update(true));
+        world.camera.controls.addEventListener("update", () => fragments.update());
+        
+        convertIFC(modelUrl, fragments, world);
+        await fragments.disposeModel("example");
       } catch (error) {
-        console.error("Error loading IFC file:", error);
+        console.error("Error fetching worker file:", error);
       }
     };
 
-    loadFile();
-  }, [viewId, container, worldRef, componentRef, loadIfc]);
+    fetchWorker();
+  }, []);
+
 
   return null;
 };

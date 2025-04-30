@@ -11,11 +11,10 @@ interface UseHighlightSetupProps {
 
 
 export function useHighlightSetup({
-  isHighlightEnabled,
   components,
   world,
 }: UseHighlightSetupProps): void {
-  if (!components || !world) return;
+  // if (!components || !world) return;
 
   const highlighter = components.get(OBCF.Highlighter);
   highlighter.zoomToSelection = false;

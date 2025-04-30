@@ -49,7 +49,7 @@ const resources = {
         subtitle: "seamlessly",
         description:
           "Enhance your 3D model workflow, ensure absolute data control, and leverage powerful BIM analytics. By applying AI, automatically detect design conflicts, predict risks, and optimize costs, enabling higher efficiency and smarter decision-making for investors, businesses, and engineers. Elevate your projects with AI & BIM technology! 🚀",
-        start: "Get Started",
+        start: "Discovery",
         deploy: "Deploy Yourself",
       },
 
@@ -200,7 +200,7 @@ const resources = {
         subtitle: "cách đơn giản",
         description:
           "Tối ưu quy trình làm việc với mô hình 3D, đảm bảo quyền kiểm soát dữ liệu tuyệt đối và nâng cao phân tích BIM mạnh mẽ. Ứng dụng AI giúp tự động phát hiện lỗi thiết kế, dự đoán rủi ro, tối ưu chi phí, mang lại hiệu suất cao hơn và quyết định chính xác hơn cho chủ đầu tư, doanh nghiệp và kỹ sư. Nâng tầm dự án của bạn với công nghệ AI & BIM!🚀",
-        start: "Bắt đầu",
+        start: "Khám phá",
         deploy: "Tự triển khai",
       },
 

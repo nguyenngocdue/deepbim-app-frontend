@@ -26,7 +26,7 @@ const MainViewer: React.FC = () => {
     sectionActive: false,
     coordinateSyssActive: false,
     coordinateSysActive: false,
-    isHighlightEnabled: false,
+    isHighlightEnabled: true,
     isClippingEdges: false,
     isEdgeMeasurement: false,
     isFaceMeasurement: false,
@@ -96,12 +96,15 @@ const MainViewer: React.FC = () => {
 
           <PanelGroup direction="vertical" className="h-full">
             {/* HEADER */}
-            <Panel defaultSize={9} minSize={5} maxSize={10} className={themeClass}>
+            <Panel defaultSize={9.5} minSize={9.5} maxSize={9.5} className={themeClass}>
               <div className="h-full">
                 <HeaderViewer
                   onToggle={toggleState}
                   onToggleTheme={toggleTheme}
                   currentTheme={theme}
+                  handleFileSelect={() => { /* Add your file select logic here */ }}
+                  navigationMode="Orbit" // Replace with the appropriate navigation mode
+                  onModelReady={() => setModelActuallyReady(true)}
                   {...states}
                 />
               </div>

@@ -15,16 +15,16 @@ export default function RightSidebarViewer({
       <SidebarTabs
         themeClass={themeClass}
         tabs={[
-          {
-            name: "Properties",
-            value: "properties",
-            content: <ElementProperties />,
-          },
-          {
-            name: "Properties2",
-            value: "properties2",
-            content: <ElementProperties2 />,
-          },
+          // {
+          //   name: "Properties",
+          //   value: "properties",
+          //   content: <ElementProperties />,
+          // },
+          // {
+          //   name: "Properties2",
+          //   value: "properties2",
+          //   content: <ElementProperties2 />,
+          // },
           {
             name: "Relations",
             value: "relations",

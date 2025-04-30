@@ -10,6 +10,7 @@ export function InitializeWorld(
 ) {
   const components = new OBC.Components();
   const worlds = components.get(OBC.Worlds);
+  console.log("components");
 
   // Tạo world
   const world = worlds.create<
@@ -35,11 +36,11 @@ export function InitializeWorld(
 
 
 
+
   const { postproduction } = world.renderer;
   postproduction.enabled = true;
   postproduction.setPasses({ custom: true, ao: true, gamma: true });
 
-  const isHighlightEnabled = true;
-  useHighlightSetup({isHighlightEnabled, components, world})
+  // useHighlightSetup({components, world})
   return { world, components };
 }

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { containerManager } from "@/services/ContainerManager";
 import { worldManager } from "@/services/WorldManager";
 import { gridManager } from "@/services/GridManager";
+import { useHighlightSetup } from "./useHighlightSetup";
 
 export function useInitWorld(containerRef: React.RefObject<HTMLDivElement>, onModelReady?: () => void) {
   const [isWorldReady, setIsWorldReady] = useState(false);
@@ -26,9 +27,12 @@ export function useInitWorld(containerRef: React.RefObject<HTMLDivElement>, onMo
 
       gridManager.createGrid(componentInstance, worldInstance);
 
+      
+      
       setWorld(worldInstance);
       setComponents(componentInstance);
       setIsWorldReady(true);
+      // useHighlightSetup({ isHighlightEnabled: true, components, world });
     };
 
     init();

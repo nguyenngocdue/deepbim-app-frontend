@@ -1,4 +1,5 @@
 import * as OBC from "@thatopen/components";
+import { fragmentManager } from "./FragmentManager";
 
 /**
  * Class ModelManager manages loading and storing models from a buffer.
@@ -14,18 +15,13 @@ class ModelManager {
       });
     }
   
-    async setModel(buffer: any, components: OBC.Components): Promise<void> {
+    async setModel(model: any): Promise<void> {
       try {
-        const fragmentIfcLoader = components.get(OBC.IfcLoader);
-        if (!fragmentIfcLoader) throw new Error("IfcLoader not found in components.");
-        await fragmentIfcLoader.setup();
-        const fragmentGroup2 = await fragmentIfcLoader.load(buffer);
-  
-        this.model = fragmentGroup2;
+        this.model = model;
   
         // Khi model sẵn sàng => resolve promise
         if (this.modelReadyResolver) {
-          this.modelReadyResolver(fragmentGroup2);
+          this.modelReadyResolver(model);
           this.modelReadyResolver = undefined; // cleanup
         }
       } catch (error) {

@@ -8,7 +8,7 @@ interface LogoWordProps {
 
 export const LogoWord = ({ isHiddenText = false, path = "/images/logo.png", size = 'md' }: LogoWordProps) => {
   const sizeClasses = {
-    sm: { img: 'h-8', text: 'text-lg', textClass: 'text-green-600 font-heading', layout: 'inline-flex items-center gap-x-1' },
+    sm: { img: 'h-8', text: 'text-sm', textClass: 'text-green-600 font-heading', layout: 'inline-flex items-center gap-x-1' },
     md: { img: 'h-12', text: 'text-xl', textClass: 'text-green-600 font-heading', layout: 'inline-flex items-center gap-x-1' },
     lg: { img: 'h-24', text: 'text-3xl', textClass: 'text-emerald-500 font-heading tracking-wide ml-[-18px]', layout: 'inline-flex items-center gap-x-1' },
     'lg-wrap': { img: 'h-24', text: 'text-3xl', textClass: 'text-emerald-500 font-heading tracking-wide', layout: 'flex flex-col items-center' },
