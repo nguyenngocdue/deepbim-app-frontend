@@ -42,7 +42,7 @@ export function setupClickMarker({
   const highlightMaterial: FRAGS.MaterialDefinition = {
     color: new THREE.Color("#ff6699"),
     renderedFaces: FRAGS.RenderedFaces.BOTH,
-    // opacity: 1,
+    opacity: 1,
     transparent: false,
     emissive: new THREE.Color("#ff99cc"),
     emissiveIntensity: 0.8,
@@ -75,7 +75,6 @@ export function setupClickMarker({
     highlightedMesh = selectedModel.group?.getObjectByName(localId.toString()) as THREE.Mesh | null;
 
     onItemSelected();
-    removeMarker(marker, world);
     marker = createMarker(sphereRadius, sphereColor, point);
     world.scene.three.add(marker);
     world.renderer.three.render(world.scene.three, world.camera.three);
