@@ -5,17 +5,23 @@ import * as THREE from "three";
 export function setModelTransparency(
   model: FRAGS.FragmentsModel,
   transparent: boolean,
-  opacity: number
+  opacity: number,
+  excludeModelId?: string // ✅ thêm đối số tùy chọn
 ) {
   model.object?.traverse((child) => {
     if ((child as THREE.Mesh).isMesh) {
       const mesh = child as THREE.Mesh;
-      const material = mesh.material;
+      // console.log(mesh);
 
+      // ✅ Bỏ qua nếu userData.modelID trùng với excludeModelId
+      const childModelId = mesh.userData.modelID;
+      if (excludeModelId && childModelId === excludeModelId) return;
+
+      const material = mesh.material;
       const setTransparent = (mat: THREE.Material) => {
         mat.transparent = transparent;
         mat.opacity = opacity;
-        mat.depthWrite = !transparent; // tránh lỗi render nếu trong suốt
+        mat.depthWrite = !transparent;
         mat.needsUpdate = true;
       };
 
@@ -27,6 +33,7 @@ export function setModelTransparency(
     }
   });
 }
+
 
 export function resetModelTransparency(model: FRAGS.FragmentsModel) {
   model.object?.traverse((child) => {

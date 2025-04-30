@@ -73,10 +73,10 @@ const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({ worldRef, componentRef, conta
           fragments,
           world,
           onItemSelected: () => {
-            console.log("Item selected!");
+            // console.log("Item selected!");
           },
           onItemDeselected: () => {
-            console.log("Deselected.");
+            // console.log("Deselected.");
           },
         });
 

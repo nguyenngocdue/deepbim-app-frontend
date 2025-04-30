@@ -18,6 +18,7 @@ interface SetupClickMarkerOptions {
   onItemDeselected?: () => void;
 }
 
+
 export function setupClickMarker({
   container,
   model,
@@ -41,7 +42,7 @@ export function setupClickMarker({
   const highlightMaterial: FRAGS.MaterialDefinition = {
     color: new THREE.Color("#ff6699"),
     renderedFaces: FRAGS.RenderedFaces.BOTH,
-    opacity: 1,
+    // opacity: 1,
     transparent: false,
     emissive: new THREE.Color("#ff99cc"),
     emissiveIntensity: 0.8,
@@ -69,7 +70,7 @@ export function setupClickMarker({
     currentSelection.model = selectedModel;
 
     selectedModel.highlight([localId], highlightMaterial);
-    setModelTransparency(model, true, 0.3);
+    // setModelTransparency(model, true, 0.3);
 
     highlightedMesh = selectedModel.group?.getObjectByName(localId.toString()) as THREE.Mesh | null;
 
