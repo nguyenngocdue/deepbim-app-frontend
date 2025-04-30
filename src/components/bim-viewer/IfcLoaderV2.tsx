@@ -2,12 +2,9 @@ import React, { useEffect, useCallback } from "react";
 import * as OBC from "@thatopen/components";
 import * as FRAGS from "@thatopen/fragments";
 import { modelManager } from "@/services/ModelManager";
-import * as THREE from "three";
 import { useLocation } from "@tanstack/react-router";
 import { fragmentManager } from "@/services/FragmentManager";
-import { SetupModelHighlighting } from "../../lib/SetupModelHighlighting";
-import { SetupRaycastHover } from "@/lib/SetupRaycastHover";
-import { SetupClickMarker } from "@/lib/SetupClickMarker";
+import { setupClickMarker } from "@/features/bim-viewer/SetupClickMarker";
 
 
 interface IfcLoaderV2Props {
@@ -70,7 +67,7 @@ const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({ worldRef, componentRef, conta
         //   },
         // });
 
-        SetupClickMarker({
+        setupClickMarker({
           container: containerRef.current,
           model,
           fragments,
