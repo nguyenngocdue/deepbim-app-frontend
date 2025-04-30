@@ -30,7 +30,7 @@ const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({ worldRef, componentRef, conta
 
   const loadModel = useCallback(
     async (fragmentBytes: ArrayBuffer, fragments: FRAGS.FragmentsModels, world: OBC.World) => {
-      if (  !componentRef.current) {
+      if (!componentRef.current) {
         console.warn("Cannot load IFC: World, components, or container not ready.");
         return;
       }
@@ -47,7 +47,7 @@ const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({ worldRef, componentRef, conta
         await modelManager.setModel(model);
         await fragments.update(true);
 
-        
+
         // SetupRaycastHover({
         //   container,
         //   fragments,
@@ -57,7 +57,20 @@ const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({ worldRef, componentRef, conta
         //   },
         // });
 
-        SetupModelHighlighting({
+        // SetupModelHighlighting({
+        //   container: containerRef.current,
+        //   model,
+        //   fragments,
+        //   world,
+        //   onItemSelected: () => {
+        //     console.log("Item selected!");
+        //   },
+        //   onItemDeselected: () => {
+        //     console.log("Deselected.");
+        //   },
+        // });
+
+        SetupClickMarker({
           container: containerRef.current,
           model,
           fragments,
@@ -70,15 +83,9 @@ const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({ worldRef, componentRef, conta
           },
         });
 
-        SetupClickMarker({
-          container,
-          model,
-          world,
-        });
 
 
-        
-      
+
 
       } catch (error) {
         console.error("Failed to load IFC file:", error);
@@ -88,15 +95,15 @@ const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({ worldRef, componentRef, conta
   );
 
 
-  const convertIFC = async (ifcPath: string, fragments:any, world:any) => {
+  const convertIFC = async (ifcPath: string, fragments: any, world: any) => {
     const ifcRes = await fetch(ifcPath);
     const ifcBytes = new Uint8Array(await ifcRes.arrayBuffer());
     const importer = new FRAGS.IfcImporter();
     importer.wasm = { absolute: true, path: "https://unpkg.com/web-ifc@0.0.68/" };
     const fragmentBytes = await importer.process({ bytes: ifcBytes });
     fragmentManager.setFragment(fragmentBytes);
-    loadModel(fragmentBytes, fragments, world); 
-      
+    loadModel(fragmentBytes, fragments, world);
+
   };
 
 
@@ -104,7 +111,7 @@ const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({ worldRef, componentRef, conta
     const fetchWorker = async () => {
       try {
         const modelUrl = `${import.meta.env.VITE_API_BASE_URL}/view?v=${viewId}`;
-        const fetchedWorker = await fetch( "https://thatopen.github.io/engine_fragment/resources/worker.mjs");
+        const fetchedWorker = await fetch("https://thatopen.github.io/engine_fragment/resources/worker.mjs");
         const workerText = await fetchedWorker.text();
         const workerFile = new File([new Blob([workerText])], "worker.mjs", {
           type: "text/javascript",
@@ -114,7 +121,7 @@ const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({ worldRef, componentRef, conta
         const world = worldRef.current;
         world.camera.controls.addEventListener("rest", () => fragments.update(true));
         world.camera.controls.addEventListener("update", () => fragments.update());
-        
+
         convertIFC(modelUrl, fragments, world);
         await fragments.disposeModel("example");
       } catch (error) {

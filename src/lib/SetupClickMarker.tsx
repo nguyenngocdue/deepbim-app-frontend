@@ -1,30 +1,31 @@
 import * as THREE from "three";
 import * as FRAGS from "@thatopen/fragments";
 import * as OBC from "@thatopen/components";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
 interface SetupClickMarkerOptions {
   container: HTMLElement;
   model: FRAGS.FragmentsModel;
+  fragments: FRAGS.FragmentsModels;
   world: OBC.World;
   sphereColor?: string;
   sphereRadius?: number;
   focusCamera?: boolean;
+  onItemSelected?: () => void;
+  onItemDeselected?: () => void;
 }
 
 export function SetupClickMarker({
   container,
   model,
+  fragments,
   world,
-  sphereColor = "#F59492",
+  sphereColor = "#05f7d3",
   sphereRadius = 0.4,
   focusCamera = true,
+  onItemSelected = () => {},
+  onItemDeselected = () => {},
 }: SetupClickMarkerOptions) {
   const mouse = new THREE.Vector2();
-  let marker: THREE.Mesh | null = null;
-
-  const fragments = (world as any).fragments as FRAGS.FragmentsModels | undefined;
-
   const sphereGeometry = new THREE.SphereGeometry(sphereRadius);
   const sphereMaterial = new THREE.MeshLambertMaterial({
     color: sphereColor,
@@ -33,96 +34,124 @@ export function SetupClickMarker({
     depthTest: false,
   });
 
-  const getOrbitControls = (): OrbitControls | null => {
-    const controls = (world.camera as any).controls;
-    return controls instanceof OrbitControls ? controls : null;
+  const highlightMaterial: FRAGS.MaterialDefinition = {
+    color: new THREE.Color("#ff6699"),
+    renderedFaces: FRAGS.RenderedFaces.BOTH,
+    opacity: 1,
+    transparent: false,
+    emissive: new THREE.Color("#ff99cc"),
+    emissiveIntensity: 0.8,
+    depthTest: false,
   };
 
-  const moveOrbitTarget = (point: THREE.Vector3) => {
-    const controls = getOrbitControls();
-    if (!controls) {
-      console.warn("OrbitControls không tồn tại.");
-      return;
-    }
-  
-    // Step 1: Lấy khoảng cách từ camera đến target hiện tại
-    const currentTarget = controls.target.clone();
-    const cam = world.camera.three;
-  
-    const direction = new THREE.Vector3().subVectors(cam.position, currentTarget).normalize();
-    const distance = cam.position.distanceTo(currentTarget);
-  
-    // Step 2: Tính vị trí camera mới sao cho giữ nguyên khoảng cách
-    const newCameraPosition = new THREE.Vector3().addVectors(point, direction.multiplyScalar(distance));
-    cam.position.copy(newCameraPosition);
-  
-    // Step 3: Set lại target
-    controls.target.copy(point);
-    controls.update();
-  
-    console.log("📌 Camera moved to look at:", point);
-  };
-  
+  let marker: THREE.Mesh | null = null;
+  let highlightedMesh: THREE.Mesh | null = null;
 
-  const removeAllModels = () => {
-    if (!fragments?.models?.list) return;
-
-    for (const [modelId, fragModel] of fragments.models.list) {
-      if (fragModel.group) world.scene.three.remove(fragModel.group);
-
-      fragModel.meshes.forEach((mesh: THREE.Mesh) => {
-        mesh.geometry?.dispose();
-        if (Array.isArray(mesh.material)) {
-          mesh.material.forEach(m => m.dispose());
-        } else {
-          mesh.material.dispose();
-        }
-      });
-
-      fragments.models.list.delete(modelId);
-    }
-
-    world.renderer?.three.render(world.scene.three, world.camera.three);
+  const currentSelection = {
+    model: null as FRAGS.FragmentsModel | null,
+    localId: null as number | null,
   };
 
   const removeMarker = () => {
     if (!marker) return;
     world.scene.three.remove(marker);
     marker.geometry.dispose();
-    (marker.material as THREE.Material).dispose();
+    marker.material.dispose();
     marker = null;
-    world.renderer?.three.render(world.scene.three, world.camera.three);
+    world.renderer.three.render(world.scene.three, world.camera.three);
+  };
+
+  const resetMaterialDepthTest = (material: THREE.Material | THREE.Material[] | undefined) => {
+    if (!material) return;
+    const materials = Array.isArray(material) ? material : [material];
+    materials.forEach((mat) => {
+      mat.depthTest = true;
+      mat.needsUpdate = true;
+    });
+  };
+
+  const resetHighlight = async () => {
+    const { model, localId } = currentSelection;
+    if (!model || localId === null) return;
+    await model.resetHighlight([localId]);
+    resetMaterialDepthTest(highlightedMesh?.material);
+    highlightedMesh = null;
+    currentSelection.model = null;
+    currentSelection.localId = null;
+  };
+
+  const highlight = async (model: FRAGS.FragmentsModel, localId: number) => {
+    await model.highlight([localId], highlightMaterial);
+    const mesh = model.group?.getObjectByName(localId.toString()) as THREE.Mesh | null;
+    highlightedMesh = mesh;
+  };
+
+  const moveOrbitTarget = (point: THREE.Vector3) => {
+    const controls = world.camera.controls;
+    if (!controls) {
+      console.warn("🚨 OrbitControls not found.");
+      return;
+    }
+    controls.setOrbitPoint(point.x, point.y, point.z, true);
+    controls.update();
   };
 
   const handleMouseDown = async (event: MouseEvent) => {
+    event.stopPropagation();
     mouse.x = event.clientX;
     mouse.y = event.clientY;
-
+  
     const result = await model.raycast({
       camera: world.camera.three,
       mouse,
-      dom: world.renderer?.three.domElement!,
+      dom: world.renderer.three.domElement,
     });
-
-    if (!result) {
-      console.log("❌ Không tìm thấy đối tượng raycast");
+  
+    // Nếu không trúng đối tượng → không reset
+    if (!result) return;
+  
+    const { localId, object, point } = result;
+    const selectedModel = fragments.models.list.get(object.name);
+    if (!selectedModel) {
+      console.warn("Không tìm thấy model phù hợp.");
       return;
     }
+  
+  
+      await resetHighlight();
+      currentSelection.localId = localId;
+      currentSelection.model = selectedModel;
+  
+      // Highlight nhanh
+      selectedModel.highlight([localId], highlightMaterial);
+      highlightedMesh = selectedModel.group?.getObjectByName(localId.toString()) as THREE.Mesh | null;
+  
+      onItemSelected();
+  
+      // Vẽ marker
+      removeMarker();
+      marker = new THREE.Mesh(sphereGeometry.clone(), sphereMaterial.clone());
+      marker.position.copy(point);
+      world.scene.three.add(marker);
+      world.renderer.three.render(world.scene.three, world.camera.three);
+  
+      if (focusCamera) moveOrbitTarget(point);
+  };
 
-    const { point } = result;
-
-    removeAllModels();
-    removeMarker();
-
-    marker = new THREE.Mesh(sphereGeometry.clone(), sphereMaterial.clone());
-    marker.position.copy(point);
-    world.scene.three.add(marker);
-    world.renderer?.three.render(world.scene.three, world.camera.three);
-
-    console.log("✅ Marker mới tại:", point);
-
-    if (focusCamera) {
-      moveOrbitTarget(point);
+  const handleDoubleClick = async (event: MouseEvent) => {
+    mouse.x = event.clientX;
+    mouse.y = event.clientY;
+  
+    const result = await model.raycast({
+      camera: world.camera.three,
+      mouse,
+      dom: world.renderer.three.domElement,
+    });
+  
+    if (!result) {
+      await resetHighlight();
+      removeMarker();
+      onItemDeselected();
     }
   };
 
@@ -132,11 +161,12 @@ export function SetupClickMarker({
 
   container.addEventListener("mousedown", handleMouseDown);
   container.addEventListener("mouseup", handleMouseUp);
+  container.addEventListener("dblclick", handleDoubleClick);
 
   return () => {
     container.removeEventListener("mousedown", handleMouseDown);
     container.removeEventListener("mouseup", handleMouseUp);
+    container.removeEventListener("dblclick", handleDoubleClick);
     removeMarker();
-    removeAllModels();
   };
 }

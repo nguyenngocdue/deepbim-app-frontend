@@ -7,6 +7,8 @@ interface SetupHighlightOptions {
   model?: FRAGS.FragmentsModel;
   fragments: FRAGS.FragmentsModels;
   world: OBC.World;
+  sphereColor?: string;
+  sphereRadius?: number;
   onItemSelected?: () => void;
   onItemDeselected?: () => void;
 }
@@ -16,10 +18,11 @@ export function SetupModelHighlighting({
   model,
   fragments,
   world,
+  sphereColor = "#05f7d3",
+  sphereRadius = 0.4,
   onItemSelected = () => {},
   onItemDeselected = () => {},
 }: SetupHighlightOptions) {
-  // Định nghĩa vật liệu highlight
   const highlightMaterial: FRAGS.MaterialDefinition = {
     color: new THREE.Color("#ff6699"),
     renderedFaces: FRAGS.RenderedFaces.BOTH,
@@ -27,149 +30,171 @@ export function SetupModelHighlighting({
     transparent: false,
     emissive: new THREE.Color("#ff99cc"),
     emissiveIntensity: 0.8,
-    depthTest: false, // Để đề phòng thư viện hỗ trợ thuộc tính này
+    depthTest: false,
   };
 
-  let localId: number | null = null;
-  let selectedModel: FRAGS.FragmentsModel | null = null;
+  let currentLocalId: number | null = null;
+  let currentModel: FRAGS.FragmentsModel | null = null;
+  let highlightedMesh: THREE.Mesh | null = null;
   const mouse = new THREE.Vector2();
-  let highlightedMesh: THREE.Mesh | null = null; // Lưu mesh để reset sau này
 
-  // Raycast toàn bộ models để tìm đối tượng gần nhất
-  const raycastAllModels = async (data: {
+  let marker: THREE.Mesh | null = null;
+  const sphereGeometry = new THREE.SphereGeometry(sphereRadius);
+  const sphereMaterial = new THREE.MeshLambertMaterial({
+    color: sphereColor,
+    transparent: true,
+    opacity: 0.8,
+    depthTest: false,
+  });
+
+  // Track mouse down/up to distinguish click vs drag
+  let isMouseDown = false;
+  const mouseDownPos = new THREE.Vector2();
+  const dragThreshold = 2; // px
+
+  const resetMaterialDepthTest = (material: THREE.Material | THREE.Material[] | undefined) => {
+    if (!material) return;
+
+    if (Array.isArray(material)) {
+      material.forEach((mat) => {
+        mat.depthTest = true;
+        mat.needsUpdate = true;
+      });
+    } else {
+      material.depthTest = true;
+      material.needsUpdate = true;
+    }
+  };
+
+  const resetHighlight = async () => {
+    if (!currentModel || currentLocalId === null) return;
+    await currentModel.resetHighlight([currentLocalId]);
+    resetMaterialDepthTest(highlightedMesh?.material);
+    highlightedMesh = null;
+    currentLocalId = null;
+    currentModel = null;
+  };
+
+  const highlightObject = async (model: FRAGS.FragmentsModel, localId: number) => {
+    await model.highlight([localId], highlightMaterial);
+    const group = model.group;
+    if (!group) {
+      console.warn("Không tìm thấy group trong model!");
+      return;
+    }
+
+    highlightedMesh = group.getObjectByName(localId.toString()) as THREE.Mesh | null;
+  };
+
+  const raycastAllModels = async ({
+    camera,
+    mouse,
+    dom,
+  }: {
     camera: THREE.PerspectiveCamera | THREE.OrthographicCamera;
     mouse: THREE.Vector2;
     dom: HTMLCanvasElement;
-  }) => {
+  }): Promise<FRAGS.RaycastResult | null> => {
     const results: FRAGS.RaycastResult[] = [];
 
-    for (const [, m] of fragments.models.list) {
-      const result = await m.raycast(data);
-      if (result) {
-        results.push(result);
-      }
+    for (const [, model] of fragments.models.list) {
+      const result = await model.raycast({ camera, mouse, dom });
+      if (result) results.push(result);
     }
 
-    if (results.length === 0) return null;
-
-    let closestResult = results[0];
-    for (let i = 1; i < results.length; i++) {
-      if (results[i].distance < closestResult.distance) {
-        closestResult = results[i];
-      }
-    }
-
-    return closestResult;
+    return results.length
+      ? results.reduce((closest, current) =>
+          current.distance < closest.distance ? current : closest
+        )
+      : null;
   };
 
-  // Hàm highlight và can thiệp trực tiếp vào mesh
-  const highlight = async () => {
-    if (localId === null || !selectedModel) return;
+  const handleMouseDown = (event: MouseEvent) => {
+    isMouseDown = true;
+    mouseDownPos.set(event.clientX, event.clientY);
+  };
 
-    // Gọi hàm highlight của thư viện
-    await selectedModel.highlight([localId], highlightMaterial);
+  const removeMarker = () => {
+    if (!marker) return;
+    world.scene.three.remove(marker);
+    marker.geometry.dispose();
+    marker.material.dispose();
+    marker = null;
+    world.renderer.three.render(world.scene.three, world.camera.three);
+  };
 
-    // Truy cập mesh Three.js gốc
-    const group = selectedModel.group;
-    if (!group) {
-      console.warn("Không tìm thấy group cho model được chọn!");
-      return;
-    }
-
-    // Tìm mesh tương ứng với localId
-    let targetMesh: THREE.Mesh | null = null;
-    group.traverse((child) => {
-      if (child instanceof THREE.Mesh && child.userData.localId === localId) {
-        targetMesh = child;
+  const moveOrbitTarget = (point : THREE.Vector3) => {
+      const controls = world.camera.controls;
+      if (!controls) {
+        console.warn("🚨 OrbitControls not found.");
+        return;
       }
-    });
+      controls.setOrbitPoint(point.x, point.y, point.z, true);
+      controls.update();
+    };
 
-    if (!targetMesh) {
-      console.warn(`Không tìm thấy mesh cho localId ${localId}`);
-      return;
-    }
+  const handleMouseUp = async (event: MouseEvent) => {
+    removeMarker();
+    if (!isMouseDown) return;
+    isMouseDown = false;
 
-    highlightedMesh = targetMesh;
+    const deltaX = Math.abs(event.clientX - mouseDownPos.x);
+    const deltaY = Math.abs(event.clientY - mouseDownPos.y);
+    const isClick = deltaX < dragThreshold && deltaY < dragThreshold;
 
-    // Cập nhật vật liệu của mesh để đảm bảo nó nổi lên trên
-    if (targetMesh.material instanceof THREE.Material) {
-      targetMesh.material.depthTest = false;
-      targetMesh.material.needsUpdate = true;
-    } else if (Array.isArray(targetMesh.material)) {
-      targetMesh.material.forEach((mat) => {
-        if (mat instanceof THREE.Material) {
-          mat.depthTest = false;
-          mat.needsUpdate = true;
-        }
-      });
-    }
+    if (!isClick) return;
 
-    // Đặt renderOrder để đảm bảo đối tượng được vẽ sau cùng
-    targetMesh.renderOrder = 1;
-  };
-
-  // Reset highlight và khôi phục trạng thái mesh
-  const resetHighlight = async () => {
-    if (localId === null || !selectedModel || !highlightedMesh) return;
-
-    // Reset highlight bằng hàm của thư viện
-    await selectedModel.resetHighlight([localId]);
-
-    // Khôi phục depthTest và renderOrder
-    if (highlightedMesh.material instanceof THREE.Material) {
-      highlightedMesh.material.depthTest = true;
-      highlightedMesh.material.needsUpdate = true;
-    } else if (Array.isArray(highlightedMesh.material)) {
-      highlightedMesh.material.forEach((mat) => {
-        if (mat instanceof THREE.Material) {
-          mat.depthTest = true;
-          mat.needsUpdate = true;
-        }
-      });
-    }
-
-    highlightedMesh.renderOrder = 0;
-    highlightedMesh = null;
-  };
-
-  // Xử lý sự kiện click
-  const handleClick = async (event: MouseEvent) => {
-    mouse.x = event.clientX;
-    mouse.y = event.clientY;
+    mouse.set(event.clientX, event.clientY);
 
     const result = await raycastAllModels({
       camera: world.camera.three,
       mouse,
       dom: world.renderer!.three.domElement!,
     });
+    
 
-    const promises: Promise<any>[] = [];
 
     if (result) {
-      promises.push(resetHighlight());
-      localId = result.localId;
-      selectedModel = fragments.models.list.get(result.object.name) ?? null;
-      onItemSelected();
-      promises.push(highlight());
+      await resetHighlight();
+      removeMarker();
+      
+      const model = fragments.models.list.get(result.object.name);
+      if (model) {
+        currentLocalId = result.localId;
+        currentModel = model;
+        await highlightObject(model, result.localId);
+        onItemSelected();
+      }
+
+
+          // create marker
+    const { point } = result;
+    marker = new THREE.Mesh(sphereGeometry.clone(), sphereMaterial.clone());
+    marker.position.copy(point);
+    world.scene.three.add(marker);
+    world.renderer.three.render(world.scene.three, world.camera.three);
+    moveOrbitTarget(point);
+
+
     } else {
-      promises.push(resetHighlight());
-      localId = null;
-      selectedModel = null;
+      await resetHighlight();
       onItemDeselected();
     }
 
-    promises.push(fragments.update(true));
-    await Promise.all(promises);
+    fragments.update(true);
   };
 
   if (!container) {
-    console.warn("No container element found for highlighting!");
+    console.warn("Không tìm thấy container để gắn sự kiện click!");
     return () => {};
   }
 
-  container.addEventListener("click", handleClick);
+  container.addEventListener("mousedown", handleMouseDown);
+  container.addEventListener("mouseup", handleMouseUp);
 
   return () => {
-    container.removeEventListener("click", handleClick);
+    container.removeEventListener("mousedown", handleMouseDown);
+    container.removeEventListener("mouseup", handleMouseUp);
+    removeMarker();
   };
 }
