@@ -7,6 +7,7 @@ import { AiOutlineInfoCircle } from 'react-icons/ai';
 import { GrFormViewHide } from "react-icons/gr";
 import { MdOutlineHideSource } from "react-icons/md";
 import { TbSquareToggle } from "react-icons/tb";
+import { BsToggle2Off } from "react-icons/bs";
 
 interface ContextMenuProps {
   x: number;
@@ -25,7 +26,8 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ x, y, onAction, onClose }) =>
       <ul className="text-sm p-2 space-y-1 w-48">
         {[
           { icon: <MdApps/>, label: "Show all elements", action: "showAll" },
-          { icon: <TbSquareToggle />, label: "Toggle Visibility", action: "onToggleVisibility" },
+          { icon: <TbSquareToggle />, label: "Show Last Hidden", action: "onToggleVisibility" },
+          { icon: <BsToggle2Off  />, label: "Toggle Elements", action: "onToggleElements" },
           { icon: <BiBorderInner />, label: "Isolate", action: "isolate" },
           { icon: <GrFormViewHide/>, label: "Isolate by IFC type", action: "onIsolateByIFCType" },
           { icon: <VscEyeClosed />, label: "Hide", action: "hide" },

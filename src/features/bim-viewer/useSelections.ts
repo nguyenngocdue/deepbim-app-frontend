@@ -167,6 +167,21 @@ export function useSelections() {
 
   }
 
+  const onToggleElements = async () => {
+    const modelList = fragments.models.list;
+    for (const model of modelList) {
+      for (const element of model) {
+        if (typeof element.getItemsByVisibility === "function") {
+          const unVisibleElementIds = await element.getItemsByVisibility(false);
+          const visibleElementIds = await element.getItemsByVisibility(true);
+          
+          await element?.setVisible(unVisibleElementIds, true);
+          await element?.setVisible(visibleElementIds, false);
+        }
+      }
+    }
+  }
+
 
 
 
@@ -179,6 +194,7 @@ export function useSelections() {
     onHideByIFCType,
     onFocusSelection,
     onIsolateByIFCType,
-    onShowProperties
+    onShowProperties,
+    onToggleElements,
    };
 }

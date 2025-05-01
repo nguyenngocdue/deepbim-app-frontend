@@ -103,6 +103,8 @@ export function setupClickMarker({
     currentSelection.model = selectedModel;
     selectedModel.highlight([localId], highlightMaterial);
 
+    // console.log(await selectedModel.getItemsByVisibility(false));
+
     // const i = await selectedModel.getItem(String(localId));
 
     highlightedMesh = selectedModel.object?.getObjectByName(localId.toString()) as THREE.Mesh | null;

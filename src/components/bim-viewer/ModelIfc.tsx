@@ -45,6 +45,7 @@ const ModelIfc: React.FC<ModelIfcProps> = (props) => {
   const onIsolateByIFCType = selections?.onIsolateByIFCType || (() => { });
   const onShowProperties = selections?.onShowProperties || (() => { });
   const onToggleVisibility = selections?.onToggleVisibility || (() => {});
+  const onToggleElements = selections?.onToggleElements || (() => {});
   const { contextMenu, setContextMenu, openContextMenu } = useContextMenu();
 
   worldRef.current = world;
@@ -103,6 +104,9 @@ const ModelIfc: React.FC<ModelIfcProps> = (props) => {
                 break;
               case "onToggleVisibility":
                 onToggleVisibility();
+                break;
+              case "onToggleElements":
+                onToggleElements();
                 break;
               case "isolate":
                 isolate();
