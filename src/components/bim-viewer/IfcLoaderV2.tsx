@@ -43,6 +43,7 @@ const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({ worldRef, componentRef, conta
 
         await modelManager.setModel(model);
         await fragments.update(true);
+        fragmentManager.setFragment(fragments);
 
 
         // SetupRaycastHover({

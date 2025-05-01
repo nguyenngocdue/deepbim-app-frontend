@@ -6,6 +6,12 @@ import { setModelTransparency } from "@/lib/effects/ModelTransparency";
 import { createMarker, removeMarker } from "@/utils/markerUtils";
 import { moveOrbitTarget } from "@/lib/effects/OrbitTarget";
 
+import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
+import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
+import { OutlinePass } from "three/examples/jsm/postprocessing/OutlinePass.js";
+import { SelectionStore } from "@/services/SelectionStore";
+
+
 interface SetupClickMarkerOptions {
   container: HTMLElement;
   model: FRAGS.FragmentsModel;
@@ -18,13 +24,12 @@ interface SetupClickMarkerOptions {
   onItemDeselected?: () => void;
 }
 
-
 export function setupClickMarker({
   container,
   model,
   fragments,
   world,
-  sphereColor = "#05faf2",
+  sphereColor = "#fa05ac",
   sphereRadius = 1,
   focusCamera = true,
   onItemSelected = () => {},
@@ -34,19 +39,39 @@ export function setupClickMarker({
   let marker: THREE.Mesh | null = null;
   let highlightedMesh: THREE.Mesh | null = null;
 
+
+
+  const composer = new EffectComposer(world.renderer.three);
+  composer.addPass(new RenderPass(world.scene.three, world.camera.three));
+
+  const outlinePass = new OutlinePass(
+    new THREE.Vector2(container.clientWidth, container.clientHeight),
+    world.scene.three,
+    world.camera.three
+  );
+  composer.addPass(outlinePass);
+
+  // Optional: viền màu hồng sáng
+  outlinePass.edgeStrength = 3.0;
+  outlinePass.edgeGlow = 0.5;
+  outlinePass.edgeThickness = 1.0;
+  outlinePass.visibleEdgeColor.set("#ff99cc");
+  outlinePass.hiddenEdgeColor.set("#000000");
+
+
+
   const currentSelection = {
     model: null as FRAGS.FragmentsModel | null,
     localId: null as number | null,
   };
 
   const highlightMaterial: FRAGS.MaterialDefinition = {
-    color: new THREE.Color("#ff6699"),
+    color: new THREE.Color("#F59492"),
     renderedFaces: FRAGS.RenderedFaces.BOTH,
     opacity: 1,
     transparent: false,
     emissive: new THREE.Color("#ff99cc"),
     emissiveIntensity: 0.8,
-    depthTest: false,
   };
 
   const handleMouseDown = async (event: MouseEvent) => {
@@ -62,17 +87,25 @@ export function setupClickMarker({
     if (!result) return;
 
     const { localId, object, point } = result;
+
+    // outlinePass.selectedObjects = [object];
+    // animate()
+    
     const selectedModel = fragments.models.list.get(object.name);
+    // query and store object from raycaster 
+    SelectionStore.set(localId, object, point, selectedModel);
+    
+
     if (!selectedModel) return;
 
     await resetHighlight(currentSelection, highlightedMesh);
     currentSelection.localId = localId;
     currentSelection.model = selectedModel;
-
     selectedModel.highlight([localId], highlightMaterial);
-    // setModelTransparency(model, true, 0.3);
 
-    highlightedMesh = selectedModel.group?.getObjectByName(localId.toString()) as THREE.Mesh | null;
+    // const i = await selectedModel.getItem(String(localId));
+
+    highlightedMesh = selectedModel.object?.getObjectByName(localId.toString()) as THREE.Mesh | null;
 
     onItemSelected();
     marker = createMarker(sphereRadius, sphereColor, point);
@@ -80,7 +113,14 @@ export function setupClickMarker({
     world.renderer.three.render(world.scene.three, world.camera.three);
 
     if (focusCamera) moveOrbitTarget(point, world);
+    animate();
   };
+
+  function animate() {
+    fragments.update();
+    requestAnimationFrame(animate);
+    // composer.render(); 
+  }
 
   const handleDoubleClick = async (event: MouseEvent) => {
     mouse.set(event.clientX, event.clientY);
