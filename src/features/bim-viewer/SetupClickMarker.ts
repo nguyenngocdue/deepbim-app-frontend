@@ -10,6 +10,7 @@ import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
 import { OutlinePass } from "three/examples/jsm/postprocessing/OutlinePass.js";
 import { SelectionStore } from "@/services/SelectionStore";
+import { MultiSelectionManager } from "@/lib/MultiSelectionManager";
 
 
 interface SetupClickMarkerOptions {
@@ -40,7 +41,6 @@ export function setupClickMarker({
   let highlightedMesh: THREE.Mesh | null = null;
 
 
-
   const composer = new EffectComposer(world.renderer.three);
   composer.addPass(new RenderPass(world.scene.three, world.camera.three));
 
@@ -65,59 +65,44 @@ export function setupClickMarker({
     localId: null as number | null,
   };
 
-  const highlightMaterial: FRAGS.MaterialDefinition = {
-    color: new THREE.Color("#F59492"),
-    renderedFaces: FRAGS.RenderedFaces.BOTH,
-    opacity: 1,
-    transparent: false,
-    emissive: new THREE.Color("#ff99cc"),
-    emissiveIntensity: 0.8,
-  };
+  const selectionManager = MultiSelectionManager.getInstance();
 
   const handleMouseDown = async (event: MouseEvent) => {
     event.stopPropagation();
     mouse.set(event.clientX, event.clientY);
-
+  
     const result = await model.raycast({
       camera: world.camera.three,
       mouse,
       dom: world.renderer.three.domElement,
     });
-
+  
     if (!result) return;
-
+  
     const { localId, object, point } = result;
-
-    // outlinePass.selectedObjects = [object];
-    // animate()
-    
     const selectedModel = fragments.models.list.get(object.name);
-    // query and store object from raycaster 
-    SelectionStore.set(localId, object, point, selectedModel);
-    
-
     if (!selectedModel) return;
+  
+    // Nếu không giữ Ctrl thì clear toàn bộ và chọn mới
+    if (!event.ctrlKey) {
+      await selectionManager.clear();
+    }
+    selectionManager.add(selectedModel, localId);
 
-    await resetHighlight(currentSelection, highlightedMesh);
-    currentSelection.localId = localId;
-    currentSelection.model = selectedModel;
-    selectedModel.highlight([localId], highlightMaterial);
-
-    // console.log(await selectedModel.getItemsByVisibility(false));
-
-    // const i = await selectedModel.getItem(String(localId));
-
-    highlightedMesh = selectedModel.object?.getObjectByName(localId.toString()) as THREE.Mesh | null;
-
+    // Highlight lại toàn bộ
+    await selectionManager.highlightAll();
+  
+    SelectionStore.set(localId, object, point, selectedModel);
+  
     onItemSelected();
     marker = createMarker(sphereRadius, sphereColor, point);
     world.scene.three.add(marker);
     world.renderer.three.render(world.scene.three, world.camera.three);
-
+    
     if (focusCamera) moveOrbitTarget(point, world);
     animate();
   };
-
+  
   function animate() {
     fragments.update();
     requestAnimationFrame(animate);
@@ -134,6 +119,7 @@ export function setupClickMarker({
     });
 
     if (!result) {
+      await selectionManager.clear();
       await resetHighlight(currentSelection, highlightedMesh);
       removeMarker(marker, world);
       onItemDeselected();

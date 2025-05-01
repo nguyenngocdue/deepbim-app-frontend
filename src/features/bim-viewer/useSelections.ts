@@ -1,38 +1,35 @@
-import { useEffect, useState } from "react";
 import { worldManager } from "@/services/WorldManager";
-import * as FRAGS from "@thatopen/fragments";
 import * as OBC from "@thatopen/components";
-import * as THREE from "three";
-import * as OBF from "@thatopen/components-front";
 import { modelManager } from "@/services/ModelManager";
 import { fragmentManager } from "@/services/FragmentManager";
 import { SelectionStore } from "@/services/SelectionStore";
-import { any } from "three/src/nodes/TSL.js";
+import { MultiSelectionManager } from "@/lib/MultiSelectionManager";
 
 
 export function useSelections() {
-  const [highlighter, setHighlighter] = useState<any>(null);
-  const {localId, object, point, selectedModel } = SelectionStore.get();
   const fragments = fragmentManager.getFragment();
+  const selectionManager = MultiSelectionManager.getInstance();
+  const selections = selectionManager.getSelections();
+  const firstEntry = selections.entries().next().value;
 
   const isolate = async () => {
-    const modelList = fragments.models.list;
-    for (const elements of modelList) {
-      for (const element of elements) {
-        if (typeof element.getItemsByVisibility === "function") {
-          const localIds = await element.getItemsByVisibility(true);
-          const index = localIds.indexOf(localId);
-          if (index !== -1) localIds.splice(index, 1);
-          await element?.setVisible(localIds, false)
-        }
+    const selections = selectionManager.getSelections();
+    for (const [model, selectedSet] of selections.entries()) {
+      if (typeof model.getItemsByVisibility === "function") {
+        const visibleIds = await model.getItemsByVisibility(true);
+        // Lọc ra những ID đang hiển thị mà không nằm trong selectedSet
+        const idsToHide = visibleIds.filter(id => !selectedSet.has(id));
+        await model.setVisible(idsToHide, false);
       }
     }
-   
   };
+  
 
   const onToggleVisibility = async () => {
-    await selectedModel.toggleVisible([localId]);
-    await fragments.update();
+    if (!firstEntry) return;
+    const [model, idsToHideSet] = firstEntry;
+    const idsToHide = Array.from(idsToHideSet);
+    await model.toggleVisible([idsToHide[idsToHide.length - 1]]);
   };
 
   const onShowAll = async () => {
@@ -41,7 +38,6 @@ export function useSelections() {
       for (const element of elements) {
         if (typeof element.resetVisible === "function") {
           await element.resetVisible();
-          await element.resetHighlight([localId]);
         }
       }
     }
@@ -50,9 +46,10 @@ export function useSelections() {
   };
 
   const onHide = async ()  => {
-    await selectedModel?.setVisible([localId], false)
-    await fragments.update();
-
+    if (!firstEntry) return;
+    const [model, idsToHideSet] = firstEntry;
+    const idsToHide = Array.from(idsToHideSet);
+    await model?.setVisible(idsToHide, false)
   }
 
 
@@ -125,30 +122,7 @@ export function useSelections() {
     }
   
   const onFocusSelection = async () => {
-    const world = worldManager.getWorld();
-
-    console.log(await selectedModel.getVisibility())
-    
-
-
-    // const fragment = fragments.list.get(localId);
-    // console.log(fragment);
-
-
-    // const sphere = bbox.getSphere();
-    // const i = Infinity;
-    // const mi = -Infinity;
-    // const { x, y, z } = sphere.center;
-    // const isInf = sphere.radius === i || x === i || y === i || z === i;
-    // const isMInf = sphere.radius === mi || x === mi || y === mi || z === mi;
-    // const isZero = sphere.radius === 0;
-    // if (isInf || isMInf || isZero) {
-    //   return;
-    // }
-
-    // sphere.radius *= 1.2;
-    // const camera = world.camera;
-    // await camera.controls.fitToSphere(sphere, true);
+ 
   };
 
   const onShowProperties = async () => {
