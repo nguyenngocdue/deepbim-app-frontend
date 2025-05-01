@@ -25,4 +25,6 @@ export interface ModelIfcProps {
     onToggleTheme: () => void;
     currentTheme: "light" | "dark";
     viewId?: string;
+
+    isVisibleSettings:boolean;
 }

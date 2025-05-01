@@ -20,6 +20,7 @@ import WorldSettings from "../bim-viewer/WorldSettings";
 import { ModelIfcProps } from "@/props/ModelIfcProps";
 import FreeControlElements from "../bim-viewer/FreeControlElements";
 import LogoSection from "./LogoSection";
+import VisibleSettings from "../bim-viewer/settings/VisibleSettings";
 
 
 const HeaderViewer: React.FC<ModelIfcProps> = (
@@ -46,6 +47,7 @@ const HeaderViewer: React.FC<ModelIfcProps> = (
     isFitView,
     onToggleTheme,
     currentTheme,
+    isVisibleSettings,
   }
 ) => {
 
@@ -91,6 +93,7 @@ const HeaderViewer: React.FC<ModelIfcProps> = (
               {/* <OriginalWorldCamera onToggle={() => onToggle("isOriginalWorldCamera")} isActive={isOriginalWorldCamera} /> */}
               {/* <PlaneHover onToggle={() => onToggle("isPlaneHover")} isActive={isPlaneHover} /> */}
 
+              <VisibleSettings onToggle={() => onToggle("isVisibleSettings")}  isActive={isVisibleSettings}/>
             </div>
           </div>
         </div>

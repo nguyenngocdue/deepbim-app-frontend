@@ -43,6 +43,7 @@ const MainViewer: React.FC = () => {
     isPlaneHover: false,
     isFitView: false,
     isIsolation: false,
+    isVisibleSettings:false
   });
 
   const toggleState = (stateName: keyof typeof states) => {
@@ -82,9 +83,6 @@ const MainViewer: React.FC = () => {
     }
   }, [progress, modelActuallyReady]);
   
-  
-  
-
 
   return (
     <ViewCubeProvider>
@@ -96,7 +94,7 @@ const MainViewer: React.FC = () => {
 
           <PanelGroup direction="vertical" className="h-full">
             {/* HEADER */}
-            <Panel defaultSize={9.5} minSize={9.5} maxSize={9.5} className={themeClass}>
+            <Panel defaultSize={15} minSize={9.5} maxSize={15} className={themeClass}>
               <div className="h-full">
                 <HeaderViewer
                   onToggle={toggleState}
