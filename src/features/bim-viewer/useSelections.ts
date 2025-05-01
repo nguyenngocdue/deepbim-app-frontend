@@ -2,8 +2,8 @@ import { worldManager } from "@/services/WorldManager";
 import * as OBC from "@thatopen/components";
 import { modelManager } from "@/services/ModelManager";
 import { fragmentManager } from "@/services/FragmentManager";
-import { SelectionStore } from "@/services/SelectionStore";
-import { MultiSelectionManager } from "@/lib/MultiSelectionManager";
+import { MultiSelectionManager } from "@/lib/selections/MultiSelectionManager";
+import { resetHighlight } from "@/lib/effects/Highlight";
 
 
 export function useSelections() {
@@ -37,11 +37,17 @@ export function useSelections() {
     for (const elements of modelList) {
       for (const element of elements) {
         if (typeof element.resetVisible === "function") {
+          // to hide
+          const idsToReset1 = await element.getItemsByVisibility(false);
+          await element.resetHighlight(idsToReset1)
+          const idsToReset2 = await element.getItemsByVisibility(true);
+          // to isolate
+          await element.resetHighlight(idsToReset2)
           await element.resetVisible();
         }
       }
     }
-    SelectionStore.reset();
+    await selections.clear();
     await fragments.update();
   };
 

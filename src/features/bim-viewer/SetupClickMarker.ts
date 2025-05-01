@@ -2,15 +2,13 @@ import * as THREE from "three";
 import * as FRAGS from "@thatopen/fragments";
 import * as OBC from "@thatopen/components";
 import { resetHighlight } from "@/lib/effects/Highlight";
-import { setModelTransparency } from "@/lib/effects/ModelTransparency";
 import { createMarker, removeMarker } from "@/utils/markerUtils";
 import { moveOrbitTarget } from "@/lib/effects/OrbitTarget";
 
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
 import { OutlinePass } from "three/examples/jsm/postprocessing/OutlinePass.js";
-import { SelectionStore } from "@/services/SelectionStore";
-import { MultiSelectionManager } from "@/lib/MultiSelectionManager";
+import { MultiSelectionManager } from "@/lib/selections/MultiSelectionManager";
 
 
 interface SetupClickMarkerOptions {
@@ -91,8 +89,6 @@ export function setupClickMarker({
 
     // Highlight lại toàn bộ
     await selectionManager.highlightAll();
-  
-    SelectionStore.set(localId, object, point, selectedModel);
   
     onItemSelected();
     marker = createMarker(sphereRadius, sphereColor, point);
