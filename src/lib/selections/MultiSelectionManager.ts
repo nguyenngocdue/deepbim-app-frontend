@@ -1,4 +1,5 @@
 import * as FRAGS from "@thatopen/fragments";
+import { mode } from "d3";
 import * as THREE from "three";
 
 const highlightMaterial: FRAGS.MaterialDefinition = {
@@ -14,6 +15,7 @@ export class MultiSelectionManager {
   private static instance: MultiSelectionManager | null = null;
 
   private selectionMap = new Map<FRAGS.FragmentsModel, Set<number>>();
+  private idsToReset = new Set<number>();
 
   private constructor() {}
 
@@ -32,8 +34,18 @@ export class MultiSelectionManager {
     return this.selectionMap.get(model)!;
   }
 
+  async toggle(model: FRAGS.FragmentsModel, localId: number) {
+    const set = this.ensureModelSet(model);
+    if (set.has(localId)) {
+      set.delete(localId);
+      this.idsToReset.add(localId);
+    } else {
+      set.add(localId);
+    }
+  }
+
   add(model: FRAGS.FragmentsModel, localId: number) {
-    this.ensureModelSet(model).add(localId);
+    this.toggle(model, localId);
   }
 
   remove(model: FRAGS.FragmentsModel, localId: number) {
@@ -49,9 +61,11 @@ export class MultiSelectionManager {
 
   async highlightAll() {
     for (const [model, ids] of this.selectionMap.entries()) {
+      await model.resetHighlight?.(Array.from(this.idsToReset));
       await model.highlight?.(Array.from(ids), highlightMaterial);
     }
   }
+
 
   getSelections(): Map<FRAGS.FragmentsModel, Set<number>> {
     return this.selectionMap;

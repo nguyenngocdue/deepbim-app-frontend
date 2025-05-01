@@ -3,7 +3,6 @@ import * as OBC from "@thatopen/components";
 import { modelManager } from "@/services/ModelManager";
 import { fragmentManager } from "@/services/FragmentManager";
 import { MultiSelectionManager } from "@/lib/selections/MultiSelectionManager";
-import { resetHighlight } from "@/lib/effects/Highlight";
 
 
 export function useSelections() {
@@ -161,10 +160,6 @@ export function useSelections() {
       }
     }
   }
-
-
-
-
 
   return { 
     isolate,
