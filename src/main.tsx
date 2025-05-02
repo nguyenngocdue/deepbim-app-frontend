@@ -22,8 +22,9 @@ import { store } from './store';
 import { Toaster } from 'sonner';
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import { UserManager } from './services/UserManager'
+import { LanguageProvider } from './context/LanguageContext'
 
-console.log("VITE_API_BASE_URL from main",import.meta.env.VITE_API_BASE_URL)
+console.log("VITE_API_BASE_URL from main", import.meta.env.VITE_API_BASE_URL)
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -104,22 +105,26 @@ declare module '@tanstack/react-router' {
 const rootElement = document.getElementById('root')!
 if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement)
-  
+
 
   await UserManager.fetch();
   root.render(
     // <StrictMode>
     <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
-      <Provider store={store}>
-        <QueryClientProvider client={queryClient}>
-          <ThemeProvider defaultTheme='light' storageKey='vite-ui-theme'>
-            <FontProvider>
-              <Toaster richColors closeButton />
-              <RouterProvider router={router} />
-            </FontProvider>
-          </ThemeProvider>
-        </QueryClientProvider>
-      </Provider>
+      <LanguageProvider>
+        <Provider store={store}>
+          <QueryClientProvider client={queryClient}>
+            <ThemeProvider defaultTheme='light' storageKey='vite-ui-theme'>
+              <FontProvider>
+                <Toaster richColors closeButton />
+                <RouterProvider router={router} />
+              </FontProvider>
+            </ThemeProvider>
+          </QueryClientProvider>
+        </Provider>
+
+      </LanguageProvider>
+
     </GoogleOAuthProvider>
     // </StrictMode>
   )

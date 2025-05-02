@@ -14,8 +14,9 @@ import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import FooterTabViewer from "../layout/FooterTabViewer";
 import RightSidebarViewer from "../layout/RightSidebarViewer";
 import FullscreenLoader from "./common/FullscreenLoader";
-import { UserManager } from "@/services/UserManager";
 import DraggableHeaderViewer from "../layout/DraggableHeaderViewer";
+import LeftHeader from "@/sections/LeftHeader";
+import { useLanguage } from "@/context/LanguageContext";
 
 const MainViewer: React.FC = () => {
   const [isModelReady, setIsModelReady] = useState(false);
@@ -23,6 +24,7 @@ const MainViewer: React.FC = () => {
   const [isRightCollapsed, setIsRightCollapsed] = useState(false);
   const [progress, setProgress] = useState(0);
   const [modelActuallyReady, setModelActuallyReady] = useState(false);
+  const { language, toggleLanguage } = useLanguage();
 
   const [states, setStates] = useState({
     sectionActive: false,
@@ -114,6 +116,17 @@ const MainViewer: React.FC = () => {
                 {/* CENTER */}
                 <Panel defaultSize={60} minSize={30} className={themeClass}>
                   <div className="h-full w-full bg-black relative">
+                    
+                    <div className="absolute top-0 z-50 right-0 p-4">
+                      <LeftHeader 
+                        toggleLanguage={toggleLanguage}
+                        language={language.toUpperCase()}
+                        toggleTheme={toggleTheme}
+                        theme={theme}
+                        className="bg-red-300"
+                      />
+                    </div>
+
                     <ModelIfc
                       onModelReady={() => {
                         setModelActuallyReady(true);

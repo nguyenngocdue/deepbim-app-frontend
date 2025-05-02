@@ -11,16 +11,21 @@ interface LeftHeaderProps {
   language: string;
   toggleTheme: () => void;
   theme: string;
+  setLanguage?: boolean,
+  className?:string
 }
 
-const LeftHeader: React.FC<LeftHeaderProps> = ({ toggleLanguage, language, toggleTheme, theme }) => {
+const LeftHeader: React.FC<LeftHeaderProps> = ({ toggleLanguage, language, toggleTheme, theme, setLanguage, className }) => {
   return (
-    <div className="flex items-center gap-2">
-
-      <Button variant="ghost" onClick={toggleLanguage} className="text-sm px-1 transition icon-text-color">
-        {language.toUpperCase()}
-      </Button>
-      <Button variant="ghost" onClick={toggleTheme} className="text-sm px-1 transition icon-text-color">
+    <div className="flex items-center gap-1">
+      {
+        setLanguage && (
+          <Button variant="ghost" onClick={toggleLanguage} className={`text-sm transition icon-text-color  ${className}`}>
+            {language.toUpperCase()}
+          </Button>
+        )
+      }
+      <Button variant="ghost" onClick={toggleTheme} className={`text-sm transition icon-text-color`}>
         {theme === 'light' ? <CiLight /> : <MdOutlineDarkMode />}
       </Button>
       <ProfileDropdown />
