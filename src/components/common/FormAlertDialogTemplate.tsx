@@ -24,7 +24,7 @@ interface FieldConfig {
   type: FieldType;
 }
 
-interface FormDialogTemplateProps {
+interface FormAlertDialogTemplateProps {
   open: boolean;
   onClose: () => void;
   onSubmit: (values: Record<string, any>) => Promise<void> | void;
@@ -36,7 +36,7 @@ interface FormDialogTemplateProps {
   loading?: boolean;
 }
 
-export const FormDialogTemplate = ({
+export const FormAlertDialogTemplate = ({
   open,
   onClose,
   onSubmit,
@@ -46,7 +46,7 @@ export const FormDialogTemplate = ({
   submitText = "Save",
   cancelText = "Cancel",
   loading = false,
-}: FormDialogTemplateProps) => {
+}: FormAlertDialogTemplateProps) => {
   const [formData, setFormData] = useState<Record<string, any>>(initialValues);
 
   useEffect(() => {

@@ -1,4 +1,4 @@
-import { DialogTemplate } from "./common/DialogTemplate";
+import { AlertDialogTemplate } from "./common/AlertDialogTemplate";
 
 interface ConfirmDeleteDialogProps {
   open: boolean;
@@ -14,7 +14,7 @@ export const ConfirmDeleteDialog = ({
   itemName = "this item",
 }: ConfirmDeleteDialogProps) => {
   return (
-    <DialogTemplate
+    <AlertDialogTemplate
       open={open}
       onClose={onClose}
       onConfirm={onConfirm}

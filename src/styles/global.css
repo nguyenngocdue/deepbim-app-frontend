@@ -226,7 +226,7 @@ body.signin-page #leva__root {
   background: var(--bg-button-1);
 }
 .bg-button-2 {
-  background: var(--bg-button-2);
+  background: var(--bg-button-2); /* normal */
 }
 
 .text-button {

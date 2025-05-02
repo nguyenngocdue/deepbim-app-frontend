@@ -7,8 +7,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import { Checkbox } from "@/components/ui/checkbox";
 
 interface DynamicTableProps {
+  configs: Object,
   categories: string[];
   categoryColors: Record<string, string>;
   categoryTransparencies: Record<string, number>;
@@ -17,9 +20,12 @@ interface DynamicTableProps {
   onOpenTransparencyPicker: (category: string) => void;
   onCheckboxChange: (category: string, checked: boolean) => void;
   resetRow: (category: string) => void;
+  onCheckAllChange: (checked: boolean) => void;
+
 }
 
 export function DynamicTable({
+  configs,
   categories,
   categoryColors,
   categoryTransparencies,
@@ -28,51 +34,50 @@ export function DynamicTable({
   onOpenTransparencyPicker,
   onCheckboxChange,
   resetRow,
+  onCheckAllChange
 }: DynamicTableProps) {
-
+  const [selected, setSelected] = useState<string[]>([]);
 
   
   return (
     <>
-      <div className="relative overflow-y-auto rounded-lg border border-slate-800 shadow-lg bg-slate-900 max-h-[500px]">
+      <div className="relative max-h-[330px] overflow-auto rounded-lg border border-slate-700 shadow-md shadow-zinc-700">
         <Table>
-          <TableHeader className="sticky top-0 z-10">
-            <TableRow className="bg-slate-800 text-slate-100 border-b border-slate-700">
+          <TableHeader>
+            {/* Dòng 1 */}
+            <TableRow className="sticky top-0 z-20 bg-slate-950 text-slate-100 border-b border-slate-700 shadow-sm">
               <TableHead
-                className="w-12 px-4 py-3 sticky top-0 bg-slate-800 z-10"
+                className="w-12   text-center sticky top-0 bg-slate-950 z-20"
                 rowSpan={2}
-              ></TableHead>
+              />
               <TableHead
-                className="px-6 py-3 font-semibold sticky top-0 bg-slate-800 z-10"
+                className="  font-semibold sticky top-0 bg-slate-950 z-20"
                 rowSpan={2}
               >
                 Visibility
               </TableHead>
               <TableHead
-                className="text-center px-6 py-3 font-semibold sticky top-0 bg-slate-800 z-10"
+                className="text-center   font-semibold sticky top-0 bg-slate-950 z-20"
                 colSpan={3}
               >
                 Projection / Surface
               </TableHead>
             </TableRow>
-            <TableRow className="bg-slate-700 text-slate-300 border-b border-slate-700">
-              <TableHead
-                className="px-6 py-2 text-center font-medium sticky top-[48px] bg-slate-700 z-10"
-              >
+
+            {/* Dòng 2 */}
+            <TableRow className=" z-10 bg-slate-800 text-slate-300 border-b border-slate-700 shadow-sm">
+              <TableHead className="  text-center font-medium  bg-slate-800 z-10">
                 Color
               </TableHead>
-              <TableHead
-                className="px-6 py-2 text-center font-medium sticky top-[48px] bg-slate-700 z-10"
-              >
+              <TableHead className="  text-center font-medium  bg-slate-800 z-10">
                 Transparent
               </TableHead>
-              <TableHead
-                className="px-6 py-2 text-center font-medium sticky top-[48px] bg-slate-700 z-10"
-              >
+              <TableHead className="  text-center font-medium  bg-slate-800 z-10">
                 Reset
               </TableHead>
             </TableRow>
           </TableHeader>
+
           <TableBody>
             {categories.map((cat, idx) => {
               const color = categoryColors[cat];
@@ -80,79 +85,101 @@ export function DynamicTable({
               return (
                 <TableRow
                   key={idx}
-                  className="hover:bg-slate-800/50 transition-colors duration-200"
+                  className="hover:bg-slate-800/40 transition-colors duration-150 border-0"
+                  onClick={() => {
+                    setSelected((prev) =>
+                      prev.includes(cat) ? prev.filter((c) => c !== cat) : [...prev, cat]
+                    );
+                  }}
                 >
-                  <TableCell className="px-4 py-3 text-center">
-                    <input
-                      type="checkbox"
+                  <TableCell className="text-center">
+                    <Checkbox
                       checked={checkedCategories.includes(cat)}
-                      onChange={(e) => onCheckboxChange(cat, e.target.checked)}
-                      className="h-4 w-4 rounded border-slate-600 bg-slate-800 text-blue-600 focus:ring-blue-600"
+                      onCheckedChange={(checked) =>
+                        onCheckboxChange(cat, Boolean(checked))
+                      }
+                      className="border-slate-600 bg-slate-800 text-white 
+                           data-[state=checked]:bg-green-600 
+                           data-[state=checked]:border-green-600 
+                           data-[state=checked]:text-white 
+                           hover:border-slate-500 transition-colors"
                       aria-label={`Toggle visibility for ${cat}`}
                     />
                   </TableCell>
-                  <TableCell className="text-slate-100 font-medium px-6 py-3 whitespace-nowrap">
+                  <TableCell className="text-slate-100 font-medium whitespace-nowrap">
                     {cat}
                   </TableCell>
-                  <TableCell className="text-center px-6 py-3">
+                  <TableCell className="text-center">
                     <Button
                       size="sm"
                       variant="secondary"
                       style={{
                         backgroundColor: color || "#334155",
                         color: color ? "transparent" : "#F1F5F9",
-                        boxShadow: color ? "0 0 8px rgba(0,0,0,0.2)" : "none",
+                        boxShadow: color ? "0 0 8px rgba(0,0,0,0.3)" : "none",
                       }}
-                      className="w-28 rounded-lg border border-slate-600/50 hover:opacity-80 transition-all duration-200"
+                      className="w-28 rounded-md border border-slate-600/50 hover:opacity-90 transition-all"
                       onClick={() => onOpenColorPicker(cat)}
                       aria-label={`Override color for ${cat}`}
                     >
                       {!color && "Override"}
                     </Button>
                   </TableCell>
-                  <TableCell className="text-center px-6 py-3">
+                  <TableCell className="text-center">
                     <Button
                       size="sm"
                       variant="secondary"
-                      className="w-28 rounded-lg border border-slate-600/50 hover:opacity-80 transition-all duration-200 text-slate-300"
+                      className="w-28 rounded-md border border-slate-600/50 hover:opacity-90 text-slate-300"
                       onClick={() => onOpenTransparencyPicker(cat)}
                       aria-label={`Set transparency for ${cat}`}
                     >
-                      {transparency !== undefined ? `${transparency}%` : `Override`}
+                      {transparency != null && !Number.isNaN(transparency)
+                        ? `${transparency}%`
+                        : `Override`}
                     </Button>
                   </TableCell>
-
-                  <TableCell className="text-center px-6 py-3">
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    className="text-slate-400 hover:text-red-500"
-                    onClick={() => resetRow(cat)}
-                  >
-                    Reset
-                  </Button>
-                </TableCell>
+                  <TableCell className="text-center">
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      className="text-slate-400 hover:text-red-500"
+                      onClick={() => resetRow(cat)}
+                    >
+                      Reset
+                    </Button>
+                  </TableCell>
                 </TableRow>
               );
             })}
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center gap-3 p-4  ">
-        <input
-          type="checkbox"
-          checked={checkedCategories.length === categories.length}
-          onChange={(e) => {
-            const checked = e.target.checked;
-            categories.forEach((cat) => onCheckboxChange(cat, checked));
-          }}
-          className="h-4 w-4 rounded border-slate-600 bg-slate-800 text-blue-600 focus:ring-blue-600"
-          aria-label="Toggle all categories"
-        />
-        <label className="text-slate-300 text-sm font-medium">
-          {checkedCategories.length === categories.length ? "Uncheck all" : "Check all"}
+
+      <div className="flex items-center gap-3 px-4 py-3 ">
+      <Checkbox
+  checked={checkedCategories.length === categories.length}
+  indeterminate={
+    checkedCategories.length > 0 &&
+    checkedCategories.length < categories.length
+  }
+  onCheckedChange={(checked) => {
+    onCheckAllChange(Boolean(checked)); // ✅ gọi hàm thực sự cập nhật state cha
+  }}
+  className="border-slate-600 bg-slate-800 text-white 
+       data-[state=checked]:bg-green-600 
+       data-[state=checked]:border-green-600 
+       data-[state=checked]:text-white 
+       hover:border-slate-500"
+  aria-label="Toggle all categories"
+/>
+
+        <label className="text-slate-300 text-sm font-medium select-none">
+          {checkedCategories.length === categories.length
+            ? "Uncheck all"
+            : "Check all"}
         </label>
       </div>
+
     </>
   );
 }

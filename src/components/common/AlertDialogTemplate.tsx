@@ -11,7 +11,7 @@ import {
   import { Button, buttonVariants } from "@/components/ui/button";
   import { ExternalLink, Trash, X, OctagonAlert } from "lucide-react";
   
-  interface DialogTemplateProps {
+  interface AlertDialogTemplateProps {
     open: boolean;
     onClose: () => void;
     onConfirm: () => void;
@@ -22,7 +22,7 @@ import {
     learnMoreLink?: string;
   }
   
-  export const DialogTemplate = ({
+  export const AlertDialogTemplate = ({
     open,
     onClose,
     onConfirm,
@@ -31,7 +31,7 @@ import {
     confirmText = "Delete",
     cancelText = "Cancel",
     learnMoreLink,
-  }: DialogTemplateProps) => {
+  }: AlertDialogTemplateProps) => {
     return (
       <AlertDialog open={open} onOpenChange={onClose} >
         <AlertDialogContent className="overflow-hidden border-zinc-600 bg-behind">

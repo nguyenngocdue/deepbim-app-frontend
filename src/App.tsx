@@ -13,6 +13,7 @@ function App() {
     dispatch(fetchCurrentUser())
   }, [])
 
+
   return (
     <>
       <HomePage />

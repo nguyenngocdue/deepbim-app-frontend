@@ -1,39 +1,57 @@
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import VisibilityGraphicsTabs from "./component/VisibilityGraphicsTabs";
-import { useState } from "react";
+import { UserManager } from "@/services/UserManager";
+import { DialogTemplate } from "@/components/model-table/DialogTemplate";
 
-interface Props {
-  open: boolean;
-  onClose: () => void;
-}
-
-const VisibilityManager = ({ open, onClose }: Props) => {
-
-  const [modelColors, setModelColors] = useState<Record<string, string>>({});
-
-  const handleColorChange = (colors: Record<string, string>) => {
-    setModelColors(colors);
-    // Cập nhật màu trong 3D viewer
-    console.log("Updated colors:", colors);
+const VisibilityManager = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
+  const usersettings = {
+    ...UserManager.get(),
+    view: {
+      visibility: UserManager.get()?.view?.visibility || {},
+    },
   };
 
-  return (
-    <div>
-      <Dialog open={open} onOpenChange={onClose}>
-        <DialogContent className="max-w-5xl">
-          <DialogHeader>
-            <DialogTitle>
-            <VisibilityGraphicsTabs
-              // categories={["IfcWall", "IfcBeam", "IfcRoof"]}
-              onColorChange={handleColorChange}
-              onClose={onClose}
-            />
-            </DialogTitle>
-          </DialogHeader>
-        </DialogContent>
-      </Dialog>
-    </div>
-  )
-}
+  const hasData = !!usersettings?.view?.visibility;
 
-export default VisibilityManager
+  return (
+    <DialogTemplate
+      open={open}
+      onClose={onClose}
+      title="Graphics Visibility Settings"
+      description="Customize visibility, color, and transparency by category."
+      disableOutsideClose
+      className="max-w-5xl"
+      // footer={
+      //   hasData && (
+      //     <>
+      //       <Button variant="outline" onClick={onClose}>
+      //         Cancel
+      //       </Button>
+      //       <Button className="bg-blue-600 text-white hover:bg-blue-700">
+      //         Apply
+      //       </Button>
+      //     </>
+      //   )
+      // }
+    >
+      {hasData ? (
+        <div className="h-[500px] overflow-auto">
+          <VisibilityGraphicsTabs 
+            dataSource={usersettings} 
+            onClose={onClose} 
+            />
+        </div>
+      ) : (
+        <Alert variant="destructive">
+          <AlertTitle>No Data</AlertTitle>
+          <AlertDescription>
+            No settings were found for the selected model.
+          </AlertDescription>
+        </Alert>
+      )}
+    </DialogTemplate>
+  );
+};
+
+export default VisibilityManager;

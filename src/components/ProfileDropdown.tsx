@@ -15,7 +15,6 @@ import {
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
 import { useTranslation } from 'react-i18next';
 import { handleSignout } from '@/api';
-import { toast } from 'react-toastify';
 import { clearUser } from '@/store/slices/AuthSlice';
 
 export function ProfileDropdown() {
@@ -38,11 +37,12 @@ export function ProfileDropdown() {
 
   const onSignout = async () => {
     try {
-      await handleSignout();
-      dispatch(clearUser());
-      navigate({ to: '/sign-in' });
+      await handleSignout(); // có thể lỗi nếu session mất
     } catch (error: any) {
-      toast.error(error?.message || 'Failed to sign out');
+      console.warn("Session might already be gone:", error.message);
+    } finally {
+      dispatch(clearUser()); // vẫn clear redux/local state
+      navigate({ to: '/sign-in' }); // luôn redirect
     }
   };
 

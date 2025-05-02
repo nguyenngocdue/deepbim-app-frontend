@@ -24,7 +24,7 @@ import { LogoWord } from "@/components/LogoWord";
 import { ConfirmDeleteDialog } from "@/components/ConfirmDeleteDialog";
 import { apiRequest } from "@/api";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { FormDialogTemplate } from "@/components/common/FormDialogTemplate";
+import { FormAlertDialogTemplate } from "@/components/common/FormAlertDialogTemplate";
 import { IoIosArrowForward } from "react-icons/io";
 import { IoIosArrowBack } from "react-icons/io";
 import { MdKeyboardDoubleArrowLeft } from "react-icons/md";
@@ -293,7 +293,7 @@ export function ModelTable({ data, refeshData }: ModelTableProps) {
       />
 
 
-      <FormDialogTemplate
+      <FormAlertDialogTemplate
         open={openModifiedDialog}
         onClose={() => setOpenModifiedDialog(false)}
         title="Update Media"

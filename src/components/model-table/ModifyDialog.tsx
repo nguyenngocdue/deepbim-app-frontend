@@ -1,4 +1,4 @@
-import { FormDialogTemplate } from "@/components/common/FormDialogTemplate";
+import { FormAlertDialogTemplate } from "../common/FormAlertDialogTemplate";
 import { Model } from "./types";
 import { apiRequest } from "@/api";
 
@@ -24,7 +24,7 @@ export function ModifyDialog({ open, onClose, selectedRow, refeshData }: {
     : {};
 
   return (
-    <FormDialogTemplate
+    <FormAlertDialogTemplate
       open={open}
       onClose={onClose}
       title="Update Media"

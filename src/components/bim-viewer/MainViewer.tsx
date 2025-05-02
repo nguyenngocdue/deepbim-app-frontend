@@ -14,6 +14,7 @@ import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import FooterTabViewer from "../layout/FooterTabViewer";
 import RightSidebarViewer from "../layout/RightSidebarViewer";
 import FullscreenLoader from "./common/FullscreenLoader";
+import { UserManager } from "@/services/UserManager";
 
 const MainViewer: React.FC = () => {
   const [isModelReady, setIsModelReady] = useState(false);
