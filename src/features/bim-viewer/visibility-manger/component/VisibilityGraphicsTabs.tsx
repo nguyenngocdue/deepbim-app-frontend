@@ -11,14 +11,8 @@ import { ColorPickerModal } from "./ColorPickerModal";
 import { TransparencyModal } from "./TransparencyModal";
 import { defaultCategories, defaultPresetColors } from "./defaults";
 
-interface DataSource {
-  view: {
-    visibility: Record<string, { isShow: boolean; color: string; transparency: number }>;
-  };
-}
 
 interface VisibilityGraphicsTabsProps {
-  dataSource: DataSource;
   categories: string[];
   presetColors?: string[];
   checkedCategories: string[];

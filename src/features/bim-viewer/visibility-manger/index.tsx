@@ -6,6 +6,7 @@ import { DialogTemplate } from "@/components/model-table/DialogTemplate";
 import { useEffect, useState } from "react";
 import { defaultCategories } from "./component/defaults";
 import { mergeCategorySettings } from "@/utils/tables/merge-category-settings";
+import AppButton from "@/components/bim-viewer/common/AppButton";
 
 
 
@@ -65,9 +66,6 @@ const VisibilityManager = ({ open, onClose }: { open: boolean; onClose: () => vo
     onClose();
   };
 
-  
-
-
 
   return (
     <DialogTemplate
@@ -80,12 +78,15 @@ const VisibilityManager = ({ open, onClose }: { open: boolean; onClose: () => vo
       footer={
          (
           <>
-            <Button variant="outline" onClick={handleCancel}>
-              Cancel
-            </Button>
-            <Button className="bg-blue-600 text-white hover:bg-blue-700" onClick={handleApply}>
-              Apply
-            </Button>
+            <AppButton
+              falseName ="Cancel"
+              className="bg-blue-600"
+              onClick={handleCancel}
+              />
+            <AppButton
+            falseName="Apply"
+            className="bg-purple-400 "
+            onClick={handleApply}/>
           </>
         )
       }
@@ -93,7 +94,6 @@ const VisibilityManager = ({ open, onClose }: { open: boolean; onClose: () => vo
       {hasData ? (
         <div className="h-[500px] overflow-auto">
           <VisibilityGraphicsTabs 
-            dataSource={usersettings}
             categories={defaultCategories}
             categoryColors={categoryColors}
             categoryTransparencies={categoryTransparencies}

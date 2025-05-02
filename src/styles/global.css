@@ -50,8 +50,16 @@ p {
   --text-reverse:#114611;
   --text-paragraph: #4b5563;
   --bg-button-1:#22c55e;
-  --bg-button-2:#1f2937;
   --text-button:#172220;
+
+  /* BUTTON */
+  --bg-button-2: #dadada;
+  --bg-button-hover: #e4f5ea;
+  --bg-button-active: #d0d0d0;
+
+  --text-color: #000000;
+  --text-color-hover: #111111;
+  --text-color-active: #333333;
 
 }
 
@@ -90,7 +98,17 @@ p {
   --text-paragraph: #dee0e2;
   --bg-button-1:#22c55e;
   --text-button:#dee0e2;
-  --bg-button-2:#1f2937;
+
+  /* BUTTON */
+  --bg-button-2: #2d2d2d;
+  --bg-button-hover: #615e5e;
+  --bg-button-active: #1a1a1a;
+
+  --text-color: #ffffff;
+  --text-color-hover: #ffffff;
+  --text-color-active: #cccccc;
+
+  
 
 }
 
@@ -229,6 +247,36 @@ body.signin-page #leva__root {
   background: var(--bg-button-2); /* normal */
 }
 
-.text-button {
-  color: var(--text-button);
+/* BUTTON - NORMAL*/
+
+.hover-button {
+  padding: 10px 20px;
+  background: var(--bg-button-2);
+  color: var(--text-color);
+  border-radius: 0.5rem; /* rounded-lg */
+  border: 1px solid transparent;
+  font-weight: 500;
+  transition:
+    background-color 200ms ease-in-out,
+    color 200ms ease-in-out,
+    border-color 200ms ease-in-out,
+    box-shadow 200ms ease-in-out,
+    transform 150ms ease-out;
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); /* nhẹ như shadcn */
+}
+
+.hover-button:hover {
+  background: var(--bg-button-hover);
+  color: var(--text-color-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.hover-button:active {
+  background: var(--bg-button-active);
+  color: var(--text-color-active);
+  transform: scale(0.98); /* nhấn xuống nhẹ */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); /* bóng thấp hơn */
 }

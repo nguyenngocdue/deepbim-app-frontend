@@ -36,7 +36,7 @@ export function DynamicTable({
 }: DynamicTableProps) {
   const [selected, setSelected] = useState<string[]>([]);
 
-  
+
   return (
     <>
       <div className="relative max-h-[330px] overflow-auto rounded-lg border border-slate-700 shadow-md shadow-zinc-700">
@@ -112,11 +112,11 @@ export function DynamicTable({
                       size="sm"
                       variant="secondary"
                       style={{
-                        backgroundColor: color || "#334155",
-                        color: color ? "transparent" : "#F1F5F9",
+                        backgroundColor: color ,
+                        color: color ? "transparent" : "",
                         boxShadow: color ? "0 0 8px rgba(0,0,0,0.3)" : "none",
                       }}
-                      className="w-28 rounded-md border border-slate-600/50 hover:opacity-90 transition-all"
+                      className="w-28 rounded-md border transition-all hover-button"
                       onClick={() => onOpenColorPicker(cat)}
                       aria-label={`Override color for ${cat}`}
                     >
@@ -127,7 +127,7 @@ export function DynamicTable({
                     <Button
                       size="sm"
                       variant="secondary"
-                      className="w-28 rounded-md border border-slate-600/50 hover:opacity-90 text-slate-300"
+                      className="w-28 rounded-md border transition-all hover-button"
                       onClick={() => onOpenTransparencyPicker(cat)}
                       aria-label={`Set transparency for ${cat}`}
                     >
@@ -139,8 +139,8 @@ export function DynamicTable({
                   <TableCell className="text-center">
                     <Button
                       size="sm"
-                      variant="ghost"
-                      className="text-slate-400 hover:text-red-500"
+                      variant="secondary"
+                      className=" hover-button"
                       onClick={() => resetRow(cat)}
                     >
                       Reset
@@ -154,22 +154,22 @@ export function DynamicTable({
       </div>
 
       <div className="flex items-center gap-3 px-4 py-3 ">
-      <Checkbox
-  checked={checkedCategories.length === categories.length}
-  indeterminate={
-    checkedCategories.length > 0 &&
-    checkedCategories.length < categories.length
-  }
-  onCheckedChange={(checked) => {
-    onCheckAllChange(Boolean(checked)); // ✅ gọi hàm thực sự cập nhật state cha
-  }}
-  className="border-slate-600 bg-slate-800 text-white 
+        <Checkbox
+          checked={checkedCategories.length === categories.length}
+          indeterminate={
+            checkedCategories.length > 0 &&
+            checkedCategories.length < categories.length
+          }
+          onCheckedChange={(checked) => {
+            onCheckAllChange(Boolean(checked)); // ✅ gọi hàm thực sự cập nhật state cha
+          }}
+          className="border-slate-600 bg-slate-800 text-white 
        data-[state=checked]:bg-green-600 
        data-[state=checked]:border-green-600 
        data-[state=checked]:text-white 
        hover:border-slate-500"
-  aria-label="Toggle all categories"
-/>
+          aria-label="Toggle all categories"
+        />
 
         <label className="text-slate-300 text-sm font-medium select-none">
           {checkedCategories.length === categories.length
