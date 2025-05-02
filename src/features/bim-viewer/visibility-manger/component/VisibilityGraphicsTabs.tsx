@@ -6,70 +6,46 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs";
-import { Button } from "@/components/ui/button";
 import { DynamicTable } from "./DynamicTable";
 import { ColorPickerModal } from "./ColorPickerModal";
 import { TransparencyModal } from "./TransparencyModal";
 import { defaultCategories, defaultPresetColors } from "./defaults";
-import { mergeCategorySettings } from "@/utils/tables/merge-category-settings";
-import { UserManager, UserSetting } from "@/services/UserManager";
 
 interface DataSource {
   view: {
-    visibility: any; // Replace 'any' with the actual type if known
+    visibility: Record<string, { isShow: boolean; color: string; transparency: number }>;
   };
 }
 
 interface VisibilityGraphicsTabsProps {
   dataSource: DataSource;
-  categories?: string[];
+  categories: string[];
   presetColors?: string[];
+  checkedCategories: string[];
+  setCheckedCategories: (val: string[]) => void;
+  categoryColors: Record<string, string>;
+  setCategoryColors: (val: Record<string, string>) => void;
+  categoryTransparencies: Record<string, number>;
+  setCategoryTransparencies: (val: Record<string, number>) => void;
   onClose: (value: boolean) => void;
 }
 
 export default function VisibilityGraphicsTabs({
-  dataSource,
-  onClose,
   categories = defaultCategories,
   presetColors = defaultPresetColors,
+  checkedCategories,
+  setCheckedCategories,
+  categoryColors,
+  setCategoryColors,
+  categoryTransparencies,
+  setCategoryTransparencies,
 }: VisibilityGraphicsTabsProps) {
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [activeTransparencyCategory, setActiveTransparencyCategory] = useState<string | null>(null);
-  const [categoryColors, setCategoryColors] = useState<Record<string, string>>({});
-  const [categoryTransparencies, setCategoryTransparencies] = useState<Record<string, number>>({});
-  const [initialColors, setInitialColors] = useState<Record<string, string>>({});
-  const [initialTransparencies, setInitialTransparencies] = useState<Record<string, number>>({});
   const [tempColor, setTempColor] = useState<string>("#ffffff");
   const [tempTransparency, setTempTransparency] = useState<number>(0);
-  const [checkedCategories, setCheckedCategories] = useState<string[]>(categories);
 
-  const configs = dataSource.view?.visibility;
   
-  useEffect(() => {
-    if(!configs) return;
-    setCheckedCategories( categories.filter((category) => configs[category]?.isShow));
-  
-    setCategoryColors(
-      categories.reduce((acc, cat) => {
-        if (configs[cat]) {
-          acc[cat] = configs[cat].color;
-        }
-        return acc;
-      }, {} as Record<string, string>)
-    );
-    setCategoryTransparencies(
-      categories.reduce((acc, cat) => {
-        if (configs[cat]) {
-          acc[cat] = Number(configs[cat].transparency);
-        }
-        return acc;
-      }, {} as Record<string, number>)
-    );
-    
-
-  }, [configs])
-
-
 
   const handleOpenColorPicker = (category: string) => {
     if (!categories.includes(category)) {
@@ -89,75 +65,44 @@ export default function VisibilityGraphicsTabs({
 
   const handleColorConfirm = () => {
     if (activeCategory) {
-      setCategoryColors((prev) => ({
-        ...prev,
-        [activeCategory]: categoryColors[activeCategory] || tempColor,
-      }));
+      setCategoryColors({
+        ...categoryColors,
+        [activeCategory]: tempColor,
+      });
     }
+    setActiveCategory(null);
   };
 
   const handleTransparencyConfirm = () => {
     if (activeTransparencyCategory) {
-      setCategoryTransparencies((prev) => ({
-        ...prev,
+      setCategoryTransparencies({
+        ...categoryTransparencies,
         [activeTransparencyCategory]: tempTransparency,
-      }));
+      });
     }
-  };
-
-  const handleCancelModal = () => {
-    setActiveCategory(null);
-  };
-
-  const handleCancelTransparencyModal = () => {
     setActiveTransparencyCategory(null);
   };
 
+
   const handleCheckboxChange = (category: string, checked: boolean) => {
-    setCheckedCategories((prev) =>
-      checked ? [...prev, category] : prev.filter((c) => c !== category)
+    setCheckedCategories(
+      checked ? [...checkedCategories, category] : checkedCategories.filter((c) => c !== category)
     );
   };
 
-  const handleFooterCancel = () => {
-    setCategoryColors(initialColors);
-    setCategoryTransparencies(initialTransparencies);
-    setCheckedCategories([]);
-    setActiveCategory(null);
-    setActiveTransparencyCategory(null);
-    onClose(false);
-  };
 
-  const handleFooterApply = async () => {
-    setCheckedCategories(checkedCategories);
-    setInitialColors(categoryColors);
-    setInitialTransparencies(categoryTransparencies);
-    const settings: Partial<UserSetting> = {
-      view: {
-        visibility: mergeCategorySettings(
-          checkedCategories,
-          categoryColors,
-          categoryTransparencies
-        ),
-      },
-    };
-    // fetch api usersettings
-    await UserManager.set(settings);
-    onClose(false);
-  };
 
   const handleResetRow = (category: string) => {
-    setCategoryColors((prev) => ({
-      ...prev,
-      [category]: initialColors[category],
-    }));
-    setCategoryTransparencies((prev) => ({
-      ...prev,
-      [category]: initialTransparencies[category],
-    }));
+    setCategoryColors({
+      ...categoryColors,
+      [category]: "",
+    });
+    setCategoryTransparencies({
+      ...categoryTransparencies,
+      [category]: NaN,
+    });
   };
-
-
+  
 
 const handleCheckAll = (checked: boolean) => {
   setCheckedCategories(checked ? [...categories] : []);
@@ -170,7 +115,6 @@ const handleCheckAll = (checked: boolean) => {
       value: "model",
       content: (
         <DynamicTable
-          configs={configs}
           categories={categories}
           categoryColors={categoryColors}
           categoryTransparencies={categoryTransparencies}
@@ -218,24 +162,6 @@ const handleCheckAll = (checked: boolean) => {
         ))}
       </Tabs>
 
-      <div className="flex justify-end gap-3">
-        <Button
-          variant="outline"
-          className="text-slate-300 border-slate-600 hover:bg-slate-800 bg-button-1"
-          onClick={handleFooterCancel}
-          aria-label="Cancel all changes"
-        >
-          Cancel
-        </Button>
-        <Button
-          className="bg-blue-600 text-white hover:bg-blue-700"
-          onClick={handleFooterApply}
-          aria-label="Apply all changes"
-        >
-          Apply
-        </Button>
-      </div>
-
       {activeCategory && (
         <ColorPickerModal
           category={activeCategory}
@@ -244,7 +170,7 @@ const handleCheckAll = (checked: boolean) => {
           initialColor={categoryColors[activeCategory] || "#ffffff"}
           onColorChange={setTempColor}
           onConfirm={handleColorConfirm}
-          onCancel={handleCancelModal}
+          onCancel={() => setActiveCategory(null)}
         />
       )}
 
@@ -255,7 +181,7 @@ const handleCheckAll = (checked: boolean) => {
           initialTransparency={categoryTransparencies[activeTransparencyCategory] || 0}
           onTransparencyChange={setTempTransparency}
           onConfirm={handleTransparencyConfirm}
-          onCancel={handleCancelTransparencyModal}
+          onCancel={() => setActiveTransparencyCategory(null)}
         />
       )}
     </div>

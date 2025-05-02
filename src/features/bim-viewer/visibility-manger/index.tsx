@@ -1,10 +1,21 @@
 import { Button } from "@/components/ui/button";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import VisibilityGraphicsTabs from "./component/VisibilityGraphicsTabs";
-import { UserManager } from "@/services/UserManager";
+import { UserManager, UserSetting } from "@/services/UserManager";
 import { DialogTemplate } from "@/components/model-table/DialogTemplate";
+import { useEffect, useState } from "react";
+import { defaultCategories } from "./component/defaults";
+import { mergeCategorySettings } from "@/utils/tables/merge-category-settings";
+
+
 
 const VisibilityManager = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
+  const [categoryColors, setCategoryColors] = useState<Record<string, string>>({});
+  const [categoryTransparencies, setCategoryTransparencies] = useState<Record<string, number>>({});
+  const [checkedCategories, setCheckedCategories] = useState<string[]>([]);
+
+
+
   const usersettings = {
     ...UserManager.get(),
     view: {
@@ -14,6 +25,50 @@ const VisibilityManager = ({ open, onClose }: { open: boolean; onClose: () => vo
 
   const hasData = !!usersettings?.view?.visibility;
 
+
+
+  useEffect(() => {
+    const configs = usersettings?.view?.visibility || {};
+    setCheckedCategories(
+      defaultCategories.filter((category) => configs[category]?.isShow)
+    );
+    setCategoryColors(
+      defaultCategories.reduce((acc, cat) => {
+        if (configs[cat]) acc[cat] = configs[cat].color;
+        return acc;
+      }, {} as Record<string, string>)
+    );
+    setCategoryTransparencies(
+      defaultCategories.reduce((acc, cat) => {
+        if (configs[cat]) acc[cat] = configs[cat].transparency;
+        return acc;
+      }, {} as Record<string, number>)
+    );
+  }, []);
+
+
+  const handleApply = async () => {
+    const settings: Partial<UserSetting> = {
+      view: {
+        visibility: mergeCategorySettings(
+          checkedCategories,
+          categoryColors,
+          categoryTransparencies
+        ),
+      },
+    };
+    await UserManager.set(settings);
+    onClose();
+  };
+  
+  const handleCancel = () => {
+    onClose();
+  };
+
+  
+
+
+
   return (
     <DialogTemplate
       open={open}
@@ -22,24 +77,31 @@ const VisibilityManager = ({ open, onClose }: { open: boolean; onClose: () => vo
       description="Customize visibility, color, and transparency by category."
       disableOutsideClose
       className="max-w-5xl"
-      // footer={
-      //   hasData && (
-      //     <>
-      //       <Button variant="outline" onClick={onClose}>
-      //         Cancel
-      //       </Button>
-      //       <Button className="bg-blue-600 text-white hover:bg-blue-700">
-      //         Apply
-      //       </Button>
-      //     </>
-      //   )
-      // }
+      footer={
+         (
+          <>
+            <Button variant="outline" onClick={handleCancel}>
+              Cancel
+            </Button>
+            <Button className="bg-blue-600 text-white hover:bg-blue-700" onClick={handleApply}>
+              Apply
+            </Button>
+          </>
+        )
+      }
     >
       {hasData ? (
         <div className="h-[500px] overflow-auto">
           <VisibilityGraphicsTabs 
-            dataSource={usersettings} 
-            onClose={onClose} 
+            dataSource={usersettings}
+            categories={defaultCategories}
+            categoryColors={categoryColors}
+            categoryTransparencies={categoryTransparencies}
+            checkedCategories={checkedCategories}
+            setCategoryColors={setCategoryColors}
+            setCategoryTransparencies={setCategoryTransparencies}
+            setCheckedCategories={setCheckedCategories}
+            onClose={onClose}
             />
         </div>
       ) : (

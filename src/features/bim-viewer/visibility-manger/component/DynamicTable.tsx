@@ -11,7 +11,6 @@ import { useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 
 interface DynamicTableProps {
-  configs: Object,
   categories: string[];
   categoryColors: Record<string, string>;
   categoryTransparencies: Record<string, number>;
@@ -25,7 +24,6 @@ interface DynamicTableProps {
 }
 
 export function DynamicTable({
-  configs,
   categories,
   categoryColors,
   categoryTransparencies,
@@ -51,7 +49,7 @@ export function DynamicTable({
                 rowSpan={2}
               />
               <TableHead
-                className="  font-semibold sticky top-0 bg-slate-950 z-20"
+                className=" w-4 font-semibold sticky top-0 bg-slate-950 z-20"
                 rowSpan={2}
               >
                 Visibility
