@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
-import { toast } from "sonner";
 import { X } from "lucide-react";
 
 interface TransparencyModalProps {
@@ -23,17 +22,11 @@ export function TransparencyModal({
   const handleCancel = () => {
     onTransparencyChange(initialTransparency);
     onCancel();
-    toast.info(`Canceled transparency selection for "${category}"`, {
-      style: { background: "#1E293B", color: "#F1F5F9" },
-    });
   };
 
   const handleConfirm = () => {
     onConfirm();
     onCancel();
-    toast.success(`Transparency set to ${tempTransparency}% for "${category}"`, {
-      style: { background: "#1E293B", color: "#F1F5F9" },
-    });
   };
 
   const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {

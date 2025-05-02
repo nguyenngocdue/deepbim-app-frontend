@@ -12,13 +12,17 @@ import { DynamicTable } from "./DynamicTable";
 import { ColorPickerModal } from "./ColorPickerModal";
 import { TransparencyModal } from "./TransparencyModal";
 import { defaultCategories, defaultPresetColors } from "./defaults";
+import { mergeCategorySettings } from "@/utils/tables/merge-category-settings";
+import { fetchWithAuth2 } from "@/api";
 
 interface VisibilityGraphicsTabsProps {
   categories?: string[];
   presetColors?: string[];
+  onClose: (value: boolean) => void;
 }
 
 export default function VisibilityGraphicsTabs({
+  onClose,
   categories = defaultCategories,
   presetColors = defaultPresetColors,
 }: VisibilityGraphicsTabsProps) {
@@ -34,9 +38,6 @@ export default function VisibilityGraphicsTabs({
 
   const handleOpenColorPicker = (category: string) => {
     if (!categories.includes(category)) {
-      toast.error("Invalid category selected!", {
-        style: { background: "#1E293B", color: "#F1F5F9" },
-      });
       return;
     }
     setActiveCategory(category);
@@ -45,9 +46,6 @@ export default function VisibilityGraphicsTabs({
 
   const handleOpenTransparencyPicker = (category: string) => {
     if (!categories.includes(category)) {
-      toast.error("Invalid category selected!", {
-        style: { background: "#1E293B", color: "#F1F5F9" },
-      });
       return;
     }
     setActiveTransparencyCategory(category);
@@ -58,11 +56,8 @@ export default function VisibilityGraphicsTabs({
     if (activeCategory) {
       setCategoryColors((prev) => ({
         ...prev,
-        [activeCategory]: tempColor,
+        [activeCategory]: categoryColors[activeCategory] || tempColor,
       }));
-      toast.success(`Color set for "${activeCategory}"`, {
-        style: { background: "#1E293B", color: "#F1F5F9" },
-      });
     }
   };
 
@@ -84,8 +79,16 @@ export default function VisibilityGraphicsTabs({
   };
 
   const handleCheckboxChange = (category: string, checked: boolean) => {
-    setCheckedCategories((prev) =>
-      checked ? [...prev, category] : prev.filter((cat) => cat !== category)
+    setCheckedCategories((prev) => {
+      if (checked && !prev.includes(category)) {
+        return [...prev, category];
+      } else if (!checked && prev.includes(category)) {
+        return prev.filter((c) => c !== category);
+      } else {
+        return prev;
+      }
+    }
+      
     );
   };
 
@@ -95,20 +98,45 @@ export default function VisibilityGraphicsTabs({
     setCheckedCategories([]);
     setActiveCategory(null);
     setActiveTransparencyCategory(null);
-    toast.info("All changes have been canceled!", {
-      style: { background: "#1E293B", color: "#F1F5F9" },
-    });
+    
+    onClose(false);
   };
 
-  const handleFooterApply = () => {
+  const handleFooterApply = async () => {
     setInitialColors(categoryColors);
     setInitialTransparencies(categoryTransparencies);
-    toast.success(
-      `All changes applied (${checkedCategories.length} categories selected)!`,
-      {
-        style: { background: "#1E293B", color: "#F1F5F9" },
+    const settings = {
+      "userSetting": {
+        'view': {
+          "visibility": mergeCategorySettings(checkedCategories, categoryColors, categoryTransparencies)
+        }
       }
-    );
+    };
+    // fetch api usersettings
+    try {
+      const response = await fetchWithAuth2('/users/user-settings', {
+        method: 'POST',
+        body: JSON.stringify(settings),
+      });
+
+      await response.json();
+      toast.success("Update successful!");
+    } catch (error: any) {
+      toast.error("Error: " + error.message);
+    }
+    onClose(false);
+
+  };
+
+  const handleResetRow = (category: string) => {
+    setCategoryColors((prev) => ({
+      ...prev,
+      [category]: initialColors[category],
+    }));
+    setCategoryTransparencies((prev) => ({
+      ...prev,
+      [category]: initialTransparencies[category],
+    }));
   };
 
   const tabs = [
@@ -124,6 +152,7 @@ export default function VisibilityGraphicsTabs({
           onOpenColorPicker={handleOpenColorPicker}
           onOpenTransparencyPicker={handleOpenTransparencyPicker}
           onCheckboxChange={handleCheckboxChange}
+          resetRow={handleResetRow}
         />
       ),
     },

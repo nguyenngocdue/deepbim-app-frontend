@@ -1,6 +1,5 @@
 // src/components/ColorPickerModal.tsx
 import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
 import { HexColorPicker } from "react-colorful";
 import { X } from "lucide-react";
 
@@ -26,9 +25,6 @@ export function ColorPickerModal({
   const handleCancel = () => {
     onColorChange(initialColor || "#ffffff");
     onCancel();
-    toast.info(`Canceled color selection for "${category}"`, {
-      style: { background: "#1E293B", color: "#F1F5F9" },
-    });
   };
 
   const handleConfirm = () => {

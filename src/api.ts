@@ -168,7 +168,7 @@ export async function handleSignout(): Promise<void> {
 
 // Hàm tự động đính Bearer token, phân biệt FormData, và retry nếu 401
 export async function fetchWithAuth2(
-  url: string,
+  endpoint: string,
   options: RequestInit = {},
   retryCount = 0
 ): Promise<Response> {
@@ -180,55 +180,92 @@ export async function fetchWithAuth2(
     ...options.headers,
   };
 
+  // Add Content-Type for JSON if not FormData
   if (!isFormData && !(headers as Record<string, string>)["Content-Type"]) {
     (headers as Record<string, string>)["Content-Type"] = "application/json";
   }
 
-  const response = await fetch(url, {
+  const baseUrl = import.meta.env.VITE_API_BASE_URL;
+  const url = new URL(`${baseUrl}${endpoint}`);
+
+  const response = await fetch(url.toString(), {
     ...options,
     headers,
-    credentials: "include", // Nếu backend dùng cookie, nếu không thì có thể bỏ
+    credentials: "include", // keep if using cookies (can remove otherwise)
   });
 
+  // 🔁 Auto-retry if unauthorized
   if (response.status === 401 && retryCount < 1) {
     try {
-      await refreshAccessToken(); // Hàm bạn cần định nghĩa riêng
-      return fetchWithAuth2(url, options, retryCount + 1);
+      await refreshAccessToken(); // define this separately
+      return fetchWithAuth2(endpoint, options, retryCount + 1);
     } catch (err) {
       localStorage.removeItem("access_token");
       localStorage.removeItem("refresh_token");
-      throw new Error("Session expired. Please login again.");
+      throw new Error("Session expired. Please log in again.");
     }
+  }
+
+  // ❗ Handle non-2xx responses
+  if (!response.ok) {
+    let errorMessage = `HTTP ${response.status}`;
+    try {
+      const errorData = await response.clone().json();
+      errorMessage = errorData.message || JSON.stringify(errorData);
+    } catch {
+      const text = await response.clone().text();
+      errorMessage = text || errorMessage;
+    }
+
+    throw new Error(errorMessage);
   }
 
   return response;
 }
+
 
 // Hàm GET có đính kèm Authorization, tự build query, tự parse JSON
 export async function apiGet<T>(
   endpoint: string,
   params?: Record<string, any>
 ): Promise<T> {
-  const baseUrl = import.meta.env.VITE_API_BASE_URL;
-  const url = new URL(`${baseUrl}${endpoint}`);
+  try {
+    // Biến endpoint thành URL, xử lý base URL nếu cần
+    const baseUrl = import.meta.env.VITE_API_BASE_URL || '';
+    const url = new URL(endpoint, baseUrl);
 
-  if (params) {
-    Object.keys(params).forEach((key) => {
-      if (params[key] !== undefined && params[key] !== null) {
-        url.searchParams.append(key, params[key]);
-      }
+    // Thêm query params nếu có
+    if (params) {
+      Object.entries(params).forEach(([key, value]) => {
+        if (value !== undefined && value !== null) {
+          url.searchParams.append(key, String(value));
+        }
+      });
+    }
+
+    const response = await fetchWithAuth2(endpoint.toString(), {
+      method: 'GET',
     });
-  }
-  const response = await fetchWithAuth2(url.toString(), {
-    method: "GET",
-  });
 
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(`HTTP error ${response.status}: ${errorText}`);
+    if (!response.ok) {
+      let message = `HTTP error ${response.status}`;
+      try {
+        const errorBody = await response.json();
+        message += `: ${errorBody.message || JSON.stringify(errorBody)}`;
+      } catch {
+        const errorText = await response.text();
+        message += `: ${errorText}`;
+      }
+      throw new Error(message);
+    }
+
+    return await response.json();
+  } catch (err: any) {
+    console.error('[apiGet error]', err);
+    throw new Error(err.message || 'Unknown error during GET request');
   }
-  return response.json();
 }
+
 
 
 
@@ -237,9 +274,6 @@ export async function apiRequest<T>(
   method: "GET" | "PATCH" | "DELETE" = "GET",
   body?: any,
 ): Promise<T> {
-  const baseUrl = import.meta.env.VITE_API_BASE_URL;
-  const url = new URL(`${baseUrl}${endpoint}`);
-
   const options: RequestInit = {
     method,
     headers: {
@@ -250,7 +284,7 @@ export async function apiRequest<T>(
   if (body) {
     options.body = JSON.stringify(body);
   }
-  const response = await fetchWithAuth2(url.toString(), options);
+  const response = await fetchWithAuth2(endpoint.toString(), options);
 
   if (!response.ok) {
     const errorText = await response.text();

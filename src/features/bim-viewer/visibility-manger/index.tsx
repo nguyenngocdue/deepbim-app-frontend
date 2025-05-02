@@ -25,7 +25,8 @@ const VisibilityManager = ({ open, onClose }: Props) => {
             <DialogTitle>
             <VisibilityGraphicsTabs
               // categories={["IfcWall", "IfcBeam", "IfcRoof"]}
-              // onColorChange={handleColorChange}
+              onColorChange={handleColorChange}
+              onClose={onClose}
             />
             </DialogTitle>
           </DialogHeader>

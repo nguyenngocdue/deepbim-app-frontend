@@ -58,7 +58,7 @@ const Upload: React.FC<UploadProps> = ({
     try {
       await simulateProgress(0, 40, 1000);
 
-      const response = await fetchWithAuth2(`${import.meta.env.VITE_API_BASE_URL}/media/upload`, {
+      const response = await fetchWithAuth2(`/media/upload`, {
         method: "POST",
         body: formData,
       });

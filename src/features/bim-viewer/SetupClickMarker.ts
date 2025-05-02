@@ -81,21 +81,17 @@ export function setupClickMarker({
     const { localId, object, point } = result;
     const selectedModel = fragments.models.list.get(object.name);
     if (!selectedModel) return;
-    const eles = await selectedModel.getItemsOfCategory("IFCSLAB");
+    // const eles = await selectedModel.getItemsOfCategory("IFCSLAB");
 
-  const highlightMaterial: FRAGS.MaterialDefinition = {
-      color: new THREE.Color("#F59492"),
-      renderedFaces: FRAGS.RenderedFaces.BOTH,
-      opacity: 1,
-      transparent: false,
-    };
 
-    const ids = eles.map((item) => item._localId);
-    if(ids){
 
-      await selectedModel.highlight(ids, highlightMaterial)
-    }
-    console.log(ids);
+
+    // const ids = eles.map((item) => item._localId);
+    // if(ids){
+
+    //   await selectedModel.highlight(ids, highlightMaterial)
+    // }
+    // console.log(ids);
   
  
 
