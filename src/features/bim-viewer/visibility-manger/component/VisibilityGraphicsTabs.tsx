@@ -10,6 +10,7 @@ import { DynamicTable } from "./DynamicTable";
 import { ColorPickerModal } from "./ColorPickerModal";
 import { TransparencyModal } from "./TransparencyModal";
 import { defaultCategories, defaultPresetColors } from "./defaults";
+import { Input } from "@/components/ui/input";
 
 
 interface VisibilityGraphicsTabsProps {
@@ -39,7 +40,7 @@ export default function VisibilityGraphicsTabs({
   const [tempColor, setTempColor] = useState<string>("#ffffff");
   const [tempTransparency, setTempTransparency] = useState<number>(0);
 
-  
+
 
   const handleOpenColorPicker = (category: string) => {
     if (!categories.includes(category)) {
@@ -96,29 +97,43 @@ export default function VisibilityGraphicsTabs({
       [category]: NaN,
     });
   };
-  
 
-const handleCheckAll = (checked: boolean) => {
-  setCheckedCategories(checked ? [...categories] : []);
-};
 
+  const handleCheckAll = (checked: boolean) => {
+    setCheckedCategories(checked ? [...categories] : []);
+  };
+  const [searchTerm, setSearchTerm] = useState("");
+  const filteredCategories = categories.filter((cat) =>
+    cat.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const tabs = [
     {
       name: "Model Categories",
       value: "model",
       content: (
-        <DynamicTable
-          categories={categories}
-          categoryColors={categoryColors}
-          categoryTransparencies={categoryTransparencies}
-          checkedCategories={checkedCategories}
-          onOpenColorPicker={handleOpenColorPicker}
-          onOpenTransparencyPicker={handleOpenTransparencyPicker}
-          onCheckboxChange={handleCheckboxChange}
-          resetRow={handleResetRow}
-          onCheckAllChange={handleCheckAll} 
-        />
+        <>
+          <div className="mb-4">
+            <Input
+              type="text"
+              placeholder="Search categories..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full"
+            />
+          </div>
+          <DynamicTable
+            categories={filteredCategories}
+            categoryColors={categoryColors}
+            categoryTransparencies={categoryTransparencies}
+            checkedCategories={checkedCategories}
+            onOpenColorPicker={handleOpenColorPicker}
+            onOpenTransparencyPicker={handleOpenTransparencyPicker}
+            onCheckboxChange={handleCheckboxChange}
+            resetRow={handleResetRow}
+            onCheckAllChange={handleCheckAll}
+          />
+        </>
       ),
     },
     {
@@ -131,6 +146,9 @@ const handleCheckAll = (checked: boolean) => {
       ),
     },
   ];
+
+
+
 
   return (
     <div className="bg-slate-950 flex flex-col p-2">

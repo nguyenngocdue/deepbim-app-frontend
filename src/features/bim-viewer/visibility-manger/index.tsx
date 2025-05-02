@@ -85,6 +85,7 @@ const VisibilityManager = ({ open, onClose }: { open: boolean; onClose: () => vo
               />
             <AppButton
             falseName="Apply"
+            trueName="Apply ..."
             className="bg-purple-400 "
             onClick={handleApply}/>
           </>
