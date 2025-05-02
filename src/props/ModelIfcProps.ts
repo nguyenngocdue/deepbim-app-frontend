@@ -27,4 +27,5 @@ export interface ModelIfcProps {
     viewId?: string;
 
     isVisibleSettings:boolean;
+    isVertical:boolean;
 }

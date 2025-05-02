@@ -19,7 +19,6 @@ import AngleMeasurements from "../bim-viewer/AngleMeasurements";
 import WorldSettings from "../bim-viewer/WorldSettings";
 import { ModelIfcProps } from "@/props/ModelIfcProps";
 import FreeControlElements from "../bim-viewer/FreeControlElements";
-import LogoSection from "./LogoSection";
 import VisibleSettings from "../bim-viewer/settings/VisibleSettings";
 
 
@@ -48,22 +47,16 @@ const HeaderViewer: React.FC<ModelIfcProps> = (
     onToggleTheme,
     currentTheme,
     isVisibleSettings,
+    isVertical,
   }
 ) => {
 
   return (
     <>
-      <header className={`z-50 backdrop-blur-md text-white  md:px-6 py-2 shadow-md`}>
+      <header className={`z-50 backdrop-blur-md text-white  md:px-6 py-2 shadow-md border rounded-md`}>
         <div className="flex flex-col gap-2">
-
-          {/* Logo Section */}
-          <div className="flex items-center justify-between">
-            <LogoSection />
-          </div>
-
-          {/* Toolbar Section */}
-          <div className="max-h-48 overflow-y-auto overflow-x-hidden">
-            <div className="flex flex-wrap gap-2 items-center">
+        <div className={`${isVertical ? "max-h-none" : "max-h-48"} overflow-y-auto overflow-x-hidden`}>
+            <div className={`flex gap-2 ${isVertical ? "flex-col items-start" : "flex-wrap items-center"}`}>
               <Button variant="ghost" size="icon">
                 <FaUserCog className="text-lg" />
               </Button>
@@ -72,30 +65,20 @@ const HeaderViewer: React.FC<ModelIfcProps> = (
               <CameraSetting onToggle={() => onToggle("isOrthoPerspective")} isActive={isOrthoPerspective} />
               <CoordinateSystem onToggle={() => onToggle("coordinateSysActive")} isActive={coordinateSysActive} />
               <Grids onToggle={() => onToggle("haveGrids")} isActive={haveGrids} />
-
               <FreeControlElements onToggle={() => onToggle("isFreeControlElements")} isActive={isFreeControlElements} />
               <ClippingEdges onToggle={() => onToggle("isClippingEdges")} isActive={isClippingEdges} />
-
               <EdgeMeasurement onToggle={() => onToggle("isEdgeMeasurement")} isActive={isEdgeMeasurement} />
               <FaceMeasurement onToggle={() => onToggle("isFaceMeasurement")} isActive={isFaceMeasurement} />
               <VolumeMeasurement onToggle={() => onToggle("hasVolumeMeasurement")} isActive={hasVolumeMeasurement} />
               <LengthMeasurements onToggle={() => onToggle("haveLengthMeasurements")} isActive={haveLengthMeasurements} />
               <AreaMeasurements onToggle={() => onToggle("haveAreaMeasureElements")} isActive={haveAreaMeasureElements} />
               <AngleMeasurements onToggle={() => onToggle("haveAngleMeasurements")} isActive={haveAngleMeasurements} />
-
-              {/* <SectionBox onToggle={() => onToggle("sectionActive")} isActive={sectionActive} /> */}
-
               <PlansViews onToggle={() => onToggle("havePlansViews")} isActive={havePlansViews} />
-              
-
               <WorldSettings onToggle={() => onToggle("haveWorldSettings")} isActive={haveWorldSettings} />
-
-              {/* <OriginalWorldCamera onToggle={() => onToggle("isOriginalWorldCamera")} isActive={isOriginalWorldCamera} /> */}
-              {/* <PlaneHover onToggle={() => onToggle("isPlaneHover")} isActive={isPlaneHover} /> */}
-
-              <VisibleSettings onToggle={() => onToggle("isVisibleSettings")}  isActive={isVisibleSettings}/>
+              <VisibleSettings onToggle={() => onToggle("isVisibleSettings")} isActive={isVisibleSettings} />
             </div>
           </div>
+
         </div>
       </header>
 

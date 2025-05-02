@@ -15,6 +15,7 @@ import FooterTabViewer from "../layout/FooterTabViewer";
 import RightSidebarViewer from "../layout/RightSidebarViewer";
 import FullscreenLoader from "./common/FullscreenLoader";
 import { UserManager } from "@/services/UserManager";
+import DraggableHeaderViewer from "../layout/DraggableHeaderViewer";
 
 const MainViewer: React.FC = () => {
   const [isModelReady, setIsModelReady] = useState(false);
@@ -92,23 +93,18 @@ const MainViewer: React.FC = () => {
 
         {!isModelReady && <FullscreenLoader progress={progress} message="Loading 3D model..." />}
 
+            {/* HEADER */}
+            <DraggableHeaderViewer
+              onToggle={toggleState}
+              onToggleTheme={toggleTheme}
+              currentTheme={theme}
+              handleFileSelect={() => {}}
+              navigationMode="Orbit"
+              onModelReady={() => setModelActuallyReady(true)}
+              states={states}
+            />
 
           <PanelGroup direction="vertical" className="h-full">
-            {/* HEADER */}
-            <Panel defaultSize={15} minSize={9.5} maxSize={15} className={themeClass}>
-              <div className="h-full">
-                <HeaderViewer
-                  onToggle={toggleState}
-                  onToggleTheme={toggleTheme}
-                  currentTheme={theme}
-                  handleFileSelect={() => { /* Add your file select logic here */ }}
-                  navigationMode="Orbit" // Replace with the appropriate navigation mode
-                  onModelReady={() => setModelActuallyReady(true)}
-                  {...states}
-                />
-              </div>
-            </Panel>
-            <PanelResizeHandle className={`h-1 ${themeClass} cursor-ns-resize border-b border-zinc-800`} />
 
             {/* MAIN */}
             <Panel defaultSize={80} className={themeClass}>
