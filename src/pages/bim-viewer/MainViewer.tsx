@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import HeaderViewer from "../layout/HeaderViewer";
 import { ViewCubeProvider } from "@/context/view-cube-context";
 import { ViewCubeProvider2 } from "@/context/view-cube-context2";
-import ModelIfc from "./ModelIfc";
-import FaceMeasurementGuide from "./guides/FaceMeasurementGuide";
+import ModelIfc from "../../components/bim-viewer/ModelIfc";
+import FaceMeasurementGuide from "../../components/bim-viewer/guides/FaceMeasurementGuide";
 
 import {
   Panel,
@@ -11,14 +10,13 @@ import {
   PanelResizeHandle,
 } from "react-resizable-panels";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
-import FooterTabViewer from "../layout/FooterTabViewer";
-import RightSidebarViewer from "../layout/RightSidebarViewer";
-import DraggableHeaderViewer from "../layout/DraggableHeaderViewer";
+import FooterTabViewer from "../../components/layout/FooterTabViewer";
+import RightSidebarViewer from "../../components/layout/RightSidebarViewer";
+import DraggableHeaderViewer from "../../components/layout/DraggableHeaderViewer";
 import LeftHeader from "@/sections/LeftHeader";
 import { useLanguage } from "@/context/LanguageContext";
 import { UserManager } from "@/services/UserManager";
-import { useVisibilityManager } from "@/features/bim-viewer/useVisibilityManager";
-import VisibilityManager from "@/features/bim-viewer/visibility-manger";
+import VisibilityManager from "@/features/bim-viewer/modals/visibility-manger";
 
 const MainViewer: React.FC = () => {
   const [isLeftCollapsed, setIsLeftCollapsed] = useState(false);
@@ -134,14 +132,6 @@ const MainViewer: React.FC = () => {
                   </Panel>
 
                   <PanelResizeHandle className={`w-1 ${themeClass} cursor-ns-resize`} />
-                  {/* RIGHT */}
-                  {/* <DataSiderBar
-                    isCollapsed={isRightCollapsed}
-                    onCollapse={() => setIsRightCollapsed(true)}
-                    isModelReady={isModelReady}
-                  >
-                    <RelationsTree />
-                  </DataSiderBar> */}
                   <Panel defaultSize={20} minSize={5} maxSize={50} className={themeClass}>
                     <RightSidebarViewer themeClass="h-full" />
                   </Panel>
