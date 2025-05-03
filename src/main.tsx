@@ -107,7 +107,7 @@ if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement)
 
 
-  await UserManager.fetch();
+  // await UserManager.fetch();
   root.render(
     // <StrictMode>
     <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>

@@ -6,11 +6,15 @@ import { useEffect } from 'react';
 import { fetchCurrentUser } from './store/slices/AuthSlice';
 import useScrollRestoration from './hooks/useScrollRestoration';
 
+
 function App() {
   useScrollRestoration();
   const dispatch = useDispatch<AppDispatch>()
   useEffect(() => {
-    dispatch(fetchCurrentUser())
+    const fetchData = async () => {
+      dispatch(fetchCurrentUser());
+    };
+    fetchData();
   }, [])
 
 

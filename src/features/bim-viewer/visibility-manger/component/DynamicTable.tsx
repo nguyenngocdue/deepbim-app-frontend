@@ -155,11 +155,14 @@ export function DynamicTable({
 
       <div className="flex items-center gap-3 px-4 py-3 ">
         <Checkbox
+          ref={(el: HTMLInputElement | HTMLButtonElement | null) => {
+            if (el instanceof HTMLInputElement) {
+              el.indeterminate =
+                checkedCategories.length > 0 &&
+                checkedCategories.length < categories.length;
+            }
+          }}
           checked={checkedCategories.length === categories.length}
-          indeterminate={
-            checkedCategories.length > 0 &&
-            checkedCategories.length < categories.length
-          }
           onCheckedChange={(checked) => {
             onCheckAllChange(Boolean(checked)); // ✅ gọi hàm thực sự cập nhật state cha
           }}

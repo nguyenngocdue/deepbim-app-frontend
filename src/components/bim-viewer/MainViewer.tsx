@@ -17,6 +17,7 @@ import FullscreenLoader from "./common/FullscreenLoader";
 import DraggableHeaderViewer from "../layout/DraggableHeaderViewer";
 import LeftHeader from "@/sections/LeftHeader";
 import { useLanguage } from "@/context/LanguageContext";
+import { UserManager } from "@/services/UserManager";
 
 const MainViewer: React.FC = () => {
   const [isModelReady, setIsModelReady] = useState(false);
@@ -25,6 +26,14 @@ const MainViewer: React.FC = () => {
   const [progress, setProgress] = useState(0);
   const [modelActuallyReady, setModelActuallyReady] = useState(false);
   const { language, toggleLanguage } = useLanguage();
+
+  useEffect( ()=> {
+    const fetchUserSetting = async () => {
+      await UserManager.fetch();
+    }
+    fetchUserSetting();
+
+  }, [])
 
   const [states, setStates] = useState({
     sectionActive: false,

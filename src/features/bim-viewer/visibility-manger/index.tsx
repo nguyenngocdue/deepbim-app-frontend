@@ -24,12 +24,10 @@ const VisibilityManager = ({ open, onClose }: { open: boolean; onClose: () => vo
     },
   };
 
-  const hasData = !!usersettings?.view?.visibility;
-
-
+  const configs = usersettings?.view?.visibility;
+  const hasData = !!configs;
 
   useEffect(() => {
-    const configs = usersettings?.view?.visibility || {};
     setCheckedCategories(
       defaultCategories.filter((category) => configs[category]?.isShow)
     );
@@ -45,7 +43,7 @@ const VisibilityManager = ({ open, onClose }: { open: boolean; onClose: () => vo
         return acc;
       }, {} as Record<string, number>)
     );
-  }, []);
+  }, [configs]);
 
 
   const handleApply = async () => {
