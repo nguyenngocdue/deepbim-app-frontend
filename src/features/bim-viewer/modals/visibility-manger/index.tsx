@@ -46,7 +46,7 @@ const VisibilityManager = ({ open, onClose }: VisibilityManagerProps) => {
         return acc;
       }, {} as Record<string, number>)
     );
-  }, []);
+  }, [configs]);
 
 
   const handleApply = async () => {

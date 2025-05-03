@@ -25,7 +25,7 @@ const MainViewer: React.FC = () => {
 
   useEffect(() => {
     const fetchUserSetting = async () => {
-      // await UserManager.fetch();
+      await UserManager.fetch();
     }
     fetchUserSetting();
 
