@@ -15,7 +15,7 @@ interface LeftHeaderProps {
   className?:string
 }
 
-const LeftHeader: React.FC<LeftHeaderProps> = ({ toggleLanguage, language, toggleTheme, theme, setLanguage, className }) => {
+const LeftHeader: React.FC<LeftHeaderProps> = ({ toggleLanguage, language, toggleTheme, theme, setLanguage = true, className }) => {
   return (
     <div className="flex items-center gap-1">
       {
