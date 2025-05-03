@@ -13,18 +13,19 @@ import {
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import FooterTabViewer from "../layout/FooterTabViewer";
 import RightSidebarViewer from "../layout/RightSidebarViewer";
-import FullscreenLoader from "./common/FullscreenLoader";
 import DraggableHeaderViewer from "../layout/DraggableHeaderViewer";
 import LeftHeader from "@/sections/LeftHeader";
 import { useLanguage } from "@/context/LanguageContext";
 import { UserManager } from "@/services/UserManager";
+import { useVisibilityManager } from "@/features/bim-viewer/useVisibilityManager";
+import VisibilityManager from "@/features/bim-viewer/visibility-manger";
 
 const MainViewer: React.FC = () => {
   const [isLeftCollapsed, setIsLeftCollapsed] = useState(false);
   const [isRightCollapsed, setIsRightCollapsed] = useState(false);
   const { language, toggleLanguage } = useLanguage();
 
-  useEffect( ()=> {
+  useEffect(() => {
     const fetchUserSetting = async () => {
       await UserManager.fetch();
     }
@@ -53,7 +54,7 @@ const MainViewer: React.FC = () => {
     isPlaneHover: false,
     isFitView: false,
     isIsolation: false,
-    isVisibleSettings:false
+    isVisibleSettings: false
   });
 
   const toggleState = (stateName: keyof typeof states) => {
@@ -68,103 +69,105 @@ const MainViewer: React.FC = () => {
   };
   const [theme, setTheme] = useState<"light" | "dark">("dark");
   const themeClass = theme === "dark" ? "bg-slate-900 text-white" : "bg-gray-100 text-black";
-
-console.log("object");
   return (
-    <ViewCubeProvider>
-      <ViewCubeProvider2>
-        <div className={`h-screen ${themeClass}`}>
+    <>
+      <ViewCubeProvider>
+        <ViewCubeProvider2>
+          <div className={`h-screen ${themeClass}`}>
 
-        {/* {!isModelReady && <FullscreenLoader progress={progress} message="Loading 3D model..." />} */}
+            {/* {!isModelReady && <FullscreenLoader progress={progress} message="Loading 3D model..." />} */}
 
             {/* HEADER */}
             <DraggableHeaderViewer
               onToggle={toggleState}
               onToggleTheme={toggleTheme}
               currentTheme={theme}
-              handleFileSelect={() => {}}
+              handleFileSelect={() => { }}
               navigationMode="Orbit"
-              // onModelReady={() => setModelActuallyReady(true)}
               states={states}
             />
 
-          <PanelGroup direction="vertical" className="h-full">
+            <PanelGroup direction="vertical" className="h-full">
 
-            {/* MAIN */}
-            <Panel defaultSize={80} className={themeClass}>
-              <PanelGroup direction="horizontal" className="h-full">
-                {/* LEFT */}
-                <PanelResizeHandle className={`w-1 ${themeClass} cursor-ns-resize`} />
-                {/* CENTER */}
-                <Panel defaultSize={60} minSize={30} className={themeClass}>
-                  <div className="h-full w-full bg-black relative">
-                    
-                    <div className="absolute top-0 z-50 right-0 p-4">
-                      <LeftHeader 
-                        toggleLanguage={toggleLanguage}
-                        language={language.toUpperCase()}
-                        toggleTheme={toggleTheme}
-                        theme={theme}
-                        className="bg-red-300"
+              {/* MAIN */}
+              <Panel defaultSize={80} className={themeClass}>
+                <PanelGroup direction="horizontal" className="h-full">
+                  {/* LEFT */}
+                  <PanelResizeHandle className={`w-1 ${themeClass} cursor-ns-resize`} />
+                  {/* CENTER */}
+                  <Panel defaultSize={60} minSize={30} className={themeClass}>
+                    <div className="h-full w-full bg-black relative">
+
+                      <div className="absolute top-0 z-50 right-0 p-4">
+                        <LeftHeader
+                          toggleLanguage={toggleLanguage}
+                          language={language.toUpperCase()}
+                          toggleTheme={toggleTheme}
+                          theme={theme}
+                          className=""
+                        />
+                      </div>
+
+                      <ModelIfc
+                        {...states}
                       />
+                      <FaceMeasurementGuide isEnabled={states.isFaceMeasurement} />
+                      {isLeftCollapsed && (
+                        <button
+                          onClick={() => setIsLeftCollapsed(false)}
+                          className="absolute top-2 right-2 z-50 p-1 bg-zinc-700 hover:bg-zinc-600 rounded"
+                          title="Expand left"
+                        >
+                          <FiChevronRight className="text-white" />
+                        </button>
+                      )}
+                      {isRightCollapsed && (
+                        <button
+                          onClick={() => setIsRightCollapsed(false)}
+                          className="absolute top-2 right-2 z-50 p-1 bg-zinc-700 hover:bg-zinc-600 rounded"
+                          title="Expand right"
+                        >
+                          <FiChevronLeft className="text-white" />
+                        </button>
+                      )}
                     </div>
+                  </Panel>
 
-                    <ModelIfc
-                      // onModelReady={() => {
-                      //   setModelActuallyReady(true);
-                      //   }
-                      // }
-                      {...states}
-                    />
-                    <FaceMeasurementGuide isEnabled={states.isFaceMeasurement} />
-                    {isLeftCollapsed && (
-                      <button
-                        onClick={() => setIsLeftCollapsed(false)}
-                        className="absolute top-2 right-2 z-50 p-1 bg-zinc-700 hover:bg-zinc-600 rounded"
-                        title="Expand left"
-                      >
-                        <FiChevronRight className="text-white" />
-                      </button>
-                    )}
-                    {isRightCollapsed && (
-                      <button
-                        onClick={() => setIsRightCollapsed(false)}
-                        className="absolute top-2 right-2 z-50 p-1 bg-zinc-700 hover:bg-zinc-600 rounded"
-                        title="Expand right"
-                      >
-                        <FiChevronLeft className="text-white" />
-                      </button>
-                    )}
-                  </div>
-                </Panel>
+                  <PanelResizeHandle className={`w-1 ${themeClass} cursor-ns-resize`} />
+                  {/* RIGHT */}
+                  {/* <DataSiderBar
+                    isCollapsed={isRightCollapsed}
+                    onCollapse={() => setIsRightCollapsed(true)}
+                    isModelReady={isModelReady}
+                  >
+                    <RelationsTree />
+                  </DataSiderBar> */}
+                  <Panel defaultSize={20} minSize={5} maxSize={50} className={themeClass}>
+                    <RightSidebarViewer themeClass="h-full" />
+                  </Panel>
+                </PanelGroup>
+              </Panel>
 
-                <PanelResizeHandle className={`w-1 ${themeClass} cursor-ns-resize`} />
-                {/* RIGHT */}
-                {/* <DataSiderBar
-                  isCollapsed={isRightCollapsed}
-                  onCollapse={() => setIsRightCollapsed(true)}
-                  isModelReady={isModelReady}
-                >
-                  <RelationsTree />
-                </DataSiderBar> */}
-                <Panel defaultSize={20} minSize={5} maxSize={50} className={themeClass}>
-                <RightSidebarViewer themeClass="h-full" />
-                </Panel>
-              </PanelGroup>
-            </Panel>
-
-            <PanelResizeHandle className={` ${themeClass} cursor-ns-resize`} />
+              <PanelResizeHandle className={` ${themeClass} cursor-ns-resize`} />
               {/* FOOTER */}
               <Panel defaultSize={10} minSize={5} maxSize={100} className={themeClass}>
-                  <FooterTabViewer themeClass={themeClass}/>
+                <FooterTabViewer themeClass={themeClass} />
               </Panel>
-          </PanelGroup>
+            </PanelGroup>
 
-        </div>
-      </ViewCubeProvider2>
-    </ViewCubeProvider>
+          </div>
+        </ViewCubeProvider2>
+      </ViewCubeProvider>
+      {
+        states.isVisibleSettings &&
+        <VisibilityManager
+          open={true}
+          onClose={() => toggleState('isVisibleSettings')}  
+        />
+      }
+    </>
   );
- 
+
 };
 
 export default MainViewer;

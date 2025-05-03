@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 
-export function useVisibilityManager(featureFlags: { isVisibleSettings: boolean }) {
-  const [open, setOpen] = useState(false);
-
+export function useVisibilityManager( flag: boolean ) {
+  const [open, setOpen] = useState(flag);
+  
   useEffect(() => {
-    setOpen(featureFlags.isVisibleSettings);
-  }, [featureFlags.isVisibleSettings]);
-
+    setOpen(flag);
+  }, [flag]);
+  
   return {
     open,
     setOpen,

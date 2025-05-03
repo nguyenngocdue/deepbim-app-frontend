@@ -8,18 +8,16 @@ export function useBimViewerFeatures({
   componentRef,
   ifcContainerRef,
   modelRef,
-  isWorldReady,
   featureFlags,
 }: {
   worldRef: any;
   componentRef: any;
   ifcContainerRef: any;
   modelRef: any;
-  isWorldReady: boolean;
   featureFlags: FeatureFlags;
 }) {
-  useMeasurementFeatures({ isWorldReady, componentRef, worldRef, ifcContainerRef, modelRef, featureFlags });
-  useViewerEnhancements({ isWorldReady, componentRef, worldRef, ifcContainerRef, modelRef, featureFlags });
+  useMeasurementFeatures({ componentRef, worldRef, ifcContainerRef, modelRef, featureFlags });
+  useViewerEnhancements({ componentRef, worldRef, ifcContainerRef, modelRef, featureFlags });
   useInteractionFeatures({ worldRef, componentRef, ifcContainerRef, modelRef, featureFlags });
 }
 

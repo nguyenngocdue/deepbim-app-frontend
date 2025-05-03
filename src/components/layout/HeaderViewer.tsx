@@ -25,10 +25,7 @@ import VisibleSettings from "../bim-viewer/settings/VisibleSettings";
 const HeaderViewer: React.FC<ModelIfcProps> = (
   {
     onToggle,
-    sectionActive,
     coordinateSysActive,
-    handleFileSelect,
-    isHighlightEnabled,
     isClippingEdges,
     isEdgeMeasurement,
     isFaceMeasurement,
@@ -40,12 +37,8 @@ const HeaderViewer: React.FC<ModelIfcProps> = (
     haveAreaMeasureElements,
     haveAngleMeasurements,
     haveWorldSettings,
-    isOriginalWorldCamera,
     isFreeControlElements,
-    isPlaneHover,
     isFitView,
-    onToggleTheme,
-    currentTheme,
     isVisibleSettings,
     isVertical,
   }

@@ -17,8 +17,6 @@ import ContextMenu from "./common/ContextMenu";
 import { useSelections } from "@/features/bim-viewer/useSelections";
 import { useContextMenu } from "@/hooks/useContextMenu";
 import { useBimViewerFeatures } from "@/features/bim-viewer/useBimViewerFeatures";
-import { useVisibilityManager } from "@/features/bim-viewer/useVisibilityManager";
-import VisibilityManager from "@/features/bim-viewer/visibility-manger";
 
 THREE.BufferGeometry.prototype.computeBoundsTree = computeBoundsTree;
 THREE.BufferGeometry.prototype.disposeBoundsTree = disposeBoundsTree;
@@ -35,7 +33,7 @@ const ModelIfc: React.FC<ModelIfcProps> = (props) => {
 
   const featureFlags = useFeatureFlags(flags);
 
-  const { isWorldReady, world, components } = useInitWorld(ifcContainerRef);
+  const { world, components } = useInitWorld(ifcContainerRef);
 
   // Selection by a right click
   const selections = useSelections();
@@ -50,8 +48,6 @@ const ModelIfc: React.FC<ModelIfcProps> = (props) => {
   const onToggleElements = selections?.onToggleElements || (() => { });
   const { contextMenu, setContextMenu, openContextMenu } = useContextMenu();
 
-  const { open, setOpen } = useVisibilityManager(featureFlags);
-
   worldRef.current = world;
   componentRef.current = components;
 
@@ -62,20 +58,12 @@ const ModelIfc: React.FC<ModelIfcProps> = (props) => {
     componentRef,
     ifcContainerRef,
     modelRef,
-    isWorldReady,
     featureFlags,
   });
 
 
-  // const shouldLoadModel = isWorldReady && statusUpload === "upload_by_user";
   return (
     <div className="relative w-full h-full " id="deepbim-mainviewer">
-
-    <VisibilityManager
-            open={open}
-            onClose={() => setOpen(false)} // đóng modal => set false
-      />
-
       <div className="w-full h-full " ref={ifcContainerRef} onContextMenu={(e) => openContextMenu(e, ifcContainerRef.current)}>
         {ifcContainerRef.current && (
           <IfcLoaderV2

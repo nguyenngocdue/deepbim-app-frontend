@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import VisibilityGraphicsTabs from "./component/VisibilityGraphicsTabs";
 import { UserManager, UserSetting } from "@/services/UserManager";
@@ -10,12 +9,15 @@ import AppButton from "@/components/bim-viewer/common/AppButton";
 
 
 
-const VisibilityManager = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
+interface VisibilityManagerProps {
+  open: boolean;
+  onClose: () => void;
+}
+
+const VisibilityManager = ({ open, onClose }: VisibilityManagerProps) => {
   const [categoryColors, setCategoryColors] = useState<Record<string, string>>({});
   const [categoryTransparencies, setCategoryTransparencies] = useState<Record<string, number>>({});
   const [checkedCategories, setCheckedCategories] = useState<string[]>([]);
-
-
 
   const usersettings = {
     ...UserManager.get(),

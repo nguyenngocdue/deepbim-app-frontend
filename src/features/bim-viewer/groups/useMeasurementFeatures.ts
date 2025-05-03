@@ -5,10 +5,8 @@ import { useVolumeMeasurement } from "../useVolumeMeasurement";
 import { useLengthMeasurements } from "../useLengthMeasurements";
 import { useAreaMeasurements } from "../useAreaMeasurements";
 import { useAngleMeasurements } from "../useAngleMeasurements";
-import { FragmentsGroup } from "@thatopen/fragments";
 
 export function useMeasurementFeatures({
-    isWorldReady,
     componentRef,
     worldRef,
     ifcContainerRef,
@@ -27,7 +25,6 @@ export function useMeasurementFeatures({
  
 
     useEffect(() => {
-        if (!isWorldReady) return;
         useEdgeMeasurement({ isEdgeMeasurement, componentRef, worldRef, ifcContainerRef });
         useFaceMeasurement({ isFaceMeasurement, componentRef, worldRef, ifcContainerRef });
         useVolumeMeasurement({ hasVolumeMeasurement, componentRef, worldRef, ifcContainerRef, modelRef });
@@ -35,7 +32,6 @@ export function useMeasurementFeatures({
         useAreaMeasurements({ haveAreaMeasureElements, componentRef, worldRef, ifcContainerRef, modelRef });
         useAngleMeasurements({ haveAngleMeasurements, componentRef, worldRef, ifcContainerRef, modelRef });
     }, [
-        isWorldReady,
         isEdgeMeasurement,
         isFaceMeasurement,
         hasVolumeMeasurement,

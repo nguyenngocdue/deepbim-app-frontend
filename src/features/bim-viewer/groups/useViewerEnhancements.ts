@@ -6,7 +6,6 @@ import { useGrids } from "../useGrid";
 import { useCameraType } from "../useCameraType";
 
 export function useViewerEnhancements({
-  isWorldReady,
   componentRef,
   worldRef,
   ifcContainerRef,
@@ -16,11 +15,10 @@ export function useViewerEnhancements({
   const { haveGrids, havePlansViews, haveWorldSettings, isClippingEdges, isOrthoPerspective} = featureFlags;
 
   useEffect(() => {
-    if (!isWorldReady) return;
     useGrids({ haveGrids });
     usePlaneViews({ havePlansViews, componentRef, worldRef, ifcContainerRef, modelRef });
     useWorldSettings({ haveWorldSettings, componentRef, worldRef });
     useClippingEdges({isClippingEdges , componentRef, worldRef, ifcContainerRef });
     useCameraType({isOrthoPerspective});
-  }, [isWorldReady, haveGrids, havePlansViews, haveWorldSettings, isClippingEdges, isOrthoPerspective]);
+  }, [ haveGrids, havePlansViews, haveWorldSettings, isClippingEdges, isOrthoPerspective]);
 }
