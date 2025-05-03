@@ -17,7 +17,8 @@ import { ModelTableProps, Model } from "@/components/model-table/types";
 import { getColumns } from "@/components/model-table/Columns";
 import { Skeleton } from "@/components/ui/skeleton";
 
-export function ModelTable({ data, refeshData }: ModelTableProps) {
+
+export function ModelTable({ data, refeshData, hasAction }: ModelTableProps) {
   const [sorting, setSorting] = React.useState([]);
   const [pageSize, setPageSize] = React.useState(10);
   const [openDeleteDialog, setOpenDeleteDialog] = React.useState(false);
@@ -28,7 +29,7 @@ export function ModelTable({ data, refeshData }: ModelTableProps) {
 
   const columns = React.useMemo(
     () => getColumns(setSelectedRow, setOpenModifiedDialog, setOpenDeleteDialog),
-    [setSelectedRow, setOpenModifiedDialog, setOpenDeleteDialog]
+    [setSelectedRow, setOpenModifiedDialog, setOpenDeleteDialog, hasAction]
   );
 
   const table = useReactTable({
@@ -78,18 +79,19 @@ export function ModelTable({ data, refeshData }: ModelTableProps) {
     <div className="space-y-4">
       <TableToolbar total={data.length} />
       <TableContent table={table} columns={columns} />
-      <DeleteDialog
-        open={openDeleteDialog}
-        onClose={() => setOpenDeleteDialog(false)}
-        selectedRow={selectedRow}
-        refeshData={refeshData}
-      />
-      <ModifyDialog
-        open={openModifiedDialog}
-        onClose={() => setOpenModifiedDialog(false)}
-        selectedRow={selectedRow}
-        refeshData={refeshData}
-      />
+        <DeleteDialog
+          open={openDeleteDialog}
+          onClose={() => setOpenDeleteDialog(false)}
+          selectedRow={selectedRow}
+          refeshData={refeshData}
+        />
+        <ModifyDialog
+          open={openModifiedDialog}
+          onClose={() => setOpenModifiedDialog(false)}
+          selectedRow={selectedRow}
+          refeshData={refeshData}
+        />
+
       <TableFooter
         table={table}
         pageSize={pageSize}

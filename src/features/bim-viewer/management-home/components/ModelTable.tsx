@@ -52,11 +52,12 @@ export type Model = {
 type ModelTableProps = {
   data: Model[];
   refeshData: () => void;
+  hasAction: boolean
 };
 
 
 
-export function ModelTable({ data, refeshData }: ModelTableProps) {
+export function ModelTable({ data, refeshData, hasAction }: ModelTableProps) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [pageSize, setPageSize] = React.useState<number>(10);
   const [globalFilter, setGlobalFilter] = React.useState("");
@@ -170,41 +171,46 @@ export function ModelTable({ data, refeshData }: ModelTableProps) {
           </div>
         );
       },
-    },
-    {
-      id: "actions",
-      header: "Actions",
-      cell: ({ row }) => (
-        <div className="flex justify-start gap-2">
-          {
-            (import.meta.env.VITE_ENV !== 'production') &&
-            (
-              <>
-                <Pencil
-                  className="w-4 h-4 cursor-pointer hover:text-yellow-600 text-50"
-                  onClick={
-                    () => {
-                      setSelectedRow(row.original);
-                      setOpenModifiedDialog(true);
-                    }
-                  }
-                />
-                <Trash2
-                  className="w-4 h-4 cursor-pointer text-red-500 hover:text-red-700"
-                  onClick={() => {
-                    setSelectedRow(row.original);
-                    setOpenDeleteDialog(true);
-                  }}
-                />
-              </>
-            )}
-          <a href={`/view?v=${row.original.viewId}`} target="_blank" rel="noopener noreferrer">
-            <IoEyeSharp className="w-4 h-4 cursor-pointer hover:text-blue-600 text-50" />
-          </a>
-        </div>
-      ),
-    },
+    }
   ];
+
+  if (hasAction) {
+    columns.push(
+      {
+        id: "actions",
+        header: "Actions",
+        cell: ({ row }) => (
+          <div className="flex justify-start gap-2">
+            {
+              (import.meta.env.VITE_ENV !== 'production') &&
+              (
+                <>
+                  <Pencil
+                    className="w-4 h-4 cursor-pointer hover:text-yellow-600 text-50"
+                    onClick={
+                      () => {
+                        setSelectedRow(row.original);
+                        setOpenModifiedDialog(true);
+                      }
+                    }
+                  />
+                  <Trash2
+                    className="w-4 h-4 cursor-pointer text-red-500 hover:text-red-700"
+                    onClick={() => {
+                      setSelectedRow(row.original);
+                      setOpenDeleteDialog(true);
+                    }}
+                  />
+                </>
+              )}
+            <a href={`/view?v=${row.original.viewId}`} target="_blank" rel="noopener noreferrer">
+              <IoEyeSharp className="w-4 h-4 cursor-pointer hover:text-blue-600 text-50" />
+            </a>
+          </div>
+        ),
+      },
+    )
+  }
 
   const table = useReactTable({
     data,

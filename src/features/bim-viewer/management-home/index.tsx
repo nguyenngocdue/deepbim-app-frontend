@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import MediaPage from './components/MediaPage';
+import MediaPage from './components/AppMediaPage';
 import Upload from '@/components/Upload';
 
 const ManagenentHome: React.FC = () => {

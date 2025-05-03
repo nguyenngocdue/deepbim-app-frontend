@@ -1,17 +1,19 @@
-import React from 'react'
-import { DialogTemplate } from '@/components/model-table/DialogTemplate';
+import React, { useState } from 'react'
 import CombineModels from './components/CombineModels';
+import SelectionModel from './components/SelectionModel';
 
 interface CombineModelManagerProps {
-  open: boolean;
-  onClose: () => void;
 }
 
 const CombineModelManager: React.FC<CombineModelManagerProps> = () => {
+  const [openSelectModel, setOpenSelectModel] = useState(false);
   return (
+    <>
         <div className=''>
-          <CombineModels onAddModelClick={() => console.log('Add Model Clicked')} />
+          <CombineModels onAddModelClick={() => setOpenSelectModel(true)} />
         </div>
+        {openSelectModel && <SelectionModel open={openSelectModel} onClose={() => setOpenSelectModel(false)}/>}
+    </>
   )
 }
 

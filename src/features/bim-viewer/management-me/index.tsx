@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Upload from '@/components/Upload';
-import MediaPage from './components/MediaPage';
+import MediaPage from './components/UserMediaPage';
 
 const UserProjectsPage: React.FC = () => {
   const [refreshKey, setRefreshKey] = useState(0);
