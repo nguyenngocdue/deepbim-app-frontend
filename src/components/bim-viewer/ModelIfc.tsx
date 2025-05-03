@@ -25,7 +25,7 @@ THREE.BufferGeometry.prototype.disposeBoundsTree = disposeBoundsTree;
 THREE.Mesh.prototype.raycast = acceleratedRaycast;
 
 const ModelIfc: React.FC<ModelIfcProps> = (props) => {
-  const { onModelReady, viewId, ...flags } = props;
+  const {viewId, ...flags } = props;
 
   const ifcContainerRef = useRef<HTMLDivElement | null>(null);
   const worldRef = useRef<any>(null);
@@ -35,7 +35,7 @@ const ModelIfc: React.FC<ModelIfcProps> = (props) => {
 
   const featureFlags = useFeatureFlags(flags);
 
-  const { isWorldReady, world, components } = useInitWorld(ifcContainerRef, onModelReady);
+  const { isWorldReady, world, components } = useInitWorld(ifcContainerRef);
 
   // Selection by a right click
   const selections = useSelections();

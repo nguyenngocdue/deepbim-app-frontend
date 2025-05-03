@@ -20,11 +20,8 @@ import { useLanguage } from "@/context/LanguageContext";
 import { UserManager } from "@/services/UserManager";
 
 const MainViewer: React.FC = () => {
-  const [isModelReady, setIsModelReady] = useState(false);
   const [isLeftCollapsed, setIsLeftCollapsed] = useState(false);
   const [isRightCollapsed, setIsRightCollapsed] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const [modelActuallyReady, setModelActuallyReady] = useState(false);
   const { language, toggleLanguage } = useLanguage();
 
   useEffect( ()=> {
@@ -72,37 +69,13 @@ const MainViewer: React.FC = () => {
   const [theme, setTheme] = useState<"light" | "dark">("dark");
   const themeClass = theme === "dark" ? "bg-slate-900 text-white" : "bg-gray-100 text-black";
 
-  useEffect(() => {
-    if (!modelActuallyReady && progress < 95) {
-      const interval = setInterval(() => {
-        setProgress((prev) => Math.min(prev + 1, 95)); // dừng ở 95%
-      }, 100);
-      return () => clearInterval(interval);
-    }
-  
-    // khi ModelIfc báo ready thì boost lên 100
-    if (modelActuallyReady && progress < 100) {
-      const boost = setInterval(() => {
-        setProgress((prev) => Math.min(prev + 5, 100)); // tăng nhanh phần cuối
-      }, 100);
-      return () => clearInterval(boost);
-    }
-  
-    if (modelActuallyReady && progress === 100) {
-      const timeout = setTimeout(() => {
-        setIsModelReady(true);
-      }, 1000);
-      return () => clearTimeout(timeout);
-    }
-  }, [progress, modelActuallyReady]);
-  
-
+console.log("object");
   return (
     <ViewCubeProvider>
       <ViewCubeProvider2>
         <div className={`h-screen ${themeClass}`}>
 
-        {!isModelReady && <FullscreenLoader progress={progress} message="Loading 3D model..." />}
+        {/* {!isModelReady && <FullscreenLoader progress={progress} message="Loading 3D model..." />} */}
 
             {/* HEADER */}
             <DraggableHeaderViewer
@@ -111,7 +84,7 @@ const MainViewer: React.FC = () => {
               currentTheme={theme}
               handleFileSelect={() => {}}
               navigationMode="Orbit"
-              onModelReady={() => setModelActuallyReady(true)}
+              // onModelReady={() => setModelActuallyReady(true)}
               states={states}
             />
 
@@ -137,10 +110,10 @@ const MainViewer: React.FC = () => {
                     </div>
 
                     <ModelIfc
-                      onModelReady={() => {
-                        setModelActuallyReady(true);
-                        }
-                      }
+                      // onModelReady={() => {
+                      //   setModelActuallyReady(true);
+                      //   }
+                      // }
                       {...states}
                     />
                     <FaceMeasurementGuide isEnabled={states.isFaceMeasurement} />
