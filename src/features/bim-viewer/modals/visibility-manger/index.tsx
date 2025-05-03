@@ -15,6 +15,7 @@ interface VisibilityManagerProps {
 }
 
 const VisibilityManager = ({ open, onClose }: VisibilityManagerProps) => {
+  console.log("object");
   const [categoryColors, setCategoryColors] = useState<Record<string, string>>({});
   const [categoryTransparencies, setCategoryTransparencies] = useState<Record<string, number>>({});
   const [checkedCategories, setCheckedCategories] = useState<string[]>([]);
@@ -45,7 +46,7 @@ const VisibilityManager = ({ open, onClose }: VisibilityManagerProps) => {
         return acc;
       }, {} as Record<string, number>)
     );
-  }, [configs]);
+  }, []);
 
 
   const handleApply = async () => {
