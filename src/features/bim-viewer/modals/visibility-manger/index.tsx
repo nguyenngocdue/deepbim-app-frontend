@@ -15,7 +15,7 @@ interface VisibilityManagerProps {
 }
 
 const VisibilityManager = ({ open, onClose }: VisibilityManagerProps) => {
-  console.log("object");
+  console.log("VisibilityManager 1");
   const [categoryColors, setCategoryColors] = useState<Record<string, string>>({});
   const [categoryTransparencies, setCategoryTransparencies] = useState<Record<string, number>>({});
   const [checkedCategories, setCheckedCategories] = useState<string[]>([]);
@@ -29,8 +29,10 @@ const VisibilityManager = ({ open, onClose }: VisibilityManagerProps) => {
 
   const configs = usersettings?.view?.visibility;
   const hasData = !!configs;
-
+  
   useEffect(() => {
+    console.log("VisibilityManager 2");
+    if (!hasData) return;
     setCheckedCategories(
       defaultCategories.filter((category) => configs[category]?.isShow)
     );
@@ -46,7 +48,7 @@ const VisibilityManager = ({ open, onClose }: VisibilityManagerProps) => {
         return acc;
       }, {} as Record<string, number>)
     );
-  }, [configs]);
+  }, [hasData]);
 
 
   const handleApply = async () => {
