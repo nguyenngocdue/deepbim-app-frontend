@@ -20,6 +20,7 @@ import WorldSettings from "../bim-viewer/WorldSettings";
 import { ModelIfcProps } from "@/props/ModelIfcProps";
 import FreeControlElements from "../bim-viewer/FreeControlElements";
 import VisibleSettings from "../bim-viewer/settings/VisibleSettings";
+import CombineModelBtn from "../bim-viewer/CombineModelBtn";
 
 
 const HeaderViewer: React.FC<ModelIfcProps> = (
@@ -41,12 +42,13 @@ const HeaderViewer: React.FC<ModelIfcProps> = (
     isFitView,
     isVisibleSettings,
     isVertical,
+    hasCombineModels,
   }
 ) => {
 
   return (
     <>
-      <header className={`z-50 backdrop-blur-md text-white  md:px-6 py-2 shadow-md border rounded-md`}>
+      <header className={`z-50 backdrop-blur-md text-white  md:px-6 py-2 shadow-md shadow-zinc-600 border-zinc-600 round-lg border`}>
         <div className="flex flex-col gap-2">
         <div className={`${isVertical ? "max-h-none" : "max-h-48"} overflow-y-auto overflow-x-hidden`}>
             <div className={`flex gap-2 ${isVertical ? "flex-col items-start" : "flex-wrap items-center"}`}>
@@ -69,6 +71,7 @@ const HeaderViewer: React.FC<ModelIfcProps> = (
               <PlansViews onToggle={() => onToggle("havePlansViews")} isActive={havePlansViews} />
               <WorldSettings onToggle={() => onToggle("haveWorldSettings")} isActive={haveWorldSettings} />
               <VisibleSettings onToggle={() => onToggle("isVisibleSettings")} isActive={isVisibleSettings} />
+              <CombineModelBtn onToggle={() => onToggle("hasCombineModels")} isActive={hasCombineModels} />
             </div>
           </div>
 

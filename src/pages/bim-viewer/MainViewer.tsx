@@ -17,6 +17,8 @@ import LeftHeader from "@/sections/LeftHeader";
 import { useLanguage } from "@/context/LanguageContext";
 import { UserManager } from "@/services/UserManager";
 import VisibilityManager from "@/features/bim-viewer/modals/visibility-manger";
+import CombineModelManager from "@/features/bim-viewer/modals/combine-model";
+import DraggableRightBarViewer from "@/components/layout/DraggableRightBarViewer";
 
 const MainViewer: React.FC = () => {
   const [isLeftCollapsed, setIsLeftCollapsed] = useState(false);
@@ -52,7 +54,8 @@ const MainViewer: React.FC = () => {
     isPlaneHover: false,
     isFitView: false,
     isIsolation: false,
-    isVisibleSettings: false
+    isVisibleSettings: false,
+    hasCombineModels:false,
   });
 
   const toggleState = (stateName: keyof typeof states) => {
@@ -132,9 +135,27 @@ const MainViewer: React.FC = () => {
                   </Panel>
 
                   <PanelResizeHandle className={`w-1 ${themeClass} cursor-ns-resize`} />
-                  <Panel defaultSize={20} minSize={5} maxSize={50} className={themeClass}>
-                    <RightSidebarViewer themeClass="h-full" />
-                  </Panel>
+
+                      {/* RIGHT BAR */}
+                  {/* {
+                   states.hasCombineModels && <Panel defaultSize={20} minSize={5} maxSize={50} className={themeClass}>
+                      <RightSidebarViewer themeClass="h-full" />
+                    </Panel> 
+                  } */}
+                  {
+                    states.hasCombineModels && 
+                      <DraggableRightBarViewer
+                        onToggle={toggleState}
+                        onToggleTheme={toggleTheme}
+                        currentTheme={theme}
+                        handleFileSelect={() => { }}
+                        navigationMode="Orbit"
+                        states={states}
+                        hasDirection={false}
+                      />
+                  }
+
+
                 </PanelGroup>
               </Panel>
 
@@ -155,6 +176,13 @@ const MainViewer: React.FC = () => {
           onClose={() => toggleState('isVisibleSettings')}  
         />
       }
+       {/* {
+        states.hasCombineModels &&
+        <CombineModelManager
+          open={true}
+          onClose={() => toggleState('hasCombineModels')}  
+        />
+      } */}
     </>
   );
 

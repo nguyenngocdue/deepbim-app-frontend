@@ -7,7 +7,7 @@ interface ElementToggleProps {
     icon?: React.ReactNode; // Optional custom icon
     label?: string;        // Optional label text
     activeColor?: string;  // Custom color when active
-    inactiveColor?: string; // Custom color when inactive
+    unActiveColor?: string; // Custom color when inactive
     className?: string;    // Additional custom class names
     hoverTitle?: string;   // Optional hover title
     showActiveColor?:boolean;
@@ -19,19 +19,20 @@ const ElementToggle: React.FC<ElementToggleProps> = ({
     icon = null,
     label = "Toggle",
     activeColor = "bg-green-500",
-    inactiveColor = "bg-blue-500",
+    unActiveColor = "",
     className = "",
     hoverTitle = "Toggle Element",
     showActiveColor=true
 }) => {
     return (
         <Button
+            variant='ghost'
             title={hoverTitle} // Use hoverTitle for the tooltip
             onClick={() => {
                 // Call the onToggle function to update the state
                 onToggle();
             }}
-            className={`button-transition  ${isActive ?  (showActiveColor ? activeColor : inactiveColor) : inactiveColor} ${className}`}
+            className={`button-transition  ${isActive ?  (showActiveColor ? activeColor : unActiveColor) : unActiveColor} ${className}`}
         >
             {icon && <div className="text-lg">{icon}</div>}
             {label &&  <span className="ml-1">{label}</span>}

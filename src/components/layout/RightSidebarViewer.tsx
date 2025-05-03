@@ -1,42 +1,20 @@
+import { ReactNode } from "@tanstack/react-router";
 import SidebarTabs from "./SidebarTabs";
-import ElementProperties from "../bim-viewer/element-properties/ElementProperties";
-import RelationsTree from "../bim-viewer/element-properties/RelationsTree";
-import ClassificationsTree from "../bim-viewer/classifications/ClassificationsTree";
-import ElementProperties2 from "../bim-viewer/element-properties/ElementProperties2";
 
+export interface TabConfig {
+  name: string;
+  value: string;
+  content: ReactNode;
+}
+
+interface RightSidebarViewerProps {
+  themeClass: string;
+  tabs: TabConfig[];
+}
 
 export default function RightSidebarViewer({
   themeClass,
-}: {
-  themeClass: string;
-}) {
-  return (
-    <>
-      <SidebarTabs
-        themeClass={themeClass}
-        tabs={[
-          // {
-          //   name: "Properties",
-          //   value: "properties",
-          //   content: <ElementProperties />,
-          // },
-          // {
-          //   name: "Properties2",
-          //   value: "properties2",
-          //   content: <ElementProperties2 />,
-          // },
-          {
-            name: "Relations",
-            value: "relations",
-            content: <RelationsTree />,
-          },
-          {
-            name: "Classification Tree",
-            value: "classification_tree",
-            content: <ClassificationsTree />,
-          }
-        ]}
-      />
-    </>
-  );
+  tabs,
+}: RightSidebarViewerProps) {
+  return <SidebarTabs themeClass={themeClass} tabs={tabs} />
 }
