@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { apiGet, fetchNoSignAPI } from "@/api";
 import { Model, ModelTable } from "@/components/common/ModelTable";
+import { modelColumnsConfig } from "../../ColumnsConfig";
 
 interface AppMediaPageProps {
   hasAction?: boolean;
@@ -16,7 +17,7 @@ export default function AppMediaPage({ hasAction = true }: AppMediaPageProps) {
   const fetchData = useCallback(async () => {
 
     try {
-      const mediaData = await fetchNoSignAPI<{data: any[]}>(`/media/guest`);
+      const mediaData = await fetchNoSignAPI<{ data: any[] }>(`/media/guest`);
       const mediaList = mediaData.data;
       const formatted: Model[] = mediaList
         .filter((item) => item.deletedBy === null) // ✅ Chỉ lấy những cái chưa bị xóa mềm
@@ -25,10 +26,10 @@ export default function AppMediaPage({ hasAction = true }: AppMediaPageProps) {
           name: item.filename,
           viewId: item.viewId,
           status: item.isPublic ? "Public" : "Private",
-          size: item.size*1/(1024 * 1024),
+          size: item.size * 1 / (1024 * 1024),
           uploader: {
-            email:   "duengocnguyen@gmail.com",
-            avatar:   "https://lh3.googleusercontent.com/a/ACg8ocKi6JqRVGqhLlyiqQ99c9P44TF7vfWXUZeLJS0x2xbur9HAJDA=s96-c",
+            email: "duengocnguyen@gmail.com",
+            avatar: "https://lh3.googleusercontent.com/a/ACg8ocKi6JqRVGqhLlyiqQ99c9P44TF7vfWXUZeLJS0x2xbur9HAJDA=s96-c",
           },
           modified: new Date(item.updatedAt).toLocaleDateString("en-GB"),
         }));
@@ -46,7 +47,14 @@ export default function AppMediaPage({ hasAction = true }: AppMediaPageProps) {
 
   return (
     <div className="p-4">
-      <ModelTable data={data} refeshData={fetchData} hasAction={hasAction} actionTypes={["View"]}/>
+      <ModelTable
+        data={data}
+        refeshData={fetchData}
+        hasAction={true}
+        actionTypes={["View"]}
+        columnsConfig={modelColumnsConfig}
+      />
+
     </div>
   );
 }

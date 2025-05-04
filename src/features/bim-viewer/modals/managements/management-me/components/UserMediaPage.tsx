@@ -4,6 +4,7 @@ import { RootState } from "@/store";
 import { apiGet } from "@/api";
 import { Model } from "@/components/model-table/types";
 import { ModelTable } from "@/components/common/ModelTable";
+import { modelColumnsConfig } from "../../ColumnsConfig";
 
 export default function UserMediaPage({ hasAction = true }) {
   const [data, setData] = useState<Model[]>([]);
@@ -18,7 +19,7 @@ export default function UserMediaPage({ hasAction = true }) {
 
 
       // Fetch media list
-      const [mediaResponse] = await Promise.all([ apiGet<{ data: any[] }>(`/media/user/${userId}`)]);
+      const [mediaResponse] = await Promise.all([apiGet<{ data: any[] }>(`/media/user/${userId}`)]);
       const mediaList = mediaResponse.data;
       const formatted: Model[] = mediaList
         .filter((item) => item.deletedBy === null) // ✅ Chỉ lấy những cái chưa bị xóa mềm
@@ -27,7 +28,7 @@ export default function UserMediaPage({ hasAction = true }) {
           name: item.filename,
           viewId: item.viewId,
           status: item.isPublic ? "Public" : "Private",
-          size: item.size*1/(1024 * 1024),
+          size: item.size * 1 / (1024 * 1024),
           uploader: {
             email: currentUser?.email || "Unknown",
             avatar: currentUser?.picture || "",
@@ -48,7 +49,13 @@ export default function UserMediaPage({ hasAction = true }) {
 
   return (
     <div className="p-4">
-      <ModelTable data={data} refeshData={fetchData} hasAction={true}  actionTypes={["View", "Delete", "Edit"]}/>
+      <ModelTable
+        data={data}
+        refeshData={fetchData}
+        hasAction={true}
+        actionTypes={["View", "Delete", "Edit"]}
+        columnsConfig={modelColumnsConfig}
+      />
     </div>
   );
 }

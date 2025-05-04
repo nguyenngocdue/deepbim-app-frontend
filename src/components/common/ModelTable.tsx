@@ -22,7 +22,8 @@ import { MdKeyboardDoubleArrowLeft, MdKeyboardDoubleArrowRight } from "react-ico
 
 import { apiRequest } from "@/api";
 import { TableContent } from "../model-table/TableContent";
-import { getModelTableColumns } from "@/features/bim-viewer/modals/managements/management-home/components/ModelTableColumns";
+import { getModelTableColumns } from "@/components/common/ModelTableColumns";
+import { ColumnConfig } from "@/features/bim-viewer/modals/managements/ColumnsConfig";
 
 export type Model = {
   id: string;
@@ -42,9 +43,10 @@ type ModelTableProps = {
   refeshData: () => void;
   hasAction: boolean;
   actionTypes: string[];
+  columnsConfig: ColumnConfig[];
 };
 
-export function ModelTable({ data, refeshData, hasAction, actionTypes }: ModelTableProps) {
+export function ModelTable({ data, refeshData, hasAction, actionTypes, columnsConfig }: ModelTableProps) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [pageSize, setPageSize] = React.useState<number>(10);
   const [globalFilter, setGlobalFilter] = React.useState("");
@@ -73,15 +75,16 @@ export function ModelTable({ data, refeshData, hasAction, actionTypes }: ModelTa
 
   // Tạo columns sau khi table đã khởi tạo
   React.useEffect(() => {
-    const cols = getModelTableColumns({
-      hasAction,
-      setSelectedRow,
-      setOpenDeleteDialog,
-      setOpenModifiedDialog,
-      table,
-      actionTypes,
-    });
-    setColumns(cols);
+    const columns = getModelTableColumns({
+        hasAction,
+        setSelectedRow,
+        setOpenDeleteDialog,
+        setOpenModifiedDialog,
+        table,
+        actionTypes,
+        configs: columnsConfig, // lấy từ props
+      });
+    setColumns(columns);
   }, [hasAction, actionTypes, setSelectedRow, setOpenDeleteDialog, setOpenModifiedDialog]);
 
   console.log(columns);
