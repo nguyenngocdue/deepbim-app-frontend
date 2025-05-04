@@ -1,24 +1,25 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
-import { apiGet, fetchNoSignAPI } from "@/api";
+import { apiGet } from "@/api";
 import { Model } from "@/components/model-table/types";
-import { ModelTable } from "./ModelTable";
+import { ModelTable } from "@/components/common/ModelTable";
 
-interface AppMediaPageProps {
-  hasAction?: boolean;
-}
-
-export default function AppMediaPage({ hasAction = true }: AppMediaPageProps) {
+export default function UserMediaPage({ hasAction = true }) {
   const [data, setData] = useState<Model[]>([]);
   const currentUser = useSelector((state: RootState) => state.auth.user);
 
   // Hàm fetchData tách riêng và dùng useCallback để tránh tạo mới mỗi render
   const fetchData = useCallback(async () => {
+    if (!currentUser) return;
 
     try {
-      const mediaData = await fetchNoSignAPI<{data: any[]}>(`/media/guest`);
-      const mediaList = mediaData.data;
+      const userId = currentUser.id;
+
+
+      // Fetch media list
+      const [mediaResponse] = await Promise.all([ apiGet<{ data: any[] }>(`/media/user/${userId}`)]);
+      const mediaList = mediaResponse.data;
       const formatted: Model[] = mediaList
         .filter((item) => item.deletedBy === null) // ✅ Chỉ lấy những cái chưa bị xóa mềm
         .map((item) => ({
@@ -28,8 +29,8 @@ export default function AppMediaPage({ hasAction = true }: AppMediaPageProps) {
           status: item.isPublic ? "Public" : "Private",
           size: item.size*1/(1024 * 1024),
           uploader: {
-            email:   "duengocnguyen@gmail.com",
-            avatar:   "https://lh3.googleusercontent.com/a/ACg8ocKi6JqRVGqhLlyiqQ99c9P44TF7vfWXUZeLJS0x2xbur9HAJDA=s96-c",
+            email: currentUser?.email || "Unknown",
+            avatar: currentUser?.picture || "",
           },
           modified: new Date(item.updatedAt).toLocaleDateString("en-GB"),
         }));
@@ -47,7 +48,7 @@ export default function AppMediaPage({ hasAction = true }: AppMediaPageProps) {
 
   return (
     <div className="p-4">
-      <ModelTable data={data} refeshData={fetchData} hasAction={hasAction}/>
+      <ModelTable data={data} refeshData={fetchData} hasAction={true}  actionTypes={["View", "Delete", "Edit"]}/>
     </div>
   );
 }

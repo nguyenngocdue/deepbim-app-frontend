@@ -1,6 +1,6 @@
 import ModelTabsTemplate from "@/components/bim-viewer/common/ModelTabsTemplate";
-import AppMediaPage from "@/features/bim-viewer/management-home/components/AppMediaPage";
-import UserMediaPage from "@/features/bim-viewer/management-me/components/UserMediaPage";
+import AppMediaPage from "../../managements/management-home/components/AppMediaPage";
+import UserMediaPage from "../../managements/management-me/components/UserMediaPage";
 
 const tabs = [
   { label: "Public Models", value: "public", content: <AppMediaPage hasAction={false}/> },

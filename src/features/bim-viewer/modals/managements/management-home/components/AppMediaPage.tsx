@@ -1,25 +1,23 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
-import { apiGet } from "@/api";
-import { ModelTable } from "./ModelTable";
-import { Model } from "@/components/model-table/types";
+import { apiGet, fetchNoSignAPI } from "@/api";
+import { Model, ModelTable } from "@/components/common/ModelTable";
 
-export default function UserMediaPage({ hasAction = true }) {
+interface AppMediaPageProps {
+  hasAction?: boolean;
+}
+
+export default function AppMediaPage({ hasAction = true }: AppMediaPageProps) {
   const [data, setData] = useState<Model[]>([]);
   const currentUser = useSelector((state: RootState) => state.auth.user);
 
   // Hàm fetchData tách riêng và dùng useCallback để tránh tạo mới mỗi render
   const fetchData = useCallback(async () => {
-    if (!currentUser) return;
 
     try {
-      const userId = currentUser.id;
-
-
-      // Fetch media list
-      const [mediaResponse] = await Promise.all([ apiGet<{ data: any[] }>(`/media/user/${userId}`)]);
-      const mediaList = mediaResponse.data;
+      const mediaData = await fetchNoSignAPI<{data: any[]}>(`/media/guest`);
+      const mediaList = mediaData.data;
       const formatted: Model[] = mediaList
         .filter((item) => item.deletedBy === null) // ✅ Chỉ lấy những cái chưa bị xóa mềm
         .map((item) => ({
@@ -29,8 +27,8 @@ export default function UserMediaPage({ hasAction = true }) {
           status: item.isPublic ? "Public" : "Private",
           size: item.size*1/(1024 * 1024),
           uploader: {
-            email: currentUser?.email || "Unknown",
-            avatar: currentUser?.picture || "",
+            email:   "duengocnguyen@gmail.com",
+            avatar:   "https://lh3.googleusercontent.com/a/ACg8ocKi6JqRVGqhLlyiqQ99c9P44TF7vfWXUZeLJS0x2xbur9HAJDA=s96-c",
           },
           modified: new Date(item.updatedAt).toLocaleDateString("en-GB"),
         }));
@@ -48,7 +46,7 @@ export default function UserMediaPage({ hasAction = true }) {
 
   return (
     <div className="p-4">
-      <ModelTable data={data} refeshData={fetchData}  hasAction={hasAction}/>
+      <ModelTable data={data} refeshData={fetchData} hasAction={hasAction} actionTypes={["View"]}/>
     </div>
   );
 }
