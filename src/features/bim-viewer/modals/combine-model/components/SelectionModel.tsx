@@ -12,17 +12,15 @@ const SelectionModel: React.FC<SelectionModelProps> = ({ open, onClose }) => {
 
   return (
     <>
-    <DialogTemplate
-      open={open}
-      onClose={onClose}
-      title="Graphics Visibility Settings"
-      description="Customize visibility, color, and transparency by category."
-      disableOutsideClose
-      // className="max-w-5xl  max-h-[650px]"
-     
-    >
+      <DialogTemplate
+        open={open}
+        onClose={onClose}
+        title="Manage Combined Models"
+        description="Select, organize, and combine multiple models into a single scene for unified visualization and analysis."
+        disableOutsideClose
+      >
         <ModelTabs />
-    </DialogTemplate>
+      </DialogTemplate>
     </>
   );
 };
