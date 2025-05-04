@@ -33,6 +33,7 @@ import { Heading } from "@/components/common/Heading";
 import LinkMark from "@/components/auth/LinkMark";
 import { Link } from "@tanstack/react-router";
 import { IoEyeSharp } from "react-icons/io5";
+import { TableContent } from "@/components/model-table/TableContent";
 
 // Kiểu Model
 export type Model = {
@@ -240,50 +241,7 @@ export function ModelTable({ data, refeshData, hasAction }: ModelTableProps) {
   return (
     <div className="space-y-4">
       <Heading level={6} className='px-4 pt-2 text-150 italic' position="right">(Total item: {data.length})</Heading>
-      <div className="rounded-md border border-zinc-400 overflow-auto ">
-        <Table className="border-collapse w-full ">
-          <TableHeader className="table-header shadow-md ">
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow
-                key={headerGroup.id}
-                className="border-b border-muted"
-              >
-                {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id} className="text-left">
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(header.column.columnDef.header, header.getContext())}
-                  </TableHead>
-                ))}
-              </TableRow>
-            ))}
-          </TableHeader>
-
-          <TableBody>
-            {table.getRowModel().rows.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  className="border-b border-muted "
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} className="text-zinc-300" title={`ID: ${row.original.id}`}>
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={columns.length} className="text-sm text-center py-8 text-150 italic">
-                  No data available. Please upload or <LinkMark to={'/sign-in'}>sig-in</LinkMark> again if you are a guest.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-
-        </Table>
-      </div>
+      <TableContent table={table} columns={columns} />
 
       {/* Delete Dialog */}
       <ConfirmDeleteDialog
