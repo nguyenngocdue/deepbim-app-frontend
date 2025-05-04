@@ -93,8 +93,6 @@ const MainViewer: React.FC = () => {
               {/* MAIN */}
               <Panel defaultSize={80} className={themeClass}>
                 <PanelGroup direction="horizontal" className="h-full">
-                  {/* LEFT */}
-                  <PanelResizeHandle className={`w-1 ${themeClass} cursor-ns-resize`} />
                   {/* CENTER */}
                   <Panel defaultSize={60} minSize={30} className={themeClass}>
                     <div className="h-full w-full bg-black relative">
@@ -112,16 +110,6 @@ const MainViewer: React.FC = () => {
                       <ModelIfc
                         {...states}
                       />
-                      <FaceMeasurementGuide isEnabled={states.isFaceMeasurement} />
-                      {isLeftCollapsed && (
-                        <button
-                          onClick={() => setIsLeftCollapsed(false)}
-                          className="absolute top-2 right-2 z-50 p-1 bg-zinc-700 hover:bg-zinc-600 rounded"
-                          title="Expand left"
-                        >
-                          <FiChevronRight className="text-white" />
-                        </button>
-                      )}
                       {isRightCollapsed && (
                         <button
                           onClick={() => setIsRightCollapsed(false)}
@@ -133,15 +121,6 @@ const MainViewer: React.FC = () => {
                       )}
                     </div>
                   </Panel>
-
-                  <PanelResizeHandle className={`w-1 ${themeClass} cursor-ns-resize`} />
-
-                      {/* RIGHT BAR */}
-                  {/* {
-                   states.hasCombineModels && <Panel defaultSize={20} minSize={5} maxSize={50} className={themeClass}>
-                      <RightSidebarViewer themeClass="h-full" />
-                    </Panel> 
-                  } */}
                   {
                     states.hasCombineModels && 
                       <DraggableRightBarViewer
@@ -154,15 +133,7 @@ const MainViewer: React.FC = () => {
                         hasDirection={false}
                       />
                   }
-
-
                 </PanelGroup>
-              </Panel>
-
-              <PanelResizeHandle className={` ${themeClass} cursor-ns-resize`} />
-              {/* FOOTER */}
-              <Panel defaultSize={10} minSize={5} maxSize={100} className={themeClass}>
-                <FooterTabViewer themeClass={themeClass} />
               </Panel>
             </PanelGroup>
 
