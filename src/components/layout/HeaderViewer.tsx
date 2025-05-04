@@ -48,7 +48,7 @@ const HeaderViewer: React.FC<ModelIfcProps> = (
 
   return (
     <>
-      <header className={`z-50 backdrop-blur-md text-white  md:px-6 py-2 shadow-md shadow-zinc-600 border-zinc-600 round-lg border`}>
+      <header className={`bg-behind text-foreground backdrop-blur-md border border-zinc-600 shadow-md shadow-zinc-600 rounded-lg px-6 py-2 z-50`}>
         <div className="flex flex-col gap-2">
         <div className={`${isVertical ? "max-h-none" : "max-h-48"} overflow-y-auto overflow-x-hidden`}>
             <div className={`flex gap-2 ${isVertical ? "flex-col items-start" : "flex-wrap items-center"}`}>

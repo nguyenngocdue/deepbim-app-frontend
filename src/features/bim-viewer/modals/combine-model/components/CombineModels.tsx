@@ -1,5 +1,6 @@
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import ModelCombineTable from "./ModelCombineTable";
 
 export interface ModelItem {
   id: string;
@@ -17,7 +18,7 @@ export default function CombineModels({
   models = [],
 }: CombineModelsProps) {
   return (
-    <div className="w-72 rounded-xl bg-zinc-900 text-white p-4 shadow-lg space-y-4">
+    <div className="w-full rounded-xl text-white p-4 shadow-lg space-y-4">
       {/* Header */}
       <div className="flex justify-between items-center border-b border-zinc-700 pb-2">
         <h3 className="text-sm font-medium tracking-tight">Combine Models</h3>
@@ -32,7 +33,7 @@ export default function CombineModels({
       </div>
 
       {/* Model List */}
-      <div className="space-y-2">
+      {/* <div className="space-y-2">
         {models.map((model) => (
           <div
             key={model.id}
@@ -49,6 +50,9 @@ export default function CombineModels({
         {models.length === 0 && (
           <div className="text-sm text-zinc-400 italic">No models yet.</div>
         )}
+      </div> */}
+      <div className="w-full">
+          {/* <ModelCombineTable/> */}
       </div>
     </div>
   );

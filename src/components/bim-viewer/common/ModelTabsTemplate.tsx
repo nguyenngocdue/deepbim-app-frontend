@@ -21,19 +21,18 @@ interface ModelTabsTemplateProps {
 export default function ModelTabsTemplate({
   tabs,
   defaultValue = tabs[0]?.value,
-  contentHeight = "min-h-[400px]", // chiều cao tối thiểu
+  contentHeight = "", // chiều cao tối thiểu
 }: ModelTabsTemplateProps) {
   return (
     <div className="flex flex-col w-full h-full">
-      <Tabs defaultValue={defaultValue} className="flex flex-col w-full">
-        {/* Sticky hoặc cố định phần tab header */}
-        <div className="sticky top-0 z-10 bg-zinc-900">
-          <TabsList className="w-full bg-zinc-800 p-1 rounded-lg flex">
+      <Tabs defaultValue={defaultValue} className="w-full flex-grow ">
+        <div className="w-full  border-b border-zinc-800 pb-2">
+          <TabsList className="flex gap-3 bg-transparent justify-start p-2">
             {tabs.map((tab) => (
               <TabsTrigger
                 key={tab.value}
                 value={tab.value}
-                className="w-full data-[state=active]:bg-zinc-900 data-[state=active]:text-white"
+                className="px-5 py-2 text-sm font-medium text-slate-300 data-[state=active]:bg-blue-600  data-[state=active]:text-white rounded-lg transition-all hover:text-white"
               >
                 {tab.label}
               </TabsTrigger>
@@ -41,11 +40,10 @@ export default function ModelTabsTemplate({
           </TabsList>
         </div>
 
-        {/* Nội dung */}
         <div className={`mt-4 flex-1 ${contentHeight}`}>
           {tabs.map((tab) => (
             <TabsContent key={tab.value} value={tab.value}>
-              <div className="p-4 rounded-md bg-zinc-800 text-white h-full">
+              <div className="rounded-md text-white h-full">
                 {tab.content}
               </div>
             </TabsContent>

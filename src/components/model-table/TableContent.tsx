@@ -17,11 +17,11 @@ export function TableContent<T>({ table }: TableContentProps<T>) {
   const rows = table.getRowModel().rows;
 
   return (
-    <div className="rounded-2xl border border-border bg-background shadow-sm overflow-auto max-h-[600px]">
+    <div className="rounded-md border border-zinc-400 overflow-auto bg-background shadow-sm  max-h-[600px]">
       <Table className="w-full border-collapse">
         <TableHeader className="bg-muted sticky top-0 z-10 shadow-sm">
           {headers.map((headerGroup) => (
-            <TableRow key={headerGroup.id} className="border-b border-border">
+            <TableRow key={headerGroup.id} className="border-b border-border border-zinc-500">
               {headerGroup.headers.map((header) => (
                 <TableHead
                   key={header.id}
@@ -41,7 +41,7 @@ export function TableContent<T>({ table }: TableContentProps<T>) {
             rows.map((row) => (
               <TableRow
                 key={row.id}
-                className="border-b border-border hover:bg-muted/50 transition-colors"
+                className="border-b border-border hover:bg-muted/50 transition-colors border-gray-600"
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell

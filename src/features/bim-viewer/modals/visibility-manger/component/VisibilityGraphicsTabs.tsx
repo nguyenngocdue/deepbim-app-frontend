@@ -11,6 +11,7 @@ import { ColorPickerModal } from "./ColorPickerModal";
 import { TransparencyModal } from "./TransparencyModal";
 import { defaultCategories, defaultPresetColors } from "./defaults";
 import { Input } from "@/components/ui/input";
+import ModelTabsTemplate from "@/components/bim-viewer/common/ModelTabsTemplate";
 
 
 interface VisibilityGraphicsTabsProps {
@@ -109,7 +110,7 @@ export default function VisibilityGraphicsTabs({
 
   const tabs = [
     {
-      name: "Model Categories",
+      label: "Category",
       value: "model",
       content: (
         <>
@@ -137,7 +138,7 @@ export default function VisibilityGraphicsTabs({
       ),
     },
     {
-      name: "Filter",
+      label: "Filter",
       value: "filter",
       content: (
         <p className="text-slate-300">
@@ -151,29 +152,8 @@ export default function VisibilityGraphicsTabs({
 
 
   return (
-    <div className="bg-slate-950 flex flex-col p-2">
-      <Tabs defaultValue="model" className="w-full flex-grow ">
-        <div className="w-full  border-b border-zinc-700 pb-2">
-          <TabsList className="flex gap-3 bg-transparent justify-start p-2">
-            {tabs.map((tab) => (
-              <TabsTrigger
-                key={tab.value}
-                value={tab.value}
-                className="px-5 py-2 text-sm font-medium text-slate-300 data-[state=active]:bg-blue-600  data-[state=active]:text-white rounded-lg transition-all hover:text-white"
-              >
-                {tab.name}
-              </TabsTrigger>
-            ))}
-          </TabsList>
-        </div>
-
-        {tabs.map((tab) => (
-          <TabsContent key={tab.value} value={tab.value}>
-            <div className="">{tab.content}</div>
-          </TabsContent>
-        ))}
-      </Tabs>
-
+    <div className="flex flex-col p-2">
+      <ModelTabsTemplate tabs={tabs} contentHeight=""/>
       {activeCategory && (
         <ColorPickerModal
           category={activeCategory}

@@ -52,7 +52,7 @@ export default function UserMediaPage({ hasAction = true }) {
       <ModelTable
         data={data}
         refeshData={fetchData}
-        hasAction={true}
+        hasAction={hasAction}
         actionTypes={["View", "Delete", "Edit"]}
         columnsConfig={modelColumnsConfig}
       />

@@ -104,7 +104,7 @@ export function DynamicTable({
                       aria-label={`Toggle visibility for ${cat}`}
                     />
                   </TableCell>
-                  <TableCell className="text-slate-100 font-medium whitespace-nowrap">
+                  <TableCell className="font-medium whitespace-nowrap text-200">
                     {cat}
                   </TableCell>
                   <TableCell className="text-center">

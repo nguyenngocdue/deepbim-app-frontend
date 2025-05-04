@@ -50,7 +50,7 @@ export default function AppMediaPage({ hasAction = true }: AppMediaPageProps) {
       <ModelTable
         data={data}
         refeshData={fetchData}
-        hasAction={true}
+        hasAction={hasAction}
         actionTypes={["View"]}
         columnsConfig={modelColumnsConfig}
       />

@@ -55,7 +55,7 @@ const MainViewer: React.FC = () => {
     isFitView: false,
     isIsolation: false,
     isVisibleSettings: false,
-    hasCombineModels:false,
+    hasCombineModels: false,
   });
 
   const toggleState = (stateName: keyof typeof states) => {
@@ -69,74 +69,54 @@ const MainViewer: React.FC = () => {
     setTheme((prev) => (prev === "light" ? "dark" : "light"));
   };
   const [theme, setTheme] = useState<"light" | "dark">("dark");
-  const themeClass = theme === "dark" ? "bg-slate-900 text-white" : "bg-gray-100 text-black";
+  // const themeClass = theme === "dark" ? "bg-slate-900 text-white" : "bg-gray-100 text-black";
+  const themeClass = theme === "dark" ? "" : "";
   return (
     <>
       <ViewCubeProvider>
         <ViewCubeProvider2>
-          <div className={`h-screen ${themeClass}`}>
+          <DraggableHeaderViewer
+            onToggle={toggleState}
+            onToggleTheme={toggleTheme}
+            currentTheme={theme}
+            handleFileSelect={() => { }}
+            navigationMode="Orbit"
+            states={states}
+          />
+          <div className={` ${themeClass} h-full`}>
 
             {/* {!isModelReady && <FullscreenLoader progress={progress} message="Loading 3D model..." />} */}
 
             {/* HEADER */}
-            <DraggableHeaderViewer
-              onToggle={toggleState}
-              onToggleTheme={toggleTheme}
-              currentTheme={theme}
-              handleFileSelect={() => { }}
-              navigationMode="Orbit"
-              states={states}
-            />
-
-            <PanelGroup direction="vertical" className="h-full">
-
-              {/* MAIN */}
-              <Panel defaultSize={80} className={themeClass}>
-                <PanelGroup direction="horizontal" className="h-full">
-                  {/* CENTER */}
-                  <Panel defaultSize={60} minSize={30} className={themeClass}>
-                    <div className="h-full w-full bg-black relative">
-
-                      <div className="absolute top-0 z-50 right-0 p-4">
-                        <LeftHeader
-                          toggleLanguage={toggleLanguage}
-                          language={language.toUpperCase()}
-                          toggleTheme={toggleTheme}
-                          theme={theme}
-                          className=""
-                        />
-                      </div>
-
-                      <ModelIfc
-                        {...states}
-                      />
-                      {isRightCollapsed && (
-                        <button
-                          onClick={() => setIsRightCollapsed(false)}
-                          className="absolute top-2 right-2 z-50 p-1 bg-zinc-700 hover:bg-zinc-600 rounded"
-                          title="Expand right"
-                        >
-                          <FiChevronLeft className="text-white" />
-                        </button>
-                      )}
-                    </div>
-                  </Panel>
-                  {
-                    states.hasCombineModels && 
-                      <DraggableRightBarViewer
-                        onToggle={toggleState}
-                        onToggleTheme={toggleTheme}
-                        currentTheme={theme}
-                        handleFileSelect={() => { }}
-                        navigationMode="Orbit"
-                        states={states}
-                        hasDirection={false}
-                      />
-                  }
-                </PanelGroup>
+            <PanelGroup direction="vertical">
+              <Panel defaultSize={60} minSize={30} >
+                <div className="absolute top-0 z-50 right-0 p-4">
+                  <LeftHeader
+                    toggleLanguage={toggleLanguage}
+                    language={language.toUpperCase()}
+                    toggleTheme={toggleTheme}
+                    theme={theme}
+                    className=""
+                  />
+                </div>
+                <ModelIfc
+                  {...states}
+                />
               </Panel>
-            </PanelGroup>
+              {
+                states.hasCombineModels &&
+                <DraggableRightBarViewer
+                  onToggle={toggleState}
+                  onToggleTheme={toggleTheme}
+                  currentTheme={theme}
+                  handleFileSelect={() => { }}
+                  navigationMode="Orbit"
+                  states={states}
+                  hasDirection={false}
 
+                />
+              }
+            </PanelGroup>
           </div>
         </ViewCubeProvider2>
       </ViewCubeProvider>
@@ -144,16 +124,9 @@ const MainViewer: React.FC = () => {
         states.isVisibleSettings &&
         <VisibilityManager
           open={true}
-          onClose={() => toggleState('isVisibleSettings')}  
+          onClose={() => toggleState('isVisibleSettings')}
         />
       }
-       {/* {
-        states.hasCombineModels &&
-        <CombineModelManager
-          open={true}
-          onClose={() => toggleState('hasCombineModels')}  
-        />
-      } */}
     </>
   );
 

@@ -32,7 +32,7 @@ export function DialogTemplate({
   return (
     <Dialog open={open} onOpenChange={onClose} modal>
       <DialogContent
-        className={`w-full max-w-[95vw] sm:max-w-lg md:max-w-2xl lg:max-w-4xl ${className}`}
+        className={`w-full max-w-[100vw] sm:max-w-lg md:max-w-2xl lg:max-w-4xl ${className}`}
         onInteractOutside={(e) => {
           if (disableOutsideClose) e.preventDefault();
         }}
@@ -48,7 +48,7 @@ export function DialogTemplate({
           )}
         </DialogHeader>
 
-        <div className="mt-4 max-h-[75vh] overflow-y-auto pr-1">{children}</div>
+        <div className="mt-4 pr-1">{children}</div>
 
         {footer && (
           <div className="mt-6 flex flex-col-reverse md:flex-row justify-end gap-2">

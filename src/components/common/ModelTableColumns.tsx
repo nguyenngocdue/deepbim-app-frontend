@@ -18,6 +18,7 @@ type ColumnOptions = {
 };
 
 export const getModelTableColumns = ({
+  hasAction,
   actionTypes,
   setSelectedRow,
   setOpenDeleteDialog,
@@ -25,7 +26,9 @@ export const getModelTableColumns = ({
   table,
   configs,
 }: ColumnOptions): ColumnDef<Model>[] => {
-  return configs.map((config): ColumnDef<Model> => {
+  return configs
+  .filter((config) => config.renderType !== "actions" || hasAction)
+  .map((config): ColumnDef<Model> => {
     switch (config.renderType) {
       case "index":
         return {

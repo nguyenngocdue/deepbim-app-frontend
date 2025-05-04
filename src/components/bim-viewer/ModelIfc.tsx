@@ -63,8 +63,7 @@ const ModelIfc: React.FC<ModelIfcProps> = (props) => {
 
 
   return (
-    <div className="relative w-full h-full " id="deepbim-mainviewer">
-      <div className="w-full h-full " ref={ifcContainerRef} onContextMenu={(e) => openContextMenu(e, ifcContainerRef.current)}>
+    <div className="bg-transparent h-screen w-full" id="deepbim-mainviewer" ref={ifcContainerRef} onContextMenu={(e) => openContextMenu(e, ifcContainerRef.current)}>
         {ifcContainerRef.current && (
           <IfcLoaderV2
             container={ifcContainerRef.current}
@@ -73,7 +72,7 @@ const ModelIfc: React.FC<ModelIfcProps> = (props) => {
             haveGrids={true}
           />
         )}
-      </div>
+      
 
 
       {/* context menu */}

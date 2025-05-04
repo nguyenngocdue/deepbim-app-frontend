@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import CombineModels from './components/CombineModels';
 import SelectionModel from './components/SelectionModel';
+import UserProjectsPage from '../managements/management-me';
+import ModelCombineTable from './components/ModelCombineTable';
 
 interface CombineModelManagerProps {
 }

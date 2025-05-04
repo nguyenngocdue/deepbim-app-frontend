@@ -94,7 +94,7 @@ const VisibilityManager = ({ open, onClose }: VisibilityManagerProps) => {
       }
     >
       {hasData ? (
-        <div className="h-[500px] overflow-auto">
+        <div className="h-[500px]">
           <VisibilityGraphicsTabs 
             categories={defaultCategories}
             categoryColors={categoryColors}
