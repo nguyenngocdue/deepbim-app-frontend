@@ -18,6 +18,8 @@ const VisibilityManager = ({ open, onClose }: VisibilityManagerProps) => {
   const [categoryColors, setCategoryColors] = useState<Record<string, string>>({});
   const [categoryTransparencies, setCategoryTransparencies] = useState<Record<string, number>>({});
   const [checkedCategories, setCheckedCategories] = useState<string[]>([]);
+  const params = new URLSearchParams(window.location.search);
+  const viewId = params.get("v");
 
   const usersettings = {
     ...UserManager.get(),
@@ -26,7 +28,7 @@ const VisibilityManager = ({ open, onClose }: VisibilityManagerProps) => {
     },
   };
 
-  const configs = usersettings?.view?.visibility;
+  const configs = usersettings?.view?.visibility[viewId];
   const hasData = !!configs;
   
   useEffect(() => {
@@ -50,17 +52,23 @@ const VisibilityManager = ({ open, onClose }: VisibilityManagerProps) => {
 
 
   const handleApply = async () => {
+
+
     const settings: Partial<UserSetting> = {
       view: {
-        visibility: mergeCategorySettings(
-          checkedCategories,
-          categoryColors,
-          categoryTransparencies
-        ),
+        visibility: {
+          [viewId || "defaultViewId"]: mergeCategorySettings(
+            defaultCategories,
+            checkedCategories,
+            categoryColors,
+            categoryTransparencies
+          )
+        } 
       },
     };
     await UserManager.set(settings);
     onClose();
+    window.location.reload();
   };
   
   const handleCancel = () => {

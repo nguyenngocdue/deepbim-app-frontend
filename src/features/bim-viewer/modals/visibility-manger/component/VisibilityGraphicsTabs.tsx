@@ -87,7 +87,6 @@ export default function VisibilityGraphicsTabs({
   };
 
 
-
   const handleResetRow = (category: string) => {
     setCategoryColors({
       ...categoryColors,
@@ -107,6 +106,7 @@ export default function VisibilityGraphicsTabs({
   const filteredCategories = categories.filter((cat) =>
     cat.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
 
   const tabs = [
     {

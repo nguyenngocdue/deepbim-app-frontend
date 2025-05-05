@@ -28,6 +28,8 @@ export const defaultCategories = [
     "IFCMATERIALCONSTITUENT",
     "IFCBUILDING",
     "IFCELEMENTASSEMBLY",
+    "IFCWALLSTANDARDCASE",
+    "IFCFURNISHINGELEMENT",
   ];
   
   export const defaultPresetColors = [

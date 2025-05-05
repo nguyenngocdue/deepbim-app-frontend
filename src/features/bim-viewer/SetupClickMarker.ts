@@ -9,7 +9,6 @@ import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
 import { OutlinePass } from "three/examples/jsm/postprocessing/OutlinePass.js";
 import { MultiSelectionManager } from "@/lib/selections/MultiSelectionManager";
-import { Item } from "@radix-ui/react-dropdown-menu";
 
 
 interface SetupClickMarkerOptions {
@@ -29,8 +28,8 @@ export function setupClickMarker({
   model,
   fragments,
   world,
-  sphereColor = "#fa05ac",
-  sphereRadius = 1,
+  sphereColor = "#00ff00",
+  sphereRadius = 0.5,
   focusCamera = true,
   onItemSelected = () => {},
   onItemDeselected = () => {},
@@ -54,8 +53,8 @@ export function setupClickMarker({
   outlinePass.edgeStrength = 3.0;
   outlinePass.edgeGlow = 0.5;
   outlinePass.edgeThickness = 1.0;
-  outlinePass.visibleEdgeColor.set("#ff99cc");
-  outlinePass.hiddenEdgeColor.set("#000000");
+  outlinePass.visibleEdgeColor.set("#93fde7");
+  outlinePass.hiddenEdgeColor.set("#93fde7");
 
 
 
@@ -81,17 +80,25 @@ export function setupClickMarker({
     const { localId, object, point } = result;
     const selectedModel = fragments.models.list.get(object.name);
     if (!selectedModel) return;
+
+
+    // console.log(selectedModel);
+
+    // const highlightMaterial: FRAGS.MaterialDefinition = {
+    //     color: new THREE.Color("#ff00ff"),
+    //     renderedFaces: FRAGS.RenderedFaces.BOTH,
+    //     opacity: 1,
+    //     transparent: false,
+    //     emissive: new THREE.Color("#ff99cc"),
+    //     emissiveIntensity: 0.8,
+    //   };
+    
     // const eles = await selectedModel.getItemsOfCategory("IFCSLAB");
 
-
-
-
-    // const ids = eles.map((item) => item._localId);
+    // const ids = eles.map((item) => item._localId  );
     // if(ids){
-
     //   await selectedModel.highlight(ids, highlightMaterial)
     // }
-    // console.log(ids);
   
  
 

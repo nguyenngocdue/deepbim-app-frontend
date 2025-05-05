@@ -5,9 +5,10 @@ export function createMarker(radius: number, color: string, point: THREE.Vector3
   const geometry = new THREE.SphereGeometry(radius);
   const material = new THREE.MeshLambertMaterial({
     color,
-    transparent: true,
-    opacity: 0.8,
-    depthTest: false,
+    // transparent: true,
+    // opacity: 0.8,
+    // depthTest: false,
+    emissive: new THREE.Color("#00ff00"),
   });
 
   const marker = new THREE.Mesh(geometry, material);
@@ -19,5 +20,4 @@ export function removeMarker(marker: THREE.Mesh | null, world: OBC.World) {
   if (!marker) return;
   world.scene.three.remove(marker);
   marker.geometry.dispose();
-  marker.material.dispose();
 }

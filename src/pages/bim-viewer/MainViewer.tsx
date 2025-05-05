@@ -71,6 +71,9 @@ const MainViewer: React.FC = () => {
   const [theme, setTheme] = useState<"light" | "dark">("dark");
   // const themeClass = theme === "dark" ? "bg-slate-900 text-white" : "bg-gray-100 text-black";
   const themeClass = theme === "dark" ? "" : "";
+
+
+  
   return (
     <>
       <ViewCubeProvider>
@@ -85,7 +88,7 @@ const MainViewer: React.FC = () => {
           />
           <div className={` ${themeClass} h-full`}>
 
-            {/* {!isModelReady && <FullscreenLoader progress={progress} message="Loading 3D model..." />} */}
+            {!isModelReady && <FullscreenLoader progress={progress} message="Loading 3D model..." />}
 
             {/* HEADER */}
             <PanelGroup direction="vertical">

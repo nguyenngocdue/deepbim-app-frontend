@@ -3,7 +3,7 @@ import { mode } from "d3";
 import * as THREE from "three";
 
 const highlightMaterial: FRAGS.MaterialDefinition = {
-    color: new THREE.Color("#F59492"),
+    color: new THREE.Color("#00ffa7"),
     renderedFaces: FRAGS.RenderedFaces.BOTH,
     opacity: 1,
     transparent: false,

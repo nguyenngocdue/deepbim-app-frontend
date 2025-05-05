@@ -5,6 +5,7 @@ import { modelManager } from "@/services/ModelManager";
 import { useLocation } from "@tanstack/react-router";
 import { fragmentManager } from "@/services/FragmentManager";
 import { setupClickMarker } from "@/features/bim-viewer/SetupClickMarker";
+import { updateUserSettings } from "@/features/bim-viewer/visibility-settings/ModelSetting";
 
 
 interface IfcLoaderV2Props {
@@ -35,6 +36,9 @@ const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({ worldRef, componentRef, conta
       const component = componentRef.current;
       try {
         const model = await fragments.load(fragmentBytes, { modelId: "example" });
+        const selectedModel = fragments.models.list.get('example');
+        updateUserSettings({ selectedModel });
+        
         model.useCamera(world.camera.three);
         world.scene.three.add(model.object);
 
@@ -44,6 +48,11 @@ const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({ worldRef, componentRef, conta
         await modelManager.setModel(model);
         await fragments.update(true);
         fragmentManager.setFragment(fragments);
+
+
+        // const eles = await model.getItemsOfCategory("IFCSLAB");
+        // console.log(eles);
+
 
 
         // SetupRaycastHover({

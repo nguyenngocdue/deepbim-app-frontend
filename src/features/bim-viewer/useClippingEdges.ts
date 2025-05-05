@@ -50,59 +50,31 @@ export function useClippingEdges({
       depthWrite: false,
     });
     
-    
-
     const cube = new THREE.Mesh(geometry, material);
     cube.name = "BoundingCube";
     world.scene.three.add(cube);
     world.meshes.add(cube);
 
+    const casters = component.get(OBC.Raycasters);
+    casters.get(world);
+
+    const clipper = component.get(OBC.Clipper);
     clipper.enabled = true;
-    clipper.Type = OBCF.EdgesPlane;
-    clipper.size = (size.x + size.y + size.z) / 12;
-    edges.enabled = true;
+
 
     container.ondblclick = () => {
-      if (!clipper.enabled) return;
-
-      clipper.create(world);
-      console.log(world);
-
-
-
-
-      // window.onkeydown = (event) => {
-      //   if (event.code === "Delete" || event.code === "Backspace") {
-      //     clipper.delete(world);
-      //   }
-      // };
-
-      // container.addEventListener("mousemove", (event) => {
-      //   if (!world?.camera || !world.renderer) return;
-
-      //   const bounds = container.getBoundingClientRect();
-      //   const x = ((event.clientX - bounds.left) / bounds.width) * 2 - 1;
-      //   const y = -((event.clientY - bounds.top) / bounds.height) * 2 + 1;
-
-      //   const pointer = new THREE.Vector2(x, y);
-      //   const raycaster = new THREE.Raycaster();
-      //   raycaster.setFromCamera(pointer, world.camera.three);
-
-      //   const intersects = raycaster.intersectObject(cube);
-      //   clipper.visible = intersects.length > 0;
-      // });
+      // if (clipper.enabled) {
+      //   clipper.create(world);
+      // }
     };
+
+   
+
   } else {
-    // Cleanup when disabled
+    // Nếu không sử dụng clipping, bạn có thể tắt mọi thứ
     clipper.enabled = false;
-    clipper.deleteAll();
-
     edges.enabled = false;
-
-    const cube = world.scene.three.getObjectByName("BoundingCube");
-    if (cube) {
-      world.scene.three.remove(cube);
-      world.meshes.delete(cube as THREE.Mesh);
-    }
+    console.log("Clipping đã bị vô hiệu hóa.");
   }
 }
+
