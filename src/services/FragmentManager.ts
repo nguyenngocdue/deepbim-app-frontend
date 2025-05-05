@@ -14,6 +14,10 @@ class FragmentManager {
       return this.fragment || null;
     }
 
+    getModelByObjectName(name : string): any | null {
+      return this.getFragment().models.list.get(name || 'example') || null;
+    }
+
   }
 // Create a singleton instance of FragmentManager
 export const fragmentManager = new FragmentManager();

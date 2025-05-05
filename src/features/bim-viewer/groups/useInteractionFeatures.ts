@@ -17,6 +17,6 @@ export function useInteractionFeatures({
   usePlaneHover({ isPlaneHover, componentRef, worldRef, ifcContainerRef, modelRef });
   useSetViewPoint({ isFitView, worldRef });
   useCoordinateSystem({ coordinateSysActive, worldRef });
-  useSelections({ worldRef });
+  useSelections();
 
 }

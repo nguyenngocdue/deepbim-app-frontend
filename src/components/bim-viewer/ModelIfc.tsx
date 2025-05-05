@@ -51,7 +51,6 @@ const ModelIfc: React.FC<ModelIfcProps> = (props) => {
   worldRef.current = world;
   componentRef.current = components;
 
-
   useViewerLoop(worldRef);
   useBimViewerFeatures({
     worldRef,
@@ -63,7 +62,10 @@ const ModelIfc: React.FC<ModelIfcProps> = (props) => {
 
 
   return (
-    <div className="bg-transparent h-screen w-full" id="deepbim-mainviewer" ref={ifcContainerRef} onContextMenu={(e) => openContextMenu(e, ifcContainerRef.current)}>
+    <div className="bg-transparent h-screen w-full" id="deepbim-mainviewer" 
+      ref={ifcContainerRef} 
+      onContextMenu={(e) => openContextMenu(e, ifcContainerRef.current)}
+      >
         {ifcContainerRef.current && (
           <IfcLoaderV2
             container={ifcContainerRef.current}
@@ -72,8 +74,6 @@ const ModelIfc: React.FC<ModelIfcProps> = (props) => {
             haveGrids={true}
           />
         )}
-      
-
 
       {/* context menu */}
       {contextMenu && (
