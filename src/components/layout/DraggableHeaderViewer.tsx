@@ -11,7 +11,7 @@ export default function DraggableHeaderViewer({
   states,
 }: any) {
   return (
-    <DraggableTemplate initialPosition={{x:30, y:30}}>
+    <DraggableTemplate initialPosition={{x: window.innerWidth / 2 -500, y: window.innerHeight - 100}}>
       {(isVertical) => (
         <HeaderViewer
           onToggle={onToggle}
