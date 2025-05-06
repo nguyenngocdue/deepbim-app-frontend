@@ -3,19 +3,21 @@ import * as FRAGS from "@thatopen/fragments";
 import * as THREE from "three";
 import { createHighlightMaterial } from "../utils/HighlightMaterial";
 
+interface UserSettingProps {
+    selectedModel: FRAGS.FragmentsSelectedModel;
+    configs?: Record<string, any>;
+}
 
 
-
-export async function updateUserSettings({ selectedModel }: { selectedModel: FRAGS.FragmentsSelectedModel }) {
+export async function updateUserSettings({ selectedModel, configs = {} }: UserSettingProps) {
     const settings = UserManager.get();
     if (!settings) return selectedModel;
-    const visibilities = settings.view?.visibility;
+    const visibilities = configs.length  ? configs : settings.view?.visibility;
     const params = new URLSearchParams(window.location.search);
     const viewId = params.get("v");
 
     if (visibilities) {
         for (const [id, configs] of Object.entries(visibilities)) {
-            console.log(id, viewId)
             if(id != viewId)  continue;
             for (const [key, cates] of Object.entries(configs)) {
                 const { color, isShow, transparency } = cates;

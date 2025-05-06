@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 import { defaultCategories } from "./component/defaults";
 import { mergeCategorySettings } from "@/utils/tables/merge-category-settings";
 import AppButton from "@/components/bim-viewer/common/AppButton";
+import { fragmentManager } from "@/services/FragmentManager";
+import { updateUserSettings } from "../../visibility-settings/ModelSetting";
 
 
 
@@ -29,7 +31,7 @@ const VisibilityManager = ({ open, onClose }: VisibilityManagerProps) => {
   };
 
   const configs = usersettings?.view?.visibility[viewId];
-  const hasData = !!configs;
+  const hasData = !!configs; //include In the case when user open the model for the first time
   
   useEffect(() => {
     if (!hasData) return;
@@ -68,7 +70,10 @@ const VisibilityManager = ({ open, onClose }: VisibilityManagerProps) => {
     };
     await UserManager.set(settings);
     onClose();
-    window.location.reload();
+
+    const selectedModel =fragmentManager.getModelByObjectName('example');
+    const configs = settings.view?.visibility;
+    updateUserSettings({ selectedModel, configs });
   };
   
   const handleCancel = () => {
@@ -101,9 +106,10 @@ const VisibilityManager = ({ open, onClose }: VisibilityManagerProps) => {
         )
       }
     >
-      {hasData ? (
+      
         <div className="h-[500px]">
-          <VisibilityGraphicsTabs 
+          <VisibilityGraphicsTabs
+            hasInit={!hasData}
             categories={defaultCategories}
             categoryColors={categoryColors}
             categoryTransparencies={categoryTransparencies}
@@ -114,14 +120,6 @@ const VisibilityManager = ({ open, onClose }: VisibilityManagerProps) => {
             onClose={onClose}
             />
         </div>
-      ) : (
-        <Alert variant="destructive">
-          <AlertTitle>No Data</AlertTitle>
-          <AlertDescription>
-            No settings were found for the selected model.
-          </AlertDescription>
-        </Alert>
-      )}
     </DialogTemplate>
   );
 };

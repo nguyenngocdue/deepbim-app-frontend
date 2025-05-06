@@ -8,6 +8,8 @@ class ModelManager {
     private model: any;
     private modelReadyResolver?: (model: any) => void;
     private modelReadyPromise: Promise<any>;
+    private selectedElement: any;
+    private selectedRayCasterElement: any;
   
     constructor() {
       this.modelReadyPromise = new Promise((resolve) => {
@@ -29,6 +31,22 @@ class ModelManager {
         throw error;
       }
     }
+    async setSelectedElement(element: any):  Promise<void> {
+      this.selectedElement = element;
+    }
+
+    getSelectedElement(): any | null {
+      return this.selectedElement || null;
+    }
+  
+    async setSelectedRayCasterElement(result: any):  Promise<void> {
+      this.selectedRayCasterElement = result;
+    }
+
+    async getSelectedRayCasterElement():  Promise<void> {
+      return this.selectedRayCasterElement;
+    }
+
   
     getModel(): any | null {
       return this.model || null;

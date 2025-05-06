@@ -53,7 +53,7 @@ export default function DraggableTemplate({
     >
       <div
         ref={nodeRef}
-        className="fixed z-50 rounded-lg border border-zinc-800 shadow-lg overflow-auto max-h-[90vh]"
+        className="fixed rounded-lg border border-zinc-800 shadow-lg " //overflow-auto max-h-[90vh]
         style={{ top: 0, left: 0 }}
       >
         {/* Header */}

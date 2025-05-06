@@ -44,6 +44,7 @@ class WorldManager {
     const container = containerManager.getRefOrThrow();
     this.world.renderer = new OBCF.PostproductionRenderer(this.components, container);
     this.world.camera = new OBC.OrthoPerspectiveCamera(this.components);
+    this.world.camera.controls.setLookAt(183, 11, -102, 27, -52, -11);
 
     // Thiết lập các cấu hình cơ bản
     this.world.scene.setup();

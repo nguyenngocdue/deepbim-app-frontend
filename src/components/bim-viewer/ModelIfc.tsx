@@ -29,6 +29,7 @@ const ModelIfc: React.FC<ModelIfcProps> = (props) => {
   const worldRef = useRef<any>(null);
   const componentRef = useRef<any>(null);
   const modelRef = useRef<THREE.Object3D | null>(null);
+  
 
 
   const featureFlags = useFeatureFlags(flags);

@@ -9,6 +9,7 @@ import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
 import { OutlinePass } from "three/examples/jsm/postprocessing/OutlinePass.js";
 import { MultiSelectionManager } from "@/lib/selections/MultiSelectionManager";
+import { modelManager } from "@/services/ModelManager";
 
 
 interface SetupClickMarkerOptions {
@@ -19,7 +20,7 @@ interface SetupClickMarkerOptions {
   sphereColor?: string;
   sphereRadius?: number;
   focusCamera?: boolean;
-  onItemSelected?: () => void;
+  onItemSelected?: (result?: any) => void;
   onItemDeselected?: () => void;
 }
 
@@ -78,31 +79,11 @@ export function setupClickMarker({
     if (!result) return;
   
     const { localId, object, point } = result;
+    modelManager.setSelectedRayCasterElement(result);
     const selectedModel = fragments.models.list.get(object.name);
     if (!selectedModel) return;
 
 
-    // console.log(selectedModel);
-
-    // const highlightMaterial: FRAGS.MaterialDefinition = {
-    //     color: new THREE.Color("#ff00ff"),
-    //     renderedFaces: FRAGS.RenderedFaces.BOTH,
-    //     opacity: 1,
-    //     transparent: false,
-    //     emissive: new THREE.Color("#ff99cc"),
-    //     emissiveIntensity: 0.8,
-    //   };
-    
-    // const eles = await selectedModel.getItemsOfCategory("IFCSLAB");
-
-    // const ids = eles.map((item) => item._localId  );
-    // if(ids){
-    //   await selectedModel.highlight(ids, highlightMaterial)
-    // }
-  
- 
-
-  
     // Nếu không giữ Ctrl thì clear toàn bộ và chọn mới
     if (!event.ctrlKey) {
       await selectionManager.clear();
@@ -112,7 +93,7 @@ export function setupClickMarker({
     // Highlight lại toàn bộ
     await selectionManager.highlightAll();
   
-    onItemSelected();
+    onItemSelected(result);
     marker = createMarker(sphereRadius, sphereColor, point);
     world.scene.three.add(marker);
     world.renderer.three.render(world.scene.three, world.camera.three);
@@ -128,6 +109,7 @@ export function setupClickMarker({
   }
 
   const handleDoubleClick = async (event: MouseEvent) => {
+    onItemSelected();
     mouse.set(event.clientX, event.clientY);
 
     const result = await model.raycast({

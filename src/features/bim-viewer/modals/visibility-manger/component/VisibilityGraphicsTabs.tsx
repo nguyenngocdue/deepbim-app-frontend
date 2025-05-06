@@ -1,11 +1,5 @@
 // src/components/VisibilityGraphicsTabs.tsx
 import { useEffect, useState } from "react";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/tabs";
 import { DynamicTable } from "./DynamicTable";
 import { ColorPickerModal } from "./ColorPickerModal";
 import { TransparencyModal } from "./TransparencyModal";
@@ -15,6 +9,7 @@ import ModelTabsTemplate from "@/components/bim-viewer/common/ModelTabsTemplate"
 
 
 interface VisibilityGraphicsTabsProps {
+  hasInit: boolean,
   categories: string[];
   presetColors?: string[];
   checkedCategories: string[];
@@ -27,6 +22,7 @@ interface VisibilityGraphicsTabsProps {
 }
 
 export default function VisibilityGraphicsTabs({
+  hasInit = true,
   categories = defaultCategories,
   presetColors = defaultPresetColors,
   checkedCategories,
@@ -124,6 +120,7 @@ export default function VisibilityGraphicsTabs({
             />
           </div>
           <DynamicTable
+            hasInit={hasInit}
             categories={filteredCategories}
             categoryColors={categoryColors}
             categoryTransparencies={categoryTransparencies}
@@ -147,8 +144,6 @@ export default function VisibilityGraphicsTabs({
       ),
     },
   ];
-
-
 
 
   return (

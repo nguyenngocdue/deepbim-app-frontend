@@ -11,6 +11,7 @@ import { useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 
 interface DynamicTableProps {
+  hasInit: boolean,
   categories: string[];
   categoryColors: Record<string, string>;
   categoryTransparencies: Record<string, number>;
@@ -24,6 +25,7 @@ interface DynamicTableProps {
 }
 
 export function DynamicTable({
+  hasInit,
   categories,
   categoryColors,
   categoryTransparencies,
@@ -92,7 +94,7 @@ export function DynamicTable({
                 >
                   <TableCell className="text-center">
                     <Checkbox
-                      checked={checkedCategories.includes(cat)}
+                      checked={checkedCategories.includes(cat) || hasInit}
                       onCheckedChange={(checked) =>
                         onCheckboxChange(cat, Boolean(checked))
                       }
@@ -162,7 +164,7 @@ export function DynamicTable({
                 checkedCategories.length < categories.length;
             }
           }}
-          checked={checkedCategories.length === categories.length}
+          checked={checkedCategories.length === categories.length || hasInit}
           onCheckedChange={(checked) => {
             onCheckAllChange(Boolean(checked)); // ✅ gọi hàm thực sự cập nhật state cha
           }}

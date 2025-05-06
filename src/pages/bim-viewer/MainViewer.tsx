@@ -2,27 +2,20 @@ import React, { useEffect, useState } from "react";
 import { ViewCubeProvider } from "@/context/view-cube-context";
 import { ViewCubeProvider2 } from "@/context/view-cube-context2";
 import ModelIfc from "../../components/bim-viewer/ModelIfc";
-import FaceMeasurementGuide from "../../components/bim-viewer/guides/FaceMeasurementGuide";
 
 import {
   Panel,
   PanelGroup,
-  PanelResizeHandle,
 } from "react-resizable-panels";
-import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
-import FooterTabViewer from "../../components/layout/FooterTabViewer";
-import RightSidebarViewer from "../../components/layout/RightSidebarViewer";
 import DraggableHeaderViewer from "../../components/layout/DraggableHeaderViewer";
 import LeftHeader from "@/sections/LeftHeader";
 import { useLanguage } from "@/context/LanguageContext";
 import { UserManager } from "@/services/UserManager";
 import VisibilityManager from "@/features/bim-viewer/modals/visibility-manger";
-import CombineModelManager from "@/features/bim-viewer/modals/combine-model";
 import DraggableRightBarViewer from "@/components/layout/DraggableRightBarViewer";
+import CombineModelManager from "@/features/bim-viewer/modals/combine-model";
 
 const MainViewer: React.FC = () => {
-  const [isLeftCollapsed, setIsLeftCollapsed] = useState(false);
-  const [isRightCollapsed, setIsRightCollapsed] = useState(false);
   const { language, toggleLanguage } = useLanguage();
 
   useEffect(() => {
@@ -73,6 +66,13 @@ const MainViewer: React.FC = () => {
   const themeClass = theme === "dark" ? "" : "";
 
 
+  const sidebarTabs = [
+      {
+        name: "Combine Model",
+        value: "Combine Model",
+        content: <CombineModelManager />,
+      }
+    ];
   
   return (
     <>
@@ -88,8 +88,6 @@ const MainViewer: React.FC = () => {
           />
           <div className={` ${themeClass} h-full`}>
 
-            {!isModelReady && <FullscreenLoader progress={progress} message="Loading 3D model..." />}
-
             {/* HEADER */}
             <PanelGroup direction="vertical">
               <Panel defaultSize={60} minSize={30} >
@@ -104,18 +102,18 @@ const MainViewer: React.FC = () => {
                 </div>
                 <ModelIfc
                   {...states}
+                  onToggle={toggleState}
+                  navigationMode="Orbit"
+                  onModelReady={() => { console.log("Model is ready"); }}
+                  isVertical={false}
                 />
               </Panel>
               {
                 states.hasCombineModels &&
                 <DraggableRightBarViewer
-                  onToggle={toggleState}
-                  onToggleTheme={toggleTheme}
                   currentTheme={theme}
-                  handleFileSelect={() => { }}
-                  navigationMode="Orbit"
-                  states={states}
                   hasDirection={false}
+                  sidebarTabs={sidebarTabs}
 
                 />
               }

@@ -6,7 +6,7 @@ export const createHighlightMaterial = (
   transparency?: number // 0 (trong suốt) đến 100 (đậm đặc)
 ): FRAGS.MaterialDefinition => {
   const material: Partial<FRAGS.MaterialDefinition> = {
-    renderedFaces: FRAGS.RenderedFaces.BOTH,
+    renderedFaces: FRAGS.RenderedFaces.TWO,
   };
 
   if (colorCode) {
