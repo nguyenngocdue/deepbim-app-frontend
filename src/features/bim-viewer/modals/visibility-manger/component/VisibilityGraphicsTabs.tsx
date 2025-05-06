@@ -6,6 +6,7 @@ import { TransparencyModal } from "./TransparencyModal";
 import { defaultCategories, defaultPresetColors } from "./defaults";
 import { Input } from "@/components/ui/input";
 import ModelTabsTemplate from "@/components/bim-viewer/common/ModelTabsTemplate";
+import { Selections } from "./Selections";
 
 
 interface VisibilityGraphicsTabsProps {
@@ -135,13 +136,9 @@ export default function VisibilityGraphicsTabs({
       ),
     },
     {
-      label: "Filter",
-      value: "filter",
-      content: (
-        <p className="text-slate-300">
-          Filter tab coming soon... Stay tuned for some BIM magic! 😎
-        </p>
-      ),
+      label: "Selections",
+      value: "Selections",
+      content: <Selections/>,
     },
   ];
 

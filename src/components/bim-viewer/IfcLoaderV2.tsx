@@ -85,7 +85,7 @@ const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({ worldRef, componentRef, conta
           fragments,
           world,
           onItemSelected: (content) => handleItemSelected(content),
-          onItemDeselected: () => {},
+          onItemDeselected:() => handleItemDeselected(),
         });
 
         setProgress(100); // Hoàn tất tiến trình

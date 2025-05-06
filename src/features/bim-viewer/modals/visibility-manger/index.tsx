@@ -1,4 +1,3 @@
-import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import VisibilityGraphicsTabs from "./component/VisibilityGraphicsTabs";
 import { UserManager, UserSetting } from "@/services/UserManager";
 import { DialogTemplate } from "@/components/model-table/DialogTemplate";
@@ -107,7 +106,7 @@ const VisibilityManager = ({ open, onClose }: VisibilityManagerProps) => {
       }
     >
       
-        <div className="h-[500px]">
+        <div className="min-h-[600px] overflow-auto">
           <VisibilityGraphicsTabs
             hasInit={!hasData}
             categories={defaultCategories}

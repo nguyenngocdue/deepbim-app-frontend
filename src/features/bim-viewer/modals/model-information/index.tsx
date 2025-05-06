@@ -8,27 +8,27 @@ interface DraggableModelInformationProps {
   onClose: () => void;
 }
 
-export default function DraggableModelInformation({content, onClose}:DraggableModelInformationProps) {
-  
+export default function DraggableModelInformation({ content, onClose }: DraggableModelInformationProps) {
+
   const sidebarTabs = [
     {
       name: "Element Attributes",
       value: "Element Attributes",
       content: <ModelAttributes content={content} />,
     },
-    {
-      name: "Category",
-      value: "Category",
-      content: <ModelCategories content={content} />,
-    },
+    // {
+    //   name: "Category",
+    //   value: "Category",
+    //   content: <ModelCategories content={content} />,
+    // },
   ];
 
   return (
-      <DraggableRightBarViewer
-                       currentTheme={""}
-                       hasDirection={false}
-                       sidebarTabs={sidebarTabs}
-                       initialPosition={{x:10 , y:0}} 
-      />
+    <DraggableRightBarViewer
+      currentTheme={""}
+      hasDirection={false}
+      sidebarTabs={sidebarTabs}
+      initialPosition={{ x: 10, y: 10 }}
+    />
   );
 }

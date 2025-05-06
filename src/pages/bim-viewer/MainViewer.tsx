@@ -14,6 +14,7 @@ import { UserManager } from "@/services/UserManager";
 import VisibilityManager from "@/features/bim-viewer/modals/visibility-manger";
 import DraggableRightBarViewer from "@/components/layout/DraggableRightBarViewer";
 import CombineModelManager from "@/features/bim-viewer/modals/combine-model";
+import TestMultiSelect from "@/features/bim-viewer/modals/model-information/components/TestMultiSelect";
 
 const MainViewer: React.FC = () => {
   const { language, toggleLanguage } = useLanguage();
@@ -87,11 +88,9 @@ const MainViewer: React.FC = () => {
             navigationMode="Orbit"
             states={states}
           />
+          
           <div className={` ${themeClass} h-full`}>
-
             {/* HEADER */}
-            <PanelGroup direction="vertical">
-              <Panel defaultSize={60} minSize={30} >
                 <div className="absolute top-0 z-50 right-0 p-4">
                   <LeftHeader
                     toggleLanguage={toggleLanguage}
@@ -108,7 +107,6 @@ const MainViewer: React.FC = () => {
                   onModelReady={() => { console.log("Model is ready"); }}
                   isVertical={false}
                 />
-              </Panel>
               {
                 states.hasCombineModels &&
                 <DraggableRightBarViewer
@@ -117,7 +115,6 @@ const MainViewer: React.FC = () => {
                   sidebarTabs={sidebarTabs}
                 />
               }
-            </PanelGroup>
           </div>
         </ViewCubeProvider2>
       </ViewCubeProvider>

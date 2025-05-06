@@ -1,37 +1,38 @@
 import React, { useState } from "react";
+import Select from "react-select";
+
+const options = [
+  { value: "IFCWALL", label: "IFCWALL" },
+  { value: "IFCDOOR", label: "IFCDOOR" },
+];
 
 const TestMultiSelect = () => {
-  const [selected, setSelected] = useState<string[]>([]);
-
-  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedOptions = Array.from(e.target.selectedOptions).map(
-      (option) => option.value
-    );
-    setSelected(selectedOptions);
-  };
+  const [selectedOptions, setSelectedOptions] = useState<{ value: string; label: string }[]>([]);
 
   return (
-    <div className="p-4">
-      <label className="block mb-2 text-sm font-medium text-white">
-        Chọn nhiều category (HTML thuần)
-      </label>
-      <select
-        multiple
-        onChange={handleChange}
-        className="w-full h-40 bg-slate-800 text-white border border-slate-600 rounded p-2"
-      >
-        <option value="IFCWALL">IFCWALL</option>
-        <option value="IFCDOOR">IFCDOOR</option>
-        <option value="IFCWINDOW">IFCWINDOW</option>
-        <option value="IFCFLOOR">IFCFLOOR</option>
-        <option value="IFCSTAIR">IFCSTAIR</option>
-      </select>
+    <div className="p-8 bg-slate-900 min-h-screen text-white">
+      <h1 className="text-lg font-semibold mb-4">Test Multi-Select Dropdown</h1>
+      
+      <div className="relative z-50 overflow-visible">
+        <Select
+          isMulti
+          options={options}
+          value={selectedOptions}
+          onChange={(options) => setSelectedOptions(options as any)}
+          placeholder="Chọn category..."
+          className="text-black"
+          styles={{
+            menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+          }}
+          menuPortalTarget={document.body}
+        />
+      </div>
 
-      <div className="mt-4 text-white">
-        <strong>Đã chọn:</strong>
-        <ul className="list-disc ml-5 mt-1 text-cyan-400">
-          {selected.map((cat) => (
-            <li key={cat}>{cat}</li>
+      <div className="mt-6">
+        <p className="text-sm">Bạn đã chọn:</p>
+        <ul className="list-disc list-inside text-sky-400">
+          {selectedOptions.map((opt) => (
+            <li key={opt.value}>{opt.label}</li>
           ))}
         </ul>
       </div>

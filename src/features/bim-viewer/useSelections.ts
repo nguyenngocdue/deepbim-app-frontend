@@ -22,7 +22,7 @@ export function useSelections() {
       }
     }
   };
-  
+
 
   const onToggleVisibility = async () => {
     if (!firstEntry) return;
@@ -50,7 +50,7 @@ export function useSelections() {
     await fragments.update();
   };
 
-  const onHide = async ()  => {
+  const onHide = async () => {
     if (!firstEntry) return;
     const [model, idsToHideSet] = firstEntry;
     const idsToHide = Array.from(idsToHideSet);
@@ -59,81 +59,26 @@ export function useSelections() {
 
 
   const onHideByIFCType = async () => {
-    const components = worldManager.getComponents();
-    if (!components) return;
-  
-    const fragments = components.get(OBC.FragmentsManager);
-    const selection = highlighter.selection.select;
-  
-    // Exit if there's no selected element
-    if (Object.keys(selection).length === 0) return;
-  
-    // Get fragment ID and express ID of the selected element
-    const [fragmentID, expressIDs] = Object.entries(selection)[0];
-    const selectedExpressID = Array.from(expressIDs as Set<number>)[0];
-  
-    // Get the model and properties of the selected element
-    const model = await modelManager.waitForModel();
-    const selectedProps = await model.getProperties(selectedExpressID);
-    const selectedType = selectedProps.type; // e.g. "IfcWall", "IfcDoor", etc.
-    if (!selectedType) return;
-  
-    // Loop through all fragments in the scene
-    for (const [, fragment] of fragments.list) {
-      for (const expressID of fragment.ids) {
-        const props = await model.getProperties(expressID);
-        console.log(props, selectedType);
-  
-        // Hide the fragment if it belongs to the same IFC type
-        if (props.type === selectedType) {
-          fragment.setVisibility(false);
-        }
-      }
+    const selections = selectionManager.getSelections();
+    for (const [model, selectedSet] of selections.entries()) {
+      const cate = model.getCategories();
+      console.log(cate);
     }
+   
   };
-  
-  const onIsolateByIFCType = async ()  => {
-    const components = worldManager.getComponents();
-    if (!components) return;
-  
-    const fragments = components.get(OBC.FragmentsManager);
-    const selection = highlighter.selection.select;
-  
-    // Exit if there's no selected element
-    if (Object.keys(selection).length === 0) return;
-  
-    // Get fragment ID and express ID of the selected element
-    const [fragmentID, expressIDs] = Object.entries(selection)[0];
-    const selectedExpressID = Array.from(expressIDs as Set<number>)[0];
-  
-    // Get the model and properties of the selected element
-    const model = await modelManager.waitForModel();
-    const selectedProps = await model.getProperties(selectedExpressID);
-    const selectedType = selectedProps.type; // e.g. "IfcWall", "IfcDoor", etc.
-    if (!selectedType) return;
-  
-    // Loop through all fragments in the scene
-    for (const [, fragment] of fragments.list) {
-      for (const expressID of fragment.ids) {
-        const props = await model.getProperties(expressID);
-        console.log(props, selectedType);
-        // Hide the fragment if it belongs to the same IFC type
-        if (props.type !== selectedType) {
-          fragment.setVisibility(false);
-        }
-      }
 
-      }
-    }
-  
+  const onIsolateByIFCType = async () => {
+
+  }
+
   const onFocusSelection = async () => {
- 
+
   };
 
   const onShowProperties = async () => {
     const components = worldManager.getComponents();
     if (!components) return;
-  
+
     const fragments = components.get(OBC.FragmentsManager);
     const selection = highlighter.selection.select;
     const [uuid, expressIDs] = Object.entries(selection)[0];
@@ -153,7 +98,7 @@ export function useSelections() {
         if (typeof element.getItemsByVisibility === "function") {
           const unVisibleElementIds = await element.getItemsByVisibility(false);
           const visibleElementIds = await element.getItemsByVisibility(true);
-          
+
           await element?.setVisible(unVisibleElementIds, true);
           await element?.setVisible(visibleElementIds, false);
         }
@@ -161,7 +106,7 @@ export function useSelections() {
     }
   }
 
-  return { 
+  return {
     isolate,
     onToggleVisibility,
     onShowAll,
@@ -171,5 +116,5 @@ export function useSelections() {
     onIsolateByIFCType,
     onShowProperties,
     onToggleElements,
-   };
+  };
 }

@@ -100,11 +100,6 @@ const ModelCategories: React.FC<{ content: Content }> = ({ content }) => {
             setSelectedCategories(options as { value: string; label: string }[]);
           }}
           placeholder="Chọn một hoặc nhiều category"
-          menuPortalTarget={document.body}
-          styles={{
-            menuPortal: (base) => ({ ...base, zIndex: 9999 }),
-          }}
-          className="text-black mb-4"
         />
       </div>
 
