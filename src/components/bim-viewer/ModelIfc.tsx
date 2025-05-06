@@ -41,9 +41,9 @@ const ModelIfc: React.FC<ModelIfcProps> = (props) => {
   const isolate = selections?.isolate || (() => { });
   const onShowAll = selections?.onShowAll || (() => { });
   const onHide = selections?.onHide || (() => { });
-  const onHideByIFCType = selections?.onHideByIFCType || (() => { });
+  const onHideByIFCCate = selections?.onHideByIFCCate || (() => { });
   const onFocusSelection = selections?.onFocusSelection || (() => { });
-  const onIsolateByIFCType = selections?.onIsolateByIFCType || (() => { });
+  const onIsolateByIFCCate = selections?.onIsolateByIFCCate || (() => { });
   const onShowProperties = selections?.onShowProperties || (() => { });
   const onToggleVisibility = selections?.onToggleVisibility || (() => { });
   const onToggleElements = selections?.onToggleElements || (() => { });
@@ -100,13 +100,13 @@ const ModelIfc: React.FC<ModelIfcProps> = (props) => {
                 onHide();
                 break;
               case "hideByIFCType":
-                onHideByIFCType();
+                onHideByIFCCate();
                 break;
               case "focusSelection":
                 onFocusSelection();
                 break;
-              case "onIsolateByIFCType":
-                onIsolateByIFCType();
+              case "onIsolateByIFCCate":
+                onIsolateByIFCCate();
                 break;
               case "onShowProperties":
                 onShowProperties();

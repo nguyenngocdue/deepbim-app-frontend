@@ -29,9 +29,9 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ x, y, onAction, onClose }) =>
           { icon: <TbSquareToggle />, label: "Toggle Last Hidden", action: "onToggleVisibility" },
           { icon: <BsToggle2Off  />, label: "Toggle Elements", action: "onToggleElements" },
           { icon: <BiBorderInner />, label: "Isolate", action: "isolate" },
-          { icon: <GrFormViewHide/>, label: "Isolate by IFC type", action: "onIsolateByIFCType" },
+          { icon: <GrFormViewHide/>, label: "Isolate by Category", action: "onIsolateByIFCCate" },
           { icon: <VscEyeClosed />, label: "Hide", action: "hide" },
-          { icon: <MdOutlineHideSource/>, label: "Hide by IFC type", action: "hideByIFCType" },
+          { icon: <MdOutlineHideSource/>, label: "Hide by Category", action: "hideByIFCType" },
           { icon: <FiMaximize/>, label: "Focus on selection", action: "focusSelection" },
           { icon: <AiOutlineInfoCircle/>, label: "Properties", action: "onShowProperties" },
         ].map((item) => (

@@ -58,16 +58,52 @@ export function useSelections() {
   }
 
 
-  const onHideByIFCType = async () => {
+  const onHideByIFCCate = async () => {
     const selections = selectionManager.getSelections();
     for (const [model, selectedSet] of selections.entries()) {
-      const cate = model.getCategories();
-      console.log(cate);
+      const data = await model.getItemsData(Array.from(selectedSet), {
+        attributes: ["Category", "Type", "Name"],
+        attributesDefault: false,
+      });
+      const category  = data[0]._category.value;
+      const itemsOfCate = await model.getItemsOfCategory(category);
+      const localIds = (
+        await Promise.all(itemsOfCate.map((item) => item.getLocalId()))
+      ).filter((localId) => localId !== null) as number[];
+      if (typeof model.getItemsByVisibility === "function") {
+        const visibleIds = await model.getItemsByVisibility(true);
+        // Lọc ra những ID đang hiển thị mà không nằm trong selectedSet
+        const idsToHide = visibleIds.filter(id => localIds.includes(id));
+        await model.setVisible(idsToHide, false);
+      }
+      
+
     }
    
   };
 
-  const onIsolateByIFCType = async () => {
+  const onIsolateByIFCCate = async () => {
+    const selections = selectionManager.getSelections();
+    for (const [model, selectedSet] of selections.entries()) {
+      const data = await model.getItemsData(Array.from(selectedSet), {
+        attributes: ["Category", "Type", "Name"],
+        attributesDefault: false,
+      });
+      const category  = data[0]._category.value;
+      const itemsOfCate = await model.getItemsOfCategory(category);
+      const localIds = (
+        await Promise.all(itemsOfCate.map((item) => item.getLocalId()))
+      ).filter((localId) => localId !== null) as number[];
+      if (typeof model.getItemsByVisibility === "function") {
+        const visibleIds = await model.getItemsByVisibility(true);
+        // Lọc ra những ID đang hiển thị mà không nằm trong selectedSet
+        const idsToHide = visibleIds.filter(id => !localIds.includes(id));
+        await model.setVisible(idsToHide, false);
+      }
+      
+
+    }
+    
 
   }
 
@@ -111,9 +147,9 @@ export function useSelections() {
     onToggleVisibility,
     onShowAll,
     onHide,
-    onHideByIFCType,
+    onHideByIFCCate,
     onFocusSelection,
-    onIsolateByIFCType,
+    onIsolateByIFCCate,
     onShowProperties,
     onToggleElements,
   };
