@@ -16,7 +16,7 @@ export default function SidebarTabs({
             <TabsTrigger
               key={tab.value}
               value={tab.value}
-              className="px-3 py-1.5 text-sm font-medium text-slate-300 data-[state=active]:bg-white data-[state=active]:text-slate-900 rounded-md transition-colors hover:text-white"
+              className="px-5 py-2 text-sm font-medium text-slate-300 data-[state=active]:bg-blue-600  data-[state=active]:text-white rounded-lg transition-all hover:text-white"
             >
               {tab.name}
             </TabsTrigger>

@@ -58,11 +58,11 @@ export default function DraggableTemplate({
     >
       <div
         ref={nodeRef}
-        className="fixed rounded-lg border-zinc-800 shadow-lg bg-zinc-900 text-white text-sm overflow-auto border-lg"
+        className="fixed rounded-lg border-zinc-800 shadow-lg text-white text-sm overflow-auto border-lg"
         style={{ top: 0, left: 0 }}
       >
         {/* Header */}
-        <div className="drag-handle flex justify-between items-center p-1 bg-zinc-800 text-xs text-slate-300 cursor-move">
+        <div className="drag-handle flex justify-between items-center p-1 text-xs text-slate-300 cursor-move">
           <span className="truncate">{title}</span>
           <div className="flex justify-between items-center gap-1 ml-auto">
             {hasDirection && (
