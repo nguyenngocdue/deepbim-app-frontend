@@ -17,6 +17,7 @@ import CombineModelManager from "@/features/bim-viewer/modals/combine-model";
 
 const MainViewer: React.FC = () => {
   const { language, toggleLanguage } = useLanguage();
+  const [showPanel, setShowPanel] = useState(true);
 
   useEffect(() => {
     const fetchUserSetting = async () => {
@@ -114,7 +115,6 @@ const MainViewer: React.FC = () => {
                   currentTheme={theme}
                   hasDirection={false}
                   sidebarTabs={sidebarTabs}
-
                 />
               }
             </PanelGroup>

@@ -7,20 +7,22 @@ export default function DraggableRightBarViewer(props: {
   hasDirection: boolean; 
   sidebarTabs: any; 
   initialPosition?: { x: number; y: number }; 
+  visible: boolean,
+  onClose: () => void,
 }) {
   const screenSize = useViewportSize();
   const { 
     hasDirection, 
     sidebarTabs, 
-    initialPosition = { x: screenSize.width - 400, y: 50 } 
+    initialPosition = { x: screenSize.width - 400, y: 50 },
+    visible = true,
+    onClose,
   } = props;
   
   return (
-    <DraggableTemplate hasDirection={hasDirection} initialPosition={initialPosition}>
+    <DraggableTemplate hasDirection={hasDirection} initialPosition={initialPosition} visible={visible} onClose={onClose}>
       {() => (
-        <Panel defaultSize={20} minSize={5} maxSize={50} className="">
           <RightSidebarViewer themeClass="dark-theme" tabs={sidebarTabs} />
-        </Panel>
       )}
     </DraggableTemplate>
   );

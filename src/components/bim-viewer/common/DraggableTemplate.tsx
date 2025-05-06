@@ -6,6 +6,8 @@ interface DraggableTemplateProps {
   children?: (isVertical: boolean) => ReactNode;
   initialPosition?: { x: number; y: number };
   hasDirection?: boolean;
+  visible?: boolean;
+  onClose?: () => void;
 }
 
 export default function DraggableTemplate({
@@ -13,6 +15,8 @@ export default function DraggableTemplate({
   children,
   initialPosition = { x: 100, y: 100 },
   hasDirection = true,
+  visible = true,
+  onClose,
 }: DraggableTemplateProps) {
   const nodeRef = useRef(null);
   const [isVertical, setIsVertical] = useState(false);
@@ -25,7 +29,6 @@ export default function DraggableTemplate({
   const handleDrag = (_: DraggableEvent, data: DraggableData) => {
     const clampedX = Math.max(0, Math.min(data.x, window.innerWidth - 100));
     const clampedY = Math.max(0, Math.min(data.y, window.innerHeight - 100));
-
     setPosition({ x: clampedX, y: clampedY });
     setRatio({
       x: clampedX / window.innerWidth,
@@ -44,6 +47,8 @@ export default function DraggableTemplate({
     return () => window.removeEventListener("resize", handleResize);
   }, [ratio]);
 
+  if (!visible) return null;
+
   return (
     <Draggable
       handle=".drag-handle"
@@ -53,23 +58,33 @@ export default function DraggableTemplate({
     >
       <div
         ref={nodeRef}
-        className="fixed rounded-lg border border-zinc-800 shadow-lg " //overflow-auto max-h-[90vh]
+        className="fixed rounded-lg border-zinc-800 shadow-lg bg-zinc-900 text-white text-sm overflow-auto border-lg"
         style={{ top: 0, left: 0 }}
       >
         {/* Header */}
-        <div className="drag-handle flex justify-between items-center p-2 bg-zinc-800 text-xs text-slate-300">
-          {title && <span>{title}</span>}
-          <div className="flex items-center gap-1">
+        <div className="drag-handle flex justify-between items-center p-1 bg-zinc-800 text-xs text-slate-300 cursor-move">
+          <span className="truncate">{title}</span>
+          <div className="flex justify-between items-center gap-1 ml-auto">
             {hasDirection && (
               <button
                 onClick={() => setIsVertical((prev) => !prev)}
-                className="px-1 py-0.5 rounded bg-zinc-700 hover:bg-zinc-600"
+                className=""
+                title="Toggle layout direction"
               >
                 {isVertical ? "↔" : "↕"}
               </button>
             )}
-            <div>
-                {children?.(isVertical)}
+            {onClose && (
+              <button
+                onClick={onClose}
+                className="px-2 text-sm rounded bg-red-600 hover:bg-red-500 text-white"
+                title="Close"
+              >
+                ✕
+              </button>
+            )}
+            <div className="p-2 max-h-[90vh] overflow-auto ">
+              {children?.(isVertical)}
             </div>
           </div>
         </div>

@@ -1,6 +1,5 @@
 import DraggableRightBarViewer from "@/components/layout/DraggableRightBarViewer";
 import ModelAttributes from "./components/ModelAttributes";
-import CategoryChart from "./components/ModelCategories";
 import ModelCategories from "./components/ModelCategories";
 import TestMultiSelect from "./components/TestMultiSelect";
 
@@ -22,11 +21,6 @@ export default function DraggableModelInformation({content, onClose}:DraggableMo
       value: "Category",
       content: <ModelCategories content={content} />,
     },
-    {
-      name: "Category",
-      value: "Category",
-      content: <TestMultiSelect content={content} />,
-    }
   ];
 
   return (
@@ -34,7 +28,7 @@ export default function DraggableModelInformation({content, onClose}:DraggableMo
                        currentTheme={""}
                        hasDirection={false}
                        sidebarTabs={sidebarTabs}
-                      //  initialPosition={{x:0 , y:0}} 
+                       initialPosition={{x:10 , y:0}} 
       />
   );
 }
