@@ -79,6 +79,9 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
                         <MenuItem icon={<HiHomeModern size={18} />} component={<Link to="/managements/home" />}>Home</MenuItem>
                         <MenuItem icon={<MdWorkspaces  size={18} />} component={<Link to="/managements/spaces" />}>Spaces</MenuItem>
                         <MenuItem icon={<IoPerson  size={18} />} component={<Link to="/managements/me" />}>Me</MenuItem>
+                        
+                        {!collapsed && <div className="px-4 pt-2 pb-1 uppercase text-xs tracking-wide text-slate-400">Project Managerment</div>}
+                        <MenuItem icon={<IoPerson  size={18} />} component={<Link to="/managements/cloud" />}>Data</MenuItem>
                         </Menu>
 
 
