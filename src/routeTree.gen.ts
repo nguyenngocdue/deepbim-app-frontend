@@ -39,7 +39,10 @@ import { Route as AuthenticatedBimViewerUtGeometrySceneViewcubeImport } from './
 import { Route as AuthenticatedBimViewerUtIfcViewerSelectionImport } from './routes/_authenticated/bim-viewer-ut/Ifc-viewer-selection'
 import { Route as AuthenticatedAppLayoutImport } from './routes/_authenticated/app/_layout'
 import { Route as AuthenticatedViewUploadIndexImport } from './routes/_authenticated/view/upload/index'
+import { Route as AuthenticatedManagementsLayoutSubProjectsImport } from './routes/_authenticated/managements/_layout/sub-projects'
+import { Route as AuthenticatedManagementsLayoutStorageImport } from './routes/_authenticated/managements/_layout/storage'
 import { Route as AuthenticatedManagementsLayoutSpacesImport } from './routes/_authenticated/managements/_layout/spaces'
+import { Route as AuthenticatedManagementsLayoutProjectsImport } from './routes/_authenticated/managements/_layout/projects'
 import { Route as AuthenticatedManagementsLayoutMeImport } from './routes/_authenticated/managements/_layout/me'
 import { Route as AuthenticatedManagementsLayoutHomeImport } from './routes/_authenticated/managements/_layout/home'
 import { Route as AuthenticatedManagementsLayoutCloudImport } from './routes/_authenticated/managements/_layout/cloud'
@@ -353,10 +356,31 @@ const AuthenticatedViewUploadIndexRoute =
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 
+const AuthenticatedManagementsLayoutSubProjectsRoute =
+  AuthenticatedManagementsLayoutSubProjectsImport.update({
+    id: '/sub-projects',
+    path: '/sub-projects',
+    getParentRoute: () => AuthenticatedManagementsLayoutRoute,
+  } as any)
+
+const AuthenticatedManagementsLayoutStorageRoute =
+  AuthenticatedManagementsLayoutStorageImport.update({
+    id: '/storage',
+    path: '/storage',
+    getParentRoute: () => AuthenticatedManagementsLayoutRoute,
+  } as any)
+
 const AuthenticatedManagementsLayoutSpacesRoute =
   AuthenticatedManagementsLayoutSpacesImport.update({
     id: '/spaces',
     path: '/spaces',
+    getParentRoute: () => AuthenticatedManagementsLayoutRoute,
+  } as any)
+
+const AuthenticatedManagementsLayoutProjectsRoute =
+  AuthenticatedManagementsLayoutProjectsImport.update({
+    id: '/projects',
+    path: '/projects',
     getParentRoute: () => AuthenticatedManagementsLayoutRoute,
   } as any)
 
@@ -728,11 +752,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedManagementsLayoutMeImport
       parentRoute: typeof AuthenticatedManagementsLayoutImport
     }
+    '/_authenticated/managements/_layout/projects': {
+      id: '/_authenticated/managements/_layout/projects'
+      path: '/projects'
+      fullPath: '/managements/projects'
+      preLoaderRoute: typeof AuthenticatedManagementsLayoutProjectsImport
+      parentRoute: typeof AuthenticatedManagementsLayoutImport
+    }
     '/_authenticated/managements/_layout/spaces': {
       id: '/_authenticated/managements/_layout/spaces'
       path: '/spaces'
       fullPath: '/managements/spaces'
       preLoaderRoute: typeof AuthenticatedManagementsLayoutSpacesImport
+      parentRoute: typeof AuthenticatedManagementsLayoutImport
+    }
+    '/_authenticated/managements/_layout/storage': {
+      id: '/_authenticated/managements/_layout/storage'
+      path: '/storage'
+      fullPath: '/managements/storage'
+      preLoaderRoute: typeof AuthenticatedManagementsLayoutStorageImport
+      parentRoute: typeof AuthenticatedManagementsLayoutImport
+    }
+    '/_authenticated/managements/_layout/sub-projects': {
+      id: '/_authenticated/managements/_layout/sub-projects'
+      path: '/sub-projects'
+      fullPath: '/managements/sub-projects'
+      preLoaderRoute: typeof AuthenticatedManagementsLayoutSubProjectsImport
       parentRoute: typeof AuthenticatedManagementsLayoutImport
     }
     '/_authenticated/view/upload/': {
@@ -786,7 +831,10 @@ interface AuthenticatedManagementsLayoutRouteChildren {
   AuthenticatedManagementsLayoutCloudRoute: typeof AuthenticatedManagementsLayoutCloudRoute
   AuthenticatedManagementsLayoutHomeRoute: typeof AuthenticatedManagementsLayoutHomeRoute
   AuthenticatedManagementsLayoutMeRoute: typeof AuthenticatedManagementsLayoutMeRoute
+  AuthenticatedManagementsLayoutProjectsRoute: typeof AuthenticatedManagementsLayoutProjectsRoute
   AuthenticatedManagementsLayoutSpacesRoute: typeof AuthenticatedManagementsLayoutSpacesRoute
+  AuthenticatedManagementsLayoutStorageRoute: typeof AuthenticatedManagementsLayoutStorageRoute
+  AuthenticatedManagementsLayoutSubProjectsRoute: typeof AuthenticatedManagementsLayoutSubProjectsRoute
 }
 
 const AuthenticatedManagementsLayoutRouteChildren: AuthenticatedManagementsLayoutRouteChildren =
@@ -797,8 +845,14 @@ const AuthenticatedManagementsLayoutRouteChildren: AuthenticatedManagementsLayou
       AuthenticatedManagementsLayoutHomeRoute,
     AuthenticatedManagementsLayoutMeRoute:
       AuthenticatedManagementsLayoutMeRoute,
+    AuthenticatedManagementsLayoutProjectsRoute:
+      AuthenticatedManagementsLayoutProjectsRoute,
     AuthenticatedManagementsLayoutSpacesRoute:
       AuthenticatedManagementsLayoutSpacesRoute,
+    AuthenticatedManagementsLayoutStorageRoute:
+      AuthenticatedManagementsLayoutStorageRoute,
+    AuthenticatedManagementsLayoutSubProjectsRoute:
+      AuthenticatedManagementsLayoutSubProjectsRoute,
   }
 
 const AuthenticatedManagementsLayoutRouteWithChildren =
@@ -926,7 +980,10 @@ export interface FileRoutesByFullPath {
   '/managements/cloud': typeof AuthenticatedManagementsLayoutCloudRoute
   '/managements/home': typeof AuthenticatedManagementsLayoutHomeRoute
   '/managements/me': typeof AuthenticatedManagementsLayoutMeRoute
+  '/managements/projects': typeof AuthenticatedManagementsLayoutProjectsRoute
   '/managements/spaces': typeof AuthenticatedManagementsLayoutSpacesRoute
+  '/managements/storage': typeof AuthenticatedManagementsLayoutStorageRoute
+  '/managements/sub-projects': typeof AuthenticatedManagementsLayoutSubProjectsRoute
   '/view/upload': typeof AuthenticatedViewUploadIndexRoute
 }
 
@@ -972,7 +1029,10 @@ export interface FileRoutesByTo {
   '/managements/cloud': typeof AuthenticatedManagementsLayoutCloudRoute
   '/managements/home': typeof AuthenticatedManagementsLayoutHomeRoute
   '/managements/me': typeof AuthenticatedManagementsLayoutMeRoute
+  '/managements/projects': typeof AuthenticatedManagementsLayoutProjectsRoute
   '/managements/spaces': typeof AuthenticatedManagementsLayoutSpacesRoute
+  '/managements/storage': typeof AuthenticatedManagementsLayoutStorageRoute
+  '/managements/sub-projects': typeof AuthenticatedManagementsLayoutSubProjectsRoute
   '/view/upload': typeof AuthenticatedViewUploadIndexRoute
 }
 
@@ -1023,7 +1083,10 @@ export interface FileRoutesById {
   '/_authenticated/managements/_layout/cloud': typeof AuthenticatedManagementsLayoutCloudRoute
   '/_authenticated/managements/_layout/home': typeof AuthenticatedManagementsLayoutHomeRoute
   '/_authenticated/managements/_layout/me': typeof AuthenticatedManagementsLayoutMeRoute
+  '/_authenticated/managements/_layout/projects': typeof AuthenticatedManagementsLayoutProjectsRoute
   '/_authenticated/managements/_layout/spaces': typeof AuthenticatedManagementsLayoutSpacesRoute
+  '/_authenticated/managements/_layout/storage': typeof AuthenticatedManagementsLayoutStorageRoute
+  '/_authenticated/managements/_layout/sub-projects': typeof AuthenticatedManagementsLayoutSubProjectsRoute
   '/_authenticated/view/upload/': typeof AuthenticatedViewUploadIndexRoute
 }
 
@@ -1072,7 +1135,10 @@ export interface FileRouteTypes {
     | '/managements/cloud'
     | '/managements/home'
     | '/managements/me'
+    | '/managements/projects'
     | '/managements/spaces'
+    | '/managements/storage'
+    | '/managements/sub-projects'
     | '/view/upload'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -1117,7 +1183,10 @@ export interface FileRouteTypes {
     | '/managements/cloud'
     | '/managements/home'
     | '/managements/me'
+    | '/managements/projects'
     | '/managements/spaces'
+    | '/managements/storage'
+    | '/managements/sub-projects'
     | '/view/upload'
   id:
     | '__root__'
@@ -1166,7 +1235,10 @@ export interface FileRouteTypes {
     | '/_authenticated/managements/_layout/cloud'
     | '/_authenticated/managements/_layout/home'
     | '/_authenticated/managements/_layout/me'
+    | '/_authenticated/managements/_layout/projects'
     | '/_authenticated/managements/_layout/spaces'
+    | '/_authenticated/managements/_layout/storage'
+    | '/_authenticated/managements/_layout/sub-projects'
     | '/_authenticated/view/upload/'
   fileRoutesById: FileRoutesById
 }
@@ -1379,7 +1451,10 @@ export const routeTree = rootRoute
         "/_authenticated/managements/_layout/cloud",
         "/_authenticated/managements/_layout/home",
         "/_authenticated/managements/_layout/me",
-        "/_authenticated/managements/_layout/spaces"
+        "/_authenticated/managements/_layout/projects",
+        "/_authenticated/managements/_layout/spaces",
+        "/_authenticated/managements/_layout/storage",
+        "/_authenticated/managements/_layout/sub-projects"
       ]
     },
     "/_authenticated/view/$fileCode": {
@@ -1441,8 +1516,20 @@ export const routeTree = rootRoute
       "filePath": "_authenticated/managements/_layout/me.tsx",
       "parent": "/_authenticated/managements/_layout"
     },
+    "/_authenticated/managements/_layout/projects": {
+      "filePath": "_authenticated/managements/_layout/projects.tsx",
+      "parent": "/_authenticated/managements/_layout"
+    },
     "/_authenticated/managements/_layout/spaces": {
       "filePath": "_authenticated/managements/_layout/spaces.tsx",
+      "parent": "/_authenticated/managements/_layout"
+    },
+    "/_authenticated/managements/_layout/storage": {
+      "filePath": "_authenticated/managements/_layout/storage.tsx",
+      "parent": "/_authenticated/managements/_layout"
+    },
+    "/_authenticated/managements/_layout/sub-projects": {
+      "filePath": "_authenticated/managements/_layout/sub-projects.tsx",
       "parent": "/_authenticated/managements/_layout"
     },
     "/_authenticated/view/upload/": {

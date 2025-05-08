@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Sidebar, Menu, MenuItem } from "react-pro-sidebar"
+import { Sidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar"
 import {
     ChevronLeft,
     ChevronRight,
@@ -17,10 +17,11 @@ import { Button } from "../ui/button"
 import { IoPerson } from "react-icons/io5"
 import { MdWorkspaces } from "react-icons/md"
 import { HiHomeModern } from "react-icons/hi2"
-import { Separator } from "../ui/separator"
+import { GrProjects, GrVirtualStorage } from "react-icons/gr"
+import { TiFlowChildren } from "react-icons/ti";
 
 export default function SidebarLayout({ children }: { children: React.ReactNode }) {
-    const [collapsed, setCollapsed] = useState(()=> {
+    const [collapsed, setCollapsed] = useState(() => {
         const stored = localStorage.getItem('sidebar-collapsed');
         return stored === 'true';// localStorage lưu kiểu string, nên phải so sánh
     });
@@ -29,7 +30,7 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
 
     const toggleTheme = () => {
         setTheme(theme === "light" ? "dark" : "light");
-      };
+    };
 
     return (
         <div className="flex min-h-screen bg-behind text-white relative">
@@ -43,7 +44,7 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
                 >
                     {/* Logo and Title */}
                     <div className="flex items-center justify-center  px-2 py-3 border-b border-[#1c1c2a] shadow-sm">
-                        <LogoWord isHiddenText={true} path="/images/logo_no_bg.png" size="md"/>
+                        <LogoWord isHiddenText={true} path="/images/logo_no_bg.png" size="md" />
                         {!collapsed && (
                             <h1 className="text-transparent text-white text-base font-heading tracking-wider">
                                 DeepBIM
@@ -53,36 +54,45 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
 
                     <Menu
                         menuItemStyles={{
-                            button: {
-                            padding: "12px 20px",
-                            fontWeight: 500,
-                            fontSize: "0.925rem",
-                            color: "white",
-                            [`&:hover`]: {
-                                backgroundColor: "#020817",
-                                color: "#60a5fa", // text màu đen khi hover
-                            },
-                            [`&.active`]: {
-                                backgroundColor: "#1d283a",
-                                color: "#60a5fa",
-                            },
-                            [`& svg`]: {
-                                transition: "color 0.3s ease",
-                            },
-                            [`&:hover svg`]: {
-                                color: "#0c5abb", // icon chuyển sang đen khi hover
-                            },
-                            },
+                            button: ({ level, active }) => ({
+                                backgroundColor: active ? "#1d283a" : level > 0 ? "#0f172a" : "transparent",
+                                color: active ? "#60a5fa" : "#f8fafc",
+                                padding: "12px 20px",
+                                fontWeight: 500,
+                                fontSize: "0.925rem",
+                                [`&:hover`]: {
+                                    backgroundColor: "#1e293b",
+                                    color: "#60a5fa",
+                                },
+                                [`& svg`]: {
+                                    transition: "color 0.3s ease",
+                                    color: active ? "#60a5fa" : undefined,
+                                },
+                                [`&:hover svg`]: {
+                                    color: "#3b82f6",
+                                },
+                            }),
+                            label: {
+                                fontSize: "0.925rem",
+                            }
                         }}
-                        >
+                    >
+
                         {!collapsed && <div className="px-4 pt-2 pb-1 uppercase text-xs tracking-wide text-slate-400">General</div>}
                         <MenuItem icon={<HiHomeModern size={18} />} component={<Link to="/managements/home" />}>Home</MenuItem>
-                        <MenuItem icon={<MdWorkspaces  size={18} />} component={<Link to="/managements/spaces" />}>Spaces</MenuItem>
-                        <MenuItem icon={<IoPerson  size={18} />} component={<Link to="/managements/me" />}>Me</MenuItem>
-                        
+                        <MenuItem icon={<MdWorkspaces size={18} />} component={<Link to="/managements/spaces" />}>Spaces</MenuItem>
+                        <MenuItem icon={<IoPerson size={18} />} component={<Link to="/managements/me" />}>Me</MenuItem>
+
                         {!collapsed && <div className="px-4 pt-2 pb-1 uppercase text-xs tracking-wide text-slate-400">Project Managerment</div>}
-                        <MenuItem icon={<IoPerson  size={18} />} component={<Link to="/managements/cloud" />}>Data</MenuItem>
-                        </Menu>
+
+                        <SubMenu label="Workspaces" icon={<MdWorkspaces  size={18} />} defaultOpen={true}>
+                            <MenuItem icon={<GrProjects   className="ml-5" size={20} />} component={<Link to="/managements/projects" />}>Projects</MenuItem>
+                            <MenuItem icon={<TiFlowChildren className="ml-5" size={20} />} component={<Link to="/managements/sub-projects" />}>Sub-Projects</MenuItem>
+                        </SubMenu>
+
+                        {!collapsed && <div className="px-4 pt-2 pb-1 uppercase text-xs tracking-wide text-slate-400">Data Management</div>}
+                            <MenuItem icon={<GrVirtualStorage  size={18} />}   component={<Link to="/managements/storage" />} >Storage</MenuItem>
+                    </Menu>
 
 
                     {/* Footer call to action */}
@@ -99,16 +109,16 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
 
                 {/* Collapse Toggle Button */}
                 <div
-                    className="absolute top-[50%] bottom-0 right-2 z-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    className="absolute top-[50%] bottom-0 right-[-18px] z-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-transparent"
                     onClick={() => {
                         setCollapsed(prev => {
-                          const newValue = !prev;
-                          localStorage.setItem('sidebar-collapsed', String(newValue));
-                          return newValue;
+                            const newValue = !prev;
+                            localStorage.setItem('sidebar-collapsed', String(newValue));
+                            return newValue;
                         });
-                      }}
+                    }}
                 >
-                    <Button className="bg-transparent hover:bg-slate-700 text-white px-2 py-1 shadow-md">
+                    <Button className=" hover:bg-slate-700 p-1 shadow-md rounded bg-green-100 text-green-700">
                         {collapsed ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
                     </Button>
                 </div>
@@ -118,13 +128,13 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
             <div className="flex flex-col flex-1 p-4">
                 <div className="text-sm text-muted-foreground mb-4">
                     <div className="flex items-center justify-between">
-                            <BreadcrumbsWithIconAndLabel/>
-                            <LeftHeader 
-                                toggleLanguage={toggleLanguage}
-                                language={language.toUpperCase()}
-                                toggleTheme={toggleTheme}
-                                theme={theme}
-                            />
+                        <BreadcrumbsWithIconAndLabel />
+                        <LeftHeader
+                            toggleLanguage={toggleLanguage}
+                            language={language.toUpperCase()}
+                            toggleTheme={toggleTheme}
+                            theme={theme}
+                        />
                     </div>
                 </div>
                 <main className="bg-behind">
