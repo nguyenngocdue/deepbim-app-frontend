@@ -10,6 +10,7 @@ interface DraggableModelInformationProps {
 
 export default function DraggableModelInformation({ content, onClose }: DraggableModelInformationProps) {
 
+  console.log(content)
   const sidebarTabs = [
     {
       name: "Element Attributes",
@@ -22,6 +23,7 @@ export default function DraggableModelInformation({ content, onClose }: Draggabl
     //   content: <ModelCategories content={content} />,
     // },
   ];
+  // console.log(onClose());
 
   return (
     <DraggableRightBarViewer

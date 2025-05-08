@@ -29,12 +29,16 @@ const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({ worldRef, componentRef, conta
 
 
   const handleItemSelected = (content: string) => {
+    modelManager.setSelectedRayCasterElement(content);
     setPopupContent(content); // Cập nhật nội dung của pop-up
     setShowPopup(true); // Mở pop-up
+
   };
 
   const handleItemDeselected = () => {
     setShowPopup(false); // Đóng pop-up
+    modelManager.clearSelectedRayCasterElement();
+
   };
 
 
@@ -178,7 +182,7 @@ const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({ worldRef, componentRef, conta
   }, []);
 
   return (
-    <>
+    <div>
       {isLoading && (
         <div className="asolute top-0 z-50 progress-bar w-full h-full">
           <FullscreenLoader progress={progress} message="Loading 3D model..." />
@@ -188,7 +192,7 @@ const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({ worldRef, componentRef, conta
       {showPopup && (
         <DraggableModelInformation content={popupContent} onClose={handleItemDeselected}/>
       )}
-    </>
+    </div>
   );
 };
 

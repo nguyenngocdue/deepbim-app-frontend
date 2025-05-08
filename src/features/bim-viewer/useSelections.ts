@@ -112,18 +112,8 @@ export function useSelections() {
   };
 
   const onShowProperties = async () => {
-    const components = worldManager.getComponents();
-    if (!components) return;
-
-    const fragments = components.get(OBC.FragmentsManager);
-    const selection = highlighter.selection.select;
-    const [uuid, expressIDs] = Object.entries(selection)[0];
-    const fragment = fragments.list.get(uuid);
-    if (!fragment) return;
-    const props = await modelManager.waitForModel();
-    const properties = await props.getProperties(Array.from(expressIDs as Set<number>));
-
-    console.log(properties);
+   
+    console.log("properties");
 
   }
 

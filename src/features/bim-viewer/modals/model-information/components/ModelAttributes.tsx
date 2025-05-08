@@ -37,6 +37,7 @@ const ModelAttributes = ({ content }: { content: Content }) => {
   const [data, setData] = useState<Record<string, Attribute>>({}); // State to store the data
   const [columns, setColumns] = useState<string[]>(['Attribute', 'Type','Value']); // Dynamic columns
 
+  
   useEffect(() => {
     if (!localId) {
       return;

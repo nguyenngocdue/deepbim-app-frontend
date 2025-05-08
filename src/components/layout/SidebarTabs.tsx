@@ -26,7 +26,7 @@ export default function SidebarTabs({
 
       {tabs.map((tab) => (
         <TabsContent key={tab.value} value={tab.value}>
-          <div className="p-4 text-sm text-slate-100">{tab.content}</div>
+          <div className="px-2 pb-2  pt-1 text-sm text-slate-100">{tab.content}</div>
         </TabsContent>
       ))}
     </Tabs>

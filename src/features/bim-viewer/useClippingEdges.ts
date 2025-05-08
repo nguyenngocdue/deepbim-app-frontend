@@ -74,7 +74,7 @@ export function useClippingEdges({
     // Nếu không sử dụng clipping, bạn có thể tắt mọi thứ
     clipper.enabled = false;
     edges.enabled = false;
-    console.log("Clipping đã bị vô hiệu hóa.");
+    // console.log("Clipping đã bị vô hiệu hóa.");
   }
 }
 

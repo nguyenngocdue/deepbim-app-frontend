@@ -34,19 +34,22 @@ class ModelManager {
     async setSelectedElement(element: any):  Promise<void> {
       this.selectedElement = element;
     }
+    
 
     getSelectedElement(): any | null {
       return this.selectedElement || null;
     }
   
+    // Raycaster
     async setSelectedRayCasterElement(result: any):  Promise<void> {
       this.selectedRayCasterElement = result;
     }
-
     async getSelectedRayCasterElement():  Promise<void> {
       return this.selectedRayCasterElement;
     }
-
+    async clearSelectedRayCasterElement():  Promise<void> {
+      this.selectedRayCasterElement = null;
+    }
   
     getModel(): any | null {
       return this.model || null;
