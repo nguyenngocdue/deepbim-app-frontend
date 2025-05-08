@@ -5,18 +5,25 @@ import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useForm } from "react-hook-form"
+import { format } from "date-fns"
+import { CalendarIcon } from "lucide-react"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { Calendar } from "@/components/ui/calendar"
+import { cn } from "@/lib/utils"
+import { useState } from "react"
 
 export function GenericEntityForm({
   title,
   fields,
-  mode = "create", // "view" | "create" | "update" | "delete"
+  mode = "create",
   initialValues = {},
   onSubmit,
   onCancel,
   submitLabel,
-  cancelLabel = "Hủy"
+  cancelLabel = "Cancel"
 }) {
-  const { register, handleSubmit, reset } = useForm({ defaultValues: initialValues })
+  const { register, handleSubmit, setValue, reset } = useForm({ defaultValues: initialValues })
+  const [dateState, setDateState] = useState({})
 
   const handleFormSubmit = (data) => {
     onSubmit?.(data)
@@ -27,16 +34,16 @@ export function GenericEntityForm({
 
   const renderTitle = () => {
     switch (mode) {
-      case "create": return `Tạo ${title}`
-      case "update": return `Cập nhật ${title}`
-      case "view": return `Chi tiết ${title}`
-      case "delete": return `Xóa ${title}`
+      case "create": return `Create ${title}`
+      case "update": return `Update ${title}`
+      case "view": return `View ${title}`
+      case "delete": return `Delete ${title}`
       default: return title
     }
   }
 
   return (
-    <Card>
+    <Card className="bg-background text-foreground border-border">
       <CardHeader>
         <h2 className="text-2xl font-semibold text-left">{renderTitle()}</h2>
       </CardHeader>
@@ -50,7 +57,7 @@ export function GenericEntityForm({
                 <div key={index}>
                   <Label className="text-muted-foreground">{field.label}</Label>
                   <div className="font-medium mt-1">
-                    {field.type === "checkbox" ? (value ? "✓ Có" : "✗ Không") : value || "—"}
+                    {field.type === "checkbox" ? (value ? "✓ Yes" : "✗ No") : value || "—"}
                   </div>
                 </div>
               )
@@ -76,7 +83,7 @@ export function GenericEntityForm({
               return (
                 <div key={index}>
                   <Label>{field.label}</Label>
-                  <Select {...register(field.name)}>
+                  <Select onValueChange={(val) => setValue(field.name, val)}>
                     <SelectTrigger className="mt-1">
                       <SelectValue placeholder={field.placeholder} />
                     </SelectTrigger>
@@ -97,6 +104,41 @@ export function GenericEntityForm({
                 </label>
               )
             }
+            if (field.type === "date") {
+              return (
+                <div key={index} className="grid gap-1">
+                  <Label>{field.label}</Label>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        className={cn(
+                          "w-full justify-start text-left font-normal",
+                          !dateState[field.name] && "text-muted-foreground"
+                        )}
+                      >
+                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        {dateState[field.name]
+                          ? format(dateState[field.name], "PPP")
+                          : field.placeholder || "Pick a date"}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0">
+                      <Calendar
+                        mode="single"
+                        selected={dateState[field.name]}
+                        onSelect={(date) => {
+                          setDateState((prev) => ({ ...prev, [field.name]: date }))
+                          setValue(field.name, date)
+                        }}
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
+                </div>
+              )
+            }
+
             return null
           })}
         </form>
@@ -107,7 +149,7 @@ export function GenericEntityForm({
         )}
         {mode !== "view" && (
           <Button type="submit" form={undefined} onClick={handleSubmit(handleFormSubmit)}>
-            {submitLabel || (mode === "create" ? "Tạo" : mode === "update" ? "Lưu" : mode === "delete" ? "Xác nhận xóa" : "Gửi")}
+            {submitLabel || (mode === "create" ? "Create" : mode === "update" ? "Save" : mode === "delete" ? "Confirm Delete" : "Submit")}
           </Button>
         )}
       </CardFooter>

@@ -25,7 +25,8 @@ export function useGoogleLoginHandler() {
         credentials: 'include',
       });
 
-      const data = await res.json();
+      const { data } = await res.json() as { data: any };
+      
       if (!res.ok) {
         throw new Error(data.message || 'Google login failed');
       }

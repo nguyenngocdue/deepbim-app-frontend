@@ -1,12 +1,13 @@
-// components/ProjectListPage.tsx
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { ColumnDef, useReactTable, getCoreRowModel } from "@tanstack/react-table";
+import { ColumnDef, getCoreRowModel, useReactTable } from "@tanstack/react-table"
 import { TableContent } from "@/components/model-table/TableContent"
-import { GenericEntityForm } from "@/components/bim-viewer/common/GenericEntityForm"
+import { DialogTemplate } from "@/components/model-table/DialogTemplate"
+import { EntityForm } from "@/components/bim-viewer/common/EntityForm"
+import { createProjects, getProjects } from "@/apis/project"
+import { Skeleton } from "@/components/ui/skeleton"
 
 interface Project {
   id: number
@@ -18,54 +19,90 @@ interface Project {
   created: string
 }
 
-const mockData: Project[] = [
-  {
-    id: 1,
-    type: "🌐",
-    name: "HCM-TL-MT_FS",
-    number: "HCM-TL-MT_25",
-    access: "Docs",
-    account: "Công ty Cổ phần Tập Đoàn Đèo Cả",
-    created: "25 thg 2, 2025"
-  },
-  {
-    id: 2,
-    type: "🏗️",
-    name: "CANTHO-EXP_2",
-    number: "CTH-EXP-122",
-    access: "BIM 360",
-    account: "Công ty Hạ tầng Miền Tây",
-    created: "10 thg 3, 2025"
-  },
-  {
-    id: 3,
-    type: "🛰️",
-    name: "HA-NOI-INFRA",
-    number: "HN-INF-88",
-    access: "Docs",
-    account: "Tổng công ty Hạ tầng Đô thị",
-    created: "5 thg 1, 2025"
-  }
-]
-
 export default function ProjectListPage() {
   const [filter, setFilter] = useState("")
+  const [open, setOpen] = useState(false)
+  const [projects, setProjects] = useState<Project[] | null>(null)
 
-  const data = useMemo(() =>
-    mockData.filter(p =>
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await getProjects()
+        setProjects(data)
+      } catch (err) {
+        console.error("Failed to fetch projects:", err)
+      }
+    }
+    fetchData()
+  }, [])
+
+  const data = useMemo(() => {
+    if (!projects) return []
+    return projects.filter(p =>
       p.name.toLowerCase().includes(filter.toLowerCase()) ||
       p.number.toLowerCase().includes(filter.toLowerCase())
-    ), [filter]
-  )
+    )
+  }, [filter, projects])
 
   const columns = useMemo<ColumnDef<Project>[]>(() => [
-    { accessorKey: "type", header: "Type" },
-    { accessorKey: "name", header: "Name" },
-    { accessorKey: "number", header: "Number" },
-    { accessorKey: "access", header: "Default access" },
-    { accessorKey: "account", header: "Account" },
-    { accessorKey: "created", header: "Created on" }
+    {
+      accessorKey: "name",
+      header: "Name",
+    },
+    {
+      accessorKey: "creator",
+      header: "Creator",
+      cell: ({ getValue }) => {
+        const val = getValue() as any;
+        return val?.user_name ?? val?.name ?? val?.label ?? val?.title ?? "-";
+      }
+    },
+    {
+      accessorKey: "main_discipline",
+      header: "Discipline",
+      cell: ({ getValue }) => {
+        const val = getValue() as any;
+        return val?.name ?? "-";
+      }
+    },
+    {
+      accessorKey: "location",
+      header: "Location",
+    },
+    {
+      accessorKey: "start_time",
+      header: "Start Time",
+      cell: ({ getValue }) => {
+        const val = getValue();
+        return val ? new Date(val).toLocaleDateString() : "-";
+      }
+    },
+    {
+      accessorKey: "end_time",
+      header: "End Time",
+      cell: ({ getValue }) => {
+        const val = getValue();
+        return val ? new Date(val).toLocaleDateString() : "-";
+      }
+    },
+    {
+      accessorKey: "created_at",
+      header: "Created At",
+      cell: ({ getValue }) => {
+        const val = getValue();
+        return val ? new Date(val).toLocaleString() : "-";
+      }
+    },
+    {
+      accessorKey: "updated_at",
+      header: "Updated At",
+      cell: ({ getValue }) => {
+        const val = getValue();
+        return val ? new Date(val).toLocaleString() : "-";
+      }
+    },
   ], [])
+  
 
   const table = useReactTable({
     data,
@@ -73,71 +110,76 @@ export default function ProjectListPage() {
     getCoreRowModel: getCoreRowModel()
   })
 
-  const fields = [
-    { name: "name", label: "Project name", placeholder: "Enter a project name", type: "text" },
-    { name: "number", label: "Project number", placeholder: "Enter a project number", type: "text" },
-    {
-      name: "account", label: "Account", placeholder: "Select an account", type: "select",
-      options: ["Công ty Cổ phần Tập Đoàn Đèo Cả", "Công ty Hạ tầng Miền Tây"]
-    },
-    {
-      name: "access", label: "Project type", placeholder: "Select type", type: "select",
-      options: ["Docs", "BIM 360"]
-    },
-    { name: "address", label: "Address", placeholder: "Enter a location", type: "text" },
-    { name: "timezone", label: "Time zone", placeholder: "(GMT+07:00) Bangkok/Hanoi", type: "text" },
-    { name: "start_date", label: "Start date", placeholder: "MM/DD/YYYY", type: "text" },
-    { name: "end_date", label: "End date", placeholder: "MM/DD/YYYY", type: "text" },
-    { name: "value", label: "Project value", placeholder: "Enter value", type: "text" }
+  const projectFields = [
+    { name: "name", label: "Project name", placeholder: "Enter project name", type: "text" },
+    { name: "description", label: "Description", placeholder: "Enter project description", type: "textarea" },
+    { name: "partner", label: "Partner", placeholder: "Enter partner name", type: "text" },
+    { name: "main_discipline", label: "Main Discipline", placeholder: "E.g. Structure, Architecture...", type: "text" },
+    { name: "location", label: "Location", placeholder: "Enter project location", type: "text" },
+    { name: "start_time", label: "Start Time", placeholder: "Select start date", type: "date" },
+    { name: "end_time", label: "End Time", placeholder: "Select end date", type: "date" }
   ]
+
+  const handleApply = async (data: any) => {
+    await createProjects(data)
+    setOpen(false)
+  }
+
+  const handleCancel = () => setOpen(false)
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
-      <h1 className="text-3xl font-bold mb-1">Welcome, kha</h1>
-      <p className="text-muted-foreground mb-6">What would you like to do today?</p>
+      <h1 className="text-3xl font-bold mb-1">Projects</h1>
+      <p className="text-muted-foreground mb-6">Manage your current and upcoming projects.</p>
 
       <Tabs defaultValue="projects" className="mb-4">
         <TabsList>
-          <TabsTrigger value="home">My Home</TabsTrigger>
           <TabsTrigger value="projects">Projects</TabsTrigger>
-          <TabsTrigger value="templates">Project Templates</TabsTrigger>
+          <TabsTrigger value="templates">Templates</TabsTrigger>
         </TabsList>
       </Tabs>
 
       <div className="flex items-center justify-between mb-4">
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button>+ Create project</Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-xl">
-            <DialogHeader>
-              <DialogTitle>Create project</DialogTitle>
-            </DialogHeader>
-            <GenericEntityForm
-              title="Project"
-              mode="create"
-              fields={fields}
-              onSubmit={(data) => console.log("Created", data)}
-              onCancel={() => console.log("Canceled")}
-            />
-          </DialogContent>
-        </Dialog>
-
-        <div className="flex gap-2 items-center">
-          <Input
-            placeholder="Search projects by name or number..."
-            value={filter}
-            onChange={(e) => setFilter(e.target.value)}
-            className="w-72"
+        <DialogTemplate
+          open={open}
+          onClose={handleCancel}
+          title="Create New Project"
+          description="Enter details to create a new project."
+          disableOutsideClose
+          className="max-w-5xl"
+        >
+          <EntityForm
+            fields={projectFields}
+            onSubmit={handleApply}
+            submitLabel="Apply"
+            cancelLabel="Cancel"
+            showFooter
+            onCancel={handleCancel}
           />
-          <Button variant="outline">🔍</Button>
+        </DialogTemplate>
+
+        <div className="flex gap-2 items-center justify-between">
+          <Button onClick={() => setOpen(true)}>+ Create Project</Button>
+          <div className="flex gap-2">
+            <Input
+              placeholder="Search projects by name or number..."
+              value={filter}
+              onChange={(e) => setFilter(e.target.value)}
+              className="w-72"
+            />
+            <Button variant="outline">🔍</Button>
+          </div>
         </div>
       </div>
 
-      <TableContent table={table} />
+      {projects === null ? (
+        <Skeleton className="w-full h-40 rounded-md" />
+      ) : (
+        <TableContent table={table} />
+      )}
 
       <div className="flex justify-between items-center px-4 py-2 text-sm text-muted-foreground">
-        <div>Showing {data.length} of {mockData.length}</div>
+        <div>Showing {data.length} of {projects?.length ?? 0}</div>
         <div className="flex gap-2">
           <Button variant="ghost">«</Button>
           <div>1 of 1</div>

@@ -5,16 +5,17 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { ColumnMeta, flexRender, Table as TableType } from "@tanstack/react-table";
+} from "@/components/ui/table"
+import { ColumnMeta, flexRender, Table as TableType } from "@tanstack/react-table"
 
 interface TableContentProps<T> {
-  table: TableType<T>;
+  table: TableType<T>
+  showNo?: boolean
 }
 
-export function TableContent<T>({ table }: TableContentProps<T>) {
-  const headers = table.getHeaderGroups();
-  const rows = table.getRowModel().rows;
+export function TableContent<T>({ table, showNo = true }: TableContentProps<T>) {
+  const headers = table.getHeaderGroups()
+  const rows = table.getRowModel().rows
 
   return (
     <div className="rounded-md border border-zinc-400 overflow-auto bg-background shadow-sm max-h-[600px]">
@@ -22,6 +23,11 @@ export function TableContent<T>({ table }: TableContentProps<T>) {
         <TableHeader className="bg-muted sticky top-0 z-10 shadow-sm">
           {headers.map((headerGroup) => (
             <TableRow key={headerGroup.id} className="border-b border-zinc-500">
+              {showNo && (
+                <TableHead className="px-4 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                  No.
+                </TableHead>
+              )}
               {headerGroup.headers.map((header) => (
                 <TableHead
                   key={header.id}
@@ -36,12 +42,17 @@ export function TableContent<T>({ table }: TableContentProps<T>) {
 
         <TableBody>
           {rows.length ? (
-            rows.map((row) => (
+            rows.map((row, index) => (
               <TableRow key={row.id} className="border-b border-gray-600 hover:bg-muted/50 transition-colors">
+                {showNo && (
+                  <TableCell className="px-4 py-2 text-sm text-foreground font-medium">
+                    {index + 1}
+                  </TableCell>
+                )}
                 {row.getVisibleCells().map((cell) => {
-                  const meta = cell.column.columnDef.meta as ColumnMeta;
-                  const value = cell.getValue();
-                  const rowData = row.original as any;
+                  const meta = cell.column.columnDef.meta as ColumnMeta
+                  const value = cell.getValue()
+                  const rowData = row.original as any
 
                   return (
                     <TableCell key={cell.id} className="px-4 py-2 text-sm text-foreground">
@@ -54,7 +65,7 @@ export function TableContent<T>({ table }: TableContentProps<T>) {
                                 checked={Boolean(value)}
                                 onChange={(e) => (rowData[cell.column.id] = e.target.checked)}
                               />
-                            );
+                            )
                           case "select":
                             return (
                               <select
@@ -68,7 +79,7 @@ export function TableContent<T>({ table }: TableContentProps<T>) {
                                   </option>
                                 ))}
                               </select>
-                            );
+                            )
                           case "textarea":
                             return (
                               <textarea
@@ -77,20 +88,20 @@ export function TableContent<T>({ table }: TableContentProps<T>) {
                                 className="bg-background border rounded w-full px-2 py-1"
                                 rows={2}
                               />
-                            );
+                            )
                           default:
-                            return flexRender(cell.column.columnDef.cell, cell.getContext());
+                            return flexRender(cell.column.columnDef.cell, cell.getContext())
                         }
                       })()}
                     </TableCell>
-                  );
+                  )
                 })}
               </TableRow>
             ))
           ) : (
             <TableRow>
               <TableCell
-                colSpan={headers[0]?.headers.length || 1}
+                colSpan={(headers[0]?.headers.length || 1) + (showNo ? 1 : 0)}
                 className="text-center py-12 text-muted-foreground italic"
               >
                 No data available.
@@ -100,7 +111,5 @@ export function TableContent<T>({ table }: TableContentProps<T>) {
         </TableBody>
       </Table>
     </div>
-  );
+  )
 }
-
-
