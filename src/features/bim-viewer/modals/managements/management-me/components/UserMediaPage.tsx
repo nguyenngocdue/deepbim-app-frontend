@@ -5,6 +5,7 @@ import { apiGet } from "@/api";
 import { Model } from "@/components/model-table/types";
 import { ModelTable } from "@/components/common/ModelTable";
 import { modelColumnsConfig } from "../../ColumnsConfig";
+import { getMedia } from "@/apis/media-api";
 
 export default function UserMediaPage({ hasAction = true }) {
   const [data, setData] = useState<Model[]>([]);
@@ -16,26 +17,23 @@ export default function UserMediaPage({ hasAction = true }) {
 
     try {
       const userId = currentUser.id;
-
-
       // Fetch media list
-      const [mediaResponse] = await Promise.all([apiGet<{ data: any[] }>(`/media/user/${userId}`)]);
+      const mediaResponse = await getMedia(userId);
       const mediaList = mediaResponse.data;
       const formatted: Model[] = mediaList
-        .filter((item) => item.deletedBy === null) // ✅ Chỉ lấy những cái chưa bị xóa mềm
+        .filter((item) => item.deleted_by === null) // ✅ Chỉ lấy những cái chưa bị xóa mềm
         .map((item) => ({
           id: item.id,
           name: item.filename,
-          viewId: item.viewId,
-          status: item.isPublic ? "Public" : "Private",
+          viewId: item.view_id,
+          status: item.is_public ? "Public" : "Private",
           size: item.size * 1 / (1024 * 1024),
           uploader: {
-            email: currentUser?.email || "Unknown",
-            avatar: currentUser?.picture || "",
+            email: item.uploader.email || "Unknown",
+            avatar: item.uploader.picture || "",
           },
-          modified: new Date(item.updatedAt).toLocaleDateString("en-GB"),
+          modified: new Date(item.updated_at).toLocaleDateString("en-GB"),
         }));
-
       setData(formatted);
     } catch (error) {
       console.error("Failed to fetch data:", error);

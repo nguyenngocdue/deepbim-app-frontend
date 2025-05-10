@@ -23,9 +23,9 @@ export default function AppMediaPage({ hasAction = true }: AppMediaPageProps) {
         .filter((item) => item.deletedBy === null) // ✅ Chỉ lấy những cái chưa bị xóa mềm
         .map((item) => ({
           id: item.id,
-          name: item.filename,
-          viewId: item.viewId,
-          status: item.isPublic ? "Public" : "Private",
+          name: item.file_name,
+          viewId: item.view_id,
+          status: item.is_public ? "Public" : "Private",
           size: item.size * 1 / (1024 * 1024),
           uploader: {
             email: "duengocnguyen@gmail.com",

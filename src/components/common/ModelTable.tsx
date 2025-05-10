@@ -87,7 +87,7 @@ export function ModelTable({ data, refeshData, hasAction, actionTypes, columnsCo
     setColumns(columns);
   }, [hasAction, actionTypes, setSelectedRow, setOpenDeleteDialog, setOpenModifiedDialog]);
 
-  console.log(columns);
+  // console.log(columns);
   // Loading giả lập
   React.useEffect(() => {
     const timeout = setTimeout(() => {

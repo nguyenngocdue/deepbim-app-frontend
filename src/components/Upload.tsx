@@ -63,16 +63,15 @@ const Upload: React.FC<UploadProps> = ({
         body: formData,
       });
 
-      if (!response.ok) throw new Error("Upload failed");
 
-      await simulateProgress(40, 70, 1500);
-
-      await simulateProgress(70, 100, 1000);
-
-      setMessage("✅ Upload successful!");
-      toast.success("✅ Upload successful!");
-      if (onUploadSuccess) {
-        onUploadSuccess();
+      if (response.statusCode === 201) {
+        toast.success('A file uploaded successfully')
+        await simulateProgress(70, 100, 1000);
+        if (onUploadSuccess) {
+          onUploadSuccess();
+        }
+      } else {
+        toast.error('Failed to upload file')
       }
     } catch (error: any) {
       setMessage("Upload error: " + error.message);
@@ -132,7 +131,7 @@ const Upload: React.FC<UploadProps> = ({
       </div>
 
       {/* Upload Progress Modal */}
-      <UploadProgressModal open={uploading}  progress={progress} />
+      <UploadProgressModal open={uploading} progress={progress} />
     </div>
   );
 };
