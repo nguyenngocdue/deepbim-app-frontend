@@ -167,11 +167,11 @@ export async function handleSignout(): Promise<void> {
 // utils/apiClient.ts
 
 // Hàm tự động đính Bearer token, phân biệt FormData, và retry nếu 401
-export async function fetchWithAuth2(
+export async function fetchWithAuth2<T = any>(
   endpoint: string,
   options: RequestInit = {},
   retryCount = 0
-): Promise<Response> {
+): Promise<T> {
   const token = localStorage.getItem("access_token");
   const isFormData = options.body instanceof FormData;
 
@@ -219,8 +219,8 @@ export async function fetchWithAuth2(
 
     throw new Error(errorMessage);
   }
-
-  return response;
+  const rep = await response.json();
+  return rep;
 }
 
 
@@ -234,32 +234,20 @@ export async function apiGet<T>(
     const baseUrl = import.meta.env.VITE_API_BASE_URL || '';
     const url = new URL(endpoint, baseUrl);
 
-    // Thêm query params nếu có
-    if (params) {
-      Object.entries(params).forEach(([key, value]) => {
-        if (value !== undefined && value !== null) {
-          url.searchParams.append(key, String(value));
-        }
-      });
-    }
+    // // Thêm query params nếu có
+    // if (params) {
+    //   Object.entries(params).forEach(([key, value]) => {
+    //     if (value !== undefined && value !== null) {
+    //       url.searchParams.append(key, String(value));
+    //     }
+    //   });
+    // }
 
     const response = await fetchWithAuth2(endpoint.toString(), {
       method: 'GET',
     });
 
-    if (!response.ok) {
-      let message = `HTTP error ${response.status}`;
-      try {
-        const errorBody = await response.json();
-        message += `: ${errorBody.message || JSON.stringify(errorBody)}`;
-      } catch {
-        const errorText = await response.text();
-        message += `: ${errorText}`;
-      }
-      throw new Error(message);
-    }
-
-    return await response.json();
+    return response;
   } catch (err: any) {
     console.error('[apiGet error]', err);
     throw new Error(err.message || 'Unknown error during GET request');

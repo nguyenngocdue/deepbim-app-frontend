@@ -13,10 +13,8 @@ export async function createProjects(data: any) {
           method: 'POST',
           body: JSON.stringify(payload),
         });
-        console.log(payload);
-  
-        await response.json();
-        toast.success("Create A Project successful");
+        await response;
+        toast.success("A project was created successfully");
       } catch (error: any) {
         toast.error("Error: " + error.message);
       }

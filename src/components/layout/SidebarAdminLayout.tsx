@@ -1,0 +1,134 @@
+import { useState } from "react"
+import { Sidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar"
+import {
+    ChevronLeft,
+    ChevronRight,
+} from "lucide-react"
+import { Link } from "@tanstack/react-router"
+import { LogoWord } from "../LogoWord"
+import BreadcrumbsWithIconAndLabel from "@/components/BreadcrumbsWithIconAndLabel"
+import { useLanguage } from "@/context/LanguageContext"
+import { useTheme } from "@/context/theme-context"
+import LeftHeader from "@/sections/LeftHeader"
+import { Button } from "../ui/button"
+import { MdWorkspaces } from "react-icons/md"
+import { GrProjects } from "react-icons/gr"
+import { TiFlowChildren } from "react-icons/ti";
+
+export default function SidebarAdminLayout({ children }: { children: React.ReactNode }) {
+    const [collapsed, setCollapsed] = useState(() => {
+        const stored = localStorage.getItem('sidebar-collapsed');
+        return stored === 'true';// localStorage lưu kiểu string, nên phải so sánh
+    });
+    const { language, toggleLanguage } = useLanguage();
+    const { theme, setTheme } = useTheme();
+
+    const toggleTheme = () => {
+        setTheme(theme === "light" ? "dark" : "light");
+    };
+
+    return (
+        <div className="flex min-h-screen bg-behind text-white relative">
+            {/* Sidebar section */}
+            <div className="relative group bg-behind ">
+                <Sidebar
+                    collapsed={collapsed}
+                    backgroundColor="#0b1120"
+                    rootStyles={{ height: "100vh", backgroundImage: "url(/sidebar-bg.png)", backgroundSize: "cover" }}
+                    width="200px"
+                >
+                    {/* Logo and Title */}
+                    <div className="flex items-center justify-center  px-2 py-3 border-b border-[#1c1c2a] shadow-sm">
+                        <LogoWord isHiddenText={true} path="/images/logo_no_bg.png" size="md" />
+                        {!collapsed && (
+                            <h1 className="text-transparent text-white text-base font-heading tracking-wider">
+                                DeepBIM
+                            </h1>
+                        )}
+                    </div>
+
+                    <Menu
+                        menuItemStyles={{
+                            button: ({ level, active }) => ({
+                                backgroundColor: active ? "#1d283a" : level > 0 ? "#0f172a" : "transparent",
+                                color: active ? "#60a5fa" : "#f8fafc",
+                                padding: "12px 20px",
+                                fontWeight: 500,
+                                fontSize: "0.925rem",
+                                [`&:hover`]: {
+                                    backgroundColor: "#1e293b",
+                                    color: "#60a5fa",
+                                },
+                                [`& svg`]: {
+                                    transition: "color 0.3s ease",
+                                    color: active ? "#60a5fa" : undefined,
+                                },
+                                [`&:hover svg`]: {
+                                    color: "#3b82f6",
+                                },
+                            }),
+                            label: {
+                                fontSize: "0.925rem",
+                            }
+                        }}
+                    >
+
+                        {!collapsed && <div className="px-4 pt-2 pb-1 uppercase text-xs tracking-wide text-slate-400">Project Managerment</div>}
+
+                        <SubMenu label="User Manager" icon={<MdWorkspaces  size={18} />} defaultOpen={true}>
+                            <MenuItem icon={<GrProjects   className="ml-5" size={20} />} component={<Link to="/admin/users" />}>Users</MenuItem>
+                            <MenuItem icon={<TiFlowChildren className="ml-5" size={20} />} component={<Link to="/admin/roles" />}>Role</MenuItem>
+                        </SubMenu>
+
+                    </Menu>
+
+
+                    {/* Footer call to action */}
+                    {!collapsed && (
+                        <div className="absolute left-0 right-0 bottom-0 mt-auto px-4 py-6">
+                            <div className="bg-gradient-to-br from-green-500 to-cyan-400 rounded-xl p-4 text-center">
+                                <div className="text-white font-semibold text-sm">Wellcome to DeepBim</div>
+                                <div className="text-xs text-slate-100">v1.1.0</div>
+                                <Button className="mt-2 bg-white text-blue-600 text-xs font-bold py-1 px-3 rounded shadow">Hello</Button>
+                            </div>
+                        </div>
+                    )}
+                </Sidebar>
+
+                {/* Collapse Toggle Button */}
+                <div
+                    className="absolute top-[50%] bottom-0 right-[-18px] z-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-transparent"
+                    onClick={() => {
+                        setCollapsed(prev => {
+                            const newValue = !prev;
+                            localStorage.setItem('sidebar-collapsed', String(newValue));
+                            return newValue;
+                        });
+                    }}
+                >
+                    <Button className=" hover:bg-slate-700 p-1 shadow-md rounded bg-green-100 text-green-700">
+                        {collapsed ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
+                    </Button>
+                </div>
+            </div>
+
+            {/* Main layout */}
+            <div className="flex flex-col flex-1 p-4">
+                <div className="text-sm text-muted-foreground mb-4">
+                    <div className="flex items-center justify-between">
+                        <BreadcrumbsWithIconAndLabel />
+                        <LeftHeader
+                            toggleLanguage={toggleLanguage}
+                            language={language.toUpperCase()}
+                            toggleTheme={toggleTheme}
+                            theme={theme}
+                        />
+                    </div>
+                </div>
+                <main className="bg-behind">
+                    {children}
+                </main>
+            </div>
+        </div>
+    )
+}

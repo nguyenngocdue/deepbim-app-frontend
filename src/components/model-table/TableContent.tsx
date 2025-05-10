@@ -66,6 +66,13 @@ export function TableContent<T>({ table, showNo = true }: TableContentProps<T>) 
                                 onChange={(e) => (rowData[cell.column.id] = e.target.checked)}
                               />
                             )
+                          case "id":
+                            return (
+                              <span className="font-mono text-muted-foreground">
+                                #{value}
+                              </span>
+                            )
+
                           case "select":
                             return (
                               <select
@@ -89,9 +96,16 @@ export function TableContent<T>({ table, showNo = true }: TableContentProps<T>) 
                                 rows={2}
                               />
                             )
+                          case "tag":
+                            return (
+                              <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-muted text-muted-foreground">
+                                {typeof value === 'string' ? value : JSON.stringify(value)}
+                              </span>
+                            )
                           default:
                             return flexRender(cell.column.columnDef.cell, cell.getContext())
                         }
+
                       })()}
                     </TableCell>
                   )

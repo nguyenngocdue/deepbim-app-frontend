@@ -24,3 +24,40 @@ export async function getUserSettings()  {
         toast.error("Error: " + error.message);
       }
 }
+
+export async function fetchUserRoles(userId: number, roleIds: number[]) {
+  try {
+    await fetchWithAuth2(`/users/${userId}/roles`, {
+        method: "PATCH",
+        body: JSON.stringify({ "role_ids": roleIds })
+    });
+  }catch (error: any) {
+    toast.error("Error: " + error.message);
+  }
+}
+
+export async function getUsers() {
+    try {
+      const response = await apiGet('/users');
+      return response;
+    }catch (error: any) {
+      toast.error("Error: " + error.message);
+    }
+}
+
+export async function getUserRoles() {
+  try {
+    const response = await apiGet(`/user-roles`);
+    return response;
+  }catch (error: any) {
+    toast.error("Error: " + error.message);
+  }
+}
+
+export async function deleteUserRoles(id: number) {
+    console.log(id);
+    const res = await fetchWithAuth2(`/user-roles/${id}`, {
+        method: 'DELETE',
+    })
+    return res;
+}

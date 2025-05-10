@@ -8,6 +8,7 @@ import { DialogTemplate } from "@/components/model-table/DialogTemplate"
 import { EntityForm } from "@/components/bim-viewer/common/EntityForm"
 import { createProjects, getProjects } from "@/apis/project"
 import { Skeleton } from "@/components/ui/skeleton"
+import { toast } from "sonner"
 
 interface Project {
   id: number
@@ -123,6 +124,13 @@ export default function ProjectListPage() {
   const handleApply = async (data: any) => {
     await createProjects(data)
     setOpen(false)
+    try {
+        const data = await getProjects()
+        setProjects(data)
+        toast.success("Projects updated  successfuly")
+      } catch (err) {
+        toast.error("Failed to get projects")
+      }
   }
 
   const handleCancel = () => setOpen(false)
@@ -175,7 +183,7 @@ export default function ProjectListPage() {
       {projects === null ? (
         <Skeleton className="w-full h-40 rounded-md" />
       ) : (
-        <TableContent table={table} />
+        <TableContent table={table} key={projects.length}/>
       )}
 
       <div className="flex justify-between items-center px-4 py-2 text-sm text-muted-foreground">

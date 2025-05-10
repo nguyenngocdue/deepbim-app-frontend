@@ -24,6 +24,7 @@ import { Toaster } from 'sonner';
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import { UserManager } from './services/UserManager'
 import { LanguageProvider } from './context/LanguageContext'
+import useScrollRestoration from './hooks/useScrollRestoration'
 
 console.log("VITE_API_BASE_URL from main", import.meta.env.VITE_API_BASE_URL)
 

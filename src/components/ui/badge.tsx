@@ -32,4 +32,18 @@ function Badge({ className, variant, ...props }: BadgeProps) {
   )
 }
 
+export const getBadgeVariant = (roleName: string) => {
+  switch (roleName.toLowerCase()) {
+    case 'admin':
+      return 'destructive'
+    case 'editor':
+      return 'default'
+    case 'viewer':
+      return 'secondary'
+    default:
+      return 'outline'
+  }
+}
+
+
 export { Badge, badgeVariants }

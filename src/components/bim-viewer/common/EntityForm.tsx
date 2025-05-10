@@ -19,14 +19,14 @@ import {
 } from "@/components/ui/popover"
 import { Calendar } from "@/components/ui/calendar"
 import { cn } from "@/lib/utils"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 
 interface Field {
   name: string
   label: string
   placeholder?: string
-  type: "text" | "textarea" | "select" | "date"
+  type: "text" | "textarea" | "select" | "date" | "readonly" | "id"
   options?: string[]
 }
 
@@ -37,6 +37,7 @@ interface EntityFormProps {
   submitLabel?: string
   cancelLabel?: string
   showFooter?: boolean
+  defaultValues?: Record<string, any>
 }
 
 export function EntityForm({
@@ -45,7 +46,8 @@ export function EntityForm({
   onCancel,
   submitLabel = "Submit",
   cancelLabel = "Cancel",
-  showFooter = false
+  showFooter = false,
+  defaultValues = {},
 }: EntityFormProps) {
   const {
     register,
@@ -53,8 +55,13 @@ export function EntityForm({
     setValue,
     reset,
     formState: { errors }
-  } = useForm()
+  } = useForm({ defaultValues })
+
   const [dateState, setDateState] = useState<Record<string, Date | null>>({})
+
+  useEffect(() => {
+    // reset(defaultValues)
+  }, [defaultValues, reset])
 
   const handleFormSubmit = (data: any) => {
     onSubmit(data)
@@ -63,6 +70,32 @@ export function EntityForm({
   return (
     <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4 text-left">
       {fields.map((field, index) => {
+        if (field.type === "readonly") {
+          return (
+            <div key={index}>
+              <Label title={field.name}>{field.label}</Label>
+              <Input
+                readOnly
+                value={defaultValues[field.name] ?? ''}
+                className="mt-1 bg-muted cursor-not-allowed"
+              />
+            </div>
+          )
+        }
+
+        if (field.type === "id") {
+          return (
+            <div key={index}>
+              <Label title={field.name}>{field.label}</Label>
+              <Input
+                readOnly
+                value={`#${defaultValues[field.name] ?? ''}`}
+                className="mt-1 bg-muted cursor-not-allowed"
+              />
+            </div>
+          )
+        }
+
         if (field.type === "text") {
           return (
             <div key={index}>

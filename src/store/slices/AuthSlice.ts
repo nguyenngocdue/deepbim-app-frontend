@@ -36,7 +36,8 @@ export const fetchCurrentUser = createAsyncThunk<UserProfile>(
     });
 
     if (!res.ok) throw new Error('Failed to fetch user');
-    return await res.json();
+    const json = await res.json();
+    return json.data as UserProfile;
   }
 );
 

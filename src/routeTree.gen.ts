@@ -38,6 +38,7 @@ import { Route as AuthenticatedBimViewerUtIfcViewerSelectionFamilyImport } from 
 import { Route as AuthenticatedBimViewerUtGeometrySceneViewcubeImport } from './routes/_authenticated/bim-viewer-ut/geometry-scene-viewcube'
 import { Route as AuthenticatedBimViewerUtIfcViewerSelectionImport } from './routes/_authenticated/bim-viewer-ut/Ifc-viewer-selection'
 import { Route as AuthenticatedAppLayoutImport } from './routes/_authenticated/app/_layout'
+import { Route as AuthenticatedAdminLayoutImport } from './routes/_authenticated/admin/_layout'
 import { Route as AuthenticatedViewUploadIndexImport } from './routes/_authenticated/view/upload/index'
 import { Route as AuthenticatedManagementsLayoutSubProjectsImport } from './routes/_authenticated/managements/_layout/sub-projects'
 import { Route as AuthenticatedManagementsLayoutStorageImport } from './routes/_authenticated/managements/_layout/storage'
@@ -50,6 +51,7 @@ import { Route as AuthenticatedAppLayoutHowItWorksImport } from './routes/_authe
 import { Route as AuthenticatedAppLayoutFeaturesImport } from './routes/_authenticated/app/_layout/features'
 import { Route as AuthenticatedAppLayoutContactUsImport } from './routes/_authenticated/app/_layout/contact-us'
 import { Route as AuthenticatedAppLayoutConnectorsImport } from './routes/_authenticated/app/_layout/connectors'
+import { Route as AuthenticatedAdminLayoutUsersImport } from './routes/_authenticated/admin/_layout/users'
 
 // Create Virtual Routes
 
@@ -57,6 +59,7 @@ const AuthenticatedManagementsImport = createFileRoute(
   '/_authenticated/managements',
 )()
 const AuthenticatedAppImport = createFileRoute('/_authenticated/app')()
+const AuthenticatedAdminImport = createFileRoute('/_authenticated/admin')()
 const errors503LazyImport = createFileRoute('/(errors)/503')()
 const errors500LazyImport = createFileRoute('/(errors)/500')()
 const errors404LazyImport = createFileRoute('/(errors)/404')()
@@ -99,6 +102,12 @@ const AuthenticatedManagementsRoute = AuthenticatedManagementsImport.update({
 const AuthenticatedAppRoute = AuthenticatedAppImport.update({
   id: '/app',
   path: '/app',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+
+const AuthenticatedAdminRoute = AuthenticatedAdminImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 
@@ -349,6 +358,11 @@ const AuthenticatedAppLayoutRoute = AuthenticatedAppLayoutImport.update({
   getParentRoute: () => AuthenticatedAppRoute,
 } as any)
 
+const AuthenticatedAdminLayoutRoute = AuthenticatedAdminLayoutImport.update({
+  id: '/_layout',
+  getParentRoute: () => AuthenticatedAdminRoute,
+} as any)
+
 const AuthenticatedViewUploadIndexRoute =
   AuthenticatedViewUploadIndexImport.update({
     id: '/view/upload/',
@@ -431,6 +445,13 @@ const AuthenticatedAppLayoutConnectorsRoute =
     id: '/connectors',
     path: '/connectors',
     getParentRoute: () => AuthenticatedAppLayoutRoute,
+  } as any)
+
+const AuthenticatedAdminLayoutUsersRoute =
+  AuthenticatedAdminLayoutUsersImport.update({
+    id: '/users',
+    path: '/users',
+    getParentRoute: () => AuthenticatedAdminLayoutRoute,
   } as any)
 
 // Populate the FileRoutesByPath interface
@@ -555,6 +576,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/503'
       preLoaderRoute: typeof errors503LazyImport
       parentRoute: typeof rootRoute
+    }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminImport
+      parentRoute: typeof AuthenticatedRouteImport
+    }
+    '/_authenticated/admin/_layout': {
+      id: '/_authenticated/admin/_layout'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminLayoutImport
+      parentRoute: typeof AuthenticatedAdminRoute
     }
     '/_authenticated/app': {
       id: '/_authenticated/app'
@@ -703,6 +738,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ExampleModelIfcIndexImport
       parentRoute: typeof rootRoute
     }
+    '/_authenticated/admin/_layout/users': {
+      id: '/_authenticated/admin/_layout/users'
+      path: '/users'
+      fullPath: '/admin/users'
+      preLoaderRoute: typeof AuthenticatedAdminLayoutUsersImport
+      parentRoute: typeof AuthenticatedAdminLayoutImport
+    }
     '/_authenticated/app/_layout/connectors': {
       id: '/_authenticated/app/_layout/connectors'
       path: '/connectors'
@@ -792,6 +834,31 @@ declare module '@tanstack/react-router' {
 
 // Create and export the route tree
 
+interface AuthenticatedAdminLayoutRouteChildren {
+  AuthenticatedAdminLayoutUsersRoute: typeof AuthenticatedAdminLayoutUsersRoute
+}
+
+const AuthenticatedAdminLayoutRouteChildren: AuthenticatedAdminLayoutRouteChildren =
+  {
+    AuthenticatedAdminLayoutUsersRoute: AuthenticatedAdminLayoutUsersRoute,
+  }
+
+const AuthenticatedAdminLayoutRouteWithChildren =
+  AuthenticatedAdminLayoutRoute._addFileChildren(
+    AuthenticatedAdminLayoutRouteChildren,
+  )
+
+interface AuthenticatedAdminRouteChildren {
+  AuthenticatedAdminLayoutRoute: typeof AuthenticatedAdminLayoutRouteWithChildren
+}
+
+const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
+  AuthenticatedAdminLayoutRoute: AuthenticatedAdminLayoutRouteWithChildren,
+}
+
+const AuthenticatedAdminRouteWithChildren =
+  AuthenticatedAdminRoute._addFileChildren(AuthenticatedAdminRouteChildren)
+
 interface AuthenticatedAppLayoutRouteChildren {
   AuthenticatedAppLayoutConnectorsRoute: typeof AuthenticatedAppLayoutConnectorsRoute
   AuthenticatedAppLayoutContactUsRoute: typeof AuthenticatedAppLayoutContactUsRoute
@@ -879,6 +946,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedContactUsRoute: typeof AuthenticatedContactUsRoute
   AuthenticatedFeaturesRoute: typeof AuthenticatedFeaturesRoute
   AuthenticatedHowItWorksRoute: typeof AuthenticatedHowItWorksRoute
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRouteWithChildren
   AuthenticatedAppRoute: typeof AuthenticatedAppRouteWithChildren
   AuthenticatedBimViewerUtIfcViewerSelectionRoute: typeof AuthenticatedBimViewerUtIfcViewerSelectionRoute
   AuthenticatedBimViewerUtGeometrySceneViewcubeRoute: typeof AuthenticatedBimViewerUtGeometrySceneViewcubeRoute
@@ -903,6 +971,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedContactUsRoute: AuthenticatedContactUsRoute,
   AuthenticatedFeaturesRoute: AuthenticatedFeaturesRoute,
   AuthenticatedHowItWorksRoute: AuthenticatedHowItWorksRoute,
+  AuthenticatedAdminRoute: AuthenticatedAdminRouteWithChildren,
   AuthenticatedAppRoute: AuthenticatedAppRouteWithChildren,
   AuthenticatedBimViewerUtIfcViewerSelectionRoute:
     AuthenticatedBimViewerUtIfcViewerSelectionRoute,
@@ -954,6 +1023,7 @@ export interface FileRoutesByFullPath {
   '/403': typeof errors403LazyRoute
   '/404': typeof errors404LazyRoute
   '/503': typeof errors503LazyRoute
+  '/admin': typeof AuthenticatedAdminLayoutRouteWithChildren
   '/app': typeof AuthenticatedAppLayoutRouteWithChildren
   '/bim-viewer-ut/Ifc-viewer-selection': typeof AuthenticatedBimViewerUtIfcViewerSelectionRoute
   '/bim-viewer-ut/geometry-scene-viewcube': typeof AuthenticatedBimViewerUtGeometrySceneViewcubeRoute
@@ -973,6 +1043,7 @@ export interface FileRoutesByFullPath {
   '/my-room-3d': typeof AuthenticatedMyRoom3dIndexRoute
   '/view': typeof AuthenticatedViewIndexRoute
   '/example-model/ifc': typeof ExampleModelIfcIndexRoute
+  '/admin/users': typeof AuthenticatedAdminLayoutUsersRoute
   '/app/connectors': typeof AuthenticatedAppLayoutConnectorsRoute
   '/app/contact-us': typeof AuthenticatedAppLayoutContactUsRoute
   '/app/features': typeof AuthenticatedAppLayoutFeaturesRoute
@@ -1004,6 +1075,7 @@ export interface FileRoutesByTo {
   '/403': typeof errors403LazyRoute
   '/404': typeof errors404LazyRoute
   '/503': typeof errors503LazyRoute
+  '/admin': typeof AuthenticatedAdminLayoutRouteWithChildren
   '/app': typeof AuthenticatedAppIndexRoute
   '/bim-viewer-ut/Ifc-viewer-selection': typeof AuthenticatedBimViewerUtIfcViewerSelectionRoute
   '/bim-viewer-ut/geometry-scene-viewcube': typeof AuthenticatedBimViewerUtGeometrySceneViewcubeRoute
@@ -1022,6 +1094,7 @@ export interface FileRoutesByTo {
   '/my-room-3d': typeof AuthenticatedMyRoom3dIndexRoute
   '/view': typeof AuthenticatedViewIndexRoute
   '/example-model/ifc': typeof ExampleModelIfcIndexRoute
+  '/admin/users': typeof AuthenticatedAdminLayoutUsersRoute
   '/app/connectors': typeof AuthenticatedAppLayoutConnectorsRoute
   '/app/contact-us': typeof AuthenticatedAppLayoutContactUsRoute
   '/app/features': typeof AuthenticatedAppLayoutFeaturesRoute
@@ -1055,6 +1128,8 @@ export interface FileRoutesById {
   '/(errors)/404': typeof errors404LazyRoute
   '/(errors)/500': typeof errors500LazyRoute
   '/(errors)/503': typeof errors503LazyRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
+  '/_authenticated/admin/_layout': typeof AuthenticatedAdminLayoutRouteWithChildren
   '/_authenticated/app': typeof AuthenticatedAppRouteWithChildren
   '/_authenticated/app/_layout': typeof AuthenticatedAppLayoutRouteWithChildren
   '/_authenticated/bim-viewer-ut/Ifc-viewer-selection': typeof AuthenticatedBimViewerUtIfcViewerSelectionRoute
@@ -1076,6 +1151,7 @@ export interface FileRoutesById {
   '/_authenticated/my-room-3d/': typeof AuthenticatedMyRoom3dIndexRoute
   '/_authenticated/view/': typeof AuthenticatedViewIndexRoute
   '/example-model/ifc/': typeof ExampleModelIfcIndexRoute
+  '/_authenticated/admin/_layout/users': typeof AuthenticatedAdminLayoutUsersRoute
   '/_authenticated/app/_layout/connectors': typeof AuthenticatedAppLayoutConnectorsRoute
   '/_authenticated/app/_layout/contact-us': typeof AuthenticatedAppLayoutContactUsRoute
   '/_authenticated/app/_layout/features': typeof AuthenticatedAppLayoutFeaturesRoute
@@ -1109,6 +1185,7 @@ export interface FileRouteTypes {
     | '/403'
     | '/404'
     | '/503'
+    | '/admin'
     | '/app'
     | '/bim-viewer-ut/Ifc-viewer-selection'
     | '/bim-viewer-ut/geometry-scene-viewcube'
@@ -1128,6 +1205,7 @@ export interface FileRouteTypes {
     | '/my-room-3d'
     | '/view'
     | '/example-model/ifc'
+    | '/admin/users'
     | '/app/connectors'
     | '/app/contact-us'
     | '/app/features'
@@ -1158,6 +1236,7 @@ export interface FileRouteTypes {
     | '/403'
     | '/404'
     | '/503'
+    | '/admin'
     | '/app'
     | '/bim-viewer-ut/Ifc-viewer-selection'
     | '/bim-viewer-ut/geometry-scene-viewcube'
@@ -1176,6 +1255,7 @@ export interface FileRouteTypes {
     | '/my-room-3d'
     | '/view'
     | '/example-model/ifc'
+    | '/admin/users'
     | '/app/connectors'
     | '/app/contact-us'
     | '/app/features'
@@ -1207,6 +1287,8 @@ export interface FileRouteTypes {
     | '/(errors)/404'
     | '/(errors)/500'
     | '/(errors)/503'
+    | '/_authenticated/admin'
+    | '/_authenticated/admin/_layout'
     | '/_authenticated/app'
     | '/_authenticated/app/_layout'
     | '/_authenticated/bim-viewer-ut/Ifc-viewer-selection'
@@ -1228,6 +1310,7 @@ export interface FileRouteTypes {
     | '/_authenticated/my-room-3d/'
     | '/_authenticated/view/'
     | '/example-model/ifc/'
+    | '/_authenticated/admin/_layout/users'
     | '/_authenticated/app/_layout/connectors'
     | '/_authenticated/app/_layout/contact-us'
     | '/_authenticated/app/_layout/features'
@@ -1315,6 +1398,7 @@ export const routeTree = rootRoute
         "/_authenticated/contact-us",
         "/_authenticated/features",
         "/_authenticated/how-it-works",
+        "/_authenticated/admin",
         "/_authenticated/app",
         "/_authenticated/bim-viewer-ut/Ifc-viewer-selection",
         "/_authenticated/bim-viewer-ut/geometry-scene-viewcube",
@@ -1382,6 +1466,20 @@ export const routeTree = rootRoute
     },
     "/(errors)/503": {
       "filePath": "(errors)/503.lazy.tsx"
+    },
+    "/_authenticated/admin": {
+      "filePath": "_authenticated/admin",
+      "parent": "/_authenticated",
+      "children": [
+        "/_authenticated/admin/_layout"
+      ]
+    },
+    "/_authenticated/admin/_layout": {
+      "filePath": "_authenticated/admin/_layout.tsx",
+      "parent": "/_authenticated/admin",
+      "children": [
+        "/_authenticated/admin/_layout/users"
+      ]
     },
     "/_authenticated/app": {
       "filePath": "_authenticated/app",
@@ -1487,6 +1585,10 @@ export const routeTree = rootRoute
     },
     "/example-model/ifc/": {
       "filePath": "example-model/ifc/index.ts"
+    },
+    "/_authenticated/admin/_layout/users": {
+      "filePath": "_authenticated/admin/_layout/users.tsx",
+      "parent": "/_authenticated/admin/_layout"
     },
     "/_authenticated/app/_layout/connectors": {
       "filePath": "_authenticated/app/_layout/connectors.tsx",

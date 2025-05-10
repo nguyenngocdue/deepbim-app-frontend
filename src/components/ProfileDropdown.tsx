@@ -23,7 +23,7 @@ export function ProfileDropdown() {
   const { navigate } = useRouter();
   const { user, loading } = useAppSelector((state) => state.auth);
 
-  const username = user?.username || 'guest';
+  const username = user?.user_name || 'guest';
   const email = user?.email || 'anonymous';
   const avatarUrl: string = user?.picture || `https://api.dicebear.com/7.x/adventurer/svg?seed=${username}`;
 
