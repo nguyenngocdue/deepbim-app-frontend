@@ -1,43 +1,53 @@
-// ✅ FolderTree.tsx - Đã sửa để dùng lazy loading với onToggle (vì loadData không phải prop hợp lệ)
+// ✅ FolderTree.tsx - Hiển thị chỉ thư mục, trả files khi chọn folder
 
-import { useRef, useState } from "react";
+import { fetchWithAuth2 } from "@/api";
+import { useEffect, useRef, useState } from "react";
 import { Tree, TreeApi, NodeApi } from "react-arborist";
+
+interface MediaInfo {
+  url: string;
+  extension: string;
+}
+
+interface FileItem {
+  id: number;
+  name: string;
+  type?: string;
+  media?: MediaInfo;
+}
 
 interface TreeNode {
   id: string;
   name: string;
-  type?: string;
-  isFolder?: boolean;
-  isLeaf?: boolean;
-  children?: TreeNode[] | undefined;
+  isFolder: true;
+  isLeaf: false;
+  children?: TreeNode[];
+  files?: FileItem[];
 }
-
-const initialData: TreeNode[] = [
-  {
-    id: "documents",
-    name: "Documents",
-    isFolder: true,
-    children: [
-      {
-        id: "company",
-        name: "Company",
-        isFolder: true,
-        children: undefined,
-      },
-    ],
-  },
-  { id: "bookmarked", name: "Bookmarked", isLeaf: true },
-  { id: "history", name: "History", isLeaf: true },
-  { id: "trash", name: "Trash", isLeaf: true },
-];
 
 interface FolderTreeProps {
-  onSelect?: (node: NodeApi<TreeNode>) => void;
+  onSelect?: (node: NodeApi<TreeNode>, files: FileItem[]) => void;
+  subProjectId: number; // truyền vào ID sub-project
 }
 
-export default function FolderTree({ onSelect }: FolderTreeProps) {
+export default function FolderTree({ onSelect, subProjectId=7 }: FolderTreeProps) {
   const treeRef = useRef<TreeApi<TreeNode>>(null);
   const [filter, setFilter] = useState("");
+  const [treeData, setTreeData] = useState<TreeNode[]>([]);
+
+  // Load toàn bộ cây một lần duy nhất theo sub-project
+  useEffect(() => {
+    const fetchTree = async () => {
+      try {
+        const data = await fetchWithAuth2(`/folders/sub-project/${subProjectId}/tree`);
+        const mapped = mapFolderTreeOnly(data.data);
+        setTreeData(mapped);
+      } catch (error) {
+        console.error("Failed to fetch tree:", error);
+      }
+    };
+    fetchTree();
+  }, [subProjectId]);
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -45,28 +55,6 @@ export default function FolderTree({ onSelect }: FolderTreeProps) {
     if (treeRef.current) {
       treeRef.current.filter(value.toLowerCase(), "name");
     }
-  };
-
-  const loadData = async (node: NodeApi<TreeNode>): Promise<TreeNode[]> => {
-    console.log("▶️ Loading children for:", node.id);
-    await delay(1000);
-    if (node.id === "company") {
-      return [
-        { id: "invoice", name: "Invoice", type: "pdf", isLeaf: true },
-        { id: "meeting", name: "Meeting notes", type: "note", isLeaf: true },
-        { id: "tasks", name: "Tasks list", type: "note", isLeaf: true },
-        { id: "equipment", name: "Equipment", type: "pdf", isLeaf: true },
-        { id: "video", name: "Video conference", type: "video", isLeaf: true },
-        { id: "personal", name: "Personal", isFolder: true, children: undefined },
-        { id: "photo", name: "Group photo", type: "image", isLeaf: true },
-      ];
-    } else if (node.id === "personal") {
-      return [
-        { id: "resume", name: "Resume", type: "pdf", isLeaf: true },
-        { id: "portfolio", name: "Portfolio", type: "pdf", isLeaf: true },
-      ];
-    }
-    return [];
   };
 
   return (
@@ -82,59 +70,70 @@ export default function FolderTree({ onSelect }: FolderTreeProps) {
       </div>
 
       <div className="flex-1 overflow-auto bg-gray-900">
-        <Tree
-          ref={treeRef}
-          data={initialData}
-          openByDefault={false}
-          childrenAccessor="children"
-          rowHeight={32}
-          indent={24}
-          disableMultiSelection
-          termFilter={(node, term) => node.data.name.toLowerCase().includes(term)}
-          onToggle={async (id) => {
-            const node = treeRef.current?.get(id);
-            if (node?.isInternal && !node.hasLoaded && node.data.children === undefined) {
-              const children = await loadData(node);
-              node.append(children);
-            }
-          }}
-          renderNode={({ node, style }) => {
-            console.log("Rendering node:", node.data.name);
-            return (
-              <div
-                style={style}
-                className="flex items-center gap-2 cursor-pointer hover:bg-gray-700 px-2 py-1 rounded"
-                onClick={() => onSelect?.(node)}
-              >
-                <img
-                  src={getIconUrl(node)}
-                  alt="icon"
-                  className="w-5 h-5 object-contain"
-                />
-                <span>{node.data.name}</span>
-              </div>
-            );
-          }}
-        />
+        <Tree<TreeNode>
+  ref={treeRef}
+  data={treeData}
+  openByDefault={false}
+  childrenAccessor="children"
+  rowHeight={32}
+  indent={24}
+  disableMultiSelection
+  termFilter={(node, term) => node.data.name.toLowerCase().includes(term)}
+  onSelect={(nodes) => {
+    const node = nodes[0]; // Single selection
+    if (node) onSelect?.(node, node.data.files || []);
+  }}
+  renderNode={({ node, style }) => (
+    <div
+      style={style}
+      className="flex items-center gap-2 cursor-pointer hover:bg-gray-700 px-2 py-1 rounded"
+    >
+      <img
+        src={getIconUrl("folder", node.isOpen)}
+        alt="icon"
+        className="w-5 h-5 object-contain"
+      />
+      <span >{node.data.name}</span>
+    </div>
+  )}
+/>
+
       </div>
     </div>
   );
 }
 
-function getIconUrl(node: NodeApi<TreeNode>) {
-  const type = node.isInternal ? "folder" : node.data.type;
-  switch (type) {
-    case "pdf": return "https://img.icons8.com/color/48/pdf.png";
-    case "note": return "https://img.icons8.com/color/48/document--v1.png";
-    case "image": return "https://img.icons8.com/color/48/image.png";
-    case "video": return "https://img.icons8.com/color/48/video.png";
-    case "folder": return node.isOpen
-      ? "https://img.icons8.com/color/48/opened-folder.png"
-      : "https://img.icons8.com/color/48/folder-invoices--v1.png";
-    default: return "https://img.icons8.com/color/48/file.png";
-  }
+function mapFolderTreeOnly(nodes: any[]): TreeNode[] {
+  if (!Array.isArray(nodes)) return [];
+  return nodes.map((node) => {
+    return {
+      id: String(node.id),
+      name: node.name,
+      isFolder: true,
+      isLeaf: false,
+      files: Array.isArray(node.files)
+        ? node.files.map((file: any) => ({
+            id: file.id,
+            name: file.name,
+            type: file.media?.extension,
+            media: file.media ? {
+              url: file.media.url,
+              extension: file.media.extension,
+            } : undefined,
+          }))
+        : [],
+      children: mapFolderTreeOnly(node.children || []),
+    };
+  });
 }
 
-function delay(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
+function getIconUrl(type: string, isOpen = false) {
+  switch (type) {
+    case "folder":
+      return isOpen
+        ? "https://img.icons8.com/color/48/opened-folder.png"
+        : "https://img.icons8.com/color/48/folder-invoices--v1.png";
+    default:
+      return "https://img.icons8.com/color/48/file.png";
+  }
 }
