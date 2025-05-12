@@ -47,6 +47,10 @@ export default function ProjectListPage() {
 
   const columns = useMemo<ColumnDef<Project>[]>(() => [
     {
+      accessorKey: "id",
+      header: "Id",
+    },
+    {
       accessorKey: "name",
       header: "Name",
     },

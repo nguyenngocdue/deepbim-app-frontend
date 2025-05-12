@@ -1,5 +1,6 @@
 // SubProjectListPage.tsx
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
+import axios from "axios"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -7,66 +8,63 @@ import { ColumnDef, useReactTable, getCoreRowModel } from "@tanstack/react-table
 import { TableContent } from "@/components/model-table/TableContent"
 import { DialogTemplate } from "@/components/model-table/DialogTemplate"
 import { EntityForm } from "@/components/bim-viewer/common/EntityForm"
-import AppButton from "@/components/bim-viewer/common/AppButton"
+import { createSubProjects, getSubProjects } from "@/apis/sub-project-api"
 
 interface SubProject {
   id: number
-  type: string
   name: string
-  number: string
-  access: string
-  account: string
-  created: string
+  number?: string
+  access?: string
+  type?: string
+  created_at: string
+  discipline?: { name: string }
+  owner?: { name: string }
+  creator?: { name: string }
 }
-
-const mockData: SubProject[] = [
-  {
-    id: 1,
-    type: "🌐",
-    name: "HCM-TL-MT_FS",
-    number: "HCM-TL-MT_25",
-    access: "Docs",
-    account: "Công ty Cổ phần Tập Đoàn Đèo Cả",
-    created: "25 thg 2, 2025"
-  },
-  {
-    id: 2,
-    type: "🏗️",
-    name: "CANTHO-EXP_2",
-    number: "CTH-EXP-122",
-    access: "BIM 360",
-    account: "Công ty Hạ tầng Miền Tây",
-    created: "10 thg 3, 2025"
-  },
-  {
-    id: 3,
-    type: "🛰️",
-    name: "HA-NOI-INFRA",
-    number: "HN-INF-88",
-    access: "Docs",
-    account: "Tổng công ty Hạ tầng Đô thị",
-    created: "5 thg 1, 2025"
-  }
-]
 
 export default function SubProjectListPage() {
   const [filter, setFilter] = useState("")
+  const [data, setData] = useState<SubProject[]>([])
   const [open, setOpen] = useState(false)
 
-  const data = useMemo(() =>
-    mockData.filter(p =>
-      p.name.toLowerCase().includes(filter.toLowerCase()) ||
-      p.number.toLowerCase().includes(filter.toLowerCase())
-    ), [filter]
-  )
+  const fetchData = async () => {
+    const res = await getSubProjects();
+    const formatted = res?.data.map((item: any) => ({
+      id: item.id,
+      name: item.name,
+      access: item.is_public ? "Public" : item.is_visible ? "Internal" : "Hidden",
+      start_time: item.start_time,
+      end_time: item.end_time,
+      discipline: item.discipline.name,
+      creator: item.creator,
+      owner: item.owner,
+      created_at: formatDate(item.created_at),
+    }))
+    setData(formatted)
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, [filter])
+
+  const formatDate = (dateStr: string) => {
+    const d = new Date(dateStr)
+    return d.toLocaleDateString("vi-VN", {
+      day: "numeric",
+      month: "short",
+      year: "numeric"
+    })
+  }
+
 
   const columns = useMemo<ColumnDef<SubProject>[]>(() => [
-    { accessorKey: "type", header: "Type" },
+    { accessorKey: "id", header: "Id" },
+    { accessorKey: "discipline", header: "Discipline" },
     { accessorKey: "name", header: "Name" },
-    { accessorKey: "number", header: "Number" },
-    { accessorKey: "access", header: "Default access" },
-    { accessorKey: "account", header: "Account" },
-    { accessorKey: "created", header: "Created on" }
+    { accessorKey: "start_time", header: "Start Time" },
+    { accessorKey: "end_time", header: "End Time" },
+    { accessorKey: "owner.name", header: "Owner" },
+    { accessorKey: "creator", header: "Creator" }
   ], [])
 
   const table = useReactTable({
@@ -85,12 +83,15 @@ export default function SubProjectListPage() {
     { name: "end_time", label: "End Time", placeholder: "Pick end date", type: "date" }
   ]
 
-  const handleApply = (data: any) => {
-    console.log("Submitted sub-project:", data)
-    setOpen(false)
+  const handleApply = async (formData: any) => {
+    try {
+      await createSubProjects(formData)
+      setOpen(false)
+      fetchData()
+    } catch (err) {
+      console.error("Error creating sub-project:", err)
+    }
   }
-
-  const handleCancel = () => setOpen(false)
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
@@ -107,7 +108,7 @@ export default function SubProjectListPage() {
       <div className="flex items-center justify-between mb-4">
         <DialogTemplate
           open={open}
-          onClose={handleCancel}
+          onClose={() => setOpen(false)}
           title="Create New Sub-Project"
           description="Fill in the details to create a new sub-project."
           disableOutsideClose
@@ -119,7 +120,7 @@ export default function SubProjectListPage() {
             submitLabel="Apply"
             cancelLabel="Cancel"
             showFooter
-            onCancel={handleCancel}
+            onCancel={() => setOpen(false)}
           />
         </DialogTemplate>
 
@@ -140,7 +141,7 @@ export default function SubProjectListPage() {
       <TableContent table={table} />
 
       <div className="flex justify-between items-center px-4 py-2 text-sm text-muted-foreground">
-        <div>Showing {data.length} of {mockData.length}</div>
+        <div>Showing {data.length}</div>
         <div className="flex gap-2">
           <Button variant="ghost">«</Button>
           <div>1 of 1</div>
