@@ -125,7 +125,7 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
             </div>
 
             {/* Main layout */}
-            <div className="flex flex-col flex-1 p-4">
+            <div className="flex flex-col flex-1 px-2 pt-2">
                 <div className="text-sm text-muted-foreground mb-4">
                     <div className="flex items-center justify-between">
                         <BreadcrumbsWithIconAndLabel />
@@ -137,7 +137,7 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
                         />
                     </div>
                 </div>
-                <main className="bg-behind">
+                <main className="bg-behind h-full w-full">
                     {children}
                 </main>
             </div>

@@ -45,10 +45,8 @@ const renderContent = () => {
 };
 
 
-
-
   return (
-    <div className="h-screen bg-gray-900 text-white flex flex-col">
+    <div className="h-full bg-gray-900 text-white flex flex-col">
       {/* Top Toolbar */}
       <div className="bg-white px-4 py-2">
         <CloudToolbar 
@@ -65,7 +63,7 @@ const renderContent = () => {
       <div className="flex-1 overflow-hidden">
         <PanelGroup direction="horizontal">
           {/* Left Panel - Tree */}
-          <Panel defaultSize={30} minSize={20} maxSize={50} className="bg-gray-900">
+          <Panel defaultSize={20} minSize={15} maxSize={25} className="bg-gray-900">
             <FolderTree 
                 onSelect={handleSelect} 
                 entityId={entityId} 
