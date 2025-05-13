@@ -1,9 +1,8 @@
 // components/FolderTree.tsx
 
-import { fetchWithAuth2 } from "@/api";
 import { useEffect, useRef, useState } from "react";
 import { Tree, TreeApi, NodeApi } from "react-arborist";
-import { FiFolder, FiChevronRight, FiChevronDown } from "react-icons/fi";
+import { FiFolder, FiChevronRight, FiChevronDown, FiSearch } from "react-icons/fi";
 import { FolderTreeProps } from "./Type";
 import { getFolderTree } from "@/apis/folder-api";
 
@@ -34,6 +33,7 @@ export default function FolderTree({ onSelect, entityId, refreshTrigger }: Folde
   const treeRef = useRef<TreeApi<TreeNode>>(null);
   const [filter, setFilter] = useState("");
   const [treeData, setTreeData] = useState<TreeNode[]>([]);
+  const [originalData, setOriginalData] = useState<TreeNode[]>([]);
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -41,47 +41,67 @@ export default function FolderTree({ onSelect, entityId, refreshTrigger }: Folde
       try {
         const res = await getFolderTree(entityId);
         const mapped = mapFolderTreeOnly(res.data);
+        setOriginalData(mapped);
         setTreeData(mapped);
 
         const lastId = localStorage.getItem(LOCAL_STORAGE_KEY);
-        const firstOrStored = lastId && findNodeById(mapped, lastId) ? lastId : mapped[0]?.id;
+        const firstOrStoredId = lastId && findNodeById(mapped, lastId) ? lastId : mapped[0]?.id;
+        if (!firstOrStoredId) return;
 
-        if (firstOrStored) {
-          setSelectedNodeId(firstOrStored);
-          setTimeout(() => {
-            const tree = treeRef.current;
-            if (tree) {
-              const node = tree.getNode(firstOrStored);
-              if (node) {
-                tree.select(node);
-                onSelect?.(node, node.data.files || []);
-              }
-            }
-          }, 50);
+        setSelectedNodeId(firstOrStoredId);
+        const foundNode = findNodeById(mapped, firstOrStoredId);
+        if (foundNode) {
+          const fakeNode = {
+            id: foundNode.id,
+            data: foundNode,
+            isLeaf: false,
+            isSelected: true,
+            isOpen: true,
+            level: 0,
+            parent: null,
+            hasChildren: !!foundNode.children?.length,
+            children: () => foundNode.children || [],
+          } as unknown as NodeApi<TreeNode>;
+
+          onSelect?.(fakeNode, foundNode.files || []);
         }
       } catch (err) {
         console.error("Failed to load tree:", err);
       }
     };
+
     fetchTree();
-  }, [entityId, refreshTrigger]);
+  }, [entityId, refreshTrigger]); // ✅ đúng: refreshTrigger là giá trị (number), không phải () => {}
+
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const val = e.target.value;
-    setFilter(val);
-    treeRef.current?.filter(val.toLowerCase(), "name");
+    const keyword = e.target.value.toLowerCase();
+    setFilter(keyword);
+
+    if (!keyword) {
+      setTreeData(originalData);
+      return;
+    }
+
+    const filtered = filterTree(originalData, keyword);
+    setTreeData(filtered);
   };
 
   return (
     <div className="flex flex-col h-full bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 text-white rounded-xl shadow-2xl overflow-hidden">
       <div className="p-3 bg-gray-800 border-b border-gray-700">
-        <input
-          type="text"
-          value={filter}
-          onChange={handleFilterChange}
-          placeholder="🔍 Search folders..."
-          className="w-full px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-        />
+        <div className="relative">
+          <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <FiSearch className="text-gray-400" />
+          </span>
+          <input
+            type="text"
+            value={filter}
+            onChange={handleFilterChange}
+            placeholder="Search folders or files..."
+            className="w-full pl-10 pr-4 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          />
+        </div>
       </div>
 
       <div className="flex-1 overflow-auto p-4">
@@ -131,14 +151,14 @@ function NodeRenderer({ node, style, dragHandle, isSelected }: {
     <div
       ref={dragHandle}
       style={style}
-      className={`flex items-center  justify-between px-4 py-2 rounded-lg transition-all duration-200 ease-in-out shadow-sm hover:shadow-md ${isSelected ? "bg-blue-600 text-white" : "hover:bg-gray-700"}`}
+      className={`flex items-center justify-between px-4 py-2 rounded-lg transition-all duration-200 ease-in-out shadow-sm hover:shadow-md ${isSelected ? "bg-blue-600 text-white" : "hover:bg-gray-700"}`}
       onClick={() => node.toggle()}
     >
       <span className="flex items-center gap-2 text-base font-medium px-2">
         {isFolder && hasChildren ? <FiFolder className="text-yellow-400" /> : <FiFolder className="text-gray-400" />}
         <span>{node.data.name}</span>
       </span>
-       <span className="text-xl">
+      <span className="text-xl">
         {hasChildren ? (isOpen ? <FiChevronDown /> : <FiChevronRight />) : <span className="w-4" />}
       </span>
     </div>
@@ -154,14 +174,32 @@ function mapFolderTreeOnly(nodes: any[]): TreeNode[] {
     isLeaf: false,
     files: Array.isArray(node.files)
       ? node.files.map((f: any) => ({
-          id: f.id,
-          name: f.name,
-          type: f.media?.extension,
-          media: f.media ? { url: f.media.url, extension: f.media.extension } : undefined,
-        }))
+        id: f.id,
+        name: f.name,
+        type: f.media?.extension,
+        media: f.media ? { url: f.media.url, extension: f.media.extension } : undefined,
+      }))
       : [],
     children: mapFolderTreeOnly(node.children || []),
   }));
+}
+
+function filterTree(nodes: TreeNode[], keyword: string): TreeNode[] {
+  return nodes
+    .map((node) => {
+      const childMatches = filterTree(node.children || [], keyword);
+      const fileMatches = (node.files || []).some((file) => file.name.toLowerCase().includes(keyword));
+      const folderMatch = node.name.toLowerCase().includes(keyword);
+
+      if (folderMatch || fileMatches || childMatches.length > 0) {
+        return {
+          ...node,
+          children: childMatches
+        };
+      }
+      return null;
+    })
+    .filter(Boolean) as TreeNode[];
 }
 
 function findNodeById(nodes: TreeNode[], id: string): TreeNode | undefined {

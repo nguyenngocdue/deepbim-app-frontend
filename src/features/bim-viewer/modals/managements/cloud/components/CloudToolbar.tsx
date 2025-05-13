@@ -9,8 +9,7 @@ import { uploadFilesIntoFolder } from "@/apis/file-api";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 
-const CloudToolbar = ({ selectedFolder, entityId, onCreated, onUploaded }: CloudToolbarProps) => {
-  const [view, setView] = useState<"list" | "grid">("list");
+const CloudToolbar = ({ selectedFolder, entityId, onCreated, onUploaded, setView, view }: CloudToolbarProps) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [uploading, setUploading] = useState(false);
 
@@ -98,13 +97,13 @@ const CloudToolbar = ({ selectedFolder, entityId, onCreated, onUploaded }: Cloud
       </Button>
 
 
-      <button
+      <Button
         className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-1.5 rounded"
         onClick={() => setDialogOpen(true)}
       >
         <FaFolderPlus />
         Create a new folder
-      </button>
+      </Button>
 
       <div className="flex gap-1 border rounded p-1 ml-2">
         <button
