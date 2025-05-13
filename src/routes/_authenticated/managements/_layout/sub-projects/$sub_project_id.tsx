@@ -8,9 +8,10 @@ export const Route = createFileRoute(
 })
 
 function RouteComponent() {
+  const { sub_project_id } = Route.useParams();
   return (
     <>
-      <CloudManagerment />
+      <CloudManagerment entityId={sub_project_id}/>
     </>
   )
 }

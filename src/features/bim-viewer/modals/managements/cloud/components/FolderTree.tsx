@@ -3,7 +3,9 @@
 import { fetchWithAuth2 } from "@/api";
 import { useEffect, useRef, useState } from "react";
 import { Tree, TreeApi, NodeApi } from "react-arborist";
-import { FiFolder, FiFile, FiChevronRight, FiChevronDown } from "react-icons/fi";
+import { FiFolder, FiChevronRight, FiChevronDown } from "react-icons/fi";
+import { FolderTreeProps } from "./Type";
+import { getFolderTree } from "@/apis/folder-api";
 
 interface MediaInfo {
   url: string;
@@ -26,28 +28,43 @@ interface TreeNode {
   files?: FileItem[];
 }
 
-interface FolderTreeProps {
-  onSelect?: (node: NodeApi<TreeNode>, files: FileItem[]) => void;
-  subProjectId: number;
-}
+const LOCAL_STORAGE_KEY = "lastSelectedFolderId";
 
-export default function FolderTree({ onSelect, subProjectId = 15 }: FolderTreeProps) {
+export default function FolderTree({ onSelect, entityId, refreshTrigger }: FolderTreeProps) {
   const treeRef = useRef<TreeApi<TreeNode>>(null);
   const [filter, setFilter] = useState("");
   const [treeData, setTreeData] = useState<TreeNode[]>([]);
+  const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchTree = async () => {
       try {
-        const res = await fetchWithAuth2(`/folders/sub-project/${subProjectId}/tree?project_id=1`);
+        const res = await getFolderTree(entityId);
         const mapped = mapFolderTreeOnly(res.data);
         setTreeData(mapped);
+
+        const lastId = localStorage.getItem(LOCAL_STORAGE_KEY);
+        const firstOrStored = lastId && findNodeById(mapped, lastId) ? lastId : mapped[0]?.id;
+
+        if (firstOrStored) {
+          setSelectedNodeId(firstOrStored);
+          setTimeout(() => {
+            const tree = treeRef.current;
+            if (tree) {
+              const node = tree.getNode(firstOrStored);
+              if (node) {
+                tree.select(node);
+                onSelect?.(node, node.data.files || []);
+              }
+            }
+          }, 50);
+        }
       } catch (err) {
         console.error("Failed to load tree:", err);
       }
     };
     fetchTree();
-  }, [subProjectId]);
+  }, [entityId, refreshTrigger]);
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
@@ -81,34 +98,48 @@ export default function FolderTree({ onSelect, subProjectId = 15 }: FolderTreePr
           padding={10}
           onSelect={(nodes) => {
             const node = nodes[0];
-            if (node) onSelect?.(node, node.data.files || []);
+            if (node) {
+              setSelectedNodeId(node.id);
+              localStorage.setItem(LOCAL_STORAGE_KEY, node.id);
+              onSelect?.(node, node.data.files || []);
+            }
           }}
         >
-          {NodeRenderer}
+          {(props) => (
+            <NodeRenderer
+              {...props}
+              isSelected={props.node.id === selectedNodeId}
+            />
+          )}
         </Tree>
       </div>
     </div>
   );
 }
 
-function NodeRenderer({ node, style, dragHandle }: { node: NodeApi<TreeNode>; style: React.CSSProperties; dragHandle?: (el: HTMLDivElement | null) => void }) {
+function NodeRenderer({ node, style, dragHandle, isSelected }: {
+  node: NodeApi<TreeNode>;
+  style: React.CSSProperties;
+  dragHandle?: (el: HTMLDivElement | null) => void;
+  isSelected?: boolean;
+}) {
   const isOpen = node.isOpen;
-  const hasChildren = node.hasChildren;
-  const isFolder = node.data.children && node.data.children.length > 0;
+  const hasChildren = node.data.children && node.data.children.length > 0;
+  const isFolder = true;
 
   return (
     <div
       ref={dragHandle}
       style={style}
-      className={`flex items-center gap-3 px-4 py-2 rounded-lg transition-all duration-200 ease-in-out shadow-sm hover:shadow-md ${node.isSelected ? "bg-blue-600 text-white" : "hover:bg-gray-700"}`}
+      className={`flex items-center  justify-between px-4 py-2 rounded-lg transition-all duration-200 ease-in-out shadow-sm hover:shadow-md ${isSelected ? "bg-blue-600 text-white" : "hover:bg-gray-700"}`}
       onClick={() => node.toggle()}
     >
-      <span className="text-xl">
-        {hasChildren ? (isOpen ? <FiChevronDown /> : <FiChevronRight />) : <span className="w-4" />}
-      </span>
-      <span className="flex items-center gap-2 text-base font-medium">
-        {isFolder ? <FiFolder className="text-yellow-400" /> : <FiFolder className="text-gray-400" />}
+      <span className="flex items-center gap-2 text-base font-medium px-2">
+        {isFolder && hasChildren ? <FiFolder className="text-yellow-400" /> : <FiFolder className="text-gray-400" />}
         <span>{node.data.name}</span>
+      </span>
+       <span className="text-xl">
+        {hasChildren ? (isOpen ? <FiChevronDown /> : <FiChevronRight />) : <span className="w-4" />}
       </span>
     </div>
   );
@@ -131,4 +162,13 @@ function mapFolderTreeOnly(nodes: any[]): TreeNode[] {
       : [],
     children: mapFolderTreeOnly(node.children || []),
   }));
+}
+
+function findNodeById(nodes: TreeNode[], id: string): TreeNode | undefined {
+  for (const node of nodes) {
+    if (node.id === id) return node;
+    const child = findNodeById(node.children || [], id);
+    if (child) return child;
+  }
+  return undefined;
 }
