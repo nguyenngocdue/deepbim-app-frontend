@@ -1,6 +1,5 @@
 // SubProjectListPage.tsx
 import { useEffect, useMemo, useState } from "react"
-import axios from "axios"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -9,6 +8,8 @@ import { TableContent } from "@/components/model-table/TableContent"
 import { DialogTemplate } from "@/components/model-table/DialogTemplate"
 import { EntityForm } from "@/components/bim-viewer/common/EntityForm"
 import { createSubProjects, getSubProjects } from "@/apis/sub-project-api"
+import { getProjects } from "@/apis/project"
+import { LinkId } from "@/components/common/LinkId"
 
 interface SubProject {
   id: number
@@ -26,25 +27,36 @@ export default function SubProjectListPage() {
   const [filter, setFilter] = useState("")
   const [data, setData] = useState<SubProject[]>([])
   const [open, setOpen] = useState(false)
+  const [projectOptions, setProjectOptions] = useState<string[]>([])
 
+  const fetchProjects = async () => {
+    const res = await getProjects();
+    const options = res?.data.map((proj: any) => ({
+      label: proj.name,
+      value: proj.id.toString(),
+    }))
+    setProjectOptions(options)
+  }
   const fetchData = async () => {
     const res = await getSubProjects();
     const formatted = res?.data.map((item: any) => ({
       id: item.id,
       name: item.name,
+      project: item.project.name,
       access: item.is_public ? "Public" : item.is_visible ? "Internal" : "Hidden",
       start_time: item.start_time,
       end_time: item.end_time,
-      discipline: item.discipline.name,
+      discipline: item.discipline?.name,
       creator: item.creator,
       owner: item.owner,
       created_at: formatDate(item.created_at),
     }))
-    setData(formatted)
+    setData(formatted);
   }
 
   useEffect(() => {
-    fetchData()
+    fetchData();
+    fetchProjects();
   }, [filter])
 
   const formatDate = (dateStr: string) => {
@@ -58,9 +70,15 @@ export default function SubProjectListPage() {
 
 
   const columns = useMemo<ColumnDef<SubProject>[]>(() => [
-    { accessorKey: "id", header: "Id" },
-    { accessorKey: "discipline", header: "Discipline" },
+    { 
+      accessorKey: "id", 
+      header: "Id",
+      cell: ({ row }) => ( <LinkId id={row.original.id} href="/managements/sub-projects" />)
+    },
     { accessorKey: "name", header: "Name" },
+    { accessorKey: "description", header: "Description" },
+    { accessorKey: "project", header: "Project" },
+    { accessorKey: "discipline", header: "Discipline" },
     { accessorKey: "start_time", header: "Start Time" },
     { accessorKey: "end_time", header: "End Time" },
     { accessorKey: "owner.name", header: "Owner" },
@@ -73,9 +91,11 @@ export default function SubProjectListPage() {
     getCoreRowModel: getCoreRowModel()
   })
 
+
   const subProjectFields = [
     { name: "name", label: "Sub-project name", placeholder: "Enter sub-project name", type: "text" },
     { name: "description", label: "Description", placeholder: "Enter description", type: "textarea" },
+    { name: "project", label: "Project", placeholder: "Select a project", type: "select", options: projectOptions },
     { name: "partner", label: "Partner", placeholder: "Enter partner", type: "text" },
     { name: "main_discipline", label: "Discipline", placeholder: "E.g. Architecture, Structure...", type: "text" },
     { name: "location", label: "Location", placeholder: "Enter location", type: "text" },
@@ -85,13 +105,19 @@ export default function SubProjectListPage() {
 
   const handleApply = async (formData: any) => {
     try {
-      await createSubProjects(formData)
+      const payload = {
+        ...formData,
+        project_id: parseInt(formData.project),
+      }
+
+      await createSubProjects(payload)
       setOpen(false)
       fetchData()
     } catch (err) {
       console.error("Error creating sub-project:", err)
     }
   }
+
 
   return (
     <div className="p-6 max-w-7xl mx-auto">

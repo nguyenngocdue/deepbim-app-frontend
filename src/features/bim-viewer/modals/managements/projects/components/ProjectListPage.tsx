@@ -9,6 +9,7 @@ import { EntityForm } from "@/components/bim-viewer/common/EntityForm"
 import { createProjects, getProjects } from "@/apis/project"
 import { Skeleton } from "@/components/ui/skeleton"
 import { toast } from "sonner"
+import { LinkId } from "@/components/common/LinkId"
 
 interface Project {
   id: number
@@ -28,8 +29,8 @@ export default function ProjectListPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await getProjects()
-        setProjects(data)
+        const res = await getProjects()
+        setProjects(res?.data)
       } catch (err) {
         console.error("Failed to fetch projects:", err)
       }
@@ -49,6 +50,7 @@ export default function ProjectListPage() {
     {
       accessorKey: "id",
       header: "Id",
+      cell: ({ row }) => ( <LinkId id={row.original.id} href="/managements/projects" disabled={true} />)
     },
     {
       accessorKey: "name",
@@ -129,8 +131,8 @@ export default function ProjectListPage() {
     await createProjects(data)
     setOpen(false)
     try {
-        const data = await getProjects()
-        setProjects(data)
+        const res = await getProjects()
+        setProjects(res?.data)
         toast.success("Projects updated  successfuly")
       } catch (err) {
         toast.error("Failed to get projects")

@@ -1,4 +1,5 @@
 import { apiGet, fetchWithAuth2 } from "@/api";
+import { json } from "d3";
 import { toast } from "sonner";
 
 export async function setUserSettings(data: Object)  {
@@ -55,9 +56,17 @@ export async function getUserRoles() {
 }
 
 export async function deleteUserRoles(id: number) {
-    console.log(id);
     const res = await fetchWithAuth2(`/user-roles/${id}`, {
         method: 'DELETE',
     })
+    return res;
+}
+
+
+export async function createNewUser(data: any){
+    const res = await fetchWithAuth2('/users/create', {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
     return res;
 }

@@ -24,7 +24,7 @@ export async function createProjects(data: any) {
 export async function getProjects() {
     try {
         const response = await apiGet('/projects') as { data: any };
-        return response.data ?? {};
+        return response ?? {};
       } catch (error: any) {
         toast.error("Error: " + error.message);
       }

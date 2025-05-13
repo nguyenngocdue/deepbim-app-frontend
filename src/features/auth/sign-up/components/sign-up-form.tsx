@@ -24,6 +24,7 @@ import { GoogleLoginButton } from '@/components/GoogleLoginButton'
 import { Loader2 } from 'lucide-react'
 import AppButton from '@/components/bim-viewer/common/AppButton'
 import { CLASS_NAME_DEFAULT } from '@/utils/class'
+import { createNewUser } from '@/apis/users/UserSettings'
 
 
 const formSchema = z
@@ -63,14 +64,8 @@ export function SignUpForm({ className, ...props }: HTMLAttributes<HTMLDivElemen
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
     setIsLoadingCreator(true);
+    const response = await createNewUser(data)
     try {
-      const payload = new URLSearchParams({
-        email: data.email,
-        username: data.username,
-        password: data.password,
-      })
-
-      const response = await api.post('/users/create', payload)
       console.log('User created ✅:', response.data)
       navigate({ to: '/sign-in' })
     } catch (error: any) {

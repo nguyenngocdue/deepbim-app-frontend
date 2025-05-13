@@ -35,52 +35,58 @@ const CloudManagerment = () => {
   };
 
 const renderContent = () => {
-  // 1. Nếu chưa chọn thư mục thì không hiển thị gì
   if (!selectedFolder) return null;
 
   return (
-    <div className="space-y-4">
-      {/* 2. Lưới hiển thị danh sách file */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 pt-4">
-        {/* 3. Lặp qua từng file để render */}
-        {folderFiles.map((file) => (
-          <div
-            key={file.id} // 4. Key duy nhất cho từng phần tử
-            className="bg-gray-800 p-3 rounded shadow hover:bg-gray-700 transition flex flex-col items-center text-center"
-            title={file.name} // 5. Tooltip khi hover tên đầy đủ
-          >
-            {/* 6. Hiển thị icon theo loại file */}
-            <img
-              src={getIconUrlByType(file.type || "")}
-              alt={file.name}
-              className="w-12 h-12 mb-2"
-            />
+    <div className="space-y-2">
+      {/* Header của bảng */}
+      <div className="grid grid-cols-5 gap-2 px-2 text-sm text-gray-400 border-b border-gray-700">
+        <span>Icon</span>
+        <span className="col-span-2">Name</span>
+        <span>Extension</span>
+        <span>Action</span>
+      </div>
 
-            {/* 7. Tên file (bị cắt nếu quá dài) */}
-            <p className="text-sm font-medium truncate w-full">{file.name}</p>
+      {/* Danh sách từng file */}
+      {folderFiles.map((file) => (
+        <div
+          key={file.id}
+          className="grid grid-cols-5 gap-2 items-center px-2 py-2 bg-gray-800 hover:bg-gray-700 rounded transition text-sm"
+        >
+          {/* Icon */}
+          <img
+            src={getIconUrlByType(file.type || '')}
+            alt={file.name}
+            className="w-6 h-6"
+          />
 
-            {/* 8. Nút mở file nếu có URL */}
-            {file.media?.url && (
+          {/* Tên file */}
+          <span className="col-span-2 truncate">{file.name}</span>
+
+          {/* Phần mở rộng */}
+          <span className="text-gray-400">{file.media?.extension ? `.${file.media.extension}` : '-'}</span>
+
+          {/* Nút mở */}
+          <div>
+            {file.media?.url ? (
               <a
                 href={file.media.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-xs text-blue-400 hover:underline mt-1"
+                className="text-blue-400 hover:underline text-xs"
               >
-                Xem file
+                View
               </a>
-            )}
-
-            {/* 9. Hiển thị phần mở rộng (ví dụ: .ifc, .pdf) nếu có */}
-            {file.media?.extension && (
-              <p className="text-xs text-gray-400 mt-0.5">.{file.media.extension}</p>
+            ) : (
+              <span className="text-gray-500 text-xs">No link</span>
             )}
           </div>
-        ))}
-      </div>
+        </div>
+      ))}
     </div>
   );
 };
+
 
 
 

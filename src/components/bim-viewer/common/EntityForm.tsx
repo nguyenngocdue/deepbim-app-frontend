@@ -135,13 +135,16 @@ export function EntityForm({
             <div key={index}>
               <Label title={field.name}>{field.label}</Label>
               <Select onValueChange={(val) => setValue(field.name, val, { shouldValidate: true })}>
-                <SelectTrigger className={cn("mt-1", errors[field.name] && "border-red-500")}> 
+                <SelectTrigger className={cn("mt-1", errors[field.name] && "border-red-500")}>
                   <SelectValue placeholder={field.placeholder} />
                 </SelectTrigger>
                 <SelectContent>
-                  {field.options?.map((option, i) => (
-                    <SelectItem key={i} value={option}>{option}</SelectItem>
-                  ))}
+                  {field.options?.map((opt, i) =>
+                    typeof opt === 'string'
+                      ? <SelectItem key={i} value={opt}>{opt}</SelectItem>
+                      : <SelectItem key={i} value={opt.value}>{opt.label}</SelectItem>
+                  )
+                  }
                 </SelectContent>
               </Select>
               {errors[field.name] && (
