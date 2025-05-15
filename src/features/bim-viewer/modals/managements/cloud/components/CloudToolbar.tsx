@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { FaSearch, FaFolderPlus, FaFileUpload } from "react-icons/fa";
-import { MdCalendarToday } from "react-icons/md";
 import { HiViewList, HiViewGrid } from "react-icons/hi";
 import { FolderDialog } from "./FolderDialog";
 import { CloudToolbarProps } from "./Type";
@@ -8,17 +7,20 @@ import { createFolder } from "@/apis/folder-api";
 import { uploadFilesIntoFolder } from "@/apis/file-api";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
-
 const CloudToolbar = ({ selectedFolder, entityId, onCreated, onUploaded, setView, view }: CloudToolbarProps) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [uploading, setUploading] = useState(false);
 
 
-  const onSubmit = async (data: any) => {
+const onSubmit = async (data: any) => {
+  try {
     await createFolder(data);
-    setDialogOpen(false);
     onCreated?.();
-  };
+  } catch (error) {
+    throw error; // ném lỗi ra để component con bắt
+  }
+};
+
 
   const handleUploadClick = () => {
     const input = document.createElement("input");
@@ -46,38 +48,8 @@ const CloudToolbar = ({ selectedFolder, entityId, onCreated, onUploaded, setView
 
 
   return (
-    <div className="flex items-center gap-2 p-2 bg-white rounded shadow-sm text-sm text-gray-700">
-      <select className="border rounded px-3 py-1 hover:border-gray-400">
-        <option>Mới nhất</option>
-        <option>Cũ nhất</option>
-        <option>Tên A-Z</option>
-      </select>
-
-      <input
-        type="text"
-        placeholder="Tìm kiếm ..."
-        className="border rounded px-3 py-1 w-60 focus:outline-none focus:ring-2 focus:ring-blue-300"
-      />
-
-      <button className="flex items-center gap-1 px-3 py-1 border rounded hover:border-gray-400">
-        <MdCalendarToday className="text-gray-500" />
-        Ngày
-      </button>
-
-      <select className="border rounded px-3 py-1 hover:border-gray-400">
-        <option>Tất cả</option>
-        <option>PDF</option>
-        <option>Ảnh</option>
-        <option>Video</option>
-      </select>
-
-      <button className="flex items-center gap-1 bg-green-100 text-green-700 px-3 py-1 rounded hover:bg-green-200">
-        <FaSearch />
-        Tìm Kiếm
-      </button>
-
+    <div className="flex items-center gap-2 p-2 bg-behind shadow-sm text-sm text-gray-700">
       <div className="flex-1" />
-
       <Button
         onClick={handleUploadClick}
         disabled={uploading}
@@ -96,7 +68,6 @@ const CloudToolbar = ({ selectedFolder, entityId, onCreated, onUploaded, setView
         )}
       </Button>
 
-
       <Button
         className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-1.5 rounded"
         onClick={() => setDialogOpen(true)}
@@ -105,7 +76,7 @@ const CloudToolbar = ({ selectedFolder, entityId, onCreated, onUploaded, setView
         Create a new folder
       </Button>
 
-      <div className="flex gap-1 border rounded p-1 ml-2">
+      <div className="flex gap-1  shadow-zinc-500 p-1 ml-2">
         <button
           onClick={() => setView("list")}
           className={`p-1 rounded ${view === "list" ? "bg-green-100 text-green-700" : "text-gray-500"}`}
@@ -123,11 +94,9 @@ const CloudToolbar = ({ selectedFolder, entityId, onCreated, onUploaded, setView
       <FolderDialog
         open={dialogOpen}
         onClose={() => setDialogOpen(false)}
-        selectedFolder={selectedFolder}
         entityId={entityId}
-        onSubmit={(data) => {
-          onSubmit(data);
-        }}
+        selectedFolder={selectedFolder}
+        onSubmit={onSubmit} 
       />
     </div>
   );

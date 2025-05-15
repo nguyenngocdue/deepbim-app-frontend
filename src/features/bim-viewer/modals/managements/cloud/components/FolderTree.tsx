@@ -88,8 +88,8 @@ export default function FolderTree({ onSelect, entityId, refreshTrigger }: Folde
   };
 
   return (
-    <div className="flex flex-col h-full bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 text-white rounded-xl shadow-2xl overflow-hidden">
-      <div className="p-3 bg-gray-800 border-b border-gray-700">
+    <div className="flex flex-col h-full">
+      <div className="p-3  border-b border-gray-700">
         <div className="relative">
           <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
             <FiSearch className="text-gray-400" />
@@ -104,7 +104,7 @@ export default function FolderTree({ onSelect, entityId, refreshTrigger }: Folde
         </div>
       </div>
 
-      <div className="flex-1 overflow-auto p-4">
+      <div className="flex-1 overflow-auto p-4 overflow-auto">
         <Tree
           ref={treeRef}
           data={treeData}
@@ -116,12 +116,16 @@ export default function FolderTree({ onSelect, entityId, refreshTrigger }: Folde
           paddingTop={10}
           paddingBottom={10}
           padding={10}
+          height={800}
           onSelect={(nodes) => {
             const node = nodes[0];
             if (node) {
               setSelectedNodeId(node.id);
               localStorage.setItem(LOCAL_STORAGE_KEY, node.id);
               onSelect?.(node, node.data.files || []);
+            } else{
+              setSelectedNodeId(null)
+              onSelect?.(node, []);
             }
           }}
         >

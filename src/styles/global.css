@@ -60,6 +60,7 @@ p {
   --text-color: #000000;
   --text-color-hover: #111111;
   --text-color-active: #333333;
+  --border-frame: 1px solid #4b5563
 
 }
 
@@ -107,7 +108,7 @@ p {
   --text-color: #ffffff;
   --text-color-hover: #ffffff;
   --text-color-active: #cccccc;
-
+  --border-frame: 1px solid #4b5563
   
 
 }
@@ -232,9 +233,17 @@ body.signin-page #leva__root {
   display: none !important;
 }
 
+
+/* BORDER */
 .border-dialog {
   border: var(--border-dialog); /*border-zinc-800*/
 }
+
+.border-frame {
+  border: var(--border-frame); /* border-gray-600 */
+}
+
+
 
 .table-header {
   color: var(--bg-table-header);

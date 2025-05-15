@@ -38,17 +38,16 @@ const CloudManagerment = ({ entityId }: { entityId: number }) => {
     console.log(uploadedFile);
   };
 
-
-
-const renderContent = () => {
-  return <FolderContent files={folderFiles} view={view} />
-};
+  
+  const renderContent = () => {
+    return <FolderContent files={folderFiles} view={view} />
+  };
 
 
   return (
-    <div className="h-full bg-gray-900 text-white flex flex-col">
+    <div className="h-full bg-behind text-white flex flex-col">
       {/* Top Toolbar */}
-      <div className="bg-white px-4 py-2">
+      <div className=" px-4 py-2">
         <CloudToolbar 
           selectedFolder={selectedFolder} 
           entityId={entityId} 
@@ -60,7 +59,7 @@ const renderContent = () => {
       </div>
 
       {/* Resizable Panels */}
-      <div className="flex-1 overflow-hidden">
+      <div className="flex-1 overflow-hidden bg-behind border-t border-gray-600">
         <PanelGroup direction="horizontal">
           {/* Left Panel - Tree */}
           <Panel defaultSize={20} minSize={15} maxSize={25} className="bg-gray-900">
@@ -76,7 +75,7 @@ const renderContent = () => {
 
           {/* Right Panel - Content */}
           <Panel>
-            <div className="p-4 h-full overflow-auto">
+            <div className="p-2 h-full overflow-auto">
               {selectedFolder ? 
                   renderContent()
                : (

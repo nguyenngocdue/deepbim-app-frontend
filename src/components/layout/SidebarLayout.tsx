@@ -33,13 +33,13 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
     };
 
     return (
-        <div className="flex min-h-screen bg-behind text-white relative">
+        <div className="flex h-full bg-behind text-white">
             {/* Sidebar section */}
             <div className="relative group bg-behind ">
                 <Sidebar
                     collapsed={collapsed}
                     backgroundColor="#0b1120"
-                    rootStyles={{ height: "100vh", backgroundImage: "url(/sidebar-bg.png)", backgroundSize: "cover" }}
+                    rootStyles={{ height: "100%", backgroundImage: "url(/sidebar-bg.png)", backgroundSize: "cover" }}
                     width="200px"
                 >
                     {/* Logo and Title */}
@@ -125,7 +125,7 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
             </div>
 
             {/* Main layout */}
-            <div className="flex flex-col flex-1 px-2 pt-2">
+            <div className="flex flex-col flex-1 px-2 pt-2 h-screen overflow-hidden">
                 <div className="text-sm text-muted-foreground mb-4">
                     <div className="flex items-center justify-between">
                         <BreadcrumbsWithIconAndLabel />
@@ -137,7 +137,7 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
                         />
                     </div>
                 </div>
-                <main className="bg-behind h-full w-full">
+                <main className="bg-behind  w-full">
                     {children}
                 </main>
             </div>
