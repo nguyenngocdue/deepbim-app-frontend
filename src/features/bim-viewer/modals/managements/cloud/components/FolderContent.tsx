@@ -1,160 +1,215 @@
-import React, { useState } from "react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { PDFViewerModal } from "./PDFViewerModal";
-import PDFReader from "./PDFReader";
+import React, { useState, useEffect } from "react";
+import { FileText, MoreHorizontal, Move, Trash2 } from "lucide-react";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
+import { deleteFileById, moveFileToFolder } from "@/apis/file-api";
+import { getFoldersBySubProjectId } from "@/apis/folder-api";
+import { DialogTemplate } from "@/components/model-table/DialogTemplate";
+import AppButton from "@/components/bim-viewer/common/AppButton";
 
 interface FileItem {
   id: number;
   name: string;
   type?: string;
+  folder_id?: number;
   media?: {
     url: string;
     extension: string;
   };
 }
 
+interface FolderItem {
+  id: number;
+  name: string;
+}
+
 interface FolderContentProps {
   files: FileItem[];
   view: "list" | "grid";
+  entityId: number;
+  currentFolderId: number;
 }
 
-const getIconUrlByType = (type: string) => {
-  switch (type) {
-    case "pdf": return "https://img.icons8.com/color/96/pdf.png";
-    case "note": return "https://img.icons8.com/color/96/document--v1.png";
-    case "image": return "https://img.icons8.com/color/96/image.png";
-    case "video": return "https://img.icons8.com/color/96/video.png";
-    case "ifc": return "https://img.icons8.com/color/96/building.png";
-    case "folder": return "https://img.icons8.com/color/96/folder-invoices--v1.png";
-    default: return "https://img.icons8.com/color/96/file.png";
-  }
-};
+export const FolderContent: React.FC<FolderContentProps> = ({ files, view, entityId, currentFolderId }) => {
+  const [fileList, setFileList] = useState<FileItem[]>(files);
 
-export const FolderContent: React.FC<FolderContentProps> = ({ files, view }) => {
-  const [pdfUrl, setPdfUrl] = useState<string | null>(null);
+  const [deleteFile, setDeleteFile] = useState<FileItem | null>(null);
+  const [moveFile, setMoveFile] = useState<FileItem | null>(null);
+  const [selectedFolderId, setSelectedFolderId] = useState<number | null>(null);
+  const [availableFolders, setAvailableFolders] = useState<FolderItem[]>([]);
 
-  if (view === "list") {
-    return (
-      <TooltipProvider>
-        <div className="space-y-2">
-          <div className="grid grid-cols-5 gap-3 px-4 text-sm text-zinc-400 border-b border-zinc-700 pb-1 font-medium">
-            <span>Icon</span>
-            <span className="col-span-2">File name</span>
-            <span>Type</span>
-            <span>Action</span>
-          </div>
+  useEffect(() => {
+    setFileList(files);
+  }, [files]);
 
-          {files.map((file) => (
-            <div
-              key={file.id}
-              className="grid grid-cols-5 gap-3 items-center px-4 py-2 bg-zinc-800 hover:bg-zinc-700 rounded-lg transition text-sm"
-            >
-              <img
-                src={getIconUrlByType(file.type || "")}
-                alt={file.name}
-                className="w-6 h-6 object-contain"
-              />
+  useEffect(() => {
+    const fetchFolders = async () => {
+      const response = await getFoldersBySubProjectId(entityId);
+      setAvailableFolders(response.data);
+    };
+    fetchFolders();
+  }, [entityId]);
 
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <span className="col-span-2 truncate cursor-default">
-                    {file.name}
-                  </span>
-                </TooltipTrigger>
-                <TooltipContent>{file.name}</TooltipContent>
-              </Tooltip>
+  const triggerDialog = (
+    setter: React.Dispatch<React.SetStateAction<FileItem | null>>,
+    file: FileItem
+  ) => {
+    setter(null); // reset trước
+    requestAnimationFrame(() => setter(file)); // set lại ở frame tiếp theo
+  };
 
-              <span className="text-zinc-400">{file.media?.extension || "-"}</span>
+  const onConfirmDelete = async () => {
+    if (!deleteFile) return;
+    try {
+      await deleteFileById(deleteFile.id);
+      toast.success("File deleted successfully");
+      setFileList((prev) => prev.filter((f) => f.id !== deleteFile.id));
+      setDeleteFile(null);
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to delete file");
+    }
+  };
 
-              <div>
-                {file.media?.url ? (
-                  <a
-                    onClick={(e) => {
-                      e.preventDefault();
-                      if (file.media?.url.endsWith(".pdf")) {
-                        setPdfUrl(file.media.url);
-                      } else {
-                        window.open(file.media.url, "_blank");
-                      }
-                    }}
-                    href={file.media?.url}
-                    className="text-blue-400 hover:underline text-xs cursor-pointer"
-                  >
-                    View
-                  </a>
-                ) : (
-                  <span className="text-zinc-500 text-xs">No link</span>
-                )}
-              </div>
-            </div>
-          ))}
+  const onMoveToFolder = async () => {
+    if (!moveFile || !selectedFolderId) return;
+    try {
+      await moveFileToFolder(moveFile.id, { folder_id: selectedFolderId });
+      setFileList((prev) =>
+        prev.map((f) => (f.id === moveFile.id ? { ...f, folder_id: selectedFolderId } : f))
+      );
+      toast.success(`File "${moveFile.name}" moved successfully`);
+      setMoveFile(null);
+      setSelectedFolderId(null);
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to move file");
+    }
+  };
 
-          {pdfUrl && (
-            <PDFViewerModal
-              open={!!pdfUrl}
-              onClose={() => setPdfUrl(null)}
-              pdfUrl='/deepbim_db_v1.pdf'
-              title="Preview PDF"
-            />
-          )}
-        </div>
-      </TooltipProvider>
-    );
+  const filteredFiles = fileList.filter((file) => file.folder_id === currentFolderId);
+
+  const getIconByType = (type?: string) => {
+    const typeColors: Record<string, string> = {
+      pdf: "text-red-600",
+      note: "text-green-600",
+      image: "text-blue-600",
+      video: "text-purple-600",
+      folder: "text-yellow-600",
+    };
+    const color = typeColors[type || ""] || "text-gray-600";
+    return <FileText className={`w-6 h-6 ${color}`} />;
+  };
+
+  if (view !== "list") {
+    return <div className="text-center text-muted-foreground">Grid view not implemented yet.</div>;
   }
 
   return (
-    <TooltipProvider>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 p-1">
-        {files.map((file) => (
-          <div
-            key={file.id}
-            className="flex flex-col items-center bg-zinc-800 rounded-lg p-4 hover:bg-zinc-700 transition group"
-          >
-            <img
-              src={getIconUrlByType(file.type || "")}
-              alt={file.name}
-              className="w-10 h-10 object-contain mb-2"
-            />
-
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <p className="text-xs text-center truncate w-full text-white cursor-default">
-                  {file.name}
-                </p>
-              </TooltipTrigger>
-              <TooltipContent>{file.name}</TooltipContent>
-            </Tooltip>
-
-            {file.media?.url ? (
-              <a
-                onClick={(e) => {
-                  e.preventDefault();
-                  if (file.media?.url.endsWith(".pdf")) {
-                    setPdfUrl(file.media.url);
-                  } else {
-                    window.open(file.media.url, "_blank");
-                  }
-                }}
-                href={file.media?.url}
-                className="text-xs text-blue-400 mt-1 hover:underline"
-              >
-                View
-              </a>
-            ) : (
-              <span className="text-xs text-zinc-500 mt-1">No link</span>
-            )}
-          </div>
-        ))}
+    <div className="max-w-4xl mx-auto space-y-4">
+      <div className="grid grid-cols-5 gap-3 px-4 py-2 text-sm font-semibold text-muted-foreground border-b border-border">
+        <span>Icon</span>
+        <span className="col-span-2">File name</span>
+        <span>Type</span>
+        <span>Actions</span>
       </div>
 
-      {pdfUrl && (
-        <PDFReader/>
-      )}
-    </TooltipProvider>
+      {filteredFiles.map((file) => (
+        <div
+          key={file.id}
+          className="grid grid-cols-5 gap-3 items-center px-4 py-2 rounded-md hover:bg-muted transition"
+        >
+          <div>{getIconByType(file.type)}</div>
+          <div className="col-span-2 truncate">{file.name}</div>
+          <div className="text-muted-foreground">
+            {file.media?.extension || "-"}
+          </div>
+          <div className="text-right">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon" className="h-8 w-8">
+                  <MoreHorizontal className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={() => triggerDialog(setMoveFile, file)}>
+                  <Move className="mr-2 h-4 w-4" /> Move to Folder
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => triggerDialog(setDeleteFile, file)}
+                  className="text-destructive"
+                >
+                  <Trash2 className="mr-2 h-4 w-4" /> Delete
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        </div>
+      ))}
+
+      {/* Delete Dialog */}
+      <DialogTemplate
+        open={!!deleteFile}
+        onClose={() => setDeleteFile(null)}
+        title="Delete File"
+        description={`Are you sure you want to delete "${deleteFile?.name}"?`}
+        footer={
+          <>
+            <AppButton
+              onClick={() => setDeleteFile(null)}
+              falseName="Cancel"
+            />
+            <AppButton
+              variant="destructive"
+              onClick={onConfirmDelete}
+              falseName="Delete"
+            />
+          </>
+        }
+      >
+        <p className="text-sm">This action cannot be undone.</p>
+      </DialogTemplate>
+
+      {/* Move Dialog */}
+      <DialogTemplate
+        open={!!moveFile}
+        onClose={() => {
+          setMoveFile(null);
+          setSelectedFolderId(null);
+        }}
+        title="Move File"
+        description={`Select a folder to move "${moveFile?.name}" into.`}
+        footer={
+          <>
+            <AppButton
+              onClick={() => {
+                setMoveFile(null);
+                setSelectedFolderId(null);
+              }}
+              falseName="Cancel"
+            />
+            <AppButton
+              onClick={onMoveToFolder}
+              isLoading={!selectedFolderId}
+              trueName="Submit"
+            />
+          </>
+        }
+      >
+        <div className="flex flex-col space-y-2 max-h-48 overflow-y-auto">
+          {availableFolders.map((folder) => (
+            <Button
+              variant={selectedFolderId === folder.id ? "secondary" : "ghost"}
+              key={folder.id}
+              className="justify-start"
+              onClick={() => setSelectedFolderId(folder.id)}
+            >
+              {folder.name}
+            </Button>
+          ))}
+        </div>
+      </DialogTemplate>
+    </div>
   );
 };

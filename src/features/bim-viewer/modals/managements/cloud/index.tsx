@@ -40,7 +40,7 @@ const CloudManagerment = ({ entityId }: { entityId: number }) => {
 
   
   const renderContent = () => {
-    return <FolderContent files={folderFiles} view={view} />
+    return <FolderContent files={folderFiles} view={view} entityId={entityId}/>
   };
 
 

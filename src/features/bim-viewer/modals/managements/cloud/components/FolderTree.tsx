@@ -1,9 +1,6 @@
-// components/FolderTree.tsx
-
 import { useEffect, useRef, useState } from "react";
 import { Tree, TreeApi, NodeApi } from "react-arborist";
 import { FiFolder, FiChevronRight, FiChevronDown, FiSearch } from "react-icons/fi";
-import { FolderTreeProps } from "./Type";
 import { getFolderTree } from "@/apis/folder-api";
 
 interface MediaInfo {
@@ -27,6 +24,12 @@ interface TreeNode {
   files?: FileItem[];
 }
 
+interface FolderTreeProps {
+  onSelect: (node: NodeApi<TreeNode> | null, files: FileItem[]) => void;
+  entityId: number;
+  refreshTrigger: number;
+}
+
 const LOCAL_STORAGE_KEY = "lastSelectedFolderId";
 
 export default function FolderTree({ onSelect, entityId, refreshTrigger }: FolderTreeProps) {
@@ -45,34 +48,34 @@ export default function FolderTree({ onSelect, entityId, refreshTrigger }: Folde
         setTreeData(mapped);
 
         const lastId = localStorage.getItem(LOCAL_STORAGE_KEY);
-        const firstOrStoredId = lastId && findNodeById(mapped, lastId) ? lastId : mapped[0]?.id;
-        if (!firstOrStoredId) return;
+        const defaultId = lastId && findNodeById(mapped, lastId) ? lastId : mapped[0]?.id;
+        if (!defaultId) return;
 
-        setSelectedNodeId(firstOrStoredId);
-        const foundNode = findNodeById(mapped, firstOrStoredId);
-        if (foundNode) {
+        setSelectedNodeId(defaultId);
+
+        const latestNode = findNodeById(mapped, defaultId);
+        if (latestNode) {
           const fakeNode = {
-            id: foundNode.id,
-            data: foundNode,
+            id: latestNode.id,
+            data: latestNode,
             isLeaf: false,
             isSelected: true,
             isOpen: true,
             level: 0,
             parent: null,
-            hasChildren: !!foundNode.children?.length,
-            children: () => foundNode.children || [],
+            hasChildren: !!latestNode.children?.length,
+            children: () => latestNode.children || [],
           } as unknown as NodeApi<TreeNode>;
 
-          onSelect?.(fakeNode, foundNode.files || []);
+          onSelect?.(fakeNode, latestNode.files || []);
         }
       } catch (err) {
-        console.error("Failed to load tree:", err);
+        console.error("Failed to load folder tree:", err);
       }
     };
 
     fetchTree();
-  }, [entityId, refreshTrigger]); // ✅ đúng: refreshTrigger là giá trị (number), không phải () => {}
-
+  }, [entityId, refreshTrigger]);
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const keyword = e.target.value.toLowerCase();
@@ -89,7 +92,7 @@ export default function FolderTree({ onSelect, entityId, refreshTrigger }: Folde
 
   return (
     <div className="flex flex-col h-full">
-      <div className="p-3  border-b border-gray-700">
+      <div className="p-3 border-b border-gray-700">
         <div className="relative">
           <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
             <FiSearch className="text-gray-400" />
@@ -104,11 +107,11 @@ export default function FolderTree({ onSelect, entityId, refreshTrigger }: Folde
         </div>
       </div>
 
-      <div className="flex-1 overflow-auto p-4 overflow-auto">
+      <div className="flex-1 overflow-auto p-4">
         <Tree
           ref={treeRef}
           data={treeData}
-          openByDefault={true}
+          openByDefault
           childrenAccessor="children"
           indent={20}
           rowHeight={48}
@@ -117,23 +120,37 @@ export default function FolderTree({ onSelect, entityId, refreshTrigger }: Folde
           paddingBottom={10}
           padding={10}
           height={800}
-          onSelect={(nodes) => {
+          onSelect={async (nodes) => {
             const node = nodes[0];
             if (node) {
               setSelectedNodeId(node.id);
               localStorage.setItem(LOCAL_STORAGE_KEY, node.id);
-              onSelect?.(node, node.data.files || []);
-            } else{
-              setSelectedNodeId(null)
-              onSelect?.(node, []);
+
+              // ✅ Gọi lại fetchTree() để luôn lấy data mới nhất khi click folder
+              try {
+                const res = await getFolderTree(entityId);
+                const mapped = mapFolderTreeOnly(res.data);
+                setOriginalData(mapped);
+                setTreeData(mapped);
+
+                const latestNode = findNodeById(mapped, node.id);
+                if (latestNode) {
+                  onSelect?.(node, latestNode.files || []);
+                } else {
+                  onSelect?.(node, []);
+                }
+              } catch (err) {
+                console.error("Failed to refresh tree on select:", err);
+              }
+            } else {
+              setSelectedNodeId(null);
+              onSelect?.(null, []);
             }
           }}
+
         >
           {(props) => (
-            <NodeRenderer
-              {...props}
-              isSelected={props.node.id === selectedNodeId}
-            />
+            <NodeRenderer {...props} isSelected={props.node.id === selectedNodeId} />
           )}
         </Tree>
       </div>
@@ -141,7 +158,12 @@ export default function FolderTree({ onSelect, entityId, refreshTrigger }: Folde
   );
 }
 
-function NodeRenderer({ node, style, dragHandle, isSelected }: {
+function NodeRenderer({
+  node,
+  style,
+  dragHandle,
+  isSelected,
+}: {
   node: NodeApi<TreeNode>;
   style: React.CSSProperties;
   dragHandle?: (el: HTMLDivElement | null) => void;
@@ -149,17 +171,17 @@ function NodeRenderer({ node, style, dragHandle, isSelected }: {
 }) {
   const isOpen = node.isOpen;
   const hasChildren = node.data.children && node.data.children.length > 0;
-  const isFolder = true;
 
   return (
     <div
       ref={dragHandle}
       style={style}
-      className={`flex items-center justify-between px-4 py-2 rounded-lg transition-all duration-200 ease-in-out shadow-sm hover:shadow-md ${isSelected ? "bg-blue-600 text-white" : "hover:bg-gray-700"}`}
+      className={`flex items-center justify-between px-4 py-2 rounded-lg transition-all duration-200 ease-in-out shadow-sm hover:shadow-md ${isSelected ? "bg-blue-600 text-white" : "hover:bg-gray-700"
+        }`}
       onClick={() => node.toggle()}
     >
       <span className="flex items-center gap-2 text-base font-medium px-2">
-        {isFolder && hasChildren ? <FiFolder className="text-yellow-400" /> : <FiFolder className="text-gray-400" />}
+        <FiFolder className={hasChildren ? "text-yellow-400" : "text-gray-400"} />
         <span>{node.data.name}</span>
       </span>
       <span className="text-xl">
@@ -192,14 +214,13 @@ function filterTree(nodes: TreeNode[], keyword: string): TreeNode[] {
   return nodes
     .map((node) => {
       const childMatches = filterTree(node.children || [], keyword);
-      const fileMatches = (node.files || []).some((file) => file.name.toLowerCase().includes(keyword));
+      const fileMatches = (node.files || []).some((file) =>
+        file.name.toLowerCase().includes(keyword)
+      );
       const folderMatch = node.name.toLowerCase().includes(keyword);
 
       if (folderMatch || fileMatches || childMatches.length > 0) {
-        return {
-          ...node,
-          children: childMatches
-        };
+        return { ...node, children: childMatches };
       }
       return null;
     })

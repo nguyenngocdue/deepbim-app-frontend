@@ -10,6 +10,7 @@ interface AppButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   loadingIcon?: React.ReactNode;
   defaultIcon?: React.ReactNode;
   href?: string;
+  variant?: string;
   onClick?: (e: React.MouseEvent) => void; // ✅ thêm onClick chuẩn
 }
 
@@ -21,6 +22,7 @@ const AppButton: React.FC<AppButtonProps> = ({
   loadingIcon,
   defaultIcon,
   href,
+  variant = "",
   onClick,
   ...props
 }) => {
@@ -47,7 +49,7 @@ const AppButton: React.FC<AppButtonProps> = ({
   // Ngược lại render Button
   return (
     <Button
-      variant='ghost'
+      variant={variant}
       onClick={onClick}
       className={`transition-all duration-200 font-semibold shadow-md hover:shadow-lg  ${className}`}
       disabled={isLoading || props.disabled}

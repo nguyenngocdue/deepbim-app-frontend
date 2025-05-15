@@ -25,6 +25,15 @@ export async function uploadFilesIntoFolder(file: File, folderId: number) {
 }
 
 
-export async function getFilesByFolder() {
-    
+export async function deleteFileById(id : number) {
+    return await fetchWithAuth2(`/files/${id}`, {
+      method: 'DELETE'
+    });
+}
+
+export async function moveFileToFolder(fileId : number, data: any) {
+    return await fetchWithAuth2(`/files/${fileId}/move`, {
+      method: 'PUT',
+      body: JSON.stringify(data)
+    });
 }
