@@ -28,3 +28,31 @@ export interface FolderDialogProps {
   selectedFolder: { data: { id: number } };
   entityId: number;
 }
+
+
+export interface FileItem {
+  id: number;
+  name: string;
+  type?: string;
+  folder_id?: number;
+  media?: {
+    url: string;
+    extension: string;
+  };
+  updated_at: string;
+  creator: {
+    user_name: string;
+  };
+}
+
+export interface FolderItem {
+  id: number;
+  name: string;
+}
+
+export interface FolderContentProps {
+  files: FileItem[];
+  view: "list" | "grid";
+  entityId: number;
+  currentFolderId: number;
+}
