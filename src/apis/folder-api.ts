@@ -29,3 +29,12 @@ export async function getFoldersBySubProjectId(subProjectId: number) {
     }
 }
 
+
+export async function renameFolder(id: number, newName: string) {
+  const res = await fetchWithAuth2(`/folders/${id}/rename`, {
+    method: "PUT",
+    body: JSON.stringify({ name: newName }),
+  })
+  return res;
+}
+
