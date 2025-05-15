@@ -38,3 +38,11 @@ export async function renameFolder(id: number, newName: string) {
   return res;
 }
 
+export async function deleteFolder(id:number) {
+  const res = await fetchWithAuth2(`/folders/${id}`, {
+    method: "DELETE",
+  })
+  return res;
+}
+
+

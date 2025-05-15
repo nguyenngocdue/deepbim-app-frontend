@@ -4,12 +4,13 @@ import { HiViewList, HiViewGrid } from "react-icons/hi";
 import { FolderDialog } from "./FolderDialog";
 import { CloudToolbarProps } from "./Type";
 import { createFolder } from "@/apis/folder-api";
-import { uploadFilesIntoFolder } from "@/apis/file-api";
 import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
-const CloudToolbar = ({ selectedFolder, entityId, onCreated, onUploaded, setView, view }: CloudToolbarProps) => {
+import { UploadFilesButton } from "./UploadFilesButton";
+
+
+const CloudToolbar = ({ selectedFolder, entityId, onCreated, onUploaded, setView, view }: CloudToolbarProps) => { 
+
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [uploading, setUploading] = useState(false);
 
 
 const onSubmit = async (data: any) => {
@@ -22,51 +23,15 @@ const onSubmit = async (data: any) => {
 };
 
 
-  const handleUploadClick = () => {
-    const input = document.createElement("input");
-    input.type = "file";
-    input.multiple = true;
-    input.onchange = async (e: any) => {
-      const files = e.target.files;
-      const folderId = Number(selectedFolder?.data?.id);
-      if (!folderId) return;
-
-      try {
-        setUploading(true);
-        for (const file of files) {
-          const uploadedFile = await uploadFilesIntoFolder(file, folderId);
-          onUploaded?.(uploadedFile); // refresh file list
-        }
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setUploading(false);
-      }
-    };
-    input.click();
-  };
 
 
   return (
     <div className="flex items-center gap-2 p-2 bg-behind shadow-sm text-sm text-gray-700">
       <div className="flex-1" />
-      <Button
-        onClick={handleUploadClick}
-        disabled={uploading}
-        className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-1.5 rounded"
-      >
-        {uploading ? (
-          <>
-            <Loader2 className="animate-spin w-4 h-4" />
-            Uploading...
-          </>
-        ) : (
-          <>
-            <FaFileUpload />
-            Upload Files
-          </>
-        )}
-      </Button>
+      <UploadFilesButton
+        selectedFolder={selectedFolder}
+        onUploaded={onUploaded}
+      />
 
       <Button
         className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-1.5 rounded"

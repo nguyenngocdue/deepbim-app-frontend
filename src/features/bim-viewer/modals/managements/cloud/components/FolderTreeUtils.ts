@@ -2,6 +2,7 @@ import { TreeNode } from "./FolderTree";
 
 export function mapFolderTreeOnly(nodes: any[]): TreeNode[] {
   if (!Array.isArray(nodes)) return [];
+  console.log(nodes);
   return nodes.map((node) => ({
     id: String(node.id),
     name: node.name,
@@ -11,8 +12,11 @@ export function mapFolderTreeOnly(nodes: any[]): TreeNode[] {
       ? node.files.map((f: any) => ({
           id: f.id,
           name: f.name,
+          folder_id: f.folder_id,
           type: f.media?.extension,
           media: f.media ? { url: f.media.url, extension: f.media.extension } : undefined,
+          creator: f.creator ? {id : f.creator.id, user_name:  f.creator.user_name} : undefined,
+          updated_at: f.updated_at,
         }))
       : [],
     children: mapFolderTreeOnly(node.children || []),

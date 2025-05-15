@@ -19,7 +19,7 @@ export const FolderDialog: React.FC<FolderDialogProps> = ({
       setAvailableFolders(folders.data);
     };
     fetchFolders();
-  }, [entityId]);
+  }, [open]);
 
 
   const [form, setForm] = React.useState<FolderData>({

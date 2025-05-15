@@ -14,73 +14,70 @@ interface FileItem {
   };
 }
 
-
-const CloudManagerment = ({ entityId }: { entityId: number }) => {
-
-
+const CloudManagement = ({ entityId }: { entityId: number }) => {
   const [selectedFolder, setSelectedFolder] = useState<any>(null);
   const [folderFiles, setFolderFiles] = useState<FileItem[]>([]);
   const [refreshFlag, setRefreshFlag] = useState(0);
   const [view, setView] = useState<"list" | "grid">("list");
 
 
+  // ✅ Refresh FolderTree (trigger lại API & re-call onSelect)
   const triggerRefreshTree = () => {
-    setRefreshFlag(prev => prev + 1);
+    setRefreshFlag((prev) => prev + 1);
   };
 
-
+  // ✅ Khi FolderTree select 1 folder → update selectedFolder & files
   const handleSelect = (node: any, files: FileItem[]) => {
     setSelectedFolder(node);
     setFolderFiles(files);
   };
 
-   const handleUploadedFile = (uploadedFile: FileItem) => {
-    console.log(uploadedFile);
+  // ✅ Sau khi upload file xong → chỉ cần refresh tree để load files mới nhất
+  const handleUploadedFile = () => {
+    triggerRefreshTree();
   };
-
-  
-  const renderContent = () => {
-    return <FolderContent files={folderFiles} view={view} entityId={entityId}/>
-  };
-
 
   return (
     <div className="h-full bg-behind text-white flex flex-col">
-      {/* Top Toolbar */}
-      <div className=" px-4 py-2">
-        <CloudToolbar 
-          selectedFolder={selectedFolder} 
-          entityId={entityId} 
-          onCreated={triggerRefreshTree} 
-          onUploaded={handleUploadedFile}  
+      {/* Toolbar */}
+      <div className="px-4 py-2">
+        <CloudToolbar
+          selectedFolder={selectedFolder}
+          entityId={entityId}
+          onCreated={triggerRefreshTree}
+          onUploaded={handleUploadedFile}
           setView={setView}
           view={view}
-          />
+        />
       </div>
 
-      {/* Resizable Panels */}
-      <div className="flex-1 overflow-hidden bg-behind border-t border-gray-600">
+      {/* Main Panels */}
+      <div className="flex-1 overflow-hidden bg-behind border-gray-600">
         <PanelGroup direction="horizontal">
-          {/* Left Panel - Tree */}
+          {/* Left FolderTree */}
           <Panel defaultSize={20} minSize={15} maxSize={25} className="bg-gray-900">
-            <FolderTree 
-                onSelect={handleSelect} 
-                entityId={entityId} 
-                onCreated={triggerRefreshTree} 
-                refreshTrigger={refreshFlag}
-                />
+            <FolderTree
+              onSelect={handleSelect}
+              entityId={entityId}
+              refreshTrigger={refreshFlag}
+            />
           </Panel>
 
           <PanelResizeHandle className="w-1 bg-gray-700 hover:bg-blue-500 cursor-col-resize" />
 
-          {/* Right Panel - Content */}
+          {/* Right FolderContent */}
           <Panel>
-            <div className="p-2 h-full overflow-auto">
-              {selectedFolder ? 
-                  renderContent()
-               : (
+            <div className="h-full overflow-auto border border-zinc-500">
+              {selectedFolder ? (
+                <FolderContent
+                  files={folderFiles}
+                  view={view}
+                  entityId={entityId}
+                  currentFolderId={Number(selectedFolder.id)}
+                />
+              ) : (
                 <p className="text-gray-400">
-                  Chọn một thư mục từ cây bên trái để xem các tệp bên trong.
+                  Select a folder from the tree on the left to view the files inside.
                 </p>
               )}
             </div>
@@ -91,4 +88,4 @@ const CloudManagerment = ({ entityId }: { entityId: number }) => {
   );
 };
 
-export default CloudManagerment;
+export default CloudManagement;

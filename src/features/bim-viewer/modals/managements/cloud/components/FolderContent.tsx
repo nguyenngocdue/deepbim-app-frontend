@@ -7,6 +7,8 @@ import { deleteFileById, moveFileToFolder } from "@/apis/file-api";
 import { getFoldersBySubProjectId } from "@/apis/folder-api";
 import { DialogTemplate } from "@/components/model-table/DialogTemplate";
 import AppButton from "@/components/bim-viewer/common/AppButton";
+import { DateTimeDisplay } from "@/components/bim-viewer/common/DateTimeDisplay";
+import { FaEye } from "react-icons/fa";
 
 interface FileItem {
   id: number;
@@ -16,6 +18,10 @@ interface FileItem {
   media?: {
     url: string;
     extension: string;
+  };
+  updated_at: string; // ISO date string
+  creator: {
+    user_name: string;
   };
 }
 
@@ -106,26 +112,35 @@ export const FolderContent: React.FC<FolderContentProps> = ({ files, view, entit
     return <div className="text-center text-muted-foreground">Grid view not implemented yet.</div>;
   }
 
+  console.log(filteredFiles);
+
   return (
-    <div className="max-w-4xl mx-auto space-y-4">
-      <div className="grid grid-cols-5 gap-3 px-4 py-2 text-sm font-semibold text-muted-foreground border-b border-border">
-        <span>Icon</span>
-        <span className="col-span-2">File name</span>
-        <span>Type</span>
-        <span>Actions</span>
-      </div>
+    <div className="w-full mx-auto space-y-[0.5px]">
+    <div className="grid grid-cols-7 gap-3 py-2 px-4 text-sm font-semibold 
+                    bg-muted text-muted-foreground border-b border-border rounded-t-md">
+      <span>Icon</span>
+      <span>File name</span>
+      <span>Type</span>
+      <span>Creator</span>
+      <span>Created At</span>
+    </div>
 
       {filteredFiles.map((file) => (
         <div
           key={file.id}
-          className="grid grid-cols-5 gap-3 items-center px-4 py-2 rounded-md hover:bg-muted transition"
+          className="group grid grid-cols-7 gap-3 items-center px-4 py-2 rounded-sm
+            even:bg-muted/50 odd:bg-muted hover:bg-gray-500
+            border-b border-border transition"
         >
           <div>{getIconByType(file.type)}</div>
-          <div className="col-span-2 truncate">{file.name}</div>
-          <div className="text-muted-foreground">
+          <div className="truncate text-200">{file.name}</div>
+          <div className=" text-200">
             {file.media?.extension || "-"}
           </div>
-          <div className="text-right">
+          <div className="truncate text-200">{file.creator.user_name}</div>
+          <DateTimeDisplay isoDate={file.updated_at} />
+
+          <div className="text-right invisible group-hover:visible ">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="icon" className="h-8 w-8">
@@ -142,11 +157,20 @@ export const FolderContent: React.FC<FolderContentProps> = ({ files, view, entit
                 >
                   <Trash2 className="mr-2 h-4 w-4" /> Delete
                 </DropdownMenuItem>
+
+                <DropdownMenuItem
+                  onClick={() => triggerDialog(setDeleteFile, file)}
+                  className=""
+                >
+                  <FaEye  className="mr-2 h-4 w-4" /> View
+                </DropdownMenuItem>
+
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
         </div>
       ))}
+
 
       {/* Delete Dialog */}
       <DialogTemplate

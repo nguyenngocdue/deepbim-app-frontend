@@ -2,6 +2,7 @@ import { NodeApi } from "react-arborist";
 import { TreeNode } from "./FolderTree";
 import { FiFolder, FiChevronDown, FiChevronRight, FiMoreVertical } from "react-icons/fi";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
 
 export function FolderTreeNode({
   node, style, isSelected, onRename, onDelete
@@ -18,12 +19,12 @@ export function FolderTreeNode({
   return (
     <div
       style={style}
-      className={`group flex items-center justify-between px-4 py-2 rounded-lg transition hover:bg-gray-700 ${
+      className={`group flex items-center justify-between px-2 py-1 rounded-lg transition hover:bg-gray-700 ${
         isSelected ? "bg-blue-600 text-white" : ""
       }`}
       onClick={() => node.toggle()}
     >
-      <span className="flex items-center gap-2 text-base font-medium">
+      <span className="flex items-center gap-2 px-2 text-base font-medium">
         <FiFolder className={hasChildren ? "text-yellow-400" : "text-gray-400"} />
         {node.data.name}
       </span>
@@ -32,7 +33,7 @@ export function FolderTreeNode({
         <div className="opacity-0 group-hover:opacity-100 transition">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button>
+              <button className="bg-transparent" >
                 <FiMoreVertical size={16} />
               </button>
             </DropdownMenuTrigger>
