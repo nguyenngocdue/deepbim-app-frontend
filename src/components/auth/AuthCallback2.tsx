@@ -18,6 +18,7 @@ export function AuthCallback2() {
         if (!res.ok) throw new Error('Auth failed');
 
         const user = await res.json();
+        console.log(user);
         if(user) {
             dispatch(setCurrentUser(user));
         } else {
