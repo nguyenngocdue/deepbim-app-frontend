@@ -180,7 +180,6 @@ export async function fetchWithAuth2<T = any>(
     ...options.headers,
   };
 
-  // Add Content-Type for JSON if not FormData
   if (!isFormData && !(headers as Record<string, string>)["Content-Type"]) {
     (headers as Record<string, string>)["Content-Type"] = "application/json";
   }
@@ -191,13 +190,12 @@ export async function fetchWithAuth2<T = any>(
   const response = await fetch(url.toString(), {
     ...options,
     headers,
-    credentials: "include", // keep if using cookies (can remove otherwise)
+    credentials: "include",
   });
 
-  // 🔁 Auto-retry if unauthorized
   if (response.status === 401 && retryCount < 1) {
     try {
-      await refreshAccessToken(); // define this separately
+      await refreshAccessToken();
       return fetchWithAuth2(endpoint, options, retryCount + 1);
     } catch (err) {
       localStorage.removeItem("access_token");
@@ -206,22 +204,20 @@ export async function fetchWithAuth2<T = any>(
     }
   }
 
-  // ❗ Handle non-2xx responses
   if (!response.ok) {
-    let errorMessage = `HTTP ${response.status}`;
+    let errorData: any = {};
     try {
-      const errorData = await response.clone().json();
-      errorMessage = errorData.message || JSON.stringify(errorData);
+      errorData = await response.clone().json();
     } catch {
-      const text = await response.clone().text();
-      errorMessage = text || errorMessage;
+      errorData = { message: await response.clone().text() };
     }
-
-    throw new Error(errorMessage);
+    errorData.status = response.status;
+    throw errorData; // Ném ra object lỗi thay vì Error string
   }
-  const rep = await response.json();
-  return rep;
+
+  return await response.json();
 }
+
 
 
 // Hàm GET có đính kèm Authorization, tự build query, tự parse JSON

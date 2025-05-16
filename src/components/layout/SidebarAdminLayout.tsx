@@ -77,7 +77,6 @@ export default function SidebarAdminLayout({ children }: { children: React.React
 
                         <SubMenu label="User Manager" icon={<MdWorkspaces  size={18} />} defaultOpen={true}>
                             <MenuItem icon={<GrProjects   className="ml-5" size={20} />} component={<Link to="/admin/users" />}>Users</MenuItem>
-                            <MenuItem icon={<TiFlowChildren className="ml-5" size={20} />} component={<Link to="/admin/roles" />}>Role</MenuItem>
                         </SubMenu>
 
                     </Menu>

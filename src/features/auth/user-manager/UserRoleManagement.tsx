@@ -17,12 +17,10 @@ interface User {
   name: string
   user_name: string
 }
-
 interface Role {
   id: number
   name: string
 }
-
 interface UserRole {
   id: number
   user: User
@@ -35,7 +33,7 @@ const selectStyles = {
     backgroundColor: 'hsl(var(--background))',
     borderColor: 'hsl(var(--border))',
     borderRadius: '0.5rem',
-    fontSize: '0.875rem',
+    fontSize: '0.95rem',
     minHeight: '2.5rem',
     boxShadow: 'none',
     '&:hover': { borderColor: 'hsl(var(--primary))' },
@@ -46,18 +44,18 @@ const selectStyles = {
       ? 'hsl(var(--muted))'
       : 'hsl(var(--background))',
     color: 'hsl(var(--foreground))',
-    fontSize: '0.875rem',
+    fontSize: '0.95rem',
   }),
   multiValue: (base: any) => ({
     ...base,
-    backgroundColor: 'hsl(var(--primary)/15%)',
+    backgroundColor: 'hsl(var(--primary)/10%)',
     borderRadius: '0.25rem',
     padding: '0 4px',
   }),
   multiValueLabel: (base: any) => ({
     ...base,
     color: 'hsl(var(--primary))',
-    fontSize: '0.75rem',
+    fontSize: '0.82rem',
     fontWeight: '500',
   }),
   menuPortal: (base: any) => ({
@@ -125,7 +123,7 @@ export function UserRoleManagement() {
     {
       accessorKey: 'user.name',
       header: 'User',
-      cell: ({ row }) => <div className="font-medium text-foreground">{row.original.user.name}</div>,
+      cell: ({ row }) => <div className="font-medium">{row.original.user.name}</div>,
     },
     {
       accessorKey: 'user.user_name',
@@ -136,25 +134,23 @@ export function UserRoleManagement() {
       accessorKey: 'role.name',
       header: 'Role',
       cell: ({ row }) => (
-        <span className="inline-flex px-2 py-0.5 text-xs font-semibold rounded bg-primary/10 text-primary">
+        <span className="inline-flex px-2 py-0.5 text-xs font-semibold rounded-md bg-primary/10 text-primary">
           {row.original.role.name}
         </span>
       ),
     },
     {
       id: 'actions',
-      header: 'Action',
+      header: '',
       cell: ({ row }) => (
-        <div className="text-center">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="text-destructive hover:bg-destructive/10"
-            onClick={() => handleDelete(row.original.id)}
-          >
-            <Trash2 className="h-4 w-4" />
-          </Button>
-        </div>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="text-destructive hover:bg-destructive/10"
+          onClick={() => handleDelete(row.original.id)}
+        >
+          <Trash2 className="h-4 w-4" />
+        </Button>
       ),
     },
   ]
@@ -166,11 +162,20 @@ export function UserRoleManagement() {
   })
 
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-6">
-      <div className="text-xl font-bold">User Role Management</div>
-
-      <div className="grid md:grid-cols-[1fr_2fr_auto] gap-4 items-end bg-muted/30 p-4 rounded-xl">
+    <div className="w-full p-0 md:p-4 space-y-6">
+      {/* Header */}
+      <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-2">
         <div>
+          <h2 className="text-lg font-semibold text-foreground mb-1">
+            User Role Management
+          </h2>
+          <span className="text-xs text-muted-foreground">Assign roles for each user easily below.</span>
+        </div>
+      </div>
+
+      {/* Form: Assign Role */}
+      <div className="w-full bg-muted/60 rounded-md p-4 flex flex-col md:flex-row gap-3 items-end md:items-center">
+        <div className="flex-1 min-w-[160px]">
           <label className="block text-xs font-medium mb-1 text-muted-foreground">User</label>
           <Select
             options={users.map((u) => ({ label: u.user_name, value: u.id }))}
@@ -184,9 +189,11 @@ export function UserRoleManagement() {
             styles={selectStyles}
             menuPortalTarget={typeof window !== 'undefined' ? document.body : null}
             isDisabled={loading}
+            className="react-select-container"
+            classNamePrefix="react-select"
           />
         </div>
-        <div>
+        <div className="flex-1 min-w-[180px]">
           <label className="block text-xs font-medium mb-1 text-muted-foreground">Roles</label>
           <Select
             isMulti
@@ -197,24 +204,31 @@ export function UserRoleManagement() {
             styles={selectStyles}
             menuPortalTarget={typeof window !== 'undefined' ? document.body : null}
             isDisabled={loading}
+            className="react-select-container"
+            classNamePrefix="react-select"
           />
         </div>
         <Button
           onClick={handleAssign}
           disabled={loading || !selectedUserId || selectedRoles.length === 0}
-          className="h-10 mt-6"
+          className="h-10 min-w-[90px] md:mt-6"
         >
           {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Assign'}
         </Button>
       </div>
 
-      {userRoles.length === 0 ? (
-        <p className="text-sm text-muted-foreground italic">No user-role assignments found.</p>
-      ) : (
-        <div className="rounded-lg border">
-          <TableContent key={userRoles.length} table={table} />
-        </div>
-      )}
+      {/* Table */}
+      <div className="w-full">
+        {userRoles.length === 0 ? (
+          <div className="p-4 text-center text-sm text-muted-foreground italic">
+            No user-role assignments found.
+          </div>
+        ) : (
+          <div className="rounded-md border bg-background overflow-x-auto">
+            <TableContent key={userRoles.length} table={table} />
+          </div>
+        )}
+      </div>
     </div>
   )
 }

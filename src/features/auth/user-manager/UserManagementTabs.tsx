@@ -26,12 +26,12 @@ export function UserManagementTabs() {
 
       <Tabs value={tab} onValueChange={(val) => setTab(val as any)}>
         <div className="flex items-center justify-between mb-4">
-          <TabsList className="flex flex-wrap gap-2">
-            <TabsTrigger value="users">Users</TabsTrigger>
-            <TabsTrigger value="roles-permissions">Roles</TabsTrigger>
-            <TabsTrigger value="user_roles">User Roles</TabsTrigger>
-            <TabsTrigger value="role_permissions">Role Permissions</TabsTrigger>
-            <TabsTrigger value="permissions">Permissions</TabsTrigger>
+          <TabsList className="flex flex-wrap gap-2 ">
+            <TabsTrigger className='font-semibold' value="users">Users</TabsTrigger>
+            <TabsTrigger className='font-semibold' value="roles-permissions">Roles</TabsTrigger>
+            <TabsTrigger className='font-semibold' value="user_roles">User Roles</TabsTrigger>
+            <TabsTrigger className='font-semibold' value="role_permissions">Role Permissions</TabsTrigger>
+            <TabsTrigger className='font-semibold' value="permissions">Permissions</TabsTrigger>
           </TabsList>
         </div>
       </Tabs>

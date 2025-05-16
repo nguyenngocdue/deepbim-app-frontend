@@ -44,7 +44,6 @@ export function RolePermissionManagement() {
       }
       setMatrix(currentMatrix)
     }
-
     fetchData()
   }, [])
 
@@ -74,34 +73,44 @@ export function RolePermissionManagement() {
   }
 
   return (
-    <div className="p-6 max-w-5xl mx-auto bg-background border rounded-xl shadow-sm space-y-6">
-      <div className="flex justify-between items-center">
+    <div className="w-full p-0 md:p-6 space-y-6">
+      <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-3">
         <div>
-          <h2 className="text-2xl font-bold text-foreground">Role Permission Management</h2>
-          <p className="text-sm text-muted-foreground">
-            Assign permissions to roles to control access rights.
+          <h2 className="text-lg font-semibold text-foreground mb-1">
+            Role Permission Management
+          </h2>
+          <p className="text-xs text-muted-foreground">
+            Assign permissions to each role to control access.
           </p>
         </div>
-        <Button onClick={handleApply} disabled={loading} className="h-9">
+        <Button onClick={handleApply} disabled={loading} className="h-9 w-fit">
           {loading ? 'Applying...' : 'Apply Changes'}
         </Button>
       </div>
 
-      <div className="overflow-auto border rounded-lg">
-        <table className="w-full border-collapse text-sm">
-          <thead className="bg-muted text-xs text-muted-foreground uppercase">
-            <tr>
-              <th className="border px-4 py-2 text-left">Permission</th>
+      <div className="w-full overflow-x-auto rounded-md border bg-background">
+        <table className="w-full border-collapse text-sm min-w-[520px]">
+          <thead>
+            <tr className="bg-muted/60">
+              <th className="px-4 py-2 text-left font-medium text-xs text-muted-foreground border-b border-border">
+                Permission
+              </th>
               {roles.map((role) => (
-                <th key={role.id} className="border px-4 py-2 text-center">
+                <th
+                  key={role.id}
+                  className="px-4 py-2 text-center font-medium text-xs text-muted-foreground border-b border-border"
+                >
                   {role.name}
                 </th>
               ))}
             </tr>
           </thead>
-          <tbody className="divide-y divide-border">
+          <tbody>
             {permissions.map((perm) => (
-              <tr key={perm.id} className="hover:bg-muted/30 transition">
+              <tr
+                key={perm.id}
+                className="border-b border-border hover:bg-muted/30 transition"
+              >
                 <td className="px-4 py-2">
                   <div className="font-medium text-foreground">{perm.code}</div>
                   <div className="text-xs text-muted-foreground">{perm.description}</div>
@@ -110,10 +119,11 @@ export function RolePermissionManagement() {
                   const key = `${role.id}-${perm.id}`
                   return (
                     <td key={key} className="px-4 py-2 text-center">
-                      <Checkbox
-                        checked={matrix[key] || false}
-                        onCheckedChange={() => togglePermission(role.id, perm.id)}
-                      />
+                     <Checkbox
+                          checked={matrix[key] || false}
+                          onCheckedChange={() => togglePermission(role.id, perm.id)}
+                          className="mx-auto border-border text-foreground data-[state=checked]:bg-foreground data-[state=checked]:text-background"
+                        />
                     </td>
                   )
                 })}

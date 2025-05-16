@@ -10,7 +10,7 @@ export default function SignUp() {
     <div className='relative z-10'>
       <ParticlesContainer/>
       <AuthLayout>
-        <Card className='p-6 h-full '>
+        <Card className='p-6 h-full bg-behind '>
           <div className='mb-2 flex flex-col space-y-2 text-left'>
             <h1 className='text-lg font-semibold text-info tracking-tight text-white'>
               Create an account

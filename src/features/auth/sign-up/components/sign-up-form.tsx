@@ -3,7 +3,6 @@ import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 
-
 import { cn } from '@/lib/utils'
 import {
   Form,
@@ -16,23 +15,21 @@ import {
 import { Input } from '@/components/ui/input'
 import { PasswordInput } from '@/components/password-input'
 import { useNavigate } from '@tanstack/react-router'
-import api from '@/lib/AxiosInstance'
 import { useGoogleLoginHandler } from '@/hooks/useGoogleLogin'
-import { useGitHubLoginHandler } from '@/hooks/useGiiHubLogin'
 import { GitHubLoginButton } from '@/components/GitHubLoginButton'
 import { GoogleLoginButton } from '@/components/GoogleLoginButton'
 import { Loader2 } from 'lucide-react'
 import AppButton from '@/components/bim-viewer/common/AppButton'
 import { CLASS_NAME_DEFAULT } from '@/utils/class'
 import { createNewUser } from '@/apis/users/UserSettings'
-
+import { useGitHubLoginHandler } from '@/hooks/useGiiHubLogin'
 
 const formSchema = z
   .object({
-    username: z
+    user_name: z
       .string()
-      .min(3, { message: 'Username must be at least 3 characters' })
-      .max(20, { message: 'Username must be less than 20 characters' }),
+      .min(3, { message: 'user_name must be at least 3 characters' })
+      .max(20, { message: 'user_name must be less than 20 characters' }),
     email: z
       .string()
       .min(1, { message: 'Please enter your email' })
@@ -49,47 +46,41 @@ const formSchema = z
   })
 
 export function SignUpForm({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
-  const [isLoadingCreator, setIsLoadingCreator] = useState(false);
-  const navigate = useNavigate();
+  const [isLoadingCreator, setIsLoadingCreator] = useState(false)
+  const navigate = useNavigate()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: '',
+      user_name: '',
       email: '',
       password: '',
       confirmPassword: '',
     },
-  });
+  })
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
-    setIsLoadingCreator(true);
-    const response = await createNewUser(data)
+    setIsLoadingCreator(true)
     try {
-      console.log('User created ✅:', response.data)
+      const response = await createNewUser(data)
+      // save email into localStorage
+      localStorage.setItem("signup_email", data.email)      
+      
       navigate({ to: '/sign-in' })
     } catch (error: any) {
-      const message = error.response?.data?.message
       const apiErrors = error.response?.data?.errors
 
       if (apiErrors && typeof apiErrors === 'object') {
-        for (const key in apiErrors) {
+        Object.keys(apiErrors).forEach((key) => {
           if (form.getValues().hasOwnProperty(key)) {
-            form.setError(key as 'username' | 'email' | 'password' | 'confirmPassword', {
-              message: apiErrors[key],
-            })
+            form.setError(key as any, { message: apiErrors[key] })
           }
-        }
-      } else if (message) {
-        if (message.toLowerCase().includes('email')) {
-          form.setError('email', { message })
-        } else if (message.toLowerCase().includes('username')) {
-          form.setError('username', { message })
-        } else if (message.toLowerCase().includes('password')) {
-          form.setError('password', { message })
-        } else {
-          form.setError('confirmPassword', { message })
-        }
+        })
+      } else if (error.message) {
+          form.setError('email', {
+          type: 'server',
+          message: error.message,
+        })
       } else {
         alert('Signup failed! Please try again.')
       }
@@ -98,12 +89,8 @@ export function SignUpForm({ className, ...props }: HTMLAttributes<HTMLDivElemen
     }
   }
 
-  const { isLoading, error, handleGoogleLogin } = useGoogleLoginHandler();
-  const { isLoadingGitHub, errorGitHub, handleGitHubLogin } = useGitHubLoginHandler();
-
-  if (error) {
-    console.log(error);
-  }
+  const { isLoading: isLoadingGoogle, handleGoogleLogin } = useGoogleLoginHandler()
+  const { isLoading: isLoadingGitHub, handleGitHubLogin } = useGitHubLoginHandler()
 
   return (
     <div className={cn('grid gap-6 pt-2 text-slate-300', className)} {...props}>
@@ -113,7 +100,7 @@ export function SignUpForm({ className, ...props }: HTMLAttributes<HTMLDivElemen
             {/* Username */}
             <FormField
               control={form.control}
-              name="username"
+              name="user_name"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Username</FormLabel>
@@ -178,7 +165,6 @@ export function SignUpForm({ className, ...props }: HTMLAttributes<HTMLDivElemen
               className={CLASS_NAME_DEFAULT.CLASS_APP_BUTTON}
             />
 
-
             {/* Divider */}
             <div className="relative my-4">
               <div className="absolute inset-0 flex items-center">
@@ -189,9 +175,9 @@ export function SignUpForm({ className, ...props }: HTMLAttributes<HTMLDivElemen
               </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <GitHubLoginButton isLoading={isLoadingGitHub} onClick={handleGitHubLogin} />
-              <GoogleLoginButton/>
+              <GoogleLoginButton isLoading={isLoadingGoogle} onClick={handleGoogleLogin} />
             </div>
           </div>
         </form>

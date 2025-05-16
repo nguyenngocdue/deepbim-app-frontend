@@ -76,7 +76,7 @@ export function RolesManagement() {
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
-        <h2 className="text-xl font-bold">Role Management</h2>
+        <h2 className="text-lg font-semibold text-foreground mb-1">Role Management</h2>
         <Button onClick={() => setOpenCreate(true)}>
           <PlusIcon className="w-4 h-4 mr-2" />
           Create Role

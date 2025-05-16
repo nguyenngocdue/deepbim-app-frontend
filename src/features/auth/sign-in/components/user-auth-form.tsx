@@ -1,4 +1,4 @@
-import { HTMLAttributes, useState } from 'react';
+import { HTMLAttributes, useEffect, useState } from 'react';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -56,6 +56,14 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       password: '',
     },
   });
+
+   useEffect(() => {
+    const email = localStorage.getItem('signup_email')
+    if (email) {
+      form.setValue('email', email)
+      localStorage.removeItem('signup_email') // xoá luôn cho sạch
+    }
+  }, [form])
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
     try {

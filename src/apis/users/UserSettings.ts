@@ -1,5 +1,6 @@
 import { apiGet, fetchWithAuth2 } from "@/api";
 import { json } from "d3";
+import { l } from "node_modules/framer-motion/dist/types.d-CQt5spQA";
 import { toast } from "sonner";
 
 export async function setUserSettings(data: Object)  {
@@ -68,5 +69,9 @@ export async function createNewUser(data: any){
       method: "POST",
       body: JSON.stringify(data),
     });
-    return res;
+    if (res.success === false) {
+    throw new Error(res.message || 'Failed to create user')
+  }
+
+  return res
 }

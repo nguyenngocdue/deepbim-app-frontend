@@ -40,6 +40,7 @@ import { Route as AuthenticatedBimViewerUtIfcViewerSelectionImport } from './rou
 import { Route as AuthenticatedAppLayoutImport } from './routes/_authenticated/app/_layout'
 import { Route as AuthenticatedAdminLayoutImport } from './routes/_authenticated/admin/_layout'
 import { Route as AuthenticatedViewUploadIndexImport } from './routes/_authenticated/view/upload/index'
+import { Route as AuthenticatedManagementsLayoutUsersImport } from './routes/_authenticated/managements/_layout/users'
 import { Route as AuthenticatedManagementsLayoutSpacesImport } from './routes/_authenticated/managements/_layout/spaces'
 import { Route as AuthenticatedManagementsLayoutProjectsImport } from './routes/_authenticated/managements/_layout/projects'
 import { Route as AuthenticatedManagementsLayoutMeImport } from './routes/_authenticated/managements/_layout/me'
@@ -49,7 +50,6 @@ import { Route as AuthenticatedAppLayoutHowItWorksImport } from './routes/_authe
 import { Route as AuthenticatedAppLayoutFeaturesImport } from './routes/_authenticated/app/_layout/features'
 import { Route as AuthenticatedAppLayoutContactUsImport } from './routes/_authenticated/app/_layout/contact-us'
 import { Route as AuthenticatedAppLayoutConnectorsImport } from './routes/_authenticated/app/_layout/connectors'
-import { Route as AuthenticatedAdminLayoutUsersImport } from './routes/_authenticated/admin/_layout/users'
 import { Route as AuthenticatedManagementsLayoutSubProjectsIndexImport } from './routes/_authenticated/managements/_layout/sub-projects/index'
 import { Route as AuthenticatedManagementsLayoutSubProjectsSubprojectidImport } from './routes/_authenticated/managements/_layout/sub-projects/$sub_project_id'
 
@@ -370,6 +370,13 @@ const AuthenticatedViewUploadIndexRoute =
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 
+const AuthenticatedManagementsLayoutUsersRoute =
+  AuthenticatedManagementsLayoutUsersImport.update({
+    id: '/users',
+    path: '/users',
+    getParentRoute: () => AuthenticatedManagementsLayoutRoute,
+  } as any)
+
 const AuthenticatedManagementsLayoutSpacesRoute =
   AuthenticatedManagementsLayoutSpacesImport.update({
     id: '/spaces',
@@ -431,13 +438,6 @@ const AuthenticatedAppLayoutConnectorsRoute =
     id: '/connectors',
     path: '/connectors',
     getParentRoute: () => AuthenticatedAppLayoutRoute,
-  } as any)
-
-const AuthenticatedAdminLayoutUsersRoute =
-  AuthenticatedAdminLayoutUsersImport.update({
-    id: '/users',
-    path: '/users',
-    getParentRoute: () => AuthenticatedAdminLayoutRoute,
   } as any)
 
 const AuthenticatedManagementsLayoutSubProjectsIndexRoute =
@@ -738,13 +738,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ExampleModelIfcIndexImport
       parentRoute: typeof rootRoute
     }
-    '/_authenticated/admin/_layout/users': {
-      id: '/_authenticated/admin/_layout/users'
-      path: '/users'
-      fullPath: '/admin/users'
-      preLoaderRoute: typeof AuthenticatedAdminLayoutUsersImport
-      parentRoute: typeof AuthenticatedAdminLayoutImport
-    }
     '/_authenticated/app/_layout/connectors': {
       id: '/_authenticated/app/_layout/connectors'
       path: '/connectors'
@@ -808,6 +801,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedManagementsLayoutSpacesImport
       parentRoute: typeof AuthenticatedManagementsLayoutImport
     }
+    '/_authenticated/managements/_layout/users': {
+      id: '/_authenticated/managements/_layout/users'
+      path: '/users'
+      fullPath: '/managements/users'
+      preLoaderRoute: typeof AuthenticatedManagementsLayoutUsersImport
+      parentRoute: typeof AuthenticatedManagementsLayoutImport
+    }
     '/_authenticated/view/upload/': {
       id: '/_authenticated/view/upload/'
       path: '/view/upload'
@@ -834,26 +834,12 @@ declare module '@tanstack/react-router' {
 
 // Create and export the route tree
 
-interface AuthenticatedAdminLayoutRouteChildren {
-  AuthenticatedAdminLayoutUsersRoute: typeof AuthenticatedAdminLayoutUsersRoute
-}
-
-const AuthenticatedAdminLayoutRouteChildren: AuthenticatedAdminLayoutRouteChildren =
-  {
-    AuthenticatedAdminLayoutUsersRoute: AuthenticatedAdminLayoutUsersRoute,
-  }
-
-const AuthenticatedAdminLayoutRouteWithChildren =
-  AuthenticatedAdminLayoutRoute._addFileChildren(
-    AuthenticatedAdminLayoutRouteChildren,
-  )
-
 interface AuthenticatedAdminRouteChildren {
-  AuthenticatedAdminLayoutRoute: typeof AuthenticatedAdminLayoutRouteWithChildren
+  AuthenticatedAdminLayoutRoute: typeof AuthenticatedAdminLayoutRoute
 }
 
 const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
-  AuthenticatedAdminLayoutRoute: AuthenticatedAdminLayoutRouteWithChildren,
+  AuthenticatedAdminLayoutRoute: AuthenticatedAdminLayoutRoute,
 }
 
 const AuthenticatedAdminRouteWithChildren =
@@ -900,6 +886,7 @@ interface AuthenticatedManagementsLayoutRouteChildren {
   AuthenticatedManagementsLayoutMeRoute: typeof AuthenticatedManagementsLayoutMeRoute
   AuthenticatedManagementsLayoutProjectsRoute: typeof AuthenticatedManagementsLayoutProjectsRoute
   AuthenticatedManagementsLayoutSpacesRoute: typeof AuthenticatedManagementsLayoutSpacesRoute
+  AuthenticatedManagementsLayoutUsersRoute: typeof AuthenticatedManagementsLayoutUsersRoute
   AuthenticatedManagementsLayoutSubProjectsSubprojectidRoute: typeof AuthenticatedManagementsLayoutSubProjectsSubprojectidRoute
   AuthenticatedManagementsLayoutSubProjectsIndexRoute: typeof AuthenticatedManagementsLayoutSubProjectsIndexRoute
 }
@@ -916,6 +903,8 @@ const AuthenticatedManagementsLayoutRouteChildren: AuthenticatedManagementsLayou
       AuthenticatedManagementsLayoutProjectsRoute,
     AuthenticatedManagementsLayoutSpacesRoute:
       AuthenticatedManagementsLayoutSpacesRoute,
+    AuthenticatedManagementsLayoutUsersRoute:
+      AuthenticatedManagementsLayoutUsersRoute,
     AuthenticatedManagementsLayoutSubProjectsSubprojectidRoute:
       AuthenticatedManagementsLayoutSubProjectsSubprojectidRoute,
     AuthenticatedManagementsLayoutSubProjectsIndexRoute:
@@ -1023,7 +1012,7 @@ export interface FileRoutesByFullPath {
   '/403': typeof errors403LazyRoute
   '/404': typeof errors404LazyRoute
   '/503': typeof errors503LazyRoute
-  '/admin': typeof AuthenticatedAdminLayoutRouteWithChildren
+  '/admin': typeof AuthenticatedAdminLayoutRoute
   '/app': typeof AuthenticatedAppLayoutRouteWithChildren
   '/bim-viewer-ut/Ifc-viewer-selection': typeof AuthenticatedBimViewerUtIfcViewerSelectionRoute
   '/bim-viewer-ut/geometry-scene-viewcube': typeof AuthenticatedBimViewerUtGeometrySceneViewcubeRoute
@@ -1043,7 +1032,6 @@ export interface FileRoutesByFullPath {
   '/my-room-3d': typeof AuthenticatedMyRoom3dIndexRoute
   '/view': typeof AuthenticatedViewIndexRoute
   '/example-model/ifc': typeof ExampleModelIfcIndexRoute
-  '/admin/users': typeof AuthenticatedAdminLayoutUsersRoute
   '/app/connectors': typeof AuthenticatedAppLayoutConnectorsRoute
   '/app/contact-us': typeof AuthenticatedAppLayoutContactUsRoute
   '/app/features': typeof AuthenticatedAppLayoutFeaturesRoute
@@ -1053,6 +1041,7 @@ export interface FileRoutesByFullPath {
   '/managements/me': typeof AuthenticatedManagementsLayoutMeRoute
   '/managements/projects': typeof AuthenticatedManagementsLayoutProjectsRoute
   '/managements/spaces': typeof AuthenticatedManagementsLayoutSpacesRoute
+  '/managements/users': typeof AuthenticatedManagementsLayoutUsersRoute
   '/view/upload': typeof AuthenticatedViewUploadIndexRoute
   '/managements/sub-projects/$sub_project_id': typeof AuthenticatedManagementsLayoutSubProjectsSubprojectidRoute
   '/managements/sub-projects': typeof AuthenticatedManagementsLayoutSubProjectsIndexRoute
@@ -1075,7 +1064,7 @@ export interface FileRoutesByTo {
   '/403': typeof errors403LazyRoute
   '/404': typeof errors404LazyRoute
   '/503': typeof errors503LazyRoute
-  '/admin': typeof AuthenticatedAdminLayoutRouteWithChildren
+  '/admin': typeof AuthenticatedAdminLayoutRoute
   '/app': typeof AuthenticatedAppIndexRoute
   '/bim-viewer-ut/Ifc-viewer-selection': typeof AuthenticatedBimViewerUtIfcViewerSelectionRoute
   '/bim-viewer-ut/geometry-scene-viewcube': typeof AuthenticatedBimViewerUtGeometrySceneViewcubeRoute
@@ -1094,7 +1083,6 @@ export interface FileRoutesByTo {
   '/my-room-3d': typeof AuthenticatedMyRoom3dIndexRoute
   '/view': typeof AuthenticatedViewIndexRoute
   '/example-model/ifc': typeof ExampleModelIfcIndexRoute
-  '/admin/users': typeof AuthenticatedAdminLayoutUsersRoute
   '/app/connectors': typeof AuthenticatedAppLayoutConnectorsRoute
   '/app/contact-us': typeof AuthenticatedAppLayoutContactUsRoute
   '/app/features': typeof AuthenticatedAppLayoutFeaturesRoute
@@ -1104,6 +1092,7 @@ export interface FileRoutesByTo {
   '/managements/me': typeof AuthenticatedManagementsLayoutMeRoute
   '/managements/projects': typeof AuthenticatedManagementsLayoutProjectsRoute
   '/managements/spaces': typeof AuthenticatedManagementsLayoutSpacesRoute
+  '/managements/users': typeof AuthenticatedManagementsLayoutUsersRoute
   '/view/upload': typeof AuthenticatedViewUploadIndexRoute
   '/managements/sub-projects/$sub_project_id': typeof AuthenticatedManagementsLayoutSubProjectsSubprojectidRoute
   '/managements/sub-projects': typeof AuthenticatedManagementsLayoutSubProjectsIndexRoute
@@ -1129,7 +1118,7 @@ export interface FileRoutesById {
   '/(errors)/500': typeof errors500LazyRoute
   '/(errors)/503': typeof errors503LazyRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
-  '/_authenticated/admin/_layout': typeof AuthenticatedAdminLayoutRouteWithChildren
+  '/_authenticated/admin/_layout': typeof AuthenticatedAdminLayoutRoute
   '/_authenticated/app': typeof AuthenticatedAppRouteWithChildren
   '/_authenticated/app/_layout': typeof AuthenticatedAppLayoutRouteWithChildren
   '/_authenticated/bim-viewer-ut/Ifc-viewer-selection': typeof AuthenticatedBimViewerUtIfcViewerSelectionRoute
@@ -1151,7 +1140,6 @@ export interface FileRoutesById {
   '/_authenticated/my-room-3d/': typeof AuthenticatedMyRoom3dIndexRoute
   '/_authenticated/view/': typeof AuthenticatedViewIndexRoute
   '/example-model/ifc/': typeof ExampleModelIfcIndexRoute
-  '/_authenticated/admin/_layout/users': typeof AuthenticatedAdminLayoutUsersRoute
   '/_authenticated/app/_layout/connectors': typeof AuthenticatedAppLayoutConnectorsRoute
   '/_authenticated/app/_layout/contact-us': typeof AuthenticatedAppLayoutContactUsRoute
   '/_authenticated/app/_layout/features': typeof AuthenticatedAppLayoutFeaturesRoute
@@ -1161,6 +1149,7 @@ export interface FileRoutesById {
   '/_authenticated/managements/_layout/me': typeof AuthenticatedManagementsLayoutMeRoute
   '/_authenticated/managements/_layout/projects': typeof AuthenticatedManagementsLayoutProjectsRoute
   '/_authenticated/managements/_layout/spaces': typeof AuthenticatedManagementsLayoutSpacesRoute
+  '/_authenticated/managements/_layout/users': typeof AuthenticatedManagementsLayoutUsersRoute
   '/_authenticated/view/upload/': typeof AuthenticatedViewUploadIndexRoute
   '/_authenticated/managements/_layout/sub-projects/$sub_project_id': typeof AuthenticatedManagementsLayoutSubProjectsSubprojectidRoute
   '/_authenticated/managements/_layout/sub-projects/': typeof AuthenticatedManagementsLayoutSubProjectsIndexRoute
@@ -1205,7 +1194,6 @@ export interface FileRouteTypes {
     | '/my-room-3d'
     | '/view'
     | '/example-model/ifc'
-    | '/admin/users'
     | '/app/connectors'
     | '/app/contact-us'
     | '/app/features'
@@ -1215,6 +1203,7 @@ export interface FileRouteTypes {
     | '/managements/me'
     | '/managements/projects'
     | '/managements/spaces'
+    | '/managements/users'
     | '/view/upload'
     | '/managements/sub-projects/$sub_project_id'
     | '/managements/sub-projects'
@@ -1255,7 +1244,6 @@ export interface FileRouteTypes {
     | '/my-room-3d'
     | '/view'
     | '/example-model/ifc'
-    | '/admin/users'
     | '/app/connectors'
     | '/app/contact-us'
     | '/app/features'
@@ -1265,6 +1253,7 @@ export interface FileRouteTypes {
     | '/managements/me'
     | '/managements/projects'
     | '/managements/spaces'
+    | '/managements/users'
     | '/view/upload'
     | '/managements/sub-projects/$sub_project_id'
     | '/managements/sub-projects'
@@ -1310,7 +1299,6 @@ export interface FileRouteTypes {
     | '/_authenticated/my-room-3d/'
     | '/_authenticated/view/'
     | '/example-model/ifc/'
-    | '/_authenticated/admin/_layout/users'
     | '/_authenticated/app/_layout/connectors'
     | '/_authenticated/app/_layout/contact-us'
     | '/_authenticated/app/_layout/features'
@@ -1320,6 +1308,7 @@ export interface FileRouteTypes {
     | '/_authenticated/managements/_layout/me'
     | '/_authenticated/managements/_layout/projects'
     | '/_authenticated/managements/_layout/spaces'
+    | '/_authenticated/managements/_layout/users'
     | '/_authenticated/view/upload/'
     | '/_authenticated/managements/_layout/sub-projects/$sub_project_id'
     | '/_authenticated/managements/_layout/sub-projects/'
@@ -1476,10 +1465,7 @@ export const routeTree = rootRoute
     },
     "/_authenticated/admin/_layout": {
       "filePath": "_authenticated/admin/_layout.tsx",
-      "parent": "/_authenticated/admin",
-      "children": [
-        "/_authenticated/admin/_layout/users"
-      ]
+      "parent": "/_authenticated/admin"
     },
     "/_authenticated/app": {
       "filePath": "_authenticated/app",
@@ -1551,6 +1537,7 @@ export const routeTree = rootRoute
         "/_authenticated/managements/_layout/me",
         "/_authenticated/managements/_layout/projects",
         "/_authenticated/managements/_layout/spaces",
+        "/_authenticated/managements/_layout/users",
         "/_authenticated/managements/_layout/sub-projects/$sub_project_id",
         "/_authenticated/managements/_layout/sub-projects/"
       ]
@@ -1586,10 +1573,6 @@ export const routeTree = rootRoute
     "/example-model/ifc/": {
       "filePath": "example-model/ifc/index.ts"
     },
-    "/_authenticated/admin/_layout/users": {
-      "filePath": "_authenticated/admin/_layout/users.tsx",
-      "parent": "/_authenticated/admin/_layout"
-    },
     "/_authenticated/app/_layout/connectors": {
       "filePath": "_authenticated/app/_layout/connectors.tsx",
       "parent": "/_authenticated/app/_layout"
@@ -1624,6 +1607,10 @@ export const routeTree = rootRoute
     },
     "/_authenticated/managements/_layout/spaces": {
       "filePath": "_authenticated/managements/_layout/spaces.tsx",
+      "parent": "/_authenticated/managements/_layout"
+    },
+    "/_authenticated/managements/_layout/users": {
+      "filePath": "_authenticated/managements/_layout/users.tsx",
       "parent": "/_authenticated/managements/_layout"
     },
     "/_authenticated/view/upload/": {

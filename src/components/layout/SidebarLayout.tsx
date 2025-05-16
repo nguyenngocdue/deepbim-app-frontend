@@ -90,8 +90,8 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
                             <MenuItem icon={<TiFlowChildren className="ml-5" size={20} />} component={<Link to="/managements/sub-projects" />}>Sub-Projects</MenuItem>
                         </SubMenu>
 
-                        {!collapsed && <div className="px-4 pt-2 pb-1 uppercase text-xs tracking-wide text-slate-400">Data Management</div>}
-                            <MenuItem icon={<GrVirtualStorage  size={18} />}   component={<Link to="/managements/storage" />} >Storage</MenuItem>
+                        {!collapsed && <div className="px-4 pt-2 pb-1 uppercase text-xs tracking-wide text-slate-400">Admin Management</div>}
+                            <MenuItem icon={<GrVirtualStorage  size={18} />}   component={<Link to="/managements/users" />} >User</MenuItem>
                     </Menu>
 
 
