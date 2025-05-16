@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from '@tanstack/react-router';
 import { useAppDispatch } from '@/hooks/reduxHooks';
-import { clearUser, setCurrentUser } from '@/store/slices/AuthSlice';
+import { clearUser, setCurrentUser, UserProfile } from '@/store/slices/AuthSlice';
+import { fetchUserProfile } from '@/api';
 
 export function AuthCallback2() {
   const { navigate } = useRouter();
@@ -16,9 +17,11 @@ export function AuthCallback2() {
         });
 
         if (!res.ok) throw new Error('Auth failed');
-        const  ressult = await res.json();
-        if(ressult) {
-            dispatch(setCurrentUser(ressult));
+        const ressult = await res.json();
+
+        const userData = await fetchUserProfile();
+        if (userData.data.id) {
+          dispatch(setCurrentUser(userData as UserProfile));
         } else {
           dispatch(clearUser());
         }
