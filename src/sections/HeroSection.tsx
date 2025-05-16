@@ -68,7 +68,7 @@ const HeroSection = () => {
         <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
           <Link to="/managements/home">
             <AppButton 
-              className="bg-button-1 text-white" 
+              className="bg-button-1 text-white dark:bg-green-600 dark:text-white hover:bg-zinc-900 dark:hover:bg-zinc-900" 
               falseName={t("hero.start")}
               >
               {t("hero.start")}
@@ -76,7 +76,7 @@ const HeroSection = () => {
           </Link>
           <Link to="/managements/me">
             <AppButton 
-              className="bg-button-2 text-white" 
+              className="bg-button-2 text-white bg-gray-700 hover:bg-zinc-900 dark:hover:bg-gray-400" 
               falseName={t("hero.deploy")}
               >
               {t("hero.deploy")}
