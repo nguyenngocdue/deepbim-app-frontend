@@ -16,11 +16,9 @@ export function AuthCallback2() {
         });
 
         if (!res.ok) throw new Error('Auth failed');
-
-        const user = await res.json();
-        console.log(user);
-        if(user) {
-            dispatch(setCurrentUser(user));
+        const { data } = await res.json() as { data: any };
+        if(data) {
+            dispatch(setCurrentUser(data));
         } else {
           dispatch(clearUser());
         }
@@ -34,5 +32,5 @@ export function AuthCallback2() {
     checkLogin();
   }, [navigate]);
 
-  return <div>{loading ? 'Đang đăng nhập...' : ''}</div>;
+  return <div>{loading ? 'Signing in...' : ''}</div>;
 }
