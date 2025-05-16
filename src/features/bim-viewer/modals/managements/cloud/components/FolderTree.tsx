@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Tree, TreeApi, NodeApi } from "react-arborist";
-import { getFolderTree, renameFolder, deleteFolder } from "@/apis/folder-api";
+import { getFolderTree, renameFolder, deleteFolder, getFoldersBySubProjectId, moveFolderToFolder } from "@/apis/folder-api";
 import { FolderTreeHeader } from "./FolderTreeHeader";
 import { FolderTreeNode } from "./FolderTreeNode";
 import { DialogTemplate } from "@/components/model-table/DialogTemplate";
@@ -8,6 +8,9 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { filterTree, findNodeById, mapFolderTreeOnly } from "./FolderTreeUtils";
 import AppButton from "@/components/bim-viewer/common/AppButton";
+import { FolderSelector } from "./FolderSelector";
+import { FolderItem } from "./Type";
+import { useFoldersBySubProjectId } from "../hooks/useFoldersBySubProjectId";
 
 const LOCAL_STORAGE_KEY = "lastSelectedFolderId";
 
@@ -23,6 +26,12 @@ export default function FolderTree({ onSelect, entityId, refreshTrigger }) {
   const [renameValue, setRenameValue] = useState("");
   const [deleteNode, setDeleteNode] = useState<NodeApi<any> | null>(null);
 
+  const [moveNode, setMoveNode] = useState<NodeApi<any> | null>(null);
+  const [openMoveFolder, setOpenMoveFolder] = useState(false);
+  const [selectedDestinationId, setSelectedDestinationId] = useState<number | null>(null);
+
+
+  const { folders, loading, error } = useFoldersBySubProjectId(entityId);
 
 
   const [storedId, setStoredId] = useState(() => localStorage.getItem(LOCAL_STORAGE_KEY));
@@ -92,6 +101,22 @@ export default function FolderTree({ onSelect, entityId, refreshTrigger }) {
     await fetchTree();
   };
 
+
+  const handleMoveSubmit = async () => {
+  try {
+    await moveFolderToFolder(Number(moveNode.id), { 'parent_id': selectedDestinationId});
+    toast.success(`Moved "${moveNode.data.name}" successfully`);
+    setOpenMoveFolder(false);
+    setMoveNode(null);
+    setSelectedDestinationId(null);
+    await fetchTree();
+  } catch (error) {
+    toast.error("Failed to move folder");
+  }
+};
+
+
+
   return (
     <div className="flex flex-col h-full">
       <FolderTreeHeader filter={filter} onFilterChange={setFilter} />
@@ -115,10 +140,43 @@ export default function FolderTree({ onSelect, entityId, refreshTrigger }) {
                 setRenameNode(props.node);
               }}
               onDelete={() => setDeleteNode(props.node)}
+
+               onMoveToFolder={() => {
+                  setMoveNode(props.node);
+                  setOpenMoveFolder(true);
+                }}
+
             />
           )}
         </Tree>
       </div>
+
+      {/* Movel folder to folder */}
+      <DialogTemplate
+        open={openMoveFolder}
+        onClose={() => setOpenMoveFolder(false)}
+        title="Move Folder"
+        description={`Select destination folder for "${moveNode?.data.name}"`}
+        footer={
+          <>
+            <AppButton onClick={() => setOpenMoveFolder(false)} falseName="Cancel" />
+            <AppButton
+              className="bg-blue-800"
+              onClick={handleMoveSubmit}
+              falseName="Move"
+            />
+          </>
+        }
+      >
+        <FolderSelector
+          folders={folders}
+          selectedId={selectedDestinationId}
+          onSelect={setSelectedDestinationId}
+          excludeId={moveNode?.id}
+        />
+      </DialogTemplate>
+
+
 
       <DialogTemplate
         open={!!renameNode}

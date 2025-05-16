@@ -60,8 +60,9 @@ p {
   --text-color: #000000;
   --text-color-hover: #111111;
   --text-color-active: #333333;
-  --border-frame: 1px solid #4b5563
+  --border-frame: 1px solid #4b5563;
 
+  --text-icon: #84d3c3;
 }
 
 .dark {
@@ -108,7 +109,8 @@ p {
   --text-color: #ffffff;
   --text-color-hover: #ffffff;
   --text-color-active: #cccccc;
-  --border-frame: 1px solid #4b5563
+  --border-frame: 1px solid #4b5563;
+  --text-icon: #84d3c3;
   
 
 }
@@ -228,6 +230,17 @@ footer nav a:hover {
 .text-primary:hover {
   color: var(--text-hover-primary)
 }
+
+.text-icon {
+  color: var(--text-icon);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  font-family: 'Inter', 'Roboto', 'Open Sans', 'Helvetica Neue', sans-serif;
+  letter-spacing: 0.2px;
+  line-height: 1.4; 
+}
+
 
 body.signin-page #leva__root {
   display: none !important;

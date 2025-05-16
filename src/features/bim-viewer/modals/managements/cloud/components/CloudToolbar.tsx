@@ -24,7 +24,7 @@ const onSubmit = async (data: any) => {
 
 
   return (
-    <div className="flex items-center gap-2 p-2 bg-behind shadow-sm text-sm text-gray-700">
+    <div className="flex items-center gap-2 p-2 shadow-sm text-sm text-gray-700">
       <div className="flex-1" />
       <UploadFilesButton
         selectedFolder={selectedFolder}

@@ -5,6 +5,9 @@ import {
   FiChevronDown,
   FiChevronRight,
   FiMoreVertical,
+  FiEdit,
+  FiTrash,
+  FiFolderPlus,
 } from "react-icons/fi";
 import {
   DropdownMenu,
@@ -19,12 +22,14 @@ export function FolderTreeNode({
   isSelected,
   onRename,
   onDelete,
+  onMoveToFolder,
 }: {
   node: NodeApi<TreeNode>;
   style: React.CSSProperties;
   isSelected: boolean;
   onRename: () => void;
   onDelete: () => void;
+  onMoveToFolder: () => void
 }) {
   const isOpen = node.isOpen;
   const hasChildren = node.data.children?.length > 0;
@@ -44,7 +49,7 @@ export function FolderTreeNode({
             size={16}
           />
         </div>
-        <span className="truncate">{node.data.name}</span>
+        <span title={`id: #${node.data.id}`} className="truncate">{node.data.name}</span>
       </span>
 
       <div className="flex items-center gap-2">
@@ -69,7 +74,8 @@ export function FolderTreeNode({
                   onRename();
                 }}
               >
-                Rename
+                <FiEdit className="mr-2" size={14} />
+                <span className="text-icon">Rename</span>
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={(e) => {
@@ -78,7 +84,17 @@ export function FolderTreeNode({
                 }}
                 className="text-red-500"
               >
-                Delete
+                <FiTrash className="mr-2" size={14} />
+                <span className="text-icon">Delete</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={(e) => {
+                  e.stopPropagation();
+                   onMoveToFolder();
+                }}
+              >
+                <FiFolderPlus className="mr-2" size={14} />
+                <span className="text-icon">Move to folder</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

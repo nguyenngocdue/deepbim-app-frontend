@@ -2,7 +2,6 @@ import { TreeNode } from "./FolderTree";
 
 export function mapFolderTreeOnly(nodes: any[]): TreeNode[] {
   if (!Array.isArray(nodes)) return [];
-  console.log(nodes);
   return nodes.map((node) => ({
     id: String(node.id),
     name: node.name,

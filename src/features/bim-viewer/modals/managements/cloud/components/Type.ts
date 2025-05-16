@@ -1,5 +1,10 @@
 import { Tree, TreeApi, NodeApi } from "react-arborist";
 
+export interface FolderItem {
+  id: number;
+  name: string;
+}
+
 export interface CloudToolbarProps {
   selectedFolder: NodeApi | null; 
   entityId: number;

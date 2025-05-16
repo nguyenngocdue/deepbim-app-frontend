@@ -45,4 +45,14 @@ export async function deleteFolder(id:number) {
   return res;
 }
 
+export async function moveFolderToFolder(id:number, data: any) {
+  const res = await fetchWithAuth2(`/folders/${id}/move`, {
+    method: "PUT",
+    body: JSON.stringify(data)
+  })
+  return res;
+}
+
+
+
 
