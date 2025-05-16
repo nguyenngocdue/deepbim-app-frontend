@@ -8,38 +8,38 @@ import ParticlesContainer from '@/components/ParticlesContainer'
 export default function SignUp() {
   return (
     <div className='relative z-10'>
-      <ParticlesContainer/>
+      <ParticlesContainer />
       <AuthLayout>
-        <Card className='p-6 h-full bg-behind '>
+        <Card className='p-6 h-full bg-behind'>
           <div className='mb-2 flex flex-col space-y-2 text-left'>
-            <h1 className='text-lg font-semibold text-info tracking-tight text-white'>
+            <h1 className="text-lg font-semibold tracking-tight  dark:text-gray-100 text-gray-900">
               Create an account
             </h1>
-            <p className='text-sm text-muted-foreground'>
+            <p className='text-sm text-gray-700 dark:text-gray-300'>
               Enter your email and password to create an account. <br />
               Already have an account?{' '}
               <Link
                 to='/sign-in'
-                className='font-medium text-blue-400 hover:text-blue-300 transition-colors duration-200'
+                className='font-medium text-blue-600 dark:text-blue-300 hover:underline transition-colors duration-200'
               >
                 Sign In
               </Link>
             </p>
           </div>
-          <Separator orientation='horizontal' className='bg-zinc-500'/>
+          <Separator orientation='horizontal' className='bg-zinc-300 dark:bg-zinc-600' />
           <SignUpForm />
-          <p className='mt-4 px-8 text-center text-sm text-muted-foreground'>
+          <p className='mt-4 px-8 text-center text-sm text-gray-600 dark:text-gray-400'>
             By creating an account, you agree to our{' '}
             <a
               href='/terms'
-              className='underline underline-offset-4 hover:text-primary'
+              className='underline underline-offset-4 hover:text-blue-600 dark:hover:text-blue-300 transition-colors duration-200'
             >
               Terms of Service
             </a>{' '}
             and{' '}
             <a
               href='/privacy'
-              className='underline underline-offset-4 hover:text-primary'
+              className='underline underline-offset-4 hover:text-blue-600 dark:hover:text-blue-300 transition-colors duration-200'
             >
               Privacy Policy
             </a>

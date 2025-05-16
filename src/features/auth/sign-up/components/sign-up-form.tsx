@@ -65,7 +65,7 @@ export function SignUpForm({ className, ...props }: HTMLAttributes<HTMLDivElemen
     try {
       const response = await createNewUser(data)
       // save email into localStorage
-      localStorage.setItem("signup_email", data.email)    
+      localStorage.setItem("signup_email", data.email)
       navigate({ to: '/sign-in' })
       toast.success('Please check your email to verify your account.')
     } catch (error: any) {
@@ -78,7 +78,7 @@ export function SignUpForm({ className, ...props }: HTMLAttributes<HTMLDivElemen
           }
         })
       } else if (error.message) {
-          form.setError('email', {
+        form.setError('email', {
           type: 'server',
           message: error.message,
         })
@@ -94,7 +94,10 @@ export function SignUpForm({ className, ...props }: HTMLAttributes<HTMLDivElemen
   const { isLoading: isLoadingGitHub, handleGitHubLogin } = useGitHubLoginHandler()
 
   return (
-    <div className={cn('grid gap-6 pt-2 text-slate-300', className)} {...props}>
+    <div className={cn(
+      'grid gap-6 pt-2 text-gray-800 dark:text-slate-300',
+      className
+    )} {...props}>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="text-left">
           <div className="grid gap-4">
@@ -104,9 +107,13 @@ export function SignUpForm({ className, ...props }: HTMLAttributes<HTMLDivElemen
               name="user_name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Username</FormLabel>
+                  <FormLabel className="text-gray-700 dark:text-slate-200">Username</FormLabel>
                   <FormControl>
-                    <Input placeholder="username" className="bg-[#161B22] border border-slate-600 text-slate-100" {...field} />
+                    <Input
+                      placeholder="username"
+                      className="bg-white dark:bg-[#161B22] border border-gray-300 dark:border-slate-600 text-gray-900 dark:text-slate-100"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -119,9 +126,13 @@ export function SignUpForm({ className, ...props }: HTMLAttributes<HTMLDivElemen
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel className="text-gray-700 dark:text-slate-200">Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="name@example.com" className="bg-[#161B22] border border-slate-600 text-slate-100" {...field} />
+                    <Input
+                      placeholder="name@example.com"
+                      className="bg-white dark:bg-[#161B22] border border-gray-300 dark:border-slate-600 text-gray-900 dark:text-slate-100"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -134,9 +145,13 @@ export function SignUpForm({ className, ...props }: HTMLAttributes<HTMLDivElemen
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel className="text-gray-700 dark:text-slate-200">Password</FormLabel>
                   <FormControl>
-                    <PasswordInput placeholder="********" className="bg-[#161B22] border border-slate-600 text-slate-100" {...field} />
+                    <PasswordInput
+                      placeholder="********"
+                      className="bg-white dark:bg-[#161B22] border border-gray-300 dark:border-slate-600 text-gray-900 dark:text-slate-100"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -149,9 +164,13 @@ export function SignUpForm({ className, ...props }: HTMLAttributes<HTMLDivElemen
               name="confirmPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Confirm Password</FormLabel>
+                  <FormLabel className="text-gray-700 dark:text-slate-200">Confirm Password</FormLabel>
                   <FormControl>
-                    <PasswordInput placeholder="********" className="bg-[#161B22] border border-slate-600 text-slate-100" {...field} />
+                    <PasswordInput
+                      placeholder="********"
+                      className="bg-white dark:bg-[#161B22] border border-gray-300 dark:border-slate-600 text-gray-900 dark:text-slate-100"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -169,10 +188,12 @@ export function SignUpForm({ className, ...props }: HTMLAttributes<HTMLDivElemen
             {/* Divider */}
             <div className="relative my-4">
               <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t border-slate-700" />
+                <span className="w-full border-t border-gray-300 dark:border-slate-700" />
               </div>
               <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-[#0d1117] px-2 text-slate-500">OR CONTINUE WITH</span>
+                <span className="bg-white dark:bg-[#0d1117] px-2 text-gray-500 dark:text-slate-500">
+                  OR CONTINUE WITH
+                </span>
               </div>
             </div>
 
@@ -184,5 +205,6 @@ export function SignUpForm({ className, ...props }: HTMLAttributes<HTMLDivElemen
         </form>
       </Form>
     </div>
+
   )
 }
