@@ -67,6 +67,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
     try {
+
       const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/auth/login`, {
         method: 'POST',
         headers: {
@@ -75,21 +76,25 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         body: JSON.stringify(data),
       });
 
+
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message || 'Invalid email or password');
       }
 
       const result = await response.json();
-      if (!result.access_token || !result.refresh_token) {
+
+      if (!result.data.access_token || !result.data.refresh_token) {
         throw new Error('Invalid response from server: Missing tokens');
       }
 
-      localStorage.setItem('access_token', result.access_token);
-      localStorage.setItem('refresh_token', result.refresh_token);
+
+      localStorage.setItem('access_token', result.data.access_token);
+      localStorage.setItem('refresh_token', result.data.refresh_token);
 
       const userData = await fetchUserProfile();
-      if(userData.id) {
+
+      if(userData.data.id) {
         dispatch(setCurrentUser(userData as UserProfile));
       }
 
@@ -108,7 +113,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   }
 
   return (
-    <div className={cn('grid gap-8 h-full bg-behind w-full p-4 z-50 bg-transparent', className)} {...props}>
+    <div className={cn('grid gap-8 h-svh bg-behind w-full p-4 z-50 bg-transparent', className)} {...props}>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="grid gap-4">

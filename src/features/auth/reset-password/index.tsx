@@ -12,7 +12,7 @@ export default function ResetPasswordPage() {
           <h1 className='text-md font-semibold tracking-tight'>
             Set New Password
           </h1>
-          <p className='text-sm text-muted-foreground'>
+          <p className='text-sm text-gray-800 dark:text-gray-200 '>
             Please enter your new password below.<br />
             Make sure it's strong and easy to remember.
           </p>
@@ -23,7 +23,7 @@ export default function ResetPasswordPage() {
           Already know your password?{" "}
           <Link
             to="/sign-in"
-            className="underline underline-offset-4 hover:text-primary"
+            className="text-gray-800 dark:text-gray-400 underline underline-offset-4 hover:text-blue-800"
           >
             Sign in
           </Link>

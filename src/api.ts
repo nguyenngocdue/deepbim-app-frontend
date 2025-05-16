@@ -113,9 +113,7 @@ async function refreshAccessToken(): Promise<void> {
  * API này sẽ trả về thông tin cơ bản như userId.
  */
 export async function fetchCurrentUser(): Promise<{ id: number }> {
-  return fetchWithAuth(`${import.meta.env.VITE_API_BASE_URL}/auth/me`, {
-    method: 'GET',
-  });
+  return fetchWithAuth2(`/auth/me`);
 }
 
 export async function fetchNoSignAPI<T>(url : string) :Promise<T>{
@@ -128,10 +126,9 @@ export async function fetchNoSignAPI<T>(url : string) :Promise<T>{
  * Hàm này gọi 2 API: `/auth/me` để lấy ID, sau đó gọi `/users/:id` để lấy thông tin chi tiết.
  */
 export async function fetchUserProfile(): Promise<UserProfile> {
-  const currentUser = await fetchCurrentUser(); // lấy ID người dùng hiện tại
-  return fetchWithAuth(`${import.meta.env.VITE_API_BASE_URL}/users/${currentUser.id}`, {
-    method: 'GET',
-  });
+  const currentUser =  await fetchCurrentUser(); // lấy ID người dùng hiện tại
+  const user =  await fetchWithAuth2(`/users/${currentUser?.data.id}`);
+  return user;
 }
 
 export async function handleSignout(): Promise<void> {
@@ -214,7 +211,6 @@ export async function fetchWithAuth2<T = any>(
     errorData.status = response.status;
     throw errorData; // Ném ra object lỗi thay vì Error string
   }
-
   return await response.json();
 }
 

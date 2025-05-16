@@ -23,6 +23,7 @@ import AppButton from '@/components/bim-viewer/common/AppButton'
 import { CLASS_NAME_DEFAULT } from '@/utils/class'
 import { createNewUser } from '@/apis/users/UserSettings'
 import { useGitHubLoginHandler } from '@/hooks/useGiiHubLogin'
+import { toast } from 'sonner'
 
 const formSchema = z
   .object({
@@ -64,9 +65,9 @@ export function SignUpForm({ className, ...props }: HTMLAttributes<HTMLDivElemen
     try {
       const response = await createNewUser(data)
       // save email into localStorage
-      localStorage.setItem("signup_email", data.email)      
-      
+      localStorage.setItem("signup_email", data.email)    
       navigate({ to: '/sign-in' })
+      toast.success('Please check your email to verify your account.')
     } catch (error: any) {
       const apiErrors = error.response?.data?.errors
 

@@ -15,7 +15,7 @@ export default function SignIn2() {
   }, [])
 
   return (
-    <div className='relative z-10 h-screen overflow-hidden'>
+    <div className='relative z-10 h-svh overflow-hidden'>
       <ParticlesContainer/>
       <div className='relative grid flex-col h-full w-full items-center justify-center lg:max-w-none lg:grid-cols-2 lg:px-0'>
         <div className='relative h-full flex-col lg:flex'>
@@ -41,7 +41,7 @@ export default function SignIn2() {
           </div>
           
         </div>
-        <div className='lg:p-8  h-full bg-transparent'>
+        <div className='lg:p-8  h-svh bg-transparent overflow-y-auto'>
           <div className='mx-auto flex w-full flex-col justify-center space-y-2 sm:w-[500px]'>
             <UserAuthForm />
             <p className='px-8 text-center text-sm text-muted-foreground'>

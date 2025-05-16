@@ -14,7 +14,6 @@ import {
 import { toast } from 'sonner'
 import { useRouter } from '@tanstack/react-router'
 import { PasswordInput } from '@/components/password-input'
-import { Separator } from "@/components/ui/separator";
 
 
 const schema = z.object({
@@ -31,7 +30,7 @@ export default function ResetPasswordForm() {
   const searchParams = new URLSearchParams(router.state.location.search)
   const token = searchParams.get('token') || undefined
 
-  if(!token){
+  if (!token) {
     router.navigate({ to: '/sign-in' });
   }
 
@@ -62,7 +61,8 @@ export default function ResetPasswordForm() {
         const error = await res.json()
         throw new Error(error.message || 'Reset failed')
       }
-
+      const { data } = await res.json() as { data: any };
+      localStorage.setItem("signup_email", data.mail)   
       toast.success('Password reset successfully')
       setTimeout(() => {
         router.navigate({ to: '/sign-in' })
@@ -82,39 +82,39 @@ export default function ResetPasswordForm() {
           name="password"
           render={({ field }) => (
             <FormItem>
-               <FormLabel  className='font-medium text-muted-foreground text-left block'>New Password</FormLabel>
+              <FormLabel className='font-medium text-muted-foreground text-left block pt-4'>New Password</FormLabel>
+              <FormControl>
+                <PasswordInput placeholder="********" className="bg-[#161B22] border border-slate-600 text-slate-100" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormItem>
+          <FormControl>
+            <FormField
+              control={form.control}
+              name="confirmPassword"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className='font-medium text-muted-foreground text-left block'>Confirm Password</FormLabel>
                   <FormControl>
                     <PasswordInput placeholder="********" className="bg-[#161B22] border border-slate-600 text-slate-100" {...field} />
                   </FormControl>
                   <FormMessage />
-            </FormItem>
-          )}
-        />
-            <FormItem>
-              <FormControl>
-                    <FormField
-                    control={form.control}
-                    name="confirmPassword"
-                    render={({ field }) => (
-                        <FormItem>
-                        <FormLabel className='font-medium text-muted-foreground text-left block'>Confirm Password</FormLabel>
-                        <FormControl>
-                            <PasswordInput placeholder="********" className="bg-[#161B22] border border-slate-600 text-slate-100" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                        </FormItem>
-                    )}
-                    />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-        
+                </FormItem>
+              )}
+            />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+
         <Button
-              className="mt-2 w-full bg-gradient-to-r from-indigo-500 to-blue-500 text-white"
-              disabled={isLoading}
-            >
-               {isLoading ? 'Resetting...' : 'Reset Password'}
-            </Button>
+          className="mt-2 w-full bg-gradient-to-r from-indigo-500 to-blue-500 text-white"
+          disabled={isLoading}
+        >
+          {isLoading ? 'Resetting...' : 'Reset Password'}
+        </Button>
       </form>
     </Form>
   )

@@ -18,6 +18,7 @@ import { Route as IndexImport } from './routes/index'
 import { Route as AuthenticatedHowItWorksImport } from './routes/_authenticated/how-it-works'
 import { Route as AuthenticatedFeaturesImport } from './routes/_authenticated/features'
 import { Route as AuthenticatedContactUsImport } from './routes/_authenticated/contact-us'
+import { Route as authVerifyEmailImport } from './routes/(auth)/verify-email'
 import { Route as authSignInImport } from './routes/(auth)/sign-in'
 import { Route as authResetPasswordImport } from './routes/(auth)/reset-password'
 import { Route as authCallbackImport } from './routes/(auth)/callback'
@@ -193,6 +194,12 @@ const AuthenticatedContactUsRoute = AuthenticatedContactUsImport.update({
   id: '/contact-us',
   path: '/contact-us',
   getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+
+const authVerifyEmailRoute = authVerifyEmailImport.update({
+  id: '/(auth)/verify-email',
+  path: '/verify-email',
+  getParentRoute: () => rootRoute,
 } as any)
 
 const authSignInRoute = authSignInImport.update({
@@ -498,6 +505,13 @@ declare module '@tanstack/react-router' {
       path: '/sign-in'
       fullPath: '/sign-in'
       preLoaderRoute: typeof authSignInImport
+      parentRoute: typeof rootRoute
+    }
+    '/(auth)/verify-email': {
+      id: '/(auth)/verify-email'
+      path: '/verify-email'
+      fullPath: '/verify-email'
+      preLoaderRoute: typeof authVerifyEmailImport
       parentRoute: typeof rootRoute
     }
     '/_authenticated/contact-us': {
@@ -1002,6 +1016,7 @@ export interface FileRoutesByFullPath {
   '/callback': typeof authCallbackRoute
   '/reset-password': typeof authResetPasswordRoute
   '/sign-in': typeof authSignInRoute
+  '/verify-email': typeof authVerifyEmailRoute
   '/contact-us': typeof AuthenticatedContactUsRoute
   '/features': typeof AuthenticatedFeaturesRoute
   '/how-it-works': typeof AuthenticatedHowItWorksRoute
@@ -1054,6 +1069,7 @@ export interface FileRoutesByTo {
   '/callback': typeof authCallbackRoute
   '/reset-password': typeof authResetPasswordRoute
   '/sign-in': typeof authSignInRoute
+  '/verify-email': typeof authVerifyEmailRoute
   '/contact-us': typeof AuthenticatedContactUsRoute
   '/features': typeof AuthenticatedFeaturesRoute
   '/how-it-works': typeof AuthenticatedHowItWorksRoute
@@ -1106,6 +1122,7 @@ export interface FileRoutesById {
   '/(auth)/callback': typeof authCallbackRoute
   '/(auth)/reset-password': typeof authResetPasswordRoute
   '/(auth)/sign-in': typeof authSignInRoute
+  '/(auth)/verify-email': typeof authVerifyEmailRoute
   '/_authenticated/contact-us': typeof AuthenticatedContactUsRoute
   '/_authenticated/features': typeof AuthenticatedFeaturesRoute
   '/_authenticated/how-it-works': typeof AuthenticatedHowItWorksRoute
@@ -1164,6 +1181,7 @@ export interface FileRouteTypes {
     | '/callback'
     | '/reset-password'
     | '/sign-in'
+    | '/verify-email'
     | '/contact-us'
     | '/features'
     | '/how-it-works'
@@ -1215,6 +1233,7 @@ export interface FileRouteTypes {
     | '/callback'
     | '/reset-password'
     | '/sign-in'
+    | '/verify-email'
     | '/contact-us'
     | '/features'
     | '/how-it-works'
@@ -1265,6 +1284,7 @@ export interface FileRouteTypes {
     | '/(auth)/callback'
     | '/(auth)/reset-password'
     | '/(auth)/sign-in'
+    | '/(auth)/verify-email'
     | '/_authenticated/contact-us'
     | '/_authenticated/features'
     | '/_authenticated/how-it-works'
@@ -1322,6 +1342,7 @@ export interface RootRouteChildren {
   authCallbackRoute: typeof authCallbackRoute
   authResetPasswordRoute: typeof authResetPasswordRoute
   authSignInRoute: typeof authSignInRoute
+  authVerifyEmailRoute: typeof authVerifyEmailRoute
   authForgotPasswordLazyRoute: typeof authForgotPasswordLazyRoute
   authSignIn2LazyRoute: typeof authSignIn2LazyRoute
   authSignUpLazyRoute: typeof authSignUpLazyRoute
@@ -1340,6 +1361,7 @@ const rootRouteChildren: RootRouteChildren = {
   authCallbackRoute: authCallbackRoute,
   authResetPasswordRoute: authResetPasswordRoute,
   authSignInRoute: authSignInRoute,
+  authVerifyEmailRoute: authVerifyEmailRoute,
   authForgotPasswordLazyRoute: authForgotPasswordLazyRoute,
   authSignIn2LazyRoute: authSignIn2LazyRoute,
   authSignUpLazyRoute: authSignUpLazyRoute,
@@ -1367,6 +1389,7 @@ export const routeTree = rootRoute
         "/(auth)/callback",
         "/(auth)/reset-password",
         "/(auth)/sign-in",
+        "/(auth)/verify-email",
         "/(auth)/forgot-password",
         "/(auth)/sign-in-2",
         "/(auth)/sign-up",
@@ -1419,6 +1442,9 @@ export const routeTree = rootRoute
     },
     "/(auth)/sign-in": {
       "filePath": "(auth)/sign-in.tsx"
+    },
+    "/(auth)/verify-email": {
+      "filePath": "(auth)/verify-email.tsx"
     },
     "/_authenticated/contact-us": {
       "filePath": "_authenticated/contact-us.tsx",

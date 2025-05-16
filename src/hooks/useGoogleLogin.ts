@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from '@tanstack/react-router';
 import { CredentialResponse } from '@react-oauth/google';
+import { toast } from 'sonner';
 
 export function useGoogleLoginHandler() {
   const [isLoading, setIsLoading] = useState(false);
@@ -24,11 +25,11 @@ export function useGoogleLoginHandler() {
         body: JSON.stringify({ credential }),
         credentials: 'include',
       });
-
       const { data } = await res.json() as { data: any };
-      
-      if (!res.ok) {
-        throw new Error(data.message || 'Google login failed');
+
+     if (!res.ok) {
+        toast.error(data?.message || 'Google login failed');
+        throw new Error(data?.message || 'Google login failed');
       }
 
       const { access_token, refresh_token, user } = data;

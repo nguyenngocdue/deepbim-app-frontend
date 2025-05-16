@@ -27,10 +27,14 @@ export function GoogleLoginButton() {
 
         // ✅ Render Google button vào thẻ div của bạn
         window.google.accounts.id.renderButton(buttonDivRef.current, {
-          theme: 'outline',
-          size: 'large',
-          type: 'standard',
-          width: '100%',
+         theme: 'filled_blue',    // Có màu xanh đặc trưng Google
+          size: 'large',           // To rõ, dễ bấm
+          type: 'standard',        // Có cả icon Google + text
+          shape: 'pill',           // Nút bo tròn
+          width: '100%',              // Rộng hơn (hoặc '100%' nếu muốn full div)
+          text: 'signin_with',     // Chữ: "Đăng nhập với Google"
+          logo_alignment: 'left',  // Logo nằm bên trái (default)
+          locale: 'en'
         });
       }
     };
@@ -48,7 +52,7 @@ export function GoogleLoginButton() {
   }, [handleGoogleLogin]);
 
   return (
-    <div className="w-full flex justify-center">
+    <div className="w-full h-full flex justify-center">
       <div ref={buttonDivRef} className="w-full" />
     </div>
   );
