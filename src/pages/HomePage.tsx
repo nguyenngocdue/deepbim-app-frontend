@@ -12,7 +12,7 @@ import Header from '@/sections/ Header';
 import { CLASS_NAME_DEFAULT } from '@/utils/class';
 import ParticlesContainer from '@/components/ParticlesContainer';
 import useScrollRestoration from '@/hooks/useScrollRestoration';
-import CustomerChat from '@/features/admin/chat-support/components/CustomerChat';
+import CustomerChat from '@/features/chats/chat-customer';
 
 
 const HomePage: React.FC = () => {
