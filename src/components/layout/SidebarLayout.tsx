@@ -15,10 +15,11 @@ import { useTheme } from "@/context/theme-context"
 import LeftHeader from "@/sections/LeftHeader"
 import { Button } from "../ui/button"
 import { IoPerson } from "react-icons/io5"
-import { MdWorkspaces } from "react-icons/md"
+import { MdAdminPanelSettings, MdWorkspaces } from "react-icons/md"
 import { HiHomeModern } from "react-icons/hi2"
 import { GrProjects, GrVirtualStorage } from "react-icons/gr"
 import { TiFlowChildren } from "react-icons/ti";
+import { BsChatQuoteFill } from "react-icons/bs"
 
 export default function SidebarLayout({ children }: { children: React.ReactNode }) {
     const [collapsed, setCollapsed] = useState(() => {
@@ -91,14 +92,14 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
                         </SubMenu>
 
                         {!collapsed && <div className="px-4 pt-2 pb-1 uppercase text-xs tracking-wide text-slate-400">Admin Management</div>}
-                            <MenuItem icon={<GrVirtualStorage  size={18} />}   component={<Link to="/managements/users" />} >User</MenuItem>
-                            <MenuItem icon={<GrVirtualStorage  size={18} />}   component={<Link to="/managements/chat-support" />} >Chat</MenuItem>
+                            <MenuItem icon={<MdAdminPanelSettings   size={18} />}   component={<Link to="/managements/users" />} >User</MenuItem>
+                            <MenuItem icon={<BsChatQuoteFill   size={18} />}   component={<Link to="/managements/chat-support" />} >Chat</MenuItem>
                     </Menu>
 
 
                     {/* Footer call to action */}
                     {!collapsed && (
-                        <div className="absolute left-0 right-0 bottom-0 mt-auto px-4 py-6">
+                        <div className="absolute left-0 right-0 bottom-0 mt-auto px-4 py-6 sm:hidden">
                             <div className="bg-gradient-to-br from-green-500 to-cyan-400 rounded-xl p-4 text-center">
                                 <div className="text-white font-semibold text-sm">Wellcome to DeepBim</div>
                                 <div className="text-xs text-slate-100">v1.1.0</div>

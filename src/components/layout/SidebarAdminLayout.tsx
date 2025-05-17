@@ -84,7 +84,7 @@ export default function SidebarAdminLayout({ children }: { children: React.React
 
                     {/* Footer call to action */}
                     {!collapsed && (
-                        <div className="absolute left-0 right-0 bottom-0 mt-auto px-4 py-6">
+                        <div className="absolute left-0 right-0 bottom-0 mt-auto px-4 py-6 sm:hidden">
                             <div className="bg-gradient-to-br from-green-500 to-cyan-400 rounded-xl p-4 text-center">
                                 <div className="text-white font-semibold text-sm">Wellcome to DeepBim</div>
                                 <div className="text-xs text-slate-100">v1.1.0</div>
