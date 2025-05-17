@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import ChatHeader from "./ChatHeader";
+import { MessageBubble } from "./MessageBubble";
 
 export default function ChatBox({
   selectedSession,
@@ -31,25 +32,21 @@ export default function ChatBox({
 
       {/* CHAT MESSAGES */}
       <div className="flex-1 overflow-y-auto px-6 py-4">
-        {messages.map((msg: any, idx: number) => (
-          <div
-            key={idx}
-            className={`flex w-full mb-4 ${msg.from === "user" ? "justify-end" : "justify-start"}`}
-          >
-            <div
-              className={`
-                px-4 py-2 rounded-2xl max-w-[70%] shadow-sm
-                ${msg.from === "user"
-                  ? "bg-blue-500 text-white"
-                  : "bg-green-400 text-gray-900"
-                }`}
-            >
-              {msg.text}
-            </div>
-          </div>
-        ))}
-        <div ref={chatEndRef} />
+        {messages.map((msg, idx) => {
+
+          const fromSunpport = msg.from === 'support' ? true : false;
+          return (
+            <MessageBubble
+              key={idx}
+              text={msg.text}
+              avatarUrl={selectedSession?.user?.avatarUrl}
+              isSender={msg.from === "user"}
+              showAvatar={fromSunpport}
+            />
+          );
+        })}
       </div>
+
 
       {/* Typing indicator */}
       <div className={`h-6 px-6 text-xs text-muted-foreground italic min-h-6 transition-opacity duration-300 ${isTyping ? "opacity-100" : "opacity-0 pointer-events-none"}`}>
