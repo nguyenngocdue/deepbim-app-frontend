@@ -19,60 +19,60 @@ export default function ChatBox({
 
   if (!selectedSession) {
     return (
-      <div className="flex-1 flex items-center justify-center text-gray-500 text-lg">
+      <div className="flex-1 flex items-center justify-center text-muted-foreground text-base">
         Select a customer to view messages
       </div>
     );
   }
 
   return (
-    <main className="flex-1 flex flex-col items-stretch justify-stretch relative">
-      <div className="flex flex-col h-full w-full">
-        <ChatHeader selectedSession={selectedSession} />
-        {/* CHAT MESSAGES */}
-        <div className="flex-1 px-6 py-3 flex flex-col overflow-y-auto bg-[#f5f6fa]">
-          {messages.map((msg: any, idx: number) => (
-            <div
-              key={idx}
-              className={`flex w-full mb-2 ${msg.from === "user" ? "justify-start" : "justify-end"}`}
-            >
-              <div
-                className={`px-4 py-2 rounded-2xl text-sm max-w-[70%] shadow
-                  ${msg.from === "user"
-                    ? "bg-white text-gray-900 border border-gray-200"
-                    : "bg-blue-500 text-white border border-blue-400"
-                  }`}
-              >
-                {msg.text}
-              </div>
-            </div>
-          ))}
-          <div ref={chatEndRef} />
-        </div>
+    <div className="flex flex-col flex-1 bg-background">
+      <ChatHeader selectedSession={selectedSession} />
 
-        {/* Typing indicator */}
-        <div className={`h-6 px-6 text-xs text-gray-400 min-h-6 transition-opacity duration-300 ${isTyping ? "opacity-100" : "opacity-0 pointer-events-none"}`}>
-          {isTyping && <span>The customer is typing...</span>}
-        </div>
-
-        {/* INPUT AREA */}
-        <div className="flex gap-2 p-5 border-t bg-white shadow-inner z-20">
-          <Input
-            className="flex-1 border rounded-2xl bg-[#f7f7fb]"
-            placeholder="Type your reply..."
-            value={input}
-            onChange={handleInputChange}
-            onKeyDown={(e) => e.key === "Enter" && handleSend()}
-          />
-          <Button
-            onClick={handleSend}
-            disabled={!input.trim()}
-            className="rounded-2xl px-6"
+      {/* CHAT MESSAGES */}
+      <div className="flex-1 overflow-y-auto px-6 py-4">
+        {messages.map((msg: any, idx: number) => (
+          <div
+            key={idx}
+            className={`flex w-full mb-4 ${msg.from === "user" ? "justify-end" : "justify-start"}`}
           >
-            Send
-          </Button>
-        </div>
+            <div
+              className={`
+                px-4 py-2 rounded-2xl max-w-[70%] shadow-sm
+                ${msg.from === "user"
+                  ? "bg-blue-500 text-white"
+                  : "bg-green-400 text-gray-900"
+                }`}
+            >
+              {msg.text}
+            </div>
+          </div>
+        ))}
+        <div ref={chatEndRef} />
       </div>
-    </main>
+
+      {/* Typing indicator */}
+      <div className={`h-6 px-6 text-xs text-muted-foreground italic min-h-6 transition-opacity duration-300 ${isTyping ? "opacity-100" : "opacity-0 pointer-events-none"}`}>
+        {isTyping && <span>The customer is typing...</span>}
+      </div>
+
+      {/* INPUT AREA */}
+      <div className="flex gap-2 p-4 border-t bg-background shadow-inner">
+        <Input
+          className="flex-1 rounded-full border border-muted bg-muted px-5 py-3"
+          placeholder="Type your reply..."
+          value={input}
+          onChange={handleInputChange}
+          onKeyDown={(e) => e.key === "Enter" && handleSend()}
+        />
+        <Button
+          onClick={handleSend}
+          disabled={!input.trim()}
+          className="rounded-full px-6 py-3"
+        >
+          Send
+        </Button>
+      </div>
+    </div>
   );
 }
