@@ -1,3 +1,4 @@
+import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 import React from "react";
 
 export function MessageBubble({
@@ -21,15 +22,12 @@ export function MessageBubble({
     `https://ui-avatars.com/api/?name=${encodeURIComponent(userName || "U")}&background=444&color=fff&size=64`;
 
   const isUser = from === "user";
-
   return (
-    <div className={`flex items-end mb-2 ${isUser ? "justify-end" : "justify-start"}`}>
-      {!isUser && showAvatar && (
-        <img
-          src={avatarSrc}
-          className="w-8 h-8 rounded-full mr-2 object-cover border bg-[#444]"
-          alt="avatar"
-        />
+    <div className={`flex items-end mb-1 ${isUser ? "justify-end" : "justify-start"}`}>
+      {!isUser && (
+      <Avatar>
+        <AvatarImage src={avatarSrc} className="w-7 h-7 object-cover rounded-full mr-1"/>
+      </Avatar>
       )}
       <div className="relative flex flex-col">
         <div
