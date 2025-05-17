@@ -1,6 +1,4 @@
 import { apiGet, fetchWithAuth2 } from "@/api";
-import { json } from "d3";
-import { l } from "node_modules/framer-motion/dist/types.d-CQt5spQA";
 import { toast } from "sonner";
 
 export async function setUserSettings(data: Object)  {
@@ -75,3 +73,9 @@ export async function createNewUser(data: any){
 
   return res
 }
+
+export async function fetchAdminId(): Promise<number> {
+  const res = await fetchWithAuth2('/users/admins');
+  return res;
+}
+

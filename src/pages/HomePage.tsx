@@ -12,6 +12,7 @@ import Header from '@/sections/ Header';
 import { CLASS_NAME_DEFAULT } from '@/utils/class';
 import ParticlesContainer from '@/components/ParticlesContainer';
 import useScrollRestoration from '@/hooks/useScrollRestoration';
+import CustomerChat from '@/features/admin/chat-support/components/CustomerChat';
 
 
 const HomePage: React.FC = () => {
@@ -49,6 +50,7 @@ const HomePage: React.FC = () => {
         </LanguageProvider>
       </div>
       <Footer />
+      <CustomerChat/>
     </div>
   );
 };

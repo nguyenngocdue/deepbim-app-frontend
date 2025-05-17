@@ -92,6 +92,7 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
 
                         {!collapsed && <div className="px-4 pt-2 pb-1 uppercase text-xs tracking-wide text-slate-400">Admin Management</div>}
                             <MenuItem icon={<GrVirtualStorage  size={18} />}   component={<Link to="/managements/users" />} >User</MenuItem>
+                            <MenuItem icon={<GrVirtualStorage  size={18} />}   component={<Link to="/managements/chat-support" />} >Chat</MenuItem>
                     </Menu>
 
 

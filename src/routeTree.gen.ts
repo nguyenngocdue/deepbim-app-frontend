@@ -47,6 +47,7 @@ import { Route as AuthenticatedManagementsLayoutProjectsImport } from './routes/
 import { Route as AuthenticatedManagementsLayoutMeImport } from './routes/_authenticated/managements/_layout/me'
 import { Route as AuthenticatedManagementsLayoutHomeImport } from './routes/_authenticated/managements/_layout/home'
 import { Route as AuthenticatedManagementsLayoutCloudImport } from './routes/_authenticated/managements/_layout/cloud'
+import { Route as AuthenticatedManagementsLayoutChatSupportImport } from './routes/_authenticated/managements/_layout/chat-support'
 import { Route as AuthenticatedAppLayoutHowItWorksImport } from './routes/_authenticated/app/_layout/how-it-works'
 import { Route as AuthenticatedAppLayoutFeaturesImport } from './routes/_authenticated/app/_layout/features'
 import { Route as AuthenticatedAppLayoutContactUsImport } from './routes/_authenticated/app/_layout/contact-us'
@@ -419,6 +420,13 @@ const AuthenticatedManagementsLayoutCloudRoute =
     getParentRoute: () => AuthenticatedManagementsLayoutRoute,
   } as any)
 
+const AuthenticatedManagementsLayoutChatSupportRoute =
+  AuthenticatedManagementsLayoutChatSupportImport.update({
+    id: '/chat-support',
+    path: '/chat-support',
+    getParentRoute: () => AuthenticatedManagementsLayoutRoute,
+  } as any)
+
 const AuthenticatedAppLayoutHowItWorksRoute =
   AuthenticatedAppLayoutHowItWorksImport.update({
     id: '/how-it-works',
@@ -780,6 +788,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppLayoutHowItWorksImport
       parentRoute: typeof AuthenticatedAppLayoutImport
     }
+    '/_authenticated/managements/_layout/chat-support': {
+      id: '/_authenticated/managements/_layout/chat-support'
+      path: '/chat-support'
+      fullPath: '/managements/chat-support'
+      preLoaderRoute: typeof AuthenticatedManagementsLayoutChatSupportImport
+      parentRoute: typeof AuthenticatedManagementsLayoutImport
+    }
     '/_authenticated/managements/_layout/cloud': {
       id: '/_authenticated/managements/_layout/cloud'
       path: '/cloud'
@@ -895,6 +910,7 @@ const AuthenticatedAppRouteWithChildren =
   AuthenticatedAppRoute._addFileChildren(AuthenticatedAppRouteChildren)
 
 interface AuthenticatedManagementsLayoutRouteChildren {
+  AuthenticatedManagementsLayoutChatSupportRoute: typeof AuthenticatedManagementsLayoutChatSupportRoute
   AuthenticatedManagementsLayoutCloudRoute: typeof AuthenticatedManagementsLayoutCloudRoute
   AuthenticatedManagementsLayoutHomeRoute: typeof AuthenticatedManagementsLayoutHomeRoute
   AuthenticatedManagementsLayoutMeRoute: typeof AuthenticatedManagementsLayoutMeRoute
@@ -907,6 +923,8 @@ interface AuthenticatedManagementsLayoutRouteChildren {
 
 const AuthenticatedManagementsLayoutRouteChildren: AuthenticatedManagementsLayoutRouteChildren =
   {
+    AuthenticatedManagementsLayoutChatSupportRoute:
+      AuthenticatedManagementsLayoutChatSupportRoute,
     AuthenticatedManagementsLayoutCloudRoute:
       AuthenticatedManagementsLayoutCloudRoute,
     AuthenticatedManagementsLayoutHomeRoute:
@@ -1051,6 +1069,7 @@ export interface FileRoutesByFullPath {
   '/app/contact-us': typeof AuthenticatedAppLayoutContactUsRoute
   '/app/features': typeof AuthenticatedAppLayoutFeaturesRoute
   '/app/how-it-works': typeof AuthenticatedAppLayoutHowItWorksRoute
+  '/managements/chat-support': typeof AuthenticatedManagementsLayoutChatSupportRoute
   '/managements/cloud': typeof AuthenticatedManagementsLayoutCloudRoute
   '/managements/home': typeof AuthenticatedManagementsLayoutHomeRoute
   '/managements/me': typeof AuthenticatedManagementsLayoutMeRoute
@@ -1103,6 +1122,7 @@ export interface FileRoutesByTo {
   '/app/contact-us': typeof AuthenticatedAppLayoutContactUsRoute
   '/app/features': typeof AuthenticatedAppLayoutFeaturesRoute
   '/app/how-it-works': typeof AuthenticatedAppLayoutHowItWorksRoute
+  '/managements/chat-support': typeof AuthenticatedManagementsLayoutChatSupportRoute
   '/managements/cloud': typeof AuthenticatedManagementsLayoutCloudRoute
   '/managements/home': typeof AuthenticatedManagementsLayoutHomeRoute
   '/managements/me': typeof AuthenticatedManagementsLayoutMeRoute
@@ -1161,6 +1181,7 @@ export interface FileRoutesById {
   '/_authenticated/app/_layout/contact-us': typeof AuthenticatedAppLayoutContactUsRoute
   '/_authenticated/app/_layout/features': typeof AuthenticatedAppLayoutFeaturesRoute
   '/_authenticated/app/_layout/how-it-works': typeof AuthenticatedAppLayoutHowItWorksRoute
+  '/_authenticated/managements/_layout/chat-support': typeof AuthenticatedManagementsLayoutChatSupportRoute
   '/_authenticated/managements/_layout/cloud': typeof AuthenticatedManagementsLayoutCloudRoute
   '/_authenticated/managements/_layout/home': typeof AuthenticatedManagementsLayoutHomeRoute
   '/_authenticated/managements/_layout/me': typeof AuthenticatedManagementsLayoutMeRoute
@@ -1216,6 +1237,7 @@ export interface FileRouteTypes {
     | '/app/contact-us'
     | '/app/features'
     | '/app/how-it-works'
+    | '/managements/chat-support'
     | '/managements/cloud'
     | '/managements/home'
     | '/managements/me'
@@ -1267,6 +1289,7 @@ export interface FileRouteTypes {
     | '/app/contact-us'
     | '/app/features'
     | '/app/how-it-works'
+    | '/managements/chat-support'
     | '/managements/cloud'
     | '/managements/home'
     | '/managements/me'
@@ -1323,6 +1346,7 @@ export interface FileRouteTypes {
     | '/_authenticated/app/_layout/contact-us'
     | '/_authenticated/app/_layout/features'
     | '/_authenticated/app/_layout/how-it-works'
+    | '/_authenticated/managements/_layout/chat-support'
     | '/_authenticated/managements/_layout/cloud'
     | '/_authenticated/managements/_layout/home'
     | '/_authenticated/managements/_layout/me'
@@ -1558,6 +1582,7 @@ export const routeTree = rootRoute
       "filePath": "_authenticated/managements/_layout.tsx",
       "parent": "/_authenticated/managements",
       "children": [
+        "/_authenticated/managements/_layout/chat-support",
         "/_authenticated/managements/_layout/cloud",
         "/_authenticated/managements/_layout/home",
         "/_authenticated/managements/_layout/me",
@@ -1614,6 +1639,10 @@ export const routeTree = rootRoute
     "/_authenticated/app/_layout/how-it-works": {
       "filePath": "_authenticated/app/_layout/how-it-works.tsx",
       "parent": "/_authenticated/app/_layout"
+    },
+    "/_authenticated/managements/_layout/chat-support": {
+      "filePath": "_authenticated/managements/_layout/chat-support.tsx",
+      "parent": "/_authenticated/managements/_layout"
     },
     "/_authenticated/managements/_layout/cloud": {
       "filePath": "_authenticated/managements/_layout/cloud.tsx",

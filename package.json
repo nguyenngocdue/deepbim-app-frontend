@@ -89,6 +89,7 @@
     "react-toastify": "^11.0.5",
     "react-type-animation": "^3.2.0",
     "recharts": "^2.14.1",
+    "socket.io-client": "^4.8.1",
     "sonner": "^2.0.3",
     "stats": "^1.0.0",
     "stats.js": "^0.17.0",
