@@ -19,7 +19,7 @@ export function MessageBubble({
   // Nếu không có avatar, render avatar ảo
   const avatarSrc =
     avatar ||
-    `https://ui-avatars.com/api/?name=${encodeURIComponent(userName || "U")}&background=444&color=fff&size=64`;
+    `https://api.dicebear.com/7.x/adventurer/svg?seed=${userName}`;
 
   const isUser = from === "user";
   return (

@@ -5,6 +5,9 @@ import { io, Socket } from "socket.io-client";
 import { mapMessages, DisplayMessage } from "./useChatMessages";
 
 const SOCKET_URL = import.meta.env.VITE_API_BASE_URL;
+const AUTO_REPLY_DELAY = 8000; // 8s, bạn muốn chờ bao lâu thì chỉnh
+const AUTO_REPLY_TEXT = "Chúng tôi sẽ phản hồi bạn khi chúng tôi online.";
+
 
 export function useCustomerChatSocket(userId?: number) {
   const [open, setOpen] = useState(false);
@@ -15,6 +18,19 @@ export function useCustomerChatSocket(userId?: number) {
   const [isTyping, setIsTyping] = useState(false);
   const socketRef = useRef<Socket | null>(null);
 
+  const defaultWelcomeMessages: DisplayMessage[] = [
+    { text: "Xin cảm ơn bạn đã đến trang web của chúng tôi.", from: "support" },
+    { text: "Bạn cần điều chi?", from: "support" },
+  ];
+
+  useEffect(() => {
+    console.log(open);
+    if (open && messages.length === 0) {
+      setMessages(defaultWelcomeMessages);
+    }
+    // eslint-disable-next-line
+  }, [open]);
+
   // Lấy adminId khi mở chat lần đầu
   useEffect(() => {
     if (!open || adminId) return;
@@ -22,7 +38,7 @@ export function useCustomerChatSocket(userId?: number) {
       const res = await fetchAdminId();
       if (res.data?.[0]?.id) setAdminId(res.data[0].id);
     })();
-  }, [open, adminId]);
+  }, [open, adminId, sessionId, userId]);
 
   // Khi đã có adminId, tạo/lấy session và lấy tin nhắn, kết nối socket
   useEffect(() => {
@@ -31,7 +47,20 @@ export function useCustomerChatSocket(userId?: number) {
       const id = await initSession(userId, adminId);
       setSessionId(id);
       const msgs = await getMessageHistory(id);
-      setMessages(mapMessages(msgs, userId));
+      // Nếu message history đã có welcome, chỉ nối phần chưa có
+      let userMsgs = mapMessages(msgs, userId) || [];
+      // Kiểm tra xem đã có message chào mừng chưa
+      let hasWelcome = userMsgs.length >= 2 &&
+        userMsgs[0].text === defaultWelcomeMessages[0].text &&
+        userMsgs[1].text === defaultWelcomeMessages[1].text;
+
+      if (userMsgs.length > 0 && !hasWelcome) {
+        setMessages([...defaultWelcomeMessages, ...userMsgs]);
+      } else if (userMsgs.length > 0 && hasWelcome) {
+        setMessages(userMsgs);
+      } else {
+        setMessages(defaultWelcomeMessages);
+      }
     })();
   }, [open, adminId, sessionId, userId]);
 
@@ -66,12 +95,38 @@ export function useCustomerChatSocket(userId?: number) {
   // Gửi tin nhắn qua socket
   const handleSend = () => {
     if (!input.trim() || !sessionId || !socketRef.current || !userId) return;
+
+    // Đánh dấu thời điểm gửi của user
+    const sentAt = new Date().getTime();
+
     socketRef.current.emit("send_message", {
       sessionId,
       sender_id: userId,
       content: input,
     });
     setInput("");
+
+
+     // Đặt timer chờ phản hồi admin
+    setTimeout(() => {
+      // Kiểm tra trong messages: từ lúc gửi đến giờ, có tin nhắn nào from support mới không?
+      setMessages(prevMessages => {
+        // Tìm tin nhắn cuối cùng từ support
+        const lastSupportMsg = [...prevMessages].reverse().find(msg => msg.from === "support");
+        // Nếu không có support trả lời sau tin user gửi thì push auto-reply
+        if (!lastSupportMsg || !lastSupportMsg.created_at || (lastSupportMsg.created_at && new Date(lastSupportMsg.created_at).getTime() < sentAt)) {
+          // Kiểm tra chưa có auto-reply thì mới gửi (tránh spam)
+          if (!prevMessages.some(msg => msg.text === AUTO_REPLY_TEXT)) {
+            return [
+              ...prevMessages,
+              { from: "support", text: AUTO_REPLY_TEXT, created_at: new Date().toISOString() }
+            ];
+          }
+        }
+        return prevMessages;
+      });
+    }, AUTO_REPLY_DELAY);
+
   };
 
   // Emit typing event
