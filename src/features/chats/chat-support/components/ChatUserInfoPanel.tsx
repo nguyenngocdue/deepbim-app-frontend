@@ -6,7 +6,7 @@ export default function ChatUserInfoPanel({ selectedSession }: any) {
   const user = selectedSession.user;
 
   return (
-    <aside className="w-[300px] border-l bg-background p-4 flex flex-col gap-4">
+    <aside className="w-[300px] border-l bg-background p-4 flex flex-col gap-4 dark:border-zinc-500 border-gray-300" >
       <div className="flex flex-col items-center">
         <img
           src={

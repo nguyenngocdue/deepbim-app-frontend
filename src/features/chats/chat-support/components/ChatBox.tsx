@@ -61,9 +61,9 @@ export default function ChatBox({
       </div>
 
       {/* INPUT AREA */}
-      <div className="flex gap-2 p-4 border-t bg-background shadow-inner">
+      <div className="flex gap-2 p-4 border-t bg-background shadow-inner dark:border-zinc-500">
         <Input
-          className="flex-1 rounded-full border border-muted bg-muted px-5 py-3"
+          className="flex-1 rounded-full border border-muted bg-muted px-5 py-3 text-50 "
           placeholder="Type your reply..."
           value={input}
           onChange={handleInputChange}

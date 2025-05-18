@@ -1,6 +1,3 @@
-import { ConversationItem } from "@/features/admin/chat-support/components/ConversationItem";
-import React from "react";
-
 export default function ChatSidebar({
   sessions,
   selectedSession,
@@ -8,9 +5,9 @@ export default function ChatSidebar({
   currentUser
 }: any) {
   return (
-    <aside className="w-[330px] bg-background border-r h-full flex flex-col font-sans">
+    <aside className="w-[330px] bg-background border-r dark:border-zinc-500 border-gray-300 h-full flex flex-col font-sans">
       {/* Header */}
-      <div className="h-14 flex items-center px-5 border-b text-lg font-semibold text-primary">
+      <div className="h-14 flex items-center px-5 border-b dark:border-zinc-500 border-gray-300 text-lg font-semibold text-50">
         All messages
       </div>
       {/* List conversation */}
@@ -28,14 +25,15 @@ export default function ChatSidebar({
             <div
               key={s.id}
               onClick={() => setSelectedSession(s)}
+              title={`Id: #${s.user.id} \nEmail: ${s.user.email}`}
               className={`
-                cursor-pointer rounded-lg transition-all select-none flex items-center gap-4 px-3 py-3
+                cursor-pointer rounded-md transition-all select-none flex items-center gap-4 px-3 py-3 
                 ${isActive ? "ring-2 ring-primary/40 bg-muted" : "hover:bg-muted hover:shadow-sm hover:scale-[1.01]"}
                 mb-1
               `}
             >
               <img
-                src={s.user.avatarUrl}
+                src={s.user.picture}
                 alt="avatar"
                 className="w-11 h-11 rounded-full object-cover"
               />
@@ -46,9 +44,11 @@ export default function ChatSidebar({
                   </div>
                   <div className="text-xs text-muted-foreground whitespace-nowrap">{lastTime}</div>
                 </div>
-                <div className="truncate text-sm text-muted-foreground">
-                  {lastMsgIsYou && <span className="font-semibold text-muted-foreground">You: </span>}
-                  {lastMsg}
+                <div className="w-full max-w-[200px]">
+                  <div className="truncate text-sm text-muted-foreground text-left ">
+                    {lastMsgIsYou && <span className="font-semibold text-muted-foreground">You: </span>}
+                    {lastMsg}
+                  </div>
                 </div>
               </div>
             </div>

@@ -14,7 +14,16 @@ export default function AdminChatDashboard() {
   if (!currentUser) return null;
 
   return (
-    <div className="flex w-full h-[80vh] rounded-lg border bg-background shadow mx-auto overflow-hidden">
+    <div className=" flex w-full h-[80vh] rounded-md border
+                    bg-background
+                    shadow
+                    mx-auto
+                    overflow-hidden
+                    border-zinc-400
+                    shadow-slate-400
+                    dark:border-zinc-500
+                    dark:shadow-slate-800
+                    dark:shadow-lg">
       <ChatSidebar {...chatSocket} />
       <ChatBox {...chatSocket} />
       <ChatUserInfoPanel selectedSession={chatSocket.selectedSession} />

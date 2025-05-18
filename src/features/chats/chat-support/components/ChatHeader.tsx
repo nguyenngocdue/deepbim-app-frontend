@@ -2,7 +2,7 @@ import React from "react";
 
 export default function ChatHeader({ selectedSession }: any) {
   return (
-    <div className="flex items-center gap-3 h-14 px-4 border-b bg-background shadow-sm z-10">
+    <div className="flex items-center gap-3 h-14 px-4 border-b bg-background shadow-sm z-10 dark:border-zinc-500 border-gray-300">
       <img
         src={
           selectedSession.user.avatarUrl ||

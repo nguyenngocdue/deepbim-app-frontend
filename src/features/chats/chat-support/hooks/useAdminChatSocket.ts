@@ -17,7 +17,6 @@ export function useAdminChatSocket(adminId?: number) {
     let mounted = true;
     const fetchSessions = async () => {
       const res = await getSessionList();
-      console.log(res);
       if (mounted) setSessions(Array.isArray(res.data) ? res.data : []);
     };
     fetchSessions();
