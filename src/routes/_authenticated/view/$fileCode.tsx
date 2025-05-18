@@ -7,6 +7,6 @@ export const Route = createFileRoute('/_authenticated/view/$fileCode')({
 
 function RouteComponent() {
   return <>
-    <MainViewer/>
+    {/* <MainViewer/> */}
   </>
 }

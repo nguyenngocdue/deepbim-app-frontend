@@ -29,6 +29,7 @@ import { Route as AuthenticatedMyRoom3dIndexImport } from './routes/_authenticat
 import { Route as AuthenticatedAppIndexImport } from './routes/_authenticated/app/index'
 import { Route as AuthenticatedViewFileCodeImport } from './routes/_authenticated/view/$fileCode'
 import { Route as AuthenticatedManagementsLayoutImport } from './routes/_authenticated/managements/_layout'
+import { Route as AuthenticatedBlogLayoutImport } from './routes/_authenticated/blog/_layout'
 import { Route as AuthenticatedBimViewerUtWebglClippingV2Import } from './routes/_authenticated/bim-viewer-ut/webgl-clipping-v2'
 import { Route as AuthenticatedBimViewerUtWebglClippingV1Import } from './routes/_authenticated/bim-viewer-ut/webgl-clipping-v1'
 import { Route as AuthenticatedBimViewerUtWebglClippingStencilIfcImport } from './routes/_authenticated/bim-viewer-ut/webgl-clipping-stencil-ifc'
@@ -48,18 +49,28 @@ import { Route as AuthenticatedManagementsLayoutMeImport } from './routes/_authe
 import { Route as AuthenticatedManagementsLayoutHomeImport } from './routes/_authenticated/managements/_layout/home'
 import { Route as AuthenticatedManagementsLayoutCloudImport } from './routes/_authenticated/managements/_layout/cloud'
 import { Route as AuthenticatedManagementsLayoutChatSupportImport } from './routes/_authenticated/managements/_layout/chat-support'
+import { Route as AuthenticatedBlogLayoutContactImport } from './routes/_authenticated/blog/_layout/contact'
+import { Route as AuthenticatedBlogLayoutAboutImport } from './routes/_authenticated/blog/_layout/about'
 import { Route as AuthenticatedAppLayoutHowItWorksImport } from './routes/_authenticated/app/_layout/how-it-works'
 import { Route as AuthenticatedAppLayoutFeaturesImport } from './routes/_authenticated/app/_layout/features'
 import { Route as AuthenticatedAppLayoutContactUsImport } from './routes/_authenticated/app/_layout/contact-us'
 import { Route as AuthenticatedAppLayoutConnectorsImport } from './routes/_authenticated/app/_layout/connectors'
+import { Route as AuthenticatedUserShowPortfolioIndexImport } from './routes/_authenticated/user/show/portfolio/index'
+import { Route as AuthenticatedUserShowCvIndexImport } from './routes/_authenticated/user/show/cv/index'
 import { Route as AuthenticatedManagementsLayoutSubProjectsIndexImport } from './routes/_authenticated/managements/_layout/sub-projects/index'
+import { Route as AuthenticatedUserShowProfileLayoutImport } from './routes/_authenticated/user/show/profile/_layout'
 import { Route as AuthenticatedManagementsLayoutSubProjectsSubprojectidImport } from './routes/_authenticated/managements/_layout/sub-projects/$sub_project_id'
+import { Route as AuthenticatedUserShowProfileLayoutPortfolioImport } from './routes/_authenticated/user/show/profile/_layout/portfolio'
+import { Route as AuthenticatedUserShowProfileLayoutIdUserImport } from './routes/_authenticated/user/show/profile/_layout/$idUser'
+import { Route as AuthenticatedUserSettingsProfileEditLayoutImport } from './routes/_authenticated/user/settings/profile/edit/_layout'
+import { Route as AuthenticatedUserSettingsProfileEditLayoutIdUserImport } from './routes/_authenticated/user/settings/profile/edit/_layout/$idUser'
 
 // Create Virtual Routes
 
 const AuthenticatedManagementsImport = createFileRoute(
   '/_authenticated/managements',
 )()
+const AuthenticatedBlogImport = createFileRoute('/_authenticated/blog')()
 const AuthenticatedAppImport = createFileRoute('/_authenticated/app')()
 const AuthenticatedAdminImport = createFileRoute('/_authenticated/admin')()
 const errors503LazyImport = createFileRoute('/(errors)/503')()
@@ -81,6 +92,12 @@ const AuthenticatedBimViewerUtInstancedMeshLazyImport = createFileRoute(
 const AuthenticatedBimViewerUtIfcLoaderLazyImport = createFileRoute(
   '/_authenticated/bim-viewer-ut/ifc-loader',
 )()
+const AuthenticatedUserShowProfileImport = createFileRoute(
+  '/_authenticated/user/show/profile',
+)()
+const AuthenticatedUserSettingsProfileEditImport = createFileRoute(
+  '/_authenticated/user/settings/profile/edit',
+)()
 
 // Create/Update Routes
 
@@ -98,6 +115,12 @@ const IndexRoute = IndexImport.update({
 const AuthenticatedManagementsRoute = AuthenticatedManagementsImport.update({
   id: '/managements',
   path: '/managements',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+
+const AuthenticatedBlogRoute = AuthenticatedBlogImport.update({
+  id: '/blog',
+  path: '/blog',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 
@@ -298,6 +321,11 @@ const AuthenticatedManagementsLayoutRoute =
     getParentRoute: () => AuthenticatedManagementsRoute,
   } as any)
 
+const AuthenticatedBlogLayoutRoute = AuthenticatedBlogLayoutImport.update({
+  id: '/_layout',
+  getParentRoute: () => AuthenticatedBlogRoute,
+} as any)
+
 const AuthenticatedBimViewerUtWebglClippingV2Route =
   AuthenticatedBimViewerUtWebglClippingV2Import.update({
     id: '/bim-viewer-ut/webgl-clipping-v2',
@@ -371,6 +399,13 @@ const AuthenticatedAdminLayoutRoute = AuthenticatedAdminLayoutImport.update({
   getParentRoute: () => AuthenticatedAdminRoute,
 } as any)
 
+const AuthenticatedUserShowProfileRoute =
+  AuthenticatedUserShowProfileImport.update({
+    id: '/user/show/profile',
+    path: '/user/show/profile',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+
 const AuthenticatedViewUploadIndexRoute =
   AuthenticatedViewUploadIndexImport.update({
     id: '/view/upload/',
@@ -427,6 +462,20 @@ const AuthenticatedManagementsLayoutChatSupportRoute =
     getParentRoute: () => AuthenticatedManagementsLayoutRoute,
   } as any)
 
+const AuthenticatedBlogLayoutContactRoute =
+  AuthenticatedBlogLayoutContactImport.update({
+    id: '/contact',
+    path: '/contact',
+    getParentRoute: () => AuthenticatedBlogLayoutRoute,
+  } as any)
+
+const AuthenticatedBlogLayoutAboutRoute =
+  AuthenticatedBlogLayoutAboutImport.update({
+    id: '/about',
+    path: '/about',
+    getParentRoute: () => AuthenticatedBlogLayoutRoute,
+  } as any)
+
 const AuthenticatedAppLayoutHowItWorksRoute =
   AuthenticatedAppLayoutHowItWorksImport.update({
     id: '/how-it-works',
@@ -455,6 +504,27 @@ const AuthenticatedAppLayoutConnectorsRoute =
     getParentRoute: () => AuthenticatedAppLayoutRoute,
   } as any)
 
+const AuthenticatedUserSettingsProfileEditRoute =
+  AuthenticatedUserSettingsProfileEditImport.update({
+    id: '/user/settings/profile/edit',
+    path: '/user/settings/profile/edit',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+
+const AuthenticatedUserShowPortfolioIndexRoute =
+  AuthenticatedUserShowPortfolioIndexImport.update({
+    id: '/user/show/portfolio/',
+    path: '/user/show/portfolio/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+
+const AuthenticatedUserShowCvIndexRoute =
+  AuthenticatedUserShowCvIndexImport.update({
+    id: '/user/show/cv/',
+    path: '/user/show/cv/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+
 const AuthenticatedManagementsLayoutSubProjectsIndexRoute =
   AuthenticatedManagementsLayoutSubProjectsIndexImport.update({
     id: '/sub-projects/',
@@ -462,11 +532,44 @@ const AuthenticatedManagementsLayoutSubProjectsIndexRoute =
     getParentRoute: () => AuthenticatedManagementsLayoutRoute,
   } as any)
 
+const AuthenticatedUserShowProfileLayoutRoute =
+  AuthenticatedUserShowProfileLayoutImport.update({
+    id: '/_layout',
+    getParentRoute: () => AuthenticatedUserShowProfileRoute,
+  } as any)
+
 const AuthenticatedManagementsLayoutSubProjectsSubprojectidRoute =
   AuthenticatedManagementsLayoutSubProjectsSubprojectidImport.update({
     id: '/sub-projects/$sub_project_id',
     path: '/sub-projects/$sub_project_id',
     getParentRoute: () => AuthenticatedManagementsLayoutRoute,
+  } as any)
+
+const AuthenticatedUserShowProfileLayoutPortfolioRoute =
+  AuthenticatedUserShowProfileLayoutPortfolioImport.update({
+    id: '/portfolio',
+    path: '/portfolio',
+    getParentRoute: () => AuthenticatedUserShowProfileLayoutRoute,
+  } as any)
+
+const AuthenticatedUserShowProfileLayoutIdUserRoute =
+  AuthenticatedUserShowProfileLayoutIdUserImport.update({
+    id: '/$idUser',
+    path: '/$idUser',
+    getParentRoute: () => AuthenticatedUserShowProfileLayoutRoute,
+  } as any)
+
+const AuthenticatedUserSettingsProfileEditLayoutRoute =
+  AuthenticatedUserSettingsProfileEditLayoutImport.update({
+    id: '/_layout',
+    getParentRoute: () => AuthenticatedUserSettingsProfileEditRoute,
+  } as any)
+
+const AuthenticatedUserSettingsProfileEditLayoutIdUserRoute =
+  AuthenticatedUserSettingsProfileEditLayoutIdUserImport.update({
+    id: '/$idUser',
+    path: '/$idUser',
+    getParentRoute: () => AuthenticatedUserSettingsProfileEditLayoutRoute,
   } as any)
 
 // Populate the FileRoutesByPath interface
@@ -690,6 +793,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedBimViewerUtWebglClippingV2Import
       parentRoute: typeof AuthenticatedRouteImport
     }
+    '/_authenticated/blog': {
+      id: '/_authenticated/blog'
+      path: '/blog'
+      fullPath: '/blog'
+      preLoaderRoute: typeof AuthenticatedBlogImport
+      parentRoute: typeof AuthenticatedRouteImport
+    }
+    '/_authenticated/blog/_layout': {
+      id: '/_authenticated/blog/_layout'
+      path: '/blog'
+      fullPath: '/blog'
+      preLoaderRoute: typeof AuthenticatedBlogLayoutImport
+      parentRoute: typeof AuthenticatedBlogRoute
+    }
     '/_authenticated/managements': {
       id: '/_authenticated/managements'
       path: '/managements'
@@ -788,6 +905,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppLayoutHowItWorksImport
       parentRoute: typeof AuthenticatedAppLayoutImport
     }
+    '/_authenticated/blog/_layout/about': {
+      id: '/_authenticated/blog/_layout/about'
+      path: '/about'
+      fullPath: '/blog/about'
+      preLoaderRoute: typeof AuthenticatedBlogLayoutAboutImport
+      parentRoute: typeof AuthenticatedBlogLayoutImport
+    }
+    '/_authenticated/blog/_layout/contact': {
+      id: '/_authenticated/blog/_layout/contact'
+      path: '/contact'
+      fullPath: '/blog/contact'
+      preLoaderRoute: typeof AuthenticatedBlogLayoutContactImport
+      parentRoute: typeof AuthenticatedBlogLayoutImport
+    }
     '/_authenticated/managements/_layout/chat-support': {
       id: '/_authenticated/managements/_layout/chat-support'
       path: '/chat-support'
@@ -851,12 +982,75 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedManagementsLayoutSubProjectsSubprojectidImport
       parentRoute: typeof AuthenticatedManagementsLayoutImport
     }
+    '/_authenticated/user/show/profile': {
+      id: '/_authenticated/user/show/profile'
+      path: '/user/show/profile'
+      fullPath: '/user/show/profile'
+      preLoaderRoute: typeof AuthenticatedUserShowProfileImport
+      parentRoute: typeof AuthenticatedRouteImport
+    }
+    '/_authenticated/user/show/profile/_layout': {
+      id: '/_authenticated/user/show/profile/_layout'
+      path: '/user/show/profile'
+      fullPath: '/user/show/profile'
+      preLoaderRoute: typeof AuthenticatedUserShowProfileLayoutImport
+      parentRoute: typeof AuthenticatedUserShowProfileRoute
+    }
     '/_authenticated/managements/_layout/sub-projects/': {
       id: '/_authenticated/managements/_layout/sub-projects/'
       path: '/sub-projects'
       fullPath: '/managements/sub-projects'
       preLoaderRoute: typeof AuthenticatedManagementsLayoutSubProjectsIndexImport
       parentRoute: typeof AuthenticatedManagementsLayoutImport
+    }
+    '/_authenticated/user/show/cv/': {
+      id: '/_authenticated/user/show/cv/'
+      path: '/user/show/cv'
+      fullPath: '/user/show/cv'
+      preLoaderRoute: typeof AuthenticatedUserShowCvIndexImport
+      parentRoute: typeof AuthenticatedRouteImport
+    }
+    '/_authenticated/user/show/portfolio/': {
+      id: '/_authenticated/user/show/portfolio/'
+      path: '/user/show/portfolio'
+      fullPath: '/user/show/portfolio'
+      preLoaderRoute: typeof AuthenticatedUserShowPortfolioIndexImport
+      parentRoute: typeof AuthenticatedRouteImport
+    }
+    '/_authenticated/user/settings/profile/edit': {
+      id: '/_authenticated/user/settings/profile/edit'
+      path: '/user/settings/profile/edit'
+      fullPath: '/user/settings/profile/edit'
+      preLoaderRoute: typeof AuthenticatedUserSettingsProfileEditImport
+      parentRoute: typeof AuthenticatedRouteImport
+    }
+    '/_authenticated/user/settings/profile/edit/_layout': {
+      id: '/_authenticated/user/settings/profile/edit/_layout'
+      path: '/user/settings/profile/edit'
+      fullPath: '/user/settings/profile/edit'
+      preLoaderRoute: typeof AuthenticatedUserSettingsProfileEditLayoutImport
+      parentRoute: typeof AuthenticatedUserSettingsProfileEditRoute
+    }
+    '/_authenticated/user/show/profile/_layout/$idUser': {
+      id: '/_authenticated/user/show/profile/_layout/$idUser'
+      path: '/$idUser'
+      fullPath: '/user/show/profile/$idUser'
+      preLoaderRoute: typeof AuthenticatedUserShowProfileLayoutIdUserImport
+      parentRoute: typeof AuthenticatedUserShowProfileLayoutImport
+    }
+    '/_authenticated/user/show/profile/_layout/portfolio': {
+      id: '/_authenticated/user/show/profile/_layout/portfolio'
+      path: '/portfolio'
+      fullPath: '/user/show/profile/portfolio'
+      preLoaderRoute: typeof AuthenticatedUserShowProfileLayoutPortfolioImport
+      parentRoute: typeof AuthenticatedUserShowProfileLayoutImport
+    }
+    '/_authenticated/user/settings/profile/edit/_layout/$idUser': {
+      id: '/_authenticated/user/settings/profile/edit/_layout/$idUser'
+      path: '/$idUser'
+      fullPath: '/user/settings/profile/edit/$idUser'
+      preLoaderRoute: typeof AuthenticatedUserSettingsProfileEditLayoutIdUserImport
+      parentRoute: typeof AuthenticatedUserSettingsProfileEditLayoutImport
     }
   }
 }
@@ -908,6 +1102,33 @@ const AuthenticatedAppRouteChildren: AuthenticatedAppRouteChildren = {
 
 const AuthenticatedAppRouteWithChildren =
   AuthenticatedAppRoute._addFileChildren(AuthenticatedAppRouteChildren)
+
+interface AuthenticatedBlogLayoutRouteChildren {
+  AuthenticatedBlogLayoutAboutRoute: typeof AuthenticatedBlogLayoutAboutRoute
+  AuthenticatedBlogLayoutContactRoute: typeof AuthenticatedBlogLayoutContactRoute
+}
+
+const AuthenticatedBlogLayoutRouteChildren: AuthenticatedBlogLayoutRouteChildren =
+  {
+    AuthenticatedBlogLayoutAboutRoute: AuthenticatedBlogLayoutAboutRoute,
+    AuthenticatedBlogLayoutContactRoute: AuthenticatedBlogLayoutContactRoute,
+  }
+
+const AuthenticatedBlogLayoutRouteWithChildren =
+  AuthenticatedBlogLayoutRoute._addFileChildren(
+    AuthenticatedBlogLayoutRouteChildren,
+  )
+
+interface AuthenticatedBlogRouteChildren {
+  AuthenticatedBlogLayoutRoute: typeof AuthenticatedBlogLayoutRouteWithChildren
+}
+
+const AuthenticatedBlogRouteChildren: AuthenticatedBlogRouteChildren = {
+  AuthenticatedBlogLayoutRoute: AuthenticatedBlogLayoutRouteWithChildren,
+}
+
+const AuthenticatedBlogRouteWithChildren =
+  AuthenticatedBlogRoute._addFileChildren(AuthenticatedBlogRouteChildren)
 
 interface AuthenticatedManagementsLayoutRouteChildren {
   AuthenticatedManagementsLayoutChatSupportRoute: typeof AuthenticatedManagementsLayoutChatSupportRoute
@@ -963,6 +1184,69 @@ const AuthenticatedManagementsRouteWithChildren =
     AuthenticatedManagementsRouteChildren,
   )
 
+interface AuthenticatedUserShowProfileLayoutRouteChildren {
+  AuthenticatedUserShowProfileLayoutIdUserRoute: typeof AuthenticatedUserShowProfileLayoutIdUserRoute
+  AuthenticatedUserShowProfileLayoutPortfolioRoute: typeof AuthenticatedUserShowProfileLayoutPortfolioRoute
+}
+
+const AuthenticatedUserShowProfileLayoutRouteChildren: AuthenticatedUserShowProfileLayoutRouteChildren =
+  {
+    AuthenticatedUserShowProfileLayoutIdUserRoute:
+      AuthenticatedUserShowProfileLayoutIdUserRoute,
+    AuthenticatedUserShowProfileLayoutPortfolioRoute:
+      AuthenticatedUserShowProfileLayoutPortfolioRoute,
+  }
+
+const AuthenticatedUserShowProfileLayoutRouteWithChildren =
+  AuthenticatedUserShowProfileLayoutRoute._addFileChildren(
+    AuthenticatedUserShowProfileLayoutRouteChildren,
+  )
+
+interface AuthenticatedUserShowProfileRouteChildren {
+  AuthenticatedUserShowProfileLayoutRoute: typeof AuthenticatedUserShowProfileLayoutRouteWithChildren
+}
+
+const AuthenticatedUserShowProfileRouteChildren: AuthenticatedUserShowProfileRouteChildren =
+  {
+    AuthenticatedUserShowProfileLayoutRoute:
+      AuthenticatedUserShowProfileLayoutRouteWithChildren,
+  }
+
+const AuthenticatedUserShowProfileRouteWithChildren =
+  AuthenticatedUserShowProfileRoute._addFileChildren(
+    AuthenticatedUserShowProfileRouteChildren,
+  )
+
+interface AuthenticatedUserSettingsProfileEditLayoutRouteChildren {
+  AuthenticatedUserSettingsProfileEditLayoutIdUserRoute: typeof AuthenticatedUserSettingsProfileEditLayoutIdUserRoute
+}
+
+const AuthenticatedUserSettingsProfileEditLayoutRouteChildren: AuthenticatedUserSettingsProfileEditLayoutRouteChildren =
+  {
+    AuthenticatedUserSettingsProfileEditLayoutIdUserRoute:
+      AuthenticatedUserSettingsProfileEditLayoutIdUserRoute,
+  }
+
+const AuthenticatedUserSettingsProfileEditLayoutRouteWithChildren =
+  AuthenticatedUserSettingsProfileEditLayoutRoute._addFileChildren(
+    AuthenticatedUserSettingsProfileEditLayoutRouteChildren,
+  )
+
+interface AuthenticatedUserSettingsProfileEditRouteChildren {
+  AuthenticatedUserSettingsProfileEditLayoutRoute: typeof AuthenticatedUserSettingsProfileEditLayoutRouteWithChildren
+}
+
+const AuthenticatedUserSettingsProfileEditRouteChildren: AuthenticatedUserSettingsProfileEditRouteChildren =
+  {
+    AuthenticatedUserSettingsProfileEditLayoutRoute:
+      AuthenticatedUserSettingsProfileEditLayoutRouteWithChildren,
+  }
+
+const AuthenticatedUserSettingsProfileEditRouteWithChildren =
+  AuthenticatedUserSettingsProfileEditRoute._addFileChildren(
+    AuthenticatedUserSettingsProfileEditRouteChildren,
+  )
+
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedContactUsRoute: typeof AuthenticatedContactUsRoute
   AuthenticatedFeaturesRoute: typeof AuthenticatedFeaturesRoute
@@ -978,6 +1262,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedBimViewerUtWebglClippingStencilIfcRoute: typeof AuthenticatedBimViewerUtWebglClippingStencilIfcRoute
   AuthenticatedBimViewerUtWebglClippingV1Route: typeof AuthenticatedBimViewerUtWebglClippingV1Route
   AuthenticatedBimViewerUtWebglClippingV2Route: typeof AuthenticatedBimViewerUtWebglClippingV2Route
+  AuthenticatedBlogRoute: typeof AuthenticatedBlogRouteWithChildren
   AuthenticatedManagementsRoute: typeof AuthenticatedManagementsRouteWithChildren
   AuthenticatedViewFileCodeRoute: typeof AuthenticatedViewFileCodeRoute
   AuthenticatedBimViewerUtIfcLoaderLazyRoute: typeof AuthenticatedBimViewerUtIfcLoaderLazyRoute
@@ -986,6 +1271,10 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedMyRoom3dIndexRoute: typeof AuthenticatedMyRoom3dIndexRoute
   AuthenticatedViewIndexRoute: typeof AuthenticatedViewIndexRoute
   AuthenticatedViewUploadIndexRoute: typeof AuthenticatedViewUploadIndexRoute
+  AuthenticatedUserShowProfileRoute: typeof AuthenticatedUserShowProfileRouteWithChildren
+  AuthenticatedUserShowCvIndexRoute: typeof AuthenticatedUserShowCvIndexRoute
+  AuthenticatedUserShowPortfolioIndexRoute: typeof AuthenticatedUserShowPortfolioIndexRoute
+  AuthenticatedUserSettingsProfileEditRoute: typeof AuthenticatedUserSettingsProfileEditRouteWithChildren
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
@@ -1011,6 +1300,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
     AuthenticatedBimViewerUtWebglClippingV1Route,
   AuthenticatedBimViewerUtWebglClippingV2Route:
     AuthenticatedBimViewerUtWebglClippingV2Route,
+  AuthenticatedBlogRoute: AuthenticatedBlogRouteWithChildren,
   AuthenticatedManagementsRoute: AuthenticatedManagementsRouteWithChildren,
   AuthenticatedViewFileCodeRoute: AuthenticatedViewFileCodeRoute,
   AuthenticatedBimViewerUtIfcLoaderLazyRoute:
@@ -1022,6 +1312,13 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedMyRoom3dIndexRoute: AuthenticatedMyRoom3dIndexRoute,
   AuthenticatedViewIndexRoute: AuthenticatedViewIndexRoute,
   AuthenticatedViewUploadIndexRoute: AuthenticatedViewUploadIndexRoute,
+  AuthenticatedUserShowProfileRoute:
+    AuthenticatedUserShowProfileRouteWithChildren,
+  AuthenticatedUserShowCvIndexRoute: AuthenticatedUserShowCvIndexRoute,
+  AuthenticatedUserShowPortfolioIndexRoute:
+    AuthenticatedUserShowPortfolioIndexRoute,
+  AuthenticatedUserSettingsProfileEditRoute:
+    AuthenticatedUserSettingsProfileEditRouteWithChildren,
 }
 
 const AuthenticatedRouteRouteWithChildren =
@@ -1056,6 +1353,7 @@ export interface FileRoutesByFullPath {
   '/bim-viewer-ut/webgl-clipping-stencil-ifc': typeof AuthenticatedBimViewerUtWebglClippingStencilIfcRoute
   '/bim-viewer-ut/webgl-clipping-v1': typeof AuthenticatedBimViewerUtWebglClippingV1Route
   '/bim-viewer-ut/webgl-clipping-v2': typeof AuthenticatedBimViewerUtWebglClippingV2Route
+  '/blog': typeof AuthenticatedBlogLayoutRouteWithChildren
   '/managements': typeof AuthenticatedManagementsLayoutRouteWithChildren
   '/view/$fileCode': typeof AuthenticatedViewFileCodeRoute
   '/bim-viewer-ut/ifc-loader': typeof AuthenticatedBimViewerUtIfcLoaderLazyRoute
@@ -1069,6 +1367,8 @@ export interface FileRoutesByFullPath {
   '/app/contact-us': typeof AuthenticatedAppLayoutContactUsRoute
   '/app/features': typeof AuthenticatedAppLayoutFeaturesRoute
   '/app/how-it-works': typeof AuthenticatedAppLayoutHowItWorksRoute
+  '/blog/about': typeof AuthenticatedBlogLayoutAboutRoute
+  '/blog/contact': typeof AuthenticatedBlogLayoutContactRoute
   '/managements/chat-support': typeof AuthenticatedManagementsLayoutChatSupportRoute
   '/managements/cloud': typeof AuthenticatedManagementsLayoutCloudRoute
   '/managements/home': typeof AuthenticatedManagementsLayoutHomeRoute
@@ -1078,7 +1378,14 @@ export interface FileRoutesByFullPath {
   '/managements/users': typeof AuthenticatedManagementsLayoutUsersRoute
   '/view/upload': typeof AuthenticatedViewUploadIndexRoute
   '/managements/sub-projects/$sub_project_id': typeof AuthenticatedManagementsLayoutSubProjectsSubprojectidRoute
+  '/user/show/profile': typeof AuthenticatedUserShowProfileLayoutRouteWithChildren
   '/managements/sub-projects': typeof AuthenticatedManagementsLayoutSubProjectsIndexRoute
+  '/user/show/cv': typeof AuthenticatedUserShowCvIndexRoute
+  '/user/show/portfolio': typeof AuthenticatedUserShowPortfolioIndexRoute
+  '/user/settings/profile/edit': typeof AuthenticatedUserSettingsProfileEditLayoutRouteWithChildren
+  '/user/show/profile/$idUser': typeof AuthenticatedUserShowProfileLayoutIdUserRoute
+  '/user/show/profile/portfolio': typeof AuthenticatedUserShowProfileLayoutPortfolioRoute
+  '/user/settings/profile/edit/$idUser': typeof AuthenticatedUserSettingsProfileEditLayoutIdUserRoute
 }
 
 export interface FileRoutesByTo {
@@ -1110,6 +1417,7 @@ export interface FileRoutesByTo {
   '/bim-viewer-ut/webgl-clipping-stencil-ifc': typeof AuthenticatedBimViewerUtWebglClippingStencilIfcRoute
   '/bim-viewer-ut/webgl-clipping-v1': typeof AuthenticatedBimViewerUtWebglClippingV1Route
   '/bim-viewer-ut/webgl-clipping-v2': typeof AuthenticatedBimViewerUtWebglClippingV2Route
+  '/blog': typeof AuthenticatedBlogLayoutRouteWithChildren
   '/managements': typeof AuthenticatedManagementsLayoutRouteWithChildren
   '/view/$fileCode': typeof AuthenticatedViewFileCodeRoute
   '/bim-viewer-ut/ifc-loader': typeof AuthenticatedBimViewerUtIfcLoaderLazyRoute
@@ -1122,6 +1430,8 @@ export interface FileRoutesByTo {
   '/app/contact-us': typeof AuthenticatedAppLayoutContactUsRoute
   '/app/features': typeof AuthenticatedAppLayoutFeaturesRoute
   '/app/how-it-works': typeof AuthenticatedAppLayoutHowItWorksRoute
+  '/blog/about': typeof AuthenticatedBlogLayoutAboutRoute
+  '/blog/contact': typeof AuthenticatedBlogLayoutContactRoute
   '/managements/chat-support': typeof AuthenticatedManagementsLayoutChatSupportRoute
   '/managements/cloud': typeof AuthenticatedManagementsLayoutCloudRoute
   '/managements/home': typeof AuthenticatedManagementsLayoutHomeRoute
@@ -1131,7 +1441,14 @@ export interface FileRoutesByTo {
   '/managements/users': typeof AuthenticatedManagementsLayoutUsersRoute
   '/view/upload': typeof AuthenticatedViewUploadIndexRoute
   '/managements/sub-projects/$sub_project_id': typeof AuthenticatedManagementsLayoutSubProjectsSubprojectidRoute
+  '/user/show/profile': typeof AuthenticatedUserShowProfileLayoutRouteWithChildren
   '/managements/sub-projects': typeof AuthenticatedManagementsLayoutSubProjectsIndexRoute
+  '/user/show/cv': typeof AuthenticatedUserShowCvIndexRoute
+  '/user/show/portfolio': typeof AuthenticatedUserShowPortfolioIndexRoute
+  '/user/settings/profile/edit': typeof AuthenticatedUserSettingsProfileEditLayoutRouteWithChildren
+  '/user/show/profile/$idUser': typeof AuthenticatedUserShowProfileLayoutIdUserRoute
+  '/user/show/profile/portfolio': typeof AuthenticatedUserShowProfileLayoutPortfolioRoute
+  '/user/settings/profile/edit/$idUser': typeof AuthenticatedUserSettingsProfileEditLayoutIdUserRoute
 }
 
 export interface FileRoutesById {
@@ -1167,6 +1484,8 @@ export interface FileRoutesById {
   '/_authenticated/bim-viewer-ut/webgl-clipping-stencil-ifc': typeof AuthenticatedBimViewerUtWebglClippingStencilIfcRoute
   '/_authenticated/bim-viewer-ut/webgl-clipping-v1': typeof AuthenticatedBimViewerUtWebglClippingV1Route
   '/_authenticated/bim-viewer-ut/webgl-clipping-v2': typeof AuthenticatedBimViewerUtWebglClippingV2Route
+  '/_authenticated/blog': typeof AuthenticatedBlogRouteWithChildren
+  '/_authenticated/blog/_layout': typeof AuthenticatedBlogLayoutRouteWithChildren
   '/_authenticated/managements': typeof AuthenticatedManagementsRouteWithChildren
   '/_authenticated/managements/_layout': typeof AuthenticatedManagementsLayoutRouteWithChildren
   '/_authenticated/view/$fileCode': typeof AuthenticatedViewFileCodeRoute
@@ -1181,6 +1500,8 @@ export interface FileRoutesById {
   '/_authenticated/app/_layout/contact-us': typeof AuthenticatedAppLayoutContactUsRoute
   '/_authenticated/app/_layout/features': typeof AuthenticatedAppLayoutFeaturesRoute
   '/_authenticated/app/_layout/how-it-works': typeof AuthenticatedAppLayoutHowItWorksRoute
+  '/_authenticated/blog/_layout/about': typeof AuthenticatedBlogLayoutAboutRoute
+  '/_authenticated/blog/_layout/contact': typeof AuthenticatedBlogLayoutContactRoute
   '/_authenticated/managements/_layout/chat-support': typeof AuthenticatedManagementsLayoutChatSupportRoute
   '/_authenticated/managements/_layout/cloud': typeof AuthenticatedManagementsLayoutCloudRoute
   '/_authenticated/managements/_layout/home': typeof AuthenticatedManagementsLayoutHomeRoute
@@ -1190,7 +1511,16 @@ export interface FileRoutesById {
   '/_authenticated/managements/_layout/users': typeof AuthenticatedManagementsLayoutUsersRoute
   '/_authenticated/view/upload/': typeof AuthenticatedViewUploadIndexRoute
   '/_authenticated/managements/_layout/sub-projects/$sub_project_id': typeof AuthenticatedManagementsLayoutSubProjectsSubprojectidRoute
+  '/_authenticated/user/show/profile': typeof AuthenticatedUserShowProfileRouteWithChildren
+  '/_authenticated/user/show/profile/_layout': typeof AuthenticatedUserShowProfileLayoutRouteWithChildren
   '/_authenticated/managements/_layout/sub-projects/': typeof AuthenticatedManagementsLayoutSubProjectsIndexRoute
+  '/_authenticated/user/show/cv/': typeof AuthenticatedUserShowCvIndexRoute
+  '/_authenticated/user/show/portfolio/': typeof AuthenticatedUserShowPortfolioIndexRoute
+  '/_authenticated/user/settings/profile/edit': typeof AuthenticatedUserSettingsProfileEditRouteWithChildren
+  '/_authenticated/user/settings/profile/edit/_layout': typeof AuthenticatedUserSettingsProfileEditLayoutRouteWithChildren
+  '/_authenticated/user/show/profile/_layout/$idUser': typeof AuthenticatedUserShowProfileLayoutIdUserRoute
+  '/_authenticated/user/show/profile/_layout/portfolio': typeof AuthenticatedUserShowProfileLayoutPortfolioRoute
+  '/_authenticated/user/settings/profile/edit/_layout/$idUser': typeof AuthenticatedUserSettingsProfileEditLayoutIdUserRoute
 }
 
 export interface FileRouteTypes {
@@ -1224,6 +1554,7 @@ export interface FileRouteTypes {
     | '/bim-viewer-ut/webgl-clipping-stencil-ifc'
     | '/bim-viewer-ut/webgl-clipping-v1'
     | '/bim-viewer-ut/webgl-clipping-v2'
+    | '/blog'
     | '/managements'
     | '/view/$fileCode'
     | '/bim-viewer-ut/ifc-loader'
@@ -1237,6 +1568,8 @@ export interface FileRouteTypes {
     | '/app/contact-us'
     | '/app/features'
     | '/app/how-it-works'
+    | '/blog/about'
+    | '/blog/contact'
     | '/managements/chat-support'
     | '/managements/cloud'
     | '/managements/home'
@@ -1246,7 +1579,14 @@ export interface FileRouteTypes {
     | '/managements/users'
     | '/view/upload'
     | '/managements/sub-projects/$sub_project_id'
+    | '/user/show/profile'
     | '/managements/sub-projects'
+    | '/user/show/cv'
+    | '/user/show/portfolio'
+    | '/user/settings/profile/edit'
+    | '/user/show/profile/$idUser'
+    | '/user/show/profile/portfolio'
+    | '/user/settings/profile/edit/$idUser'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -1277,6 +1617,7 @@ export interface FileRouteTypes {
     | '/bim-viewer-ut/webgl-clipping-stencil-ifc'
     | '/bim-viewer-ut/webgl-clipping-v1'
     | '/bim-viewer-ut/webgl-clipping-v2'
+    | '/blog'
     | '/managements'
     | '/view/$fileCode'
     | '/bim-viewer-ut/ifc-loader'
@@ -1289,6 +1630,8 @@ export interface FileRouteTypes {
     | '/app/contact-us'
     | '/app/features'
     | '/app/how-it-works'
+    | '/blog/about'
+    | '/blog/contact'
     | '/managements/chat-support'
     | '/managements/cloud'
     | '/managements/home'
@@ -1298,7 +1641,14 @@ export interface FileRouteTypes {
     | '/managements/users'
     | '/view/upload'
     | '/managements/sub-projects/$sub_project_id'
+    | '/user/show/profile'
     | '/managements/sub-projects'
+    | '/user/show/cv'
+    | '/user/show/portfolio'
+    | '/user/settings/profile/edit'
+    | '/user/show/profile/$idUser'
+    | '/user/show/profile/portfolio'
+    | '/user/settings/profile/edit/$idUser'
   id:
     | '__root__'
     | '/'
@@ -1332,6 +1682,8 @@ export interface FileRouteTypes {
     | '/_authenticated/bim-viewer-ut/webgl-clipping-stencil-ifc'
     | '/_authenticated/bim-viewer-ut/webgl-clipping-v1'
     | '/_authenticated/bim-viewer-ut/webgl-clipping-v2'
+    | '/_authenticated/blog'
+    | '/_authenticated/blog/_layout'
     | '/_authenticated/managements'
     | '/_authenticated/managements/_layout'
     | '/_authenticated/view/$fileCode'
@@ -1346,6 +1698,8 @@ export interface FileRouteTypes {
     | '/_authenticated/app/_layout/contact-us'
     | '/_authenticated/app/_layout/features'
     | '/_authenticated/app/_layout/how-it-works'
+    | '/_authenticated/blog/_layout/about'
+    | '/_authenticated/blog/_layout/contact'
     | '/_authenticated/managements/_layout/chat-support'
     | '/_authenticated/managements/_layout/cloud'
     | '/_authenticated/managements/_layout/home'
@@ -1355,7 +1709,16 @@ export interface FileRouteTypes {
     | '/_authenticated/managements/_layout/users'
     | '/_authenticated/view/upload/'
     | '/_authenticated/managements/_layout/sub-projects/$sub_project_id'
+    | '/_authenticated/user/show/profile'
+    | '/_authenticated/user/show/profile/_layout'
     | '/_authenticated/managements/_layout/sub-projects/'
+    | '/_authenticated/user/show/cv/'
+    | '/_authenticated/user/show/portfolio/'
+    | '/_authenticated/user/settings/profile/edit'
+    | '/_authenticated/user/settings/profile/edit/_layout'
+    | '/_authenticated/user/show/profile/_layout/$idUser'
+    | '/_authenticated/user/show/profile/_layout/portfolio'
+    | '/_authenticated/user/settings/profile/edit/_layout/$idUser'
   fileRoutesById: FileRoutesById
 }
 
@@ -1445,6 +1808,7 @@ export const routeTree = rootRoute
         "/_authenticated/bim-viewer-ut/webgl-clipping-stencil-ifc",
         "/_authenticated/bim-viewer-ut/webgl-clipping-v1",
         "/_authenticated/bim-viewer-ut/webgl-clipping-v2",
+        "/_authenticated/blog",
         "/_authenticated/managements",
         "/_authenticated/view/$fileCode",
         "/_authenticated/bim-viewer-ut/ifc-loader",
@@ -1452,7 +1816,11 @@ export const routeTree = rootRoute
         "/_authenticated/bim-viewer-ut/viewer",
         "/_authenticated/my-room-3d/",
         "/_authenticated/view/",
-        "/_authenticated/view/upload/"
+        "/_authenticated/view/upload/",
+        "/_authenticated/user/show/profile",
+        "/_authenticated/user/show/cv/",
+        "/_authenticated/user/show/portfolio/",
+        "/_authenticated/user/settings/profile/edit"
       ]
     },
     "/(auth)/500": {
@@ -1571,6 +1939,21 @@ export const routeTree = rootRoute
       "filePath": "_authenticated/bim-viewer-ut/webgl-clipping-v2.tsx",
       "parent": "/_authenticated"
     },
+    "/_authenticated/blog": {
+      "filePath": "_authenticated/blog",
+      "parent": "/_authenticated",
+      "children": [
+        "/_authenticated/blog/_layout"
+      ]
+    },
+    "/_authenticated/blog/_layout": {
+      "filePath": "_authenticated/blog/_layout.tsx",
+      "parent": "/_authenticated/blog",
+      "children": [
+        "/_authenticated/blog/_layout/about",
+        "/_authenticated/blog/_layout/contact"
+      ]
+    },
     "/_authenticated/managements": {
       "filePath": "_authenticated/managements",
       "parent": "/_authenticated",
@@ -1640,6 +2023,14 @@ export const routeTree = rootRoute
       "filePath": "_authenticated/app/_layout/how-it-works.tsx",
       "parent": "/_authenticated/app/_layout"
     },
+    "/_authenticated/blog/_layout/about": {
+      "filePath": "_authenticated/blog/_layout/about.tsx",
+      "parent": "/_authenticated/blog/_layout"
+    },
+    "/_authenticated/blog/_layout/contact": {
+      "filePath": "_authenticated/blog/_layout/contact.tsx",
+      "parent": "/_authenticated/blog/_layout"
+    },
     "/_authenticated/managements/_layout/chat-support": {
       "filePath": "_authenticated/managements/_layout/chat-support.tsx",
       "parent": "/_authenticated/managements/_layout"
@@ -1676,9 +2067,58 @@ export const routeTree = rootRoute
       "filePath": "_authenticated/managements/_layout/sub-projects/$sub_project_id.tsx",
       "parent": "/_authenticated/managements/_layout"
     },
+    "/_authenticated/user/show/profile": {
+      "filePath": "_authenticated/user/show/profile",
+      "parent": "/_authenticated",
+      "children": [
+        "/_authenticated/user/show/profile/_layout"
+      ]
+    },
+    "/_authenticated/user/show/profile/_layout": {
+      "filePath": "_authenticated/user/show/profile/_layout.tsx",
+      "parent": "/_authenticated/user/show/profile",
+      "children": [
+        "/_authenticated/user/show/profile/_layout/$idUser",
+        "/_authenticated/user/show/profile/_layout/portfolio"
+      ]
+    },
     "/_authenticated/managements/_layout/sub-projects/": {
       "filePath": "_authenticated/managements/_layout/sub-projects/index.tsx",
       "parent": "/_authenticated/managements/_layout"
+    },
+    "/_authenticated/user/show/cv/": {
+      "filePath": "_authenticated/user/show/cv/index.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/user/show/portfolio/": {
+      "filePath": "_authenticated/user/show/portfolio/index.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/user/settings/profile/edit": {
+      "filePath": "_authenticated/user/settings/profile/edit",
+      "parent": "/_authenticated",
+      "children": [
+        "/_authenticated/user/settings/profile/edit/_layout"
+      ]
+    },
+    "/_authenticated/user/settings/profile/edit/_layout": {
+      "filePath": "_authenticated/user/settings/profile/edit/_layout.tsx",
+      "parent": "/_authenticated/user/settings/profile/edit",
+      "children": [
+        "/_authenticated/user/settings/profile/edit/_layout/$idUser"
+      ]
+    },
+    "/_authenticated/user/show/profile/_layout/$idUser": {
+      "filePath": "_authenticated/user/show/profile/_layout/$idUser.tsx",
+      "parent": "/_authenticated/user/show/profile/_layout"
+    },
+    "/_authenticated/user/show/profile/_layout/portfolio": {
+      "filePath": "_authenticated/user/show/profile/_layout/portfolio.tsx",
+      "parent": "/_authenticated/user/show/profile/_layout"
+    },
+    "/_authenticated/user/settings/profile/edit/_layout/$idUser": {
+      "filePath": "_authenticated/user/settings/profile/edit/_layout/$idUser.tsx",
+      "parent": "/_authenticated/user/settings/profile/edit/_layout"
     }
   }
 }
