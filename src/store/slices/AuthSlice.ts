@@ -1,16 +1,6 @@
+import { UserProfile } from '@/types/User';
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 
-export interface UserProfile {
-  id: number;
-  username: string | null;
-  email: string;
-  firstName: string;
-  lastName: string;
-  picture: string;
-  birthday: string;
-  createdAt: string;
-  updatedAt: string;
-}
 
 interface AuthState {
   user: UserProfile | null;
@@ -23,8 +13,7 @@ const initialState: AuthState = {
 };
 
 // ✅ Thunk: gọi API /auth/me để lấy user hiện tại
-export const fetchCurrentUser = createAsyncThunk<UserProfile>(
-  'auth/fetchCurrentUser',
+export const fetchCurrentUser = createAsyncThunk<UserProfile>('auth/fetchCurrentUser',
   async (_, thunkAPI) => {
     const token = localStorage.getItem('access_token');
     if (!token) throw new Error('No token found');

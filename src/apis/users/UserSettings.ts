@@ -79,3 +79,13 @@ export async function fetchAdminId(): Promise<number> {
   return res;
 }
 
+
+export async function updateProfile(data: any) {
+   const res = await fetchWithAuth2('/users/me', 
+    {
+        method: "PATCH",
+      body: JSON.stringify(data),
+    }
+   );
+  return res;
+}

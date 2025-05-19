@@ -60,7 +60,7 @@ import { Route as AuthenticatedUserShowCvIndexImport } from './routes/_authentic
 import { Route as AuthenticatedManagementsLayoutSubProjectsIndexImport } from './routes/_authenticated/managements/_layout/sub-projects/index'
 import { Route as AuthenticatedUserShowProfileLayoutImport } from './routes/_authenticated/user/show/profile/_layout'
 import { Route as AuthenticatedManagementsLayoutSubProjectsSubprojectidImport } from './routes/_authenticated/managements/_layout/sub-projects/$sub_project_id'
-import { Route as AuthenticatedUserShowProfileLayoutPortfolioImport } from './routes/_authenticated/user/show/profile/_layout/portfolio'
+import { Route as AuthenticatedUserShowProfileLayoutIndexImport } from './routes/_authenticated/user/show/profile/_layout/index'
 import { Route as AuthenticatedUserShowProfileLayoutIdUserImport } from './routes/_authenticated/user/show/profile/_layout/$idUser'
 import { Route as AuthenticatedUserSettingsProfileEditLayoutImport } from './routes/_authenticated/user/settings/profile/edit/_layout'
 import { Route as AuthenticatedUserSettingsProfileEditLayoutIdUserImport } from './routes/_authenticated/user/settings/profile/edit/_layout/$idUser'
@@ -545,10 +545,10 @@ const AuthenticatedManagementsLayoutSubProjectsSubprojectidRoute =
     getParentRoute: () => AuthenticatedManagementsLayoutRoute,
   } as any)
 
-const AuthenticatedUserShowProfileLayoutPortfolioRoute =
-  AuthenticatedUserShowProfileLayoutPortfolioImport.update({
-    id: '/portfolio',
-    path: '/portfolio',
+const AuthenticatedUserShowProfileLayoutIndexRoute =
+  AuthenticatedUserShowProfileLayoutIndexImport.update({
+    id: '/',
+    path: '/',
     getParentRoute: () => AuthenticatedUserShowProfileLayoutRoute,
   } as any)
 
@@ -1038,11 +1038,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedUserShowProfileLayoutIdUserImport
       parentRoute: typeof AuthenticatedUserShowProfileLayoutImport
     }
-    '/_authenticated/user/show/profile/_layout/portfolio': {
-      id: '/_authenticated/user/show/profile/_layout/portfolio'
-      path: '/portfolio'
-      fullPath: '/user/show/profile/portfolio'
-      preLoaderRoute: typeof AuthenticatedUserShowProfileLayoutPortfolioImport
+    '/_authenticated/user/show/profile/_layout/': {
+      id: '/_authenticated/user/show/profile/_layout/'
+      path: '/'
+      fullPath: '/user/show/profile/'
+      preLoaderRoute: typeof AuthenticatedUserShowProfileLayoutIndexImport
       parentRoute: typeof AuthenticatedUserShowProfileLayoutImport
     }
     '/_authenticated/user/settings/profile/edit/_layout/$idUser': {
@@ -1186,15 +1186,15 @@ const AuthenticatedManagementsRouteWithChildren =
 
 interface AuthenticatedUserShowProfileLayoutRouteChildren {
   AuthenticatedUserShowProfileLayoutIdUserRoute: typeof AuthenticatedUserShowProfileLayoutIdUserRoute
-  AuthenticatedUserShowProfileLayoutPortfolioRoute: typeof AuthenticatedUserShowProfileLayoutPortfolioRoute
+  AuthenticatedUserShowProfileLayoutIndexRoute: typeof AuthenticatedUserShowProfileLayoutIndexRoute
 }
 
 const AuthenticatedUserShowProfileLayoutRouteChildren: AuthenticatedUserShowProfileLayoutRouteChildren =
   {
     AuthenticatedUserShowProfileLayoutIdUserRoute:
       AuthenticatedUserShowProfileLayoutIdUserRoute,
-    AuthenticatedUserShowProfileLayoutPortfolioRoute:
-      AuthenticatedUserShowProfileLayoutPortfolioRoute,
+    AuthenticatedUserShowProfileLayoutIndexRoute:
+      AuthenticatedUserShowProfileLayoutIndexRoute,
   }
 
 const AuthenticatedUserShowProfileLayoutRouteWithChildren =
@@ -1384,7 +1384,7 @@ export interface FileRoutesByFullPath {
   '/user/show/portfolio': typeof AuthenticatedUserShowPortfolioIndexRoute
   '/user/settings/profile/edit': typeof AuthenticatedUserSettingsProfileEditLayoutRouteWithChildren
   '/user/show/profile/$idUser': typeof AuthenticatedUserShowProfileLayoutIdUserRoute
-  '/user/show/profile/portfolio': typeof AuthenticatedUserShowProfileLayoutPortfolioRoute
+  '/user/show/profile/': typeof AuthenticatedUserShowProfileLayoutIndexRoute
   '/user/settings/profile/edit/$idUser': typeof AuthenticatedUserSettingsProfileEditLayoutIdUserRoute
 }
 
@@ -1441,13 +1441,12 @@ export interface FileRoutesByTo {
   '/managements/users': typeof AuthenticatedManagementsLayoutUsersRoute
   '/view/upload': typeof AuthenticatedViewUploadIndexRoute
   '/managements/sub-projects/$sub_project_id': typeof AuthenticatedManagementsLayoutSubProjectsSubprojectidRoute
-  '/user/show/profile': typeof AuthenticatedUserShowProfileLayoutRouteWithChildren
+  '/user/show/profile': typeof AuthenticatedUserShowProfileLayoutIndexRoute
   '/managements/sub-projects': typeof AuthenticatedManagementsLayoutSubProjectsIndexRoute
   '/user/show/cv': typeof AuthenticatedUserShowCvIndexRoute
   '/user/show/portfolio': typeof AuthenticatedUserShowPortfolioIndexRoute
   '/user/settings/profile/edit': typeof AuthenticatedUserSettingsProfileEditLayoutRouteWithChildren
   '/user/show/profile/$idUser': typeof AuthenticatedUserShowProfileLayoutIdUserRoute
-  '/user/show/profile/portfolio': typeof AuthenticatedUserShowProfileLayoutPortfolioRoute
   '/user/settings/profile/edit/$idUser': typeof AuthenticatedUserSettingsProfileEditLayoutIdUserRoute
 }
 
@@ -1519,7 +1518,7 @@ export interface FileRoutesById {
   '/_authenticated/user/settings/profile/edit': typeof AuthenticatedUserSettingsProfileEditRouteWithChildren
   '/_authenticated/user/settings/profile/edit/_layout': typeof AuthenticatedUserSettingsProfileEditLayoutRouteWithChildren
   '/_authenticated/user/show/profile/_layout/$idUser': typeof AuthenticatedUserShowProfileLayoutIdUserRoute
-  '/_authenticated/user/show/profile/_layout/portfolio': typeof AuthenticatedUserShowProfileLayoutPortfolioRoute
+  '/_authenticated/user/show/profile/_layout/': typeof AuthenticatedUserShowProfileLayoutIndexRoute
   '/_authenticated/user/settings/profile/edit/_layout/$idUser': typeof AuthenticatedUserSettingsProfileEditLayoutIdUserRoute
 }
 
@@ -1585,7 +1584,7 @@ export interface FileRouteTypes {
     | '/user/show/portfolio'
     | '/user/settings/profile/edit'
     | '/user/show/profile/$idUser'
-    | '/user/show/profile/portfolio'
+    | '/user/show/profile/'
     | '/user/settings/profile/edit/$idUser'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -1647,7 +1646,6 @@ export interface FileRouteTypes {
     | '/user/show/portfolio'
     | '/user/settings/profile/edit'
     | '/user/show/profile/$idUser'
-    | '/user/show/profile/portfolio'
     | '/user/settings/profile/edit/$idUser'
   id:
     | '__root__'
@@ -1717,7 +1715,7 @@ export interface FileRouteTypes {
     | '/_authenticated/user/settings/profile/edit'
     | '/_authenticated/user/settings/profile/edit/_layout'
     | '/_authenticated/user/show/profile/_layout/$idUser'
-    | '/_authenticated/user/show/profile/_layout/portfolio'
+    | '/_authenticated/user/show/profile/_layout/'
     | '/_authenticated/user/settings/profile/edit/_layout/$idUser'
   fileRoutesById: FileRoutesById
 }
@@ -2079,7 +2077,7 @@ export const routeTree = rootRoute
       "parent": "/_authenticated/user/show/profile",
       "children": [
         "/_authenticated/user/show/profile/_layout/$idUser",
-        "/_authenticated/user/show/profile/_layout/portfolio"
+        "/_authenticated/user/show/profile/_layout/"
       ]
     },
     "/_authenticated/managements/_layout/sub-projects/": {
@@ -2112,8 +2110,8 @@ export const routeTree = rootRoute
       "filePath": "_authenticated/user/show/profile/_layout/$idUser.tsx",
       "parent": "/_authenticated/user/show/profile/_layout"
     },
-    "/_authenticated/user/show/profile/_layout/portfolio": {
-      "filePath": "_authenticated/user/show/profile/_layout/portfolio.tsx",
+    "/_authenticated/user/show/profile/_layout/": {
+      "filePath": "_authenticated/user/show/profile/_layout/index.tsx",
       "parent": "/_authenticated/user/show/profile/_layout"
     },
     "/_authenticated/user/settings/profile/edit/_layout/$idUser": {

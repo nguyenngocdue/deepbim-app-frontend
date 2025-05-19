@@ -7,6 +7,9 @@ import { FaPlug, FaStar, FaQuestionCircle, FaEnvelope } from "react-icons/fa";
 import { CLASS_NAME_DEFAULT } from "@/utils/class";
 import LeftHeader from "./LeftHeader";
 import { Link, useRouterState } from "@tanstack/react-router";
+import { ProfileDropdown } from "@/components/common/ProfileDropdown";
+import { ThemeSwitch } from "@/components/theme-switch";
+import LanguageButton from "@/components/common/LanguageButton";
 
 const Header = () => {
   const { t } = useTranslation();
@@ -18,9 +21,6 @@ const Header = () => {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const isActive = (href: string) => pathname === href;
 
-  const toggleTheme = () => {
-    setTheme(theme === "light" ? "dark" : "light");
-  };
 
   // Detect scroll to show bottom navigation, and hide after scrolling stops
   useEffect(() => {
@@ -90,14 +90,12 @@ const Header = () => {
               </Link>
             ))}
           </nav>
-
           {/* Actions (Always in Header) */}
-            <LeftHeader 
-              toggleLanguage={toggleLanguage}
-              language={language.toUpperCase()}
-              toggleTheme={toggleTheme}
-              theme={theme}
-            />
+            <div className=' flex items-center space-x-4'>
+              <LanguageButton language={language} onClick={toggleLanguage} className=""/>
+              <ThemeSwitch />
+              <ProfileDropdown />
+            </div>
         </div>
       </header>
 

@@ -1,4 +1,4 @@
-import EditProfilePage from '@/features/settings/profile/edit/EditProfile'
+import EditProfilePage from '@/features/settings/common-information/edit/EditProfilePage'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute(

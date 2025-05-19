@@ -1,6 +1,5 @@
 import { SidebarProvider } from '@/components/ui/sidebar'
-import { SearchProvider } from '@/context/search-context'
-import Settings from '@/features/settings'
+import Settings from '@/features/settings/Settings'
 import { createRootRoute } from '@tanstack/react-router'
 import Cookies from 'js-cookie'
 
