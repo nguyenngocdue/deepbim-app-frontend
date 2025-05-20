@@ -1,11 +1,17 @@
-import React from "react";
+
+interface MessageBubbleProps {
+  text: string;
+  avatarUrl?: string;
+  isSender: boolean;
+  showAvatar: boolean;
+}
 
 export function MessageBubble({
   text,
   avatarUrl,
   isSender,    // true nếu là message của mình
   showAvatar,  // true: hiện avatar, false: không
-}) {
+}: MessageBubbleProps) {
   return (
     <div className={`flex items-end mb-3 ${isSender ? "flex-row-reverse" : ""}`}>
       {showAvatar && (

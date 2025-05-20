@@ -26,6 +26,7 @@ export default function ChatBox({
     );
   }
 
+
   return (
     <div className="flex flex-col flex-1 bg-background">
       <ChatHeader selectedSession={selectedSession} />
@@ -47,7 +48,7 @@ export default function ChatBox({
               key={idx}
               text={msg.text}
               from={msg.from}
-              avatar={selectedSession?.user?.avatarUrl}
+              avatar={selectedSession?.user?.picture}
               userName={msg.userName}
               showAvatar={fromSunpport}
             />

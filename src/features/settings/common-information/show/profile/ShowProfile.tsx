@@ -41,7 +41,7 @@ export default function ShowProfile() {
     avatar: user?.picture || "",
     memberSince: user?.created_at ? toYYYYMMDD(user.created_at) : "Not updated",
     bio: user?.bio || "",
-    nickName: user?.nick_name || "",
+    nick_name: user?.nick_name || "",
     birthday: user?.birthday || "",
     is_verified: user?.is_verified,
   }
@@ -70,8 +70,8 @@ export default function ShowProfile() {
             </div>
             <div className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 mb-1">{profile.fullName}</div>
             <div className="text-base text-zinc-500 dark:text-zinc-400 mb-1">@{profile.username}</div>
-            {profile.nickName && (
-              <div className="text-base text-blue-500 font-semibold mb-2">@{profile.nickName}</div>
+            {profile.nick_name && (
+              <div className="text-base text-blue-500 font-semibold mb-2">@{profile.nick_name}</div>
             )}
             {/* Social link icons */}
             {socialLinks.length > 0 && (

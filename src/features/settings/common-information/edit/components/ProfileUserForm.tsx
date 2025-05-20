@@ -60,8 +60,6 @@ export function ProfileUserForm({ profile }: { profile: any }) {
             ...data,
             bio,
         }
-
-        //Save Media
         const avatarData = {
             file: avatarFile,
             category_type: 'user',

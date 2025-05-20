@@ -54,7 +54,6 @@ const Header = () => {
   }, [scrollTimeout]);
 
   const navLinkStyle = `sm:mt-4 text-sm sm:text-base md:text-lg  `;
-  const hoverColor = theme === "dark" ? "hover:text-green-400" : "hover:text-secondary-700";
 
   const links = [
     { href: "/app", label: t("navbar.home"), icon: <FaPlug />, ariaLabel: t("navbar.home") },
@@ -68,9 +67,7 @@ const Header = () => {
     <>
       {/* Fixed Header */}
       <header
-        className={` ${CLASS_NAME_DEFAULT.CLASS_NAME_3} fixed top-0 left-0 w-full z-50 backdrop-blur-md px-6 shadow-md text-center ${
-          theme === "dark" ? "bg-gray-900 text-white" : "bg-white bg-opacity-80 text-black"
-        }`}
+        className={` ${CLASS_NAME_DEFAULT.CLASS_NAME_3} fixed top-0 left-0 w-full z-50 backdrop-blur-md px-6 shadow-md text-center `}
       >
         <div className="flex justify-between items-center py-2">
           {/* Logo */}
@@ -82,7 +79,7 @@ const Header = () => {
           <nav className="hidden md:flex items-center gap-4  ">
             {links.map((link) => (
               <Link key={link.href} to={link.href} 
-                    className={`${navLinkStyle} ${hoverColor} ${
+                    className={`${navLinkStyle} ${
                       isActive(link.href) ?  `text-reverse ` : 'text-50'
                     }`}
                     >
@@ -101,15 +98,14 @@ const Header = () => {
 
       {/* Fixed Bottom Navigation (Mobile Only, Shown on Scroll, Hidden When Scroll Stops) */}
       <nav
-        className={`fixed bottom-0 left-0 w-full z-50 md:hidden flex justify-around items-center py-2 shadow-md transition-all duration-300 ease-in-out ${
-          theme === "dark" ? "bg-gray-900 text-white" : "bg-white bg-opacity-80 text-black"
-        } ${showBottomNav ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"}`}
+        className={`fixed bottom-0 left-0 w-full z-50 md:hidden flex justify-around items-center py-2 shadow-md transition-all duration-300 ease-in-out 
+        ${showBottomNav ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"}`}
       >
         {links.map((link) => (
           <Link
             key={link.href}
             to={link.href}
-            className={`${navLinkStyle} ${hoverColor} text-xl p-2`}
+            className={`${navLinkStyle}  text-xl p-2`}
             aria-label={link.ariaLabel}
           >
             {link.icon}

@@ -11,7 +11,7 @@ export default function EditProfilePage() {
     user_name: user?.user_name || "No username",
     nick_name: user?.nick_name || "",
     email: user?.email || "Not updated",
-    avatar: user?.mediaAvatar?.url || "",
+    avatar: user?.mediaAvatar?.url || user?.picture,
     member_since: user?.created_at ? toYYYYMMDD(user.created_at) : "Not updated",
     bio: user?.bio || "",
     birthday: user?.birthday || "",
