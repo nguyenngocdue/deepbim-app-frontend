@@ -24,7 +24,6 @@ export function useCustomerChatSocket(userId?: number) {
   ];
 
   useEffect(() => {
-    console.log(open);
     if (open && messages.length === 0) {
       setMessages(defaultWelcomeMessages);
     }

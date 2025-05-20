@@ -1,8 +1,7 @@
-// SubProjectListPage.tsx
 import { useEffect, useMemo, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Skeleton } from "@/components/ui/skeleton"
 import { ColumnDef, useReactTable, getCoreRowModel } from "@tanstack/react-table"
 import { TableContent } from "@/components/model-table/TableContent"
 import { DialogTemplate } from "@/components/model-table/DialogTemplate"
@@ -10,56 +9,88 @@ import { EntityForm } from "@/components/bim-viewer/common/EntityForm"
 import { createSubProjects, getSubProjects } from "@/apis/sub-project-api"
 import { getProjects } from "@/apis/project"
 import { LinkId } from "@/components/common/LinkId"
+import { toast } from "sonner"
+import { EntityListLayout } from "../../components/EntityListLayout"
 
 interface SubProject {
   id: number
   name: string
-  number?: string
+  description?: string
+  project?: string
   access?: string
   type?: string
-  created_at: string
-  discipline?: { name: string }
+  start_time?: string
+  end_time?: string
+  created_at?: string
+  discipline?: string
   owner?: { name: string }
   creator?: { name: string }
 }
 
 export default function SubProjectListPage() {
   const [filter, setFilter] = useState("")
-  const [data, setData] = useState<SubProject[]>([])
+  const [data, setData] = useState<SubProject[] | null>(null)
   const [open, setOpen] = useState(false)
-  const [projectOptions, setProjectOptions] = useState<string[]>([])
+  const [projectOptions, setProjectOptions] = useState<{ label: string, value: string }[]>([])
+  const [tab, setTab] = useState("subprojects")
 
+  // Lấy danh sách project options cho select
   const fetchProjects = async () => {
-    const res = await getProjects();
-    const options = res?.data.map((proj: any) => ({
-      label: proj.name,
-      value: proj.id.toString(),
-    }))
-    setProjectOptions(options)
+    try {
+      const res = await getProjects();
+      const options = res?.data.map((proj: any) => ({
+        label: proj.name,
+        value: proj.id.toString(),
+      }))
+      setProjectOptions(options)
+    } catch (err) {
+      setProjectOptions([])
+    }
   }
+
+  // Lấy danh sách subproject
   const fetchData = async () => {
-    const res = await getSubProjects();
-    const formatted = res?.data.map((item: any) => ({
-      id: item.id,
-      name: item.name,
-      project: item.project.name,
-      access: item.is_public ? "Public" : item.is_visible ? "Internal" : "Hidden",
-      start_time: item.start_time,
-      end_time: item.end_time,
-      discipline: item.discipline?.name,
-      creator: item.creator,
-      owner: item.owner,
-      created_at: formatDate(item.created_at),
-    }))
-    setData(formatted);
+    try {
+      const res = await getSubProjects();
+      const formatted = res?.data.map((item: any) => ({
+        id: item.id,
+        name: item.name,
+        description: item.description,
+        project: item.project?.name,
+        access: item.is_public ? "Public" : item.is_visible ? "Internal" : "Hidden",
+        start_time: item.start_time,
+        end_time: item.end_time,
+        discipline: item.discipline?.name,
+        creator: item.creator,
+        owner: item.owner,
+        created_at: formatDate(item.created_at),
+      }))
+      setData(formatted)
+    } catch (err) {
+      toast.error("Failed to fetch sub-projects")
+      setData([])
+    }
   }
 
   useEffect(() => {
     fetchData();
     fetchProjects();
-  }, [filter])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
-  const formatDate = (dateStr: string) => {
+  // Bộ lọc theo tên, mô tả, dự án...
+  const filteredData = useMemo(() => {
+    if (!data) return []
+    return data.filter((item) =>
+      item.name?.toLowerCase().includes(filter.toLowerCase()) ||
+      item.description?.toLowerCase().includes(filter.toLowerCase()) ||
+      item.project?.toLowerCase().includes(filter.toLowerCase())
+    )
+  }, [filter, data])
+
+  // Định dạng ngày
+  function formatDate(dateStr?: string) {
+    if (!dateStr) return "-"
     const d = new Date(dateStr)
     return d.toLocaleDateString("vi-VN", {
       day: "numeric",
@@ -68,30 +99,36 @@ export default function SubProjectListPage() {
     })
   }
 
-
+  // Định nghĩa cột bảng
   const columns = useMemo<ColumnDef<SubProject>[]>(() => [
     { 
       accessorKey: "id", 
       header: "Id",
-      cell: ({ row }) => ( <LinkId id={row.original.id} href="/managements/sub-projects" />)
+      cell: ({ row }) => (
+        <LinkId id={row.original.id} href="/managements/sub-projects" />
+      )
     },
     { accessorKey: "name", header: "Name" },
     { accessorKey: "description", header: "Description" },
     { accessorKey: "project", header: "Project" },
     { accessorKey: "discipline", header: "Discipline" },
-    { accessorKey: "start_time", header: "Start Time" },
-    { accessorKey: "end_time", header: "End Time" },
-    { accessorKey: "owner.name", header: "Owner" },
-    { accessorKey: "creator", header: "Creator" }
+    { accessorKey: "start_time", header: "Start Time",
+      cell: ({ getValue }) => getValue() ? formatDate(getValue() as string) : "-" },
+    { accessorKey: "end_time", header: "End Time",
+      cell: ({ getValue }) => getValue() ? formatDate(getValue() as string) : "-" },
+    { accessorKey: "owner", header: "Owner",
+      cell: ({ getValue }) => (getValue() as any)?.name || "-" },
+    { accessorKey: "creator", header: "Creator",
+      cell: ({ getValue }) => (getValue() as any)?.name || "-" }
   ], [])
 
   const table = useReactTable({
-    data,
+    data: filteredData,
     columns,
     getCoreRowModel: getCoreRowModel()
   })
 
-
+  // Các trường của form tạo mới
   const subProjectFields = [
     { name: "name", label: "Sub-project name", placeholder: "Enter sub-project name", type: "text" },
     { name: "description", label: "Description", placeholder: "Enter description", type: "textarea" },
@@ -103,77 +140,84 @@ export default function SubProjectListPage() {
     { name: "end_time", label: "End Time", placeholder: "Pick end date", type: "date" }
   ]
 
+  // Xử lý submit tạo mới subproject
   const handleApply = async (formData: any) => {
     try {
       const payload = {
         ...formData,
         project_id: parseInt(formData.project),
       }
-
       await createSubProjects(payload)
       setOpen(false)
-      fetchData()
+      await fetchData()
+      toast.success("Created sub-project successfully")
     } catch (err) {
-      console.error("Error creating sub-project:", err)
+      toast.error("Error creating sub-project")
     }
   }
 
+  // Search bar và nút tạo mới
+  const searchBar = (
+    <>
+      <Button onClick={() => setOpen(true)}>+ Create Sub-Project</Button>
+      <div className="flex gap-2">
+        <Input
+          placeholder="Search sub-projects..."
+          value={filter}
+          onChange={(e) => setFilter(e.target.value)}
+          className="w-72"
+        />
+        <Button variant="outline">🔍</Button>
+      </div>
+    </>
+  )
+
+  // Dialog tạo mới sub-project
+  const dialog = (
+    <DialogTemplate
+      open={open}
+      onClose={() => setOpen(false)}
+      title="Create New Sub-Project"
+      description="Fill in the details to create a new sub-project."
+      disableOutsideClose
+      className="max-w-5xl"
+    >
+      <EntityForm
+        fields={subProjectFields}
+        onSubmit={handleApply}
+        submitLabel="Apply"
+        cancelLabel="Cancel"
+        showFooter
+        onCancel={() => setOpen(false)}
+      />
+    </DialogTemplate>
+  )
+
+  // Tab bar
+  const tabs = [
+    { value: "subprojects", label: "Sub-Projects" },
+    { value: "templates", label: "Templates" }
+  ]
+
+  // Footer (nếu cần custom)
+  const countInfo = `Showing ${filteredData.length} of ${data?.length ?? 0}`
 
   return (
-    <div className="p-6 max-w-7xl mx-auto">
-      <h1 className="text-3xl font-bold mb-1">Sub-Projects</h1>
-      <p className="text-muted-foreground mb-6">Manage your current and upcoming sub-projects.</p>
-
-      <Tabs defaultValue="subprojects" className="mb-4">
-        <TabsList>
-          <TabsTrigger value="subprojects">Sub-Projects</TabsTrigger>
-          <TabsTrigger value="templates">Templates</TabsTrigger>
-        </TabsList>
-      </Tabs>
-
-      <div className="flex items-center justify-between mb-4">
-        <DialogTemplate
-          open={open}
-          onClose={() => setOpen(false)}
-          title="Create New Sub-Project"
-          description="Fill in the details to create a new sub-project."
-          disableOutsideClose
-          className="max-w-5xl"
-        >
-          <EntityForm
-            fields={subProjectFields}
-            onSubmit={handleApply}
-            submitLabel="Apply"
-            cancelLabel="Cancel"
-            showFooter
-            onCancel={() => setOpen(false)}
-          />
-        </DialogTemplate>
-
-        <div className="flex gap-2 items-center justify-between">
-          <Button onClick={() => setOpen(true)}>+ Create Sub-Project</Button>
-          <div className="flex gap-2">
-            <Input
-              placeholder="Search sub-projects..."
-              value={filter}
-              onChange={(e) => setFilter(e.target.value)}
-              className="w-72"
-            />
-            <Button variant="outline">🔍</Button>
-          </div>
-        </div>
-      </div>
-
-      <TableContent table={table} />
-
-      <div className="flex justify-between items-center px-4 py-2 text-sm text-muted-foreground">
-        <div>Showing {data.length}</div>
-        <div className="flex gap-2">
-          <Button variant="ghost">«</Button>
-          <div>1 of 1</div>
-          <Button variant="ghost">»</Button>
-        </div>
-      </div>
-    </div>
+    <EntityListLayout
+      title="Sub-Projects"
+      description="Manage your current and upcoming sub-projects."
+      tabs={tabs}
+      activeTab={tab}
+      onTabChange={setTab}
+      dialog={dialog}
+      searchBar={searchBar}
+      countInfo={countInfo}
+    >
+      {data === null ? (
+        <Skeleton className="w-full h-40 rounded-md" />
+      ) : (
+        <TableContent table={table} key={filteredData.length} />
+      )}
+    </EntityListLayout>
   )
 }

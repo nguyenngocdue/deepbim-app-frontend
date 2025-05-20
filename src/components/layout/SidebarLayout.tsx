@@ -89,6 +89,7 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
                         <SubMenu label="Workspaces" icon={<MdWorkspaces  size={18} />} defaultOpen={true}>
                             <MenuItem icon={<GrProjects   className="ml-5" size={20} />} component={<Link to="/managements/projects" />}>Projects</MenuItem>
                             <MenuItem icon={<TiFlowChildren className="ml-5" size={20} />} component={<Link to="/managements/sub-projects" />}>Sub-Projects</MenuItem>
+                            <MenuItem icon={<TiFlowChildren className="ml-5" size={20} />} component={<Link to="/managements/teams" />}>Teams</MenuItem>
                         </SubMenu>
 
                         {!collapsed && <div className="px-4 pt-2 pb-1 uppercase text-xs tracking-wide text-slate-400">Admin Management</div>}
@@ -127,7 +128,7 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
             </div>
 
             {/* Main layout */}
-            <div className="flex flex-col flex-1 px-2 pt-2 h-screen overflow-hidden">
+            <div className="flex flex-col flex-1 h-screen overflow-hidden">
                 <div className="text-sm text-muted-foreground mb-4">
                     <div className="flex items-center justify-between">
                         <BreadcrumbsWithIconAndLabel />
