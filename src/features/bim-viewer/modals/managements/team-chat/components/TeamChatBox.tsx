@@ -7,6 +7,8 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu"; // Update path theo dự án của bạn
 import { MessageBubble } from "@/features/chats/chat-customer/components/MessageBubble";
+import { ShowInfoMenuItem } from "./ShowInfoMenuItem";
+import { Input } from "@/components/ui/input";
 
 export interface Message {
   id: number;
@@ -22,6 +24,7 @@ interface TeamChatBoxProps {
   teamId: number;
   messages: Message[];
   onSend: (message: string) => void;
+  sendTyping: () => void;
   teamName?: string;
   onShowInfo?: () => void; // Mở sidebar phải
 }
@@ -33,6 +36,7 @@ export const TeamChatBox: React.FC<TeamChatBoxProps> = ({
   onSend,
   teamName,
   onShowInfo,
+  sendTyping,
 }) => {
   const [input, setInput] = React.useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -57,7 +61,7 @@ export const TeamChatBox: React.FC<TeamChatBoxProps> = ({
           <div className="text-lg font-bold">{teamName || "Team Chat"}</div>
         </div>
         {/* Nút 3 chấm menu */}
-        <DropdownMenu>
+         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button
               className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-zinc-800 focus:outline-none"
@@ -68,13 +72,7 @@ export const TeamChatBox: React.FC<TeamChatBoxProps> = ({
             </button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" sideOffset={6} className="min-w-[180px]">
-            <DropdownMenuItem
-              onClick={() => {
-                onShowInfo && onShowInfo();
-              }}
-            >
-              Show information group
-            </DropdownMenuItem>
+            <ShowInfoMenuItem onClick={onShowInfo} />
             {/* Thêm các item menu khác nếu muốn */}
           </DropdownMenuContent>
         </DropdownMenu>
@@ -112,11 +110,14 @@ export const TeamChatBox: React.FC<TeamChatBoxProps> = ({
         onSubmit={handleSend}
         className="p-4 border-t border-zinc-800 bg-zinc-900 flex gap-2"
       >
-        <input
+        <Input
           className="flex-1 rounded bg-zinc-800 px-4 py-2 text-sm outline-none"
           placeholder="Type a message..."
           value={input}
-          onChange={(e) => setInput(e.target.value)}
+           onChange={e => {
+              setInput(e.target.value);
+              sendTyping();
+            }}
         />
         <button
           type="submit"

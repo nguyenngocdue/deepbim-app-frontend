@@ -1,45 +1,15 @@
-// components/team-chat/TeamMessagePage.tsx
-import React, { useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { TeamListSidebar } from "./TeamListSidebar";
-import { TeamChatBox } from "./TeamChatBox";
 import { TeamInfoSidebar } from "./TeamInfoSidebar";
 import { Sidebar, sidebarClasses } from "react-pro-sidebar";
-// Mock data mẫu
-const TEAMS = [
-  {
-    id: 1,
-    name: "Frontend Devs",
-    lastMessage: "Đã deploy bản mới 🚀",
-    unread: 3,
-    description: "Nhóm phát triển giao diện",
-    members: [
-      { id: 1, name: "A", role: "Leader" },
-      { id: 2, name: "B", role: "Member" },
-      { id: 3, name: "C", role: "Member" },
-    ],
-  },
-   {
-    id: "user_123",
-    type: "user",
-    name: "Nguyen Van A",
-    lastMessage: "Gửi cho bạn tài liệu rồi nhé",
-    unread: 1,
-    avatar: "https://i.pravatar.cc/300?u=123",
-  },
-  {
-    id: 2,
-    name: "Backend Devs",
-    lastMessage: "API lỗi 500 rồi kìa",
-    unread: 0,
-    description: "Nhóm backend, API & DB",
-    members: [
-      { id: 4, name: "D", role: "Leader" },
-      { id: 2, name: "B", role: "Member" },
-    ],
-  },
-];
+import { TeamChatFeature } from "../featutes/TeamChatFeature";
+import { useAppSelector } from "@/hooks/reduxHooks";
+import { useTeamsByUser } from "../hooks/useTeamsByUser";
+import EmptyState from "@/components/common/EmptyState";
+import { LoadingState } from "@/components/common/LoadingState";
 
-const MSGS: Record<number, any[]> = {
+// ----- MOCK (Thay bằng API ở các hooks/feature real nếu có) -----
+const MOCK_MSGS: Record<number, any[]> = {
   1: [
     { id: 1, sender: "A", content: "Hello team!", created_at: "09:00", self: false },
     { id: 2, sender: "You", content: "Hi mọi người!", created_at: "09:01", self: true },
@@ -50,49 +20,73 @@ const MSGS: Record<number, any[]> = {
     { id: 2, sender: "You", content: "OK, test nhé", created_at: "08:03", self: true },
   ],
 };
-
+// ---------------------------------------------------------------
 
 export default function TeamMessagePage() {
-  const [selectedTeamId, setSelectedTeamId] = useState<number>(TEAMS[0].id);
-  const selectedTeam = TEAMS.find((t) => t.id === selectedTeamId);
-  const [messages, setMessages] = useState(MSGS[selectedTeamId] || []);
+  const { user } = useAppSelector((state) => state.auth);
+  const { teams, loading: teamsLoading } = useTeamsByUser(user);
+
+  // State lưu id team đang chọn, mặc định chọn team đầu nếu có
+  const [selectedTeamId, setSelectedTeamId] = useState<number | null>(null);
+  const selectedTeam = useMemo(() => teams.find((t) => t.id === selectedTeamId), [teams, selectedTeamId]);
   const [infoOpen, setInfoOpen] = useState(false); // Trạng thái mở sidebar phải
 
-  React.useEffect(() => {
-    setMessages(MSGS[selectedTeamId] || []);
+
+
+  // Khi đã load xong, tự động chọn team đầu tiên nếu chưa chọn
+  useEffect(() => {
+    if (!teamsLoading && teams.length && selectedTeamId == null) {
+      setSelectedTeamId(teams[0].id);
+    }
+  }, [teams, teamsLoading, selectedTeamId]);
+
+  // Messages - ở đây chỉ mock theo teamId, muốn lấy API thật thì fetch theo teamId
+  const [messages, setMessages] = useState<any[]>([]);
+  useEffect(() => {
+    if (selectedTeamId) {
+      // Nếu có API thực tế, thay đoạn này bằng call API getMessageHistory(teamId)
+      setMessages(MOCK_MSGS[selectedTeamId] || []);
+    }
   }, [selectedTeamId]);
 
-  const handleSend = (text: string) => {
-    setMessages((msgs) => [
-      ...msgs,
-      {
-        id: msgs.length + 1,
-        sender: "You",
-        content: text,
-        created_at: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-        self: true,
-      },
-    ]);
+  // Handler chọn team
+  const handleSelectTeam = (id: number) => {
+    setSelectedTeamId(id);
+    setInfoOpen(false); // Ẩn sidebar info khi chuyển team
   };
 
   return (
     <div className="h-screen flex bg-zinc-950">
       {/* Sidebar team list */}
-      <TeamListSidebar
-        teams={TEAMS}
-        selectedTeamId={selectedTeamId}
-        onSelectTeam={setSelectedTeamId}
-      />
-      {/* Box message */}
-      <div className="flex-1 flex flex-col">
-        <TeamChatBox
-          teamId={selectedTeamId}
-          messages={messages}
-          onSend={handleSend}
-          teamName={selectedTeam?.name}
-          onShowInfo={() => setInfoOpen(true)} // Nhận sự kiện mở info
+      {teamsLoading ? (
+        <LoadingState />
+      ) : teams.length ? (
+        <TeamListSidebar
+          teams={teams}
+          selectedTeamId={selectedTeamId || undefined}
+          onSelectTeam={handleSelectTeam}
         />
+      ) : (
+        <EmptyState />
+      )}
+
+      {/* Box message/chat */}
+      <div className="flex-1 flex flex-col">
+        {selectedTeamId && selectedTeam ? (
+          <TeamChatFeature
+            teamId={selectedTeamId}
+            currentUser={user}
+            teamName={selectedTeam.name}
+            messages={messages}
+            onShowInfo={() => setInfoOpen(true)}
+          />
+        ) : (
+          <div className="flex flex-1 items-center justify-center text-muted-foreground text-xl">
+            Chọn một team để bắt đầu chat!
+          </div>
+        )}
       </div>
+
       {/* Sidebar phải với react-pro-sidebar */}
       <Sidebar
         collapsed={!infoOpen}
@@ -122,7 +116,7 @@ export default function TeamMessagePage() {
             </svg>
           </button>
         </div>
-        <TeamInfoSidebar team={selectedTeam} />
+        {/* {selectedTeam && <TeamInfoSidebar team={selectedTeam} />} */}
       </Sidebar>
     </div>
   );

@@ -1,16 +1,17 @@
 import { TeamMessagePage } from '@/features/bim-viewer/modals/managements/team-chat'
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, useParams } from '@tanstack/react-router'
 
 export const Route = createFileRoute(
-  '/_authenticated/managements/_layout/teams/$teamId',
+  '/_authenticated/managements/_layout/teams/$team_id',
 )({
   component: RouteComponent,
 })
 
 function RouteComponent() {
+   const { team_id } = Route.useParams();
   return (
     <>
-      <TeamMessagePage />
+      <TeamMessagePage  teamId={team_id}/>
     </>
   )
 }

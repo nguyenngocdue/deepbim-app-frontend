@@ -17,7 +17,13 @@ import { addTeamMembers } from "@/apis/team-member-api";
 import { toast } from "sonner";
 import { useAppSelector } from "@/hooks/reduxHooks";
 
-export function FormCreateTeam({ onSuccess, onCancel }) {
+interface FormCreateTeamProps {
+  onSuccess?: () => void;
+  onCancel?: () => void;
+  fetchTeams: () => void;
+}
+
+export function FormCreateTeam({ onSuccess, onCancel, fetchTeams }: FormCreateTeamProps) {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [subProject, setSubProject] = useState("");
@@ -90,6 +96,7 @@ export function FormCreateTeam({ onSuccess, onCancel }) {
 
       toast.success("Created user team successfully");
       onSuccess && onSuccess();
+      fetchTeams();
     } catch (err) {
       toast.error("Error creating team");
     } finally {

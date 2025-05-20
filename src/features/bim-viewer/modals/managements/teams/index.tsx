@@ -6,34 +6,16 @@ import { DialogTemplate } from "@/components/model-table/DialogTemplate"
 import { EntityListLayout } from "../components/EntityListLayout"
 import { FormCreateTeam } from "./components/FormCreateTeam"
 import TeamTable from "./components/TeamTable"
-import { getTeamByUserId } from "@/apis/team-api"
 import { useAppSelector } from "@/hooks/reduxHooks"
+import { useTeamsByUser } from "../team-chat/hooks/useTeamsByUser"
+import EmptyState from "@/components/common/EmptyState"
+import { LoadingState } from "@/components/common/LoadingState"
 
 const TeamPage: React.FC = () => {
   const [open, setOpen] = useState(false)
   const [filter, setFilter] = useState("")
-  const [teams, setTeams] = useState([])
   const { user } = useAppSelector((state) => state.auth)
-  const [loading, setLoading] = useState(false)
-
-  // Hàm fetch team, dùng useCallback để tránh tạo mới mỗi lần render
-  const fetchTeams = useCallback(async () => {
-    if (!user || !user.id) return
-    setLoading(true)
-    try {
-      const t = await getTeamByUserId(user.id)
-      setTeams(t.data)
-    } catch (err) {
-      setTeams([])
-    } finally {
-      setLoading(false)
-    }
-  }, [user])
-
-  // Gọi fetchTeams khi user.id sẵn sàng hoặc khi user thay đổi
-  useEffect(() => {
-    fetchTeams()
-  }, [fetchTeams])
+  const { teams, loading, refresh } = useTeamsByUser(user);
 
   // Xử lý filter real-time (nếu team có thuộc tính .name)
   const filteredTeams = filter
@@ -71,7 +53,7 @@ const TeamPage: React.FC = () => {
         className="w-72"
       />
       {/* Button search chỉ để demo, filter realtime luôn */}
-      <Button variant="outline" onClick={() => {}}>🔍</Button>
+      <Button variant="outline" onClick={() => { }}>🔍</Button>
     </div>
   )
 
@@ -90,15 +72,9 @@ const TeamPage: React.FC = () => {
       searchBar={searchBar}
       countInfo={`Showing ${filteredTeams.length} teams`}
     >
-      {loading ? (
-        <div className="text-center text-muted-foreground py-8">Loading teams...</div>
-      ) : filteredTeams.length === 0 ? (
-        <div className="text-center text-muted-foreground py-8">
-          No teams to display.
-        </div>
-      ) : (
-        <TeamTable data={filteredTeams} />
-      )}
+      {loading ? <LoadingState /> : filteredTeams.length ?
+        <TeamTable data={filteredTeams} /> : <EmptyState />
+      }
     </EntityListLayout>
   )
 }
