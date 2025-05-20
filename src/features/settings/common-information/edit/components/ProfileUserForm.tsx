@@ -15,6 +15,7 @@ import { useEffect, useState } from "react";
 import { uploadAvatar } from "@/apis/media-api";
 import { toast } from "sonner";
 import { updateProfile } from "@/apis/users/UserSettings";
+import { CLASS_NAME_DEFAULT } from "@/utils/class";
 
 
 const DEFAULT_PROFILE = {
@@ -32,6 +33,8 @@ const DEFAULT_PROFILE = {
 
 
 export function ProfileUserForm({ profile }: { profile: any }) {
+
+
     const form = useForm({
         defaultValues: DEFAULT_PROFILE,
     });
@@ -48,6 +51,7 @@ export function ProfileUserForm({ profile }: { profile: any }) {
     const [avatarFile, setAvatarFile] = useState<File | null>(null);
     const [bio, setBio] = useState(profile.bio || "");
     const [avatarUrl, setAvatarUrl] = useState(profile?.avatar || "");
+    const [loading, setLoading ] = useState(false);
 
     useEffect(() => {
         setAvatarUrl(profile?.avatar);
@@ -56,6 +60,7 @@ export function ProfileUserForm({ profile }: { profile: any }) {
 
 
     const onSubmit = async (data: any) => {
+        setLoading(true)
         const result = {
             ...data,
             bio,
@@ -82,11 +87,13 @@ export function ProfileUserForm({ profile }: { profile: any }) {
             const profileRes = await updateProfile(result);
             if (profileRes.ok) {
                 toast.success('Update profile success!');
+                setLoading(false)
                 window.location.reload();
             } else {
-                toast.success('Update profile failed!');
+                toast.error('Update profile failed!');
             }
         } catch (error) {
+            setLoading(false)
         }
     };
 
@@ -221,13 +228,13 @@ export function ProfileUserForm({ profile }: { profile: any }) {
                             </FormItem>
                         )}
                     />
-
                     <Button
-                        className="mt-8 bg-red-500 hover:bg-red-600 w-full text-lg font-semibold py-4 rounded-xl shadow"
+                        // className="mt-8 bg-blue-600 hover:bg-blue-900 dark:bg-blue-400 w-full text-lg font-semibold py-4 rounded-xl shadow"
+                        className={`${CLASS_NAME_DEFAULT.CLASS_APP_BUTTON} w-full`}
                         type="submit"
                         size="lg"
                     >
-                        Update Info
+                        {loading ? 'Updating ...' : 'Update Info'}
                     </Button>
                 </form>
             </Form>

@@ -57,7 +57,7 @@ export function SocialProfileInputs({ value = [], onChange }: {
       ))}
       <button
         type="button"
-        className="mt-2 px-4 py-2 bg-indigo-100 dark:bg-indigo-800 text-indigo-700 dark:text-indigo-200 rounded-xl font-medium hover:bg-indigo-200"
+        className="mt-2 px-4 py-2 bg-indigo-100 dark:bg-indigo-700 text-indigo-700 dark:text-indigo-200 rounded-xl font-medium hover:bg-indigo-200"
         onClick={handleAdd}
       >
         + Add Social Network

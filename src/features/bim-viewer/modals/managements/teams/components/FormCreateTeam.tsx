@@ -16,6 +16,8 @@ import { createTeam } from "@/apis/team-api";
 import { addTeamMembers } from "@/apis/team-member-api";
 import { toast } from "sonner";
 import { useAppSelector } from "@/hooks/reduxHooks";
+import AvatarUploadCard2 from "@/components/common/AvatarUploadCard2";
+import { CLASS_NAME_DEFAULT } from "@/utils/class";
 
 interface FormCreateTeamProps {
   onSuccess?: () => void;
@@ -23,7 +25,7 @@ interface FormCreateTeamProps {
   fetchTeams: () => void;
 }
 
-export function FormCreateTeam({ onSuccess, onCancel, fetchTeams }: FormCreateTeamProps) {
+export function FormCreateTeam({ onSuccess, onCancel }: FormCreateTeamProps) {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [subProject, setSubProject] = useState("");
@@ -36,6 +38,23 @@ export function FormCreateTeam({ onSuccess, onCancel, fetchTeams }: FormCreateTe
    const { user } = useAppSelector((state) => state.auth);
    const adminId = user?.id;
 
+   const [avatarFile, setAvatarFile] = useState(null);
+  const [avatarPreview, setAvatarPreview] = useState("");
+
+  const handleUpload = (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setAvatarFile(file);
+      setAvatarPreview(URL.createObjectURL(file));
+    }
+  };
+
+  // Nếu muốn clear preview khi submit xong
+  useEffect(() => {
+    return () => {
+      if (avatarPreview) URL.revokeObjectURL(avatarPreview);
+    };
+  }, [avatarPreview]);
 
 
   useEffect(() => {
@@ -60,6 +79,10 @@ export function FormCreateTeam({ onSuccess, onCancel, fetchTeams }: FormCreateTe
   };
 
   const selectedMemberOptions = memberOptions.filter(opt => selectedMembers.includes(opt.value));
+
+
+
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -96,7 +119,6 @@ export function FormCreateTeam({ onSuccess, onCancel, fetchTeams }: FormCreateTe
 
       toast.success("Created user team successfully");
       onSuccess && onSuccess();
-      fetchTeams();
     } catch (err) {
       toast.error("Error creating team");
     } finally {
@@ -104,93 +126,101 @@ export function FormCreateTeam({ onSuccess, onCancel, fetchTeams }: FormCreateTe
     }
   };
 
-return (
+  return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="grid grid-cols-12 gap-4">
-        {/* Team name */}
-        <div className="col-span-6">
-          <label className="block mb-1 font-medium text-left">
-            Team name<span className="text-red-500">*</span>
-          </label>
-          <Input
-            required
-            value={name}
-            onChange={e => setName(e.target.value)}
-            placeholder="Enter team name"
-          />
+      <div className="grid grid-cols-12 gap-6">
+        <div className="col-span-4">
+          {/* Avatar + Upload (bên trái như hình mẫu) */}
+          <AvatarUploadCard2 avatarUrl={avatarPreview} onUpload={handleUpload} />
         </div>
-        {/* Sub-project */}
-        <div className="col-span-6">
-          <label className="block mb-1 font-medium text-left">
-            Sub-project<span className="text-red-500">*</span>
-          </label>
-          <UiSelect value={subProject} onValueChange={setSubProject} required>
-            <SelectTrigger>
-              <SelectValue placeholder="Select sub-project" />
-            </SelectTrigger>
-            <SelectContent>
-              {subProjects.map(sp => (
-                <SelectItem key={sp.id} value={String(sp.id)}>
-                  {sp.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </UiSelect>
-        </div>
-      </div>
-      {/* Description */}
-      <div>
-        <label className="block mb-1 font-medium text-left">Description</label>
-        <Textarea
-          value={description}
-          onChange={e => setDescription(e.target.value)}
-          placeholder="Enter description"
-        />
-      </div>
-      
-      {/* Team Members dùng react-select */}
-      <div>
-        <label className="block mb-1 font-medium text-left">Team Members</label>
-        <Select
-          options={memberOptions}
-          isMulti
-          value={selectedMemberOptions}
-          onChange={handleMembersChange}
-          placeholder="Select team members..."
-          className="mb-2"
-        />
-        {selectedMembers.length === 0 && (
-          <div className="text-sm text-muted-foreground italic">
-            Select at least one member.
-          </div>
-        )}
-        {/* Hiển thị danh sách thành viên sẽ tạo */}
-        {selectedMembers.length > 0 && (
-          <div className="space-y-1 pt-2 text-sm text-muted-foreground">
+        <div className="col-span-8 space-y-4">
+          {/* Team name & sub-project */}
+          <div className="grid grid-cols-2 gap-4">
+            {/* Team name */}
             <div>
-              <span className="font-semibold">Leader:</span>{" "}
-              {users.find(u => u.id === adminId)?.user_name || "Admin (you)"}
+              <label className="block mb-1 font-medium text-left">
+                Team name<span className="text-red-500">*</span>
+              </label>
+              <Input
+                required
+                value={name}
+                onChange={e => setName(e.target.value)}
+                placeholder="Enter team name"
+              />
             </div>
+            {/* Sub-project */}
             <div>
-              <span className="font-semibold">Members:</span>{" "}
-              {selectedMembers.map(userId => {
-                const user = users.find(u => u.id === userId);
-                return (
-                  <span key={userId} className="inline-block mr-2">
-                    {user?.user_name || user?.name || userId}
-                  </span>
-                );
-              })}
+              <label className="block mb-1 font-medium text-left">
+                Sub-project<span className="text-red-500">*</span>
+              </label>
+              <UiSelect value={subProject} onValueChange={setSubProject} required>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select sub-project" />
+                </SelectTrigger>
+                <SelectContent>
+                  {subProjects.map(sp => (
+                    <SelectItem key={sp.id} value={String(sp.id)}>
+                      {sp.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </UiSelect>
             </div>
           </div>
-        )}
+          {/* Description */}
+          <div>
+            <label className="block mb-1 font-medium text-left">Description</label>
+            <Textarea
+              value={description}
+              onChange={e => setDescription(e.target.value)}
+              placeholder="Enter description"
+            />
+          </div>
+          {/* Team Members */}
+          <div>
+            <label className="block mb-1 font-medium text-left">Team Members</label>
+            <Select
+              options={memberOptions}
+              isMulti
+              value={selectedMemberOptions}
+              onChange={handleMembersChange}
+              placeholder="Select team members..."
+              className="mb-2 text-gray-600 bg-slate-700"
+            />
+            {selectedMembers.length === 0 && (
+              <div className="text-sm text-muted-foreground italic">
+                Select at least one member.
+              </div>
+            )}
+            {/* Hiển thị leader & member */}
+            {selectedMembers.length > 0 && (
+              <div className="space-y-1 pt-2 text-sm text-muted-foreground">
+                <div>
+                  <span className="font-semibold">Leader:</span>{" "}
+                  {users.find(u => u.id === adminId)?.user_name || "Admin (you)"}
+                </div>
+                <div>
+                  <span className="font-semibold">Members:</span>{" "}
+                  {selectedMembers.map(userId => {
+                    const user = users.find(u => u.id === userId);
+                    return (
+                      <span key={userId} className="inline-block mr-2">
+                        {user?.user_name || user?.name || userId}
+                      </span>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
       {/* Actions */}
       <div className="flex justify-end gap-2 pt-4">
-        <Button variant="outline" type="button" onClick={onCancel}>
+        <Button  className={`${CLASS_NAME_DEFAULT.CLASS_APP_BUTTON_DELETE}`} type="button" onClick={onCancel}>
           Cancel
         </Button>
-        <Button type="submit" disabled={loading}>
+        <Button className={`${CLASS_NAME_DEFAULT.CLASS_APP_BUTTON_CREATE}`} type="submit" disabled={loading}>
           {loading ? "Creating..." : "Create Team"}
         </Button>
       </div>

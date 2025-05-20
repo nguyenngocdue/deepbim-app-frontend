@@ -2,6 +2,8 @@ import { Card, CardHeader, CardContent, CardTitle } from '@/components/ui/card'
 import { Avatar, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { useRef } from 'react'
+import AvatarUploadCard from '@/components/common/AvatarUploadCard'
+import AvatarUploadCard2 from '@/components/common/AvatarUploadCard2'
 
 type ProfileAvatarCardProps = {
   avatarUrl: string;               // URL để preview (có thể là file cũ, hoặc blob mới)
@@ -39,8 +41,8 @@ export function ProfileAvatarCard({
 
 
   return (
-    <Card className="w-full md:w-[370px] max-w-sm rounded-3xl shadow-2xl border-0 bg-white dark:bg-zinc-900 flex-shrink-0 overflow-hidden">
-      <CardHeader className="flex flex-col items-center py-10">
+    <Card className="w-full md:w-[370px] p-4 max-w-sm rounded-3xl shadow-2xl border-0 bg-white dark:bg-zinc-900 flex-shrink-0 overflow-hidden">
+      <CardHeader className="flex flex-col items-center py-2">
         <Avatar className="w-32 h-32 mb-6 shadow-lg border-4 border-white dark:border-zinc-900 bg-zinc-200 dark:bg-zinc-800">
           <AvatarImage src={avatarUrl} alt="Avatar" />
         </Avatar>
@@ -56,30 +58,10 @@ export function ProfileAvatarCard({
           maxLength={200}
         />
       </CardHeader>
-      <CardContent className="flex flex-col items-center pb-10">
-        <input
-          type="file"
-          className="hidden"
-          accept="image/*"
-          ref={fileRef}
-          onChange={handleUpload}
-        />
-        <Button
-          className="bg-red-500 hover:bg-red-600 w-full text-base font-semibold mb-4 rounded-xl py-3"
-          onClick={() => fileRef.current?.click()}
-          type="button"
-          size="lg"
-        >
-          Upload New Photo
-        </Button>
-        <div className="bg-zinc-100 dark:bg-zinc-800 rounded-xl p-4 text-sm text-center text-zinc-600 dark:text-zinc-300 mb-3 w-full">
-          Upload a new avatar. Larger image will be resized.<br />
-          Maximum upload size is 1MB.
-        </div>
-        <div className="text-base text-zinc-400 dark:text-zinc-500">
-          Member Since: <span className="font-semibold">{memberSince}</span>
-        </div>
-      </CardContent>
+      <AvatarUploadCard2 onUpload={handleUpload} hasAvatar={false} />
+      <div className="text-base text-zinc-400 dark:text-zinc-500 p-2">
+        Member Since: <span className="font-semibold">{memberSince}</span>
+      </div>
     </Card>
   )
 }

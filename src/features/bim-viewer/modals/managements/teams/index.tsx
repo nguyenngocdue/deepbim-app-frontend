@@ -10,6 +10,7 @@ import { useAppSelector } from "@/hooks/reduxHooks"
 import { useTeamsByUser } from "../team-chat/hooks/useTeamsByUser"
 import EmptyState from "@/components/common/EmptyState"
 import { LoadingState } from "@/components/common/LoadingState"
+import { CLASS_NAME_DEFAULT } from "@/utils/class"
 
 const TeamPage: React.FC = () => {
   const [open, setOpen] = useState(false)
@@ -45,7 +46,7 @@ const TeamPage: React.FC = () => {
   // Search bar
   const searchBar = (
     <div className="flex items-center gap-2">
-      <Button onClick={() => setOpen(true)}>+ Create Team</Button>
+      <Button className={`${CLASS_NAME_DEFAULT.CLASS_APP_BUTTON_CREATE}`} onClick={() => setOpen(true)}>+ Create A Team</Button>
       <Input
         placeholder="Search teams..."
         value={filter}
