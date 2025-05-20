@@ -1,51 +1,46 @@
-import React, { useState } from "react"
+"use client"
+import React, { useCallback, useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { DialogTemplate } from "@/components/model-table/DialogTemplate"
 import { EntityListLayout } from "../components/EntityListLayout"
 import { FormCreateTeam } from "./components/FormCreateTeam"
-import TeamTable, { TeamRow } from "./components/TeamTable"
-
-// Mock data mẫu, sau này bạn fetch từ API thì chỉ cần thay data
-const MOCK_TEAMS: TeamRow[] = [
-  {
-    id: 1,
-    name: "Frontend Devs",
-    description: "All frontend developers",
-    owner: { id: 100, name: "Nguyen Van A" },
-    members_count: 4,
-    created_at: "2024-05-18",
-  },
-  {
-    id: 2,
-    name: "Backend Devs",
-    description: "Backend & API",
-    owner: { id: 101, name: "Tran Van B" },
-    members_count: 6,
-    created_at: "2024-05-19",
-  },
-  {
-    id: 3,
-    name: "QA Team",
-    description: "Testing everything",
-    owner: { id: 102, name: "Pham Thi C" },
-    members_count: 2,
-    created_at: "2024-05-20",
-  }
-]
+import TeamTable from "./components/TeamTable"
+import { getTeamByUserId } from "@/apis/team-api"
+import { useAppSelector } from "@/hooks/reduxHooks"
 
 const TeamPage: React.FC = () => {
   const [open, setOpen] = useState(false)
   const [filter, setFilter] = useState("")
+  const [teams, setTeams] = useState([])
+  const { user } = useAppSelector((state) => state.auth)
+  const [loading, setLoading] = useState(false)
 
-  // Filter teams theo tên (search)
-  const teams = MOCK_TEAMS.filter(team =>
-    team.name.toLowerCase().includes(filter.toLowerCase()) ||
-    team.description.toLowerCase().includes(filter.toLowerCase()) ||
-    (team.owner?.name ?? "").toLowerCase().includes(filter.toLowerCase())
-  )
+  // Hàm fetch team, dùng useCallback để tránh tạo mới mỗi lần render
+  const fetchTeams = useCallback(async () => {
+    if (!user || !user.id) return
+    setLoading(true)
+    try {
+      const t = await getTeamByUserId(user.id)
+      setTeams(t.data)
+    } catch (err) {
+      setTeams([])
+    } finally {
+      setLoading(false)
+    }
+  }, [user])
 
-  // Dialog tạo mới team
+  // Gọi fetchTeams khi user.id sẵn sàng hoặc khi user thay đổi
+  useEffect(() => {
+    fetchTeams()
+  }, [fetchTeams])
+
+  // Xử lý filter real-time (nếu team có thuộc tính .name)
+  const filteredTeams = filter
+    ? teams.filter(team => team?.name?.toLowerCase().includes(filter.toLowerCase()))
+    : teams
+
+  // Dialog tạo mới team, khi onSuccess sẽ gọi lại fetchTeams để reload data
   const dialog = (
     <DialogTemplate
       open={open}
@@ -56,7 +51,10 @@ const TeamPage: React.FC = () => {
       className="max-w-2xl"
     >
       <FormCreateTeam
-        onSuccess={() => setOpen(false)}
+        onSuccess={() => {
+          setOpen(false)
+          fetchTeams()        // Reload teams sau khi tạo mới
+        }}
         onCancel={() => setOpen(false)}
       />
     </DialogTemplate>
@@ -72,7 +70,8 @@ const TeamPage: React.FC = () => {
         onChange={e => setFilter(e.target.value)}
         className="w-72"
       />
-      <Button variant="outline">🔍</Button>
+      {/* Button search chỉ để demo, filter realtime luôn */}
+      <Button variant="outline" onClick={() => {}}>🔍</Button>
     </div>
   )
 
@@ -89,14 +88,16 @@ const TeamPage: React.FC = () => {
       activeTab="teams"
       dialog={dialog}
       searchBar={searchBar}
-      countInfo={`Showing ${teams.length} teams`}
+      countInfo={`Showing ${filteredTeams.length} teams`}
     >
-      {teams.length === 0 ? (
+      {loading ? (
+        <div className="text-center text-muted-foreground py-8">Loading teams...</div>
+      ) : filteredTeams.length === 0 ? (
         <div className="text-center text-muted-foreground py-8">
           No teams to display.
         </div>
       ) : (
-        <TeamTable data={teams} />
+        <TeamTable data={filteredTeams} />
       )}
     </EntityListLayout>
   )

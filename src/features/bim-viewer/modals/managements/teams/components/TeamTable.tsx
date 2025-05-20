@@ -1,6 +1,9 @@
 import React from "react";
 import { useReactTable, getCoreRowModel, ColumnDef } from "@tanstack/react-table";
 import { TableContent } from "@/components/model-table/TableContent";
+import { IdDisplay } from "@/components/common/IdDisplay";
+import { useRouter } from "@tanstack/react-router";
+import { useLocation } from "@tanstack/react-router";
 
 export interface TeamRow {
   id: number;
@@ -18,9 +21,19 @@ interface TeamTableProps {
 }
 
 export function TeamTable({ data, showNo = true, onTeamClick }: TeamTableProps) {
+  const location = useLocation(); 
+  const pathname = location.pathname;
+  
+
   const columns = React.useMemo<ColumnDef<TeamRow>[]>(
     () => [
-      { accessorKey: "id", header: "ID" },
+      { 
+        accessorKey: "id", 
+        header: "ID",
+        cell: ({row}) => (
+          <IdDisplay id={row.original.id} link={`${pathname}/${row.original.id}`} />
+        )
+      },
       {
         accessorKey: "name",
         header: "Team Name",

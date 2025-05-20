@@ -1,196 +1,192 @@
-import { useEffect, useState } from "react"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Textarea } from "@/components/ui/textarea"
-import { getSubProjects } from "@/apis/sub-project-api"
-import { getUsers } from "@/apis/user-api"
-import { createTeam } from "@/apis/team-api"
-import { addTeamMembers } from "@/apis/team-member-api"
-import { toast } from "sonner"
+import { useEffect, useState } from "react";
+import Select from "react-select";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import {
+  Select as UiSelect,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { getSubProjects } from "@/apis/sub-project-api";
+import { getUsers } from "@/apis/user-api";
+import { createTeam } from "@/apis/team-api";
+import { addTeamMembers } from "@/apis/team-member-api";
+import { toast } from "sonner";
+import { useAppSelector } from "@/hooks/reduxHooks";
 
-const ROLES = [
-  { label: "Leader", value: "Leader" },
-  { label: "Member", value: "Member" }
-]
+export function FormCreateTeam({ onSuccess, onCancel }) {
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [subProject, setSubProject] = useState("");
+  const [loading, setLoading] = useState(false);
 
-export function FormCreateTeam({ onSuccess, onCancel }: { onSuccess?: () => void, onCancel?: () => void }) {
-  const [name, setName] = useState("")
-  const [description, setDescription] = useState("")
-  const [subProject, setSubProject] = useState("")
-  const [owner, setOwner] = useState("")
-  const [loading, setLoading] = useState(false)
+  const [subProjects, setSubProjects] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [selectedMembers, setSelectedMembers] = useState([]); // array of user id
 
-  const [subProjects, setSubProjects] = useState<{ id: number, name: string }[]>([])
-  const [users, setUsers] = useState<{ id: number, name: string }[]>([])
-  const [selectedMembers, setSelectedMembers] = useState<number[]>([])
-  const [memberRoles, setMemberRoles] = useState<Record<number, string>>({})
-  const [searchUser, setSearchUser] = useState("")
+   const { user } = useAppSelector((state) => state.auth);
+   const adminId = user?.id;
+
+
 
   useEffect(() => {
-    getSubProjects().then(res => {
-      setSubProjects(res?.data || [])
-    })
+    getSubProjects().then(res => setSubProjects(res?.data || []));
     getUsers().then(res => {
-      setUsers(res?.data || [])
-    })
-  }, [])
+      // Loại admin khỏi danh sách member (vì mặc định là Leader)
+      const list = (res?.data || []).filter(u => u.id !== adminId);
+      setUsers(list);
+    });
+  }, []);
 
-  // Khi chọn member, loại bỏ những member bị unselect ra khỏi role map
-  const handleMemberChange = (userId: number, checked: boolean) => {
-    if (checked) {
-      setSelectedMembers(prev => [...prev, userId])
-    } else {
-      setSelectedMembers(prev => prev.filter(id => id !== userId))
-      setMemberRoles(prev => {
-        const copy = { ...prev }
-        delete copy[userId]
-        return copy
-      })
-    }
-  }
+  // Options cho react-select (chỉ là member, không có admin)
+  const memberOptions = users.map(u => ({
+    value: u.id,
+    label: u.user_name || u.name
+  }));
 
-  const handleRoleChange = (userId: number, role: string) => {
-    setMemberRoles(prev => ({
-      ...prev,
-      [userId]: role
-    }))
-  }
+  // Khi thay đổi danh sách member
+  const handleMembersChange = (selected) => {
+    const newIds = selected ? selected.map(opt => opt.value) : [];
+    setSelectedMembers(newIds);
+  };
 
-  // Lọc user theo từ khóa tìm kiếm
-const filteredUsers = (users || []).filter(u =>
-  typeof u?.name === "string" &&
-  u.name.toLowerCase().includes((searchUser ?? "").toLowerCase())
-)
+  const selectedMemberOptions = memberOptions.filter(opt => selectedMembers.includes(opt.value));
 
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
     try {
+      // 1. Tạo team: admin là owner_id
       const res = await createTeam({
         name,
         description,
-        sub_project_id: parseInt(subProject),
-        owner_id: owner ? parseInt(owner) : undefined,
-      })
-
-      if (res?.data?.id && selectedMembers.length > 0) {
+        sub_project_id: subProject ? parseInt(subProject) : undefined,
+        owner_id: adminId,
+        created_by: adminId,
+        user_ids: selectedMembers
+      });
+      console.log(res);
+      if(res.ok) {
+        toast.success("Created team successfully");
+      }
+      // 2. Add member: admin là Leader, những người còn lại là Member
+      if (res?.data?.id) {
         await addTeamMembers({
           team_id: res.data.id,
-          members: selectedMembers.map(userId => ({
-            user_id: userId,
-            role: memberRoles[userId] || "Member"
-          }))
-        })
+          members: [
+            // Thêm admin với role Leader
+            { user_id: adminId, role: "Leader" },
+            // Những người còn lại là Member
+            ...selectedMembers.map(userId => ({
+              user_id: userId,
+              role: "Member"
+            }))
+          ]
+        });
       }
 
-      toast.success("Created team successfully")
-      onSuccess && onSuccess()
+      toast.success("Created user team successfully");
+      onSuccess && onSuccess();
     } catch (err) {
-      toast.error("Error creating team")
+      toast.error("Error creating team");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
-  return (
+return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      {/* Team name */}
-      <div>
-        <label className="block mb-1 font-medium">Team name<span className="text-red-500">*</span></label>
-        <Input
-          required
-          value={name}
-          onChange={e => setName(e.target.value)}
-          placeholder="Enter team name"
-        />
+      <div className="grid grid-cols-12 gap-4">
+        {/* Team name */}
+        <div className="col-span-6">
+          <label className="block mb-1 font-medium text-left">
+            Team name<span className="text-red-500">*</span>
+          </label>
+          <Input
+            required
+            value={name}
+            onChange={e => setName(e.target.value)}
+            placeholder="Enter team name"
+          />
+        </div>
+        {/* Sub-project */}
+        <div className="col-span-6">
+          <label className="block mb-1 font-medium text-left">
+            Sub-project<span className="text-red-500">*</span>
+          </label>
+          <UiSelect value={subProject} onValueChange={setSubProject} required>
+            <SelectTrigger>
+              <SelectValue placeholder="Select sub-project" />
+            </SelectTrigger>
+            <SelectContent>
+              {subProjects.map(sp => (
+                <SelectItem key={sp.id} value={String(sp.id)}>
+                  {sp.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </UiSelect>
+        </div>
       </div>
       {/* Description */}
       <div>
-        <label className="block mb-1 font-medium">Description</label>
+        <label className="block mb-1 font-medium text-left">Description</label>
         <Textarea
           value={description}
           onChange={e => setDescription(e.target.value)}
           placeholder="Enter description"
         />
       </div>
-      {/* Sub-project */}
+      
+      {/* Team Members dùng react-select */}
       <div>
-        <label className="block mb-1 font-medium">Sub-project<span className="text-red-500">*</span></label>
-        <Select value={subProject} onValueChange={setSubProject} required>
-          <SelectTrigger>
-            <SelectValue placeholder="Select sub-project" />
-          </SelectTrigger>
-          <SelectContent>
-            {subProjects.map(sp => (
-              <SelectItem key={sp.id} value={String(sp.id)}>{sp.name}</SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-      {/* Owner */}
-      <div>
-        <label className="block mb-1 font-medium">Owner</label>
-        <Select value={owner} onValueChange={setOwner}>
-          <SelectTrigger>
-            <SelectValue placeholder="Select owner (optional)" />
-          </SelectTrigger>
-          <SelectContent>
-            {users.map(u => (
-              <SelectItem key={u.id} value={String(u.id)}>{u.name}</SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-      {/* Members */}
-      <div>
-        <label className="block mb-1 font-medium">Team Members</label>
-        <Input
-          placeholder="Search team members..."
-          value={searchUser}
-          onChange={e => setSearchUser(e.target.value)}
+        <label className="block mb-1 font-medium text-left">Team Members</label>
+        <Select
+          options={memberOptions}
+          isMulti
+          value={selectedMemberOptions}
+          onChange={handleMembersChange}
+          placeholder="Select team members..."
           className="mb-2"
         />
-        <div className="grid gap-2 max-h-48 overflow-auto border rounded-md p-2">
-          {filteredUsers.length === 0 ? (
-            <div className="text-sm text-muted-foreground italic">No users found.</div>
-          ) : (
-            filteredUsers.map(u => (
-              <div key={u.id} className="flex items-center gap-3">
-                <input
-                  id={`user_${u.id}`}
-                  type="checkbox"
-                  checked={selectedMembers.includes(u.id)}
-                  onChange={e => handleMemberChange(u.id, e.target.checked)}
-                  className="mr-2"
-                />
-                <label htmlFor={`user_${u.id}`} className="cursor-pointer w-40">{u.name}</label>
-                {selectedMembers.includes(u.id) && (
-                  <Select
-                    value={memberRoles[u.id] || "Member"}
-                    onValueChange={role => handleRoleChange(u.id, role)}
-                  >
-                    <SelectTrigger className="w-32">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {ROLES.map(r => (
-                        <SelectItem key={r.value} value={r.value}>{r.label}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                )}
-              </div>
-            ))
-          )}
-        </div>
+        {selectedMembers.length === 0 && (
+          <div className="text-sm text-muted-foreground italic">
+            Select at least one member.
+          </div>
+        )}
+        {/* Hiển thị danh sách thành viên sẽ tạo */}
+        {selectedMembers.length > 0 && (
+          <div className="space-y-1 pt-2 text-sm text-muted-foreground">
+            <div>
+              <span className="font-semibold">Leader:</span>{" "}
+              {users.find(u => u.id === adminId)?.user_name || "Admin (you)"}
+            </div>
+            <div>
+              <span className="font-semibold">Members:</span>{" "}
+              {selectedMembers.map(userId => {
+                const user = users.find(u => u.id === userId);
+                return (
+                  <span key={userId} className="inline-block mr-2">
+                    {user?.user_name || user?.name || userId}
+                  </span>
+                );
+              })}
+            </div>
+          </div>
+        )}
       </div>
       {/* Actions */}
       <div className="flex justify-end gap-2 pt-4">
-        <Button variant="outline" type="button" onClick={onCancel}>Cancel</Button>
-        <Button type="submit" disabled={loading} >{loading ? "Creating..." : "Create Team"}</Button>
+        <Button variant="outline" type="button" onClick={onCancel}>
+          Cancel
+        </Button>
+        <Button type="submit" disabled={loading}>
+          {loading ? "Creating..." : "Create Team"}
+        </Button>
       </div>
     </form>
-  )
+  );
 }
