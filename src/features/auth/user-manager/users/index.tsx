@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button'
 import { CreateUserModal } from '@/components/bim-viewer/common/CreateUserModal'
 import { toast } from 'sonner'
 import { error } from 'console'
+import { CLASS_NAME_DEFAULT } from '@/utils/class'
 
 export function UserManagement() {
   const [users, setUsers] = useState<User[]>([])
@@ -60,7 +61,7 @@ export function UserManagement() {
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <h2 className="text-lg font-semibold text-foreground mb-1">User Management</h2>
-        <Button onClick={() => setOpenCreateUser(true)}>+ Create User</Button>
+        <Button className={`${CLASS_NAME_DEFAULT.CLASS_APP_BUTTON_CREATE}`} onClick={() => setOpenCreateUser(true)}>+ Create User</Button>
       </div>
       <UserTable users={users} onAssignRole={setSelectedUser} />
       {selectedUser && (

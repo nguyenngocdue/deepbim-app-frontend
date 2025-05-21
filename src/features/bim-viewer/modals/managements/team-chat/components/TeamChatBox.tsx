@@ -1,14 +1,18 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState, useCallback } from "react";
 import { MoreHorizontal } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
-  DropdownMenuItem,
 } from "@/components/ui/dropdown-menu"; // Update path theo dự án của bạn
 import { MessageBubble } from "@/features/chats/chat-customer/components/MessageBubble";
 import { ShowInfoMenuItem } from "./ShowInfoMenuItem";
 import { Input } from "@/components/ui/input";
+import { TypingIndicator } from "@/components/common/TypingIndicator";
+import { useAppSelector } from "@/hooks/reduxHooks";
+import { CLASS_NAME_DEFAULT } from "@/utils/class";
+import { Button } from "@/components/ui/button";
+import { LoadingState } from "@/components/common/LoadingState";
 
 export interface Message {
   id: number;
@@ -27,9 +31,9 @@ interface TeamChatBoxProps {
   sendTyping: () => void;
   teamName?: string;
   onShowInfo?: () => void; // Mở sidebar phải
+  typingUsers: [];
+  loadingMessage: boolean
 }
-
-const currentUserName = "You"; // Thực tế lấy từ context/store
 
 export const TeamChatBox: React.FC<TeamChatBoxProps> = ({
   messages,
@@ -37,9 +41,18 @@ export const TeamChatBox: React.FC<TeamChatBoxProps> = ({
   teamName,
   onShowInfo,
   sendTyping,
+  typingUsers,
+  loadingMessage,
 }) => {
   const [input, setInput] = React.useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const { user } = useAppSelector((state) => state.auth);
+  const [currentUser, setCurrentUser] = useState<typeof user>(user);
+
+  useEffect(() => {
+    setCurrentUser(user);
+  }, [user]);
+
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -61,7 +74,7 @@ export const TeamChatBox: React.FC<TeamChatBoxProps> = ({
           <div className="text-lg font-bold">{teamName || "Team Chat"}</div>
         </div>
         {/* Nút 3 chấm menu */}
-         <DropdownMenu>
+        <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button
               className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-zinc-800 focus:outline-none"
@@ -73,37 +86,45 @@ export const TeamChatBox: React.FC<TeamChatBoxProps> = ({
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" sideOffset={6} className="min-w-[180px]">
             <ShowInfoMenuItem onClick={onShowInfo} />
-            {/* Thêm các item menu khác nếu muốn */}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
 
       {/* Message List */}
       <div className="flex-1 overflow-y-auto p-6 space-y-3">
-        {messages.map((msg) => {
-          const isMe = msg.sender === currentUserName;
-          return (
-            <div key={msg.id}>
-              <MessageBubble
-                text={msg.content}
-                from={isMe ? "user" : "support"}
-                avatar={msg.avatar}
-                userName={msg.sender}
-                showAvatar={!isMe}
-              />
-              <div
-                className={`text-xs mt-1 px-2 ${
-                  isMe ? "text-right text-zinc-400" : "text-left text-zinc-500"
-                }`}
-              >
-                {!isMe && msg.sender}{" "}
-                <span className="ml-2 text-xs">{msg.created_at}</span>
-              </div>
-            </div>
-          );
-        })}
-        <div ref={messagesEndRef} />
+        {
+          loadingMessage ? <LoadingState /> :
+            (<>
+              {messages.map((msg) => {
+                // Ensure currentUser exists and compare as strings for type safety
+                const isMe =
+                  currentUser &&
+                  String(msg.sender) === String(currentUser.id);
+                return (
+                  <div key={msg.id}>
+                    <MessageBubble
+                      text={msg.content}
+                      from={isMe ? "user" : "support"}
+                      avatar={msg.avatar}
+                      userName={msg.sender}
+                      showAvatar={!isMe}
+                    />
+                    <div
+                      className={`text-xs mt-1 px-2 ${isMe ? "text-right text-zinc-400" : "text-left text-zinc-500"
+                        }`}
+                    >
+                      {!isMe && msg.sender}{" "}
+                      <span className="ml-2 text-xs">{msg.created_at}</span>
+                    </div>
+                  </div>
+                );
+              })}
+              <div ref={messagesEndRef} />
+            </>
+            )
+        }
       </div>
+      <TypingIndicator typingUsers={typingUsers} currentUserId={currentUser?.id} />
 
       {/* Input */}
       <form
@@ -114,17 +135,17 @@ export const TeamChatBox: React.FC<TeamChatBoxProps> = ({
           className="flex-1 rounded bg-zinc-800 px-4 py-2 text-sm outline-none"
           placeholder="Type a message..."
           value={input}
-           onChange={e => {
-              setInput(e.target.value);
-              sendTyping();
-            }}
+          onChange={e => {
+            setInput(e.target.value);
+            sendTyping();
+          }}
         />
-        <button
+        <Button
           type="submit"
-          className="rounded bg-blue-600 text-white px-4 py-2 font-semibold hover:bg-blue-700"
+          className={`${CLASS_NAME_DEFAULT.CLASS_APP_BUTTON_CREATE}`}
         >
           Send
-        </button>
+        </Button>
       </form>
     </main>
   );

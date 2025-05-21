@@ -26,6 +26,8 @@ export function useTeamChatSocket(teamId: number | undefined, currentUser: { id:
   const [isConnected, setIsConnected] = useState(false);
   const [typingUsers, setTypingUsers] = useState<UserTyping[]>([]);
   const socketRef = useRef<Socket | null>(null);
+  const [loadingMessage, setLoadingMessage] = useState(false);
+
 
   // Khi vào team mới: kết nối socket, fetch message cũ
   useEffect(() => {
@@ -45,9 +47,12 @@ export function useTeamChatSocket(teamId: number | undefined, currentUser: { id:
 
     // Fetch lịch sử chat cũ (REST API)
     (async () => {
+      setLoadingMessage(true);
+      setMessages([]);
       const msgs = await getMessageByTeamId(teamId);
       if (msgs.ok) {
         setMessages(msgs.data);
+        setLoadingMessage(false);
       }
     })();
 
@@ -61,6 +66,7 @@ export function useTeamChatSocket(teamId: number | undefined, currentUser: { id:
       setTypingUsers(prev => {
         // Không thêm trùng chính mình, hoặc đã có rồi thì thôi
         if (payload.userId === currentUser.id || prev.some(u => u.user_id === payload.userId)) return prev;
+        console.log([...prev, { user_id: payload.userId, user_name: payload.userName }]);
         return [...prev, { user_id: payload.userId, user_name: payload.userName }];
       });
     });
@@ -136,5 +142,6 @@ export function useTeamChatSocket(teamId: number | undefined, currentUser: { id:
     isConnected,
     typingUsers, // mảng user đang typing (trừ mình)
     sendTyping,
+    loadingMessage,
   };
 }

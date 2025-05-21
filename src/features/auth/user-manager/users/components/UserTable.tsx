@@ -8,6 +8,7 @@ import {
 } from '@tanstack/react-table'
 import { TableContent } from '@/components/model-table/TableContent'
 import { Badge, getBadgeVariant } from '@/components/ui/badge'
+import { CLASS_NAME_DEFAULT } from '@/utils/class'
 
 export function UserTable({
   users,
@@ -40,7 +41,7 @@ export function UserTable({
             ))}
           </div>
         ) : (
-          <span className="text-muted-foreground text-xs italic">No role</span>
+          <span className="text-muted-foreground text-xs italic ">No role</span>
         )
       }
     }
@@ -49,7 +50,7 @@ export function UserTable({
       id: 'actions',
       header: 'Actions',
       cell: ({ row }) => (
-        <Button variant="default" onClick={() => onAssignRole(row.original)}>
+        <Button className={`${CLASS_NAME_DEFAULT.CLASS_APP_BUTTON_APPLY}`} onClick={() => onAssignRole(row.original)}>
           Assign Role
         </Button>
       ),

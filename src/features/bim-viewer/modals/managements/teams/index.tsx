@@ -36,7 +36,7 @@ const TeamPage: React.FC = () => {
       <FormCreateTeam
         onSuccess={() => {
           setOpen(false)
-          fetchTeams()        // Reload teams sau khi tạo mới
+          refresh();
         }}
         onCancel={() => setOpen(false)}
       />
