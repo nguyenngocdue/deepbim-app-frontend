@@ -25,12 +25,9 @@ export default function ChatBox({
       </div>
     );
   }
-
-
   return (
     <div className="flex flex-col flex-1 bg-background">
       <ChatHeader selectedSession={selectedSession} />
-
       {/* CHAT MESSAGES */}
       <div  className="
             px-2

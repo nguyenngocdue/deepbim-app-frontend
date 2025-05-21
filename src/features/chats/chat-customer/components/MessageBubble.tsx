@@ -51,7 +51,8 @@ export function MessageBubble({
             }}
           >
             <div className="whitespace-pre-line break-words max-w-lg">
-              <ReactMarkdown>{text}</ReactMarkdown>
+              {/* <ReactMarkdown>{text}</ReactMarkdown> */}
+              {text}
             </div>
 
             <div className={`flex items-center justify-end gap-1 mt-1`}>

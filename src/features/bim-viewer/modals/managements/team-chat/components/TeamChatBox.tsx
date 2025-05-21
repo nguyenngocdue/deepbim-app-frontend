@@ -139,6 +139,22 @@ export const TeamChatBox: React.FC<TeamChatBoxProps> = ({
             sendTyping();
           }}
           rows={2}
+
+
+           onKeyDown={e => {
+            if (e.key === "Enter" && !e.ctrlKey) {
+              e.preventDefault();  // Chặn xuống dòng
+              if (input.trim()) {
+                onSend(input.trim());
+                setInput("");
+              }
+            } else if (e.key === "Enter" && e.ctrlKey) {
+              // Cho phép xuống dòng khi Ctrl+Enter
+              setInput(input + "\n");
+            }
+          }}
+
+
         />
         <Button
           type="submit"

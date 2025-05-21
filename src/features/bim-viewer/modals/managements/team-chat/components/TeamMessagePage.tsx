@@ -9,17 +9,6 @@ import EmptyState from "@/components/common/EmptyState";
 import { LoadingState } from "@/components/common/LoadingState";
 
 // ----- MOCK (Thay bằng API ở các hooks/feature real nếu có) -----
-const MOCK_MSGS: Record<number, any[]> = {
-  1: [
-    { id: 1, sender: "A", content: "Hello team!", created_at: "09:00", self: false },
-    { id: 2, sender: "You", content: "Hi mọi người!", created_at: "09:01", self: true },
-    { id: 3, sender: "B", content: "Code tới đâu rồi?", created_at: "09:03", self: false },
-  ],
-  2: [
-    { id: 1, sender: "D", content: "API ready", created_at: "08:00", self: false },
-    { id: 2, sender: "You", content: "OK, test nhé", created_at: "08:03", self: true },
-  ],
-};
 // ---------------------------------------------------------------
 
 export default function TeamMessagePage() {
@@ -32,22 +21,12 @@ export default function TeamMessagePage() {
   const [infoOpen, setInfoOpen] = useState(false); // Trạng thái mở sidebar phải
 
 
-
   // Khi đã load xong, tự động chọn team đầu tiên nếu chưa chọn
   useEffect(() => {
     if (!teamsLoading && teams.length && selectedTeamId == null) {
       setSelectedTeamId(teams[0].id);
     }
   }, [teams, teamsLoading, selectedTeamId]);
-
-  // Messages - ở đây chỉ mock theo teamId, muốn lấy API thật thì fetch theo teamId
-  const [messages, setMessages] = useState<any[]>([]);
-  useEffect(() => {
-    if (selectedTeamId) {
-      // Nếu có API thực tế, thay đoạn này bằng call API getMessageHistory(teamId)
-      setMessages(MOCK_MSGS[selectedTeamId] || []);
-    }
-  }, [selectedTeamId]);
 
   // Handler chọn team
   const handleSelectTeam = (id: number) => {
@@ -77,12 +56,11 @@ export default function TeamMessagePage() {
             teamId={selectedTeamId}
             currentUser={user}
             teamName={selectedTeam.name}
-            messages={messages}
             onShowInfo={() => setInfoOpen(true)}
           />
         ) : (
           <div className="flex flex-1 items-center justify-center text-muted-foreground text-xl">
-            Chọn một team để bắt đầu chat!
+            Select a team chat to get info
           </div>
         )}
       </div>

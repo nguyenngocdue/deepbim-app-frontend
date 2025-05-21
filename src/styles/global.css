@@ -51,6 +51,7 @@ p {
   --text-paragraph: #0f1114;
   --bg-button-1:#22c55e;
   --text-button:#172220;
+  --text-form-title:#172220;
 
   /* BUTTON */
   --bg-button-2: #dadada;
@@ -112,6 +113,8 @@ p {
   --border-frame: 1px solid #4b5563;
   --text-icon: #84d3c3;
   
+  /* TEXT */
+  --text-form-title:#e9f0ef;
 
 }
 
@@ -221,6 +224,17 @@ footer nav a:hover {
 .text-subtitle2 {
   color: var(--text-subtitle2);
 }
+
+.text-form-title {
+  color: var(--text-form-title, #666);  
+  font-weight: 600;                    
+  font-size: 15px;                  
+  letter-spacing: 0.01em;
+  margin-bottom: 4px;
+  display: block;
+}
+
+
 
 
 .text-nav {
