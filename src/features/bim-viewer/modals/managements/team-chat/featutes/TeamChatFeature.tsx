@@ -13,7 +13,6 @@ export function TeamChatFeature({
   onShowInfo?: () => void;
 }) {
   const { messages, sendTeamMessage, typingUsers, sendTyping, loadingMessage } = useTeamChatSocket(teamId, currentUser);
-
   return (
     <TeamChatBox
       teamId={teamId}

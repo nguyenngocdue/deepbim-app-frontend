@@ -1,3 +1,4 @@
+import { TimeOnly } from "@/components/bim-viewer/common/TimeOnly";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 import React from "react";
 
@@ -8,13 +9,15 @@ export function MessageBubble({
   userName,
   showAvatar = false,
   reaction,
+  createdAt,
 }: {
   text: string;
-  from: "user" | "support";
+  from: "user" | "support" | "admin" | "member";
   avatar?: string | null;
   userName?: string | null;
   showAvatar?: boolean;
   reaction?: React.ReactNode;
+  createdAt?: String;
 }) {
   // Nếu không có avatar, render avatar ảo
   const avatarSrc =
@@ -25,30 +28,49 @@ export function MessageBubble({
   return (
     <div className={`flex items-end mb-1 ${isUser ? "justify-end" : "justify-start"}`}>
       {!isUser && (
-      <Avatar>
-        <AvatarImage src={avatarSrc} className="w-7 h-7 object-cover rounded-full mr-1"/>
-      </Avatar>
+        <Avatar>
+          <AvatarImage src={avatarSrc} className="w-7 h-7 object-cover rounded-full mr-1" />
+        </Avatar>
       )}
       <div className="relative flex flex-col">
-        <div
-          className={`
-            max-w-[75vw] px-4 py-2 rounded-2xl text-base leading-snug break-words
-            ${isUser
-              ? "bg-green-500 text-white rounded-br-md"
-              : "bg-gray-200 text-gray-800 rounded-bl-md"
-            }
-          `}
-          style={{
-            borderRadius: isUser
-              ? "20px 20px 5px 20px"
-              : "20px 20px 20px 5px",
-          }}
-        >
-          {text}
+        <div className={`flex flex-nowrap items-baseline flex-row-reverse `}>
+          <div
+            className={`
+          relative max-w-[75vw] px-4 py-2 rounded-2xl text-base leading-snug break-words
+          ${isUser
+                ? "bg-green-500 text-white rounded-br-md"
+                : "bg-slate-200 text-gray-800 rounded-bl-md"
+              }
+          shadow
+        `}
+            style={{
+              borderRadius: isUser
+                ? "18px 18px 6px 18px"
+                : "18px 18px 18px 6px",
+            }}
+          >
+            <div className="whitespace-pre-line break-words max-w-lg">
+              {text}
+            </div>
+
+ <div className={`flex items-center justify-end gap-1 mt-1`}>
+          {reaction && (
+            <span className="text-lg select-none">{reaction}</span>
+          )}
+          <span className="text-xs text-zinc-200/70 dark:text-zinc-600 px-1">
+            <TimeOnly isoString={createdAt?.toString() ?? ""} />
+          </span>
         </div>
+
+
+          </div>
+        </div>
+
         {reaction && (
           <span className="absolute -bottom-5 right-2 text-xl select-none">{reaction}</span>
         )}
+
+
       </div>
       {isUser && showAvatar && (
         <img

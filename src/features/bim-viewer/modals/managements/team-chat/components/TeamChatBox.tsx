@@ -21,7 +21,6 @@ export interface Message {
   created_at: string;
   avatar?: string;
   userName?: string;
-  // ... các field khác nếu có
 }
 
 interface TeamChatBoxProps {
@@ -66,8 +65,9 @@ export const TeamChatBox: React.FC<TeamChatBoxProps> = ({
     }
   };
 
+
   return (
-    <main className="flex flex-col flex-1 bg-zinc-950">
+    <main className="flex flex-col flex-1 bg-zinc-950 overflow-y-auto">
       {/* Header */}
       <div className="px-6 py-4 border-b border-zinc-800 bg-zinc-900 flex items-center justify-between gap-3">
         <div className="flex items-center gap-3">
@@ -91,31 +91,30 @@ export const TeamChatBox: React.FC<TeamChatBoxProps> = ({
       </div>
 
       {/* Message List */}
-      <div className="flex-1 overflow-y-auto p-6 space-y-3">
+      <div className="
+            px-4
+            flex-1 overflow-y-auto mb-2 space-y-2 pr-1
+            scrollbar-thin
+            scrollbar-thumb-zinc-500
+            scrollbar-track-transparent
+            hover:scrollbar-thumb-zinc-400
+            dark:scrollbar-thumb-zinc-700
+          ">
         {
           loadingMessage ? <LoadingState /> :
             (<>
               {messages.map((msg) => {
-                // Ensure currentUser exists and compare as strings for type safety
-                const isMe =
-                  currentUser &&
-                  String(msg.sender) === String(currentUser.id);
+                const isMe = currentUser && String(msg.sender_id) === String(currentUser.id);
                 return (
                   <div key={msg.id}>
                     <MessageBubble
                       text={msg.content}
-                      from={isMe ? "user" : "support"}
+                      from={isMe ? "user" : "admin"}
                       avatar={msg.avatar}
                       userName={msg.sender}
                       showAvatar={!isMe}
+                      createdAt={msg.created_at}
                     />
-                    <div
-                      className={`text-xs mt-1 px-2 ${isMe ? "text-right text-zinc-400" : "text-left text-zinc-500"
-                        }`}
-                    >
-                      {!isMe && msg.sender}{" "}
-                      <span className="ml-2 text-xs">{msg.created_at}</span>
-                    </div>
                   </div>
                 );
               })}

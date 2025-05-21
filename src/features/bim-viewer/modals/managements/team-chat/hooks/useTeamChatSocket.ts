@@ -29,6 +29,7 @@ export function useTeamChatSocket(teamId: number | undefined, currentUser: { id:
   const [loadingMessage, setLoadingMessage] = useState(false);
 
 
+
   // Khi vào team mới: kết nối socket, fetch message cũ
   useEffect(() => {
     if (!teamId || !currentUser?.id) return;
@@ -56,6 +57,7 @@ export function useTeamChatSocket(teamId: number | undefined, currentUser: { id:
       }
     })();
 
+
     // Nhận tin nhắn realtime
     socket.on("receive_team_message", (msg: TeamMessage) => {
       setMessages(prev => [...prev, msg]);
@@ -66,7 +68,6 @@ export function useTeamChatSocket(teamId: number | undefined, currentUser: { id:
       setTypingUsers(prev => {
         // Không thêm trùng chính mình, hoặc đã có rồi thì thôi
         if (payload.userId === currentUser.id || prev.some(u => u.user_id === payload.userId)) return prev;
-        console.log([...prev, { user_id: payload.userId, user_name: payload.userName }]);
         return [...prev, { user_id: payload.userId, user_name: payload.userName }];
       });
     });
