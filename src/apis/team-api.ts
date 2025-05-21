@@ -49,3 +49,11 @@ export async function updateTeam(teamId: Number, data: any) {
   });
   return res
 }
+
+
+export async function deleteTeam(teamId: Number) {
+  const res = await fetchWithAuth2(`/teams/${teamId}`, {
+    method: "DELETE",
+  });
+  return res
+}

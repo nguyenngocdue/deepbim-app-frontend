@@ -20,6 +20,7 @@ import { CLASS_NAME_DEFAULT } from "@/utils/class";
 import { AvatarGroup } from "@/components/AvatarGroup";
 import { AvatarUser } from "@/components/AvatarUser";
 import { Team } from "../types";
+import { Separator } from "@/components/ui/separator";
 
 // --- props type ---
 interface FormEditTeamProps {
@@ -29,7 +30,7 @@ interface FormEditTeamProps {
     onCancel?: () => void;
 }
 
-export function FormEditTeam({
+export function FormShowEditTeam({
     team,
     mode = "edit",
     onSuccess,
@@ -217,7 +218,7 @@ export function FormEditTeam({
                     {/* Team Members */}
                     <div>
                         <label className="block mb-1 text-left text-form-title">
-                            Team Members
+                            Team Members <span className="text-red-500">*</span>
                         </label>
                         <Select
                             options={memberOptions}
@@ -225,7 +226,7 @@ export function FormEditTeam({
                             value={selectedMemberOptions}
                             onChange={handleMembersChange}
                             placeholder="Select team members..."
-                            className="mb-2 text-gray-600 bg-slate-700"
+                            className=""
                             isDisabled={isShow}
                         />
                         {selectedMembers.length === 0 && (
@@ -276,7 +277,7 @@ export function FormEditTeam({
             </div>
             {/* Actions */}
             {!isShow && (
-                <div className="flex justify-end gap-2 pt-4">
+                <div className="flex justify-end gap-2 pt-4 border-t border-zinc-800">
                     <Button
                         className={`${CLASS_NAME_DEFAULT.CLASS_APP_BUTTON_DELETE}`}
                         type="button"

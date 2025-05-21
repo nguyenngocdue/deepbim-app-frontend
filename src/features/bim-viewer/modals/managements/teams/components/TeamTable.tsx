@@ -83,23 +83,26 @@ export function TeamTable({ data, showNo = true, onTeamClick, onEdit, onRemove, 
       id: "actions",
       header: "ACTIONS",
       cell: ({ row }) => (
-        <div className="flex items-center gap-4 justify-center">
+        <div className="flex items-center gap-0 justify-center">
           <Button
-            className="p-1 hover:bg-zinc-800 rounded"
+            variant='ghost' size='icon'
+            className="p-1 hover:bg-zinc-200 rounded "
             title="Edit"
             onClick={() => onEdit?.(row.original)}
           >
             <Pencil size={18} />
           </Button>
           <Button
-            className="p-1 hover:bg-zinc-800 rounded text-red-500"
+            variant='ghost' size='icon'
+            className="p-1 hover:bg-zinc-200 rounded text-red-500"
             title="Delete"
             onClick={() => onRemove?.(row.original)}
           >
             <Trash2 size={18} />
           </Button>
           <Button
-            className="p-1 hover:bg-zinc-800 rounded"
+            variant='ghost' size='icon'
+            className="p-1 hover:bg-zinc-200 rounded"
             title="View"
             onClick={() => onView?.(row.original)}
           >

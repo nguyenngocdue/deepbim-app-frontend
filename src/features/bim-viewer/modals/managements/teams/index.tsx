@@ -11,8 +11,12 @@ import { useTeamsByUser } from "../team-chat/hooks/useTeamsByUser"
 import EmptyState from "@/components/common/EmptyState"
 import { LoadingState } from "@/components/common/LoadingState"
 import { CLASS_NAME_DEFAULT } from "@/utils/class"
-import { FormEditTeam } from "./components/FormEditTeam"
+import { FormShowEditTeam } from "./components/FormShowEditTeam"
 import { Team } from "./types"
+import { ConfirmDeleteDialog } from "@/components/ConfirmDeleteDialog"
+import { deleteTeam } from "@/apis/team-api"
+import { toast } from "sonner"
+import { Separator } from "@/components/ui/separator"
 
 const TeamPage: React.FC = () => {
   const [open, setOpen] = useState(false)
@@ -21,6 +25,8 @@ const TeamPage: React.FC = () => {
   const { teams, loading, refresh } = useTeamsByUser(user);
   const [openEdit, setOpenEdit] = useState(false);
   const [openShow, setOpenShow] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
+
   const [selectedRow, setSelectedRow] = useState<object | null>(null);
 
   // Xử lý filter real-time (nếu team có thuộc tính .name)
@@ -29,19 +35,19 @@ const TeamPage: React.FC = () => {
     : teams
 
   const handleEdit = (data: object) => {
-    if (data) {
-      setSelectedRow(data);
-      setOpenEdit(true);
-    }
+    setSelectedRow(data);
+    setOpenEdit(true);
   }
 
   const handleShow = (data: object) => {
-    console.log("object");
     setSelectedRow(data);
     setOpenShow(true);
   }
 
-
+  const handleDeleteTeam = (data: object) => {
+    setSelectedRow(data);
+    setOpenDelete(true);
+  }
 
   // Dialog tạo mới team, khi onSuccess sẽ gọi lại fetchTeams để reload data
   const dialog = (
@@ -52,6 +58,7 @@ const TeamPage: React.FC = () => {
       description="Fill in the details to create a new team."
       disableOutsideClose
       className="max-w-2xl"
+      iconType="create"
     >
       <FormCreateTeam
         onSuccess={() => {
@@ -95,10 +102,10 @@ const TeamPage: React.FC = () => {
         countInfo={`Showing ${filteredTeams.length} teams`}
       >
         {loading ? <LoadingState /> : filteredTeams.length ?
-          <TeamTable data={filteredTeams} onEdit={handleEdit} onView={handleShow} /> : <EmptyState />
+          <TeamTable data={filteredTeams} onEdit={handleEdit} onView={handleShow} onRemove={handleDeleteTeam} /> : <EmptyState />
         }
       </EntityListLayout>
-{/* EDIT */}
+      {/* EDIT */}
       {openEdit && selectedRow &&
         <DialogTemplate
           open={openEdit}
@@ -107,8 +114,9 @@ const TeamPage: React.FC = () => {
           description="Edit details for this team."
           disableOutsideClose
           className="max-w-2xl"
+          iconType="edit"
         >
-          <FormEditTeam
+          <FormShowEditTeam
             team={selectedRow as Team}
             mode="edit"
             onSuccess={() => {
@@ -121,17 +129,18 @@ const TeamPage: React.FC = () => {
         </DialogTemplate>
       }
 
-{/* SHOW */}
+      {/* SHOW */}
       {openShow && selectedRow &&
         <DialogTemplate
           open={openShow}
-          onClose={() => setOpenEdit(false)}
+          onClose={() => setOpenShow(false)}
           title="Show Team"
           description="Show details for this team."
           disableOutsideClose
           className="max-w-2xl"
+          iconType="show"
         >
-          <FormEditTeam
+          <FormShowEditTeam
             team={selectedRow as Team}
             mode="show"
             onSuccess={() => {
@@ -144,9 +153,32 @@ const TeamPage: React.FC = () => {
         </DialogTemplate>
       }
 
-    </>
 
+      {/* DELETE */}
+      {
+        openDelete && (
+          <>
+            <ConfirmDeleteDialog open={openDelete} onClose={() => setOpenDelete(false)} onConfirm={
+              async () => {
+              if (selectedRow && (selectedRow as any).id) {
+                const teamId = (selectedRow as any).id;
+                const res = await deleteTeam(teamId);
+                if(res.ok){
+                    toast.success('Team was deleted successfully.')
+                    refresh();
+                } else{
+                  toast.error("Failed to delete the team. Please try again.")
+                }
+              }
+              setOpenDelete(false);
+            }} />
+          </>
+        )
+      }
+
+    </>
   )
+
 }
 
 export default TeamPage

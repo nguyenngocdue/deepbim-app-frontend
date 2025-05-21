@@ -17,6 +17,8 @@ import { toast } from "sonner";
 import { useAppSelector } from "@/hooks/reduxHooks";
 import AvatarUploadCard2 from "@/components/common/AvatarUploadCard2";
 import { CLASS_NAME_DEFAULT } from "@/utils/class";
+import { Trash, X } from "lucide-react";
+import { IoCreateOutline } from "react-icons/io5";
 
 interface FormCreateTeamProps {
   onSuccess?: () => void;
@@ -120,7 +122,7 @@ export function FormCreateTeam({ onSuccess, onCancel }: FormCreateTeamProps) {
           <div className="grid grid-cols-2 gap-4">
             {/* Team name */}
             <div>
-              <label className="block mb-1 font-medium text-left">
+              <label className="block mb-1 text-form-title text-left">
                 Team name<span className="text-red-500">*</span>
               </label>
               <Input
@@ -132,7 +134,7 @@ export function FormCreateTeam({ onSuccess, onCancel }: FormCreateTeamProps) {
             </div>
             {/* Sub-project */}
             <div>
-              <label className="block mb-1 font-medium text-left">
+              <label className="block mb-1 text-form-title text-left">
                 Sub-project<span className="text-red-500">*</span>
               </label>
               <UiSelect value={subProject} onValueChange={setSubProject} required>
@@ -151,7 +153,7 @@ export function FormCreateTeam({ onSuccess, onCancel }: FormCreateTeamProps) {
           </div>
           {/* Description */}
           <div>
-            <label className="block mb-1 font-medium text-left">Description</label>
+            <label className="block mb-1 text-form-title text-left">Description</label>
             <Textarea
               value={description}
               onChange={e => setDescription(e.target.value)}
@@ -160,14 +162,14 @@ export function FormCreateTeam({ onSuccess, onCancel }: FormCreateTeamProps) {
           </div>
           {/* Team Members */}
           <div>
-            <label className="block mb-1 font-medium text-left">Team Members</label>
+            <label className="block mb-1 text-form-title text-left">Team Members</label>
             <Select
               options={memberOptions}
               isMulti
               value={selectedMemberOptions}
               onChange={handleMembersChange}
               placeholder="Select team members..."
-              className="mb-2 text-gray-600 bg-slate-700"
+              className=""
             />
             {selectedMembers.length === 0 && (
               <div className="text-sm text-muted-foreground italic">
@@ -200,9 +202,11 @@ export function FormCreateTeam({ onSuccess, onCancel }: FormCreateTeamProps) {
       {/* Actions */}
       <div className="flex justify-end gap-2 pt-4">
         <Button className={`${CLASS_NAME_DEFAULT.CLASS_APP_BUTTON_DELETE}`} type="button" onClick={onCancel}>
+            <X className="mr-1 " />
           Cancel
         </Button>
         <Button className={`${CLASS_NAME_DEFAULT.CLASS_APP_BUTTON_CREATE}`} type="submit" disabled={disable}>
+          <IoCreateOutline />
           {loading ? "Creating..." : "Create Team"}
         </Button>
       </div>
