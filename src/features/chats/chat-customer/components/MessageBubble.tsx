@@ -1,6 +1,7 @@
 import { TimeOnly } from "@/components/bim-viewer/common/TimeOnly";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 import React from "react";
+import ReactMarkdown from 'react-markdown';
 
 export function MessageBubble({
   text,
@@ -26,7 +27,7 @@ export function MessageBubble({
 
   const isUser = from === "user";
   return (
-    <div className={`flex items-end mb-1 ${isUser ? "justify-end" : "justify-start"}`}>
+    <div className={`px-4 flex items-end mb-1 ${isUser ? "justify-end" : "justify-start"}`}>
       {!isUser && (
         <Avatar>
           <AvatarImage src={avatarSrc} className="w-7 h-7 object-cover rounded-full mr-1" />
@@ -50,17 +51,17 @@ export function MessageBubble({
             }}
           >
             <div className="whitespace-pre-line break-words max-w-lg">
-              {text}
+              <ReactMarkdown>{text}</ReactMarkdown>
             </div>
 
- <div className={`flex items-center justify-end gap-1 mt-1`}>
-          {reaction && (
-            <span className="text-lg select-none">{reaction}</span>
-          )}
-          <span className="text-xs text-zinc-200/70 dark:text-zinc-600 px-1">
-            <TimeOnly isoString={createdAt?.toString() ?? ""} />
-          </span>
-        </div>
+            <div className={`flex items-center justify-end gap-1 mt-1`}>
+              {reaction && (
+                <span className="text-lg select-none">{reaction}</span>
+              )}
+              <span className="text-xs text-zinc-200/70 dark:text-zinc-600 px-1">
+                <TimeOnly isoString={createdAt?.toString() ?? ""} />
+              </span>
+            </div>
 
 
           </div>

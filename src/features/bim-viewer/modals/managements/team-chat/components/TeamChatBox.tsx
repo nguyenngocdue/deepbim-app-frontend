@@ -130,7 +130,7 @@ export const TeamChatBox: React.FC<TeamChatBoxProps> = ({
         onSubmit={handleSend}
         className="p-4 border-t border-zinc-800 bg-zinc-900 flex gap-2"
       >
-        <Input
+        <textarea
           className="flex-1 rounded bg-zinc-800 px-4 py-2 text-sm outline-none"
           placeholder="Type a message..."
           value={input}
@@ -138,6 +138,7 @@ export const TeamChatBox: React.FC<TeamChatBoxProps> = ({
             setInput(e.target.value);
             sendTyping();
           }}
+          rows={2}
         />
         <Button
           type="submit"
