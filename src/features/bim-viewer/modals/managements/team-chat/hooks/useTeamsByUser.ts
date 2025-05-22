@@ -23,5 +23,6 @@ export function useTeamsByUser(user: any) {
     fetchTeams();
   }, [fetchTeams]);
 
+
   return { teams, loading, refresh: fetchTeams };
 }

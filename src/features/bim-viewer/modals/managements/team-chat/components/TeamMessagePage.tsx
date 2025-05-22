@@ -35,7 +35,7 @@ export default function TeamMessagePage() {
   };
 
   return (
-    <div className="h-full flex border border-gray-400  overflow-hidden">
+    <div className="h-full flex border border-gray-400  overflow-hidden bg-[#E2E8F0] dark:bg-[#1F293B]">
       {/* Sidebar team list */}
       {teamsLoading ? (
         <LoadingState />
@@ -71,10 +71,9 @@ export default function TeamMessagePage() {
         collapsed={!infoOpen}
         collapsedWidth="0px"
         width="320px"
-        
+        backgroundColor="#a80840"
         rootStyles={{
           [`.${sidebarClasses.container}`]: {
-            background: "#F0F5F9",
             borderLeft: "1px solid #9ca3af",
             transition: "all 0.2s",
             zIndex: 30,

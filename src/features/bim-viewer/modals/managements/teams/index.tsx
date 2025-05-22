@@ -1,7 +1,6 @@
 "use client"
 import React, { useCallback, useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import { DialogTemplate } from "@/components/model-table/DialogTemplate"
 import { EntityListLayout } from "../components/EntityListLayout"
 import { FormCreateTeam } from "./components/FormCreateTeam"
@@ -16,7 +15,6 @@ import { Team } from "./types"
 import { ConfirmDeleteDialog } from "@/components/ConfirmDeleteDialog"
 import { deleteTeam } from "@/apis/team-api"
 import { toast } from "sonner"
-import { Separator } from "@/components/ui/separator"
 import { SearchBox } from "@/components/SearchBox"
 
 const TeamPage: React.FC = () => {

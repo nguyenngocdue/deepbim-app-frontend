@@ -13,7 +13,8 @@ const BG_COLORS = [
 ];
 
 interface Member {
-  name: string;
+  id: number;
+  user_name: string;
   picture?: string;
 }
 
@@ -27,6 +28,7 @@ interface AvatarGroupProps {
 export function AvatarGroup({ members, size = 32, overlap = -12, maxDisplay = 5 }: AvatarGroupProps) {
   const displayMembers = members.slice(0, maxDisplay);
   const hiddenCount = members.length - maxDisplay;
+
 
   return (
     <div className="flex items-center">
@@ -47,12 +49,13 @@ export function AvatarGroup({ members, size = 32, overlap = -12, maxDisplay = 5 
             {m.picture ? (
               <img
                 src={m.picture}
-                alt={m.name}
+                alt={m?.user_name}
                 className="object-cover w-full h-full"
+                title={`Id: #${m.id}\nName: ${m?.user_name}`}
               />
             ) : (
-              <span className={`text-white text-base font-bold ${bg} w-full h-full flex items-center justify-center`}>
-                {getInitial(m.name)}
+              <span title={`Id: #${m.id}\nName: ${m?.user_name}`} className={`text-white text-base font-bold ${bg} w-full h-full flex items-center justify-center`}>
+                {getInitial(m.user_name)}
               </span>
             )}
           </div>

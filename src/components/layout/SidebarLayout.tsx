@@ -30,9 +30,6 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
     const { language, toggleLanguage } = useLanguage();
     const { theme, setTheme } = useTheme();
 
-    const toggleTheme = () => {
-        setTheme(theme === "light" ? "dark" : "light");
-    };
 
     return (
         <div className="flex h-full bg-behind text-white">
@@ -139,7 +136,7 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
                         </div>
                     </div>
                 </div>
-                <main className="bg-behind  w-full h-full p-4">
+                <main className="w-full h-svh p-4">
                     {children}
                 </main>
             </div>

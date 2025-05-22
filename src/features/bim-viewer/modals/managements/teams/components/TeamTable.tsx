@@ -54,6 +54,18 @@ export function TeamTable({ data, showNo = true, onTeamClick, onEdit, onRemove, 
       },
       { accessorKey: "description", header: "Description" },
       {
+        accessorKey: "sub_project_id",
+        header: "Sub-Project",
+        cell:  ({ row }: { row: { original: TeamRow } }) => (
+
+          <>
+             <span className="text-primary cursor-pointer underline">
+            {row.original?.subProject?.name}
+          </span>
+          </>
+        )
+      },
+      {
         accessorKey: "owner",
         header: "Owner",
         cell: ({ row }) =>
@@ -85,6 +97,15 @@ export function TeamTable({ data, showNo = true, onTeamClick, onEdit, onRemove, 
       cell: ({ row }) => {
         return (
           <DateTimeDisplay isoDate={row.original.created_at} />
+        )
+      }
+    },
+     { 
+      accessorKey: "updated_at", 
+      header: "Updated At",
+      cell: ({ row }) => {
+        return (
+          <DateTimeDisplay isoDate={row.original.updated_at} />
         )
       }
     },

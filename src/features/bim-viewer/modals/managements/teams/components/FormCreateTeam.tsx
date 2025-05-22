@@ -17,7 +17,6 @@ import { toast } from "sonner";
 import { useAppSelector } from "@/hooks/reduxHooks";
 import AvatarUploadCard2 from "@/components/common/AvatarUploadCard2";
 import { CLASS_NAME_DEFAULT } from "@/utils/class";
-import { Trash, X } from "lucide-react";
 import { IoCreateOutline } from "react-icons/io5";
 import { FormActionButtons } from "@/components/bim-viewer/common/FormActionButtons";
 

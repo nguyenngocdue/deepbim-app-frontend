@@ -20,7 +20,6 @@ import { CLASS_NAME_DEFAULT } from "@/utils/class";
 import { AvatarGroup } from "@/components/AvatarGroup";
 import { AvatarUser } from "@/components/AvatarUser";
 import { Team } from "../types";
-import { Separator } from "@/components/ui/separator";
 import { X } from "lucide-react";
 import { IoCreateOutline } from "react-icons/io5";
 
@@ -77,7 +76,7 @@ export function FormShowEditTeam({
             setDisable(false);
         }
         // eslint-disable-next-line
-    }, [team, adminId]);
+    }, [team, adminId, subProject]);
 
     // Upload avatar
     const handleUpload = (e: any) => {
@@ -188,8 +187,11 @@ export function FormShowEditTeam({
                                 </SelectTrigger>
                                 <SelectContent>
                                     {subProjects.map((sp) => (
-                                        <SelectItem key={sp.id} value={String(sp.id)}>
-                                            {sp.name}
+                                        <SelectItem key={sp.id} value={String(sp.id)} className="px-2 py-2">
+                                        <div className="flex w-full justify-between items-center">
+                                            <span>{sp.name}</span>
+                                            <span className="text-xs text-muted-foreground ml-2">#{sp.id}</span>
+                                        </div>
                                         </SelectItem>
                                     ))}
                                 </SelectContent>
