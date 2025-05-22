@@ -11,12 +11,16 @@ import { LoadingState } from "@/components/common/LoadingState";
 // ----- MOCK (Thay bằng API ở các hooks/feature real nếu có) -----
 // ---------------------------------------------------------------
 
-export default function TeamMessagePage() {
+interface TeamMessagePageProps {
+  teamId?: number | null;
+}
+
+export default function TeamMessagePage({ teamId }: TeamMessagePageProps) {
   const { user } = useAppSelector((state) => state.auth);
   const { teams, loading: teamsLoading } = useTeamsByUser(user);
 
   // State lưu id team đang chọn, mặc định chọn team đầu nếu có
-  const [selectedTeamId, setSelectedTeamId] = useState<number | null>(null);
+  const [selectedTeamId, setSelectedTeamId] = useState<number | null>();
   const selectedTeam = useMemo(() => teams.find((t) => t.id === selectedTeamId), [teams, selectedTeamId]);
   const [infoOpen, setInfoOpen] = useState(false); // Trạng thái mở sidebar phải
 
@@ -26,7 +30,12 @@ export default function TeamMessagePage() {
     if (!teamsLoading && teams.length && selectedTeamId == null) {
       setSelectedTeamId(teams[0].id);
     }
+    if(teamsLoading){
+      setSelectedTeamId(Number(teamId));
+    }
   }, [teams, teamsLoading, selectedTeamId]);
+
+  console.log(selectedTeamId);
 
   // Handler chọn team
   const handleSelectTeam = (id: number) => {

@@ -40,7 +40,7 @@ export function MessageBubble({
           relative max-w-[75vw] px-4 py-1 rounded-md text-sm leading-snug break-words
           ${isUser
                 ? "bg-green-500 text-white rounded-br-md"
-                : "bg-slate-200 text-gray-800 rounded-bl-md"
+                : "dark:bg-slate-200 text-gray-800 rounded-bl-md bg-slate-300"
               }
           shadow
         `}

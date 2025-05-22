@@ -68,9 +68,9 @@ export const TeamChatBox: React.FC<TeamChatBoxProps> = ({
 
 
   return (
-    <main className="flex flex-col flex-1  overflow-y-auto ">
+    <main className="flex flex-col flex-1 h-svh  overflow-y-auto ">
       {/* Header */}
-      <div className="px-6 py-2 border-b border-gray-400 bg-muted flex items-center justify-between gap-3 bg-zinc-900 ">
+      <div className="px-6 py-3 border-b border-gray-400 bg-muted flex items-center justify-between gap-3 bg-zinc-950 ">
         <div className="flex items-center gap-3">
           <div className="text-lg text-slate-200 dark:text-slate-300">{teamName || "Team Chat"}</div>
         </div>
