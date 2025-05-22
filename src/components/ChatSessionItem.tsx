@@ -23,7 +23,7 @@ export default function ChatSessionItem({
       title={`Id: #${session.user.id} \nEmail: ${session.user.email}`}
       className={`
         cursor-pointer rounded-md transition-all select-none flex items-center gap-4 px-3 py-3 
-        ${isActive ? "ring-2 ring-primary/40 bg-muted" : "hover:bg-muted hover:shadow-sm hover:scale-[1.01]"}
+        ${isActive ? "ring-2 ring-primary/40 bg-muted bg-slate-400 text-gray-800 dark:bg-slate-400 hover:scale-[1.01]" : "bg-slate-200 dark:bg-slate-600 hover:bg-muted hover:shadow-sm hover:scale-[1.01]"}
         mb-1
       `}
     >
@@ -40,8 +40,8 @@ export default function ChatSessionItem({
           <div className="text-xs text-muted-foreground whitespace-nowrap">{lastTime}</div>
         </div>
         <div className="w-full max-w-[200px]">
-          <div className="truncate text-sm text-muted-foreground text-left">
-            {lastMsgIsYou && <span className="font-semibold text-muted-foreground">You: </span>}
+          <div className="truncate text-sm text-muted-foreground text-left text-slate-700 dark:text-gray-200">
+            {lastMsgIsYou && <span className="text-muted-foreground text-gray-100 ">You: </span>}
             {lastMsg}
           </div>
         </div>

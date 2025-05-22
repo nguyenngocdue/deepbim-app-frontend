@@ -10,6 +10,8 @@ import { EntityForm } from "@/components/bim-viewer/common/EntityForm"
 import { createProjects, getProjects } from "@/apis/project"
 import { LinkId } from "@/components/common/LinkId"
 import { EntityListLayout } from "../../components/EntityListLayout"
+import { CLASS_NAME_DEFAULT } from "@/utils/class"
+import { SearchBox } from "@/components/SearchBox"
 
 interface Project {
   id: number
@@ -159,16 +161,12 @@ export default function ProjectListPage() {
   // Search bar và nút tạo mới truyền vào layout
   const searchBar = (
     <>
-      <Button onClick={() => setOpen(true)}>+ Create Project</Button>
-      <div className="flex gap-2">
-        <Input
-          placeholder="Search projects by name or number..."
-          value={filter}
-          onChange={(e) => setFilter(e.target.value)}
-          className="w-72"
-        />
-        <Button variant="outline">🔍</Button>
-      </div>
+      <Button className={`${CLASS_NAME_DEFAULT.CLASS_APP_BUTTON_CREATE}`} onClick={() => setOpen(true)}>+ Create Project</Button>
+      <SearchBox
+        value={filter}
+        onChange={setFilter}
+        placeholder="Search projects by name or number..."
+      />
     </>
   )
 

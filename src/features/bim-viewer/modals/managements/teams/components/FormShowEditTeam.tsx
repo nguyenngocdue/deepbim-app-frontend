@@ -21,6 +21,8 @@ import { AvatarGroup } from "@/components/AvatarGroup";
 import { AvatarUser } from "@/components/AvatarUser";
 import { Team } from "../types";
 import { Separator } from "@/components/ui/separator";
+import { X } from "lucide-react";
+import { IoCreateOutline } from "react-icons/io5";
 
 // --- props type ---
 interface FormEditTeamProps {
@@ -283,6 +285,7 @@ export function FormShowEditTeam({
                         type="button"
                         onClick={onCancel}
                     >
+                         <X className="mr-1 " />
                         Cancel
                     </Button>
                     <Button
@@ -290,6 +293,7 @@ export function FormShowEditTeam({
                         type="submit"
                         disabled={loading || disable}
                     >
+                         <IoCreateOutline />
                         {loading ? "Updating..." : "Update Team"}
                     </Button>
                 </div>

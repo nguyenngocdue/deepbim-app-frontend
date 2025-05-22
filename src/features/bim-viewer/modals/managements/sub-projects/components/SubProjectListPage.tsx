@@ -11,6 +11,8 @@ import { getProjects } from "@/apis/project"
 import { LinkId } from "@/components/common/LinkId"
 import { toast } from "sonner"
 import { EntityListLayout } from "../../components/EntityListLayout"
+import { CLASS_NAME_DEFAULT } from "@/utils/class"
+import { SearchBox } from "@/components/SearchBox"
 
 interface SubProject {
   id: number
@@ -159,16 +161,12 @@ export default function SubProjectListPage() {
   // Search bar và nút tạo mới
   const searchBar = (
     <>
-      <Button onClick={() => setOpen(true)}>+ Create Sub-Project</Button>
-      <div className="flex gap-2">
-        <Input
-          placeholder="Search sub-projects..."
-          value={filter}
-          onChange={(e) => setFilter(e.target.value)}
-          className="w-72"
-        />
-        <Button variant="outline">🔍</Button>
-      </div>
+      <Button className={`${CLASS_NAME_DEFAULT.CLASS_APP_BUTTON_CREATE}`} onClick={() => setOpen(true)}>+ Create Sub-Project</Button>
+        <SearchBox
+        value={filter}
+        onChange={setFilter}
+        placeholder="Search sub- projects by name or number..."
+      />    
     </>
   )
 
@@ -181,6 +179,7 @@ export default function SubProjectListPage() {
       description="Fill in the details to create a new sub-project."
       disableOutsideClose
       className="max-w-5xl"
+      iconType="create"
     >
       <EntityForm
         fields={subProjectFields}

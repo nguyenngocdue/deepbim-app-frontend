@@ -7,6 +7,7 @@ import { Pencil, Trash2, Eye } from "lucide-react";
 import { AvatarUser } from "@/components/AvatarUser";
 import { AvatarGroup } from "@/components/AvatarGroup";
 import { Button } from "@/components/ui/button";
+import { DateTimeDisplay } from "@/components/bim-viewer/common/DateTimeDisplay";
 
 export interface TeamRow {
   id: number;
@@ -75,11 +76,19 @@ export function TeamTable({ data, showNo = true, onTeamClick, onEdit, onRemove, 
             <span>
               <AvatarGroup members={users} maxDisplay={3}/>
             </span>
-          )
+        )
       }
-      },
-      { accessorKey: "created_at", header: "Created At" },
-{
+    },
+    { 
+      accessorKey: "created_at", 
+      header: "Created At",
+      cell: ({ row }) => {
+        return (
+          <DateTimeDisplay isoDate={row.original.created_at} />
+        )
+      }
+    },
+    {
       id: "actions",
       header: "ACTIONS",
       cell: ({ row }) => (
@@ -111,10 +120,9 @@ export function TeamTable({ data, showNo = true, onTeamClick, onEdit, onRemove, 
         </div>
       ),
     }
-      
-    ],
-    [onTeamClick]
-  );
+  ],
+  [onTeamClick]
+);
 
   const table = useReactTable({
     data,

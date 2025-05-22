@@ -316,3 +316,11 @@ body.signin-page #leva__root {
   transform: scale(0.98); /* nhấn xuống nhẹ */
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); /* bóng thấp hơn */
 }
+
+/* SIDEBAR */
+.sidebar-tw {
+  @apply bg-zinc-900 border-r border-zinc-800 min-w-[260px] transition-all duration-200;
+}
+.sidebar-tw-collapsed {
+  @apply min-w-[80px];
+}

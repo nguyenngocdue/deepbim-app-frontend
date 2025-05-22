@@ -10,7 +10,7 @@ export function TimeOnly({ isoString, className }: TimeOnlyProps) {
   const minutes = date.getMinutes().toString().padStart(2, "0");
 
   return (
-    <span className={className}>
+    <span className={`${className} text-zinc-500`}>
       {hours}:{minutes}
     </span>
   );

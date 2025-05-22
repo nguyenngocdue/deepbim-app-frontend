@@ -17,6 +17,7 @@ import { ConfirmDeleteDialog } from "@/components/ConfirmDeleteDialog"
 import { deleteTeam } from "@/apis/team-api"
 import { toast } from "sonner"
 import { Separator } from "@/components/ui/separator"
+import { SearchBox } from "@/components/SearchBox"
 
 const TeamPage: React.FC = () => {
   const [open, setOpen] = useState(false)
@@ -74,14 +75,11 @@ const TeamPage: React.FC = () => {
   const searchBar = (
     <div className="flex items-center gap-2">
       <Button className={`${CLASS_NAME_DEFAULT.CLASS_APP_BUTTON_CREATE}`} onClick={() => setOpen(true)}>+ Create A Team</Button>
-      <Input
-        placeholder="Search teams..."
+      <SearchBox
         value={filter}
-        onChange={e => setFilter(e.target.value)}
-        className="w-72"
+        onChange={setFilter}
+        placeholder="Search team by name or number..."
       />
-      {/* Button search chỉ để demo, filter realtime luôn */}
-      <Button variant="outline" onClick={() => { }}>🔍</Button>
     </div>
   )
 
@@ -160,18 +158,18 @@ const TeamPage: React.FC = () => {
           <>
             <ConfirmDeleteDialog open={openDelete} onClose={() => setOpenDelete(false)} onConfirm={
               async () => {
-              if (selectedRow && (selectedRow as any).id) {
-                const teamId = (selectedRow as any).id;
-                const res = await deleteTeam(teamId);
-                if(res.ok){
+                if (selectedRow && (selectedRow as any).id) {
+                  const teamId = (selectedRow as any).id;
+                  const res = await deleteTeam(teamId);
+                  if (res.ok) {
                     toast.success('Team was deleted successfully.')
                     refresh();
-                } else{
-                  toast.error("Failed to delete the team. Please try again.")
+                  } else {
+                    toast.error("Failed to delete the team. Please try again.")
+                  }
                 }
-              }
-              setOpenDelete(false);
-            }} />
+                setOpenDelete(false);
+              }} />
           </>
         )
       }

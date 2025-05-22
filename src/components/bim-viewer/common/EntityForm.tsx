@@ -21,6 +21,9 @@ import { Calendar } from "@/components/ui/calendar"
 import { cn } from "@/lib/utils"
 import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
+import { FormActionButtons } from "./FormActionButtons"
+import { CLASS_NAME_DEFAULT } from "@/utils/class"
+import { IoCreateOutline } from "react-icons/io5"
 
 interface Field {
   name: string
@@ -196,14 +199,17 @@ export function EntityForm({
       })}
 
       {showFooter && (
-        <div className="pt-6 flex justify-end gap-2">
-          {onCancel && (
-            <Button type="button" variant="ghost" onClick={onCancel}>
-              {cancelLabel}
-            </Button>
-          )}
-          <Button type="submit">{submitLabel}</Button>
-        </div>
+        <FormActionButtons
+          onCancel={onCancel ?? (() => { })}
+          onCancelText="Cancel"
+          onApplyText="Create Team"
+          applyType="submit"
+          onApplyIcon={<IoCreateOutline />}
+          classNameDelete={CLASS_NAME_DEFAULT.CLASS_APP_BUTTON_DELETE}
+          classNameApply={CLASS_NAME_DEFAULT.CLASS_APP_BUTTON_CREATE}
+        />
+
+
       )}
     </form>
   )

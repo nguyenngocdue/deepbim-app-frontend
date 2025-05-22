@@ -19,6 +19,7 @@ import AvatarUploadCard2 from "@/components/common/AvatarUploadCard2";
 import { CLASS_NAME_DEFAULT } from "@/utils/class";
 import { Trash, X } from "lucide-react";
 import { IoCreateOutline } from "react-icons/io5";
+import { FormActionButtons } from "@/components/bim-viewer/common/FormActionButtons";
 
 interface FormCreateTeamProps {
   onSuccess?: () => void;
@@ -200,16 +201,17 @@ export function FormCreateTeam({ onSuccess, onCancel }: FormCreateTeamProps) {
         </div>
       </div>
       {/* Actions */}
-      <div className="flex justify-end gap-2 pt-4">
-        <Button className={`${CLASS_NAME_DEFAULT.CLASS_APP_BUTTON_DELETE}`} type="button" onClick={onCancel}>
-            <X className="mr-1 " />
-          Cancel
-        </Button>
-        <Button className={`${CLASS_NAME_DEFAULT.CLASS_APP_BUTTON_CREATE}`} type="submit" disabled={disable}>
-          <IoCreateOutline />
-          {loading ? "Creating..." : "Create Team"}
-        </Button>
-      </div>
+      <FormActionButtons
+        onCancel={onCancel ?? (() => {})}
+        onCancelText="Cancel"
+        onApplyText="Create Team"
+        applyType="submit"  
+        disabled={disable}
+        loading={loading}
+        onApplyIcon={<IoCreateOutline />}
+        classNameDelete={CLASS_NAME_DEFAULT.CLASS_APP_BUTTON_DELETE}
+        classNameApply={CLASS_NAME_DEFAULT.CLASS_APP_BUTTON_CREATE}
+      />
     </form>
   );
 }

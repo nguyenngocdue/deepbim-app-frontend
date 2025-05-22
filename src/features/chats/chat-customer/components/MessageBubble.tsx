@@ -37,7 +37,7 @@ export function MessageBubble({
         <div className={`flex flex-nowrap items-baseline flex-row-reverse `}>
           <div
             className={`
-          relative max-w-[75vw] px-4 py-2 rounded-2xl text-base leading-snug break-words
+          relative max-w-[75vw] px-4 py-1 rounded-md text-sm leading-snug break-words
           ${isUser
                 ? "bg-green-500 text-white rounded-br-md"
                 : "bg-slate-200 text-gray-800 rounded-bl-md"
@@ -50,7 +50,7 @@ export function MessageBubble({
                 : "18px 18px 18px 6px",
             }}
           >
-            <div className="whitespace-pre-line break-words max-w-lg">
+            <div className="whitespace-pre-line break-words text-sm max-w-lg">
               {/* <ReactMarkdown>{text}</ReactMarkdown> */}
               {text}
             </div>
@@ -59,8 +59,8 @@ export function MessageBubble({
               {reaction && (
                 <span className="text-lg select-none">{reaction}</span>
               )}
-              <span className="text-xs text-zinc-200/70 dark:text-zinc-600 px-1">
-                <TimeOnly isoString={createdAt?.toString() ?? ""} />
+              <span className=" text-zinc-200/70 dark:text-zinc-600 px-1">
+                <TimeOnly isoString={createdAt?.toString() ?? ""} className="text-[10px]"/>
               </span>
             </div>
 

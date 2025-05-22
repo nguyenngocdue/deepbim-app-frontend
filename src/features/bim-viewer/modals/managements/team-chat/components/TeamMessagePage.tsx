@@ -35,16 +35,17 @@ export default function TeamMessagePage() {
   };
 
   return (
-    <div className="h-screen flex bg-zinc-950">
+    <div className="h-full flex border border-gray-400  overflow-hidden">
       {/* Sidebar team list */}
       {teamsLoading ? (
         <LoadingState />
       ) : teams.length ? (
-        <TeamListSidebar
-          teams={teams}
-          selectedTeamId={selectedTeamId || undefined}
-          onSelectTeam={handleSelectTeam}
-        />
+            <TeamListSidebar
+              teams={teams}
+              selectedTeamId={selectedTeamId || undefined}
+              onSelectTeam={handleSelectTeam}
+              currentUser={user}
+            />
       ) : (
         <EmptyState />
       )}
@@ -52,12 +53,12 @@ export default function TeamMessagePage() {
       {/* Box message/chat */}
       <div className="flex-1 flex flex-col">
         {selectedTeamId && selectedTeam ? (
-          <TeamChatFeature
-            teamId={selectedTeamId}
-            currentUser={user}
-            teamName={selectedTeam.name}
-            onShowInfo={() => setInfoOpen(true)}
-          />
+              <TeamChatFeature
+                teamId={selectedTeamId}
+                currentUser={user}
+                teamName={selectedTeam.name}
+                onShowInfo={() => setInfoOpen(true)}
+              />
         ) : (
           <div className="flex flex-1 items-center justify-center text-muted-foreground text-xl">
             Select a team chat to get info
@@ -70,10 +71,11 @@ export default function TeamMessagePage() {
         collapsed={!infoOpen}
         collapsedWidth="0px"
         width="320px"
+        
         rootStyles={{
           [`.${sidebarClasses.container}`]: {
-            background: "#18181b",
-            borderLeft: "1px solid #27272a",
+            background: "#F0F5F9",
+            borderLeft: "1px solid #9ca3af",
             transition: "all 0.2s",
             zIndex: 30,
             minWidth: "0px",
@@ -82,11 +84,12 @@ export default function TeamMessagePage() {
         }}
       >
         {/* Nút đóng sidebar phải */}
-        <div className="flex justify-end p-3 border-b border-zinc-800">
+        <div className="flex justify-between py-4 border-b  bg-muted border-gray-400 items-center bg-zinc-950">
+          <span className="text-lg font-bold text-slate-200 dark:text-slate-100 px-4">Information Group</span>
           <button
             onClick={() => setInfoOpen(false)}
             className="text-zinc-400 hover:text-zinc-100 p-1"
-            title="Đóng"
+            title="Close"
           >
             <svg width={22} height={22} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
               <line x1="18" y1="6" x2="6" y2="18" />
@@ -94,7 +97,7 @@ export default function TeamMessagePage() {
             </svg>
           </button>
         </div>
-        {/* {selectedTeam && <TeamInfoSidebar team={selectedTeam} />} */}
+        {selectedTeam  && <TeamInfoSidebar team={selectedTeam} />}
       </Sidebar>
     </div>
   );

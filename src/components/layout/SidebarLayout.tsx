@@ -12,7 +12,6 @@ import { LogoWord } from "../LogoWord"
 import BreadcrumbsWithIconAndLabel from "@/components/BreadcrumbsWithIconAndLabel"
 import { useLanguage } from "@/context/LanguageContext"
 import { useTheme } from "@/context/theme-context"
-import LeftHeader from "@/sections/LeftHeader"
 import { Button } from "../ui/button"
 import { IoPerson } from "react-icons/io5"
 import { MdAdminPanelSettings, MdWorkspaces } from "react-icons/md"
@@ -20,6 +19,8 @@ import { HiHomeModern } from "react-icons/hi2"
 import { GrProjects, GrVirtualStorage } from "react-icons/gr"
 import { TiFlowChildren } from "react-icons/ti";
 import { BsChatQuoteFill } from "react-icons/bs"
+import { ThemeSwitch } from "../theme-switch"
+import { ProfileDropdown } from "../common/ProfileDropdown"
 
 export default function SidebarLayout({ children }: { children: React.ReactNode }) {
     const [collapsed, setCollapsed] = useState(() => {
@@ -86,15 +87,15 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
 
                         {!collapsed && <div className="px-4 pt-2 pb-1 uppercase text-xs tracking-wide text-slate-400">Project Managerment</div>}
 
-                        <SubMenu label="Workspaces" icon={<MdWorkspaces  size={18} />} defaultOpen={true}>
-                            <MenuItem icon={<GrProjects   className="ml-5" size={20} />} component={<Link to="/managements/projects" />}>Projects</MenuItem>
+                        <SubMenu label="Workspaces" icon={<MdWorkspaces size={18} />} defaultOpen={true}>
+                            <MenuItem icon={<GrProjects className="ml-5" size={20} />} component={<Link to="/managements/projects" />}>Projects</MenuItem>
                             <MenuItem icon={<TiFlowChildren className="ml-5" size={20} />} component={<Link to="/managements/sub-projects" />}>Sub-Projects</MenuItem>
                             <MenuItem icon={<TiFlowChildren className="ml-5" size={20} />} component={<Link to="/managements/teams" />}>Teams</MenuItem>
                         </SubMenu>
 
                         {!collapsed && <div className="px-4 pt-2 pb-1 uppercase text-xs tracking-wide text-slate-400">Admin Management</div>}
-                            <MenuItem icon={<MdAdminPanelSettings   size={18} />}   component={<Link to="/managements/users" />} >User</MenuItem>
-                            <MenuItem icon={<BsChatQuoteFill   size={18} />}   component={<Link to="/managements/chat-support" />} >Chat</MenuItem>
+                        <MenuItem icon={<MdAdminPanelSettings size={18} />} component={<Link to="/managements/users" />} >User</MenuItem>
+                        <MenuItem icon={<BsChatQuoteFill size={18} />} component={<Link to="/managements/chat-support" />} >Chat</MenuItem>
                     </Menu>
 
 
@@ -128,19 +129,17 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
             </div>
 
             {/* Main layout */}
-            <div className="flex flex-col flex-1 h-screen overflow-hidden">
-                <div className="text-sm text-muted-foreground mb-4">
+            <div className="flex flex-col flex-1 h-screen overflow-hidden p-4">
+                <div className="text-sm text-muted-foreground">
                     <div className="flex items-center justify-between">
                         <BreadcrumbsWithIconAndLabel />
-                        <LeftHeader
-                            toggleLanguage={toggleLanguage}
-                            language={language.toUpperCase()}
-                            toggleTheme={toggleTheme}
-                            theme={theme}
-                        />
+                        <div className="flex items-center gap-2 md:gap-4">
+                            <ThemeSwitch />
+                            <ProfileDropdown />
+                        </div>
                     </div>
                 </div>
-                <main className="bg-behind  w-full">
+                <main className="bg-behind  w-full h-full p-4">
                     {children}
                 </main>
             </div>
