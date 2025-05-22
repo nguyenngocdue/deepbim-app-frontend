@@ -324,3 +324,7 @@ body.signin-page #leva__root {
 .sidebar-tw-collapsed {
   @apply min-w-[80px];
 }
+
+.ps-sidebar-root.css-hxse3r {
+  border: none;
+}

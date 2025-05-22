@@ -1,7 +1,7 @@
-import { IconSearch } from '@tabler/icons-react'
 import { cn } from '@/lib/utils'
 import { useSearch } from '@/context/search-context'
 import { Button } from './ui/button'
+import { BsFillSearchHeartFill } from 'react-icons/bs'
 
 interface Props {
   className?: string
@@ -20,7 +20,7 @@ export function Search({ className = '', placeholder = 'Search' }: Props) {
       )}
       onClick={() => setOpen(true)}
     >
-      <IconSearch
+      <BsFillSearchHeartFill
         aria-hidden='true'
         className='absolute left-1.5 top-1/2 -translate-y-1/2'
       />

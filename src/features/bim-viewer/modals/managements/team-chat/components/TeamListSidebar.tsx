@@ -1,6 +1,7 @@
 import ChatSessionItem from "@/components/ChatSessionItem";
 import React from "react";
 import { Sidebar, sidebarClasses } from "react-pro-sidebar";
+import { SearchBox } from "@/components/SearchBox"; // Import SearchBox
 
 interface TeamListSidebarProps {
   teams: {
@@ -28,14 +29,34 @@ export const TeamListSidebar: React.FC<TeamListSidebarProps> = ({
 }) => {
   const [collapsed, setCollapsed] = React.useState(false);
 
+  // State tìm kiếm
+  const [search, setSearch] = React.useState("");
+
+  // Filter team theo tên hoặc nội dung tin nhắn cuối
+  const filteredTeams = React.useMemo(() => {
+    if (!search.trim()) return teams;
+    const lower = search.trim().toLowerCase();
+    return teams.filter(
+      (team) =>
+        team.name.toLowerCase().includes(lower) ||
+        (team.lastMessage?.content?.toLowerCase() || "").includes(lower)
+    );
+  }, [teams, search]);
+
   return (
+    
     <Sidebar
       collapsed={collapsed}
+      width="350px"
+      breakPoint="lg"
       rootStyles={{
         [`.${sidebarClasses.container}`]: {
           background: "linear-gradient(135deg,#18181b 70%,#23242a 100%)",
           minWidth: collapsed ? "72px" : "250px",
           borderRight: "1px solid #283046",
+          borderLeft: "1px solid #283046",
+          borderTop: "1px solid #283046",
+          borderBottom: "1px solid #283046",
           transition: "all 0.2s cubic-bezier(.4,0,.2,1)",
           display: "flex",
           flexDirection: "column",
@@ -65,6 +86,17 @@ export const TeamListSidebar: React.FC<TeamListSidebarProps> = ({
         )}
       </div>
 
+      {/* SEARCH */}
+      {!collapsed && (
+        <div className="px-3 pt-2">
+          <SearchBox
+            value={search}
+            onChange={setSearch}
+            placeholder="Search group or message..."
+          />
+        </div>
+      )}
+
       {/* DANH SÁCH NHÓM */}
       <div
         className={`
@@ -77,9 +109,9 @@ export const TeamListSidebar: React.FC<TeamListSidebarProps> = ({
           minHeight: 0,
         }}
       >
-        {teams.map((team) => {
+        {filteredTeams.map((team) => {
           const session = {
-            team:team,
+            team: team,
             user: {
               id: team.id,
               user_name: team.name,
@@ -103,9 +135,9 @@ export const TeamListSidebar: React.FC<TeamListSidebarProps> = ({
             />
           );
         })}
-        {teams.length === 0 && (
+        {filteredTeams.length === 0 && (
           <div className="text-muted-foreground text-sm text-center pt-10 min-w-[260px] italic opacity-70">
-            No groups yet.
+            No groups found.
           </div>
         )}
       </div>

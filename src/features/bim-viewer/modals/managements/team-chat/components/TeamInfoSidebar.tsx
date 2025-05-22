@@ -96,132 +96,136 @@ export const TeamInfoSidebar: React.FC<TeamInfoSidebarProps> = ({ team }) => {
     ];
 
   return (
-    <aside
-      className="
-      w-80 min-w-[260px] max-w-xs
-      bg-gradient-to-br from-[#18181b] to-[#23242a]
-      border-l border-[#283046]
-      flex flex-col rounded-r-2xl shadow-xl h-full
-      select-none
-      "
-    >
-      {/* Header */}
-      <div className="mb-4 px-8 pt-8 pb-2 border-b border-[#283046]">
-        <div className="flex items-center gap-4">
-          <span className="w-12 h-12 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-600 text-white text-2xl font-extrabold flex items-center justify-center shadow">
-            {getInitial(team.name)}
-          </span>
-          <div>
-            <div className="text-xl font-bold text-white leading-tight truncate">
-              {team.name}
-            </div>
-            <div className="text-xs text-zinc-400 mt-1 truncate max-w-[11rem]">
-              {team.description}
-            </div>
-          </div>
-        </div>
-        <div className="flex flex-col gap-2 mt-4 text-[15px]">
-          <div className="flex items-center gap-2">
-            <span className="text-zinc-400">Project:</span>
-            <span className="font-semibold text-zinc-200">
-              {team.subProject?.name || "--"}
-            </span>
-            {team.subProject?.id && (
-              <span className="ml-1 text-xs text-zinc-500">
-                #{team.subProject.id}
-              </span>
-            )}
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="text-zinc-400">Manager:</span>
-            {team.owner?.picture ? (
-              <img
-                src={team.owner.picture}
-                className="w-6 h-6 rounded-full object-cover border border-zinc-700"
-                alt={team.owner.user_name}
-              />
-            ) : (
-              <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-blue-700 text-white font-bold text-xs">
-                {getInitial(team.owner?.user_name)}
-              </span>
-            )}
-            <span className="font-semibold text-zinc-200 ml-1">
-              {team.owner?.user_name || "--"}
-            </span>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="text-zinc-400">Created:</span>
-            <span className="font-semibold text-zinc-200">
-              {formatDate(team.created_at)}
-            </span>
-          </div>
-        </div>
-      </div>
 
-      {/* Members List - Scrollable */}
-      <div className="flex-1 flex flex-col px-8 pt-4 pb-2 overflow-hidden mb-4 border-b border-[#283046] max-h-60">
-        <div className="font-semibold mb-1 text-zinc-300 tracking-wide flex items-center">
-          Members
-          <span className="ml-2 text-xs text-zinc-400">({memberCount})</span>
-        </div>
-        <ul className="space-y-2 overflow-y-auto max-h-56 pr-2 scrollbar-thin scrollbar-thumb-zinc-700">
-          {sortedMembers.map((m) => (
-            <li
-              key={m.id}
-              className={`
-                flex items-center gap-3 px-3 py-2 rounded-xl border shadow
-                ${
-                  m.role?.toLowerCase() === "leader" ||
-                  m.role?.toLowerCase() === "owner"
-                    ? "bg-yellow-50/10 border-yellow-400/40 ring-2 ring-yellow-200/30"
-                    : "bg-zinc-800/70 border-zinc-700"
-                }
-                hover:bg-blue-950/60 transition-all
-              `}
-            >
-              {/* Avatar */}
-              {m.picture ? (
-                <img
-                  src={m.picture}
-                  alt={m.name}
-                  className="w-8 h-8 rounded-full object-cover border-2 border-zinc-700"
-                />
-              ) : (
-                <span
-                  className={`inline-flex items-center justify-center w-8 h-8 rounded-full font-bold
-                    ${
-                      m.role?.toLowerCase() === "leader" ||
-                      m.role?.toLowerCase() === "owner"
-                        ? "bg-gradient-to-br from-yellow-200 to-yellow-400 text-black shadow"
-                        : "bg-gradient-to-br from-blue-600 to-indigo-600 text-white"
-                    }
-                  `}
-                  title={m.name}
-                >
-                  {getInitial(m.name)}
+    <div className="bg-gradient-to-br from-[#18181b] to-[#23242a] min-w-96 border border-[#283046]">
+      <div className="flex w-full m-auto items-center justify-center px-5 h-14 border-b border-zinc-700 bg-gradient-to-r from-zinc-900 via-zinc-950 to-zinc-800 sticky top-0 z-50 ">
+        <span className="text-white text-lg">Group Infomation</span>
+      </div>
+      <aside
+        className="
+        min-w-[260px]
+        border-[#283046]
+        shadow-xl
+        p-2
+        "
+      >
+        {/* Header */}
+        <div className="mb-4 pt-8 pb-2 border-b border-[#283046]">
+          <div className="flex items-center gap-4">
+            <span className="w-12 h-12 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-600 text-white text-2xl font-extrabold flex items-center justify-center shadow">
+              {getInitial(team.name)}
+            </span>
+            <div>
+              <div className="text-xl font-bold text-white leading-tight truncate">
+                {team.name}
+              </div>
+              <div className="text-xs text-zinc-400 mt-1 truncate max-w-[11rem]">
+                {team.description}
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-col gap-2 mt-4 text-[15px]">
+            <div className="flex items-center gap-2">
+              <span className="text-zinc-400">Project:</span>
+              <span className="font-semibold text-zinc-200">
+                {team.subProject?.name || "--"}
+              </span>
+              {team.subProject?.id && (
+                <span className="ml-1 text-xs text-zinc-500">
+                  #{team.subProject.id}
                 </span>
               )}
-              <span className="font-medium text-zinc-100 truncate">
-                {m.name}
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-zinc-400">Manager:</span>
+              {team.owner?.picture ? (
+                <img
+                  src={team.owner.picture}
+                  className="w-6 h-6 rounded-full object-cover border border-zinc-700"
+                  alt={team.owner.user_name}
+                />
+              ) : (
+                <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-blue-700 text-white font-bold text-xs">
+                  {getInitial(team.owner?.user_name)}
+                </span>
+              )}
+              <span className="font-semibold text-zinc-200 ml-1">
+                {team.owner?.user_name || "--"}
               </span>
-              <span
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-zinc-400">Created:</span>
+              <span className="font-semibold text-zinc-200">
+                {formatDate(team.created_at)}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Members List - Scrollable */}
+        <div className="flex-1 flex flex-col pt-4 pb-2 overflow-hidden mb-4 border-b border-[#283046] max-h-60">
+          <div className="font-semibold mb-1 text-zinc-300 tracking-wide flex items-center">
+            Members
+            <span className="ml-2 text-xs text-zinc-400">({memberCount})</span>
+          </div>
+          <ul className="space-y-2 overflow-y-auto max-h-56 pr-2 scrollbar-thin scrollbar-thumb-zinc-700
+          flex-1 px-2 py-3
+          scrollbar-track-transparent
+          ">
+            {sortedMembers.map((m) => (
+              <li
+                key={m.id}
                 className={`
-                  text-xs rounded px-2 py-0.5 ml-auto font-semibold tracking-tight shadow
-                  ${
-                    m.role?.toLowerCase() === "leader" ||
+                  flex items-center gap-3 px-3 py-2 rounded-xl border shadow
+                  ${m.role?.toLowerCase() === "leader" ||
                     m.role?.toLowerCase() === "owner"
-                      ? "bg-yellow-200/90 text-black"
-                      : "bg-zinc-700/90 text-white"
+                    ? "bg-yellow-50/10 border-yellow-400/40 ring-2 ring-yellow-200/30"
+                    : "bg-zinc-800/70 border-zinc-700"
                   }
+                  hover:bg-blue-950/60 transition-all
                 `}
               >
-                {m.role}
-              </span>
-            </li>
-          ))}
-        </ul>
+                {/* Avatar */}
+                {m.picture ? (
+                  <img
+                    src={m.picture}
+                    alt={m.name}
+                    className="w-8 h-8 rounded-full object-cover border-2 border-zinc-700"
+                  />
+                ) : (
+                  <span
+                    className={`inline-flex items-center justify-center w-8 h-8 rounded-full font-bold
+                      ${m.role?.toLowerCase() === "leader" ||
+                        m.role?.toLowerCase() === "owner"
+                        ? "bg-gradient-to-br from-yellow-200 to-yellow-400 text-black shadow"
+                        : "bg-gradient-to-br from-blue-600 to-indigo-600 text-white"
+                      }
+                    `}
+                    title={m.name}
+                  >
+                    {getInitial(m.name)}
+                  </span>
+                )}
+                <span className="font-medium text-zinc-100 truncate">
+                  {m.name}
+                </span>
+                <span
+                  className={`
+                    text-xs rounded px-2 py-0.5 ml-auto font-semibold tracking-tight shadow
+                    ${m.role?.toLowerCase() === "leader" ||
+                      m.role?.toLowerCase() === "owner"
+                      ? "bg-yellow-200/90 text-black"
+                      : "bg-zinc-700/90 text-white"
+                    }
+                  `}
+                >
+                  {m.role}
+                </span>
+              </li>
+            ))}
+          </ul>
 
-      </div>
+        </div>
         {/* Tabs */}
         <div className="mt-5 ">
           <Tabs defaultValue="files" className="w-full">
@@ -269,6 +273,7 @@ export const TeamInfoSidebar: React.FC<TeamInfoSidebarProps> = ({ team }) => {
             </TabsContent>
           </Tabs>
         </div>
-    </aside>
+      </aside>
+    </div>
   );
 };

@@ -30,7 +30,7 @@ export default function TeamMessagePage({ teamId }: TeamMessagePageProps) {
     if (!teamsLoading && teams.length && selectedTeamId == null) {
       setSelectedTeamId(teams[0].id);
     }
-    if(teamsLoading){
+    if (teamsLoading) {
       setSelectedTeamId(Number(teamId));
     }
   }, [teams, teamsLoading, selectedTeamId]);
@@ -43,7 +43,7 @@ export default function TeamMessagePage({ teamId }: TeamMessagePageProps) {
   };
 
   return (
-    <div className="h-full flex border border-gray-400  overflow-hidden bg-[#E2E8F0] dark:bg-[#1F293B]">
+    <div className="h-full flex  overflow-hidden bg-[#E2E8F0] dark:bg-[#1F293B]">
       {/* Sidebar team list */}
       {teamsLoading ? (
         <LoadingState />
@@ -61,12 +61,12 @@ export default function TeamMessagePage({ teamId }: TeamMessagePageProps) {
       {/* Box message/chat */}
       <div className="flex-1 flex flex-col">
         {selectedTeamId && selectedTeam ? (
-              <TeamChatFeature
-                teamId={selectedTeamId}
-                currentUser={user}
-                teamName={selectedTeam.name}
-                onShowInfo={() => setInfoOpen(true)}
-              />
+          <TeamChatFeature
+            teamId={selectedTeamId}
+            currentUser={user}
+            teamName={selectedTeam.name}
+            onShowInfo={() => setInfoOpen(true)}
+          />
         ) : (
           <div className="flex flex-1 items-center justify-center text-muted-foreground text-xl">
             Select a team chat to get info
@@ -74,41 +74,15 @@ export default function TeamMessagePage({ teamId }: TeamMessagePageProps) {
         )}
       </div>
 
-      {/* Sidebar phải với react-pro-sidebar */}
-      <Sidebar
-        collapsed={!infoOpen}
-        collapsedWidth="0px"
-        width="320px"
-        backgroundColor="#a80840"
-        rootStyles={{
-          [`.${sidebarClasses.container}`]: {
-            borderLeft: "1px solid #9ca3af",
-            transition: "all 0.2s",
-            zIndex: 30,
-            minWidth: "0px",
-            maxWidth: "100vw",
-          },
-        }}
-      >
-        {/* Nút đóng sidebar phải */}
-        <div className="w-full flex justify-between items-center px-5 h-14
-        border-b border-zinc-700 bg-gradient-to-r from-zinc-900 via-zinc-950 to-zinc-800
-        sticky top-0 z-50
-        shadow-[0_2px_8px_-6px_rgba(0,0,0,0.5)]">
-          <span className="text-lg font-bold text-slate-200 dark:text-slate-100 px-4">Information Group</span>
-          <button
-            onClick={() => setInfoOpen(false)}
-            className="text-zinc-400 hover:text-zinc-100 p-1"
-            title="Close"
-          >
-            <svg width={22} height={22} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-              <line x1="18" y1="6" x2="6" y2="18" />
-              <line x1="6" y1="6" x2="18" y2="18" />
-            </svg>
-          </button>
-        </div>
-        {selectedTeam  && <TeamInfoSidebar team={selectedTeam} />}
-      </Sidebar>
+      {
+        teamsLoading ?
+          <LoadingState /> :
+          <>
+              {selectedTeam && <TeamInfoSidebar team={selectedTeam} />}
+          </>
+      }
+
+
     </div>
   );
 }
