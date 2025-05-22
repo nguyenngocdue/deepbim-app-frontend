@@ -17,7 +17,7 @@ interface TeamListSidebarProps {
   }[];
   selectedTeamId?: number;
   onSelectTeam: (id: number) => void;
-  currentUser: any; // Truyền user hiện tại vào để so sánh với sender
+  currentUser: any;
 }
 
 export const TeamListSidebar: React.FC<TeamListSidebarProps> = ({
@@ -33,51 +33,53 @@ export const TeamListSidebar: React.FC<TeamListSidebarProps> = ({
       collapsed={collapsed}
       rootStyles={{
         [`.${sidebarClasses.container}`]: {
-          backgroundColor: "#1F293B",
-          minWidth: collapsed ? "80px" : "260px",
-          borderRight: "1px solid #9ca3af",
-          transition: "all 0.2s",
+          background: "linear-gradient(135deg,#18181b 70%,#23242a 100%)",
+          minWidth: collapsed ? "72px" : "250px",
+          borderRight: "1px solid #283046",
+          transition: "all 0.2s cubic-bezier(.4,0,.2,1)",
           display: "flex",
           flexDirection: "column",
-          height: "100%", // Chiều cao 100%
+          height: "100%",
         },
       }}
     >
-      {/* HEADER: luôn đứng yên */}
-      <div className="w-full flex items-center px-4 py-3 border-b bg-muted border-gray-400 bg-zinc-950 shrink-0">
+      {/* HEADER */}
+      <div className="
+        w-full flex items-center px-5 h-14
+        border-b border-zinc-700 bg-gradient-to-r from-zinc-900 via-zinc-950 to-zinc-800
+        sticky top-0 z-50
+        shadow-[0_2px_8px_-6px_rgba(0,0,0,0.5)]
+        ">
         <button
-          className="mr-2 text-zinc-500 hover:text-zinc-400"
+          className="mr-3 rounded-full p-1 bg-zinc-800 hover:bg-zinc-700 transition-colors"
           onClick={() => setCollapsed((v) => !v)}
         >
-          <svg width={22} height={22} viewBox="0 0 20 20">
+          <svg width={20} height={20} viewBox="0 0 20 20">
             <rect y="3" width="20" height="2" rx="1" fill="currentColor" />
             <rect y="9" width="20" height="2" rx="1" fill="currentColor" />
             <rect y="15" width="20" height="2" rx="1" fill="currentColor" />
           </svg>
         </button>
         {!collapsed && (
-          <span className="text-lg font-bold dark:text-slate-100 text-slate-200">Groups</span>
+          <span className="text-lg font-bold tracking-wide text-white select-none">Groups</span>
         )}
       </div>
 
-      {/* SCROLL CONTENT: tin nhắn list */}
+      {/* DANH SÁCH NHÓM */}
       <div
-        className="
-          flex-1 overflow-y-auto px-2 py-2 bg-[#1F293B] dark:bg-slate-800
-          mb-2 space-y-2 pr-1
-          scrollbar-thin
-          scrollbar-thumb-zinc-500
-          scrollbar-track-transparent
-          hover:scrollbar-thumb-zinc-400
-          dark:scrollbar-thumb-zinc-700
-        "
+        className={`
+          flex-1 overflow-y-auto px-2 py-3
+          bg-[#20222b] dark:bg-[#18181b]
+          space-y-2
+          scrollbar-thin scrollbar-thumb-zinc-600 scrollbar-track-transparent
+        `}
         style={{
-          minHeight: 0, // fix cho flex scroll chuẩn
+          minHeight: 0,
         }}
       >
         {teams.map((team) => {
-          // Tạo object session cho mỗi team
           const session = {
+            team:team,
             user: {
               id: team.id,
               user_name: team.name,
@@ -97,11 +99,12 @@ export const TeamListSidebar: React.FC<TeamListSidebarProps> = ({
               isActive={selectedTeamId === team.id}
               onClick={() => onSelectTeam(team.id)}
               currentUser={currentUser}
+              collapsed={collapsed}
             />
           );
         })}
         {teams.length === 0 && (
-          <div className="text-muted-foreground text-sm text-center pt-8 min-w-[260px]">
+          <div className="text-muted-foreground text-sm text-center pt-10 min-w-[260px] italic opacity-70">
             No groups yet.
           </div>
         )}

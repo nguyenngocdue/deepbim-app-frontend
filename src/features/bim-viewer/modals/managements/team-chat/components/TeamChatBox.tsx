@@ -1,13 +1,12 @@
-import React, { useRef, useEffect, useState, useCallback } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { MoreHorizontal } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
-} from "@/components/ui/dropdown-menu"; // Update path theo dự án của bạn
+} from "@/components/ui/dropdown-menu";
 import { MessageBubble } from "@/features/chats/chat-customer/components/MessageBubble";
 import { ShowInfoMenuItem } from "./ShowInfoMenuItem";
-import { Input } from "@/components/ui/input";
 import { TypingIndicator } from "@/components/common/TypingIndicator";
 import { useAppSelector } from "@/hooks/reduxHooks";
 import { CLASS_NAME_DEFAULT } from "@/utils/class";
@@ -18,6 +17,7 @@ import { IoIosSend } from "react-icons/io";
 export interface Message {
   id: number;
   sender: string;
+  sender_id?: number;
   content: string;
   created_at: string;
   avatar?: string;
@@ -30,9 +30,9 @@ interface TeamChatBoxProps {
   onSend: (message: string) => void;
   sendTyping: () => void;
   teamName?: string;
-  onShowInfo?: () => void; // Mở sidebar phải
+  onShowInfo?: () => void;
   typingUsers: [];
-  loadingMessage: boolean
+  loadingMessage: boolean;
 }
 
 export const TeamChatBox: React.FC<TeamChatBoxProps> = ({
@@ -53,121 +53,111 @@ export const TeamChatBox: React.FC<TeamChatBoxProps> = ({
     setCurrentUser(user);
   }, [user]);
 
-
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const handleSend = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSend = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
     if (input.trim()) {
       onSend(input.trim());
       setInput("");
     }
   };
 
-
   return (
-    <main className="flex flex-col flex-1 h-svh  overflow-y-auto ">
+    <main className="flex flex-col flex-1 min-h-0 bg-slate-100 dark:bg-zinc-900 transition-all">
       {/* Header */}
-      <div className="px-6 py-3 border-b border-gray-400 bg-muted flex items-center justify-between gap-3 bg-zinc-950 ">
+      <div className="px-6 py-3 h-14 border-b border-zinc-300 dark:border-zinc-700 bg-gradient-to-r from-zinc-900 via-zinc-950 to-zinc-800 flex items-center justify-between gap-3 sticky top-0 z-10 shadow-sm">
         <div className="flex items-center gap-3">
-          <div className="text-lg text-slate-200 dark:text-slate-300">{teamName || "Team Chat"}</div>
+          <span className="text-lg font-bold text-white drop-shadow">{teamName || "Team Chat"}</span>
         </div>
-        {/* Nút 3 chấm menu */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button
-              className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-zinc-400 focus:outline-none"
+              className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-zinc-800 transition focus:outline-none"
               aria-label="More"
               type="button"
             >
-              <MoreHorizontal  className="text-gray-700 " size={16} />
+              <MoreHorizontal className="text-gray-400" size={22} />
             </button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" sideOffset={6} className="min-w-[180px] border border-gray-500">
+          <DropdownMenuContent align="end" sideOffset={6} className="min-w-[180px] border border-zinc-700 shadow-xl bg-zinc-900 text-white">
             <ShowInfoMenuItem onClick={onShowInfo} />
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
 
       {/* Message List */}
-      <div className="
-            p-4
-            bg-slate-200
-            dark:bg-slate-800
-            flex-1 overflow-y-auto mb-2 space-y-2 pr-1
-            scrollbar-thin
-            scrollbar-thumb-zinc-500
-            scrollbar-track-transparent
-            hover:scrollbar-thumb-zinc-400
-            dark:scrollbar-thumb-zinc-700
-          ">
-        {
-          loadingMessage ? <LoadingState /> :
-            (<>
-              {messages.map((msg) => {
-                const isMe = currentUser && String(msg.sender_id) === String(currentUser.id);
-                return (
-                  <div key={msg.id}>
-                    <MessageBubble
-                      text={msg.content}
-                      from={isMe ? "user" : "admin"}
-                      avatar={msg.avatar}
-                      userName={msg.sender}
-                      showAvatar={!isMe}
-                      createdAt={msg.created_at}
-                    />
-                  </div>
-                );
-              })}
-              <div ref={messagesEndRef} />
-            </>
-            )
-        }
+      <div
+        className="
+          flex-1 overflow-y-auto p-6 space-y-3 bg-slate-100 dark:bg-zinc-900
+          scrollbar-thin scrollbar-thumb-zinc-500 scrollbar-track-transparent
+          hover:scrollbar-thumb-zinc-400 dark:scrollbar-thumb-zinc-700
+          transition-all
+        "
+      >
+        {loadingMessage ? (
+          <LoadingState />
+        ) : (
+          <>
+            {messages.map((msg) => {
+              const isMe =
+                currentUser && String(msg.sender_id) === String(currentUser.id);
+              return (
+                <div key={msg.id}>
+                  <MessageBubble
+                    text={msg.content}
+                    from={isMe ? "user" : "admin"}
+                    avatar={msg.avatar}
+                    userName={msg.sender}
+                    showAvatar={!isMe}
+                    createdAt={msg.created_at}
+                  />
+                </div>
+              );
+            })}
+            <div ref={messagesEndRef} />
+          </>
+        )}
       </div>
+
+      {/* Typing Indicator */}
       <TypingIndicator typingUsers={typingUsers} currentUserId={currentUser?.id} />
 
       {/* Input */}
       <form
         onSubmit={handleSend}
-        className=" ml-2 p-2 border-t border-gray-400 bg-muted flex gap-2 border-r-0"
+        className="flex gap-2 items-center border-t border-zinc-200 dark:border-zinc-700 bg-slate-50 dark:bg-zinc-900 px-4 py-3"
       >
-        <div className="flex items-center gap-4 justify-stretch w-full">
-          <textarea
-            className="flex-1 py-1 rounded px-4 text-sm outline-none dark:bg-slate-500 dark:text-gray-100 bg-slate-200 text-gray-700 "
-            placeholder="Type a message..."
-            value={input}
-            onChange={e => {
-              setInput(e.target.value);
-              sendTyping();
-            }}
-            rows={2}
-
-
-            onKeyDown={e => {
-              if (e.key === "Enter" && !e.ctrlKey) {
-                e.preventDefault();  // Chặn xuống dòng
-                if (input.trim()) {
-                  onSend(input.trim());
-                  setInput("");
-                }
-              } else if (e.key === "Enter" && e.ctrlKey) {
-                // Cho phép xuống dòng khi Ctrl+Enter
-                setInput(input + "\n");
-              }
-            }}
-
-
-          />
-          <Button
-            type="submit"
-            className={`${CLASS_NAME_DEFAULT.CLASS_APP_BUTTON_CREATE}`}
-          >
-            <IoIosSend />
-            Send
-          </Button>
-        </div>
+        <textarea
+          className="flex-1 resize-none py-2 px-4 rounded-xl text-base outline-none transition border bg-white dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700 focus:border-blue-500 dark:focus:border-blue-500 text-zinc-900 dark:text-zinc-100 shadow-sm"
+          placeholder="Type a message..."
+          value={input}
+          onChange={e => {
+            setInput(e.target.value);
+            sendTyping();
+          }}
+          rows={2}
+          onKeyDown={e => {
+            if (e.key === "Enter" && !e.ctrlKey) {
+              e.preventDefault();
+              if (input.trim()) handleSend();
+            }
+            // Ctrl+Enter xuống dòng
+            else if (e.key === "Enter" && e.ctrlKey) {
+              setInput(input + "\n");
+            }
+          }}
+        />
+        <Button
+          type="submit"
+          className={`rounded-xl px-4 h-10 flex items-center gap-2 shadow-md transition ${CLASS_NAME_DEFAULT.CLASS_APP_BUTTON_CREATE}`}
+          disabled={!input.trim()}
+          title="Send"
+        >
+          <IoIosSend size={22} />
+        </Button>
       </form>
     </main>
   );

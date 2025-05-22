@@ -21,9 +21,7 @@ export function MessageBubble({
   createdAt?: String;
 }) {
   // Nếu không có avatar, render avatar ảo
-  const avatarSrc =
-    avatar ||
-    `https://api.dicebear.com/7.x/adventurer/svg?seed=${userName}`;
+  const avatarSrc = avatar || `https://api.dicebear.com/7.x/adventurer/svg?seed=${userName}`;
 
   const isUser = from === "user";
   return (

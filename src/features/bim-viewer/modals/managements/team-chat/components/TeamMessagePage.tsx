@@ -35,7 +35,6 @@ export default function TeamMessagePage({ teamId }: TeamMessagePageProps) {
     }
   }, [teams, teamsLoading, selectedTeamId]);
 
-  console.log(selectedTeamId);
 
   // Handler chọn team
   const handleSelectTeam = (id: number) => {
@@ -92,7 +91,10 @@ export default function TeamMessagePage({ teamId }: TeamMessagePageProps) {
         }}
       >
         {/* Nút đóng sidebar phải */}
-        <div className="flex justify-between py-4 border-b  bg-muted border-gray-400 items-center bg-zinc-950">
+        <div className="w-full flex justify-between items-center px-5 h-14
+        border-b border-zinc-700 bg-gradient-to-r from-zinc-900 via-zinc-950 to-zinc-800
+        sticky top-0 z-50
+        shadow-[0_2px_8px_-6px_rgba(0,0,0,0.5)]">
           <span className="text-lg font-bold text-slate-200 dark:text-slate-100 px-4">Information Group</span>
           <button
             onClick={() => setInfoOpen(false)}

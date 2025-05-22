@@ -27,8 +27,7 @@ export function useTeamChatSocket(teamId: number | undefined, currentUser: { id:
   const [typingUsers, setTypingUsers] = useState<UserTyping[]>([]);
   const socketRef = useRef<Socket | null>(null);
   const [loadingMessage, setLoadingMessage] = useState(false);
-
-
+console.log(messages);
 
   // Khi vào team mới: kết nối socket, fetch message cũ
   useEffect(() => {
@@ -60,8 +59,10 @@ export function useTeamChatSocket(teamId: number | undefined, currentUser: { id:
 
     // Nhận tin nhắn realtime
     socket.on("receive_team_message", (msg: TeamMessage) => {
+      console.log(msg);
       setMessages(prev => [...prev, msg]);
     });
+
 
     // Nhận user khác đang typing
     socket.on("team_member_typing", (payload: { userId: number; userName: string }) => {

@@ -28,16 +28,16 @@ interface TeamTableProps {
 }
 
 export function TeamTable({ data, showNo = true, onTeamClick, onEdit, onRemove, onView }: TeamTableProps) {
-  const location = useLocation(); 
+  const location = useLocation();
   const pathname = location.pathname;
-  
+
   const columns = React.useMemo<ColumnDef<TeamRow>[]>(
     () => [
-      { 
-        accessorKey: "id", 
+      {
+        accessorKey: "id",
         header: "ID",
-        cell: ({row}) => (
-            <IdDisplay id={row.original.id} link={`${pathname}/${row.original.id}`} />
+        cell: ({ row }) => (
+          <IdDisplay id={row.original.id} link={`${pathname}/${row.original.id}`} />
         )
       },
       {
@@ -45,8 +45,7 @@ export function TeamTable({ data, showNo = true, onTeamClick, onEdit, onRemove, 
         header: "Team Name",
         cell: ({ row }: { row: { original: TeamRow } }) => (
           <span
-            className="text-primary cursor-pointer underline"
-            onClick={() => onTeamClick?.(row.original)}
+            className=""
           >
             {row.original.name}
           </span>
@@ -56,12 +55,12 @@ export function TeamTable({ data, showNo = true, onTeamClick, onEdit, onRemove, 
       {
         accessorKey: "sub_project_id",
         header: "Sub-Project",
-        cell:  ({ row }: { row: { original: TeamRow } }) => (
+        cell: ({ row }: { row: { original: TeamRow } }) => (
 
           <>
-             <span className="text-primary cursor-pointer underline">
-            {row.original?.subProject?.name}
-          </span>
+            <span className="text-primary cursor-pointer underline">
+              {row.original?.subProject?.name}
+            </span>
           </>
         )
       },
@@ -79,71 +78,71 @@ export function TeamTable({ data, showNo = true, onTeamClick, onEdit, onRemove, 
             <span>-</span>
           ),
       },
-      { 
-        accessorKey: "members_count", 
+      {
+        accessorKey: "members_count",
         header: "Members",
         cell: ({ row }) => {
           const users = (row.original.members).map(item => item.user);;
           return (
             <span>
-              <AvatarGroup members={users} maxDisplay={3}/>
+              <AvatarGroup members={users} maxDisplay={3} />
             </span>
-        )
+          )
+        }
+      },
+      {
+        accessorKey: "created_at",
+        header: "Created At",
+        cell: ({ row }) => {
+          return (
+            <DateTimeDisplay isoDate={row.original.created_at} />
+          )
+        }
+      },
+      {
+        accessorKey: "updated_at",
+        header: "Updated At",
+        cell: ({ row }) => {
+          return (
+            <DateTimeDisplay isoDate={row.original.updated_at} />
+          )
+        }
+      },
+      {
+        id: "actions",
+        header: "ACTIONS",
+        cell: ({ row }) => (
+          <div className="flex items-center gap-0 justify-center">
+            <Button
+              variant='ghost' size='icon'
+              className="p-1 hover:bg-zinc-200 rounded "
+              title="Edit"
+              onClick={() => onEdit?.(row.original)}
+            >
+              <Pencil size={18} />
+            </Button>
+            <Button
+              variant='ghost' size='icon'
+              className="p-1 hover:bg-zinc-200 rounded text-red-500"
+              title="Delete"
+              onClick={() => onRemove?.(row.original)}
+            >
+              <Trash2 size={18} />
+            </Button>
+            <Button
+              variant='ghost' size='icon'
+              className="p-1 hover:bg-zinc-200 rounded"
+              title="View"
+              onClick={() => onView?.(row.original)}
+            >
+              <Eye size={18} />
+            </Button>
+          </div>
+        ),
       }
-    },
-    { 
-      accessorKey: "created_at", 
-      header: "Created At",
-      cell: ({ row }) => {
-        return (
-          <DateTimeDisplay isoDate={row.original.created_at} />
-        )
-      }
-    },
-     { 
-      accessorKey: "updated_at", 
-      header: "Updated At",
-      cell: ({ row }) => {
-        return (
-          <DateTimeDisplay isoDate={row.original.updated_at} />
-        )
-      }
-    },
-    {
-      id: "actions",
-      header: "ACTIONS",
-      cell: ({ row }) => (
-        <div className="flex items-center gap-0 justify-center">
-          <Button
-            variant='ghost' size='icon'
-            className="p-1 hover:bg-zinc-200 rounded "
-            title="Edit"
-            onClick={() => onEdit?.(row.original)}
-          >
-            <Pencil size={18} />
-          </Button>
-          <Button
-            variant='ghost' size='icon'
-            className="p-1 hover:bg-zinc-200 rounded text-red-500"
-            title="Delete"
-            onClick={() => onRemove?.(row.original)}
-          >
-            <Trash2 size={18} />
-          </Button>
-          <Button
-            variant='ghost' size='icon'
-            className="p-1 hover:bg-zinc-200 rounded"
-            title="View"
-            onClick={() => onView?.(row.original)}
-          >
-            <Eye size={18} />
-          </Button>
-        </div>
-      ),
-    }
-  ],
-  [onTeamClick]
-);
+    ],
+    [onTeamClick]
+  );
 
   const table = useReactTable({
     data,
