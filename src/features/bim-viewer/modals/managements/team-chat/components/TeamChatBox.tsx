@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useInView } from "react-intersection-observer";
 import { MessageBubble } from "@/features/chats/chat-customer/components/MessageBubble";
 import { TypingIndicator } from "@/components/common/TypingIndicator";
@@ -41,6 +41,12 @@ export const TeamChatBox: React.FC<TeamChatBoxProps> = ({
 }) => {
   const [input, setInput] = useState("");
   const { user } = useAppSelector((state) => state.auth);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Auto scroll xuống cuối mỗi khi messages đổi
+    messagesEndRef.current?.scrollIntoView({ behavior: "auto" });
+  }, [messages]);
 
   // Đọc tin nhắn
   const [maxReadId, setMaxReadId] = useState(0);
@@ -60,8 +66,8 @@ export const TeamChatBox: React.FC<TeamChatBoxProps> = ({
 
   // ====== Phần readers ======
   // readersMap: { [msgId]: [{id, name, avatar}] }
-  const [readersMap, setReadersMap] = useState<{[msgId: number]: any[]}>({});
-  const [loadingReaders, setLoadingReaders] = useState<{[msgId: number]: boolean}>({});
+  const [readersMap, setReadersMap] = useState<{ [msgId: number]: any[] }>({});
+  const [loadingReaders, setLoadingReaders] = useState<{ [msgId: number]: boolean }>({});
 
   // Chỉ fetch khi hover và chưa từng có reader
   const handleFetchReaders = async (msgId: number) => {
@@ -86,14 +92,18 @@ export const TeamChatBox: React.FC<TeamChatBoxProps> = ({
   };
 
   return (
-    <div className="flex flex-col flex-1 h-full bg-[#EBECF0] dark:bg-zinc-900">
+    <div className="flex flex-col h-full  bg-[#EBECF0] dark:bg-zinc-900">
       {/* Header */}
-      <div className="flex items-center justify-between px-6 py-3 h-14 bg-gradient-to-r from-zinc-900 via-zinc-950 to-zinc-800 shadow">
+      <div className="
+            flex items-center justify-between px-6 py-3 h-14 
+            bg-gradient-to-r from-zinc-900 via-zinc-950 to-zinc-800 
+            shadow-md shadow-zinc-600
+            ">
         <span className="text-lg font-bold text-white">{teamName || "Team Chat"}</span>
       </div>
 
       {/* Danh sách tin nhắn */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-3" style={{ minHeight: 0, maxHeight: 400 }}>
+      <div className="flex-1 overflow-y-auto p-4 space-y-3 scrollbar-thin scrollbar-thumb-zinc-600 scrollbar-track-transparent min-h-0">
         {loadingMessage ? (
           <LoadingState />
         ) : (
@@ -117,7 +127,7 @@ export const TeamChatBox: React.FC<TeamChatBoxProps> = ({
                 </div>
               );
             })}
-            <TypingIndicator typingUsers={typingUsers} currentUserId={user?.id} />
+            <div ref={messagesEndRef} />
           </>
         )}
       </div>
@@ -125,8 +135,9 @@ export const TeamChatBox: React.FC<TeamChatBoxProps> = ({
       {/* Khung nhập */}
       <form
         onSubmit={handleSend}
-        className="flex items-center gap-2 px-4 py-3 bg-gradient-to-r from-zinc-900 via-zinc-950 to-zinc-800"
+        className="relative flex items-center gap-2 px-4 py-3 bg-gradient-to-r from-zinc-900 via-zinc-950 to-zinc-800"
       >
+        <TypingIndicator typingUsers={typingUsers} currentUserId={user?.id} />
         <textarea
           className="flex-1 px-4 py-2 text-base rounded-xl border dark:bg-zinc-800 dark:border-zinc-700 text-zinc-900 dark:text-zinc-100"
           placeholder={`Type a message to "${teamName}"`}

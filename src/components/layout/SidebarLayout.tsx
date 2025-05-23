@@ -136,7 +136,7 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
                         </div>
                     </div>
                 </div>
-                <main className="w-full h-svh p-4">
+                <main className="w-full h-screen p-4">
                     {children}
                 </main>
             </div>

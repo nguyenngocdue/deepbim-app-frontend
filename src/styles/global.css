@@ -318,13 +318,9 @@ body.signin-page #leva__root {
 }
 
 /* SIDEBAR */
-.sidebar-tw {
-  @apply bg-zinc-900 border-r border-zinc-800 min-w-[260px] transition-all duration-200;
+.ps-sidebar-root.ps-collapsed.overflow-y-auto.css-ezlu64 {
+  border: none;
 }
-.sidebar-tw-collapsed {
-  @apply min-w-[80px];
-}
-
-.ps-sidebar-root.css-hxse3r {
+.ps-sidebar-root.overflow-y-auto.css-wd40aq {
   border: none;
 }

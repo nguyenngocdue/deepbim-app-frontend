@@ -40,8 +40,7 @@ export function useTeamChatSocket(teamId: number | undefined, currentUser: { id:
     }
   }, [teamId, currentUser]);
 
-
-
+  
   // Khi vào team mới: kết nối socket, fetch message cũ
   useEffect(() => {
     if (!teamId || !currentUser?.id) return;

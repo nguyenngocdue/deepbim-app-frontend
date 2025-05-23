@@ -39,7 +39,7 @@ export default function ChatSessionItem({
         mb-1
         ${isActive
           ? "ring-1 ring-blue-500 bg-slate-400 dark:bg-slate-700 text-gray-900 dark:text-white"
-          : "bg-slate-100 dark:bg-zinc-900 text-gray-700 dark:text-zinc-200 hover:bg-slate-200 dark:hover:bg-zinc-700 hover:shadow-sm"
+          : "bg-slate-100 dark:bg-zinc-900 text-gray-700 dark:text-zinc-200 hover:bg-slate-300 dark:hover:bg-zinc-700 hover:shadow-sm"
         }
       `}
     >

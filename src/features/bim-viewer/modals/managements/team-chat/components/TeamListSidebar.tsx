@@ -2,7 +2,6 @@ import ChatSessionItem from "@/components/ChatSessionItem";
 import React from "react";
 import { Sidebar, sidebarClasses } from "react-pro-sidebar";
 import { SearchBox } from "@/components/SearchBox"; // Import SearchBox
-import { useUnreadCounts } from "../hooks/useUnreadCounts";
 import { useUnreadCountsRealtime } from "../hooks/useUnreadCountsRealtime";
 
 interface TeamListSidebarProps {
@@ -29,7 +28,7 @@ export const TeamListSidebar: React.FC<TeamListSidebarProps> = ({
   onSelectTeam,
   currentUser,
 }) => {
-  const [collapsed, setCollapsed] = React.useState(false);
+  const [collapsed, setCollapsed] = React.useState(Boolean(localStorage.getItem('collapsed_team_chat')) || false);
 
   // State tìm kiếm
   const [search, setSearch] = React.useState("");
@@ -54,6 +53,7 @@ export const TeamListSidebar: React.FC<TeamListSidebarProps> = ({
       collapsed={collapsed}
       width="350px"
       breakPoint="lg"
+       className="max-h-[90vh] overflow-y-auto"
       rootStyles={{
         [`.${sidebarClasses.container}`]: {
           background: "linear-gradient(135deg,#18181b 70%,#23242a 100%)",
@@ -66,6 +66,7 @@ export const TeamListSidebar: React.FC<TeamListSidebarProps> = ({
           display: "flex",
           flexDirection: "column",
           height: "100%",
+          paddingBottom:"10px",
         },
       }}
     >
@@ -78,7 +79,10 @@ export const TeamListSidebar: React.FC<TeamListSidebarProps> = ({
         ">
         <button
           className="mr-3 rounded-full p-1 bg-zinc-800 hover:bg-zinc-700 transition-colors"
-          onClick={() => setCollapsed((v) => !v)}
+          onClick={() => {
+            setCollapsed((v) => !v)
+            localStorage.setItem('collapsed_team_chat', String(collapsed))
+          }}
         >
           <svg width={20} height={20} viewBox="0 0 20 20">
             <rect y="3" width="20" height="2" rx="1" fill="currentColor" />

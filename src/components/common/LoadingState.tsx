@@ -9,5 +9,3 @@ export function LoadingState({ message = "Loading..." }) {
   );
 }
 
-// Dùng:
-<LoadingState message="Loading teams..." />

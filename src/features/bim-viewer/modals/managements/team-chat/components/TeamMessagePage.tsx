@@ -1,15 +1,12 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { TeamListSidebar } from "./TeamListSidebar";
 import { TeamInfoSidebar } from "./TeamInfoSidebar";
-import { Sidebar, sidebarClasses } from "react-pro-sidebar";
 import { TeamChatFeature } from "../featutes/TeamChatFeature";
 import { useAppSelector } from "@/hooks/reduxHooks";
 import { useTeamsByUser } from "../hooks/useTeamsByUser";
 import EmptyState from "@/components/common/EmptyState";
 import { LoadingState } from "@/components/common/LoadingState";
 
-// ----- MOCK (Thay bằng API ở các hooks/feature real nếu có) -----
-// ---------------------------------------------------------------
 
 interface TeamMessagePageProps {
   teamId?: number | null;
@@ -45,12 +42,7 @@ export default function TeamMessagePage({ teamId }: TeamMessagePageProps) {
   return (
     <>
        {
-          // !teamsLoading ?  
-          // <div className="flex m-auto justify-center h-full w-full">
-          //   <LoadingState /> 
-          // </div>
-          // :
-          <div className="flex  max-h-screen   dark:bg-[#1F293B]">
+          <div className="flex h-[90vh]  dark:bg-[#1F293B]">
             {/* Sidebar team list */}
             {teamsLoading ? (
               <LoadingState />
@@ -62,11 +54,13 @@ export default function TeamMessagePage({ teamId }: TeamMessagePageProps) {
                     currentUser={user}
                   />
             ) : (
-              <EmptyState />
+              <div className="flex m-auto flex-col justify-center">
+                <EmptyState message="loading..."/>
+              </div>
             )}
 
             {/* Box message/chat */}
-            <div className="flex-1 flex flex-col">
+            <div className="flex-1 flex flex-col ">
               {selectedTeamId && selectedTeam ? (
                 <TeamChatFeature
                   teamId={selectedTeamId}
@@ -76,7 +70,7 @@ export default function TeamMessagePage({ teamId }: TeamMessagePageProps) {
                 />
               ) : (
                 <div className="flex flex-1 items-center justify-center text-muted-foreground text-xl">
-                  Select a team chat to get info
+                    <LoadingState message="Loading teams..." />
                 </div>
               )}
             </div>
@@ -88,8 +82,6 @@ export default function TeamMessagePage({ teamId }: TeamMessagePageProps) {
                     {selectedTeam && <TeamInfoSidebar team={selectedTeam} />}
                 </>
             }
-
-
           </div>
       }
     </>
