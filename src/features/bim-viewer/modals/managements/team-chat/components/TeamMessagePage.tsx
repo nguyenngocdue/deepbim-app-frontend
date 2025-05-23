@@ -50,7 +50,7 @@ export default function TeamMessagePage({ teamId }: TeamMessagePageProps) {
           //   <LoadingState /> 
           // </div>
           // :
-          <div className="h-full flex  overflow-hidden  dark:bg-[#1F293B]">
+          <div className="flex  max-h-screen   dark:bg-[#1F293B]">
             {/* Sidebar team list */}
             {teamsLoading ? (
               <LoadingState />

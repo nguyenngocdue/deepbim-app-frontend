@@ -172,57 +172,65 @@ export const TeamInfoSidebar: React.FC<TeamInfoSidebarProps> = ({ team }) => {
           flex-1 px-2 py-3
           scrollbar-track-transparent
           ">
-            {sortedMembers.map((m) => (
-              <li
-                key={m.id}
-                className={`
-                  flex items-center gap-3 px-3 py-2 rounded-xl border shadow
-                  ${m.role?.toLowerCase() === "leader" ||
-                    m.role?.toLowerCase() === "owner"
-                    ? "bg-yellow-50/10 border-yellow-400/40 ring-2 ring-yellow-200/30"
-                    : "bg-zinc-800/70 border-zinc-700"
-                  }
-                  hover:bg-blue-950/60 transition-all
-                `}
-              >
-                {/* Avatar */}
-                {m.picture ? (
-                  <img
-                    src={m.picture}
-                    alt={m.name}
-                    className="w-8 h-8 rounded-full object-cover border-2 border-zinc-700"
-                  />
-                ) : (
-                  <span
-                    className={`inline-flex items-center justify-center w-8 h-8 rounded-full font-bold
+            {sortedMembers.map((m) => {
+              const { user } = m;
+                if(!user) return;
+                const userId = user.id;
+                return (
+
+                  <li
+                    key={userId}
+                    className={`
+                      flex items-center gap-3 px-3 py-2 rounded-xl border shadow
                       ${m.role?.toLowerCase() === "leader" ||
                         m.role?.toLowerCase() === "owner"
-                        ? "bg-gradient-to-br from-yellow-200 to-yellow-400 text-black shadow"
-                        : "bg-gradient-to-br from-blue-600 to-indigo-600 text-white"
+                        ? "bg-yellow-50/10 border-yellow-400/40 ring-2 ring-yellow-200/30"
+                        : "bg-zinc-800/70 border-zinc-700"
                       }
+                      hover:bg-blue-950/60 transition-all
                     `}
-                    title={m.name}
                   >
-                    {getInitial(m.name)}
-                  </span>
-                )}
-                <span className="font-medium text-zinc-100 truncate">
-                  {m.name}
-                </span>
-                <span
-                  className={`
-                    text-xs rounded px-2 py-0.5 ml-auto font-semibold tracking-tight shadow
-                    ${m.role?.toLowerCase() === "leader" ||
-                      m.role?.toLowerCase() === "owner"
-                      ? "bg-yellow-200/90 text-black"
-                      : "bg-zinc-700/90 text-white"
-                    }
-                  `}
-                >
-                  {m.role}
-                </span>
-              </li>
-            ))}
+                    {/* Avatar */}
+                    {m.picture ? (
+                      <img
+                        src={m.picture}
+                        alt={m.name}
+                        className="w-8 h-8 rounded-full object-cover border-2 border-zinc-700"
+                      />
+                    ) : (
+                      <span
+                        className={`inline-flex items-center justify-center w-8 h-8 rounded-full font-bold
+                          ${m.role?.toLowerCase() === "leader" ||
+                            m.role?.toLowerCase() === "owner"
+                            ? "bg-gradient-to-br from-yellow-200 to-yellow-400 text-black shadow"
+                            : "bg-gradient-to-br from-blue-600 to-indigo-600 text-white"
+                          }
+                        `}
+                        title={m.name}
+                      >
+                        {getInitial(m.name)}
+                      </span>
+                    )}
+                    <span className="font-medium text-zinc-100 truncate">
+                      {m.name}
+                    </span>
+                    <span
+                      className={`
+                        text-xs rounded px-2 py-0.5 ml-auto font-semibold tracking-tight shadow
+                        ${m.role?.toLowerCase() === "leader" ||
+                          m.role?.toLowerCase() === "owner"
+                          ? "bg-yellow-200/90 text-black"
+                          : "bg-zinc-700/90 text-white"
+                        }
+                      `}
+                    >
+                      {m.role}
+                    </span>
+                  </li>
+                )
+            }
+            )
+            }
           </ul>
 
         </div>

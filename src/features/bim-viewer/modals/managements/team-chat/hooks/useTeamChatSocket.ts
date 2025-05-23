@@ -1,4 +1,5 @@
 import { getMessageByTeamId } from "@/apis/team-chat-message";
+import { UserProfile } from "@/types/User";
 import { useEffect, useRef, useState, useCallback } from "react";
 import { io, Socket } from "socket.io-client";
 
@@ -21,13 +22,25 @@ interface UserTyping {
   user_name: string;
 }
 
-export function useTeamChatSocket(teamId: number | undefined, currentUser: { id: number; user_name: string; avatar?: string }) {
+export function useTeamChatSocket(teamId: number | undefined, currentUser: { id: number; user_name: string; avatar?: string, currentUser: UserProfile }) {
   const [messages, setMessages] = useState<TeamMessage[]>([]);
   const [isConnected, setIsConnected] = useState(false);
   const [typingUsers, setTypingUsers] = useState<UserTyping[]>([]);
   const socketRef = useRef<Socket | null>(null);
   const [loadingMessage, setLoadingMessage] = useState(false);
-console.log(messages);
+
+
+  const markMessageAsRead = useCallback((messageId: number) => {
+    if (socketRef.current && teamId && currentUser?.id && messageId) {
+      socketRef.current.emit("read_team_message", {
+        teamId,
+        messageId,
+        userId: currentUser.id,
+      });
+    }
+  }, [teamId, currentUser]);
+
+
 
   // Khi vào team mới: kết nối socket, fetch message cũ
   useEffect(() => {
@@ -56,10 +69,14 @@ console.log(messages);
       }
     })();
 
+    // Read message
+      socket.on('message_read', (data) => {
+      console.log('Someone read message:', data);
+    })
+
 
     // Nhận tin nhắn realtime
     socket.on("receive_team_message", (msg: TeamMessage) => {
-      console.log(msg);
       setMessages(prev => [...prev, msg]);
     });
 
@@ -80,6 +97,10 @@ console.log(messages);
 
     // Khi client rời team hoặc component bị unmount
     return () => {
+      socket.off('message_read');
+      socket.off("receive_team_message");
+      socket.off("team_member_typing");
+      socket.off("team_member_stop_typing");
       setIsConnected(false);
       setTypingUsers([]);
       socket.disconnect();
@@ -145,5 +166,6 @@ console.log(messages);
     typingUsers, // mảng user đang typing (trừ mình)
     sendTyping,
     loadingMessage,
+    markMessageAsRead,
   };
 }

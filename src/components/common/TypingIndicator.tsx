@@ -36,7 +36,7 @@ export const TypingIndicator: React.FC<TypingIndicatorProps> = ({
   }
 
   return (
-    <span className="absolute bottom-0 left-0 right-0 z-50 py-1 text-sm italic text-blue-400  bg-transparent">
+    <span className=" bottom-0 left-0 right-0 z-50 py-1 text-sm italic text-blue-400  bg-transparent">
       {text}
     </span>
   );

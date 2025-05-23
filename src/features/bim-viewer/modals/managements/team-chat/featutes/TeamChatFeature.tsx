@@ -1,3 +1,4 @@
+import { UserProfile } from "@/types/User";
 import { TeamChatBox } from "../components/TeamChatBox"; // Component bạn gửi ở trên
 import { useTeamChatSocket } from "../hooks/useTeamChatSocket";
 
@@ -8,11 +9,11 @@ export function TeamChatFeature({
   onShowInfo,
 }: {
   teamId: number;
-  currentUser: Object;
+  currentUser: UserProfile;
   teamName?: string;
   onShowInfo?: () => void;
 }) {
-  const { messages, sendTeamMessage, typingUsers, sendTyping, loadingMessage } = useTeamChatSocket(teamId, currentUser);
+  const { messages, sendTeamMessage, typingUsers, sendTyping, loadingMessage,  markMessageAsRead, } = useTeamChatSocket(teamId, currentUser);
   return (
     <TeamChatBox
       teamId={teamId}
@@ -23,6 +24,7 @@ export function TeamChatFeature({
       typingUsers={typingUsers}
       sendTyping={sendTyping}
       loadingMessage={loadingMessage}
+      markMessageAsRead={markMessageAsRead}
     />
   );
 }
