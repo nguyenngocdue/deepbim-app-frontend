@@ -36,8 +36,8 @@ export const TypingIndicator: React.FC<TypingIndicatorProps> = ({
   }
 
   return (
-    <div className="px-4 py-2 text-sm italic text-blue-400 animate-pulse bg-muted">
+    <span className="absolute bottom-0 left-0 right-0 z-50 py-1 text-sm italic text-blue-400  bg-transparent">
       {text}
-    </div>
+    </span>
   );
 };

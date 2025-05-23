@@ -51,7 +51,7 @@ export default function ChatSessionItem({
           </> :
           <>
           <span className="w-11 h-11 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-500 text-white text-2xl font-bold flex items-center justify-center shadow">
-            {getInitial(session.team.name)}
+            {getInitial(session?.team?.name ?? session?.user.user_name)}
           </span>
           
           </>

@@ -43,46 +43,55 @@ export default function TeamMessagePage({ teamId }: TeamMessagePageProps) {
   };
 
   return (
-    <div className="h-full flex  overflow-hidden bg-[#E2E8F0] dark:bg-[#1F293B]">
-      {/* Sidebar team list */}
-      {teamsLoading ? (
-        <LoadingState />
-      ) : teams.length ? (
-            <TeamListSidebar
-              teams={teams}
-              selectedTeamId={selectedTeamId || undefined}
-              onSelectTeam={handleSelectTeam}
-              currentUser={user}
-            />
-      ) : (
-        <EmptyState />
-      )}
+    <>
+       {
+          // !teamsLoading ?  
+          // <div className="flex m-auto justify-center h-full w-full">
+          //   <LoadingState /> 
+          // </div>
+          // :
+          <div className="h-full flex  overflow-hidden  dark:bg-[#1F293B]">
+            {/* Sidebar team list */}
+            {teamsLoading ? (
+              <LoadingState />
+            ) : teams.length ? (
+                  <TeamListSidebar
+                    teams={teams}
+                    selectedTeamId={selectedTeamId || undefined}
+                    onSelectTeam={handleSelectTeam}
+                    currentUser={user}
+                  />
+            ) : (
+              <EmptyState />
+            )}
 
-      {/* Box message/chat */}
-      <div className="flex-1 flex flex-col">
-        {selectedTeamId && selectedTeam ? (
-          <TeamChatFeature
-            teamId={selectedTeamId}
-            currentUser={user}
-            teamName={selectedTeam.name}
-            onShowInfo={() => setInfoOpen(true)}
-          />
-        ) : (
-          <div className="flex flex-1 items-center justify-center text-muted-foreground text-xl">
-            Select a team chat to get info
+            {/* Box message/chat */}
+            <div className="flex-1 flex flex-col">
+              {selectedTeamId && selectedTeam ? (
+                <TeamChatFeature
+                  teamId={selectedTeamId}
+                  currentUser={user}
+                  teamName={selectedTeam.name}
+                  onShowInfo={() => setInfoOpen(true)}
+                />
+              ) : (
+                <div className="flex flex-1 items-center justify-center text-muted-foreground text-xl">
+                  Select a team chat to get info
+                </div>
+              )}
+            </div>
+
+            {
+              teamsLoading ?
+                <LoadingState /> :
+                <>
+                    {selectedTeam && <TeamInfoSidebar team={selectedTeam} />}
+                </>
+            }
+
+
           </div>
-        )}
-      </div>
-
-      {
-        teamsLoading ?
-          <LoadingState /> :
-          <>
-              {selectedTeam && <TeamInfoSidebar team={selectedTeam} />}
-          </>
       }
-
-
-    </div>
+    </>
   );
 }

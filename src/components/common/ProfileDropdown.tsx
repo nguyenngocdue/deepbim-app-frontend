@@ -29,13 +29,13 @@ export function ProfileDropdown() {
   const dispatch = useAppDispatch();
 
   const onSignout = async () => {
+    navigate({ to: '/sign-in' });
     try {
       await handleSignout(); // có thể lỗi nếu session mất
     } catch (error: any) {
       console.warn("Session might already be gone:", error.message);
     } finally {
       dispatch(clearUser());
-      navigate({ to: '/sign-in' });
     }
   };
 

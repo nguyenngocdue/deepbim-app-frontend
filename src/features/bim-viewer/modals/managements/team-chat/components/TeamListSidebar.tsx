@@ -69,7 +69,7 @@ export const TeamListSidebar: React.FC<TeamListSidebarProps> = ({
         w-full flex items-center px-5 h-14
         border-b border-zinc-700 bg-gradient-to-r from-zinc-900 via-zinc-950 to-zinc-800
         sticky top-0 z-50
-        shadow-[0_2px_8px_-6px_rgba(0,0,0,0.5)]
+        shadow-lg shadow-zinc-600 
         ">
         <button
           className="mr-3 rounded-full p-1 bg-zinc-800 hover:bg-zinc-700 transition-colors"
@@ -88,7 +88,7 @@ export const TeamListSidebar: React.FC<TeamListSidebarProps> = ({
 
       {/* SEARCH */}
       {!collapsed && (
-        <div className="px-3 pt-2">
+        <div className="px-3 pt-4">
           <SearchBox
             value={search}
             onChange={setSearch}

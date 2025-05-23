@@ -67,20 +67,23 @@ export const TeamChatBox: React.FC<TeamChatBoxProps> = ({
 
   return (
 
-              <div className='flex flex-1 flex-col gap-2 pr-6 pl-2 pt-0 bg-behind border-none '>
-                <div className='flex size-full flex-1'>
-                  <div className='chat-text-container relative -mr-4 flex flex-1 flex-col overflow-y-hidden'>
-                    <div className='chat-flex flex h-40 w-full grow flex-col-reverse justify-start gap-4 overflow-y-auto'>
-                        <main className="flex flex-col flex-1 min-h-0 bg-slate-100 dark:bg-zinc-900 transition-all border border-[#283046] shadow-lg">
+              <div className='flex flex-col flex-1 gap-2 pt-0 pl-2 pr-6 border-none bg-behind  '>
+                <div className='flex flex-1 size-full'>
+                  <div className='relative flex flex-col flex-1 -mr-4 overflow-y-hidden chat-text-container'>
+                    <div className='flex flex-col-reverse justify-start w-full h-40 gap-4 overflow-y-auto chat-flex grow'>
+                        <main className="flex flex-col flex-1 min-h-0 transition-all dark:bg-zinc-900 overflow-hidden ">
                           {/* Header */}
-                          <div className="px-6 py-3 h-14 border-b border-zinc-300 dark:border-zinc-700 bg-gradient-to-r from-zinc-900 via-zinc-950 to-zinc-800 flex items-center justify-between gap-3 sticky top-0 z-10 shadow-sm">
+                          <div className="sticky top-0 z-10 flex items-center justify-between gap-3 
+                          px-6 py-3 shadow-lg shadow-zinc-600  
+                          h-14 dark:border-zinc-700 bg-gradient-to-r from-zinc-900 via-zinc-950 to-zinc-800 
+                          ">
                             <div className="flex items-center gap-3">
                               <span className="text-lg font-bold text-white drop-shadow">{teamName || "Team Chat"}</span>
                             </div>
                             <DropdownMenu>
                               <DropdownMenuTrigger asChild>
                                 <button
-                                  className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-zinc-800 transition focus:outline-none"
+                                  className="flex items-center justify-center transition rounded-full w-9 h-9 hover:bg-zinc-800 focus:outline-none"
                                   aria-label="More"
                                   type="button"
                                 >
@@ -95,12 +98,12 @@ export const TeamChatBox: React.FC<TeamChatBoxProps> = ({
 
                           {/* Message List */}
                           <div
-                            className="
-                              flex-1 overflow-y-auto p-6 space-y-3 bg-slate-100 dark:bg-zinc-900
-                              scrollbar-thin scrollbar-thumb-zinc-500 scrollbar-track-transparent
-                              hover:scrollbar-thumb-zinc-400 dark:scrollbar-thumb-zinc-700
-                              transition-all
-                            "
+                            className="flex-1 p-6 space-y-3 overflow-y-auto transition-all 
+                                      bg-[#EBECF0] dark:bg-zinc-900 scrollbar-thin 
+                                      scrollbar-thumb-zinc-500 scrollbar-track-transparent 
+                                      hover:scrollbar-thumb-zinc-400 dark:scrollbar-thumb-zinc-700
+                                      relative
+                                      "
                           >
                             {loadingMessage ? (
                               <LoadingState />
@@ -125,19 +128,22 @@ export const TeamChatBox: React.FC<TeamChatBoxProps> = ({
                                 <div ref={messagesEndRef} />
                               </>
                             )}
+                          <TypingIndicator typingUsers={typingUsers} currentUserId={currentUser?.id} />
                           </div>
 
-                          {/* Typing Indicator */}
-                          <TypingIndicator typingUsers={typingUsers} currentUserId={currentUser?.id} />
-
+                
                           {/* Input */}
                           <form
                             onSubmit={handleSend}
-                            className="flex gap-2 items-center border-t border-zinc-200 dark:border-zinc-700 bg-slate-50 dark:bg-zinc-900 px-4 py-3"
+                            className="flex items-center gap-2 px-4 py-3
+                                    dark:border-zinc-700 bg-slate-50 dark:bg-zinc-900 
+                                    bg-gradient-to-r from-zinc-900 via-zinc-950 to-zinc-800
+                                   
+                                    "
                           >
                             <textarea
-                              className="flex-1 resize-none py-2 px-4 rounded-xl text-base outline-none transition border bg-white dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700 focus:border-blue-500 dark:focus:border-blue-500 text-zinc-900 dark:text-zinc-100 shadow-sm"
-                              placeholder="Type a message..."
+                              className="flex-1 px-4 py-2 text-base transition bg-white border shadow-sm outline-none resize-none rounded-xl dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700 focus:border-blue-500 dark:focus:border-blue-500 text-zinc-900 dark:text-zinc-100"
+                              placeholder={`Type a message to "${teamName}"`}
                               value={input}
                               onChange={e => {
                                 setInput(e.target.value);

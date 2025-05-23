@@ -28,7 +28,7 @@ export function MessageBubble({
     <div className={`px-4 flex items-end mb-1 ${isUser ? "justify-end" : "justify-start"}`}>
       {!isUser && (
         <Avatar>
-          <AvatarImage src={avatarSrc} className="w-7 h-7 object-cover rounded-full mr-1" />
+          <AvatarImage src={avatarSrc} className="object-cover mr-1 rounded-full w-7 h-7" />
         </Avatar>
       )}
       <div className="relative flex flex-col">
@@ -48,7 +48,7 @@ export function MessageBubble({
                 : "18px 18px 18px 6px",
             }}
           >
-            <div className="whitespace-pre-line break-words text-sm max-w-lg">
+            <div className="max-w-lg text-lg break-words whitespace-pre-line">
               {/* <ReactMarkdown>{text}</ReactMarkdown> */}
               {text}
             </div>
@@ -57,7 +57,7 @@ export function MessageBubble({
               {reaction && (
                 <span className="text-lg select-none">{reaction}</span>
               )}
-              <span className=" text-zinc-200/70 dark:text-zinc-600 px-1">
+              <span className="px-1 text-zinc-200/70 dark:text-zinc-600">
                 <TimeOnly isoString={createdAt?.toString() ?? ""} className="text-[10px]"/>
               </span>
             </div>
@@ -67,7 +67,7 @@ export function MessageBubble({
         </div>
 
         {reaction && (
-          <span className="absolute -bottom-5 right-2 text-xl select-none">{reaction}</span>
+          <span className="absolute text-xl select-none -bottom-5 right-2">{reaction}</span>
         )}
 
 

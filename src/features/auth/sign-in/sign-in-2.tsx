@@ -41,10 +41,10 @@ export default function SignIn2() {
           </div>
           
         </div>
-        <div className='lg:p-8  h-svh bg-transparent overflow-y-auto'>
-          <div className='mx-auto flex w-full flex-col justify-center space-y-2 sm:w-[500px]'>
+        <div className='lg:p-8  h-svh bg-transparent '>
+          <div className='mx-auto flex w-full h-full flex-col justify-center space-y-2 sm:w-[500px]'>
             <UserAuthForm />
-            <p className='px-8 text-center text-sm text-muted-foreground'>
+            {/* <p className='px-8 text-center text-sm text-muted-foreground'>
               By clicking login, you agree to our{' '}
               <a
                 href='/terms'
@@ -59,8 +59,7 @@ export default function SignIn2() {
               >
                 Privacy Policy
               </Link>
-              .
-            </p>
+            </p> */}
           </div>
         </div>
       </div>
