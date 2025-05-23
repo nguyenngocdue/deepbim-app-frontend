@@ -28,7 +28,12 @@ export function EntityListLayout({
   countInfo
 }: EntityListLayoutProps) {
   return (
-    <div className="p-6 max-w-7xl mx-auto">
+    <div className="
+        p-4 sm:p-6 lg:p-8
+        mx-auto
+        rounded-2xl
+        transition-all
+    ">
       <h1 className="text-3xl font-bold mb-1 text-gray-700 dark:text-gray-200">{title}</h1>
       {description && <p className="text-muted-foreground mb-6">{description}</p>}
 

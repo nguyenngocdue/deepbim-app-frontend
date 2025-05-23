@@ -1,4 +1,4 @@
-import { HTMLAttributes, useEffect, useState } from 'react';
+import { HTMLAttributes, useCallback, useEffect, useState } from 'react';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -16,7 +16,6 @@ import {
 import { Input } from '@/components/ui/input';
 import { PasswordInput } from '@/components/password-input';
 import { LogoWord } from '@/components/LogoWord';
-import { GoogleLogin } from '@react-oauth/google';
 import { useGoogleLoginHandler } from '@/hooks/useGoogleLogin';
 import { GitHubLoginButton } from '@/components/GitHubLoginButton';
 import { useGitHubLoginHandler } from '@/hooks/useGiiHubLogin';
@@ -24,10 +23,12 @@ import { fetchUserProfile } from '@/api';
 import { useAppDispatch } from '@/hooks/reduxHooks';
 import { Separator } from '@/components/ui/separator';
 import { GoogleLoginButton } from '@/components/GoogleLoginButton';
-import { setCurrentUser, UserProfile } from '@/store/slices/AuthSlice';
+import { setCurrentUser } from '@/store/slices/AuthSlice';
 import AppButton from '@/components/bim-viewer/common/AppButton';
 import { Loader2 } from 'lucide-react';
 import { CLASS_NAME_DEFAULT } from '@/utils/class';
+import { UserProfile } from '@/types/User';
+import { toast } from 'sonner';
 
 type UserAuthFormProps = HTMLAttributes<HTMLDivElement>;
 
@@ -49,6 +50,13 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const { isLoadingGitHub, errorGitHub, handleGitHubLogin } = useGitHubLoginHandler();
   const dispatch = useAppDispatch();
 
+
+  const [loading, setLoading] = useState(false);
+
+  useCallback(() => {
+    setLoading(true);
+  },[isLoading, isLoadingGitHub])
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -67,7 +75,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
     try {
-
+      setLoading(true);
       const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/auth/login`, {
         method: 'POST',
         headers: {
@@ -75,8 +83,6 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         },
         body: JSON.stringify(data),
       });
-
-
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message || 'Invalid email or password');
@@ -87,8 +93,6 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       if (!result.data.access_token || !result.data.refresh_token) {
         throw new Error('Invalid response from server: Missing tokens');
       }
-
-
       localStorage.setItem('access_token', result.data.access_token);
       localStorage.setItem('refresh_token', result.data.refresh_token);
 
@@ -97,12 +101,12 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       if(userData.data.id) {
         dispatch(setCurrentUser(userData as UserProfile));
       }
-
+      setLoading(false);
       await navigate({ to: '/' });
     } catch (err) {
-      console.error('Login error:', err);
-      const errorMessage = err instanceof Error ? err.message : 'Something went wrong';
+      toast.error(`Login error: ${err?.message}`);
 
+      const errorMessage = err instanceof Error ? err.message : 'Something went wrong';
       if (errorMessage.toLowerCase().includes('email')) {
         form.setError('email', { message: errorMessage });
       } else if (errorMessage.toLowerCase().includes('password')) {
@@ -190,7 +194,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
 
 
             <AppButton
-              isLoading={isLoading}
+              isLoading={loading}
               trueName="Sigining in..."
               falseName="Sign in"
               loadingIcon={<Loader2 className="w-4 h-4 animate-spin" />}

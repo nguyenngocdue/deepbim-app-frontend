@@ -2,7 +2,6 @@ import { UserAuthForm } from './components/user-auth-form'
 import { LogoWord } from '@/components/LogoWord'
 import ParticlesContainer from '@/components/ParticlesContainer'
 import MyRoom from '@/features/my-room-3d/components/MyRoom'
-import { Link } from '@tanstack/react-router'
 import { useEffect } from 'react'
 
 export default function SignIn2() {
