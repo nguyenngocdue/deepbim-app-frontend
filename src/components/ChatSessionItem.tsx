@@ -80,7 +80,7 @@ export default function ChatSessionItem({
           <div className="w-full max-w-[200px]">
             <div className="truncate text-sm text-muted-foreground text-left text-slate-700 dark:text-gray-200 italic">
               {lastMsgIsYou && <span className="text-muted-foreground text-gray-100">You: </span>}
-              {lastMsg}
+              {  typeof unReadNumber === "number" && unReadNumber > 0 ? <span className="text-blue-600 dark:text-blue-400 font-heading">{lastMsg}</span> : <span>{lastMsg}</span>}
             </div>
           </div>
         </div>
