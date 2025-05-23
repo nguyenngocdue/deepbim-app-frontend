@@ -1,15 +1,19 @@
+import { Badge } from "./ui/badge";
+
 export default function ChatSessionItem({
   session,
   isActive,
   onClick,
   currentUser,
   collapsed = false, // nhận prop mới, default false
+  unReadNumber,
 }: {
   session: any,
   isActive: boolean,
   onClick: () => void,
   currentUser: any,
-  collapsed?: boolean
+  collapsed?: boolean,
+  unReadNumber?: number
 }) {
   const lastMsg = session.lastMessage?.content || "";
   const lastMsgIsYou = session.lastMessage?.sender_id === currentUser?.id;
@@ -29,6 +33,7 @@ export default function ChatSessionItem({
       onClick={onClick}
       title={`Id: #${session.user.id} \nEmail: ${session.user.email}`}
       className={`
+        relative
         cursor-pointer rounded-lg transition-all select-none flex items-center gap-4
         ${collapsed ? "justify-center px-0 py-2" : "px-4 py-3"}
         mb-1
@@ -56,6 +61,14 @@ export default function ChatSessionItem({
           
           </>
       }
+      
+      {
+        typeof unReadNumber === "number" && unReadNumber > 0 ? (
+          <Badge className="top-0 left-[45px] w-6 h-6 flex items-center justify-center absolute bg-red-600 rounded-full" variant="outline">{unReadNumber}</Badge>
+        ) : null
+      }
+      
+      
       {!collapsed && (
         <div className="flex-1 min-w-0">
           <div className="flex justify-between items-center">

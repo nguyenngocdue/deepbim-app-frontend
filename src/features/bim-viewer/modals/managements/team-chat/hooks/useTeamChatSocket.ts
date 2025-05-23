@@ -49,7 +49,7 @@ export function useTeamChatSocket(teamId: number | undefined, currentUser: { id:
     // Kết nối socket.io
     const socket = io(TEAM_CHAT_SOCKET_URL, {
       transports: ["websocket"],
-      // withCredentials: true, // nếu server cần cookie auth
+      auth: { token: localStorage.getItem("access_token") }
     });
     socketRef.current = socket;
 

@@ -2,6 +2,8 @@ import ChatSessionItem from "@/components/ChatSessionItem";
 import React from "react";
 import { Sidebar, sidebarClasses } from "react-pro-sidebar";
 import { SearchBox } from "@/components/SearchBox"; // Import SearchBox
+import { useUnreadCounts } from "../hooks/useUnreadCounts";
+import { useUnreadCountsRealtime } from "../hooks/useUnreadCountsRealtime";
 
 interface TeamListSidebarProps {
   teams: {
@@ -42,6 +44,9 @@ export const TeamListSidebar: React.FC<TeamListSidebarProps> = ({
         (team.lastMessage?.content?.toLowerCase() || "").includes(lower)
     );
   }, [teams, search]);
+
+    const unreadCounts = useUnreadCountsRealtime(currentUser?.id);
+
 
   return (
     
@@ -132,6 +137,7 @@ export const TeamListSidebar: React.FC<TeamListSidebarProps> = ({
               onClick={() => onSelectTeam(team.id)}
               currentUser={currentUser}
               collapsed={collapsed}
+              unReadNumber={unreadCounts[team.id]}
             />
           );
         })}

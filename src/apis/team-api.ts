@@ -57,3 +57,9 @@ export async function deleteTeam(teamId: Number) {
   });
   return res
 }
+
+
+export async function getUnreadCounts() {
+  const res = await fetchWithAuth2(`/teams/unread-count`);
+  return res
+}
