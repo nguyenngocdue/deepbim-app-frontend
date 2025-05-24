@@ -21,11 +21,11 @@ const TeamPage: React.FC = () => {
   const [open, setOpen] = useState(false)
   const [filter, setFilter] = useState("")
   const { user } = useAppSelector((state) => state.auth);
-  const { teams, loading, refresh } = useTeamsByUser(user);
   const [openEdit, setOpenEdit] = useState(false);
   const [openShow, setOpenShow] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
-
+  // call teams api
+  const { teams, loading, refresh } = useTeamsByUser(user);
   const [selectedRow, setSelectedRow] = useState<object | null>(null);
 
   // Xử lý filter real-time (nếu team có thuộc tính .name)

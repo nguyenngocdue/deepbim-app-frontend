@@ -319,6 +319,7 @@ body.signin-page #leva__root {
 
 /* SIDEBAR */
 .ps-sidebar-root.ps-collapsed.overflow-y-auto.css-ezlu64 {
+  padding-bottom: 0;
   border: none;
 }
 .ps-sidebar-root.overflow-y-auto.css-wd40aq {

@@ -28,6 +28,37 @@ export function useTeamChatSocket(teamId: number | undefined, currentUser: { id:
   const [typingUsers, setTypingUsers] = useState<UserTyping[]>([]);
   const socketRef = useRef<Socket | null>(null);
   const [loadingMessage, setLoadingMessage] = useState(false);
+  const [readersMap, setReadersMap] = useState<{ [msgId: number]: any[] }>({});
+
+
+
+useEffect(() => {
+  if (!socketRef.current) return;
+  const socket = socketRef.current;
+  function handleMessageRead(data: any) {
+    console.log(data)
+    const { messageId, userId, userName, avatar } = data;
+    setReadersMap(prev => {
+      const oldList = prev[messageId] || [];
+      if (oldList.some(u => u.user_id === userId)) return prev;
+      return {
+        ...prev,
+        [messageId]: [
+          ...oldList,
+          { user_id: userId, user: { user_name: userName, picture: avatar, id: userId } }
+        ]
+      };
+    });
+  }
+  socket.on("message_read", handleMessageRead);
+  return () => {
+    socket.off("message_read", handleMessageRead);
+  };
+}, [messages]);
+
+
+console.log(readersMap);
+
 
 
   const markMessageAsRead = useCallback((messageId: number) => {
@@ -36,6 +67,8 @@ export function useTeamChatSocket(teamId: number | undefined, currentUser: { id:
         teamId,
         messageId,
         userId: currentUser.id,
+        avatar: currentUser.avatar,
+        userName: currentUser.user_name,
       });
     }
   }, [teamId, currentUser]);
@@ -70,7 +103,6 @@ export function useTeamChatSocket(teamId: number | undefined, currentUser: { id:
 
     // Read message
       socket.on('message_read', (data) => {
-      console.log('Someone read message:', data);
     })
 
 
@@ -166,5 +198,6 @@ export function useTeamChatSocket(teamId: number | undefined, currentUser: { id:
     sendTyping,
     loadingMessage,
     markMessageAsRead,
+    readersMap,
   };
 }

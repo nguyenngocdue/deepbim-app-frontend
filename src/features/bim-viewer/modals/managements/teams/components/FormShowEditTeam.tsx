@@ -97,7 +97,7 @@ export function FormShowEditTeam({
 
     const memberOptions = users.map((u) => ({
         value: u.id,
-        label: u.user_name || u.name
+        label: u.user_name + ` (#${u.id})` || u.name
     }));
 
     const handleMembersChange = (selected: any) => {
@@ -230,7 +230,7 @@ export function FormShowEditTeam({
                             value={selectedMemberOptions}
                             onChange={handleMembersChange}
                             placeholder="Select team members..."
-                            className=""
+                            className="text-zinc-950"
                             isDisabled={isShow}
                         />
                         {selectedMembers.length === 0 && (

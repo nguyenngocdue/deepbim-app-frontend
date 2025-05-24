@@ -97,7 +97,7 @@ export const TeamInfoSidebar: React.FC<TeamInfoSidebarProps> = ({ team }) => {
 
   return (
 
-    <div className="bg-gradient-to-br from-[#18181b] to-[#23242a] min-w-96 border border-[#283046]  ">
+    <div className="sm:hidden bg-gradient-to-br from-[#18181b] to-[#23242a] min-w-96 border border-[#283046]  ">
       <div className="flex w-full m-auto items-center justify-center px-5 h-14 border-b border-zinc-700 bg-gradient-to-r from-zinc-900 via-zinc-950 to-zinc-800 sticky top-0 z-50 shadow-2xl shadow-zinc-600">
         <span className="text-white text-lg">Group Infomation</span>
       </div>

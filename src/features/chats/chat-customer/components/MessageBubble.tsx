@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 import { TimeOnly } from "@/components/bim-viewer/common/TimeOnly";
 
@@ -12,7 +12,7 @@ export function MessageBubble({
   createdAt,
   seenBy = [],
   loadingSeen,
-  onHover,
+  isLastUserMessage = false, // <- prop mới
 }: {
   text: string;
   from: "user" | "support" | "admin" | "member";
@@ -23,29 +23,30 @@ export function MessageBubble({
   createdAt?: String;
   seenBy?: any[];
   loadingSeen?: boolean;
-  onHover?: () => void;
+  isLastUserMessage?: boolean;
 }) {
-  const [hovered, setHovered] = useState(false);
   const avatarSrc = avatar || `https://api.dicebear.com/7.x/adventurer/svg?seed=${userName}`;
   const isUser = from === "user";
 
   // Tooltip title
-  const seenTitle = loadingSeen
-    ? "Đang tải người đã xem..."
-    : seenBy.length
-    ? "Đã xem bởi: " + seenBy.map(u => u.user?.user_name).join(", ")
+ const seenTitle = loadingSeen
+  ? "Loading viewers..."
+  : seenBy.length
+    ? "Seen by: " + seenBy.map(u => u.user?.user_name).join(", ")
     : "";
+
 
   // Số avatar tối đa show, những người còn lại hiển thị +N
   const MAX_AVATAR = 2;
   const mainAvatars = seenBy.slice(0, MAX_AVATAR);
   const remainCount = seenBy.length - MAX_AVATAR;
 
+  // Chỉ hiện khi là tin nhắn cuối cùng của bạn và có người đã xem
+  const showSeen = isLastUserMessage && seenBy.length > 0;
+
   return (
     <div
       className={`px-4 flex items-end mb-1 relative ${isUser ? "justify-end" : "justify-start"}`}
-      onMouseEnter={() => { setHovered(true); if (onHover) onHover(); }}
-      onMouseLeave={() => setHovered(false)}
       style={{ minHeight: 40 }}
     >
       {/* Avatar bên ngoài với message của người khác */}
@@ -85,21 +86,15 @@ export function MessageBubble({
           </div>
         </div>
 
-        {/* AVATAR NGƯỜI ĐÃ XEM - bên ngoài bubble, căn phải/trái */}
-        {hovered && seenBy.length > 0 && (
+        {/* Hiện đã xem bên dưới bubble cuối của mình */}
+        {showSeen && (
           <div
             className={`
               flex items-center gap-1
-              absolute 
-               ${isUser ? "right-20 " : "left-20"}
-              z-20
-              bottom-0
-              bg-white/80 dark:bg-zinc-900/90 px-2 py-0.5 rounded-full shadow
-             
+              mt-1
               select-none
             `}
             title={seenTitle}
-            style={{ minWidth: 38 }}
           >
             {mainAvatars.map((u, i) => (
               <img
@@ -119,6 +114,9 @@ export function MessageBubble({
                 +{remainCount}
               </span>
             )}
+            <span className="ml-2 text-xs text-zinc-500">
+              {loadingSeen ? "Loadng..." : "seen"}
+            </span>
           </div>
         )}
       </div>

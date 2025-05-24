@@ -38,6 +38,8 @@ export const TeamChatBox: React.FC<TeamChatBoxProps> = ({
   typingUsers,
   loadingMessage,
   markMessageAsRead,
+    readersMap,
+
 }) => {
   const [input, setInput] = useState("");
   const { user } = useAppSelector((state) => state.auth);
@@ -66,21 +68,27 @@ export const TeamChatBox: React.FC<TeamChatBoxProps> = ({
 
   // ====== Phần readers ======
   // readersMap: { [msgId]: [{id, name, avatar}] }
-  const [readersMap, setReadersMap] = useState<{ [msgId: number]: any[] }>({});
+  // const [readersMap, setReadersMap] = useState<{ [msgId: number]: any[] }>({});
   const [loadingReaders, setLoadingReaders] = useState<{ [msgId: number]: boolean }>({});
 
-  // Chỉ fetch khi hover và chưa từng có reader
-  const handleFetchReaders = async (msgId: number) => {
-    if (readersMap[msgId] || loadingReaders[msgId]) return;
-    setLoadingReaders(prev => ({ ...prev, [msgId]: true }));
-    try {
-      const res = await getReaders(teamId, msgId);
-      console.log(res);
-      setReadersMap(prev => ({ ...prev, [msgId]: res?.data || [] }));
-    } finally {
-      setLoadingReaders(prev => ({ ...prev, [msgId]: false }));
-    }
-  };
+  // useEffect(() => {
+  //   if (
+  //     lastMsg &&
+  //     String(lastMsg.sender_id) === String(user?.id) && // Nếu message cuối là của mình
+  //     !readersMap[lastMsg.id] && // Chưa fetch reader
+  //     !loadingReaders[lastMsg.id]
+  //   ) {
+  //     setLoadingReaders(prev => ({ ...prev, [lastMsg.id]: true }));
+  //     getReaders(teamId, lastMsg.id)
+  //       .then(res => {
+  //         setReadersMap(prev => ({ ...prev, [lastMsg.id]: res?.data || [] }));
+  //       })
+  //       .finally(() => {
+  //         setLoadingReaders(prev => ({ ...prev, [lastMsg.id]: false }));
+  //       });
+  //   }
+  //   // eslint-disable-next-line
+  // }, [lastMsg?.id, user?.id, teamId, messages]);
 
   // ===== Gửi tin nhắn =====
   const handleSend = (e?: React.FormEvent) => {
@@ -110,7 +118,19 @@ export const TeamChatBox: React.FC<TeamChatBoxProps> = ({
           <>
             {messages.map((msg, idx) => {
               const isMe = user && String(msg.sender_id) === String(user.id);
+
+              const isLastUserMessage =
+                isMe &&
+                // Không còn message nào sau nó do user này gửi
+                messages
+                  .slice(idx + 1)
+                  .findIndex(m => String(m.sender_id) === String(user.id)) === -1;
+
+
               const ref = idx === messages.length - 1 ? lastMsgRef : undefined;
+
+
+
               return (
                 <div key={msg.id} ref={ref}>
                   <MessageBubble
@@ -122,7 +142,7 @@ export const TeamChatBox: React.FC<TeamChatBoxProps> = ({
                     createdAt={msg.created_at}
                     seenBy={readersMap[msg.id] || []}
                     loadingSeen={!!loadingReaders[msg.id]}
-                    onHover={() => handleFetchReaders(msg.id)}
+                    isLastUserMessage={isLastUserMessage ?? undefined}
                   />
                 </div>
               );
@@ -132,10 +152,9 @@ export const TeamChatBox: React.FC<TeamChatBoxProps> = ({
         )}
       </div>
 
-      {/* Khung nhập */}
       <form
         onSubmit={handleSend}
-        className="relative flex items-center gap-2 px-4 py-3 bg-gradient-to-r from-zinc-900 via-zinc-950 to-zinc-800"
+        className="relative flex items-center gap-2 px-4 pb-2 pt-2 bg-gradient-to-r from-zinc-900 via-zinc-950 to-zinc-800"
       >
         <TypingIndicator typingUsers={typingUsers} currentUserId={user?.id} />
         <textarea
@@ -155,7 +174,7 @@ export const TeamChatBox: React.FC<TeamChatBoxProps> = ({
         />
         <Button
           type="submit"
-          className="rounded-xl px-4 h-10 flex items-center gap-2 shadow-md"
+          className="rounded-xl px-4 h-10 flex items-center gap-2 shadow-md bg-purple-500 dark:bg-purple-500"
           disabled={!input.trim()}
           title="Send"
         >

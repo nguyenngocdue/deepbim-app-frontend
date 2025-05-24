@@ -54,8 +54,8 @@ export default function TeamMessagePage({ teamId }: TeamMessagePageProps) {
                     currentUser={user}
                   />
             ) : (
-              <div className="flex m-auto flex-col justify-center">
-                <EmptyState message="loading..."/>
+              <div className="flex m-auto flex-col justify-center pl-6">
+                <LoadingState message="loading teams..."/>
               </div>
             )}
 
@@ -69,15 +69,17 @@ export default function TeamMessagePage({ teamId }: TeamMessagePageProps) {
                   onShowInfo={() => setInfoOpen(true)}
                 />
               ) : (
-                <div className="flex flex-1 items-center justify-center text-muted-foreground text-xl">
-                    <LoadingState message="Loading teams..." />
+                <div className="flex flex-1 items-center justify-center text-muted-foreground">
+                    <LoadingState message="loading messages..." />
                 </div>
               )}
             </div>
 
             {
               teamsLoading ?
-                <LoadingState /> :
+                <div className="flex flex-1 items-center justify-center text-muted-foreground text-xl">
+                    <LoadingState message="loading ..." />
+                </div> :
                 <>
                     {selectedTeam && <TeamInfoSidebar team={selectedTeam} />}
                 </>

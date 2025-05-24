@@ -40,6 +40,14 @@ export function useUnreadCountsRealtime(currentUserId: number) {
       }));
     });
 
+
+
+    
+
+
+
+
+
     return () => {
       mounted = false;
       if (socket) socket.disconnect();

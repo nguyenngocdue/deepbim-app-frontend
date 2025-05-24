@@ -34,8 +34,8 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
     return (
         <div className="flex h-full bg-behind text-white">
             {/* Sidebar section */}
-            <div className="relative group bg-behind ">
-                <Sidebar
+            <div className="relative group bg-behind z-50">
+                <Sidebar 
                     collapsed={collapsed}
                     backgroundColor="#0b1120"
                     rootStyles={{ height: "100%", backgroundImage: "url(/sidebar-bg.png)", backgroundSize: "cover" }}

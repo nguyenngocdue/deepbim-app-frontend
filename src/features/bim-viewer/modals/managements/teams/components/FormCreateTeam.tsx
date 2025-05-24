@@ -73,7 +73,7 @@ export function FormCreateTeam({ onSuccess, onCancel }: FormCreateTeamProps) {
   // Options cho react-select (chỉ là member, không có admin)
   const memberOptions = users.map(u => ({
     value: u.id,
-    label: u.user_name || u.name
+    label: u.user_name  + ` (#${u.id})`  || u.name
   }));
 
   // Khi thay đổi danh sách member
@@ -169,7 +169,7 @@ export function FormCreateTeam({ onSuccess, onCancel }: FormCreateTeamProps) {
               value={selectedMemberOptions}
               onChange={handleMembersChange}
               placeholder="Select team members..."
-              className=""
+              className="bg-zinc-950 text-zinc-950"
             />
             {selectedMembers.length === 0 && (
               <div className="text-sm text-muted-foreground italic">

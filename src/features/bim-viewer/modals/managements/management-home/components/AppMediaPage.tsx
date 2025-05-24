@@ -19,6 +19,7 @@ export default function AppMediaPage({ hasAction = true }: AppMediaPageProps) {
     try {
       const mediaData = await fetchNoSignAPI<{ data: any[] }>(`/media/guest`);
       const mediaList = mediaData.data;
+      if(mediaList.length < 1) return;
       const formatted: Model[] = mediaList
         .filter((item) => item.deletedBy === null) // ✅ Chỉ lấy những cái chưa bị xóa mềm
         .map((item) => ({
