@@ -53,11 +53,11 @@ export const TeamListSidebar: React.FC<TeamListSidebarProps> = ({
       collapsed={collapsed}
       width="350px"
       breakPoint="lg"
-       className="max-h-[90vh] overflow-y-auto"
+       className="max-h-[90vh] overflow-y-auto overflow-hidden"
       rootStyles={{
         [`.${sidebarClasses.container}`]: {
           background: "linear-gradient(135deg,#18181b 70%,#23242a 100%)",
-          minWidth: collapsed ? "72px" : "250px",
+          minWidth: collapsed ? "100px" : "250px",
           borderRight: "1px solid #283046",
           borderLeft: "1px solid #283046",
           borderTop: "1px solid #283046",
