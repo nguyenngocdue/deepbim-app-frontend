@@ -125,9 +125,7 @@ export function FormShowEditTeam({
             });
 
             if (res.ok) {
-                if (avatarFile) {
-                    await uploadTeamAvatar(avatarFile, team.id);
-                }
+                await uploadTeamAvatar(avatarFile ?? null, team.id);
                 toast.success("Updated team successfully");
                 onSuccess && onSuccess();
             } else {

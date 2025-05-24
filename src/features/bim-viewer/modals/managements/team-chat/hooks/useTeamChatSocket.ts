@@ -36,7 +36,6 @@ useEffect(() => {
   if (!socketRef.current) return;
   const socket = socketRef.current;
   function handleMessageRead(data: any) {
-    console.log(data)
     const { messageId, userId, userName, avatar } = data;
     setReadersMap(prev => {
       const oldList = prev[messageId] || [];
@@ -55,10 +54,6 @@ useEffect(() => {
     socket.off("message_read", handleMessageRead);
   };
 }, [messages]);
-
-
-console.log(readersMap);
-
 
 
   const markMessageAsRead = useCallback((messageId: number) => {

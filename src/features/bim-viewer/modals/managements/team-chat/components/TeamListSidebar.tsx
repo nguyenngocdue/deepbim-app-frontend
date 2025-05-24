@@ -28,7 +28,7 @@ export const TeamListSidebar: React.FC<TeamListSidebarProps> = ({
   onSelectTeam,
   currentUser,
 }) => {
-  const [collapsed, setCollapsed] = React.useState(Boolean(localStorage.getItem('collapsed_team_chat')) || false);
+  const [collapsed, setCollapsed] = React.useState(!Boolean(localStorage.getItem('collapsed_team_chat')));
 
   // State tìm kiếm
   const [search, setSearch] = React.useState("");
