@@ -82,6 +82,7 @@ useEffect(() => {
 
 
     // TEST
+    console.log('socket', socket)
       socket.on("connect", () => {
     console.log("🟢 Connected to backend!");
     socket.emit("ping_test", { source: "frontend", at: Date.now() });
