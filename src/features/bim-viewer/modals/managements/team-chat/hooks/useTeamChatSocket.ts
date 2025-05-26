@@ -85,6 +85,8 @@ useEffect(() => {
 
     setIsConnected(true);
 
+    console.log(socketRef);
+
     // Fetch lịch sử chat cũ (REST API)
     (async () => {
       setLoadingMessage(true);
