@@ -75,6 +75,7 @@ useEffect(() => {
 
     // Kết nối socket.io
     const socket = io(TEAM_CHAT_SOCKET_URL, {
+      path: '/socket.io',
       transports: ["websocket"],
       auth: { token: localStorage.getItem("access_token") }
     });
