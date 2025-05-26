@@ -94,7 +94,7 @@ useEffect(() => {
   });
 
   socket.on('connect_error', (err) => {
-    console.error("Socket connect_error:", err);
+    console.error("Socket connect_error:", err.message);
   });
 
 
