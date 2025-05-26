@@ -92,6 +92,10 @@ useEffect(() => {
     console.log("📥 Received pong_test:", data);
   });
 
+  socket.on('connect_error', (err) => {
+    console.error("Socket connect_error:", err);
+  });
+
 
 
 
