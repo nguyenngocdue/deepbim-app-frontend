@@ -4,8 +4,8 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import { io, Socket } from "socket.io-client";
 
 const TEAM_CHAT_SOCKET_URL = import.meta.env.VITE_API_BASE_URL
-  ? `${import.meta.env.VITE_API_BASE_URL}/team-chat`
-  : `http://localhost:${import.meta.env.VITE_API_PORT}/team-chat`;
+  ? `${import.meta.env.VITE_API_BASE_URL}`
+  : `http://localhost:${import.meta.env.VITE_API_PORT}`;
 
 export interface TeamMessage {
   id: number;
@@ -78,6 +78,24 @@ useEffect(() => {
       transports: ["websocket"],
       auth: { token: localStorage.getItem("access_token") }
     });
+
+
+
+    // TEST
+      socket.on("connect", () => {
+    console.log("🟢 Connected to backend!");
+    socket.emit("ping_test", { source: "frontend", at: Date.now() });
+  });
+
+  socket.on("pong_test", (data) => {
+    console.log("📥 Received pong_test:", data);
+  });
+
+
+
+
+
+
     socketRef.current = socket;
 
     // Join team room
