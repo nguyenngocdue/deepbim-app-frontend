@@ -1,4 +1,5 @@
-import SubProjectsManagement from '@/features/bim-viewer/modals/managements/sub-projects'
+import SubProjectsManagement from '@/features/bim-viewer/modals/managements/sub-projects';
+import CloudManagement from '@/features/cloud';
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute(
@@ -8,5 +9,9 @@ export const Route = createFileRoute(
 })
 
 function RouteComponent() {
-  return <SubProjectsManagement/>
+  return (
+    <>
+      <SubProjectsManagement/>
+    </>
+  )
 }

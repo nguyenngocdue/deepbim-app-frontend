@@ -1,8 +1,8 @@
-import CloudManagerment from '@/features/bim-viewer/modals/managements/cloud'
+import { SubProjectDashboard } from '@/features/sub-projects';
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute(
-  '/_authenticated/managements/_layout/sub-projects/$sub_project_id',
+  '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/dashboard',
 )({
   component: RouteComponent,
 })
@@ -11,7 +11,7 @@ function RouteComponent() {
   const { sub_project_id } = Route.useParams();
   return (
     <>
-      <CloudManagerment entityId={sub_project_id}/>
+      <SubProjectDashboard subProjectId={Number(sub_project_id)}/>
     </>
   )
 }

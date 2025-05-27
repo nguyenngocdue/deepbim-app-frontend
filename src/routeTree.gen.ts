@@ -47,7 +47,6 @@ import { Route as AuthenticatedManagementsLayoutSpacesImport } from './routes/_a
 import { Route as AuthenticatedManagementsLayoutProjectsImport } from './routes/_authenticated/managements/_layout/projects'
 import { Route as AuthenticatedManagementsLayoutMeImport } from './routes/_authenticated/managements/_layout/me'
 import { Route as AuthenticatedManagementsLayoutHomeImport } from './routes/_authenticated/managements/_layout/home'
-import { Route as AuthenticatedManagementsLayoutCloudImport } from './routes/_authenticated/managements/_layout/cloud'
 import { Route as AuthenticatedManagementsLayoutChatSupportImport } from './routes/_authenticated/managements/_layout/chat-support'
 import { Route as AuthenticatedBlogLayoutContactImport } from './routes/_authenticated/blog/_layout/contact'
 import { Route as AuthenticatedBlogLayoutAboutImport } from './routes/_authenticated/blog/_layout/about'
@@ -61,11 +60,19 @@ import { Route as AuthenticatedManagementsLayoutTeamsIndexImport } from './route
 import { Route as AuthenticatedManagementsLayoutSubProjectsIndexImport } from './routes/_authenticated/managements/_layout/sub-projects/index'
 import { Route as AuthenticatedUserShowProfileLayoutImport } from './routes/_authenticated/user/show/profile/_layout'
 import { Route as AuthenticatedManagementsLayoutTeamsTeamidImport } from './routes/_authenticated/managements/_layout/teams/$team_id'
-import { Route as AuthenticatedManagementsLayoutSubProjectsSubprojectidImport } from './routes/_authenticated/managements/_layout/sub-projects/$sub_project_id'
+import { Route as AuthenticatedManagementsLayoutSubProjectsLayoutImport } from './routes/_authenticated/managements/_layout/sub-projects/_layout'
+import { Route as AuthenticatedManagementsLayoutSubProjectsIdImport } from './routes/_authenticated/managements/_layout/sub-projects/$id'
 import { Route as AuthenticatedUserShowProfileLayoutIndexImport } from './routes/_authenticated/user/show/profile/_layout/index'
 import { Route as AuthenticatedUserShowProfileLayoutIdUserImport } from './routes/_authenticated/user/show/profile/_layout/$idUser'
 import { Route as AuthenticatedUserSettingsProfileEditLayoutImport } from './routes/_authenticated/user/settings/profile/edit/_layout'
 import { Route as AuthenticatedUserSettingsProfileEditLayoutIdUserImport } from './routes/_authenticated/user/settings/profile/edit/_layout/$idUser'
+import { Route as AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidTeamImport } from './routes/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/team'
+import { Route as AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidRfisImport } from './routes/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/rfis'
+import { Route as AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidNotificationsImport } from './routes/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/notifications'
+import { Route as AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidIssuesImport } from './routes/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/issues'
+import { Route as AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidDataImport } from './routes/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/data'
+import { Route as AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidDashboardImport } from './routes/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/dashboard'
+import { Route as AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidChatImport } from './routes/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/chat'
 
 // Create Virtual Routes
 
@@ -96,6 +103,9 @@ const AuthenticatedBimViewerUtIfcLoaderLazyImport = createFileRoute(
 )()
 const AuthenticatedUserShowProfileImport = createFileRoute(
   '/_authenticated/user/show/profile',
+)()
+const AuthenticatedManagementsLayoutSubProjectsImport = createFileRoute(
+  '/_authenticated/managements/_layout/sub-projects',
 )()
 const AuthenticatedUserSettingsProfileEditImport = createFileRoute(
   '/_authenticated/user/settings/profile/edit',
@@ -408,6 +418,13 @@ const AuthenticatedUserShowProfileRoute =
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 
+const AuthenticatedManagementsLayoutSubProjectsRoute =
+  AuthenticatedManagementsLayoutSubProjectsImport.update({
+    id: '/sub-projects',
+    path: '/sub-projects',
+    getParentRoute: () => AuthenticatedManagementsLayoutRoute,
+  } as any)
+
 const AuthenticatedViewUploadIndexRoute =
   AuthenticatedViewUploadIndexImport.update({
     id: '/view/upload/',
@@ -447,13 +464,6 @@ const AuthenticatedManagementsLayoutHomeRoute =
   AuthenticatedManagementsLayoutHomeImport.update({
     id: '/home',
     path: '/home',
-    getParentRoute: () => AuthenticatedManagementsLayoutRoute,
-  } as any)
-
-const AuthenticatedManagementsLayoutCloudRoute =
-  AuthenticatedManagementsLayoutCloudImport.update({
-    id: '/cloud',
-    path: '/cloud',
     getParentRoute: () => AuthenticatedManagementsLayoutRoute,
   } as any)
 
@@ -536,9 +546,9 @@ const AuthenticatedManagementsLayoutTeamsIndexRoute =
 
 const AuthenticatedManagementsLayoutSubProjectsIndexRoute =
   AuthenticatedManagementsLayoutSubProjectsIndexImport.update({
-    id: '/sub-projects/',
-    path: '/sub-projects/',
-    getParentRoute: () => AuthenticatedManagementsLayoutRoute,
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedManagementsLayoutSubProjectsRoute,
   } as any)
 
 const AuthenticatedUserShowProfileLayoutRoute =
@@ -554,10 +564,16 @@ const AuthenticatedManagementsLayoutTeamsTeamidRoute =
     getParentRoute: () => AuthenticatedManagementsLayoutRoute,
   } as any)
 
-const AuthenticatedManagementsLayoutSubProjectsSubprojectidRoute =
-  AuthenticatedManagementsLayoutSubProjectsSubprojectidImport.update({
-    id: '/sub-projects/$sub_project_id',
-    path: '/sub-projects/$sub_project_id',
+const AuthenticatedManagementsLayoutSubProjectsLayoutRoute =
+  AuthenticatedManagementsLayoutSubProjectsLayoutImport.update({
+    id: '/_layout',
+    getParentRoute: () => AuthenticatedManagementsLayoutSubProjectsRoute,
+  } as any)
+
+const AuthenticatedManagementsLayoutSubProjectsIdRoute =
+  AuthenticatedManagementsLayoutSubProjectsIdImport.update({
+    id: '/sub-projects/$id',
+    path: '/sub-projects/$id',
     getParentRoute: () => AuthenticatedManagementsLayoutRoute,
   } as any)
 
@@ -586,6 +602,64 @@ const AuthenticatedUserSettingsProfileEditLayoutIdUserRoute =
     id: '/$idUser',
     path: '/$idUser',
     getParentRoute: () => AuthenticatedUserSettingsProfileEditLayoutRoute,
+  } as any)
+
+const AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidTeamRoute =
+  AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidTeamImport.update({
+    id: '/$sub_project_id/team',
+    path: '/$sub_project_id/team',
+    getParentRoute: () => AuthenticatedManagementsLayoutSubProjectsLayoutRoute,
+  } as any)
+
+const AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidRfisRoute =
+  AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidRfisImport.update({
+    id: '/$sub_project_id/rfis',
+    path: '/$sub_project_id/rfis',
+    getParentRoute: () => AuthenticatedManagementsLayoutSubProjectsLayoutRoute,
+  } as any)
+
+const AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidNotificationsRoute =
+  AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidNotificationsImport.update(
+    {
+      id: '/$sub_project_id/notifications',
+      path: '/$sub_project_id/notifications',
+      getParentRoute: () =>
+        AuthenticatedManagementsLayoutSubProjectsLayoutRoute,
+    } as any,
+  )
+
+const AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidIssuesRoute =
+  AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidIssuesImport.update(
+    {
+      id: '/$sub_project_id/issues',
+      path: '/$sub_project_id/issues',
+      getParentRoute: () =>
+        AuthenticatedManagementsLayoutSubProjectsLayoutRoute,
+    } as any,
+  )
+
+const AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidDataRoute =
+  AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidDataImport.update({
+    id: '/$sub_project_id/data',
+    path: '/$sub_project_id/data',
+    getParentRoute: () => AuthenticatedManagementsLayoutSubProjectsLayoutRoute,
+  } as any)
+
+const AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidDashboardRoute =
+  AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidDashboardImport.update(
+    {
+      id: '/$sub_project_id/dashboard',
+      path: '/$sub_project_id/dashboard',
+      getParentRoute: () =>
+        AuthenticatedManagementsLayoutSubProjectsLayoutRoute,
+    } as any,
+  )
+
+const AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidChatRoute =
+  AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidChatImport.update({
+    id: '/$sub_project_id/chat',
+    path: '/$sub_project_id/chat',
+    getParentRoute: () => AuthenticatedManagementsLayoutSubProjectsLayoutRoute,
   } as any)
 
 // Populate the FileRoutesByPath interface
@@ -942,13 +1016,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedManagementsLayoutChatSupportImport
       parentRoute: typeof AuthenticatedManagementsLayoutImport
     }
-    '/_authenticated/managements/_layout/cloud': {
-      id: '/_authenticated/managements/_layout/cloud'
-      path: '/cloud'
-      fullPath: '/managements/cloud'
-      preLoaderRoute: typeof AuthenticatedManagementsLayoutCloudImport
-      parentRoute: typeof AuthenticatedManagementsLayoutImport
-    }
     '/_authenticated/managements/_layout/home': {
       id: '/_authenticated/managements/_layout/home'
       path: '/home'
@@ -991,12 +1058,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedViewUploadIndexImport
       parentRoute: typeof AuthenticatedRouteImport
     }
-    '/_authenticated/managements/_layout/sub-projects/$sub_project_id': {
-      id: '/_authenticated/managements/_layout/sub-projects/$sub_project_id'
-      path: '/sub-projects/$sub_project_id'
-      fullPath: '/managements/sub-projects/$sub_project_id'
-      preLoaderRoute: typeof AuthenticatedManagementsLayoutSubProjectsSubprojectidImport
+    '/_authenticated/managements/_layout/sub-projects/$id': {
+      id: '/_authenticated/managements/_layout/sub-projects/$id'
+      path: '/sub-projects/$id'
+      fullPath: '/managements/sub-projects/$id'
+      preLoaderRoute: typeof AuthenticatedManagementsLayoutSubProjectsIdImport
       parentRoute: typeof AuthenticatedManagementsLayoutImport
+    }
+    '/_authenticated/managements/_layout/sub-projects': {
+      id: '/_authenticated/managements/_layout/sub-projects'
+      path: '/sub-projects'
+      fullPath: '/managements/sub-projects'
+      preLoaderRoute: typeof AuthenticatedManagementsLayoutSubProjectsImport
+      parentRoute: typeof AuthenticatedManagementsLayoutImport
+    }
+    '/_authenticated/managements/_layout/sub-projects/_layout': {
+      id: '/_authenticated/managements/_layout/sub-projects/_layout'
+      path: '/sub-projects'
+      fullPath: '/managements/sub-projects'
+      preLoaderRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutImport
+      parentRoute: typeof AuthenticatedManagementsLayoutSubProjectsRoute
     }
     '/_authenticated/managements/_layout/teams/$team_id': {
       id: '/_authenticated/managements/_layout/teams/$team_id'
@@ -1021,10 +1102,10 @@ declare module '@tanstack/react-router' {
     }
     '/_authenticated/managements/_layout/sub-projects/': {
       id: '/_authenticated/managements/_layout/sub-projects/'
-      path: '/sub-projects'
-      fullPath: '/managements/sub-projects'
+      path: '/'
+      fullPath: '/managements/sub-projects/'
       preLoaderRoute: typeof AuthenticatedManagementsLayoutSubProjectsIndexImport
-      parentRoute: typeof AuthenticatedManagementsLayoutImport
+      parentRoute: typeof AuthenticatedManagementsLayoutSubProjectsImport
     }
     '/_authenticated/managements/_layout/teams/': {
       id: '/_authenticated/managements/_layout/teams/'
@@ -1074,6 +1155,55 @@ declare module '@tanstack/react-router' {
       fullPath: '/user/show/profile/'
       preLoaderRoute: typeof AuthenticatedUserShowProfileLayoutIndexImport
       parentRoute: typeof AuthenticatedUserShowProfileLayoutImport
+    }
+    '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/chat': {
+      id: '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/chat'
+      path: '/$sub_project_id/chat'
+      fullPath: '/managements/sub-projects/$sub_project_id/chat'
+      preLoaderRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidChatImport
+      parentRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutImport
+    }
+    '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/dashboard': {
+      id: '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/dashboard'
+      path: '/$sub_project_id/dashboard'
+      fullPath: '/managements/sub-projects/$sub_project_id/dashboard'
+      preLoaderRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidDashboardImport
+      parentRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutImport
+    }
+    '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/data': {
+      id: '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/data'
+      path: '/$sub_project_id/data'
+      fullPath: '/managements/sub-projects/$sub_project_id/data'
+      preLoaderRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidDataImport
+      parentRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutImport
+    }
+    '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/issues': {
+      id: '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/issues'
+      path: '/$sub_project_id/issues'
+      fullPath: '/managements/sub-projects/$sub_project_id/issues'
+      preLoaderRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidIssuesImport
+      parentRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutImport
+    }
+    '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/notifications': {
+      id: '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/notifications'
+      path: '/$sub_project_id/notifications'
+      fullPath: '/managements/sub-projects/$sub_project_id/notifications'
+      preLoaderRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidNotificationsImport
+      parentRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutImport
+    }
+    '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/rfis': {
+      id: '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/rfis'
+      path: '/$sub_project_id/rfis'
+      fullPath: '/managements/sub-projects/$sub_project_id/rfis'
+      preLoaderRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidRfisImport
+      parentRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutImport
+    }
+    '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/team': {
+      id: '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/team'
+      path: '/$sub_project_id/team'
+      fullPath: '/managements/sub-projects/$sub_project_id/team'
+      preLoaderRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidTeamImport
+      parentRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutImport
     }
     '/_authenticated/user/settings/profile/edit/_layout/$idUser': {
       id: '/_authenticated/user/settings/profile/edit/_layout/$idUser'
@@ -1160,17 +1290,67 @@ const AuthenticatedBlogRouteChildren: AuthenticatedBlogRouteChildren = {
 const AuthenticatedBlogRouteWithChildren =
   AuthenticatedBlogRoute._addFileChildren(AuthenticatedBlogRouteChildren)
 
+interface AuthenticatedManagementsLayoutSubProjectsLayoutRouteChildren {
+  AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidChatRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidChatRoute
+  AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidDashboardRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidDashboardRoute
+  AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidDataRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidDataRoute
+  AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidIssuesRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidIssuesRoute
+  AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidNotificationsRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidNotificationsRoute
+  AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidRfisRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidRfisRoute
+  AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidTeamRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidTeamRoute
+}
+
+const AuthenticatedManagementsLayoutSubProjectsLayoutRouteChildren: AuthenticatedManagementsLayoutSubProjectsLayoutRouteChildren =
+  {
+    AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidChatRoute:
+      AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidChatRoute,
+    AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidDashboardRoute:
+      AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidDashboardRoute,
+    AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidDataRoute:
+      AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidDataRoute,
+    AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidIssuesRoute:
+      AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidIssuesRoute,
+    AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidNotificationsRoute:
+      AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidNotificationsRoute,
+    AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidRfisRoute:
+      AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidRfisRoute,
+    AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidTeamRoute:
+      AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidTeamRoute,
+  }
+
+const AuthenticatedManagementsLayoutSubProjectsLayoutRouteWithChildren =
+  AuthenticatedManagementsLayoutSubProjectsLayoutRoute._addFileChildren(
+    AuthenticatedManagementsLayoutSubProjectsLayoutRouteChildren,
+  )
+
+interface AuthenticatedManagementsLayoutSubProjectsRouteChildren {
+  AuthenticatedManagementsLayoutSubProjectsLayoutRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutRouteWithChildren
+  AuthenticatedManagementsLayoutSubProjectsIndexRoute: typeof AuthenticatedManagementsLayoutSubProjectsIndexRoute
+}
+
+const AuthenticatedManagementsLayoutSubProjectsRouteChildren: AuthenticatedManagementsLayoutSubProjectsRouteChildren =
+  {
+    AuthenticatedManagementsLayoutSubProjectsLayoutRoute:
+      AuthenticatedManagementsLayoutSubProjectsLayoutRouteWithChildren,
+    AuthenticatedManagementsLayoutSubProjectsIndexRoute:
+      AuthenticatedManagementsLayoutSubProjectsIndexRoute,
+  }
+
+const AuthenticatedManagementsLayoutSubProjectsRouteWithChildren =
+  AuthenticatedManagementsLayoutSubProjectsRoute._addFileChildren(
+    AuthenticatedManagementsLayoutSubProjectsRouteChildren,
+  )
+
 interface AuthenticatedManagementsLayoutRouteChildren {
   AuthenticatedManagementsLayoutChatSupportRoute: typeof AuthenticatedManagementsLayoutChatSupportRoute
-  AuthenticatedManagementsLayoutCloudRoute: typeof AuthenticatedManagementsLayoutCloudRoute
   AuthenticatedManagementsLayoutHomeRoute: typeof AuthenticatedManagementsLayoutHomeRoute
   AuthenticatedManagementsLayoutMeRoute: typeof AuthenticatedManagementsLayoutMeRoute
   AuthenticatedManagementsLayoutProjectsRoute: typeof AuthenticatedManagementsLayoutProjectsRoute
   AuthenticatedManagementsLayoutSpacesRoute: typeof AuthenticatedManagementsLayoutSpacesRoute
   AuthenticatedManagementsLayoutUsersRoute: typeof AuthenticatedManagementsLayoutUsersRoute
-  AuthenticatedManagementsLayoutSubProjectsSubprojectidRoute: typeof AuthenticatedManagementsLayoutSubProjectsSubprojectidRoute
+  AuthenticatedManagementsLayoutSubProjectsIdRoute: typeof AuthenticatedManagementsLayoutSubProjectsIdRoute
+  AuthenticatedManagementsLayoutSubProjectsRoute: typeof AuthenticatedManagementsLayoutSubProjectsRouteWithChildren
   AuthenticatedManagementsLayoutTeamsTeamidRoute: typeof AuthenticatedManagementsLayoutTeamsTeamidRoute
-  AuthenticatedManagementsLayoutSubProjectsIndexRoute: typeof AuthenticatedManagementsLayoutSubProjectsIndexRoute
   AuthenticatedManagementsLayoutTeamsIndexRoute: typeof AuthenticatedManagementsLayoutTeamsIndexRoute
 }
 
@@ -1178,8 +1358,6 @@ const AuthenticatedManagementsLayoutRouteChildren: AuthenticatedManagementsLayou
   {
     AuthenticatedManagementsLayoutChatSupportRoute:
       AuthenticatedManagementsLayoutChatSupportRoute,
-    AuthenticatedManagementsLayoutCloudRoute:
-      AuthenticatedManagementsLayoutCloudRoute,
     AuthenticatedManagementsLayoutHomeRoute:
       AuthenticatedManagementsLayoutHomeRoute,
     AuthenticatedManagementsLayoutMeRoute:
@@ -1190,12 +1368,12 @@ const AuthenticatedManagementsLayoutRouteChildren: AuthenticatedManagementsLayou
       AuthenticatedManagementsLayoutSpacesRoute,
     AuthenticatedManagementsLayoutUsersRoute:
       AuthenticatedManagementsLayoutUsersRoute,
-    AuthenticatedManagementsLayoutSubProjectsSubprojectidRoute:
-      AuthenticatedManagementsLayoutSubProjectsSubprojectidRoute,
+    AuthenticatedManagementsLayoutSubProjectsIdRoute:
+      AuthenticatedManagementsLayoutSubProjectsIdRoute,
+    AuthenticatedManagementsLayoutSubProjectsRoute:
+      AuthenticatedManagementsLayoutSubProjectsRouteWithChildren,
     AuthenticatedManagementsLayoutTeamsTeamidRoute:
       AuthenticatedManagementsLayoutTeamsTeamidRoute,
-    AuthenticatedManagementsLayoutSubProjectsIndexRoute:
-      AuthenticatedManagementsLayoutSubProjectsIndexRoute,
     AuthenticatedManagementsLayoutTeamsIndexRoute:
       AuthenticatedManagementsLayoutTeamsIndexRoute,
   }
@@ -1406,23 +1584,30 @@ export interface FileRoutesByFullPath {
   '/blog/about': typeof AuthenticatedBlogLayoutAboutRoute
   '/blog/contact': typeof AuthenticatedBlogLayoutContactRoute
   '/managements/chat-support': typeof AuthenticatedManagementsLayoutChatSupportRoute
-  '/managements/cloud': typeof AuthenticatedManagementsLayoutCloudRoute
   '/managements/home': typeof AuthenticatedManagementsLayoutHomeRoute
   '/managements/me': typeof AuthenticatedManagementsLayoutMeRoute
   '/managements/projects': typeof AuthenticatedManagementsLayoutProjectsRoute
   '/managements/spaces': typeof AuthenticatedManagementsLayoutSpacesRoute
   '/managements/users': typeof AuthenticatedManagementsLayoutUsersRoute
   '/view/upload': typeof AuthenticatedViewUploadIndexRoute
-  '/managements/sub-projects/$sub_project_id': typeof AuthenticatedManagementsLayoutSubProjectsSubprojectidRoute
+  '/managements/sub-projects/$id': typeof AuthenticatedManagementsLayoutSubProjectsIdRoute
+  '/managements/sub-projects': typeof AuthenticatedManagementsLayoutSubProjectsLayoutRouteWithChildren
   '/managements/teams/$team_id': typeof AuthenticatedManagementsLayoutTeamsTeamidRoute
   '/user/show/profile': typeof AuthenticatedUserShowProfileLayoutRouteWithChildren
-  '/managements/sub-projects': typeof AuthenticatedManagementsLayoutSubProjectsIndexRoute
+  '/managements/sub-projects/': typeof AuthenticatedManagementsLayoutSubProjectsIndexRoute
   '/managements/teams': typeof AuthenticatedManagementsLayoutTeamsIndexRoute
   '/user/show/cv': typeof AuthenticatedUserShowCvIndexRoute
   '/user/show/portfolio': typeof AuthenticatedUserShowPortfolioIndexRoute
   '/user/settings/profile/edit': typeof AuthenticatedUserSettingsProfileEditLayoutRouteWithChildren
   '/user/show/profile/$idUser': typeof AuthenticatedUserShowProfileLayoutIdUserRoute
   '/user/show/profile/': typeof AuthenticatedUserShowProfileLayoutIndexRoute
+  '/managements/sub-projects/$sub_project_id/chat': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidChatRoute
+  '/managements/sub-projects/$sub_project_id/dashboard': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidDashboardRoute
+  '/managements/sub-projects/$sub_project_id/data': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidDataRoute
+  '/managements/sub-projects/$sub_project_id/issues': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidIssuesRoute
+  '/managements/sub-projects/$sub_project_id/notifications': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidNotificationsRoute
+  '/managements/sub-projects/$sub_project_id/rfis': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidRfisRoute
+  '/managements/sub-projects/$sub_project_id/team': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidTeamRoute
   '/user/settings/profile/edit/$idUser': typeof AuthenticatedUserSettingsProfileEditLayoutIdUserRoute
 }
 
@@ -1471,22 +1656,28 @@ export interface FileRoutesByTo {
   '/blog/about': typeof AuthenticatedBlogLayoutAboutRoute
   '/blog/contact': typeof AuthenticatedBlogLayoutContactRoute
   '/managements/chat-support': typeof AuthenticatedManagementsLayoutChatSupportRoute
-  '/managements/cloud': typeof AuthenticatedManagementsLayoutCloudRoute
   '/managements/home': typeof AuthenticatedManagementsLayoutHomeRoute
   '/managements/me': typeof AuthenticatedManagementsLayoutMeRoute
   '/managements/projects': typeof AuthenticatedManagementsLayoutProjectsRoute
   '/managements/spaces': typeof AuthenticatedManagementsLayoutSpacesRoute
   '/managements/users': typeof AuthenticatedManagementsLayoutUsersRoute
   '/view/upload': typeof AuthenticatedViewUploadIndexRoute
-  '/managements/sub-projects/$sub_project_id': typeof AuthenticatedManagementsLayoutSubProjectsSubprojectidRoute
+  '/managements/sub-projects/$id': typeof AuthenticatedManagementsLayoutSubProjectsIdRoute
+  '/managements/sub-projects': typeof AuthenticatedManagementsLayoutSubProjectsIndexRoute
   '/managements/teams/$team_id': typeof AuthenticatedManagementsLayoutTeamsTeamidRoute
   '/user/show/profile': typeof AuthenticatedUserShowProfileLayoutIndexRoute
-  '/managements/sub-projects': typeof AuthenticatedManagementsLayoutSubProjectsIndexRoute
   '/managements/teams': typeof AuthenticatedManagementsLayoutTeamsIndexRoute
   '/user/show/cv': typeof AuthenticatedUserShowCvIndexRoute
   '/user/show/portfolio': typeof AuthenticatedUserShowPortfolioIndexRoute
   '/user/settings/profile/edit': typeof AuthenticatedUserSettingsProfileEditLayoutRouteWithChildren
   '/user/show/profile/$idUser': typeof AuthenticatedUserShowProfileLayoutIdUserRoute
+  '/managements/sub-projects/$sub_project_id/chat': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidChatRoute
+  '/managements/sub-projects/$sub_project_id/dashboard': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidDashboardRoute
+  '/managements/sub-projects/$sub_project_id/data': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidDataRoute
+  '/managements/sub-projects/$sub_project_id/issues': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidIssuesRoute
+  '/managements/sub-projects/$sub_project_id/notifications': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidNotificationsRoute
+  '/managements/sub-projects/$sub_project_id/rfis': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidRfisRoute
+  '/managements/sub-projects/$sub_project_id/team': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidTeamRoute
   '/user/settings/profile/edit/$idUser': typeof AuthenticatedUserSettingsProfileEditLayoutIdUserRoute
 }
 
@@ -1542,14 +1733,15 @@ export interface FileRoutesById {
   '/_authenticated/blog/_layout/about': typeof AuthenticatedBlogLayoutAboutRoute
   '/_authenticated/blog/_layout/contact': typeof AuthenticatedBlogLayoutContactRoute
   '/_authenticated/managements/_layout/chat-support': typeof AuthenticatedManagementsLayoutChatSupportRoute
-  '/_authenticated/managements/_layout/cloud': typeof AuthenticatedManagementsLayoutCloudRoute
   '/_authenticated/managements/_layout/home': typeof AuthenticatedManagementsLayoutHomeRoute
   '/_authenticated/managements/_layout/me': typeof AuthenticatedManagementsLayoutMeRoute
   '/_authenticated/managements/_layout/projects': typeof AuthenticatedManagementsLayoutProjectsRoute
   '/_authenticated/managements/_layout/spaces': typeof AuthenticatedManagementsLayoutSpacesRoute
   '/_authenticated/managements/_layout/users': typeof AuthenticatedManagementsLayoutUsersRoute
   '/_authenticated/view/upload/': typeof AuthenticatedViewUploadIndexRoute
-  '/_authenticated/managements/_layout/sub-projects/$sub_project_id': typeof AuthenticatedManagementsLayoutSubProjectsSubprojectidRoute
+  '/_authenticated/managements/_layout/sub-projects/$id': typeof AuthenticatedManagementsLayoutSubProjectsIdRoute
+  '/_authenticated/managements/_layout/sub-projects': typeof AuthenticatedManagementsLayoutSubProjectsRouteWithChildren
+  '/_authenticated/managements/_layout/sub-projects/_layout': typeof AuthenticatedManagementsLayoutSubProjectsLayoutRouteWithChildren
   '/_authenticated/managements/_layout/teams/$team_id': typeof AuthenticatedManagementsLayoutTeamsTeamidRoute
   '/_authenticated/user/show/profile': typeof AuthenticatedUserShowProfileRouteWithChildren
   '/_authenticated/user/show/profile/_layout': typeof AuthenticatedUserShowProfileLayoutRouteWithChildren
@@ -1561,6 +1753,13 @@ export interface FileRoutesById {
   '/_authenticated/user/settings/profile/edit/_layout': typeof AuthenticatedUserSettingsProfileEditLayoutRouteWithChildren
   '/_authenticated/user/show/profile/_layout/$idUser': typeof AuthenticatedUserShowProfileLayoutIdUserRoute
   '/_authenticated/user/show/profile/_layout/': typeof AuthenticatedUserShowProfileLayoutIndexRoute
+  '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/chat': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidChatRoute
+  '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/dashboard': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidDashboardRoute
+  '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/data': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidDataRoute
+  '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/issues': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidIssuesRoute
+  '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/notifications': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidNotificationsRoute
+  '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/rfis': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidRfisRoute
+  '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/team': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidTeamRoute
   '/_authenticated/user/settings/profile/edit/_layout/$idUser': typeof AuthenticatedUserSettingsProfileEditLayoutIdUserRoute
 }
 
@@ -1612,23 +1811,30 @@ export interface FileRouteTypes {
     | '/blog/about'
     | '/blog/contact'
     | '/managements/chat-support'
-    | '/managements/cloud'
     | '/managements/home'
     | '/managements/me'
     | '/managements/projects'
     | '/managements/spaces'
     | '/managements/users'
     | '/view/upload'
-    | '/managements/sub-projects/$sub_project_id'
+    | '/managements/sub-projects/$id'
+    | '/managements/sub-projects'
     | '/managements/teams/$team_id'
     | '/user/show/profile'
-    | '/managements/sub-projects'
+    | '/managements/sub-projects/'
     | '/managements/teams'
     | '/user/show/cv'
     | '/user/show/portfolio'
     | '/user/settings/profile/edit'
     | '/user/show/profile/$idUser'
     | '/user/show/profile/'
+    | '/managements/sub-projects/$sub_project_id/chat'
+    | '/managements/sub-projects/$sub_project_id/dashboard'
+    | '/managements/sub-projects/$sub_project_id/data'
+    | '/managements/sub-projects/$sub_project_id/issues'
+    | '/managements/sub-projects/$sub_project_id/notifications'
+    | '/managements/sub-projects/$sub_project_id/rfis'
+    | '/managements/sub-projects/$sub_project_id/team'
     | '/user/settings/profile/edit/$idUser'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -1676,22 +1882,28 @@ export interface FileRouteTypes {
     | '/blog/about'
     | '/blog/contact'
     | '/managements/chat-support'
-    | '/managements/cloud'
     | '/managements/home'
     | '/managements/me'
     | '/managements/projects'
     | '/managements/spaces'
     | '/managements/users'
     | '/view/upload'
-    | '/managements/sub-projects/$sub_project_id'
+    | '/managements/sub-projects/$id'
+    | '/managements/sub-projects'
     | '/managements/teams/$team_id'
     | '/user/show/profile'
-    | '/managements/sub-projects'
     | '/managements/teams'
     | '/user/show/cv'
     | '/user/show/portfolio'
     | '/user/settings/profile/edit'
     | '/user/show/profile/$idUser'
+    | '/managements/sub-projects/$sub_project_id/chat'
+    | '/managements/sub-projects/$sub_project_id/dashboard'
+    | '/managements/sub-projects/$sub_project_id/data'
+    | '/managements/sub-projects/$sub_project_id/issues'
+    | '/managements/sub-projects/$sub_project_id/notifications'
+    | '/managements/sub-projects/$sub_project_id/rfis'
+    | '/managements/sub-projects/$sub_project_id/team'
     | '/user/settings/profile/edit/$idUser'
   id:
     | '__root__'
@@ -1745,14 +1957,15 @@ export interface FileRouteTypes {
     | '/_authenticated/blog/_layout/about'
     | '/_authenticated/blog/_layout/contact'
     | '/_authenticated/managements/_layout/chat-support'
-    | '/_authenticated/managements/_layout/cloud'
     | '/_authenticated/managements/_layout/home'
     | '/_authenticated/managements/_layout/me'
     | '/_authenticated/managements/_layout/projects'
     | '/_authenticated/managements/_layout/spaces'
     | '/_authenticated/managements/_layout/users'
     | '/_authenticated/view/upload/'
-    | '/_authenticated/managements/_layout/sub-projects/$sub_project_id'
+    | '/_authenticated/managements/_layout/sub-projects/$id'
+    | '/_authenticated/managements/_layout/sub-projects'
+    | '/_authenticated/managements/_layout/sub-projects/_layout'
     | '/_authenticated/managements/_layout/teams/$team_id'
     | '/_authenticated/user/show/profile'
     | '/_authenticated/user/show/profile/_layout'
@@ -1764,6 +1977,13 @@ export interface FileRouteTypes {
     | '/_authenticated/user/settings/profile/edit/_layout'
     | '/_authenticated/user/show/profile/_layout/$idUser'
     | '/_authenticated/user/show/profile/_layout/'
+    | '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/chat'
+    | '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/dashboard'
+    | '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/data'
+    | '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/issues'
+    | '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/notifications'
+    | '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/rfis'
+    | '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/team'
     | '/_authenticated/user/settings/profile/edit/_layout/$idUser'
   fileRoutesById: FileRoutesById
 }
@@ -2012,15 +2232,14 @@ export const routeTree = rootRoute
       "parent": "/_authenticated/managements",
       "children": [
         "/_authenticated/managements/_layout/chat-support",
-        "/_authenticated/managements/_layout/cloud",
         "/_authenticated/managements/_layout/home",
         "/_authenticated/managements/_layout/me",
         "/_authenticated/managements/_layout/projects",
         "/_authenticated/managements/_layout/spaces",
         "/_authenticated/managements/_layout/users",
-        "/_authenticated/managements/_layout/sub-projects/$sub_project_id",
+        "/_authenticated/managements/_layout/sub-projects/$id",
+        "/_authenticated/managements/_layout/sub-projects",
         "/_authenticated/managements/_layout/teams/$team_id",
-        "/_authenticated/managements/_layout/sub-projects/",
         "/_authenticated/managements/_layout/teams/"
       ]
     },
@@ -2083,10 +2302,6 @@ export const routeTree = rootRoute
       "filePath": "_authenticated/managements/_layout/chat-support.tsx",
       "parent": "/_authenticated/managements/_layout"
     },
-    "/_authenticated/managements/_layout/cloud": {
-      "filePath": "_authenticated/managements/_layout/cloud.tsx",
-      "parent": "/_authenticated/managements/_layout"
-    },
     "/_authenticated/managements/_layout/home": {
       "filePath": "_authenticated/managements/_layout/home.tsx",
       "parent": "/_authenticated/managements/_layout"
@@ -2111,9 +2326,30 @@ export const routeTree = rootRoute
       "filePath": "_authenticated/view/upload/index.tsx",
       "parent": "/_authenticated"
     },
-    "/_authenticated/managements/_layout/sub-projects/$sub_project_id": {
-      "filePath": "_authenticated/managements/_layout/sub-projects/$sub_project_id.tsx",
+    "/_authenticated/managements/_layout/sub-projects/$id": {
+      "filePath": "_authenticated/managements/_layout/sub-projects/$id.tsx",
       "parent": "/_authenticated/managements/_layout"
+    },
+    "/_authenticated/managements/_layout/sub-projects": {
+      "filePath": "_authenticated/managements/_layout/sub-projects",
+      "parent": "/_authenticated/managements/_layout",
+      "children": [
+        "/_authenticated/managements/_layout/sub-projects/_layout",
+        "/_authenticated/managements/_layout/sub-projects/"
+      ]
+    },
+    "/_authenticated/managements/_layout/sub-projects/_layout": {
+      "filePath": "_authenticated/managements/_layout/sub-projects/_layout.tsx",
+      "parent": "/_authenticated/managements/_layout/sub-projects",
+      "children": [
+        "/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/chat",
+        "/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/dashboard",
+        "/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/data",
+        "/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/issues",
+        "/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/notifications",
+        "/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/rfis",
+        "/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/team"
+      ]
     },
     "/_authenticated/managements/_layout/teams/$team_id": {
       "filePath": "_authenticated/managements/_layout/teams/$team_id.tsx",
@@ -2136,7 +2372,7 @@ export const routeTree = rootRoute
     },
     "/_authenticated/managements/_layout/sub-projects/": {
       "filePath": "_authenticated/managements/_layout/sub-projects/index.tsx",
-      "parent": "/_authenticated/managements/_layout"
+      "parent": "/_authenticated/managements/_layout/sub-projects"
     },
     "/_authenticated/managements/_layout/teams/": {
       "filePath": "_authenticated/managements/_layout/teams/index.tsx",
@@ -2171,6 +2407,34 @@ export const routeTree = rootRoute
     "/_authenticated/user/show/profile/_layout/": {
       "filePath": "_authenticated/user/show/profile/_layout/index.tsx",
       "parent": "/_authenticated/user/show/profile/_layout"
+    },
+    "/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/chat": {
+      "filePath": "_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/chat.tsx",
+      "parent": "/_authenticated/managements/_layout/sub-projects/_layout"
+    },
+    "/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/dashboard": {
+      "filePath": "_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/dashboard.tsx",
+      "parent": "/_authenticated/managements/_layout/sub-projects/_layout"
+    },
+    "/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/data": {
+      "filePath": "_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/data.tsx",
+      "parent": "/_authenticated/managements/_layout/sub-projects/_layout"
+    },
+    "/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/issues": {
+      "filePath": "_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/issues.tsx",
+      "parent": "/_authenticated/managements/_layout/sub-projects/_layout"
+    },
+    "/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/notifications": {
+      "filePath": "_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/notifications.tsx",
+      "parent": "/_authenticated/managements/_layout/sub-projects/_layout"
+    },
+    "/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/rfis": {
+      "filePath": "_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/rfis.tsx",
+      "parent": "/_authenticated/managements/_layout/sub-projects/_layout"
+    },
+    "/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/team": {
+      "filePath": "_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/team.tsx",
+      "parent": "/_authenticated/managements/_layout/sub-projects/_layout"
     },
     "/_authenticated/user/settings/profile/edit/_layout/$idUser": {
       "filePath": "_authenticated/user/settings/profile/edit/_layout/$idUser.tsx",

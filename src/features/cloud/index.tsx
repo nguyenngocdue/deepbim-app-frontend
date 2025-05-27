@@ -3,7 +3,6 @@ import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import CloudToolbar from "./components/CloudToolbar";
 import FolderTree from "./components/FolderTree";
 import { FolderContent } from "./components/FolderContent";
-import { FaRegFolderOpen } from "react-icons/fa";
 import { MdFolderSpecial } from "react-icons/md";
 
 interface FileItem {

@@ -35,7 +35,7 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
         <div className="flex h-full bg-behind text-white">
             {/* Sidebar section */}
             <div className="relative group bg-behind z-50">
-                <Sidebar 
+                <Sidebar
                     collapsed={collapsed}
                     backgroundColor="#0b1120"
                     rootStyles={{ height: "100%", backgroundImage: "url(/sidebar-bg.png)", backgroundSize: "cover" }}
@@ -87,7 +87,6 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
                         <SubMenu label="Workspaces" icon={<MdWorkspaces size={18} />} defaultOpen={true}>
                             <MenuItem icon={<GrProjects className="ml-5" size={20} />} component={<Link to="/managements/projects" />}>Projects</MenuItem>
                             <MenuItem icon={<TiFlowChildren className="ml-5" size={20} />} component={<Link to="/managements/sub-projects" />}>Sub-Projects</MenuItem>
-                            <MenuItem icon={<TiFlowChildren className="ml-5" size={20} />} component={<Link to="/managements/teams" />}>Teams</MenuItem>
                         </SubMenu>
 
                         {!collapsed && <div className="px-4 pt-2 pb-1 uppercase text-xs tracking-wide text-slate-400">Admin Management</div>}
@@ -136,7 +135,7 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
                         </div>
                     </div>
                 </div>
-                <main className="w-full h-screen p-4">
+                <main className="w-full p-4 max-h-[95vh] overflow-auto">
                     {children}
                 </main>
             </div>

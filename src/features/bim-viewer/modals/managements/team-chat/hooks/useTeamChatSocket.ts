@@ -80,7 +80,7 @@ useEffect(() => {
       auth: { token: localStorage.getItem("access_token") }
     });
 
-
+    console.log('token', localStorage.getItem("access_token"))
 
     // TEST
     console.log('socket', socket)

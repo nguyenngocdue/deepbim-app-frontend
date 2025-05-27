@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Upload from '@/components/Upload';
 import MediaPage from './components/UserMediaPage';
+import ProjectDetailPage from './components/ProjectDetailPage';
 
 const UserProjectsPage: React.FC = () => {
   const [refreshKey, setRefreshKey] = useState(0);
@@ -12,10 +13,14 @@ const UserProjectsPage: React.FC = () => {
 
   return (
     <div>
-      <div className='flex justify-start'>
+      {/* <div className='flex justify-start'>
         <Upload onUploadSuccess={handleUploadSuccess} accept=".ifc"/>
       </div>
-      <MediaPage key={refreshKey} />
+      <MediaPage key={refreshKey} /> */}
+
+<ProjectDetailPage/>
+
+
     </div>
   );
 };

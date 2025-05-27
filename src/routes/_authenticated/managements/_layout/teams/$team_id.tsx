@@ -11,7 +11,7 @@ function RouteComponent() {
    const { team_id } = Route.useParams();
   return (
     <>
-      <TeamMessagePage  teamId={team_id}/>
+      <TeamMessagePage teamId={team_id ? Number(team_id) : undefined} />
     </>
   )
 }

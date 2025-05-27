@@ -4,7 +4,6 @@ import { TeamInfoSidebar } from "./TeamInfoSidebar";
 import { TeamChatFeature } from "../featutes/TeamChatFeature";
 import { useAppSelector } from "@/hooks/reduxHooks";
 import { useTeamsByUser } from "../hooks/useTeamsByUser";
-import EmptyState from "@/components/common/EmptyState";
 import { LoadingState } from "@/components/common/LoadingState";
 
 
