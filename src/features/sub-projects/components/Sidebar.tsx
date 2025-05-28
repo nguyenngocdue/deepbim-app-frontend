@@ -33,7 +33,7 @@ export function Sidebar({ subProjectId }: Props) {
   return (
     <aside
       className={cn(
-        "transition-all duration-300 border-r p-4 space-y-4 bg-background text-foreground shadow-sm",
+        "transition-all duration-300 border-r border-gray-400 dark:border-gray-700 p-4 space-y-4 bg-background text-foreground shadow-sm",
         collapsed ? "w-16" : "w-64"
       )}
     >
@@ -49,7 +49,7 @@ export function Sidebar({ subProjectId }: Props) {
       {!collapsed && <div className="text-sm font-semibold">Smart Overview</div>}
       <nav className="space-y-2 text-sm mt-4">
         <SidebarItem collapsed={collapsed} label="DashBoard" icon={Folder} count={68} to={`/managements/sub-projects/${subProjectId}/dashboard`} />
-        <SidebarItem collapsed={collapsed} label="Data" icon={Folder} count={68} to={`/managements/sub-projects/${subProjectId}/data`} />
+        <SidebarItem collapsed={collapsed} label="Document Management" icon={Folder} count={68} to={`/managements/sub-projects/${subProjectId}/data`} />
         <SidebarItem collapsed={collapsed} label="Team" icon={Users} to={`/managements/sub-projects/${subProjectId}/team`} />
         <SidebarItem collapsed={collapsed} label="Team Chat" icon={MessageSquare} count={3} to={`/managements/sub-projects/${subProjectId}/chat`} />
         <SidebarItem collapsed={collapsed} label="Notifications" icon={Bell} to={`/managements/sub-projects/${subProjectId}/notifications`} />

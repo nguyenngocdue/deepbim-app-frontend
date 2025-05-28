@@ -135,7 +135,7 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
                         </div>
                     </div>
                 </div>
-                <main className="w-full p-4 max-h-[95vh] overflow-auto">
+                <main className="w-full p-4 h-[95vh] overflow-auto">
                     {children}
                 </main>
             </div>

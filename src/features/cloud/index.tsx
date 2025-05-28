@@ -33,9 +33,9 @@ const CloudManagement = ({ entityId }: { entityId: number }) => {
   };
 
   return (
-    <div className="h-full bg-neutral-950 text-neutral-200 flex flex-col font-sans">
+    <div className="h-full bg-background text-foreground flex flex-col font-sans">
       {/* Toolbar */}
-      <div className="px-4 py-3 bg-neutral-900 border-b border-neutral-800 shadow-sm">
+      <div className="px-4 py-3 bg-muted border-b border-border shadow-sm">
         <CloudToolbar
           selectedFolder={selectedFolder}
           entityId={entityId}
@@ -54,7 +54,7 @@ const CloudManagement = ({ entityId }: { entityId: number }) => {
             defaultSize={20}
             minSize={15}
             maxSize={25}
-            className="bg-neutral-900 border-r border-neutral-800 shadow-inner"
+            className="bg-muted border-r border-border shadow-inner"
           >
             <FolderTree
               onSelect={handleSelect}
@@ -63,11 +63,11 @@ const CloudManagement = ({ entityId }: { entityId: number }) => {
             />
           </Panel>
 
-          <PanelResizeHandle className="w-1 bg-neutral-800 hover:bg-blue-500 cursor-col-resize transition-colors duration-300" />
+          <PanelResizeHandle className="w-1 bg-border hover:bg-accent cursor-col-resize transition-colors duration-300" />
 
           {/* Folder Content */}
           <Panel>
-            <div className="h-full overflow-auto p-4 bg-neutral-950">
+            <div className="h-full overflow-auto p-4 bg-background">
               {selectedFolder ? (
                 <FolderContent
                   files={folderFiles}
@@ -76,7 +76,7 @@ const CloudManagement = ({ entityId }: { entityId: number }) => {
                   currentFolderId={Number(selectedFolder.id)}
                 />
               ) : (
-                <div className="flex flex-col items-center justify-center h-full text-neutral-500 gap-2">
+                <div className="flex flex-col items-center justify-center h-full text-muted-foreground gap-2">
                   <span className="text-6xl"><MdFolderSpecial  size={100}/></span>
                   <p>Select a folder to view its files</p>
                 </div>
