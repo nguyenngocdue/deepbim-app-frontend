@@ -55,7 +55,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
 
   useCallback(() => {
     setLoading(true);
-  },[isLoading, isLoadingGitHub])
+  }, [isLoading, isLoadingGitHub])
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -65,7 +65,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     },
   });
 
-   useEffect(() => {
+  useEffect(() => {
     const email = localStorage.getItem('signup_email')
     if (email) {
       form.setValue('email', email)
@@ -98,14 +98,13 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
 
       const userData = await fetchUserProfile();
 
-      if(userData.data.id) {
+      if (userData.data.id) {
         dispatch(setCurrentUser(userData as UserProfile));
       }
       setLoading(false);
       await navigate({ to: '/' });
     } catch (err) {
       toast.error(`Login error: ${err?.message}`);
-
       const errorMessage = err instanceof Error ? err.message : 'Something went wrong';
       if (errorMessage.toLowerCase().includes('email')) {
         form.setError('email', { message: errorMessage });
@@ -113,8 +112,13 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         form.setError('password', { message: errorMessage });
       }
     } finally {
+      setLoading(false);
     }
   }
+
+  setTimeout(() => {
+    setLoading(false);
+  }, 10000)
 
   return (
     <div className={cn('grid gap-8 h-svh bg-behind w-full p-4 z-50 bg-transparent', className)} {...props}>
@@ -141,7 +145,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                 {error}
               </p>
             )}
-           <Separator orientation='horizontal' className='bg-zinc-500'/>
+            <Separator orientation='horizontal' className='bg-zinc-500' />
             {/* Trường Email */}
             <FormField
               control={form.control}
@@ -216,7 +220,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
 
             {/* Nút GitHub và Google */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-4">
-              <GitHubLoginButton  isLoading={isLoadingGitHub} onClick={handleGitHubLogin}/>
+              <GitHubLoginButton isLoading={isLoadingGitHub} onClick={handleGitHubLogin} />
               <GoogleLoginButton />
             </div>
 
