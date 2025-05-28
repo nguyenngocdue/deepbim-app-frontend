@@ -46,7 +46,7 @@ export const UploadFilesButton = ({ selectedFolder, onUploaded }: UploadFilesBut
     <Button 
       onClick={handleUploadClick} 
       disabled={uploading}
-      className="dark:bg-green-500"
+      className="dark:bg-green-500 dark:text-50"
       >
       {uploading ? "Uploading..." : "Upload Files"}
     </Button>

@@ -10,6 +10,7 @@ import { StatsCards } from "./StatsCards";
 import { useDarkMode } from "@/hooks/useDarkMode";
 import { SubProjectInfo } from "./SubProjectInfo";
 import TimeRangeSelector from "./TimeRangeSelector";
+import BIMProgressChart from "./BIMProgressChart";
 
 
 interface Props {
@@ -42,14 +43,14 @@ export default function SubProjectDashboard({ subProjectId }: Props) {
 
   return (
     <div className="min-h-screen  p-6 space-y-10">
-       <div className="grid grid-cols-1 lg:grid-cols-12 gap-2">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-2">
         <div className="lg:col-span-4">
-            <SubProjectInfo />
+          <SubProjectInfo />
         </div>
         <div className="lg:col-span-8">
           <div className="flex flex-col gap-4">
             <div className="flex justify-end">
-              <TimeRangeSelector/>
+              <TimeRangeSelector />
             </div>
             <div className="flex flex-col gap-4">
               <StatsCards data={data} />
@@ -59,19 +60,30 @@ export default function SubProjectDashboard({ subProjectId }: Props) {
           </div>
         </div>
       </div>
+      <BIMProgressChart />
 
-      <BIMMultiLineChart />
-      <EChartsLineProgress />
+
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-2">
+        <div className="lg:col-span-6">
+          <BIMMultiLineChart />
+        </div>
+        <div className="lg:col-span-6">
+          <EChartsLineProgress />
+        </div>
+      </div>
+
+
+
       {/* Section 3: Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-2">
         <div className="lg:col-span-6">
-            <TeamMemberRoseChart
-              alertThreshold={15}
-              title="Number of Members per Team"
-            />
+          <TeamMemberRoseChart
+            alertThreshold={15}
+            title="Number of Members per Team"
+          />
         </div>
         <div className="lg:col-span-6">
-            <BIMTaskCompletionChart />
+          <BIMTaskCompletionChart />
         </div>
       </div>
 

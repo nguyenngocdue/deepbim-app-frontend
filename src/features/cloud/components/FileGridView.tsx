@@ -4,6 +4,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Button } from "@/components/ui/button";
 import { DateTimeDisplay } from "@/components/bim-viewer/common/DateTimeDisplay";
 import { FileItem } from "./types";
+import { LoadingState } from "@/components/common/LoadingState";
 
 export const FileGridView = ({
   files,
@@ -47,7 +48,9 @@ export const FileGridView = ({
 
   return (
     <div className="p-4 grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
-      {files.map((file) => (
+      {      
+        files.length > 0 ?
+      files.map((file) => (
         <div
           key={file.id}
           className="relative group bg-neutral-900 border border-neutral-700 rounded-lg p-3 hover:border-blue-500 hover:shadow-md transition-all flex flex-col gap-2"
@@ -67,7 +70,8 @@ export const FileGridView = ({
             {renderDropdownMenu(file)}
           </div>
         </div>
-      ))}
+      )): <LoadingState/>
+    }
     </div>
   );
 };

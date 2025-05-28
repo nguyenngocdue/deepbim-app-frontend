@@ -114,9 +114,9 @@ export function EChartsLineProgress() {
     <Card
       className={`${
         isDark
-          ? "bg-gradient-to-br from-zinc-950 to-zinc-900 border-slate-700"
+          ? "bg-gradient-to-br bg-zinc-900 border-slate-700"
           : "bg-gradient-to-br from-slate-50 to-white border-slate-200"
-      } shadow-md rounded-xl overflow-hidden w-full`}
+      } shadow-md rounded-xl overflow-hidden w-full h-full`}
     >
       <CardContent className="p-4">
         <ReactECharts option={option} style={{ height: 300, width: "100%" }} />

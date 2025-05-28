@@ -13,6 +13,7 @@ import { useFoldersBySubProjectId } from "../hooks/useFoldersBySubProjectId";
 import { FormActionButtons } from "@/components/bim-viewer/common/FormActionButtons";
 import { TiArrowMoveOutline } from "react-icons/ti";
 import { CLASS_NAME_DEFAULT } from "@/utils/class";
+import { LoadingState } from "@/components/common/LoadingState";
 
 const LOCAL_STORAGE_KEY = "lastSelectedFolderId";
 
@@ -124,39 +125,44 @@ export default function FolderTree({ onSelect, entityId, refreshTrigger }: Folde
   }
 };
 
-
   return (
     <div className="flex flex-col h-full">
       <FolderTreeHeader filter={filter} onFilterChange={setFilter} />
 
       <div className="flex-1 overflow-auto p-4">
-        <Tree
-          ref={treeRef}
-          data={filter ? filterTree(originalData, filter) : treeData}
-          childrenAccessor="children"
-          indent={20}
-          rowHeight={35}
-          height={800}
-          onSelect={handleSelect}
-        >
-          {(props) => (
-            <FolderTreeNode
-              {...props}
-              isSelected={props.node.id === selectedNodeId}
-              onRename={() => {
-                setRenameValue(props.node.data.name);
-                setRenameNode(props.node);
-              }}
-              onDelete={() => setDeleteNode(props.node)}
 
-               onMoveToFolder={() => {
-                  setMoveNode(props.node);
-                  setOpenMoveFolder(true);
-                }}
+        {
+          originalData.length > 0 ? 
+            <Tree
+              ref={treeRef}
+              data={filter ? filterTree(originalData, filter) : treeData}
+              childrenAccessor="children"
+              indent={20}
+              rowHeight={35}
+              height={800}
+              onSelect={handleSelect}
+            >
+              {(props) => (
+                <FolderTreeNode
+                  {...props}
+                  isSelected={props.node.id === selectedNodeId}
+                  onRename={() => {
+                    setRenameValue(props.node.data.name);
+                    setRenameNode(props.node);
+                  }}
+                  onDelete={() => setDeleteNode(props.node)}
 
-            />
-          )}
-        </Tree>
+                  onMoveToFolder={() => {
+                      setMoveNode(props.node);
+                      setOpenMoveFolder(true);
+                    }}
+
+                />
+              )}
+            </Tree>
+            :
+            <LoadingState/>
+        }
       </div>
 
       {/* Movel folder to folder */}
