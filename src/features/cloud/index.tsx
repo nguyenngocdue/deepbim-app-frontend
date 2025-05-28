@@ -1,11 +1,10 @@
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import CloudToolbar from "./components/CloudToolbar";
 import FolderTree from "./components/FolderTree";
 import { FolderContent } from "./components/FolderContent";
 import { MdFolderSpecial } from "react-icons/md";
 import { CLASS_NAME_DEFAULT } from "@/utils/class";
-import { LoadingState } from "@/components/common/LoadingState";
 
 interface FileItem {
   id: number;
@@ -16,7 +15,6 @@ interface FileItem {
     extension: string;
   };
 }
-const LOCAL_STORAGE_KEY = "cloud_selected_folder_id";
 
 const CloudManagement = ({ entityId }: { entityId: number }) => {
   const [selectedFolder, setSelectedFolder] = useState<any>();
@@ -24,26 +22,22 @@ const CloudManagement = ({ entityId }: { entityId: number }) => {
   const [refreshFlag, setRefreshFlag] = useState(0);
   const [view, setView] = useState<"list" | "grid">("list");
 
-  const triggerRefreshTree = () => {
-     setRefreshFlag((prev) => prev + 1);
-     if(refreshFlag) {
-        setLoading(true);
-     }
-  }
+  // Lấy lại id folder đã chọn từ localStorage
 
+  // Khi chọn folder, lưu lại id vào localStorage
   const handleSelect = (node: any, files: FileItem[]) => {
     setSelectedFolder(node);
     setFolderFiles(files);
-     if (node && node.id) {
-    localStorage.setItem(LOCAL_STORAGE_KEY, String(node.id));
-  }
+  };
+
+  const triggerRefreshTree = () => {
+    setRefreshFlag((prev) => prev + 1);
   };
 
   const handleUploadedFile = () => {
     triggerRefreshTree();
   };
 
-  const lastSelectedId = localStorage.getItem(LOCAL_STORAGE_KEY);
 
   return (
     <div className="h-full bg-background text-foreground flex flex-col font-sans">
@@ -86,12 +80,13 @@ const CloudManagement = ({ entityId }: { entityId: number }) => {
                   files={folderFiles}
                   view={view}
                   entityId={entityId}
-                  currentFolderId={Number(lastSelectedId)}
+                  currentFolderId={Number(selectedFolder.id)}
                 />
-                
               ) : (
                 <div className="flex flex-col items-center justify-center h-full text-muted-foreground gap-2">
-                  <span className="text-6xl"><MdFolderSpecial  size={100}/></span>
+                  <span className="text-6xl">
+                    <MdFolderSpecial size={100} />
+                  </span>
                   <p>Select a folder to view its files</p>
                 </div>
               )}

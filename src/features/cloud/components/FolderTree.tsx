@@ -74,6 +74,7 @@ export default function FolderTree({ onSelect, entityId, refreshTrigger }: Folde
   useEffect(() => {
     fetchTree();
   }, [entityId, refreshTrigger]);
+  
 
   const handleSelect = (nodes) => {
     const node = nodes[0];

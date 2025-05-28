@@ -66,7 +66,7 @@ import { Route as AuthenticatedUserShowProfileLayoutIndexImport } from './routes
 import { Route as AuthenticatedUserShowProfileLayoutIdUserImport } from './routes/_authenticated/user/show/profile/_layout/$idUser'
 import { Route as AuthenticatedUserSettingsProfileEditLayoutImport } from './routes/_authenticated/user/settings/profile/edit/_layout'
 import { Route as AuthenticatedUserSettingsProfileEditLayoutIdUserImport } from './routes/_authenticated/user/settings/profile/edit/_layout/$idUser'
-import { Route as AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidTeamImport } from './routes/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/team'
+import { Route as AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidTeamByUserImport } from './routes/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/team-by-user'
 import { Route as AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidRfisImport } from './routes/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/rfis'
 import { Route as AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidNotificationsImport } from './routes/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/notifications'
 import { Route as AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidIssuesImport } from './routes/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/issues'
@@ -604,12 +604,15 @@ const AuthenticatedUserSettingsProfileEditLayoutIdUserRoute =
     getParentRoute: () => AuthenticatedUserSettingsProfileEditLayoutRoute,
   } as any)
 
-const AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidTeamRoute =
-  AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidTeamImport.update({
-    id: '/$sub_project_id/team',
-    path: '/$sub_project_id/team',
-    getParentRoute: () => AuthenticatedManagementsLayoutSubProjectsLayoutRoute,
-  } as any)
+const AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidTeamByUserRoute =
+  AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidTeamByUserImport.update(
+    {
+      id: '/$sub_project_id/team-by-user',
+      path: '/$sub_project_id/team-by-user',
+      getParentRoute: () =>
+        AuthenticatedManagementsLayoutSubProjectsLayoutRoute,
+    } as any,
+  )
 
 const AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidRfisRoute =
   AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidRfisImport.update({
@@ -1198,11 +1201,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidRfisImport
       parentRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutImport
     }
-    '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/team': {
-      id: '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/team'
-      path: '/$sub_project_id/team'
-      fullPath: '/managements/sub-projects/$sub_project_id/team'
-      preLoaderRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidTeamImport
+    '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/team-by-user': {
+      id: '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/team-by-user'
+      path: '/$sub_project_id/team-by-user'
+      fullPath: '/managements/sub-projects/$sub_project_id/team-by-user'
+      preLoaderRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidTeamByUserImport
       parentRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutImport
     }
     '/_authenticated/user/settings/profile/edit/_layout/$idUser': {
@@ -1297,7 +1300,7 @@ interface AuthenticatedManagementsLayoutSubProjectsLayoutRouteChildren {
   AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidIssuesRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidIssuesRoute
   AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidNotificationsRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidNotificationsRoute
   AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidRfisRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidRfisRoute
-  AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidTeamRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidTeamRoute
+  AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidTeamByUserRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidTeamByUserRoute
 }
 
 const AuthenticatedManagementsLayoutSubProjectsLayoutRouteChildren: AuthenticatedManagementsLayoutSubProjectsLayoutRouteChildren =
@@ -1314,8 +1317,8 @@ const AuthenticatedManagementsLayoutSubProjectsLayoutRouteChildren: Authenticate
       AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidNotificationsRoute,
     AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidRfisRoute:
       AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidRfisRoute,
-    AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidTeamRoute:
-      AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidTeamRoute,
+    AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidTeamByUserRoute:
+      AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidTeamByUserRoute,
   }
 
 const AuthenticatedManagementsLayoutSubProjectsLayoutRouteWithChildren =
@@ -1607,7 +1610,7 @@ export interface FileRoutesByFullPath {
   '/managements/sub-projects/$sub_project_id/issues': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidIssuesRoute
   '/managements/sub-projects/$sub_project_id/notifications': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidNotificationsRoute
   '/managements/sub-projects/$sub_project_id/rfis': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidRfisRoute
-  '/managements/sub-projects/$sub_project_id/team': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidTeamRoute
+  '/managements/sub-projects/$sub_project_id/team-by-user': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidTeamByUserRoute
   '/user/settings/profile/edit/$idUser': typeof AuthenticatedUserSettingsProfileEditLayoutIdUserRoute
 }
 
@@ -1677,7 +1680,7 @@ export interface FileRoutesByTo {
   '/managements/sub-projects/$sub_project_id/issues': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidIssuesRoute
   '/managements/sub-projects/$sub_project_id/notifications': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidNotificationsRoute
   '/managements/sub-projects/$sub_project_id/rfis': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidRfisRoute
-  '/managements/sub-projects/$sub_project_id/team': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidTeamRoute
+  '/managements/sub-projects/$sub_project_id/team-by-user': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidTeamByUserRoute
   '/user/settings/profile/edit/$idUser': typeof AuthenticatedUserSettingsProfileEditLayoutIdUserRoute
 }
 
@@ -1759,7 +1762,7 @@ export interface FileRoutesById {
   '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/issues': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidIssuesRoute
   '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/notifications': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidNotificationsRoute
   '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/rfis': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidRfisRoute
-  '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/team': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidTeamRoute
+  '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/team-by-user': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidTeamByUserRoute
   '/_authenticated/user/settings/profile/edit/_layout/$idUser': typeof AuthenticatedUserSettingsProfileEditLayoutIdUserRoute
 }
 
@@ -1834,7 +1837,7 @@ export interface FileRouteTypes {
     | '/managements/sub-projects/$sub_project_id/issues'
     | '/managements/sub-projects/$sub_project_id/notifications'
     | '/managements/sub-projects/$sub_project_id/rfis'
-    | '/managements/sub-projects/$sub_project_id/team'
+    | '/managements/sub-projects/$sub_project_id/team-by-user'
     | '/user/settings/profile/edit/$idUser'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -1903,7 +1906,7 @@ export interface FileRouteTypes {
     | '/managements/sub-projects/$sub_project_id/issues'
     | '/managements/sub-projects/$sub_project_id/notifications'
     | '/managements/sub-projects/$sub_project_id/rfis'
-    | '/managements/sub-projects/$sub_project_id/team'
+    | '/managements/sub-projects/$sub_project_id/team-by-user'
     | '/user/settings/profile/edit/$idUser'
   id:
     | '__root__'
@@ -1983,7 +1986,7 @@ export interface FileRouteTypes {
     | '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/issues'
     | '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/notifications'
     | '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/rfis'
-    | '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/team'
+    | '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/team-by-user'
     | '/_authenticated/user/settings/profile/edit/_layout/$idUser'
   fileRoutesById: FileRoutesById
 }
@@ -2348,7 +2351,7 @@ export const routeTree = rootRoute
         "/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/issues",
         "/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/notifications",
         "/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/rfis",
-        "/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/team"
+        "/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/team-by-user"
       ]
     },
     "/_authenticated/managements/_layout/teams/$team_id": {
@@ -2432,8 +2435,8 @@ export const routeTree = rootRoute
       "filePath": "_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/rfis.tsx",
       "parent": "/_authenticated/managements/_layout/sub-projects/_layout"
     },
-    "/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/team": {
-      "filePath": "_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/team.tsx",
+    "/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/team-by-user": {
+      "filePath": "_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/team-by-user.tsx",
       "parent": "/_authenticated/managements/_layout/sub-projects/_layout"
     },
     "/_authenticated/user/settings/profile/edit/_layout/$idUser": {

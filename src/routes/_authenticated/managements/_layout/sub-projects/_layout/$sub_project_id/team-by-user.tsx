@@ -2,13 +2,15 @@ import UserTeamPage from '@/features/bim-viewer/modals/managements/teams-by-user
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute(
-  '/_authenticated/managements/_layout/teams/',
+  '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/team-by-user',
 )({
   component: RouteComponent,
 })
 
 function RouteComponent() {
-  return <div>
-    <UserTeamPage/>
-  </div>
+  return (
+    <>
+     <UserTeamPage/>
+    </>
+  )
 }

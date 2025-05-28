@@ -17,7 +17,7 @@ import { deleteTeam } from "@/apis/team-api"
 import { toast } from "sonner"
 import { SearchBox } from "@/components/SearchBox"
 
-const TeamPage: React.FC = () => {
+const UserTeamPage: React.FC = () => {
   const [open, setOpen] = useState(false)
   const [filter, setFilter] = useState("")
   const { user } = useAppSelector((state) => state.auth);
@@ -177,4 +177,4 @@ const TeamPage: React.FC = () => {
 
 }
 
-export default TeamPage
+export default UserTeamPage
