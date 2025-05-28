@@ -19,7 +19,7 @@ export const FolderDialog: React.FC<FolderDialogProps> = ({
   const [form, setForm] = useState<FolderData>({
     name: "",
     sub_project_id: entityId,
-    parent_id: selectedFolder?.data.id ?? null,
+    parent_id: selectedFolder?.data?.id ?? null,
   });
 
   const [error, setError] = useState<string | null>(null);
@@ -38,7 +38,7 @@ export const FolderDialog: React.FC<FolderDialogProps> = ({
     setForm({
       name: "",
       sub_project_id: Number(entityId),
-      parent_id: Number(selectedFolder?.data.id) ?? null,
+      parent_id: Number(selectedFolder?.data?.id) ?? null,
     });
     setError(null);
   }, [entityId, selectedFolder, open]);

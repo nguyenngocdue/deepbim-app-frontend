@@ -4,8 +4,8 @@ import { HiViewList, HiViewGrid } from "react-icons/hi";
 import { FolderDialog } from "./FolderDialog";
 import { CloudToolbarProps } from "./Type";
 import { createFolder } from "@/apis/folder-api";
-import { Button } from "@/components/ui/button";
 import { UploadFilesButton } from "./UploadFilesButton";
+import AppButton from "@/components/bim-viewer/common/AppButton";
 
 const CloudToolbar = ({ selectedFolder, entityId, onCreated, onUploaded, setView, view }: CloudToolbarProps) => {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -20,22 +20,20 @@ const CloudToolbar = ({ selectedFolder, entityId, onCreated, onUploaded, setView
   };
 
   return (
-    <div className="flex items-center gap-2 p-2 shadow-sm bg-muted text-sm text-muted-foreground">
+    <div className="flex items-center gap-2 p-2 shadow-sm  text-sm text-muted-foreground">
       <div className="flex-1" />
 
       <UploadFilesButton
         selectedFolder={selectedFolder}
         onUploaded={onUploaded}
       />
-
-      <Button
-        className="flex items-center gap-2 bg-primary text-primary-foreground hover:bg-primary/90 px-4 py-1.5 rounded"
+      <AppButton
+        className="bg-green-500 text-50"
+        icon={<FaFolderPlus />}
+        falseName="Create Folder"
+        variant="outline"
         onClick={() => setDialogOpen(true)}
-      >
-        <FaFolderPlus />
-        Create Folder
-      </Button>
-
+      />
       <div className="flex gap-1 p-1 ml-2 rounded bg-background border border-border">
         <button
           onClick={() => setView("list")}
@@ -51,13 +49,16 @@ const CloudToolbar = ({ selectedFolder, entityId, onCreated, onUploaded, setView
         </button>
       </div>
 
-      <FolderDialog
-        open={dialogOpen}
-        onClose={() => setDialogOpen(false)}
-        entityId={entityId}
-        selectedFolder={selectedFolder}
-        onSubmit={onSubmit}
-      />
+    {
+      selectedFolder && 
+        <FolderDialog
+          open={dialogOpen}
+          onClose={() => setDialogOpen(false)}
+          entityId={entityId}
+          selectedFolder={selectedFolder}
+          onSubmit={onSubmit}
+        />
+    }
     </div>
   );
 };

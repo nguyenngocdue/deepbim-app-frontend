@@ -29,10 +29,12 @@ export const UploadFilesButton = ({ selectedFolder, onUploaded }: UploadFilesBut
         for (const file of files) {
           const uploadedFile = await uploadFilesIntoFolder(file, folderId);
           onUploaded?.(uploadedFile); // refresh file list
+          toast.success('File uploaded successfully.')
         }
       } catch (err) {
         console.error(err);
-        toast.error("Upload failed");
+        const errorMessage = (err instanceof Error) ? err.message : String(err);
+        toast.error(`Upload failed ${errorMessage}`);
       } finally {
         setUploading(false);
       }
@@ -41,7 +43,11 @@ export const UploadFilesButton = ({ selectedFolder, onUploaded }: UploadFilesBut
   };
 
   return (
-    <Button onClick={handleUploadClick} disabled={uploading}>
+    <Button 
+      onClick={handleUploadClick} 
+      disabled={uploading}
+      className="dark:bg-green-500"
+      >
       {uploading ? "Uploading..." : "Upload Files"}
     </Button>
   );

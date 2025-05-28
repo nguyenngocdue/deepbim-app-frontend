@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Tree, TreeApi, NodeApi } from "react-arborist";
-import { getFolderTree, renameFolder, deleteFolder, getFoldersBySubProjectId, moveFolderToFolder } from "@/apis/folder-api";
+import { getFolderTree, renameFolder, deleteFolder, moveFolderToFolder } from "@/apis/folder-api";
 import { FolderTreeHeader } from "./FolderTreeHeader";
 import { FolderTreeNode } from "./FolderTreeNode";
 import { DialogTemplate } from "@/components/model-table/DialogTemplate";
@@ -9,12 +9,20 @@ import { toast } from "sonner";
 import { filterTree, findNodeById, mapFolderTreeOnly } from "./FolderTreeUtils";
 import AppButton from "@/components/bim-viewer/common/AppButton";
 import { FolderSelector } from "./FolderSelector";
-import { FolderItem } from "./Type";
 import { useFoldersBySubProjectId } from "../hooks/useFoldersBySubProjectId";
+import { FormActionButtons } from "@/components/bim-viewer/common/FormActionButtons";
+import { TiArrowMoveOutline } from "react-icons/ti";
+import { CLASS_NAME_DEFAULT } from "@/utils/class";
 
 const LOCAL_STORAGE_KEY = "lastSelectedFolderId";
 
-export default function FolderTree({ onSelect, entityId, refreshTrigger }) {
+interface FolderTreeProps {
+  onSelect?: (node: NodeApi<any> | null, files: any[]) => void;
+  entityId: number;
+  refreshTrigger?: any;
+}
+
+export default function FolderTree({ onSelect, entityId, refreshTrigger }: FolderTreeProps) {
   const treeRef = useRef<TreeApi<any>>(null);
 
   const [treeData, setTreeData] = useState([]);
@@ -116,7 +124,6 @@ export default function FolderTree({ onSelect, entityId, refreshTrigger }) {
 };
 
 
-
   return (
     <div className="flex flex-col h-full">
       <FolderTreeHeader filter={filter} onFilterChange={setFilter} />
@@ -156,15 +163,21 @@ export default function FolderTree({ onSelect, entityId, refreshTrigger }) {
         open={openMoveFolder}
         onClose={() => setOpenMoveFolder(false)}
         title="Move Folder"
+        iconType="move"
         description={`Select destination folder for "${moveNode?.data.name}"`}
         footer={
           <>
-            <AppButton onClick={() => setOpenMoveFolder(false)} falseName="Cancel" />
-            <AppButton
-              className="bg-blue-800"
-              onClick={handleMoveSubmit}
-              falseName="Move"
-            />
+          <FormActionButtons
+                  onCancel={() => setOpenMoveFolder(false)}
+                  onCancelText="Cancel"
+                  onApplyText="Apply"
+                  onApply={handleMoveSubmit}  
+                  disabled={!selectedDestinationId}
+                  loading={loading}
+                  onApplyIcon={<TiArrowMoveOutline  />}
+                  classNameDelete={CLASS_NAME_DEFAULT.CLASS_APP_BUTTON_DELETE}
+                  classNameApply={CLASS_NAME_DEFAULT.CLASS_APP_BUTTON_CREATE}
+                />
           </>
         }
       >

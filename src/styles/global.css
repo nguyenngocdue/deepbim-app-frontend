@@ -205,7 +205,7 @@ footer nav a:hover {
 }
 
 .text-100 {
-  color: var(--text-subtitle);
+  color: var(--text-subtitle); /*table header, */
 }
 
 .text-150 {

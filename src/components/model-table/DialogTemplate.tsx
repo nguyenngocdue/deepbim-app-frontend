@@ -11,6 +11,7 @@ import { Separator } from "../ui/separator";
 import { LuPencil, LuTrash2, LuRefreshCw } from "react-icons/lu";
 import { LucideGitPullRequestCreateArrow } from "lucide-react";
 import { SiGoogledisplayandvideo360 } from "react-icons/si";
+import { TiArrowMoveOutline } from "react-icons/ti";
 
 interface DialogTemplateProps {
   open: boolean;
@@ -23,7 +24,7 @@ interface DialogTemplateProps {
   className?: string;
 }
 
-type IconType = "" | "create" | "edit" | "delete" | "update" | "show";
+type IconType = "" | "create" | "edit" | "delete" | "update" | "show" | "move";
 
 export function DialogTemplate({
   open,
@@ -40,6 +41,8 @@ export function DialogTemplate({
     switch (iconType) {
       case "create":
         return <LucideGitPullRequestCreateArrow className="h-5 w-5 text-blue-500 dark:text-green-900" />;
+      case "move":
+        return <TiArrowMoveOutline  className="h-5 w-5 text-blue-500 dark:text-green-900" />;
       case "edit":
         return <LuPencil className="h-5 w-5 text-yellow-500 dark:text-yellow-900" />;
       case "delete":

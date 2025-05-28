@@ -9,6 +9,7 @@ export  const CLASS_NAME_DEFAULT = {
     CLASS_APP_BUTTON_UPLOAD:  "bg-yellow-500 hover:bg-yellow-600 dark:bg-green-700 dark:hover:bg-green-900 dark:text-gray-200 w-full  py-3",
     CLASS_APP_BUTTON_CREATE: `bg-indigo-600 hover:bg-indigo-700 text-white dark:bg-indigo-400 dark:text-white dark:hover:bg-indigo-500 py-2`,
     CLASS_APP_BUTTON_DELETE: `bg-red-600 hover:bg-red-500 text-white dark:text-white dark:bg-red-600 dark:hover:bg-red-500`,
-    CLASS_APP_BUTTON_APPLY: `bg-purple-500 hover:bg-purple-500 text-white dark:text-white dark:bg-purple-500 dark:hover:bg-purple-500`
+    CLASS_APP_BUTTON_APPLY: `bg-purple-500 hover:bg-purple-500 text-white dark:text-white dark:bg-purple-500 dark:hover:bg-purple-500`,
+    CLASS_SCROLLBAR: 'scrollbar-thin scrollbar-thumb-zinc-600  scrollbar-track-transparent',
 }
 

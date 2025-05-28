@@ -30,24 +30,23 @@ export const FileListView = ({
 
   return (
     <div className="w-full mx-auto space-y-[0.5px]">
-      <div className="grid grid-cols-7 gap-3 py-2 px-4 text-xs uppercase tracking-wide font-semibold text-neutral-300 bg-neutral-900 border-b border-neutral-700">
+      <div className="grid grid-cols-7 gap-3 py-2 px-4 text-xs uppercase tracking-wide font-semibold text-neutral-300 bg-accent border-b border-neutral-700 text-50">
         <span>Icon</span>
-        <span>File Name</span>
+        <span>Name</span>        
         <span>Type</span>
-        <span>Creator</span>
-        <span>Updated At</span>
-        <span></span>
+        <span>Version</span>
+        <span>Upload By</span>
       </div>
       {files.map((file) => (
         <div
           key={file.id}
-          className="group grid grid-cols-7 gap-3 items-center px-4 py-2 rounded-sm even:bg-muted/50 odd:bg-muted hover:bg-gray-500 border-b border-border transition"
+          className="group grid grid-cols-7 gap-3 items-center px-4 py-2 rounded-sm even:bg-muted/50 odd:bg-muted hover:bg-gray-500 border-b border-gray-500 transition"
         >
           <div>{getIconByType(file.type)}</div>
-          <div className="truncate text-200">{file.name}</div>
+          <div className=" text-200">{file.name}</div>
           <div className="text-200">{file.media?.extension || "-"}</div>
           <div className="truncate text-200">{file.creator.user_name}</div>
-          <DateTimeDisplay isoDate={file.updated_at} />
+          <DateTimeDisplay isoDate={file.updated_at} formatString="yyyy-MM-dd"/>
           <div className="text-right invisible group-hover:visible">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>

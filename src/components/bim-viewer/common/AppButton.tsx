@@ -12,6 +12,7 @@ interface AppButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   href?: string;
   variant?: "link" | "outline" | "default" | "destructive" | "secondary" | "ghost" | null | undefined;
   onClick?: (e: React.MouseEvent) => void; // ✅ thêm onClick chuẩn
+  icon?: React.ReactNode;
 }
 
 const AppButton: React.FC<AppButtonProps> = ({
@@ -24,6 +25,7 @@ const AppButton: React.FC<AppButtonProps> = ({
   href,
   variant = "default",
   onClick,
+  icon,
   ...props
 }) => {
   const content = (
@@ -38,7 +40,7 @@ const AppButton: React.FC<AppButtonProps> = ({
     return (
       <Link
         to={href}
-        className={`transition-all duration-200 font-semibold rounded-xl shadow-md hover:shadow-lg ${className}`}
+        className={`transition-all duration-200 font-semibold rounded-xl shadow-md hover:shadow-lg`}
         {...(props as any)}
       >
         {content}
@@ -51,10 +53,11 @@ const AppButton: React.FC<AppButtonProps> = ({
     <Button
       variant={variant}
       onClick={onClick}
-      className={`transition-all duration-200 font-semibold shadow-md hover:shadow-lg  ${className}`}
+      className={`transition-all duration-200 font-semibold shadow-md hover:bg-primary/90  ${className}`}
       disabled={isLoading || props.disabled}
       {...props}
     >
+      {icon}
       {content}
     </Button>
   );
