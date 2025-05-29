@@ -5,6 +5,7 @@ import FolderTree from "./components/FolderTree";
 import { FolderContent } from "./components/FolderContent";
 import { MdFolderSpecial } from "react-icons/md";
 import { CLASS_NAME_DEFAULT } from "@/utils/class";
+import PDFViewer from "./components/pdf-viewer/PDFViewer";
 
 interface FileItem {
   id: number;

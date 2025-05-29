@@ -21,9 +21,6 @@ interface Props {
 
 export default function SubProjectDashboard({ subProjectId }: Props) {
   const { data, loading, error } = useSubProjectData(subProjectId);
-  const isDark = useDarkMode();
-
-
 
   if (loading) {
     return (
@@ -45,7 +42,7 @@ export default function SubProjectDashboard({ subProjectId }: Props) {
     <div className="min-h-screen  p-6 space-y-10">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-2">
         <div className="lg:col-span-4">
-          <SubProjectInfo />
+          <SubProjectInfo  data={data}/>
         </div>
         <div className="lg:col-span-8">
           <div className="flex flex-col gap-4">
@@ -53,7 +50,7 @@ export default function SubProjectDashboard({ subProjectId }: Props) {
               <TimeRangeSelector />
             </div>
             <div className="flex flex-col gap-4">
-              <StatsCards data={data} />
+              {/* <StatsCards data={data} /> */}
               <ActionableItems />
               <ActivityFeed />
             </div>

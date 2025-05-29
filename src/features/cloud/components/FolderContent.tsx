@@ -10,6 +10,7 @@ import { MoveDeleteDialogs } from "./MoveDeleteDialogs";
 export const FolderContent: React.FC<FolderContentProps> = ({ files, view, entityId, currentFolderId }) => {
   const [fileList, setFileList] = useState<FileItem[]>(files);
   const [deleteFile, setDeleteFile] = useState<FileItem | null>(null);
+  const [fileViewer, setFileViewer] = useState<FileItem | null>(null);
   const [moveFile, setMoveFile] = useState<FileItem | null>(null);
   const [selectedFolderId, setSelectedFolderId] = useState<number | null>(null);
   const [availableFolders, setAvailableFolders] = useState<FolderItem[]>([]);
@@ -61,9 +62,9 @@ export const FolderContent: React.FC<FolderContentProps> = ({ files, view, entit
   return (
     <>
       {view === "grid" ? (
-        <FileGridView files={filteredFiles} triggerDialog={triggerDialog} setMoveFile={setMoveFile} setDeleteFile={setDeleteFile} />
+        <FileGridView files={filteredFiles} triggerDialog={triggerDialog} setMoveFile={setMoveFile} setDeleteFile={setDeleteFile} setFileViewer={setFileViewer}/>
       ) : (
-        <FileListView files={filteredFiles} triggerDialog={triggerDialog} setMoveFile={setMoveFile} setDeleteFile={setDeleteFile} />
+        <FileListView files={filteredFiles} triggerDialog={triggerDialog} setMoveFile={setMoveFile} setDeleteFile={setDeleteFile} setFileViewer={setFileViewer}/>
       )}
 
       <MoveDeleteDialogs
@@ -72,6 +73,8 @@ export const FolderContent: React.FC<FolderContentProps> = ({ files, view, entit
         onConfirmDelete={onConfirmDelete}
         moveFile={moveFile}
         setMoveFile={setMoveFile}
+        fileViewer={fileViewer}
+        setFileViewer={setFileViewer}
         availableFolders={availableFolders}
         selectedFolderId={selectedFolderId}
         setSelectedFolderId={setSelectedFolderId}

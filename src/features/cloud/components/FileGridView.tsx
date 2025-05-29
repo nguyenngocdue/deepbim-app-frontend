@@ -3,8 +3,8 @@ import { FaEye } from "react-icons/fa";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { DateTimeDisplay } from "@/components/bim-viewer/common/DateTimeDisplay";
-import { FileItem } from "./types";
 import { LoadingState } from "@/components/common/LoadingState";
+import { FileItem } from "./Type";
 
 export const FileGridView = ({
   files,
@@ -39,7 +39,7 @@ export const FileGridView = ({
         <DropdownMenuItem onClick={() => triggerDialog(setDeleteFile, file)} className="text-destructive">
           <Trash2 className="mr-2 h-4 w-4" /> Delete
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => console.log(`View file ${file.name}`)}>
+        <DropdownMenuItem onClick={() =>  triggerDialog(setPdfViewer, file)}>
           <FaEye className="mr-2 h-4 w-4" /> View
         </DropdownMenuItem>
       </DropdownMenuContent>

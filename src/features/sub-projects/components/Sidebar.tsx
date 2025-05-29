@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useRouterState, useRouter } from "@tanstack/react-router";
 import {
   Folder,
-  MessageSquare,
   AlertCircle,
   FileText,
   Users,
@@ -13,6 +12,7 @@ import {
   ChevronRight
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { LoadingState } from "@/components/common/LoadingState";
 
 interface SidebarItemProps {
   label: string;
@@ -23,12 +23,18 @@ interface SidebarItemProps {
   collapsed: boolean;
 }
 
-interface Props {
-  subProjectId: number;
+interface SubProject {
+  id: string | number;
+  name: string;
 }
 
-export function Sidebar({ subProjectId }: Props) {
+interface Props {
+  subProject: SubProject;
+}
+
+export function Sidebar({ subProject }: Props) {
   const [collapsed, setCollapsed] = useState(false);
+  const subProjectId = subProject?.id;
 
   return (
     <aside
@@ -37,24 +43,31 @@ export function Sidebar({ subProjectId }: Props) {
         collapsed ? "w-16" : "w-64"
       )}
     >
-      <div className="flex justify-between items-center text-xs text-muted-foreground mb-2">
-        {!collapsed && <span className="truncate">Project: GreenTech Hub</span>}
-        <button
-          onClick={() => setCollapsed(!collapsed)}
-          className="p-1 rounded hover:bg-muted text-muted-foreground"
-        >
-          {collapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
-        </button>
-      </div>
-      {!collapsed && <div className="text-sm font-semibold">Smart Overview</div>}
-      <nav className="space-y-2 text-sm mt-4">
-        <SidebarItem collapsed={collapsed} label="DashBoard" icon={Folder} count={68} to={`/managements/sub-projects/${subProjectId}/dashboard`} />
-        <SidebarItem collapsed={collapsed} label="Document Management" icon={Folder} count={68} to={`/managements/sub-projects/${subProjectId}/data`} />
-        <SidebarItem collapsed={collapsed} label="Your Teams" icon={Users} to={`/managements/sub-projects/${subProjectId}/team-by-user`} />
-        <SidebarItem collapsed={collapsed} label="Notifications" icon={Bell} to={`/managements/sub-projects/${subProjectId}/notifications`} />
-        <SidebarItem collapsed={collapsed} label="Issues" icon={AlertCircle} count={5} color="bg-destructive/20 text-destructive" to={`/managements/sub-projects/${subProjectId}/issues`} />
-        <SidebarItem collapsed={collapsed} label="RFIs" icon={FileText} count={18} color="bg-success/20 text-success" to={`/managements/sub-projects/${subProjectId}/rfis`} />
-      </nav>
+      {
+        subProject ? (
+          <>
+            <div className="flex justify-between items-center text-xs text-muted-foreground mb-2">
+              {!collapsed && <span className="truncate" title={subProject.name}>{`Project: ${subProject.name}`}</span>}
+              <button
+                onClick={() => setCollapsed(!collapsed)}
+                className="p-1 rounded hover:bg-muted text-muted-foreground"
+              >
+                {collapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
+              </button>
+            </div>
+            {!collapsed && <div className="text-sm font-semibold">Smart Overview</div>}
+            <nav className="space-y-2 text-sm mt-4">
+              <SidebarItem collapsed={collapsed} label="Dashboard" icon={Folder} count={68} to={`/managements/sub-projects/${subProjectId}/dashboard`} />
+              <SidebarItem collapsed={collapsed} label="Document Management" icon={Folder} count={68} to={`/managements/sub-projects/${subProjectId}/data`} />
+              <SidebarItem collapsed={collapsed} label="Your Teams" icon={Users} to={`/managements/sub-projects/${subProjectId}/team-by-user`} />
+              <SidebarItem collapsed={collapsed} label="Notifications" icon={Bell} to={`/managements/sub-projects/${subProjectId}/notifications`} />
+              <SidebarItem collapsed={collapsed} label="Issues" icon={AlertCircle} count={5} color="bg-destructive/20 text-destructive" to={`/managements/sub-projects/${subProjectId}/issues`} />
+              <SidebarItem collapsed={collapsed} label="RFIs" icon={FileText} count={18} color="bg-success/20 text-success" to={`/managements/sub-projects/${subProjectId}/rfis`} />
+            </nav>
+          </>
+        ) : <LoadingState />
+      }
+
     </aside>
   );
 }

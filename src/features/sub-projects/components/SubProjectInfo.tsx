@@ -1,3 +1,5 @@
+import { DateTimeDisplay } from "@/components/bim-viewer/common/DateTimeDisplay";
+import { toYYYYMMDD } from "@/utils/date-time";
 import {
   CalendarDays,
   User,
@@ -6,17 +8,20 @@ import {
   FolderClosed,
 } from "lucide-react";
 
-export function SubProjectInfo() {
+export function SubProjectInfo({data}) {
+  if(!data) return;
+  console.log(data);
   const info = {
-    name: "Tower A BIM Package",
-    description: "BIM coordination package for structural and MEP scope.",
-    projectName: "Sunrise Complex Phase 2",
-    createdBy: "Nguyen Van A",
-    startTime: "2024-04-01",
-    endTime: "2024-07-31",
-    owner: "BIM Vietnam Co., Ltd",
-    discipline: "Architecture, MEP, Structure",
-    partner: "GreenBuild Engineering",
+    name: data.name,
+    description: data.description,
+    projectName: data.project.name,
+    createdBy: data.creator.user_name,
+    startTime: toYYYYMMDD(data.start_time),
+    endTime: toYYYYMMDD(data.end_time),
+    owner: data.owner.user_name,
+    discipline: data.discipline.name,
+    partner: data.partner,
+    updatedAt: data.updated_at,
   };
 
   const Item = ({ label, icon, value, borderColor, index }) => (
@@ -45,7 +50,7 @@ export function SubProjectInfo() {
             {info.description}
           </p>
           <p className="text-xs text-gray-500 dark:text-gray-500 mt-2">
-            Updated: Wed, May 28, 2025, 10:12 PM +07
+            <DateTimeDisplay isoDate={info.updatedAt}/>
           </p>
         </div>
 

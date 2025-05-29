@@ -1,7 +1,10 @@
 import { DialogTemplate } from "@/components/model-table/DialogTemplate";
 import AppButton from "@/components/bim-viewer/common/AppButton";
 import { Button } from "@/components/ui/button";
-import { FileItem, FolderItem } from "./types";
+import { FileItem, FolderItem } from "./Types";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from "@/components/ui/dialog";
+import PDFViewer from "./pdf-viewer/PDFViewer";
+import { PDFDialogViewer } from "./pdf-viewer/PDFDialogViewer";
 
 interface Props {
   deleteFile: FileItem | null;
@@ -20,6 +23,8 @@ export const MoveDeleteDialogs: React.FC<Props> = ({
   setDeleteFile,
   onConfirmDelete,
   moveFile,
+  setFileViewer,
+  fileViewer,
   setMoveFile,
   availableFolders,
   selectedFolderId,
@@ -79,6 +84,15 @@ export const MoveDeleteDialogs: React.FC<Props> = ({
           ))}
         </div>
       </DialogTemplate>
-    </>
+
+
+      {/* PDF Viewer */}
+      <PDFDialogViewer
+            open={fileViewer}
+            onClose={() => setFileViewer(null)}
+            url="/deepbim_db_v1.pdf"
+            fileName="deepbim_db_v1.pdf"
+          />
+        </>
   );
 };

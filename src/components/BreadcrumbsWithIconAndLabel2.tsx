@@ -54,7 +54,7 @@ const BreadcrumbsWithIconAndLabel2: React.FC = () => {
           entity: entityKey,
           id: paths[index + 1],
           entityIndex: index,
-          idIndex: index + 1,
+        idIndex: index + 1,
         };
       }
       return null;
@@ -85,7 +85,7 @@ const BreadcrumbsWithIconAndLabel2: React.FC = () => {
       }
       const endpoint = ENTITIES[entity].apiEndpoint;
       const url = `${baseUrl}/${endpoint}/${id}`;
-      console.log("Fetching from:", url);
+      // console.log("Fetching from:", url);
 
       const response = await fetch(url, {
         method: "GET",

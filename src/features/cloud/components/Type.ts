@@ -50,6 +50,15 @@ export interface FileItem {
   };
 }
 
+
+export interface FileListViewProps{
+  files: FileItem[];
+  triggerDialog: (setter: React.Dispatch<React.SetStateAction<FileItem | null>>, file: FileItem) => void;
+  setMoveFile: React.Dispatch<React.SetStateAction<FileItem | null>>;
+  setDeleteFile: React.Dispatch<React.SetStateAction<FileItem | null>>;
+  setFileViewer: React.Dispatch<React.SetStateAction<FileItem | null>>;
+};
+
 export interface FolderItem {
   id: number;
   name: string;

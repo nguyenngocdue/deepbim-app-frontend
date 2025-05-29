@@ -92,19 +92,16 @@ export default function SubProjectListPage() {
 
   // Định dạng ngày
   function formatDate(dateStr?: string) {
-    if (!dateStr) return "-"
-    const d = new Date(dateStr)
-    return d.toLocaleDateString("vi-VN", {
-      day: "numeric",
-      month: "short",
-      year: "numeric"
-    })
+    if (!dateStr) return "-";
+    const date = new Date(dateStr);
+    return date.toISOString().slice(0, 10);
   }
+
 
   // Định nghĩa cột bảng
   const columns = useMemo<ColumnDef<SubProject>[]>(() => [
-    { 
-      accessorKey: "id", 
+    {
+      accessorKey: "id",
       header: "Id",
       cell: ({ row }) => (
         <LinkId id={`${row.original.id}`} tail="/dashboard" href="/managements/sub-projects" />
@@ -114,14 +111,35 @@ export default function SubProjectListPage() {
     { accessorKey: "description", header: "Description" },
     { accessorKey: "project", header: "Project" },
     { accessorKey: "discipline", header: "Discipline" },
-    { accessorKey: "start_time", header: "Start Time",
-      cell: ({ getValue }) => getValue() ? formatDate(getValue() as string) : "-" },
-    { accessorKey: "end_time", header: "End Time",
-      cell: ({ getValue }) => getValue() ? formatDate(getValue() as string) : "-" },
-    { accessorKey: "owner", header: "Owner",
-      cell: ({ getValue }) => (getValue() as any)?.name || "-" },
-    { accessorKey: "creator", header: "Creator",
-      cell: ({ getValue }) => (getValue() as any)?.name || "-" }
+
+    {
+      accessorKey: "start_time", header: "Start Time",
+      cell: ({ getValue }) => {
+        const val = getValue()
+        return val ? new Date(val).toLocaleDateString() : "-"
+      }
+    },
+    {
+      accessorKey: "end_time", header: "End Time",
+      cell: ({ getValue }) => {
+        const val = getValue()
+        return val ? new Date(val).toLocaleDateString() : "-"
+      }
+    },
+
+    {
+      accessorKey: "owner", header: "Owner",
+      cell: ({ row }) => (
+        <span title={`Id: #${row.original.owner.id}`}>{row.original.owner.user_name}</span>
+      )
+    },
+
+    {
+      accessorKey: "creator", header: "Creator",
+      cell: ({ row }) => (
+        <span title={`Id: #${row.original.owner.id}`}>{row.original.creator.user_name}</span>
+      )
+    }
   ], [])
 
   const table = useReactTable({
@@ -162,11 +180,11 @@ export default function SubProjectListPage() {
   const searchBar = (
     <>
       <Button className={`${CLASS_NAME_DEFAULT.CLASS_APP_BUTTON_CREATE}`} onClick={() => setOpen(true)}>+ Create Sub-Project</Button>
-        <SearchBox
+      <SearchBox
         value={filter}
         onChange={setFilter}
         placeholder="Search sub- projects by name or number..."
-      />    
+      />
     </>
   )
 

@@ -2,9 +2,15 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 import { TanStackRouterVite } from '@tanstack/router-plugin/vite'
 import ignore from 'rollup-plugin-ignore';
-
+import { viteStaticCopy } from 'vite-plugin-static-copy';
 import path from 'path';
+import { normalizePath } from 'vite';
 
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
+const pdfjsDistPath = path.dirname(require.resolve('pdfjs-dist/package.json'));
+const cMapsDir = normalizePath(path.join(pdfjsDistPath, 'cmaps'));
 // https://vite.dev/config/
 export default defineConfig({
   server: {
@@ -20,7 +26,15 @@ export default defineConfig({
       ]),
       enforce: 'pre',
       apply: 'build',
-    }
+    },
+   viteStaticCopy({
+      targets: [
+        {
+          src: cMapsDir,
+          dest: '.',
+        },
+      ],
+    }),
   ],
   worker: {
     format: "es", // Đảm bảo worker dùng ES Module

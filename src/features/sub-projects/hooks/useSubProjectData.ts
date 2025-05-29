@@ -1,6 +1,7 @@
 // features/subProject/hooks/useSubProjectData.ts
 
 import { useEffect, useState } from "react";
+import { getSubProject } from "@/apis/sub-project-api"; // Import hàm API thực tế
 
 export interface SubProjectData {
   id: string;
@@ -21,38 +22,30 @@ export function useSubProjectData(subProjectId: number) {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    let ignore = false;
     async function fetchData() {
       try {
         setLoading(true);
-        // Simulate API delay with setTimeout
-        setTimeout(() => {
-          setData({
-            id: subProjectId,
-            name: "Interior Fit-Out",
-            discipline: "Architecture",
-            status: "In Progress",
-            startDate: "2024-01-01",
-            endDate: "2024-06-30",
-            filesUploaded: 68,
-            openIssues: 5,
-            rfisAnswered: 18,
-            progressHistory: [
-              { name: 'Week 1', Completed: 12 },
-              { name: 'Week 2', Completed: 24 },
-              { name: 'Week 3', Completed: 38 },
-              { name: 'Week 4', Completed: 51 },
-              { name: 'Week 5', Completed: 63 },
-              { name: 'Week 6', Completed: 72 },
-            ],
-          });
-          setLoading(false);
-        }, 500);
+        setError(null);
+
+        // Gọi API thực tế
+        const response = await getSubProject(subProjectId);
+        // Tùy thuộc vào API của bạn trả về như thế nào:
+        // Nếu là { data: {...} } thì dùng response.data
+        // Nếu là {...} thì dùng trực tiếp
+        if (!ignore) setData(response.data || response);
       } catch (err: any) {
-        setError(err.message);
-        setLoading(false);
+        if (!ignore) setError(err?.message ?? "Unknown error");
+      } finally {
+        if (!ignore) setLoading(false);
       }
     }
-    fetchData();
+    if (subProjectId) fetchData();
+    else setLoading(false);
+
+    return () => {
+      ignore = true; // tránh race condition nếu component unmount sớm
+    };
   }, [subProjectId]);
 
   return { data, loading, error };

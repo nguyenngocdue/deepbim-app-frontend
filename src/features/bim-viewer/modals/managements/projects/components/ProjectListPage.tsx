@@ -69,10 +69,6 @@ export default function ProjectListPage() {
       header: "Name",
     },
     {
-      accessorKey: "number",
-      header: "Number",
-    },
-    {
       accessorKey: "creator",
       header: "Creator",
       cell: ({ getValue }) => {
@@ -82,10 +78,10 @@ export default function ProjectListPage() {
     },
     {
       accessorKey: "main_discipline",
-      header: "Discipline",
+      header: "Main Discipline",
       cell: ({ getValue }) => {
         const val = getValue() as any
-        return val?.name ?? "-"
+        return val ?? "-"
       }
     },
     {

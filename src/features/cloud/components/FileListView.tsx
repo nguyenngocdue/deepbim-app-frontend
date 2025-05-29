@@ -3,20 +3,17 @@ import { FaEye } from "react-icons/fa";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { DateTimeDisplay } from "@/components/bim-viewer/common/DateTimeDisplay";
-import { FileItem } from "./types";
 import { LoadingState } from "@/components/common/LoadingState";
+import { FileListViewProps } from "./Type";
+
 
 export const FileListView = ({
   files,
   triggerDialog,
   setMoveFile,
   setDeleteFile,
-}: {
-  files: FileItem[];
-  triggerDialog: (setter: React.Dispatch<React.SetStateAction<FileItem | null>>, file: FileItem) => void;
-  setMoveFile: React.Dispatch<React.SetStateAction<FileItem | null>>;
-  setDeleteFile: React.Dispatch<React.SetStateAction<FileItem | null>>;
-}) => {
+  setFileViewer,
+}: FileListViewProps) => {
   const getIconByType = (type?: string) => {
     const typeColors: Record<string, string> = {
       pdf: "text-red-600",
@@ -65,7 +62,7 @@ export const FileListView = ({
                     <DropdownMenuItem onClick={() => triggerDialog(setDeleteFile, file)} className="text-destructive">
                       <Trash2 className="mr-2 h-4 w-4" /> Delete
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => console.log(`View file ${file.name}`)}>
+                    <DropdownMenuItem onClick={() => triggerDialog(setFileViewer, file)}>
                       <FaEye className="mr-2 h-4 w-4" /> View
                     </DropdownMenuItem>
                   </DropdownMenuContent>
