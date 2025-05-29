@@ -130,7 +130,6 @@ export default function FolderTree({ onSelect, entityId, refreshTrigger }: Folde
       <FolderTreeHeader filter={filter} onFilterChange={setFilter} />
       <div className="flex-1 overflow-auto p-4">
         {
-          originalData.length > 0 ? 
             <Tree
               ref={treeRef}
               data={filter ? filterTree(originalData, filter) : treeData}
@@ -158,8 +157,6 @@ export default function FolderTree({ onSelect, entityId, refreshTrigger }: Folde
                 />
               )}
             </Tree>
-            :
-            <LoadingState/>
         }
       </div>
 
