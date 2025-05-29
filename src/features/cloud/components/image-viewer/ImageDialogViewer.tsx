@@ -9,13 +9,17 @@ export function ImageDialogViewer({
   fileName,
   iconType = "show",
   disableOutsideClose = false,
+  width = 700,  
+  height = 500,  
 }: {
   open: boolean;
   onClose: () => void;
   url: string;
   fileName?: string;
-  iconType?: "show" | "edit" | "create" | "delete" | "update" | "move" | "";
+  iconType?: "show";
   disableOutsideClose?: boolean;
+  width?: number;
+  height?: number;
 }) {
   return (
     <DialogTemplate
@@ -30,19 +34,40 @@ export function ImageDialogViewer({
       description={fileName}
       iconType={iconType}
       disableOutsideClose={disableOutsideClose}
-      className="max-w-[96vw] max-h-[94vh] w-fit items-center "
+      className="max-w-[96vw] max-h-[94vh] w-fit items-center"
       footer={
         <DialogClose asChild>
           <AppButton variant="outline" falseName="Close" />
         </DialogClose>
       }
     >
-      <div className="flex justify-center items-center w-full h-full" style={{ minHeight: 300 }}>
+      <div
+        className="flex justify-center items-center"
+        style={{
+          width,
+          height,
+          background: "#fff",
+          borderRadius: 12,
+          boxShadow: "0 2px 18px #2221",
+          minHeight: height,
+          minWidth: width,
+          maxWidth: "90vw",
+          maxHeight: "70vh",
+        }}
+      >
         <img
           src={url}
           alt={fileName}
-          className="rounded-lg shadow max-w-full max-h-[70vh] object-contain bg-white"
-          style={{ margin: "0 auto" }}
+          className="rounded-lg shadow object-contain"
+          style={{
+            width: "100%",
+            height: "100%",
+            maxWidth: width,
+            maxHeight: height,
+            display: "block",
+            objectFit: "contain",
+            background: "#fff"
+          }}
           loading="lazy"
         />
       </div>

@@ -1,10 +1,9 @@
 import { FileText, MoreHorizontal, Move, Trash2 } from "lucide-react";
-import { FaEye } from "react-icons/fa";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
 import { DateTimeDisplay } from "@/components/bim-viewer/common/DateTimeDisplay";
 import { LoadingState } from "@/components/common/LoadingState";
 import { FileListViewProps } from "./Type";
+import { FileActionDropdown } from "./FileActionDropdown";
+import { handleDownload } from "../hooks/handleDownload";
 
 
 export const FileListView = ({
@@ -25,6 +24,8 @@ export const FileListView = ({
     const color = typeColors[type || ""] || "text-gray-600";
     return <FileText className={`w-6 h-6 ${color}`} />;
   };
+
+
 
   return (
     <div className="w-full mx-auto space-y-[0.5px]">
@@ -49,24 +50,13 @@ export const FileListView = ({
               <div className="truncate text-200">{file.creator.user_name}</div>
               <DateTimeDisplay isoDate={file.updated_at} formatString="yyyy-MM-dd" />
               <div className="text-right invisible group-hover:visible">
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon" className="h-8 w-8">
-                      <MoreHorizontal className="h-4 w-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem onClick={() => triggerDialog(setMoveFile, file)}>
-                      <Move className="mr-2 h-4 w-4" /> Move to Folder
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => triggerDialog(setDeleteFile, file)} className="text-destructive">
-                      <Trash2 className="mr-2 h-4 w-4" /> Delete
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => triggerDialog(setFileViewer, file)}>
-                      <FaEye className="mr-2 h-4 w-4" /> View
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
+               <FileActionDropdown
+                  file={file}
+                  onMove={file => triggerDialog(setMoveFile, file)}
+                  onDelete={file => triggerDialog(setDeleteFile, file)}
+                  onView={file => triggerDialog(setFileViewer, file)}
+                  onDownload={file => handleDownload(file)}
+                />
               </div>
             </div>
           )): <LoadingState />

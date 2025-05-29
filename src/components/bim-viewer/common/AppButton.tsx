@@ -53,7 +53,7 @@ const AppButton: React.FC<AppButtonProps> = ({
     <Button
       variant={variant}
       onClick={onClick}
-      className={`transition-all duration-200 font-semibold shadow-md hover:bg-primary/90  ${className}`}
+      className={`transition-all duration-200 font-semibold shadow-md  text-gray-200  ${className}`}
       disabled={isLoading || props.disabled}
       {...props}
     >

@@ -6,6 +6,14 @@ import { PDFDialogViewer } from "./pdf-viewer/PDFDialogViewer";
 import { FileItem, FolderItem } from "./Type";
 import { useEffect, useState } from "react";
 import { ImageDialogViewer } from "./image-viewer/ImageDialogViewer";
+import { UnsupportedFileDialogViewer } from "./UnsupportedFileDialogViewer";
+
+
+const IMAGE_EXTENSIONS = [
+  "jpg", "jpeg", "png", "gif", "bmp", "webp", "svg",
+  "ico", "tif", "tiff", "heic", "heif", "apng", "avif", "jfif",
+  "raw", "cr2", "nef", "psd"
+];
 
 interface Props {
   deleteFile: FileItem | null;
@@ -21,7 +29,7 @@ interface Props {
   fileViewer: boolean | null;
 }
 
-export const MoveDeleteDialogs: React.FC<Props> = ({
+export const MoveDeleteViewDialogs: React.FC<Props> = ({
   selectedFile,
   deleteFile,
   setDeleteFile,
@@ -35,6 +43,7 @@ export const MoveDeleteDialogs: React.FC<Props> = ({
   setSelectedFolderId,
   onMoveToFolder,
 }) => {
+
 
   const [fileUrl, setFileUrl] = useState();
   const [fileName, setFileName] = useState();
@@ -51,6 +60,11 @@ export const MoveDeleteDialogs: React.FC<Props> = ({
       )
     }
   }, [selectedFile])
+
+
+  const isPdf = fileType === "pdf";
+  const isImage = fileType && IMAGE_EXTENSIONS.includes(fileType);
+
 
   return (
     <>
@@ -109,7 +123,7 @@ export const MoveDeleteDialogs: React.FC<Props> = ({
 
       {/* PDF Viewer */}
       {
-        fileType === 'pdf' &&
+        isPdf &&
         <PDFDialogViewer
           open={fileViewer}
           onClose={() => setFileViewer(null)}
@@ -120,7 +134,7 @@ export const MoveDeleteDialogs: React.FC<Props> = ({
 
       {/* Image viewer */}
       {
-        fileType === 'png' &&
+        isImage &&
         <ImageDialogViewer
           open={fileViewer}
           onClose={() => setFileViewer(null)}
@@ -128,6 +142,19 @@ export const MoveDeleteDialogs: React.FC<Props> = ({
           fileName={fileName}
         />
       }
+
+
+      {/* Fallback: file không hỗ trợ preview */}
+      {fileViewer && !isPdf && !isImage && (
+        <UnsupportedFileDialogViewer
+          open={fileViewer}
+          onClose={() => setFileViewer(null)}
+          fileUrl={fileUrl}
+          fileName={fileName}
+        />
+      )}
+
+
     </>
   );
 };

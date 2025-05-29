@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { FileItem, FolderItem, FolderContentProps } from "./Type";
 import { FileGridView } from "./FileGridView";
 import { FileListView } from "./FileListView";
-import { MoveDeleteDialogs } from "./MoveDeleteDialogs";
+import { MoveDeleteViewDialogs } from "./MoveDeleteViewDialogs";
 
 export const FolderContent: React.FC<FolderContentProps> = ({ files, view, entityId, currentFolderId }) => {
   const [fileList, setFileList] = useState<FileItem[]>(files);
@@ -69,7 +69,7 @@ export const FolderContent: React.FC<FolderContentProps> = ({ files, view, entit
         <FileListView files={filteredFiles} triggerDialog={triggerDialog} setMoveFile={setMoveFile} setDeleteFile={setDeleteFile} setFileViewer={setFileViewer}/>
       )}
 
-      <MoveDeleteDialogs
+      <MoveDeleteViewDialogs
         selectedFile={selectedFile}
         deleteFile={deleteFile}
         setDeleteFile={setDeleteFile}

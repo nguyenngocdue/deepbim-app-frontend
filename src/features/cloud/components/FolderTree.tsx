@@ -128,9 +128,7 @@ export default function FolderTree({ onSelect, entityId, refreshTrigger }: Folde
   return (
     <div className="flex flex-col h-full">
       <FolderTreeHeader filter={filter} onFilterChange={setFilter} />
-
       <div className="flex-1 overflow-auto p-4">
-
         {
           originalData.length > 0 ? 
             <Tree
