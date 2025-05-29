@@ -6,6 +6,7 @@ import clsx from "clsx"
 interface LinkIdProps {
   id: string | number
   href: string
+  tail?:string
   prefix?: string
   className?: string
   disabled?: boolean
@@ -14,6 +15,7 @@ interface LinkIdProps {
 export function LinkId({
   id,
   href,
+  tail,
   prefix = "#",
   className = "",
   disabled = false
@@ -33,7 +35,7 @@ export function LinkId({
   if (disabled) return content
 
   return (
-    <Link to={`${href}/${id}`}>
+    <Link to={`${href}/${id}${tail}`}>
       {content}
     </Link>
   )

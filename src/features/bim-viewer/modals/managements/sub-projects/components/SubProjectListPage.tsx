@@ -107,7 +107,7 @@ export default function SubProjectListPage() {
       accessorKey: "id", 
       header: "Id",
       cell: ({ row }) => (
-        <LinkId id={row.original.id} href="/managements/sub-projects" />
+        <LinkId id={`${row.original.id}`} tail="/dashboard" href="/managements/sub-projects" />
       )
     },
     { accessorKey: "name", header: "Name" },
