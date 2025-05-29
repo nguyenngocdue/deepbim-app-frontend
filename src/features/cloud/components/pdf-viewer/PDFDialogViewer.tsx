@@ -1,6 +1,6 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import PDFViewer from "./PDFViewer";
+import AppButton from "@/components/bim-viewer/common/AppButton";
 
 interface PDFDialogViewerProps {
   open: boolean;
@@ -30,11 +30,11 @@ export function PDFDialogViewer({ open, onClose, url, fileName }: PDFDialogViewe
           </DialogDescription>
         </DialogHeader>
         <div className="flex-1 flex justify-center items-center p-4 overflow-auto">
-          <PDFViewer url={url} maxWidth={900} maxHeight={650} />
+          <PDFViewer url={url} maxWidth={1200} maxHeight={800} />
         </div>
         <DialogFooter className="flex justify-end gap-2 px-6 pb-6">
           <DialogClose asChild>
-            <Button variant="outline">Close</Button>
+            <AppButton variant="outline" falseName="Close"/>
           </DialogClose>
         </DialogFooter>
       </DialogContent>

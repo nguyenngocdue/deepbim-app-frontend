@@ -7,16 +7,16 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 import { ReactNode } from "react";
-import { Separator } from "../ui/separator";
 import { LuPencil, LuTrash2, LuRefreshCw } from "react-icons/lu";
 import { LucideGitPullRequestCreateArrow } from "lucide-react";
 import { SiGoogledisplayandvideo360 } from "react-icons/si";
 import { TiArrowMoveOutline } from "react-icons/ti";
+import { SectionDivider } from "../common/SectionDivider";
 
 interface DialogTemplateProps {
   open: boolean;
   onClose: () => void;
-  title: string;
+  title: string | ReactNode;
   description?: string;
   children: ReactNode;
   footer?: ReactNode;
@@ -75,7 +75,9 @@ export function DialogTemplate({
             </DialogDescription>
           )}
         </DialogHeader>
+        <SectionDivider className="mb-6" />
         <div className="mt-4 pr-1">{children}</div>
+        <SectionDivider className="mb-6" />
         {footer && (
           <div className="mt-6 flex flex-col-reverse md:flex-row justify-end gap-2">
             {footer}

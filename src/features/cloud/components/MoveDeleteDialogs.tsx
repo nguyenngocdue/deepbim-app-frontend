@@ -1,10 +1,11 @@
 import { DialogTemplate } from "@/components/model-table/DialogTemplate";
 import AppButton from "@/components/bim-viewer/common/AppButton";
 import { Button } from "@/components/ui/button";
-import { FileItem, FolderItem } from "./Types";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from "@/components/ui/dialog";
 import PDFViewer from "./pdf-viewer/PDFViewer";
 import { PDFDialogViewer } from "./pdf-viewer/PDFDialogViewer";
+import { FileItem, FolderItem } from "./Type";
+import { useEffect, useState } from "react";
+import { ImageDialogViewer } from "./image-viewer/ImageDialogViewer";
 
 interface Props {
   deleteFile: FileItem | null;
@@ -16,9 +17,12 @@ interface Props {
   selectedFolderId: number | null;
   setSelectedFolderId: React.Dispatch<React.SetStateAction<number | null>>;
   onMoveToFolder: () => void;
+  setFileViewer: React.Dispatch<React.SetStateAction<boolean | null>>;
+  fileViewer: boolean | null;
 }
 
 export const MoveDeleteDialogs: React.FC<Props> = ({
+  selectedFile,
   deleteFile,
   setDeleteFile,
   onConfirmDelete,
@@ -31,6 +35,23 @@ export const MoveDeleteDialogs: React.FC<Props> = ({
   setSelectedFolderId,
   onMoveToFolder,
 }) => {
+
+  const [fileUrl, setFileUrl] = useState();
+  const [fileName, setFileName] = useState();
+  const [fileType, setFileType] = useState();
+
+
+
+  useEffect(() => {
+    if (selectedFile) {
+      const url = selectedFile.media.url;
+      setFileUrl(url);
+      setFileName(selectedFile.name);
+      setFileType(selectedFile.type
+      )
+    }
+  }, [selectedFile])
+
   return (
     <>
       {/* Delete Dialog */}
@@ -87,12 +108,26 @@ export const MoveDeleteDialogs: React.FC<Props> = ({
 
 
       {/* PDF Viewer */}
-      <PDFDialogViewer
-            open={fileViewer}
-            onClose={() => setFileViewer(null)}
-            url="/deepbim_db_v1.pdf"
-            fileName="deepbim_db_v1.pdf"
-          />
-        </>
+      {
+        fileType === 'pdf' &&
+        <PDFDialogViewer
+          open={fileViewer}
+          onClose={() => setFileViewer(null)}
+          url={fileUrl}
+          fileName={fileName}
+        />
+      }
+
+      {/* Image viewer */}
+      {
+        fileType === 'png' &&
+        <ImageDialogViewer
+          open={fileViewer}
+          onClose={() => setFileViewer(null)}
+          url={fileUrl}
+          fileName={fileName}
+        />
+      }
+    </>
   );
 };

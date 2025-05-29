@@ -14,6 +14,7 @@ export const FolderContent: React.FC<FolderContentProps> = ({ files, view, entit
   const [moveFile, setMoveFile] = useState<FileItem | null>(null);
   const [selectedFolderId, setSelectedFolderId] = useState<number | null>(null);
   const [availableFolders, setAvailableFolders] = useState<FolderItem[]>([]);
+  const [selectedFile, setSelectedFile] = useState<FileItem | null>(null);
 
   useEffect(() => setFileList(files), [files]);
 
@@ -28,6 +29,7 @@ export const FolderContent: React.FC<FolderContentProps> = ({ files, view, entit
   const triggerDialog = (setter: React.Dispatch<React.SetStateAction<FileItem | null>>, file: FileItem) => {
     setter(null);
     requestAnimationFrame(() => setter(file));
+    setSelectedFile(file);
   };
 
   const onConfirmDelete = async () => {
@@ -68,6 +70,7 @@ export const FolderContent: React.FC<FolderContentProps> = ({ files, view, entit
       )}
 
       <MoveDeleteDialogs
+        selectedFile={selectedFile}
         deleteFile={deleteFile}
         setDeleteFile={setDeleteFile}
         onConfirmDelete={onConfirmDelete}

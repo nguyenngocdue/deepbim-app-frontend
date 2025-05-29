@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { getDocument, GlobalWorkerOptions, PDFDocumentProxy } from "pdfjs-dist";
+import { LoadingState } from "@/components/common/LoadingState";
 
 GlobalWorkerOptions.workerSrc = "/pdf.worker.min.mjs";
 
@@ -87,14 +88,14 @@ export default function PDFViewer({
         h = containerRef.current.offsetHeight;
       }
       const rawViewport = page.getViewport({ scale: 1.0, rotation });
-      let fitScale = 1;
-      if (fitMode === "width") fitScale = w / rawViewport.width;
-      else if (fitMode === "height") fitScale = h / rawViewport.height;
-      else fitScale = Math.min(1, w / rawViewport.width, h / rawViewport.height);
+      let renderScale = scale;
 
-      // Nếu zoom thủ công thì ưu tiên scale đó, còn fullscreen luôn fit width
-      const finalScale = isFullscreen ? fitScale : Math.max(fitScale, scale);
-      const viewport = page.getViewport({ scale: finalScale, rotation });
+      // Nếu fitMode thì tính fit scale, NGƯỢC LẠI dùng scale user
+      if (fitMode === "width") renderScale = w / rawViewport.width;
+      else if (fitMode === "height") renderScale = h / rawViewport.height;
+      // fitMode auto thì lấy scale của user
+
+      const viewport = page.getViewport({ scale: renderScale, rotation });
 
       const canvas = canvasRef.current!;
       canvas.height = viewport.height;
@@ -114,8 +115,14 @@ export default function PDFViewer({
   // Controls
   const goToPreviousPage = () => setPageNumber((p) => Math.max(1, p - 1));
   const goToNextPage = () => setPageNumber((p) => Math.min(numPages, p + 1));
-  const zoomOut = () => setScale((s) => Math.max(0.4, s - 0.15));
-  const zoomIn = () => setScale((s) => Math.min(2.2, s + 0.15));
+  const zoomOut = () => {
+    setFitMode("auto");
+    setScale((s) => Math.max(0.4, s - 0.15));
+  };
+  const zoomIn = () => {
+    setFitMode("auto");
+    setScale((s) => Math.min(2.2, s + 0.15));
+  };
   const rotate = () => setRotation((r) => (r + 90) % 360);
   const fitToWidth = () => setFitMode("width");
   const fitToHeight = () => setFitMode("height");
@@ -192,13 +199,13 @@ export default function PDFViewer({
         <span className="font-mono text-base select-none dark:text-gray-100">/ {numPages}</span>
         <button onClick={goToNextPage} disabled={pageNumber >= numPages || loading} className="px-2 py-1 rounded hover:bg-gray-100 dark:hover:bg-zinc-700 disabled:opacity-40" title="Next">▶</button>
         <div className="mx-2 border-l border-gray-200 dark:border-zinc-600 h-5"></div>
-        <button onClick={zoomOut} disabled={scale <= 0.5 || loading || isFullscreen} className="px-2 py-1 rounded hover:bg-gray-100 dark:hover:bg-zinc-700 disabled:opacity-40" title="Zoom out">-</button>
+        <button onClick={zoomOut} disabled={scale <= 0.5 || loading || fitMode !== "auto"} className="px-2 py-1 rounded hover:bg-gray-100 dark:hover:bg-zinc-700 disabled:opacity-40" title="Zoom out">-</button>
         <span className="w-12 text-center dark:text-gray-100">{Math.round(scale * 100)}%</span>
-        <button onClick={zoomIn} disabled={scale >= 2.2 || loading || isFullscreen} className="px-2 py-1 rounded hover:bg-gray-100 dark:hover:bg-zinc-700 disabled:opacity-40" title="Zoom in">+</button>
+        <button onClick={zoomIn} disabled={scale >= 2.2 || loading || fitMode !== "auto"} className="px-2 py-1 rounded hover:bg-gray-100 dark:hover:bg-zinc-700 disabled:opacity-40" title="Zoom in">+</button>
         <div className="mx-2 border-l border-gray-200 dark:border-zinc-600 h-5"></div>
         <button onClick={rotate} title="Rotate 90°" className="px-2 py-1 rounded hover:bg-gray-100 dark:hover:bg-zinc-700">⟳</button>
-        <button onClick={fitToWidth} title="Fit to Width" className="px-2 py-1 rounded hover:bg-gray-100 dark:hover:bg-zinc-700" disabled={isFullscreen}>↔</button>
-        <button onClick={fitToHeight} title="Fit to Height" className="px-2 py-1 rounded hover:bg-gray-100 dark:hover:bg-zinc-700" disabled={isFullscreen}>↕</button>
+        <button onClick={fitToWidth} title="Fit to Width" className="px-2 py-1 rounded hover:bg-gray-100 dark:hover:bg-zinc-700">↔</button>
+        <button onClick={fitToHeight} title="Fit to Height" className="px-2 py-1 rounded hover:bg-gray-100 dark:hover:bg-zinc-700">↕</button>
         <button onClick={resetView} title="Reset view" className="px-2 py-1 rounded hover:bg-gray-100 dark:hover:bg-zinc-700">⟳ Reset</button>
         <div className="mx-2 border-l border-gray-200 dark:border-zinc-600 h-5"></div>
         {!isFullscreen && <button onClick={enterFullscreen} title="Fullscreen" className="px-2 py-1 rounded hover:bg-gray-100 dark:hover:bg-zinc-700">⛶</button>}
@@ -216,7 +223,7 @@ export default function PDFViewer({
         }}
       >
         {error && <div className="text-red-500">{error}</div>}
-        {loading && (<div className="absolute inset-0 flex items-center justify-center z-10 bg-white/80 dark:bg-zinc-900/70 rounded">Loading...</div>)}
+        {loading && (<LoadingState/>)}
         <canvas
           ref={canvasRef}
           className="rounded shadow-lg border bg-white dark:bg-zinc-900 mx-auto"
