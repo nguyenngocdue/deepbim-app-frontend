@@ -31,7 +31,7 @@ export function TableContent<T>({ table, showNo = true }: TableContentProps<T>) 
               {headerGroup.headers.map((header) => (
                 <TableHead
                   key={header.id}
-                  className="px-4 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wide"
+                  className="px-4 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wide text-center"
                 >
                   {flexRender(header.column.columnDef.header, header.getContext())}
                 </TableHead>

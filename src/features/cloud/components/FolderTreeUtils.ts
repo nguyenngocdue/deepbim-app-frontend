@@ -13,8 +13,8 @@ export function mapFolderTreeOnly(nodes: any[]): TreeNode[] {
           name: f.name,
           folder_id: f.folder_id,
           type: f.media?.extension,
-          media: f.media ? { url: f.media.url, extension: f.media.extension } : undefined,
-          creator: f.creator ? {id : f.creator.id, user_name:  f.creator.user_name} : undefined,
+          media: f.media ? { url: f.media.url, extension: f.media.extension} : undefined,
+          creator: f.creator ? {id : f.creator.id, user_name:  f.creator.user_name, avatar_url: f.creator.mediaUserAvatar?.url} : undefined,
           updated_at: f.updated_at,
         }))
       : [],

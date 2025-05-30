@@ -9,7 +9,7 @@ export async function getMedia(userId: number) {
 export async function uploadAvatar(data: any) {
     const formData = new FormData();
     formData.append("file", data.file);
-    formData.append("category_type", "user");
+    formData.append("category_type", "user_avatar");
     formData.append("category_id", data.category_id);
     const response = await fetchWithAuth2(`/media/upload-avatar`, {
         method: 'POST',

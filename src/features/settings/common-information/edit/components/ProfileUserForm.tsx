@@ -67,7 +67,6 @@ export function ProfileUserForm({ profile }: { profile: any }) {
         }
         const avatarData = {
             file: avatarFile,
-            category_type: 'user',
             category_id: profile.user_id,
             description: 'avatar'
         }
