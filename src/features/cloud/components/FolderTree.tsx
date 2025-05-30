@@ -13,7 +13,6 @@ import { useFoldersBySubProjectId } from "../hooks/useFoldersBySubProjectId";
 import { FormActionButtons } from "@/components/bim-viewer/common/FormActionButtons";
 import { TiArrowMoveOutline } from "react-icons/ti";
 import { CLASS_NAME_DEFAULT } from "@/utils/class";
-import { LoadingState } from "@/components/common/LoadingState";
 
 const LOCAL_STORAGE_KEY = "lastSelectedFolderId";
 
@@ -28,7 +27,7 @@ export default function FolderTree({ onSelect, entityId, refreshTrigger }: Folde
 
   const [treeData, setTreeData] = useState([]);
   const [originalData, setOriginalData] = useState([]);
-  const [selectedNodeId, setSelectedNodeId] = useState(null);
+  const [selectedNodeId, setSelectedNodeId] = useState(localStorage.getItem(LOCAL_STORAGE_KEY));
 
   const [filter, setFilter] = useState("");
   const [renameNode, setRenameNode] = useState<NodeApi<any> | null>(null);
@@ -124,6 +123,7 @@ export default function FolderTree({ onSelect, entityId, refreshTrigger }: Folde
     toast.error("Failed to move folder");
   }
 };
+
 
   return (
     <div className="flex flex-col h-full">
