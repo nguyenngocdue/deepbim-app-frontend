@@ -6,7 +6,7 @@ import { FolderTreeNode } from "./FolderTreeNode";
 import { DialogTemplate } from "@/components/model-table/DialogTemplate";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-import { filterTree, findNodeById, mapFolderTreeOnly } from "./FolderTreeUtils";
+import { filterTree, findNodeById, mapFileInfo } from "./FolderTreeUtils";
 import AppButton from "@/components/bim-viewer/common/AppButton";
 import { FolderSelector } from "./FolderSelector";
 import { useFoldersBySubProjectId } from "../hooks/useFoldersBySubProjectId";
@@ -46,7 +46,7 @@ export default function FolderTree({ onSelect, entityId, refreshTrigger }: Folde
 
   const fetchTree = async () => {
     const res = await getFolderTree(entityId);
-    const mapped = mapFolderTreeOnly(res.data);
+    const mapped = mapFileInfo(res.data);
     setOriginalData(mapped);
     setTreeData(mapped);
 

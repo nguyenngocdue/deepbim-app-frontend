@@ -9,7 +9,6 @@ import { fragmentManager } from "@/services/FragmentManager";
 import { updateUserSettings } from "../../visibility-settings/ModelSetting";
 
 
-
 interface VisibilityManagerProps {
   open: boolean;
   onClose: () => void;
@@ -31,7 +30,7 @@ const VisibilityManager = ({ open, onClose }: VisibilityManagerProps) => {
 
   const configs = usersettings?.view?.visibility[viewId];
   const hasData = !!configs; //include In the case when user open the model for the first time
-  
+
   useEffect(() => {
     if (!hasData) return;
     setCheckedCategories(
@@ -52,27 +51,34 @@ const VisibilityManager = ({ open, onClose }: VisibilityManagerProps) => {
   }, [hasData]);
 
 
-  const handleApply = async () => {
+  const handleSettings = async (isInit: boolean) => {
     const settings: Partial<UserSetting> = {
       view: {
         visibility: {
           [viewId || "defaultViewId"]: mergeCategorySettings(
+            isInit,
             defaultCategories,
             checkedCategories,
             categoryColors,
             categoryTransparencies
           )
-        } 
+        }
       },
     };
     await UserManager.set(settings);
-    onClose();
-
-    const selectedModel =fragmentManager.getModelByObjectName('example');
+    const selectedModel = fragmentManager.getModelByObjectName('example');
     const configs = settings.view?.visibility;
     updateUserSettings({ selectedModel, configs });
+  }
+  if (!configs) {
+    handleSettings(true);
+  }
+
+  const handleApply = async () => {
+    handleSettings(false);
+    onClose();
   };
-  
+
   const handleCancel = () => {
     onClose();
   };
@@ -87,36 +93,36 @@ const VisibilityManager = ({ open, onClose }: VisibilityManagerProps) => {
       disableOutsideClose
       className="max-w-5xl"
       footer={
-         (
+        (
           <>
             <AppButton
-              falseName ="Cancel"
+              falseName="Cancel"
               className="bg-blue-600"
               onClick={handleCancel}
-              />
+            />
             <AppButton
-            falseName="Apply"
-            trueName="Apply ..."
-            className="bg-purple-400 "
-            onClick={handleApply}/>
+              falseName="Apply"
+              trueName="Apply ..."
+              className="bg-purple-400 "
+              onClick={handleApply} />
           </>
         )
       }
     >
-      
-        <div className=" overflow-auto">
-          <VisibilityGraphicsTabs
-            hasInit={!hasData}
-            categories={defaultCategories}
-            categoryColors={categoryColors}
-            categoryTransparencies={categoryTransparencies}
-            checkedCategories={checkedCategories}
-            setCategoryColors={setCategoryColors}
-            setCategoryTransparencies={setCategoryTransparencies}
-            setCheckedCategories={setCheckedCategories}
-            onClose={onClose}
-            />
-        </div>
+
+      <div className=" overflow-auto">
+        <VisibilityGraphicsTabs
+          hasInit={!hasData}
+          categories={defaultCategories}
+          categoryColors={categoryColors}
+          categoryTransparencies={categoryTransparencies}
+          checkedCategories={checkedCategories}
+          setCategoryColors={setCategoryColors}
+          setCategoryTransparencies={setCategoryTransparencies}
+          setCheckedCategories={setCheckedCategories}
+          onClose={onClose}
+        />
+      </div>
     </DialogTemplate>
   );
 };

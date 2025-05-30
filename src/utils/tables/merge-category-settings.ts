@@ -1,10 +1,11 @@
 export function mergeCategorySettings(
+  initSetting: false,
   defaultCategories: string[],
   checkedCategories: string[],
   colors: Record<string, string>,
   transparencies: Record<string, number>,
   // categoryVisibility: Record<string, boolean>,
-): Record<string, { color?: string; transparency?: number, isShow? : boolean }> {
+): Record<string, { initSetting?: boolean, color?: string; transparency?: number, isShow? : boolean }> {
   const result: Record<string, { color?: string; transparency?: number, isShow? : boolean }> = {};
 
   for (const category of defaultCategories) {
@@ -18,7 +19,7 @@ export function mergeCategorySettings(
       result[category] = {
         color: colors[category],
         transparency: transparencies[category],
-        isShow: false,
+        isShow: initSetting ? true: false,
       };
     }
   }

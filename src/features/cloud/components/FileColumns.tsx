@@ -5,6 +5,7 @@ import { DateTimeDisplay } from "@/components/bim-viewer/common/DateTimeDisplay"
 import { handleDownload } from "../hooks/handleDownload";
 import { FileItem } from "./Type"; // type của bạn
 import { getIconByType } from "@/utils/get-icon-by-type";
+import { formatFileSize } from "@/utils/format-file-size";
 
 const columnHelper = createColumnHelper<FileItem>();
 
@@ -56,6 +57,17 @@ export const fileColumns = [
     cell: info => <DateTimeDisplay isoDate={info.getValue()} formatString="yyyy-MM-dd" />,
     meta: { width: 128 },
   }),
+
+  columnHelper.display({
+    id: "size",
+    header: "Size",
+    cell: ({ row }) => formatFileSize(row.original.media.size),
+    meta: { width: 120 },
+  }),
+
+
+
+
   columnHelper.display({
   id: "actions",
   header: "",
