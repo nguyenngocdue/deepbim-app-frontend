@@ -21,4 +21,5 @@ export interface ModelIfcProps {
     isVisibleSettings:boolean;
     isVertical:boolean;
     hasCombineModels:boolean;
+    setOnModelReady:()=>void;
 }

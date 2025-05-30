@@ -22,9 +22,7 @@ import { Provider } from 'react-redux';
 import { store } from './store';
 import { Toaster } from 'sonner';
 import { GoogleOAuthProvider } from '@react-oauth/google'
-import { UserManager } from './services/UserManager'
 import { LanguageProvider } from './context/LanguageContext'
-import useScrollRestoration from './hooks/useScrollRestoration'
 
 console.log("VITE_API_BASE_URL from main", import.meta.env.VITE_API_BASE_URL)
 
@@ -109,7 +107,6 @@ if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement)
 
 
-  // await UserManager.fetch();
   root.render(
     // <StrictMode>
     <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>

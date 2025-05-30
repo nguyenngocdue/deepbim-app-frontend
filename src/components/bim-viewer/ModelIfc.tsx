@@ -17,8 +17,7 @@ import ContextMenu from "./common/ContextMenu";
 import { useSelections } from "@/features/bim-viewer/useSelections";
 import { useContextMenu } from "@/hooks/useContextMenu";
 import { useBimViewerFeatures } from "@/features/bim-viewer/useBimViewerFeatures";
-import { modelManager } from "@/services/ModelManager";
-import DraggableModelInformation from "@/features/bim-viewer/modals/model-information";
+import { LoadingOverlay } from "../common/LoadingOverlay";
 
 THREE.BufferGeometry.prototype.computeBoundsTree = computeBoundsTree;
 THREE.BufferGeometry.prototype.disposeBoundsTree = disposeBoundsTree;
@@ -75,9 +74,9 @@ const ModelIfc: React.FC<ModelIfcProps> = (props) => {
               worldRef={worldRef}
               componentRef={componentRef}
               haveGrids={true}
+              setOnModelReady={flags.setOnModelReady}
             />
           )}
-
         {/* context menu */}
         {contextMenu && (
           <ContextMenu

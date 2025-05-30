@@ -1,7 +1,5 @@
 import DraggableRightBarViewer from "@/components/layout/DraggableRightBarViewer";
 import ModelAttributes from "./components/ModelAttributes";
-import ModelCategories from "./components/ModelCategories";
-import TestMultiSelect from "./components/TestMultiSelect";
 
 interface DraggableModelInformationProps {
   content: any; // Replace 'any' with the appropriate type if known
@@ -10,7 +8,6 @@ interface DraggableModelInformationProps {
 
 export default function DraggableModelInformation({ content, onClose }: DraggableModelInformationProps) {
 
-  console.log(content)
   const sidebarTabs = [
     {
       name: "Element Attributes",

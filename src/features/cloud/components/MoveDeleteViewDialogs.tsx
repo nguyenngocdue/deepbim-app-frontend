@@ -7,6 +7,8 @@ import { FileItem, FolderItem } from "./Type";
 import { useEffect, useState } from "react";
 import { ImageDialogViewer } from "./image-viewer/ImageDialogViewer";
 import { UnsupportedFileDialogViewer } from "./UnsupportedFileDialogViewer";
+import MainViewer from "@/pages/bim-viewer/MainViewer";
+import {IFCViewerDialog } from "./IFCViewerDialog";
 
 
 const IMAGE_EXTENSIONS = [
@@ -64,6 +66,8 @@ export const MoveDeleteViewDialogs: React.FC<Props> = ({
 
   const isPdf = fileType === "pdf";
   const isImage = fileType && IMAGE_EXTENSIONS.includes(fileType);
+  const isIfc = fileType ==="ifc";
+
 
 
   return (
@@ -143,9 +147,20 @@ export const MoveDeleteViewDialogs: React.FC<Props> = ({
         />
       }
 
+       {/* Show IFC */}
+      {
+        isIfc && (
+          <IFCViewerDialog
+            open={fileViewer}
+            onClose={() => setFileViewer(false)}
+            selectedFile={selectedFile}
+          />
+        )
+      }
+
 
       {/* Fallback: file không hỗ trợ preview */}
-      {fileViewer && !isPdf && !isImage && (
+      {fileViewer && !isPdf && !isImage && !isIfc &&(
         <UnsupportedFileDialogViewer
           open={fileViewer}
           onClose={() => setFileViewer(null)}
@@ -153,6 +168,8 @@ export const MoveDeleteViewDialogs: React.FC<Props> = ({
           fileName={fileName}
         />
       )}
+
+     
 
 
     </>

@@ -8,6 +8,7 @@ import { setupClickMarker } from "@/features/bim-viewer/SetupClickMarker";
 import { updateUserSettings } from "@/features/bim-viewer/visibility-settings/ModelSetting";
 import FullscreenLoader from "./common/FullscreenLoader";
 import DraggableModelInformation from "@/features/bim-viewer/modals/model-information";
+import { LoadingOverlay } from "../common/LoadingOverlay";
 
 interface IfcLoaderV2Props {
   source?: string | File;
@@ -17,11 +18,10 @@ interface IfcLoaderV2Props {
   haveGrids: boolean;
 }
 
-const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({ worldRef, componentRef, container }) => {
+const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({ worldRef, componentRef, container, setOnModelReady }) => {
   const location = useLocation();
   const viewId = new URLSearchParams(location.search).get("v");
   const containerRef = React.useRef<HTMLElement | null>(null);
-  const [progress, setProgress] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
   const [showPopup, setShowPopup] = useState(false); // Quản lý trạng thái pop-up
@@ -47,22 +47,13 @@ const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({ worldRef, componentRef, conta
     containerRef.current = container;
   }, [container]);
 
-  useEffect(() => {
-    if (progress === 100) {
-      const timeout = setTimeout(() => {
-        setIsLoading(false);
-      }, 0); // Delay 5 giây trước khi ẩn
-      return () => clearTimeout(timeout); // Dọn dẹp timeout khi component unmount
-    }
-  }, [progress]);
-
   const loadModel = useCallback(
     async (fragmentBytes: ArrayBuffer, fragments: FRAGS.FragmentsModels, world: OBC.World) => {
       if (!componentRef.current) {
         console.warn("Cannot load IFC: World, components, or container not ready.");
         return;
       }
-
+      
       const component = componentRef.current;
       try {
         const model = await fragments.load(fragmentBytes, { modelId: "example" });
@@ -92,7 +83,6 @@ const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({ worldRef, componentRef, conta
           onItemDeselected:() => handleItemDeselected(),
         });
 
-        setProgress(100); // Hoàn tất tiến trình
       } catch (error) {
         console.error("Failed to load IFC file:", error);
       }
@@ -114,7 +104,6 @@ const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({ worldRef, componentRef, conta
       }
 
       const reader = ifcRes.body.getReader();
-      const contentLength = Number(ifcRes.headers.get("Content-Length")) || 0;
       let receivedLength = 0;
       const chunks: Uint8Array[] = [];
 
@@ -126,10 +115,6 @@ const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({ worldRef, componentRef, conta
         if (value) {
           chunks.push(value);
           receivedLength += value.length;
-          if (contentLength > 0) {
-            const downloadProgress = (receivedLength / contentLength) * 50; // Tải chiếm 50% tiến trình
-            setProgress(downloadProgress);
-          }
         }
       }
 
@@ -142,21 +127,24 @@ const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({ worldRef, componentRef, conta
       }
 
       // Xử lý file IFC (50-75%)
-      setProgress(50);
       const importer = new FRAGS.IfcImporter();
       importer.wasm = { absolute: true, path: "https://unpkg.com/web-ifc@0.0.68/" };
       const fragmentBytes = await importer.process({ bytes: ifcBytes });
-      setProgress(75); // Xử lý xong, chuẩn bị load model
 
       fragmentManager.setFragment(fragmentBytes);
       loadModel(fragmentBytes, fragments, world);
+      setOnModelReady(false);
+      setIsLoading(false);
     } catch (error) {
+      setIsLoading(false);
       console.error("Failed to convert IFC:", error);
     }
   };
 
   useEffect(() => {
     const fetchWorker = async () => {
+      setOnModelReady(true);
+      setIsLoading(true);
       try {
         const modelUrl = `${import.meta.env.VITE_API_BASE_URL}/view?v=${viewId}`;
         const fetchedWorker = await fetch("https://thatopen.github.io/engine_fragment/resources/worker.mjs");
@@ -175,20 +163,19 @@ const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({ worldRef, componentRef, conta
         await fragments.disposeModel("example");
       } catch (error) {
         console.error("Error fetching worker file:", error);
+        setOnModelReady(false);
+        setIsLoading(false);
       }
     };
 
     fetchWorker();
   }, []);
 
+  console.log(isLoading);
+
   return (
     <div>
-      {isLoading && (
-        <div className="asolute top-0 z-50 progress-bar w-full h-full">
-          <FullscreenLoader progress={progress} message="Loading 3D model..." />
-        </div>
-      )}
-
+      <LoadingOverlay open={isLoading}/>
       {showPopup && (
         <DraggableModelInformation content={popupContent} onClose={handleItemDeselected}/>
       )}

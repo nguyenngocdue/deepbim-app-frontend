@@ -53,8 +53,6 @@ const VisibilityManager = ({ open, onClose }: VisibilityManagerProps) => {
 
 
   const handleApply = async () => {
-
-
     const settings: Partial<UserSetting> = {
       view: {
         visibility: {
@@ -106,7 +104,7 @@ const VisibilityManager = ({ open, onClose }: VisibilityManagerProps) => {
       }
     >
       
-        <div className="min-h-[600px] overflow-auto">
+        <div className=" overflow-auto">
           <VisibilityGraphicsTabs
             hasInit={!hasData}
             categories={defaultCategories}

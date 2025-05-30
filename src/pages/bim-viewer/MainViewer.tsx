@@ -3,10 +3,7 @@ import { ViewCubeProvider } from "@/context/view-cube-context";
 import { ViewCubeProvider2 } from "@/context/view-cube-context2";
 import ModelIfc from "../../components/bim-viewer/ModelIfc";
 
-import {
-  Panel,
-  PanelGroup,
-} from "react-resizable-panels";
+
 import DraggableHeaderViewer from "../../components/layout/DraggableHeaderViewer";
 import LeftHeader from "@/sections/LeftHeader";
 import { useLanguage } from "@/context/LanguageContext";
@@ -14,11 +11,10 @@ import { UserManager } from "@/services/UserManager";
 import VisibilityManager from "@/features/bim-viewer/modals/visibility-manger";
 import DraggableRightBarViewer from "@/components/layout/DraggableRightBarViewer";
 import CombineModelManager from "@/features/bim-viewer/modals/combine-model";
-import TestMultiSelect from "@/features/bim-viewer/modals/model-information/components/TestMultiSelect";
 
 const MainViewer: React.FC = () => {
   const { language, toggleLanguage } = useLanguage();
-  const [showPanel, setShowPanel] = useState(true);
+  const [onModelReady, setOnModelReady] = useState(false);
 
   useEffect(() => {
     const fetchUserSetting = async () => {
@@ -104,7 +100,7 @@ const MainViewer: React.FC = () => {
                   {...states}
                   onToggle={toggleState}
                   navigationMode="Orbit"
-                  onModelReady={() => { console.log("Model is ready"); }}
+                  setOnModelReady={setOnModelReady}
                   isVertical={false}
                 />
               {

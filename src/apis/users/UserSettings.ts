@@ -5,10 +5,9 @@ export async function setUserSettings(data: Object)  {
     try {
         const response = await fetchWithAuth2('/users/user-settings', {
           method: 'POST',
-          body: JSON.stringify({"userSetting": data}),
+          body: JSON.stringify({"user_setting": data}),
         });
-  
-        await response.json();
+        await response;
         toast.success("Update Usersettings successful!");
       } catch (error: any) {
         toast.error("Error: " + error.message);

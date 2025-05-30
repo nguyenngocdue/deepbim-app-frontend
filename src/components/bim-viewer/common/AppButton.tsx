@@ -51,7 +51,7 @@ const AppButton: React.FC<AppButtonProps> = ({
   // Ngược lại render Button
   return (
     <Button
-      variant={variant}
+      // variant={variant}
       onClick={onClick}
       className={`transition-all duration-200 font-semibold shadow-md  text-gray-200  ${className}`}
       disabled={isLoading || props.disabled}
