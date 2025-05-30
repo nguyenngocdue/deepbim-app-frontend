@@ -1,16 +1,18 @@
-import { Tree, TreeApi, NodeApi } from "react-arborist";
 
 export interface FolderItem {
   id: number;
   name: string;
 }
 
-export interface CloudToolbarProps {
-  selectedFolder: NodeApi | null; 
+export type CloudToolbarProps = {
+  selectedFolder: any;
   entityId: number;
-  onCreated: () => void;
-  oonUploaded?: (uploadedFile: FileItem) => void; 
-}
+  onCreated?: () => void;
+  onUploaded?: () => void;
+  setView: (view: "list" | "grid" |"list") => void;
+  view: string;
+  setLoadingUploadFile?:(loadingUploadFile: boolean) => void
+};
 
 export interface FolderData {
   name: string;

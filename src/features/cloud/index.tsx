@@ -6,6 +6,8 @@ import { FolderContent } from "./components/FolderContent";
 import { MdFolderSpecial } from "react-icons/md";
 import { CLASS_NAME_DEFAULT } from "@/utils/class";
 import PDFViewer from "./components/pdf-viewer/PDFViewer";
+import { LoadingState } from "@/components/common/LoadingState";
+import { LoadingOverlay } from "@/components/common/LoadingOverlay";
 
 interface FileItem {
   id: number;
@@ -22,6 +24,7 @@ const CloudManagement = ({ entityId }: { entityId: number }) => {
   const [folderFiles, setFolderFiles] = useState<FileItem[]>([]);
   const [refreshFlag, setRefreshFlag] = useState(0);
   const [view, setView] = useState<"list" | "grid">("list");
+  const [loadingUploadFile, setLoadingUploadFile ] = useState(false);
 
   // Lấy lại id folder đã chọn từ localStorage
 
@@ -39,9 +42,9 @@ const CloudManagement = ({ entityId }: { entityId: number }) => {
     triggerRefreshTree();
   };
 
-
   return (
     <div className="h-full bg-background text-foreground flex flex-col font-sans">
+         <LoadingOverlay open={loadingUploadFile} message="uploading"/>
       {/* Toolbar */}
       <div className="px-4 py-3 bg-muted border-b border-border shadow-sm border-gray-400 dark:border-gray-700">
         <CloudToolbar
@@ -51,6 +54,7 @@ const CloudManagement = ({ entityId }: { entityId: number }) => {
           onUploaded={handleUploadedFile}
           setView={setView}
           view={view}
+          setLoadingUploadFile={setLoadingUploadFile}
         />
       </div>
 

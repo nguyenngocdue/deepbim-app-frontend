@@ -10,7 +10,6 @@ import {
 
 export function SubProjectInfo({data}) {
   if(!data) return;
-  console.log(data);
   const info = {
     name: data.name,
     description: data.description,

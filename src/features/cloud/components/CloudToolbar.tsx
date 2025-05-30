@@ -7,7 +7,7 @@ import { createFolder } from "@/apis/folder-api";
 import { UploadFilesButton } from "./UploadFilesButton";
 import AppButton from "@/components/bim-viewer/common/AppButton";
 
-const CloudToolbar = ({ selectedFolder, entityId, onCreated, onUploaded, setView, view }: CloudToolbarProps) => {
+const CloudToolbar = ({ selectedFolder, entityId, onCreated, onUploaded, setView, view, setLoadingUploadFile }: CloudToolbarProps) => {
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const onSubmit = async (data: any) => {
@@ -26,6 +26,7 @@ const CloudToolbar = ({ selectedFolder, entityId, onCreated, onUploaded, setView
       <UploadFilesButton
         selectedFolder={selectedFolder}
         onUploaded={onUploaded}
+        setLoadingUploadFile={setLoadingUploadFile}
       />
       <AppButton
         className="bg-green-500 text-50"

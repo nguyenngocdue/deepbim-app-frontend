@@ -47,7 +47,7 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
   const colors = themeColors[theme];
 
   return (
-    <div className="flex h-screen bg-background text-foreground transition-colors duration-300">
+    <div className="flex h-screen bg-background text-foreground transition-colors duration-300 relative">
       {/* Sidebar section */}
       <div className="relative group z-50">
         <Sidebar
@@ -242,7 +242,7 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
             <ProfileDropdown />
           </div>
         </div>
-        <main className="flex-1 overflow-auto p-6">{children}</main>
+        <main className="flex-1 overflow-auto p-4 ">{children}</main>
       </div>
     </div>
   );
