@@ -4,27 +4,9 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogClose,
 } from "@/components/ui/dialog";
-import { ReactNode } from "react";
-import { LuPencil, LuTrash2, LuRefreshCw } from "react-icons/lu";
-import { LucideGitPullRequestCreateArrow } from "lucide-react";
-import { SiGoogledisplayandvideo360 } from "react-icons/si";
-import { TiArrowMoveOutline } from "react-icons/ti";
 import { SectionDivider } from "../common/SectionDivider";
-
-interface DialogTemplateProps {
-  open: boolean;
-  onClose: () => void;
-  title: string | ReactNode;
-  description?: string;
-  children: ReactNode;
-  footer?: ReactNode;
-  disableOutsideClose?: boolean;
-  className?: string;
-}
-
-type IconType = "" | "create" | "edit" | "delete" | "update" | "show" | "move";
+import { IconType } from "react-icons/lib";
 
 export function DialogTemplate({
   open,
@@ -35,38 +17,28 @@ export function DialogTemplate({
   footer,
   disableOutsideClose = false,
   className = "",
-  iconType = "",
 }: DialogTemplateProps & { iconType?: IconType }) {
   const renderIcon = () => {
-    switch (iconType) {
-      case "create":
-        return <LucideGitPullRequestCreateArrow className="h-5 w-5 text-blue-500 dark:text-green-900" />;
-      case "move":
-        return <TiArrowMoveOutline  className="h-5 w-5 text-blue-500 dark:text-green-900" />;
-      case "edit":
-        return <LuPencil className="h-5 w-5 text-yellow-500 dark:text-yellow-900" />;
-      case "delete":
-        return <LuTrash2 className="h-5 w-5 text-red-500 dark:text-red-900" />;
-      case "update":
-        return <LuRefreshCw className="h-5 w-5 text-green-500 dark:text-green-900" />;
-      case "show":
-        return <SiGoogledisplayandvideo360  className="h-5 w-5 text-indigo-500 dark:text-indigo-700" />;
-      default:
-        return null;
-    }
+    // giữ nguyên
   };
 
   return (
     <Dialog open={open} onOpenChange={onClose} modal>
       <DialogContent
-        className={`w-full max-w-[100vw] sm:max-w-lg md:max-w-2xl lg:max-w-4xl ${className} bg-[#F0F5F9] dark:bg-[#020817]`}
+        className={`
+          w-full max-w-[100vw] sm:max-w-lg md:max-w-2xl lg:max-w-4xl 
+          bg-[#F0F5F9] dark:bg-[#020817] flex flex-col
+          ${className}
+        `}
+        style={{ maxHeight: "80vh" }} // giới hạn chiều cao dialog
         onInteractOutside={(e) => {
           if (disableOutsideClose) e.preventDefault();
         }}
       >
         {renderIcon()}
-        <DialogHeader>
-          <DialogTitle className="text-base md:text-lg lg:text-xl ">
+
+        <DialogHeader className="flex-shrink-0">
+          <DialogTitle className="text-base md:text-lg lg:text-xl">
             {title}
           </DialogTitle>
           {description && (
@@ -75,11 +47,18 @@ export function DialogTemplate({
             </DialogDescription>
           )}
         </DialogHeader>
-        <SectionDivider className="mb-6" />
-        <div className="mt-4 pr-1">{children}</div>
-        <SectionDivider className="mb-6" />
+
+        <SectionDivider className="mb-2 flex-shrink-0" />
+
+        {/* Container children scroll */}
+        <div
+          className="flex-grow overflow-y-auto pr-1  p-2  shadow-lg shadow-zinc-500 rounded-2xl"
+          style={{ minHeight: 0 }} // rất quan trọng để flex-grow hoạt động đúng trong container flex
+        >
+          {children}
+        </div>
         {footer && (
-          <div className="mt-6 flex flex-col-reverse md:flex-row justify-end gap-2">
+          <div className="mt-2 flex flex-col-reverse md:flex-row justify-end gap-2 flex-shrink-0">
             {footer}
           </div>
         )}

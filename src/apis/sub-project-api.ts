@@ -1,4 +1,5 @@
 import { apiGet, fetchWithAuth2 } from "@/api";
+import { stringify } from "node:querystring";
 import { toast } from "sonner";
 
 
@@ -34,4 +35,20 @@ export async function getSubProject(id: number) {
   const response = await fetchWithAuth2(`/sub-projects/${id}`);
   return response;
 
+}
+
+
+export async function updateSubProject(id: number, data: any) {
+   const response = await fetchWithAuth2(`/sub-projects/${id}`, {
+    method:'PUT',
+    body: JSON.stringify(data)
+   });
+  return response;
+}
+
+export async function deleteSubProject(id: number) {
+   const response = await fetchWithAuth2(`/sub-projects/${id}`, {
+    method:'DELETE',
+   });
+  return response;
 }
