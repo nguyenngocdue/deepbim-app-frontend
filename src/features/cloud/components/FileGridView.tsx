@@ -1,18 +1,15 @@
-import { FileText, MoreHorizontal } from "lucide-react";
-import { FaEye } from "react-icons/fa";
-import { Button } from "@/components/ui/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { DateTimeDisplay } from "@/components/bim-viewer/common/DateTimeDisplay";
 import { LoadingState } from "@/components/common/LoadingState";
 import { handleDownload } from "../hooks/handleDownload";
 import { FileActionDropdown } from "./FileActionDropdown";
+import { getIconByType } from "@/utils/get-icon-by-type";
 
 // Define the FileItem type for clarity
 interface FileItem {
   id: string;
   name: string;
   type?: string;
-  media?: { extension?: string };
+  media?: { extension?: string; url?: string };
   creator: { user_name: string };
   updated_at: string;
 }
@@ -29,15 +26,6 @@ interface FileGridViewProps {
   setFileViewer: React.Dispatch<React.SetStateAction<FileItem | null>>;
 }
 
-// FileActionDropdown props for clarity
-interface FileActionDropdownProps {
-  file: FileItem;
-  onMove: (file: FileItem) => void;
-  onDelete: (file: FileItem) => void;
-  onView: (file: FileItem) => void;
-  onDownload: (file: FileItem) => void;
-}
-
 export const FileGridView = ({
   files,
   triggerDialog,
@@ -45,19 +33,6 @@ export const FileGridView = ({
   setDeleteFile,
   setFileViewer,
 }: FileGridViewProps) => {
-  // Map file types to icon colors
-  const getIconByType = (type?: string) => {
-    const typeColors: Record<string, string> = {
-      pdf: "text-red-600",
-      note: "text-green-600",
-      image: "text-blue-600",
-      video: "text-purple-600",
-      folder: "text-yellow-600",
-    };
-    const color = typeColors[type || ""] || "text-gray-600";
-    return <FileText className={`w-6 h-6 ${color}`} aria-hidden="true" />;
-  };
-
   // Render the dropdown menu for file actions
   const renderDropdownMenu = (file: FileItem) => (
     <FileActionDropdown
@@ -78,7 +53,11 @@ export const FileGridView = ({
             className="group relative flex flex-col gap-2 rounded-lg border border-neutral-700 bg-neutral-900 p-3 transition-all hover:border-blue-500 hover:shadow-md"
           >
             <div className="flex h-32 items-center justify-center rounded-md bg-neutral-800">
-              {getIconByType(file.type)}
+              {getIconByType(
+                file.type,
+                file.media?.extension,
+                file.media?.url // truyền url vào
+              )}
             </div>
             <div className="flex-1">
               <p
