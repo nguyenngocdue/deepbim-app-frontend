@@ -8,33 +8,29 @@ export interface ContextMenuPosition {
 export function useContextMenu() {
   const [contextMenu, setContextMenu] = useState<ContextMenuPosition | null>(null);
 
-  // Hide context menu on any left click
+  // Đóng khi click bên ngoài, resize, scroll
   useEffect(() => {
-    const handleClick = () => {
-      if (contextMenu) setContextMenu(null);
+    const handle = () => setContextMenu(null);
+    window.addEventListener("click", handle);
+    window.addEventListener("resize", handle);
+    window.addEventListener("scroll", handle, true);
+    return () => {
+      window.removeEventListener("click", handle);
+      window.removeEventListener("resize", handle);
+      window.removeEventListener("scroll", handle, true);
     };
+  }, []);
 
-    window.addEventListener("click", handleClick);
-    return () => window.removeEventListener("click", handleClick);
-  }, [contextMenu]);
-
-  // Show context menu at mouse position
-  const openContextMenu = (
-    event: React.MouseEvent,
-    container: HTMLDivElement | null
-  ) => {
+  // Hàm mở menu tại vị trí chuột
+  const openContextMenu = (event: React.MouseEvent) => {
     event.preventDefault();
-    if (!container) return;
-
-    const rect = container.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
+    // Giả sử menu 220x320px, bạn chỉnh theo chiều menu thật sự của bạn
+    const menuWidth = 220, menuHeight = 320;
+    let x = event.clientX, y = event.clientY;
+    if (x + menuWidth > window.innerWidth) x = window.innerWidth - menuWidth - 4;
+    if (y + menuHeight > window.innerHeight) y = window.innerHeight - menuHeight - 4;
     setContextMenu({ x, y });
   };
 
-  return {
-    contextMenu,
-    setContextMenu,
-    openContextMenu,
-  };
+  return { contextMenu, setContextMenu, openContextMenu };
 }

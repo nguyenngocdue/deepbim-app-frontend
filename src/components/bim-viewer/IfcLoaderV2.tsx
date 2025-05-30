@@ -171,7 +171,6 @@ const IfcLoaderV2: React.FC<IfcLoaderV2Props> = ({ worldRef, componentRef, conta
     fetchWorker();
   }, []);
 
-  console.log(isLoading);
 
   return (
     <div>

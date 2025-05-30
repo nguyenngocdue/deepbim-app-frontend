@@ -17,7 +17,6 @@ import ContextMenu from "./common/ContextMenu";
 import { useSelections } from "@/features/bim-viewer/useSelections";
 import { useContextMenu } from "@/hooks/useContextMenu";
 import { useBimViewerFeatures } from "@/features/bim-viewer/useBimViewerFeatures";
-import { LoadingOverlay } from "../common/LoadingOverlay";
 
 THREE.BufferGeometry.prototype.computeBoundsTree = computeBoundsTree;
 THREE.BufferGeometry.prototype.disposeBoundsTree = disposeBoundsTree;
@@ -64,20 +63,7 @@ const ModelIfc: React.FC<ModelIfcProps> = (props) => {
 
   return (
     <>
-      <div className="bg-transparent h-screen w-full" id="deepbim-mainviewer" 
-        ref={ifcContainerRef} 
-        onContextMenu={(e) => openContextMenu(e, ifcContainerRef.current)}
-        >
-          {ifcContainerRef.current && (
-            <IfcLoaderV2
-              container={ifcContainerRef.current}
-              worldRef={worldRef}
-              componentRef={componentRef}
-              haveGrids={true}
-              setOnModelReady={flags.setOnModelReady}
-            />
-          )}
-        {/* context menu */}
+     {/* context menu */}
         {contextMenu && (
           <ContextMenu
             x={contextMenu.x}
@@ -118,6 +104,20 @@ const ModelIfc: React.FC<ModelIfcProps> = (props) => {
             }}
           />
         )}
+      <div className="bg-transparent h-screen w-full overflow-hidden" id="deepbim-mainviewer" 
+        ref={ifcContainerRef} 
+        onContextMenu={(e) => openContextMenu(e, ifcContainerRef.current)}
+        >
+          {ifcContainerRef.current && (
+            <IfcLoaderV2
+              container={ifcContainerRef.current}
+              worldRef={worldRef}
+              componentRef={componentRef}
+              haveGrids={true}
+              setOnModelReady={flags.setOnModelReady}
+            />
+          )}
+       
       </div>
     </>
   );
