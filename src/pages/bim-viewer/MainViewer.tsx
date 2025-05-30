@@ -14,7 +14,6 @@ import CombineModelManager from "@/features/bim-viewer/modals/combine-model";
 
 const MainViewer: React.FC = () => {
   const { language, toggleLanguage } = useLanguage();
-  const [onModelReady, setOnModelReady] = useState(false);
 
   useEffect(() => {
     const fetchUserSetting = async () => {
@@ -100,7 +99,6 @@ const MainViewer: React.FC = () => {
                   {...states}
                   onToggle={toggleState}
                   navigationMode="Orbit"
-                  setOnModelReady={setOnModelReady}
                   isVertical={false}
                 />
               {

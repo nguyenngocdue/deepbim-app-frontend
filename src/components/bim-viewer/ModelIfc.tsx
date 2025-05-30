@@ -104,7 +104,7 @@ const ModelIfc: React.FC<ModelIfcProps> = (props) => {
             }}
           />
         )}
-      <div className="bg-transparent h-screen w-full overflow-hidden" id="deepbim-mainviewer" 
+      <div className="bg-transparent h-screen w-full" id="deepbim-mainviewer" 
         ref={ifcContainerRef} 
         onContextMenu={(e) => openContextMenu(e, ifcContainerRef.current)}
         >
@@ -114,7 +114,6 @@ const ModelIfc: React.FC<ModelIfcProps> = (props) => {
               worldRef={worldRef}
               componentRef={componentRef}
               haveGrids={true}
-              setOnModelReady={flags.setOnModelReady}
             />
           )}
        
