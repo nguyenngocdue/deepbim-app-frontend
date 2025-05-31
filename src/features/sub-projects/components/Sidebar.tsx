@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { LoadingState } from "@/components/common/LoadingState";
+import { RiMessage2Fill } from "react-icons/ri";
 
 interface SidebarItemProps {
   label: string;
@@ -60,6 +61,7 @@ export function Sidebar({ subProject }: Props) {
               <SidebarItem collapsed={collapsed} label="Dashboard" icon={Folder} count={68} to={`/managements/sub-projects/${subProjectId}/dashboard`} />
               <SidebarItem collapsed={collapsed} label="Document Management" icon={Folder} count={68} to={`/managements/sub-projects/${subProjectId}/data`} />
               <SidebarItem collapsed={collapsed} label="Your Teams" icon={Users} to={`/managements/sub-projects/${subProjectId}/team-by-user`} />
+              <SidebarItem collapsed={collapsed} label="Messages" icon={RiMessage2Fill } to={`/managements/sub-projects/${subProjectId}/messages`} />
               <SidebarItem collapsed={collapsed} label="Notifications" icon={Bell} to={`/managements/sub-projects/${subProjectId}/notifications`} />
               <SidebarItem collapsed={collapsed} label="Issues" icon={AlertCircle} count={5} color="bg-destructive/20 text-destructive" to={`/managements/sub-projects/${subProjectId}/issues`} />
               <SidebarItem collapsed={collapsed} label="RFIs" icon={FileText} count={18} color="bg-success/20 text-success" to={`/managements/sub-projects/${subProjectId}/rfis`} />

@@ -31,6 +31,9 @@ export const defaultCategories = [
     "IFCWALLSTANDARDCASE",
     "IFCFURNISHINGELEMENT",
     "IFCREINFORCINGBAR",
+    "IFCCABLECARRIERSEGMENT",
+    "IFCPIPESEGMENT",
+    "IFCDUCTSEGMENT",
   ];
   
   export const defaultPresetColors = [

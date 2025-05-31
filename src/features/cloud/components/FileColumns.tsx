@@ -11,12 +11,6 @@ const columnHelper = createColumnHelper<FileItem>();
 
 export const fileColumns = [
   columnHelper.display({
-    id: "no",
-    header: "No.",
-    cell: ({ row }) => row.index + 1,
-    meta: { width: 56 },
-  }),
-  columnHelper.display({
     id: "icon",
     header: "Icon",
     cell: ({ row }) =>

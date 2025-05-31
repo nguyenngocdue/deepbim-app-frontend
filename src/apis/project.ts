@@ -29,3 +29,19 @@ export async function getProjects() {
         toast.error("Error: " + error.message);
       }
 }
+
+
+export async function updateProject(id: number, data: any) {
+   const response = await fetchWithAuth2(`/projects/${id}`, {
+    method:'Patch',
+    body: JSON.stringify(data)
+   });
+  return response;
+}
+
+export async function deleteProject(id: number) {
+   const response = await fetchWithAuth2(`/projects/${id}`, {
+    method:'DELETE',
+   });
+  return response;
+}

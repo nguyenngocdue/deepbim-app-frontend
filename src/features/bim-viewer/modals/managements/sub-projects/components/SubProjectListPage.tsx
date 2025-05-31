@@ -16,6 +16,7 @@ import { TableRowActions } from "@/components/bim-viewer/common/TableRowActions"
 import { FormActionButtons } from "@/components/bim-viewer/common/FormActionButtons"
 import { IoCreateOutline } from "react-icons/io5"
 import { ConfirmDeleteDialog } from "@/components/ConfirmDeleteDialog"
+import { LoadingState } from "@/components/common/LoadingState"
 
 
 type Mode = "create" | "edit" | null;
@@ -286,20 +287,11 @@ export default function SubProjectListPage() {
       description={mode === "edit" ? "Update sub-project details." : "Fill in the details to create a new sub-project."}
       disableOutsideClose
       className="max-w-5xl max-h-[80%] overflow-y-auto"
-      iconType={mode === "edit" ? "edit" : "create"}
-      footer={
-        // Footer riêng biệt với nút Cancel và Apply
-        <FormActionButtons
-          onCancel={closeModal}
-          onCancelText="Cancel"
-          onApplyText={mode === "edit" ? "Save" : "Create"}
-          onApplyIcon={<IoCreateOutline />}
-          classNameDelete={CLASS_NAME_DEFAULT.CLASS_APP_BUTTON_DELETE}
-          classNameApply={CLASS_NAME_DEFAULT.CLASS_APP_BUTTON_CREATE}
-          applyType="button" // phải là button để không submit form ngầm
-          onApply={formSubmitHandler}
-        />
-      }
+      iconType={mode}
+      onApply={formSubmitHandler}
+      onApplyText="Apply"
+      onCancelText="Cancel"
+      applyType="button"
     >
       <EntityForm
         ref={formRef}
@@ -346,7 +338,7 @@ export default function SubProjectListPage() {
         countInfo={countInfo}
       >
         {data === null ? (
-          <Skeleton className="w-full h-40 rounded-md" />
+           <LoadingState/>
         ) : (
           <TableContent table={table} key={filteredData.length} />
         )}

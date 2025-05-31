@@ -50,8 +50,6 @@ const CloudToolbar = ({ selectedFolder, entityId, onCreated, onUploaded, setView
         </button>
       </div>
 
-    {
-      selectedFolder && 
         <FolderDialog
           open={dialogOpen}
           onClose={() => setDialogOpen(false)}
@@ -59,7 +57,6 @@ const CloudToolbar = ({ selectedFolder, entityId, onCreated, onUploaded, setView
           selectedFolder={selectedFolder}
           onSubmit={onSubmit}
         />
-    }
     </div>
   );
 };

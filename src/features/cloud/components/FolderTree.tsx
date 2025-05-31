@@ -167,21 +167,8 @@ export default function FolderTree({ onSelect, entityId, refreshTrigger }: Folde
         title="Move Folder"
         iconType="move"
         description={`Select destination folder for "${moveNode?.data.name}"`}
-        footer={
-          <>
-          <FormActionButtons
-                  onCancel={() => setOpenMoveFolder(false)}
-                  onCancelText="Cancel"
-                  onApplyText="Apply"
-                  onApply={handleMoveSubmit}  
-                  disabled={!selectedDestinationId}
-                  loading={loading}
-                  onApplyIcon={<TiArrowMoveOutline  />}
-                  classNameDelete={CLASS_NAME_DEFAULT.CLASS_APP_BUTTON_DELETE}
-                  classNameApply={CLASS_NAME_DEFAULT.CLASS_APP_BUTTON_CREATE}
-                />
-          </>
-        }
+        onApply={handleMoveSubmit}
+        onApplyText="Apply"
       >
         <FolderSelector
           folders={folders}
@@ -198,17 +185,8 @@ export default function FolderTree({ onSelect, entityId, refreshTrigger }: Folde
         onClose={() => setRenameNode(null)}
         title="Rename Folder"
         description={`Rename folder "${renameNode?.data.name}"`}
-        footer={
-          <>
-            <AppButton onClick={() => setRenameNode(null)} falseName="Cancel" />
-            <AppButton
-              className="bg-blue-800"
-              onClick={handleRenameSubmit}
-              disabled={!renameValue.trim()}
-              falseName="Save"
-            />
-          </>
-        }
+        onApply={handleRenameSubmit}
+        onApplyText="Apply"
       >
         <Input value={renameValue} onChange={(e) => setRenameValue(e.target.value)} />
       </DialogTemplate>
@@ -218,12 +196,8 @@ export default function FolderTree({ onSelect, entityId, refreshTrigger }: Folde
         onClose={() => setDeleteNode(null)}
         title="Delete Folder"
         description={`Are you sure you want to delete folder "${deleteNode?.data.name}"?`}
-        footer={
-          <>
-            <AppButton onClick={() => setDeleteNode(null)} falseName="Cancel" />
-            <AppButton className="bg-red-700" onClick={handleDeleteSubmit} falseName="Delete" />
-          </>
-        }
+        onApply={handleDeleteSubmit}
+        onApplyText="Delete"
       >
         <p className="text-sm text-muted-foreground">
           All subfolders and files inside will be affected.

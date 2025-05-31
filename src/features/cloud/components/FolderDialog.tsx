@@ -76,19 +76,10 @@ export const FolderDialog: React.FC<FolderDialogProps> = ({
       disableOutsideClose
       className="max-w-md"
       iconType="create"
-      footer={
-        <FormActionButtons
-          onCancel={onClose ?? (() => {})}
-          onCancelText="Cancel"
-          onApplyText="Create New Folder"
-          onApply={handleSubmit}
-          disabled={isNameInvalid || loading}
-          loading={loading}
-          onApplyIcon={<IoCreateOutline />}
-          classNameDelete={CLASS_NAME_DEFAULT.CLASS_APP_BUTTON_DELETE}
-          classNameApply={CLASS_NAME_DEFAULT.CLASS_APP_BUTTON_CREATE}
-        />
-      }
+      onCancelText="Cancel"
+      onApplyText="Create"
+      onApplyIcon={<IoCreateOutline />}
+      onApply={handleSubmit}
     >
       <div className="space-y-4">
         {/* Dropdown chọn Parent Folder */}

@@ -2,11 +2,20 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
 import { SectionDivider } from "../common/SectionDivider";
 import { IconType } from "react-icons/lib";
+import { DialogTemplateProps } from "./types";
+import { LucideGitPullRequestCreateArrow, X } from "lucide-react";
+import { TiArrowMoveOutline } from "react-icons/ti";
+import { LuPencil, LuTrash2 } from "react-icons/lu";
+import { BiSolidShow } from "react-icons/bi";
+import { DialogClose } from "@radix-ui/react-dialog";
+import { Button } from "../ui/button";
+import { GrUpdate } from "react-icons/gr";
 
 export function DialogTemplate({
   open,
@@ -14,13 +23,31 @@ export function DialogTemplate({
   title,
   description,
   children,
-  footer,
   disableOutsideClose = false,
   className = "",
+  iconType="view",
+  onApply,
+  onApplyText,
+  onCancelText="Cancel",
+  applyType='button',
+
 }: DialogTemplateProps & { iconType?: IconType }) {
   const renderIcon = () => {
-    // giữ nguyên
-  };
+      switch (iconType) {
+        case "create":
+          return <LucideGitPullRequestCreateArrow className="h-5 w-5 text-blue-500 dark:text-green-900" />;
+        case "move":
+          return <TiArrowMoveOutline  className="h-5 w-5 text-blue-500 dark:text-green-900" />;
+        case "edit":
+          return <LuPencil className="h-5 w-5 text-yellow-500 dark:text-yellow-900" />;
+        case "delete":
+          return <LuTrash2 className="h-5 w-5 text-red-500 dark:text-red-900" />;
+        case "view":
+          return <BiSolidShow   className="h-5 w-5 text-indigo-500 dark:text-indigo-700" />;
+        default:
+          return null;
+      }
+    };
 
   return (
     <Dialog open={open} onOpenChange={onClose} modal>
@@ -36,7 +63,6 @@ export function DialogTemplate({
         }}
       >
         {renderIcon()}
-
         <DialogHeader className="flex-shrink-0">
           <DialogTitle className="text-base md:text-lg lg:text-xl">
             {title}
@@ -52,17 +78,19 @@ export function DialogTemplate({
 
         {/* Container children scroll */}
         <div
-          className="flex-grow overflow-y-auto pr-1  p-2  shadow-lg shadow-zinc-500 rounded-2xl"
+          className="flex-grow overflow-y-auto  p-4  shadow-2xl shadow-zinc-500 rounded-2xl bg-background/50"
           style={{ minHeight: 0 }} // rất quan trọng để flex-grow hoạt động đúng trong container flex
         >
           {children}
         </div>
-        {footer && (
-          <div className="mt-2 flex flex-col-reverse md:flex-row justify-end gap-2 flex-shrink-0">
-            {footer}
-          </div>
-        )}
+      <DialogFooter>
+            <DialogClose asChild>
+              <Button variant="destructive"><X className="mr-1" />{onCancelText}</Button>
+            </DialogClose>
+            <Button type={applyType} onClick={onApply} className="bg-purple-600 dark:bg-purple-700 dark:hover:bg-purple-600/60 text-white dark:text-white"><GrUpdate />{onApplyText}</Button>
+          </DialogFooter>
       </DialogContent>
+
     </Dialog>
   );
 }

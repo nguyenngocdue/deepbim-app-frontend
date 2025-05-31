@@ -92,22 +92,8 @@ const VisibilityManager = ({ open, onClose }: VisibilityManagerProps) => {
       description="Customize visibility, color, and transparency by category."
       disableOutsideClose
       className="max-w-5xl"
-      footer={
-        (
-          <>
-            <AppButton
-              falseName="Cancel"
-              className="bg-blue-600"
-              onClick={handleCancel}
-            />
-            <AppButton
-              falseName="Apply"
-              trueName="Apply ..."
-              className="bg-purple-400 "
-              onClick={handleApply} />
-          </>
-        )
-      }
+      onApply={handleApply}
+      onApplyText="Apply"
     >
 
       <div className=" overflow-auto">

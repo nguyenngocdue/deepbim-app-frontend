@@ -17,5 +17,5 @@ export function FileListView({
     meta: { triggerDialog, setMoveFile, setDeleteFile, setFileViewer },
   });
 
-  return <TableContent table={table} showNo={false} />;
+  return <TableContent table={table} showNo={true} />;
 }

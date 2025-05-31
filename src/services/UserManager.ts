@@ -18,8 +18,8 @@ class UserManagerClass {
   async fetch(): Promise<UserSetting | undefined> {
     try {
       const response = await getUserSettings() as { data: UserSetting };
-      
-      this.currentSettings = response.data || {};
+      console.log(response);
+      this.currentSettings = response?.data || {};
       return this.currentSettings;
     } catch (err: any) {
       toast.error('Failed to fetch user settings: ' + err.message);
