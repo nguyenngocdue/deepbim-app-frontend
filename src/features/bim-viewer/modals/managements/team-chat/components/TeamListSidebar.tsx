@@ -1,22 +1,23 @@
+import React, { useState, useMemo, useEffect } from "react";
 import ChatSessionItem from "@/components/ChatSessionItem";
-import React from "react";
-import { Sidebar, sidebarClasses } from "react-pro-sidebar";
-import { SearchBox } from "@/components/SearchBox"; // Import SearchBox
+import { SearchBox } from "@/components/SearchBox";
 import { useUnreadCountsRealtime } from "../hooks/useUnreadCountsRealtime";
 
+interface Team {
+  id: number;
+  name: string;
+  lastMessage?: {
+    content: string;
+    sender_id?: number;
+    created_at?: string;
+  };
+  unread?: number;
+  mediaAvatar?: { url?: string };
+  avatar_temp?: string;
+}
+
 interface TeamListSidebarProps {
-  teams: {
-    id: number;
-    name: string;
-    lastMessage?: {
-      content: string;
-      sender_id?: number;
-      created_at?: string;
-    };
-    unread?: number;
-    mediaAvatar?: { url?: string };
-    avatar_temp?: string;
-  }[];
+  teams: Team[];
   selectedTeamId?: number;
   onSelectTeam: (id: number) => void;
   currentUser: any;
@@ -28,76 +29,75 @@ export const TeamListSidebar: React.FC<TeamListSidebarProps> = ({
   onSelectTeam,
   currentUser,
 }) => {
-  const [collapsed, setCollapsed] = React.useState(!Boolean(localStorage.getItem('collapsed_team_chat')));
+  const [collapsed, setCollapsed] = useState(() => {
+    const saved = localStorage.getItem("collapsed_team_chat");
+    return saved === "true";
+  });
 
-  // State tìm kiếm
-  const [search, setSearch] = React.useState("");
+  const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState(search);
 
-  // Filter team theo tên hoặc nội dung tin nhắn cuối
-  const filteredTeams = React.useMemo(() => {
-    if (!search.trim()) return teams;
-    const lower = search.trim().toLowerCase();
+  useEffect(() => {
+    const handler = setTimeout(() => setDebouncedSearch(search), 300);
+    return () => clearTimeout(handler);
+  }, [search]);
+
+  const filteredTeams = useMemo(() => {
+    if (!debouncedSearch.trim()) return teams;
+    const lower = debouncedSearch.trim().toLowerCase();
     return teams.filter(
       (team) =>
         team.name.toLowerCase().includes(lower) ||
         (team.lastMessage?.content?.toLowerCase() || "").includes(lower)
     );
-  }, [teams, search]);
+  }, [teams, debouncedSearch]);
 
-    const unreadCounts = useUnreadCountsRealtime(currentUser?.id);
+  const unreadCounts = useUnreadCountsRealtime(currentUser?.id);
 
+  const toggleCollapsed = () => {
+    setCollapsed((prev) => {
+      localStorage.setItem("collapsed_team_chat", String(!prev));
+      return !prev;
+    });
+  };
 
   return (
-    
-    <Sidebar
-      collapsed={collapsed}
-      width="350px"
-      breakPoint="lg"
-       className="max-h-[90vh] overflow-y-auto overflow-hidden"
-      rootStyles={{
-        [`.${sidebarClasses.container}`]: {
-          background: "linear-gradient(135deg,#18181b 70%,#23242a 100%)",
-          minWidth: collapsed ? "100px" : "250px",
-          borderRight: "1px solid #283046",
-          borderLeft: "1px solid #283046",
-          borderTop: "1px solid #283046",
-          borderBottom: "1px solid #283046",
-          transition: "all 0.2s cubic-bezier(.4,0,.2,1)",
-          display: "flex",
-          flexDirection: "column",
-          height: "100%",
-          paddingBottom:"10px",
-        },
-      }}
+    <aside
+      className={`flex flex-col h-full transition-all duration-200
+        ${collapsed ? "w-16" : "w-72"}
+        bg-background
+        border border-gray-200 dark:border-gray-700
+        shadow-sm
+      `}
     >
       {/* HEADER */}
-      <div className="
-        w-full flex items-center px-5 h-14
-        border-b border-zinc-700 bg-gradient-to-r from-zinc-900 via-zinc-950 to-zinc-800
-        sticky top-0 z-50
-        shadow-lg shadow-zinc-600 
-        ">
+      <div
+        className="flex items-center px-4 py-3 border-b border-gray-200 dark:border-gray-700
+          bg-gradient-to-r 
+          sticky top-0 z-10"
+      >
         <button
-          className="mr-3 rounded-full p-1 bg-zinc-800 hover:bg-zinc-700 transition-colors"
-          onClick={() => {
-            setCollapsed((v) => !v)
-            localStorage.setItem('collapsed_team_chat', String(collapsed))
-          }}
+          aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+          title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+          onClick={toggleCollapsed}
+          className="p-2 rounded hover:bg-gray-200 dark:hover:bg-zinc-800 transition-colors"
         >
-          <svg width={20} height={20} viewBox="0 0 20 20">
-            <rect y="3" width="20" height="2" rx="1" fill="currentColor" />
-            <rect y="9" width="20" height="2" rx="1" fill="currentColor" />
-            <rect y="15" width="20" height="2" rx="1" fill="currentColor" />
+          <svg width={20} height={20} viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={1.5}>
+            <rect y="3" width="20" height="2" rx="1" />
+            <rect y="9" width="20" height="2" rx="1" />
+            <rect y="15" width="20" height="2" rx="1" />
           </svg>
         </button>
         {!collapsed && (
-          <span className="text-lg font-bold tracking-wide text-white select-none">Groups</span>
+          <h2 className="ml-3 text-lg font-semibold select-none text-gray-900 dark:text-gray-100">
+            Groups
+          </h2>
         )}
       </div>
 
       {/* SEARCH */}
       {!collapsed && (
-        <div className="px-3 pt-4">
+        <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
           <SearchBox
             value={search}
             onChange={setSearch}
@@ -106,21 +106,22 @@ export const TeamListSidebar: React.FC<TeamListSidebarProps> = ({
         </div>
       )}
 
-      {/* DANH SÁCH NHÓM */}
+      {/* TEAM LIST */}
       <div
-        className={`
-          flex-1 overflow-y-auto px-2 py-3
-          bg-[#20222b] dark:bg-[#18181b]
-          space-y-2
-          scrollbar-thin scrollbar-thumb-zinc-600 scrollbar-track-transparent
-        `}
-        style={{
-          minHeight: 0,
-        }}
+        className="flex-1 overflow-y-auto px-2 py-3 space-y-2
+          bg-background
+          scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-zinc-600 scrollbar-track-transparent"
+        style={{ minHeight: 0 }}
       >
+        {filteredTeams.length === 0 && (
+          <div className="text-muted-foreground text-sm text-center pt-10 italic opacity-70">
+            No groups found.
+          </div>
+        )}
+
         {filteredTeams.map((team) => {
           const session = {
-            team: team,
+            team,
             user: {
               id: team.id,
               user_name: team.name,
@@ -145,12 +146,7 @@ export const TeamListSidebar: React.FC<TeamListSidebarProps> = ({
             />
           );
         })}
-        {filteredTeams.length === 0 && (
-          <div className="text-muted-foreground text-sm text-center pt-10 min-w-[260px] italic opacity-70">
-            No groups found.
-          </div>
-        )}
       </div>
-    </Sidebar>
+    </aside>
   );
 };

@@ -39,10 +39,11 @@ export default function TeamMessagePage({ teamId }: TeamMessagePageProps) {
     setInfoOpen(false); // Ẩn sidebar info khi chuyển team
   };
 
+
   return (
     <>
        {
-          <div className="flex h-[90vh]  dark:bg-[#1F293B]">
+          <div className="flex h-[85vh]  bg-accent">
             {/* Sidebar team list */}
             {teamsLoading ? (
               <LoadingState />
@@ -74,16 +75,7 @@ export default function TeamMessagePage({ teamId }: TeamMessagePageProps) {
                 </div>
               )}
             </div>
-
-            {
-              teamsLoading ?
-                <div className="flex flex-1 items-center justify-center text-muted-foreground text-xl">
-                    <LoadingState message="loading ..." />
-                </div> :
-                <>
-                    {selectedTeam && <TeamInfoSidebar team={selectedTeam} />}
-                </>
-            }
+                <TeamInfoSidebar team={selectedTeam} />
           </div>
       }
     </>
