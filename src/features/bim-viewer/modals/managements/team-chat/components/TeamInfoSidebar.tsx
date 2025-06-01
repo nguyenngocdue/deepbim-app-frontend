@@ -50,7 +50,7 @@ interface TeamInfoSidebarProps {
 export const TeamInfoSidebar: React.FC<TeamInfoSidebarProps> = ({ team }) => {
   if (!team)
     return (
-      <aside className="w-80 min-w-[240px] bg-background border-l border-border p-8 flex flex-col rounded-r-2xl shadow-lg h-full">
+      <aside className="w-80 min-w-[240px] bg-background border-l border-border border border-gray-200 dark:border-gray-700 p-8 flex flex-col shadow-lg h-full">
         <div className="flex-1 flex items-center justify-center">
           <div className="text-center text-muted-foreground italic select-none">
             Select a team

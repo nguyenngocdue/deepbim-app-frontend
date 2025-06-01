@@ -70,7 +70,7 @@ export default function TeamMessagePage({ teamId }: TeamMessagePageProps) {
                   onShowInfo={() => setInfoOpen(true)}
                 />
               ) : (
-                <div className="flex flex-1 items-center justify-center text-muted-foreground">
+                <div className="flex flex-1 items-center justify-center text-muted-foreground border border-gray-200 dark:border-gray-700">
                     <CenterMessage text="Please select a team to view messages" />
                 </div>
               )}
