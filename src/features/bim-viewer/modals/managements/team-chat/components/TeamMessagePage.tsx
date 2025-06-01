@@ -5,6 +5,7 @@ import { TeamChatFeature } from "../featutes/TeamChatFeature";
 import { useAppSelector } from "@/hooks/reduxHooks";
 import { useTeamsByUser } from "../hooks/useTeamsByUser";
 import { LoadingState } from "@/components/common/LoadingState";
+import { CenterMessage } from "@/components/common/CenterMessage";
 
 
 interface TeamMessagePageProps {
@@ -60,7 +61,7 @@ export default function TeamMessagePage({ teamId }: TeamMessagePageProps) {
 
             {/* Box message/chat */}
             <div className="flex-1 flex flex-col ">
-              {selectedTeamId && selectedTeam ? (
+              {selectedTeamId && !teamsLoading ? (
                 <TeamChatFeature
                   teamId={selectedTeamId}
                   currentUser={user}
@@ -69,7 +70,7 @@ export default function TeamMessagePage({ teamId }: TeamMessagePageProps) {
                 />
               ) : (
                 <div className="flex flex-1 items-center justify-center text-muted-foreground">
-                    <LoadingState message="loading messages..." />
+                    <CenterMessage text="Please select a team to view messages" />
                 </div>
               )}
             </div>
