@@ -1,10 +1,11 @@
 import { getMessageByTeamId } from "@/apis/team-chat-message";
 import { UserProfile } from "@/types/User";
+import debug from "debug";
 import { useEffect, useRef, useState, useCallback } from "react";
 import { io, Socket } from "socket.io-client";
 
 const TEAM_CHAT_SOCKET_URL = import.meta.env.VITE_API_BASE_URL
-  ? `${import.meta.env.VITE_API_BASE_URL}`
+  ? `${import.meta.env.VITE_API_BASE_URL}/team-chat`
   : `http://localhost:${import.meta.env.VITE_API_PORT}`;
 
 export interface TeamMessage {
@@ -73,17 +74,18 @@ useEffect(() => {
   useEffect(() => {
     if (!teamId || !currentUser?.id) return;
 
+
     // Kết nối socket.io
     const socket = io(TEAM_CHAT_SOCKET_URL, {
-      path: '/socket.io',
       transports: ["websocket"],
+      secure: true,
       auth: { token: localStorage.getItem("access_token") }
     });
 
-    console.log('token', localStorage.getItem("access_token"))
+    // console.log('token', localStorage.getItem("access_token"))
 
     // TEST
-    console.log('socket', socket)
+    // console.log('socket', socket)
     socket.on("connect", () => {
     socket.emit("ping_test", { source: "frontend", at: Date.now() });
   });
@@ -95,10 +97,6 @@ useEffect(() => {
   socket.on('connect_error', (err) => {
     console.error("Socket connect_error:", err.message);
   });
-
-
-
-
 
 
     socketRef.current = socket;

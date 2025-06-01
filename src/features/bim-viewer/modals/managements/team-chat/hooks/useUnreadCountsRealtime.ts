@@ -18,10 +18,12 @@ export function useUnreadCountsRealtime(currentUserId: number) {
     });
 
     // Kết nối socket
-    socket = io(import.meta.env.VITE_API_BASE_URL + "/team-chat", {
+    socket = io(`${import.meta.env.VITE_API_BASE_URL}/team-chat`, {
       transports: ["websocket"],
       auth: { token: localStorage.getItem("access_token") }
     });
+    console.log(socket);
+
 
     // Khi có tin nhắn mới (nhưng user không ở phòng đó)
     socket.on("team_new_message", ({ teamId }) => {
@@ -39,10 +41,6 @@ export function useUnreadCountsRealtime(currentUserId: number) {
         [teamId]: 0
       }));
     });
-
-
-
-    
 
 
 
