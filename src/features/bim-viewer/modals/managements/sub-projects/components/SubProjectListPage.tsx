@@ -13,10 +13,23 @@ import { EntityListLayout } from "../../components/EntityListLayout"
 import { CLASS_NAME_DEFAULT } from "@/utils/class"
 import { SearchBox } from "@/components/SearchBox"
 import { TableRowActions } from "@/components/bim-viewer/common/TableRowActions"
-import { FormActionButtons } from "@/components/bim-viewer/common/FormActionButtons"
-import { IoCreateOutline } from "react-icons/io5"
 import { ConfirmDeleteDialog } from "@/components/ConfirmDeleteDialog"
 import { LoadingState } from "@/components/common/LoadingState"
+
+interface SubProject {
+  id: number;
+  name: string;
+  description: string;
+  project?: string;
+  project_id?: number;
+  access?: string;
+  start_time?: string;
+  end_time?: string;
+  discipline?: string;
+  creator?: any;
+  owner?: any;
+  created_at?: string;
+}
 
 
 type Mode = "create" | "edit" | null;

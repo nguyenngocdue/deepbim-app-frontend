@@ -84,8 +84,7 @@ useEffect(() => {
 
     // TEST
     console.log('socket', socket)
-      socket.on("connect", () => {
-    console.log("🟢 Connected to backend!");
+    socket.on("connect", () => {
     socket.emit("ping_test", { source: "frontend", at: Date.now() });
   });
 
@@ -108,9 +107,6 @@ useEffect(() => {
     socket.emit("join_team", { teamId });
 
     setIsConnected(true);
-
-    console.log(socketRef);
-
     // Fetch lịch sử chat cũ (REST API)
     (async () => {
       setLoadingMessage(true);
