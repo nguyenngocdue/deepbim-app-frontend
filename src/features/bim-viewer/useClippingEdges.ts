@@ -1,5 +1,4 @@
 import * as OBC from "@thatopen/components";
-import * as OBCF from "@thatopen/components-front";
 import * as THREE from "three";
 import React from "react";
 import { fragmentManager } from "@/services/FragmentManager";
@@ -23,8 +22,6 @@ export function useClippingEdges({
 
   if (!component || !world || !container) return;
 
-  const clipper = component.get(OBC.Clipper);
-  const edges = component.get(OBCF.ClipEdges);
 
   if (isClippingEdges) {
     const model = fragmentManager.getModelByObjectName("example");
@@ -55,26 +52,16 @@ export function useClippingEdges({
     world.scene.three.add(cube);
     world.meshes.add(cube);
 
-    const casters = component.get(OBC.Raycasters);
-    casters.get(world);
-
-    const clipper = component.get(OBC.Clipper);
-    clipper.enabled = true;
 
 
     container.ondblclick = () => {
-      // if (clipper.enabled) {
-      //   clipper.create(world);
-      // }
+   
     };
 
    
 
   } else {
-    // Nếu không sử dụng clipping, bạn có thể tắt mọi thứ
-    clipper.enabled = false;
-    edges.enabled = false;
-    // console.log("Clipping đã bị vô hiệu hóa.");
+ 
   }
 }
 

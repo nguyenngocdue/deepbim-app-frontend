@@ -10,20 +10,22 @@ interface WorldSettingsProps {
 
 export function useWorldSettings({
   haveWorldSettings,
+  worldRef
 }: WorldSettingsProps): void {
   
-  const world = worldManager.getWorld();
+  const world = worldRef.current;
+  if(!world) return;
   if(haveWorldSettings){
     const bgColor =  0xE4F2DE;
     const hexColor = `#${bgColor.toString(16).padStart(6, '0')}`;
     localStorage.setItem('current_three_background', hexColor);
   } else {
     const bgColor =  0x020817;
-    world.scene.three.background = new THREE.Color(bgColor);
+    (world.scene.three as THREE.Scene).background = new THREE.Color(bgColor);
     const hexColor = `#${bgColor.toString(16).padStart(6, '0')}`;
     localStorage.setItem('current_three_background', hexColor);
   }
-  let color = localStorage.getItem('current_three_background');
-  world.scene.three.background = new THREE.Color(color);
+  let color = localStorage.getItem('current_three_background') ?? "#020817";
+  (world.scene.three as THREE.Scene).background = new THREE.Color(color);
   world.renderer?.update();
 }

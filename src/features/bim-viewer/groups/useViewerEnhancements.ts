@@ -21,9 +21,6 @@ interface UseViewerEnhancementsProps {
   featureFlags: FeatureFlags;
 }
 
-/**
- * Hook bật các tính năng viewer: grid, camera, clipping, v.v.
- */
 export function useViewerEnhancements({
   componentRef,
   worldRef,
@@ -31,48 +28,28 @@ export function useViewerEnhancements({
   modelRef,
   featureFlags,
 }: UseViewerEnhancementsProps) {
-  const {
-    haveGrids,
-    havePlansViews,
-    haveWorldSettings,
-    isClippingEdges,
-    isOrthoPerspective,
-  } = featureFlags;
+  useGrids({ haveGrids: featureFlags.haveGrids });
 
-  useEffect(() => {
-    useGrids({ haveGrids });
-
-    usePlaneViews({
-      havePlansViews,
-      componentRef,
-      worldRef,
-      ifcContainerRef,
-      modelRef,
-    });
-
-    useWorldSettings({
-      haveWorldSettings,
-      componentRef,
-      worldRef,
-    });
-
-    useClippingEdges({
-      isClippingEdges,
-      componentRef,
-      worldRef,
-      ifcContainerRef,
-    });
-
-    useCameraType({ isOrthoPerspective });
-  }, [
-    haveGrids,
-    havePlansViews,
-    haveWorldSettings,
-    isClippingEdges,
-    isOrthoPerspective,
+  usePlaneViews({
+    havePlansViews: featureFlags.havePlansViews,
     componentRef,
     worldRef,
     ifcContainerRef,
     modelRef,
-  ]);
+  });
+
+  useWorldSettings({
+    haveWorldSettings: featureFlags.haveWorldSettings,
+    componentRef,
+    worldRef,
+  });
+
+  useClippingEdges({
+    isClippingEdges: featureFlags.isClippingEdges,
+    componentRef,
+    worldRef,
+    ifcContainerRef,
+  });
+
+  useCameraType({ isOrthoPerspective: featureFlags.isOrthoPerspective });
 }
