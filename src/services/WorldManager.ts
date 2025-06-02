@@ -58,6 +58,7 @@ class WorldManager {
     const fragments = components.get(OBC.FragmentsManager);
     this.fragments = fragments;
 
+  
   }
 
   public getHighlightSetup(){

@@ -1,90 +1,64 @@
-// AxesUtils.ts
 import * as THREE from "three";
 import { FontLoader } from "three/examples/jsm/loaders/FontLoader.js";
 import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry.js";
-import * as OBC from "@thatopen/components";
+
 /**
- * Creates a 3D text label for an axis.
- * @param text - The label text (e.g., "X", "Y", "Z").
- * @param position - The position of the label in 3D space.
- * @param color - The color of the label.
- * @param size - The size of the text.
- * @returns A mesh representing the label.
+ * Tạo chữ 3D tại vị trí chỉ định
  */
 export const createTextLabel = async (
-    text: string,
-    position: THREE.Vector3,
-    color: number = 0xffffff,
-    size: number = 0.5
+  text: string,
+  position: THREE.Vector3,
+  color: number = 0xffffff,
+  size: number = 1
 ): Promise<THREE.Mesh> => {
-    const fontLoader = new FontLoader();
-    const font = await fontLoader.loadAsync("/fonts/helvetiker_regular.typeface.json"); // Path to font
+  const loader = new FontLoader();
+  const font = await loader.loadAsync("/fonts/helvetiker_regular.typeface.json");
 
-    // Create text geometry
-    const textGeometry = new TextGeometry(text, {
-        font: font,
-        size: size,
-        height: 0.1, // Thickness of the text
-        curveSegments: 12,
-        bevelEnabled: false,
-    });
+  const geometry = new TextGeometry(text, {
+    font: font,
+    size: size,
+    height: 0.1,
+    curveSegments: 12,
+    bevelEnabled: false,
+  });
 
-    // Center the geometry
-    textGeometry.center();
+  geometry.computeBoundingBox();
+  geometry.center();
 
-    // Create material
-    const material = new THREE.MeshBasicMaterial({ color: color });
+  const material = new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.95 });
+  const mesh = new THREE.Mesh(geometry, material);
+  mesh.position.copy(position);
+  mesh.name = "coordinateAxisLabel";
 
-    // Create mesh
-    const textMesh = new THREE.Mesh(textGeometry, material);
-
-    // Set position
-    textMesh.position.copy(position);
-
-    return textMesh;
+  return mesh;
 };
 
 /**
- * Adds axes and text labels to the scene.
- * @param world - The world object containing the Three.js scene.
- * @param axesSize - The size of the axes helper.
- * @param textSize - The size of the text labels.
+ * Thêm AxesHelper và label chữ vào scene
  */
 export const addAxesWithTextLabelsToScene = async (
-    world: { scene: { three: THREE.Scene } },
-    axesSize: number = 5,
-    textSize: number = 0.5
-) => {
-    if (!world || !world.scene || !world.scene.three) return;
+  scene: THREE.Scene,
+  axesSize: number = 5,
+  textSize: number = 1
+): Promise<THREE.Group> => {
+  const axesGroup = new THREE.Group();
+  axesGroup.name = "axesGroup";
 
-    // Add axes helper
-    const axesHelper = new THREE.AxesHelper(axesSize);
-    world.scene.three.add(axesHelper);
+  const axesHelper = new THREE.AxesHelper(axesSize);
+  axesGroup.add(axesHelper);
 
-    // Define labels for the axes
-    const labels = [
-        { text: "X", position: new THREE.Vector3(axesSize + 0.5, 0, 0), color: 0xff0000 }, // X-axis
-        { text: "Y", position: new THREE.Vector3(0, axesSize + 0.5, 0), color: 0x00ff00 }, // Y-axis
-        { text: "Z", position: new THREE.Vector3(0, 0, axesSize + 0.5), color: 0x0000ff }, // Z-axis
-    ];
+  const offset = textSize * 1.2;
+  const labels = [
+    { text: "X", position: new THREE.Vector3(axesSize + offset, 0, 0), color: 0xff0000 },
+    { text: "Y", position: new THREE.Vector3(0, axesSize + offset, 0), color: 0x00ff00 },
+    { text: "Z", position: new THREE.Vector3(0, 0, axesSize + offset), color: 0x0000ff },
+  ];
 
-    // Add text labels to the scene
-    for (const { text, position, color } of labels) {
-        const label = await createTextLabel(text, position, color, textSize);
-        label.name = "coordinateAxisLabel";
-        world.scene.three.add(label);
-    }
+  for (const label of labels) {
+    const mesh = await createTextLabel(label.text, label.position, label.color, textSize);
+    axesGroup.add(mesh);
+  }
+
+  scene.add(axesGroup);
+  return axesGroup;
 };
-
-export const removeAxesWithTextLabelsFromScene = (world: OBC.World) => {
-    if (!world) return;
-    const scene = world.scene.three;
-    // Remove all AxesHelper objects from the scene
-    const axesHelpers = scene.children.filter(child => child instanceof THREE.AxesHelper);
-    axesHelpers.forEach(helper => scene.remove(helper));
-    // Remove all text labels starting with "coordinateAxisLabel"
-    const textLabels = scene.children.filter(child => child.name.startsWith("coordinateAxisLabel"));
-    textLabels.forEach(label => scene.remove(label));
-  };
-  
-  

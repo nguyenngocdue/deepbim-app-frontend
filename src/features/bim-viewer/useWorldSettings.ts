@@ -16,7 +16,6 @@ export function useWorldSettings({
   if(haveWorldSettings){
     const bgColor =  0xE4F2DE;
     const hexColor = `#${bgColor.toString(16).padStart(6, '0')}`;
-    world.scene.three.background = new THREE.Color(hexColor);
     localStorage.setItem('current_three_background', hexColor);
   } else {
     const bgColor =  0x020817;
@@ -24,5 +23,7 @@ export function useWorldSettings({
     const hexColor = `#${bgColor.toString(16).padStart(6, '0')}`;
     localStorage.setItem('current_three_background', hexColor);
   }
+  let color = localStorage.getItem('current_three_background');
+  world.scene.three.background = new THREE.Color(color);
   world.renderer?.update();
 }
