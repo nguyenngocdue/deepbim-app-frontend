@@ -1,8 +1,6 @@
 import * as OBC from "@thatopen/components";
 import * as OBCF from "@thatopen/components-front";
-import * as THREE from 'three';
 import * as OBF from "@thatopen/components-front";
-import { useHighlightSetup } from "@/features/bim-viewer/useHighlightSetup";
 import { gridManager } from "@/services/GridManager";
 
 export function InitializeWorld(

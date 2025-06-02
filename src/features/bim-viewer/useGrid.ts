@@ -1,6 +1,4 @@
 import { gridManager } from "@/services/GridManager";
-import * as OBC from "@thatopen/components";
-import React from "react";
 
 
 
