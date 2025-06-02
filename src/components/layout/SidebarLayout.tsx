@@ -23,6 +23,7 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
     return stored === "true";
   });
   const { theme } = useTheme();
+  console.log(theme);
 
   // Theme-based colors
   const themeColors = {
@@ -35,6 +36,14 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
       borderColor: "#e5e7eb",
     },
     dark: {
+      sidebarBg: "#0f172a",
+      textColor: "#f1f5f9",
+      activeBg: "#1e293b",
+      hoverBg: "#293548",
+      activeText: "#3b82f6",
+      borderColor: "#1e293b",
+    },
+     system: {
       sidebarBg: "#0f172a",
       textColor: "#f1f5f9",
       activeBg: "#1e293b",

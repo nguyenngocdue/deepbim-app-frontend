@@ -100,7 +100,7 @@ const WebglClippingCube: React.FC = () => {
         scene.three.add(ph);
     });
     
-
+    console.log(model);
     // 🔹 Handle Materials and Clipping
         materialsRef.current = [];
         model.traverse((child) => {

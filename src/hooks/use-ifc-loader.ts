@@ -34,6 +34,7 @@ export function useIfcLoader() {
         const fragmentIfcLoader = components.get(OBC.IfcLoader);
         await fragmentIfcLoader.setup();
         fragmentIfcLoader.settings.webIfc.COORDINATE_TO_ORIGIN = true;
+        console.log(buffer)
         if (!buffer) return ;
         const model = await fragmentIfcLoader.load(buffer);
         model.position.set(0, 0, 0);

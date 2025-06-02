@@ -42,6 +42,7 @@ export function useViewerEnhancements({
     haveWorldSettings: featureFlags.haveWorldSettings,
     componentRef,
     worldRef,
+    
   });
 
   useClippingEdges({
@@ -49,6 +50,7 @@ export function useViewerEnhancements({
     componentRef,
     worldRef,
     ifcContainerRef,
+    modelRef
   });
 
   useCameraType({ isOrthoPerspective: featureFlags.isOrthoPerspective });
