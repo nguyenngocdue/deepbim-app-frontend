@@ -39,7 +39,7 @@ export default function ChatSessionItem({
         ${collapsed ? "justify-center px-0 py-2" : "px-4 py-3"}
         mb-1
         ${isActive
-          ? "ring-2 ring-blue-500 bg-blue-100 dark:bg-blue-900 text-blue-900 dark:text-blue-300 shadow-md"
+          ? "ring-2 ring-blue-500 bg-blue-100 dark:bg-blue-900 text-blue-900 dark:text-blue-300 shadow-md rounded-full"
           : "bg-background text-foreground hover:bg-muted hover:dark:bg-muted-dark hover:shadow-sm"
         }
       `}
@@ -66,8 +66,8 @@ export default function ChatSessionItem({
 
       {typeof unReadNumber === "number" && unReadNumber > 0 && (
         <Badge
-          className="absolute top-0 left-[45px] w-6 h-6 flex items-center justify-center
-          bg-red-600 rounded-full text-xs font-semibold text-white shadow-md"
+          className={`absolute top-0 left-[45px] w-6 h-6 flex items-center justify-center
+          bg-red-600 rounded-full text-xs font-semibold text-white shadow-md  ${collapsed ? "left-[20px] w-5 h-5" : ""}`}
           variant="outline"
         >
           {unReadNumber > 99 ? "99+" : unReadNumber}

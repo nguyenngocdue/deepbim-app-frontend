@@ -132,11 +132,11 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
                 {collapsed && <TooltipContent side="right" className="bg-background text-foreground text-sm py-1.5 px-3 rounded-md">Spaces</TooltipContent>}
               </Tooltip>
               <Tooltip>
-                <TooltipTrigger asChild>
+                {/* <TooltipTrigger asChild>
                   <MenuItem icon={<IoPerson size={22} />} component={<Link to="/managements/me" />}>
                     Me
                   </MenuItem>
-                </TooltipTrigger>
+                </TooltipTrigger> */}
                 {collapsed && <TooltipContent side="right" className="bg-background text-foreground text-sm py-1.5 px-3 rounded-md">Me</TooltipContent>}
               </Tooltip>
             </TooltipProvider>

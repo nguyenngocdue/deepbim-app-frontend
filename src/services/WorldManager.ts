@@ -44,7 +44,7 @@ class WorldManager {
     const container = containerManager.getRefOrThrow();
     this.world.renderer = new OBCF.PostproductionRenderer(this.components, container);
     this.world.camera = new OBC.OrthoPerspectiveCamera(this.components);
-    this.world.camera.controls.setLookAt(183, 11, -102, 27, -52, -11);
+    this.world.camera.controls.setLookAt(300, 11, -102, 27, -52, -11);
 
     // Thiết lập các cấu hình cơ bản
     this.world.scene.setup();
@@ -54,18 +54,9 @@ class WorldManager {
     this.container = container;
     
     const components = this.components;
-    const world = this.world;
     const fragments = components.get(OBC.FragmentsManager);
     this.fragments = fragments;
-
-     const highlighter = components.get(OBCF.Highlighter);
-      highlighter.zoomToSelection = false;
-      highlighter.config.edgeThreshold = 0.1;
-      highlighter.config.fillColor = 0xff0000;
-      highlighter.config.edgeColor = 0x000000
-      highlighter.setup({ world: world });
-      this.highlight = highlighter;
-
+    this.world.scene.three.background = new THREE.Color(0x020817);
   }
 
   public getHighlightSetup(){

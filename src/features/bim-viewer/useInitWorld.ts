@@ -23,9 +23,7 @@ export function useInitWorld(containerRef: React.RefObject<HTMLDivElement>) {
       const componentInstance = worldManager.getComponents();
       if (!componentInstance) return;
 
-      gridManager.createGrid(componentInstance, worldInstance);
-
-      
+      // gridManager.createGrid(componentInstance, worldInstance);
       
       setWorld(worldInstance);
       setComponents(componentInstance);
