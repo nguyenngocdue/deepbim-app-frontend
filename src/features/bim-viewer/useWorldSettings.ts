@@ -1,6 +1,6 @@
+import { worldManager } from "@/services/WorldManager";
 import * as OBC from "@thatopen/components";
-import React from "react";
-import * as THREE from 'three'
+import * as THREE from 'three';
 
 interface WorldSettingsProps {
   haveWorldSettings: boolean;
@@ -10,18 +10,19 @@ interface WorldSettingsProps {
 
 export function useWorldSettings({
   haveWorldSettings,
-  componentRef,
-  worldRef,
 }: WorldSettingsProps): void {
-  const components = componentRef.current;
-  const world = worldRef.current;
-
-  if (!components || !world) return;
-
-  if (haveWorldSettings) {
-    world.scene.three.background = new THREE.Color(0xE4F2DE);
+  
+  const world = worldManager.getWorld();
+  if(haveWorldSettings){
+    const bgColor =  0xE4F2DE;
+    const hexColor = `#${bgColor.toString(16).padStart(6, '0')}`;
+    world.scene.three.background = new THREE.Color(hexColor);
+    localStorage.setItem('current_three_background', hexColor);
   } else {
-    world.scene.three.background = new THREE.Color(0x020817);
+    const bgColor =  0x020817;
+    world.scene.three.background = new THREE.Color(bgColor);
+    const hexColor = `#${bgColor.toString(16).padStart(6, '0')}`;
+    localStorage.setItem('current_three_background', hexColor);
   }
   world.renderer?.update();
 }

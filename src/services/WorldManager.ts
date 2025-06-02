@@ -4,6 +4,7 @@ import { Ref } from "react";
 import * as THREE from 'three';
 import { containerManager } from "./ContainerManager";
 import { useHighlightSetup } from "@/features/bim-viewer/useHighlightSetup";
+import { restoreWorldBackground } from "@/features/bim-viewer/useWorldSettings";
 
 // Singleton class để quản lý world và components
 class WorldManager {
@@ -56,7 +57,7 @@ class WorldManager {
     const components = this.components;
     const fragments = components.get(OBC.FragmentsManager);
     this.fragments = fragments;
-    this.world.scene.three.background = new THREE.Color(0x020817);
+
   }
 
   public getHighlightSetup(){
