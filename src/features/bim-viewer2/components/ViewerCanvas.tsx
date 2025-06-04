@@ -10,6 +10,7 @@ import {
     XKTLoaderPlugin,
     XKTLoaderPluginParams,
     SectionPlanesPlugin,
+    WebIFCLoaderPlugin,
 } from "@xeokit/xeokit-sdk"
 
 import Toolbar from "./Toolbar"
@@ -17,6 +18,7 @@ import { initNavCube } from "./plugins/initNavCube"
 import { initFastNav } from "./plugins/initFastNav"
 import { initSectionPlanes } from "./plugins/initSectionPlanes"
 import { createSectionFromClick } from "@/lib/viewer-tools/CreateSectionFromClick"
+import * as WebIFC from 'web-ifc'
 
 export interface ViewerCanvasHandle {
     getViewer: () => Viewer | null
@@ -31,7 +33,6 @@ const ViewerCanvas = forwardRef<ViewerCanvasHandle, ViewerCanvasProps>(
         const viewerRef = useRef<Viewer | null>(null)
         const sectionPlanesRef = useRef<SectionPlanesPlugin | null>(null)
         const sectionPlaneIdRef = useRef<string | null>(null)
-        const [sectionVisible, setSectionVisible] = useState(false)
 
         useImperativeHandle(ref, () => ({
             getViewer: () => viewerRef.current,
@@ -50,21 +51,39 @@ const ViewerCanvas = forwardRef<ViewerCanvasHandle, ViewerCanvasProps>(
 
             viewerRef.current = viewer
 
-            const xktLoader = new XKTLoaderPlugin(viewer)
-            const model = xktLoader.load(modelConfig)
+            const ext = modelConfig.src?.split(".").pop()?.toLowerCase()
 
-            model.on("loaded", () => {
-                viewer.cameraFlight.jumpTo(model)
-            })
+            if (ext === "xkt") {
+                const xktLoader = new XKTLoaderPlugin(viewer)
+                const model = xktLoader.load(modelConfig)
 
+                model.on("loaded", () => {
+                    viewer.cameraFlight.jumpTo(model)
+                })
+            } else if (ext === "ifc") {
+               const loadViewer = async () => {
+                     const IfcAPI = new WebIFC.IfcAPI()
+                     IfcAPI.SetWasmPath('https://cdn.jsdelivr.net/npm/web-ifc@0.0.68/')
+                     await IfcAPI.Init()
+                     const ifcLoader = new WebIFCLoaderPlugin(viewer, {
+                       WebIFC,
+                       IfcAPI,
+                     })
+                     const sceneModel = ifcLoader.load(modelConfig)
+                     sceneModel.on('loaded', () => {
+                       viewer.cameraFlight.jumpTo(sceneModel)
+                     })
+                   }
+                   loadViewer();
+            } else {
+                console.warn("⚠️ Unsupported file format:", ext)
+            }
             initNavCube(viewer)
             initFastNav(viewer)
-
             const { sectionPlanes, planeId } = initSectionPlanes(viewer)
             sectionPlanesRef.current = sectionPlanes
             sectionPlaneIdRef.current = planeId
         }, [modelConfig])
-
 
 
         const handleToggleSection = () => {
@@ -72,10 +91,6 @@ const ViewerCanvas = forwardRef<ViewerCanvasHandle, ViewerCanvasProps>(
             if (!viewer) return
             createSectionFromClick(viewer)
         }
-
-
-
-
         const handleResetView = () => {
             viewerRef.current?.cameraFlight.flyTo({
                 aabb: viewerRef.current.scene.aabb,

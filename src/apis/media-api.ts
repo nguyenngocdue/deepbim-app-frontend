@@ -11,6 +11,13 @@ export async function getMediaById(mediaId: number) {
     return res;
 }
 
+
+export async function getMediaByViewId(viewId: string) {
+    const res = await fetchWithAuth2(`/media/view-id/${viewId}`);
+    return res;
+}
+
+
 export async function uploadAvatar(data: any) {
     const formData = new FormData();
     formData.append("file", data.file);

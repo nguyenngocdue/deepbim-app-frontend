@@ -41,7 +41,7 @@ export default function RacHouseAutodesk() {
 
       const sceneModel = ifcLoader.load({
         id: 'myModel',
-        src: '/ifc/STEEL_R25.ifc', // Đặt đúng file tại public/ifc/Duplex.ifc
+        src: '/ifc/XUONG DET B13_2025.04.28.ifc', // Đặt đúng file tại public/ifc/Duplex.ifc
         loadMetadata: true,
         edges: true,
         dtxEnabled: true,
