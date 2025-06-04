@@ -1,96 +1,98 @@
 import {
-  useEffect,
-  useRef,
-  forwardRef,
-  useImperativeHandle,
+    useEffect,
+    useRef,
+    useState,
+    forwardRef,
+    useImperativeHandle,
 } from "react"
 import {
-  Viewer,
-  NavCubePlugin,
-  FastNavPlugin,
-  XKTLoaderPlugin,
-  XKTLoaderPluginParams,
+    Viewer,
+    XKTLoaderPlugin,
+    XKTLoaderPluginParams,
+    SectionPlanesPlugin,
 } from "@xeokit/xeokit-sdk"
 
+import Toolbar from "./Toolbar"
+import { initNavCube } from "./plugins/initNavCube"
+import { initFastNav } from "./plugins/initFastNav"
+import { initSectionPlanes } from "./plugins/initSectionPlanes"
+import { createSectionFromClick } from "@/lib/viewer-tools/CreateSectionFromClick"
+
 export interface ViewerCanvasHandle {
-  getViewer: () => Viewer | null
+    getViewer: () => Viewer | null
 }
 
 interface ViewerCanvasProps {
-  modelConfig: XKTLoaderPluginParams
+    modelConfig: XKTLoaderPluginParams
 }
 
 const ViewerCanvas = forwardRef<ViewerCanvasHandle, ViewerCanvasProps>(
-  ({ modelConfig }, ref) => {
-    const viewerRef = useRef<Viewer | null>(null)
+    ({ modelConfig }, ref) => {
+        const viewerRef = useRef<Viewer | null>(null)
+        const sectionPlanesRef = useRef<SectionPlanesPlugin | null>(null)
+        const sectionPlaneIdRef = useRef<string | null>(null)
+        const [sectionVisible, setSectionVisible] = useState(false)
 
-    useImperativeHandle(ref, () => ({
-      getViewer: () => viewerRef.current,
-    }))
+        useImperativeHandle(ref, () => ({
+            getViewer: () => viewerRef.current,
+        }))
 
-    useEffect(() => {
-      const viewer = new Viewer({
-        canvasId: "myCanvas",
-        transparent: true,
-        dtxEnabled: true,
-      })
+        useEffect(() => {
+            const viewer = new Viewer({
+                canvasId: "myCanvas",
+                transparent: true,
+                dtxEnabled: true,
+            })
 
-      viewer.camera.eye = [-3.933, 2.855, 27.018]
-      viewer.camera.look = [4.4, 3.724, 8.899]
-      viewer.camera.up = [-0.018, 0.999, 0.039]
+            viewer.camera.eye = [-3.933, 2.855, 27.018]
+            viewer.camera.look = [4.4, 3.724, 8.899]
+            viewer.camera.up = [-0.018, 0.999, 0.039]
 
-      viewerRef.current = viewer
+            viewerRef.current = viewer
 
-      // 🚀 Load model
-      const xktLoader = new XKTLoaderPlugin(viewer)
-      const model = xktLoader.load(modelConfig)
+            const xktLoader = new XKTLoaderPlugin(viewer)
+            const model = xktLoader.load(modelConfig)
 
-      model.on("loaded", () => {
-        viewer.cameraFlight.jumpTo(model) 
-        })
+            model.on("loaded", () => {
+                viewer.cameraFlight.jumpTo(model)
+            })
 
-      // 🧭 NavCube Plugin
-      const navCube = new NavCubePlugin(viewer, {
-        canvasId: "myNavCubeCanvas",
-        color: "#D9D9D9",
-        hoverColor: "#B0B0B0",
-        textColor: "#333333",
-        cameraFly: true,
-        cameraFitFOV: 45,
-        cameraFlyDuration: 0.5,
-        visible: true,
-      })
+            initNavCube(viewer)
+            initFastNav(viewer)
 
-  
-      // ⚡ FastNav Plugin
-      new FastNavPlugin(viewer, {
-        hideEdges: true,
-        hideSAO: true,
-        hideColorTexture: true,
-        hidePBR: true,
-        hideTransparentObjects: false,
-        scaleCanvasResolution: false,
-        scaleCanvasResolutionFactor: 0.5,
-        delayBeforeRestore: true,
-        delayBeforeRestoreSeconds: 0.4,
-      })
+            const { sectionPlanes, planeId } = initSectionPlanes(viewer)
+            sectionPlanesRef.current = sectionPlanes
+            sectionPlaneIdRef.current = planeId
+        }, [modelConfig])
 
-      
-    }, [modelConfig])
 
-    return (
-      <>
-        <canvas
-          id="myCanvas"
-          className="fixed inset-0 w-screen h-screen z-0"
-        />
-        <canvas
-          id="myNavCubeCanvas"
-          className="fixed top-4 right-4 w-[200px] h-[200px] z-50"
-        />
-      </>
-    )
-  }
+
+        const handleToggleSection = () => {
+            const viewer = viewerRef.current
+            if (!viewer) return
+            createSectionFromClick(viewer)
+        }
+
+
+
+
+        const handleResetView = () => {
+            viewerRef.current?.cameraFlight.flyTo({
+                aabb: viewerRef.current.scene.aabb,
+            })
+        }
+
+        return (
+            <>
+                <canvas id="myCanvas" className="fixed inset-0 w-screen h-screen z-0" />
+                <canvas id="myNavCubeCanvas" className="fixed top-4 right-4 w-[200px] h-[200px] z-50" />
+                <Toolbar
+                    onToggleSection={handleToggleSection}
+                    onResetView={handleResetView}
+                />
+            </>
+        )
+    }
 )
 
 export default ViewerCanvas
