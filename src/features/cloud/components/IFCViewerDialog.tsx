@@ -12,10 +12,11 @@ export function IFCViewerDialog({
   if (!selectedFile) return null;
 
   const fileCode = selectedFile.media.view_id;
+  console.log(selectedFile);
 
   const handleOpenViewer = () => {
     onClose();
-    window.open(`/view?v=${fileCode}`, "_blank");
+    // window.open(`/view?v=${fileCode}`, "_blank");
   };
 
   return (

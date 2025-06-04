@@ -13,7 +13,17 @@ export function mapFileInfo(nodes: any[]): TreeNode[] {
           name: f.name,
           folder_id: f.folder_id,
           type: f.media?.extension,
-          media: f.media ? { url: f.media.url, extension: f.media.extension, view_id: f.media.view_id, size:f.media.size} : undefined,
+          media: f.media ? { 
+            url_skt: f.media.url_skt,
+            url: f.media.url, 
+            extension: f.media.extension, 
+            view_id: f.media.view_id, 
+            size:f.media.size,
+            category_id: f.media.category_id,
+            category_type: f.media.category_type,
+            status:  f.media.status,
+            description: f.media.description,
+          } : undefined,
           creator: f.creator ? {id : f.creator.id, user_name:  f.creator.user_name, avatar_url: f.creator.mediaUserAvatar?.url} : undefined,
           updated_at: f.updated_at,
         }))
