@@ -1,8 +1,13 @@
 import { NavCubePlugin, Viewer } from "@xeokit/xeokit-sdk"
 
-export const initNavCube = (viewer: Viewer) => {
+/**
+ * Khởi tạo plugin NavCube cho viewer
+ * @param viewer - Đối tượng viewer
+ * @param canvasId - ID của canvas dùng cho NavCube
+ */
+export const initNavCube = (viewer: Viewer, canvasId: string = "myNavCubeCanvas") => {
   const navCube = new NavCubePlugin(viewer, {
-    canvasId: `cube-${(viewer as any)?.viewId || "default"}`,
+    canvasId,
     color: "#D9D9D9",
     hoverColor: "#B0B0B0",
     textColor: "#333333",
@@ -11,4 +16,6 @@ export const initNavCube = (viewer: Viewer) => {
     cameraFlyDuration: 0.5,
     visible: true,
   })
+
+  return navCube
 }
