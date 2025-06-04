@@ -5,7 +5,6 @@ import {
   FastNavPlugin,
   NavCubePlugin,
 } from "@xeokit/xeokit-sdk"
-import { initFastNav } from "../../components/plugins"
 
 export default function XktDtxAPHS() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -26,32 +25,43 @@ export default function XktDtxAPHS() {
     viewer.camera.look = [60.59, 42.37, -25.39]
     viewer.camera.up = [0.39, 0.88, -0.26]
 
-    // new NavCubePlugin(viewer, {
-    //   canvasId: navCubeRef.current.id,
-    //   visible: true,
-    //   size: 250,
-    //   alignment: "bottomRight",
-    //   bottomMargin: 100,
-    //   rightMargin: 10,
-    // })
+    new NavCubePlugin(viewer, {
+      canvasId: navCubeRef.current.id,
+      visible: true,
+      size: 250,
+      alignment: "bottomRight",
+      bottomMargin: 100,
+      rightMargin: 10,
+    })
 
-    initFastNav(viewer);
+    new FastNavPlugin(viewer, {
+      hideEdges: true,
+      hideSAO: true,
+      hideColorTexture: true,
+      hidePBR: true,
+      hideTransparentObjects: false,
+      scaleCanvasResolution: false,
+      scaleCanvasResolutionFactor: 0.5,
+      delayBeforeRestore: true,
+      delayBeforeRestoreSeconds: 0.4,
+    })
+
     const xktLoader = new XKTLoaderPlugin(viewer)
 
     const t0 = performance.now()
 
     const sceneModel = xktLoader.load({
-      id: "132",
+      id: "myModel",
       src: "/ifc/APHS.xkt", // Đảm bảo file này đúng path
       edges: true,
       saoEnabled: false,
     })
 
-    // sceneModel.on("loaded", () => {
-    //   const t1 = performance.now()
-    //   const seconds = ((t1 - t0) / 1000).toFixed(2)
-    //   setLoadTime(`Model loaded in ${seconds} seconds. Objects: ${sceneModel.numEntities}`)
-    // })
+    sceneModel.on("loaded", () => {
+      const t1 = performance.now()
+      const seconds = ((t1 - t0) / 1000).toFixed(2)
+      setLoadTime(`Model loaded in ${seconds} seconds. Objects: ${sceneModel.numEntities}`)
+    })
 
     return () => {
       viewer.destroy()
