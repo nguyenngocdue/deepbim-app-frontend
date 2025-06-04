@@ -6,6 +6,11 @@ export async function getMedia(userId: number) {
     return response;
 }
 
+export async function getMediaById(mediaId: number) {
+    const res = await fetchWithAuth2(`/media/${mediaId}`);
+    return res;
+}
+
 export async function uploadAvatar(data: any) {
     const formData = new FormData();
     formData.append("file", data.file);

@@ -4,7 +4,6 @@ import { TypeAnimation } from "react-type-animation";
 import { useMemo, useState, useEffect } from "react";
 import { useLanguage } from "@/context/LanguageContext";
 import AnimatedBorderImage3 from "@/components/ui/animated-border-image3";
-import { Button } from "@/components/ui/button";
 import { CLASS_NAME_DEFAULT } from "@/utils/class";
 import { Link } from "@tanstack/react-router";
 import AppButton from "@/components/bim-viewer/common/AppButton";
@@ -82,6 +81,17 @@ const HeroSection = () => {
               {t("hero.deploy")}
             </AppButton>
           </Link>
+
+          <Link to="/examples/bim-viewer">
+            <AppButton 
+              className="bg-button-1 text-white dark:bg-blue-600 dark:text-white hover:bg-zinc-900 dark:hover:bg-zinc-900" 
+              falseName={t("hero.demo")}
+              >
+              {t("hero.demo")}
+            </AppButton>
+          </Link>
+
+
         </div>
       </motion.div>
       <div className="w-full md:w-1/2 flex justify-center">
