@@ -1,256 +1,224 @@
 import { useState } from "react";
-import { Sidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Link } from "@tanstack/react-router";
-import { LogoWord } from "../LogoWord";
 import { useTheme } from "@/context/theme-context";
+import { LogoWord } from "../LogoWord";
 import { Button } from "../ui/button";
-import { MdAdminPanelSettings, MdWorkspaces } from "react-icons/md";
-import { GrProjects } from "react-icons/gr";
-import { TiFlowChildren } from "react-icons/ti";
-import { BsChatQuoteFill } from "react-icons/bs";
 import { ThemeSwitch } from "../theme-switch";
 import { ProfileDropdown } from "../common/ProfileDropdown";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import BreadcrumbsWithIconAndLabel2 from "../BreadcrumbsWithIconAndLabel2";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  MdAdminPanelSettings,
+  MdWorkspaces,
+} from "react-icons/md";
+import { GrProjects } from "react-icons/gr";
+import { TiFlowChildren } from "react-icons/ti";
+import { BsChatQuoteFill } from "react-icons/bs";
 import { LuWorkflow } from "react-icons/lu";
 import { TbBoxModel2 } from "react-icons/tb";
+import BreadcrumbsWithIconAndLabel2 from "../BreadcrumbsWithIconAndLabel2";
 
 export default function SidebarLayout({ children }: { children: React.ReactNode }) {
-  const [collapsed, setCollapsed] = useState(() => {
-    const stored = localStorage.getItem("sidebar-collapsed");
-    return stored === "true";
-  });
+  const [collapsed, setCollapsed] = useState(() => localStorage.getItem("sidebar-collapsed") === "true");
   const { theme } = useTheme();
-  console.log(theme);
 
-  // Theme-based colors
-  const themeColors = {
-    light: {
-      sidebarBg: "#f8fafc",
-      textColor: "#1e293b",
-      activeBg: "#e2e8f0",
-      hoverBg: "#edf2f7",
-      activeText: "#1d4ed8",
-      borderColor: "#e5e7eb",
-    },
-    dark: {
-      sidebarBg: "#0f172a",
-      textColor: "#f1f5f9",
-      activeBg: "#1e293b",
-      hoverBg: "#293548",
-      activeText: "#3b82f6",
-      borderColor: "#1e293b",
-    },
-     system: {
-      sidebarBg: "#0f172a",
-      textColor: "#f1f5f9",
-      activeBg: "#1e293b",
-      hoverBg: "#293548",
-      activeText: "#3b82f6",
-      borderColor: "#1e293b",
-    },
+  const isDark = theme === "dark" || theme === "system";
+  const sidebarBg = isDark ? "bg-zinc-900" : "bg-zinc-50";
+  const textColor = isDark ? "text-zinc-100" : "text-zinc-800";
+  const mutedText = isDark ? "text-zinc-400" : "text-zinc-500";
+  const hoverBg = isDark ? "hover:bg-zinc-800" : "hover:bg-zinc-100";
+
+  const toggleCollapse = () => {
+    const newVal = !collapsed;
+    setCollapsed(newVal);
+    localStorage.setItem("sidebar-collapsed", String(newVal));
   };
 
-  const colors = themeColors[theme];
-
   return (
-    <div className="flex h-screen bg-background text-foreground transition-colors duration-300 relative">
-      {/* Sidebar section */}
-      <div className="relative group z-50">
-        <Sidebar
-          collapsed={collapsed}
-          backgroundColor={colors.sidebarBg}
-          rootStyles={{
-            height: "100%",
-            backgroundImage: collapsed ? "none" : "url(/sidebar-bg.png)",
-            backgroundSize: "cover",
-            borderRight: `1px solid ${colors.borderColor}`,
-            transition: "width 0.3s ease, background 0.3s ease",
-          }}
-          width="250px"
-          collapsedWidth="60px"
-        >
-          {/* Logo */}
-          <div className="flex items-center justify-center px-4 py-4 border-b" style={{ borderColor: colors.borderColor }}>
-            <LogoWord isHiddenText={collapsed} path="/images/logo_no_bg.png" size="md" />
-          </div>
+    <div className="flex min-h-screen overflow-x-hidden">
+      {/* Sidebar */}
+      <aside
+        className={`group relative z-40 border-r dark:border-gray-600 border-gray-400 transition-all duration-300 ${sidebarBg} ${collapsed ? "w-[60px]" : "w-[250px]"
+          }`}
+      >
+        {/* Logo */}
+        <div className="flex items-center justify-center h-20 border-b bg-background dark:border-gray-600 border-gray-400">
+          <LogoWord isHiddenText={collapsed} path="/images/logo_no_bg.png" size="md" />
+        </div>
 
-          <Menu
-            menuItemStyles={{
-              button: ({ level, active }) => ({
-                backgroundColor: active ? colors.activeBg : level > 0 ? colors.sidebarBg : "transparent",
-                color: active ? colors.activeText : colors.textColor,
-                padding: collapsed ? "10px 12px" : "10px 20px",
-                fontWeight: active ? 600 : 500,
-                fontSize: "0.95rem",
-                transition: "all 0.2s ease",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: collapsed ? "center" : "flex-start",
-                borderRadius: "8px",
-                margin: collapsed ? "0 8px" : "0 12px",
-                [`&:hover`]: {
-                  backgroundColor: colors.hoverBg,
-                  color: colors.activeText,
-                  transform: "translateX(2px)",
-                },
-                [`& svg`]: {
-                  transition: "color 0.2s ease",
-                  color: active ? colors.activeText : colors.textColor,
-                },
-                [`&:hover svg`]: {
-                  color: colors.activeText,
-                },
-              }),
-              label: {
-                display: collapsed ? "none" : "block",
-                fontSize: "0.95rem",
-                whiteSpace: "nowrap",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-              },
-              subMenuContent: {
-                backgroundColor: colors.sidebarBg,
-                borderRadius: "8px",
-                margin: "0 12px",
-              },
-            }}
-          >
-            {!collapsed && (
-              <div className="px-4 pt-4 pb-2 uppercase text-xs tracking-wider font-medium" style={{ color: colors.textColor + "80" }}>
-                General
-              </div>
-            )}
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <MenuItem icon={<LuWorkflow   size={22} />} component={<Link to="/managements/workflows" />}>
-                    Workflows
-                  </MenuItem>
-                </TooltipTrigger>
-                {collapsed && <TooltipContent side="right" className="bg-background text-foreground text-sm py-1.5 px-3 rounded-md">Home</TooltipContent>}
-              </Tooltip>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <MenuItem icon={<TbBoxModel2  size={22} />} component={<Link to="/view2" />}>
-                    Model Example
-                  </MenuItem>
-                </TooltipTrigger>
-                {collapsed && <TooltipContent side="right" className="bg-background text-foreground text-sm py-1.5 px-3 rounded-md">Spaces</TooltipContent>}
-              </Tooltip>
-              <Tooltip>
-                {/* <TooltipTrigger asChild>
-                  <MenuItem icon={<IoPerson size={22} />} component={<Link to="/managements/me" />}>
-                    Me
-                  </MenuItem>
-                </TooltipTrigger> */}
-                {collapsed && <TooltipContent side="right" className="bg-background text-foreground text-sm py-1.5 px-3 rounded-md">Me</TooltipContent>}
-              </Tooltip>
-            </TooltipProvider>
+        {/* Menu */}
+       <nav className="p-2 overflow-y-auto overflow-x-hidden h-[calc(100%-5rem)] pb-36 bg-background">
 
-            {!collapsed && (
-              <div className="px-4 pt-4 pb-2 uppercase text-xs tracking-wider font-medium" style={{ color: colors.textColor + "80" }}>
-                Project Management
-              </div>
-            )}
-            <SubMenu label="Workspaces" icon={<MdWorkspaces size={22} />} defaultOpen>
+
+          {/* General */}
+          {!collapsed && (
+            <div className={`uppercase text-xs font-semibold px-3 mb-1 ${mutedText}`}>General</div>
+          )}
+          <ul className="space-y-1">
+            {[
+              { text: "Workflows", icon: <LuWorkflow size={20} />, to: "/managements/workflows" },
+              { text: "Model Previews", icon: <TbBoxModel2 size={20} />, to: "/managements/model-previews" },
+            ].map(({ text, icon, to }) => (
+              <TooltipProvider key={text}>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <li>
+                      <Link
+                        to={to}
+                        className={`flex items-center ${collapsed ? "justify-center" : "justify-start"
+                          } gap-3 px-3 py-2 rounded-md ${textColor} ${hoverBg} text-sm font-medium transition`}
+                      >
+                        {icon}
+                        {!collapsed && <span>{text}</span>}
+                      </Link>
+                    </li>
+                  </TooltipTrigger>
+                  {collapsed && <TooltipContent side="right">{text}</TooltipContent>}
+                </Tooltip>
+              </TooltipProvider>
+            ))}
+          </ul>
+
+          {/* Workspaces */}
+          {!collapsed && (
+            <div className={`uppercase text-xs font-semibold px-3 mt-5 mb-1 ${mutedText}`}>
+              Project Management
+            </div>
+          )}
+          <ul className="space-y-1">
+            {!collapsed ? (
+              <>
+                <li className="flex items-center gap-3 px-3 py-2 text-sm font-medium text-muted-foreground">
+                  <MdWorkspaces size={20} />
+                  <span>Workspaces</span>
+                </li>
+                <ul className="ml-8 space-y-1">
+                  <li>
+                    <Link
+                      to="/managements/projects"
+                      className={`block ${hoverBg} rounded-md px-2.5 py-2 text-sm ${textColor}`}
+                    >
+                      <GrProjects className="inline mr-2" /> Projects
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/managements/sub-projects"
+                      className={`block ${hoverBg} rounded-md px-2.5 py-2 text-sm ${textColor}`}
+                    >
+                      <TiFlowChildren className="inline mr-2" /> Sub-Projects
+                    </Link>
+                  </li>
+                </ul>
+              </>
+            ) : (
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <MenuItem icon={<GrProjects size={20} className={collapsed ? "" : "ml-4"} />} component={<Link to="/managements/projects" />}>
-                      Projects
-                    </MenuItem>
+                    <li className={`flex items-center justify-center p-2 rounded-md ${hoverBg}`}>
+                      <MdWorkspaces size={20} className={textColor} />
+                    </li>
                   </TooltipTrigger>
-                  {collapsed && <TooltipContent side="right" className="bg-background text-foreground text-sm py-1.5 px-3 rounded-md">Projects</TooltipContent>}
-                </Tooltip>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <MenuItem icon={<TiFlowChildren size={20} className={collapsed ? "" : "ml-4"} />} component={<Link to="/managements/sub-projects" />}>
-                      Sub-Projects
-                    </MenuItem>
-                  </TooltipTrigger>
-                  {collapsed && <TooltipContent side="right" className="bg-background text-foreground text-sm py-1.5 px-3 rounded-md">Sub-Projects</TooltipContent>}
+                  <TooltipContent side="right" className="p-0 overflow-hidden">
+                    <div className={`bg-background rounded-md shadow-md w-44`}>
+                      <Link
+                        to="/managements/projects"
+                        className="flex items-center gap-2 px-4 py-2 text-sm hover:bg-accent"
+                      >
+                        <GrProjects size={16} /> Projects
+                      </Link>
+                      <Link
+                        to="/managements/sub-projects"
+                        className="flex items-center gap-2 px-4 py-2 text-sm hover:bg-accent"
+                      >
+                        <TiFlowChildren size={16} /> Sub-Projects
+                      </Link>
+                    </div>
+                  </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
-            </SubMenu>
-
-            {!collapsed && (
-              <div className="px-4 pt-4 pb-2 uppercase text-xs tracking-wider font-medium" style={{ color: colors.textColor + "80" }}>
-                Admin Management
-              </div>
             )}
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <MenuItem icon={<MdAdminPanelSettings size={22} />} component={<Link to="/managements/users" />}>
-                    User
-                  </MenuItem>
-                </TooltipTrigger>
-                {collapsed && <TooltipContent side="right" className="bg-background text-foreground text-sm py-1.5 px-3 rounded-md">User</TooltipContent>}
-              </Tooltip>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <MenuItem icon={<BsChatQuoteFill size={22} />} component={<Link to="/managements/chat-support" />}>
-                    Chat
-                  </MenuItem>
-                </TooltipTrigger>
-                {collapsed && <TooltipContent side="right" className="bg-background text-foreground text-sm py-1.5 px-3 rounded-md">Chat</TooltipContent>}
-              </Tooltip>
-            </TooltipProvider>
-          </Menu>
+          </ul>
 
-          {/* Footer call to action */}
+          {/* Admin */}
           {!collapsed && (
-            <div className="absolute left-0 right-0 bottom-0 mt-auto px-6 py-8 hidden sm:block">
-              <div className="bg-gradient-to-br from-blue-700 to-indigo-600 rounded-lg p-4 text-center shadow-md">
-                <div className="text-white font-semibold text-sm">Welcome to DeepBIM</div>
-                <div className="text-xs text-white/80">v1.1.0</div>
-                <Button className="mt-3 bg-white text-blue-700 text-xs cursor-none font-semibold py-1.5 px-4 rounded-lg hover:bg-blue-50 transition-colors duration-200">
-                  Get Started
-                </Button>
-              </div>
+            <div className={`uppercase text-xs font-semibold px-3 mt-5 mb-1 ${mutedText}`}>
+              Admin Management
             </div>
           )}
-        </Sidebar>
+          <ul className="space-y-1">
+            {[
+              { text: "User", icon: <MdAdminPanelSettings size={20} />, to: "/managements/users" },
+              { text: "Chat", icon: <BsChatQuoteFill size={20} />, to: "/managements/chat-support" },
+            ].map(({ text, icon, to }) => (
+              <TooltipProvider key={text}>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <li>
+                      <Link
+                        to={to}
+                        className={`flex items-center ${collapsed ? "justify-center" : "justify-start"
+                          } gap-3 px-3 py-2 rounded-md ${textColor} ${hoverBg} text-sm font-medium transition`}
+                      >
+                        {icon}
+                        {!collapsed && <span>{text}</span>}
+                      </Link>
+                    </li>
+                  </TooltipTrigger>
+                  {collapsed && <TooltipContent side="right">{text}</TooltipContent>}
+                </Tooltip>
+              </TooltipProvider>
+            ))}
+          </ul>
+        </nav>
 
-        {/* Collapse Toggle Button */}
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <div
-                className="absolute top-1/2 -right-4 z-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                onClick={() => {
-                  const newValue = !collapsed;
-                  setCollapsed(newValue);
-                  localStorage.setItem("sidebar-collapsed", String(newValue));
-                }}
-              >
+        {/* Collapse Toggle - now only visible on hover */}
+        <div className="absolute top-1/2 -right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
                 <Button
-                  className="p-2 rounded-full shadow-lg bg-background border hover:bg-accent"
-                  style={{ borderColor: colors.borderColor, color: colors.activeText }}
+                  onClick={() => toggleCollapse()}
+                  className="rounded-full p-2 border bg-zinc-600  shadow"
                 >
-                  {collapsed ? <ChevronRight size={24} /> : <ChevronLeft size={24} />}
+                  {collapsed ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
                 </Button>
-              </div>
-            </TooltipTrigger>
-            <TooltipContent side="right" className="bg-background text-foreground text-sm py-1.5 px-3 rounded-md">
-              {collapsed ? "Expand Sidebar" : "Collapse Sidebar"}
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      </div>
+              </TooltipTrigger>
+              <TooltipContent>
+                {collapsed ? "Expand Sidebar" : "Collapse Sidebar"}
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
+
+        {/* Footer Card */}
+        {!collapsed && (
+          <div className="absolute left-0 right-0 bottom-0 px-4 pb-6">
+            <div className="bg-gradient-to-tr from-blue-600 via-indigo-600 to-indigo-700 rounded-xl shadow-lg text-white px-4 py-5 text-center space-y-2">
+              <div className="text-base font-semibold">🎉 Welcome to DeepBIM</div>
+              <div className="text-xs opacity-80">Version 1.1.0</div>
+              <Button
+                variant="default"
+                className="w-full border-white text-white text-xs font-semibold hover:bg-white/10"
+              >
+                Get Started
+              </Button>
+            </div>
+          </div>
+        )}
+      </aside>
+
 
       {/* Main layout */}
-      <div className="flex flex-col flex-1 h-screen overflow-hidden">
-        <div className="flex items-center justify-between px-6 py-4 border-b" style={{ borderColor: colors.borderColor }}>
+      <div className="flex-1 flex flex-col h-full">
+        <header className="flex justify-between items-center px-6 py-4 border-b dark:border-gray-600 border-gray-400 ">
           <BreadcrumbsWithIconAndLabel2 />
           <div className="flex items-center gap-4">
             <ThemeSwitch />
             <ProfileDropdown />
           </div>
-        </div>
-        <main className="flex-1 overflow-auto p-4 ">{children}</main>
+        </header>
+        <main className="p-4 overflow-y-auto flex-1 bg-background">{children}</main>
       </div>
     </div>
   );

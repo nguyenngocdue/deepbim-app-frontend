@@ -50,6 +50,7 @@ import { Route as AuthenticatedManagementsLayoutWorkflowsImport } from './routes
 import { Route as AuthenticatedManagementsLayoutUsersImport } from './routes/_authenticated/managements/_layout/users'
 import { Route as AuthenticatedManagementsLayoutSpacesImport } from './routes/_authenticated/managements/_layout/spaces'
 import { Route as AuthenticatedManagementsLayoutProjectsImport } from './routes/_authenticated/managements/_layout/projects'
+import { Route as AuthenticatedManagementsLayoutModelPreviewsImport } from './routes/_authenticated/managements/_layout/model-previews'
 import { Route as AuthenticatedManagementsLayoutMeImport } from './routes/_authenticated/managements/_layout/me'
 import { Route as AuthenticatedManagementsLayoutHomeImport } from './routes/_authenticated/managements/_layout/home'
 import { Route as AuthenticatedManagementsLayoutChatSupportImport } from './routes/_authenticated/managements/_layout/chat-support'
@@ -491,6 +492,13 @@ const AuthenticatedManagementsLayoutProjectsRoute =
   AuthenticatedManagementsLayoutProjectsImport.update({
     id: '/projects',
     path: '/projects',
+    getParentRoute: () => AuthenticatedManagementsLayoutRoute,
+  } as any)
+
+const AuthenticatedManagementsLayoutModelPreviewsRoute =
+  AuthenticatedManagementsLayoutModelPreviewsImport.update({
+    id: '/model-previews',
+    path: '/model-previews',
     getParentRoute: () => AuthenticatedManagementsLayoutRoute,
   } as any)
 
@@ -1105,6 +1113,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedManagementsLayoutMeImport
       parentRoute: typeof AuthenticatedManagementsLayoutImport
     }
+    '/_authenticated/managements/_layout/model-previews': {
+      id: '/_authenticated/managements/_layout/model-previews'
+      path: '/model-previews'
+      fullPath: '/managements/model-previews'
+      preLoaderRoute: typeof AuthenticatedManagementsLayoutModelPreviewsImport
+      parentRoute: typeof AuthenticatedManagementsLayoutImport
+    }
     '/_authenticated/managements/_layout/projects': {
       id: '/_authenticated/managements/_layout/projects'
       path: '/projects'
@@ -1444,6 +1459,7 @@ interface AuthenticatedManagementsLayoutRouteChildren {
   AuthenticatedManagementsLayoutChatSupportRoute: typeof AuthenticatedManagementsLayoutChatSupportRoute
   AuthenticatedManagementsLayoutHomeRoute: typeof AuthenticatedManagementsLayoutHomeRoute
   AuthenticatedManagementsLayoutMeRoute: typeof AuthenticatedManagementsLayoutMeRoute
+  AuthenticatedManagementsLayoutModelPreviewsRoute: typeof AuthenticatedManagementsLayoutModelPreviewsRoute
   AuthenticatedManagementsLayoutProjectsRoute: typeof AuthenticatedManagementsLayoutProjectsRoute
   AuthenticatedManagementsLayoutSpacesRoute: typeof AuthenticatedManagementsLayoutSpacesRoute
   AuthenticatedManagementsLayoutUsersRoute: typeof AuthenticatedManagementsLayoutUsersRoute
@@ -1462,6 +1478,8 @@ const AuthenticatedManagementsLayoutRouteChildren: AuthenticatedManagementsLayou
       AuthenticatedManagementsLayoutHomeRoute,
     AuthenticatedManagementsLayoutMeRoute:
       AuthenticatedManagementsLayoutMeRoute,
+    AuthenticatedManagementsLayoutModelPreviewsRoute:
+      AuthenticatedManagementsLayoutModelPreviewsRoute,
     AuthenticatedManagementsLayoutProjectsRoute:
       AuthenticatedManagementsLayoutProjectsRoute,
     AuthenticatedManagementsLayoutSpacesRoute:
@@ -1701,6 +1719,7 @@ export interface FileRoutesByFullPath {
   '/managements/chat-support': typeof AuthenticatedManagementsLayoutChatSupportRoute
   '/managements/home': typeof AuthenticatedManagementsLayoutHomeRoute
   '/managements/me': typeof AuthenticatedManagementsLayoutMeRoute
+  '/managements/model-previews': typeof AuthenticatedManagementsLayoutModelPreviewsRoute
   '/managements/projects': typeof AuthenticatedManagementsLayoutProjectsRoute
   '/managements/spaces': typeof AuthenticatedManagementsLayoutSpacesRoute
   '/managements/users': typeof AuthenticatedManagementsLayoutUsersRoute
@@ -1779,6 +1798,7 @@ export interface FileRoutesByTo {
   '/managements/chat-support': typeof AuthenticatedManagementsLayoutChatSupportRoute
   '/managements/home': typeof AuthenticatedManagementsLayoutHomeRoute
   '/managements/me': typeof AuthenticatedManagementsLayoutMeRoute
+  '/managements/model-previews': typeof AuthenticatedManagementsLayoutModelPreviewsRoute
   '/managements/projects': typeof AuthenticatedManagementsLayoutProjectsRoute
   '/managements/spaces': typeof AuthenticatedManagementsLayoutSpacesRoute
   '/managements/users': typeof AuthenticatedManagementsLayoutUsersRoute
@@ -1862,6 +1882,7 @@ export interface FileRoutesById {
   '/_authenticated/managements/_layout/chat-support': typeof AuthenticatedManagementsLayoutChatSupportRoute
   '/_authenticated/managements/_layout/home': typeof AuthenticatedManagementsLayoutHomeRoute
   '/_authenticated/managements/_layout/me': typeof AuthenticatedManagementsLayoutMeRoute
+  '/_authenticated/managements/_layout/model-previews': typeof AuthenticatedManagementsLayoutModelPreviewsRoute
   '/_authenticated/managements/_layout/projects': typeof AuthenticatedManagementsLayoutProjectsRoute
   '/_authenticated/managements/_layout/spaces': typeof AuthenticatedManagementsLayoutSpacesRoute
   '/_authenticated/managements/_layout/users': typeof AuthenticatedManagementsLayoutUsersRoute
@@ -1946,6 +1967,7 @@ export interface FileRouteTypes {
     | '/managements/chat-support'
     | '/managements/home'
     | '/managements/me'
+    | '/managements/model-previews'
     | '/managements/projects'
     | '/managements/spaces'
     | '/managements/users'
@@ -2023,6 +2045,7 @@ export interface FileRouteTypes {
     | '/managements/chat-support'
     | '/managements/home'
     | '/managements/me'
+    | '/managements/model-previews'
     | '/managements/projects'
     | '/managements/spaces'
     | '/managements/users'
@@ -2104,6 +2127,7 @@ export interface FileRouteTypes {
     | '/_authenticated/managements/_layout/chat-support'
     | '/_authenticated/managements/_layout/home'
     | '/_authenticated/managements/_layout/me'
+    | '/_authenticated/managements/_layout/model-previews'
     | '/_authenticated/managements/_layout/projects'
     | '/_authenticated/managements/_layout/spaces'
     | '/_authenticated/managements/_layout/users'
@@ -2390,6 +2414,7 @@ export const routeTree = rootRoute
         "/_authenticated/managements/_layout/chat-support",
         "/_authenticated/managements/_layout/home",
         "/_authenticated/managements/_layout/me",
+        "/_authenticated/managements/_layout/model-previews",
         "/_authenticated/managements/_layout/projects",
         "/_authenticated/managements/_layout/spaces",
         "/_authenticated/managements/_layout/users",
@@ -2473,6 +2498,10 @@ export const routeTree = rootRoute
     },
     "/_authenticated/managements/_layout/me": {
       "filePath": "_authenticated/managements/_layout/me.tsx",
+      "parent": "/_authenticated/managements/_layout"
+    },
+    "/_authenticated/managements/_layout/model-previews": {
+      "filePath": "_authenticated/managements/_layout/model-previews.tsx",
       "parent": "/_authenticated/managements/_layout"
     },
     "/_authenticated/managements/_layout/projects": {
