@@ -11,5 +11,6 @@ export const initFastNav = (viewer: Viewer) => {
     scaleCanvasResolutionFactor: 0.5,
     delayBeforeRestore: true,
     delayBeforeRestoreSeconds: 0.4,
+    
   })
 }

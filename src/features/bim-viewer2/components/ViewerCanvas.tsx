@@ -10,15 +10,14 @@ import {
     XKTLoaderPlugin,
     XKTLoaderPluginParams,
     SectionPlanesPlugin,
-    WebIFCLoaderPlugin,
+    CxConverterIFCLoaderPlugin,
 } from "@xeokit/xeokit-sdk"
 
 import Toolbar from "./Toolbar"
 import { initNavCube } from "./plugins/initNavCube"
-import { initFastNav } from "./plugins/initFastNav"
 import { initSectionPlanes } from "./plugins/initSectionPlanes"
 import { createSectionFromClick } from "@/lib/viewer-tools/CreateSectionFromClick"
-import * as WebIFC from 'web-ifc'
+import { initFastNav } from "./plugins"
 
 export interface ViewerCanvasHandle {
     getViewer: () => Viewer | null
@@ -51,7 +50,11 @@ const ViewerCanvas = forwardRef<ViewerCanvasHandle, ViewerCanvasProps>(
             viewer.camera.look = [4.4, 3.724, 8.899]
             viewer.camera.up = [-0.018, 0.999, 0.039]
 
-            viewerRef.current = viewer
+            viewerRef.current = viewer;
+            // Attach custom property to viewer for tracking viewId
+            (viewer as any).viewId = viewId;
+            initNavCube(viewer);
+            initFastNav(viewer)
 
             const ext = modelConfig.src?.split(".").pop()?.toLowerCase()
 
@@ -62,29 +65,40 @@ const ViewerCanvas = forwardRef<ViewerCanvasHandle, ViewerCanvasProps>(
                 model.on("loaded", () => {
                     viewer.cameraFlight.jumpTo(model)
                 })
+
+
+
+                
             } else if (ext === "ifc") {
-               const loadViewer = async () => {
-                     const IfcAPI = new WebIFC.IfcAPI()
-                     IfcAPI.SetWasmPath('https://cdn.jsdelivr.net/npm/web-ifc@0.0.68/')
-                     await IfcAPI.Init()
-                     const ifcLoader = new WebIFCLoaderPlugin(viewer, {
-                       WebIFC,
-                       IfcAPI,
-                     })
-                     const sceneModel = ifcLoader.load(modelConfig)
-                     sceneModel.on('loaded', () => {
-                       viewer.cameraFlight.jumpTo(sceneModel)
-                     })
-                   }
-                   loadViewer();
+                const loadViewer = async () => {
+                    const loader = new CxConverterIFCLoaderPlugin(viewer);
+                    loader.load({
+                        src: modelConfig.src,
+                        progressCallback: (p) => {
+                            const el = document.getElementById("progressPercentage");
+                            if (el) el.innerText = p.toFixed(1) + "%";
+                        },
+                        progressTextCallback: (txt) => {
+                            const el = document.getElementById("progressText");
+                            if (el) el.innerText = txt;
+                        }
+                    }).then((model) => {
+                        model.on("loaded", () => {
+                            viewer.cameraFlight.flyTo();
+                        });
+                    });
+                }
+                loadViewer();
             } else {
                 console.warn("⚠️ Unsupported file format:", ext)
             }
-            initNavCube(viewer)
-            initFastNav(viewer)
             const { sectionPlanes, planeId } = initSectionPlanes(viewer)
             sectionPlanesRef.current = sectionPlanes
             sectionPlaneIdRef.current = planeId
+
+            return () => {
+                viewer.destroy();
+            };
         }, [modelConfig])
 
 
@@ -94,19 +108,22 @@ const ViewerCanvas = forwardRef<ViewerCanvasHandle, ViewerCanvasProps>(
             createSectionFromClick(viewer)
         }
         const handleResetView = () => {
-            viewerRef.current?.cameraFlight.flyTo({
-                aabb: viewerRef.current.scene.aabb,
+            const viewer = viewerRef.current
+            if (!viewer) return
+            viewer.cameraFlight.flyTo({
+                aabb: viewer.scene.aabb,
             })
         }
+
 
         return (
             <>
                 <canvas id={safeId} className="fixed inset-0 w-screen h-screen z-0" />
-                <canvas id={`myNavCubeCanvas-${safeId}`} className="fixed top-4 right-4 w-[200px] h-[200px] z-50" />
-                <Toolbar
+                <canvas id={`cube-${viewId}`} className="fixed top-4 right-4 w-[200px] h-[200px] z-50" />
+                {/* <Toolbar
                     onToggleSection={handleToggleSection}
                     onResetView={handleResetView}
-                />
+                /> */}
             </>
         )
     }

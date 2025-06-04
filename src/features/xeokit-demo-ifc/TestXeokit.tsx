@@ -35,7 +35,7 @@ export function TestXeokit() {
     const loader = new CxConverterIFCLoaderPlugin(viewer);
 
     loader.load({
-      src: "/ifc/road_3.ifc",
+      src: "/ifc/school_str.ifc",
       progressCallback: (p) => {
         const el = document.getElementById("progressPercentage");
         if (el) el.innerText = p.toFixed(1) + "%";

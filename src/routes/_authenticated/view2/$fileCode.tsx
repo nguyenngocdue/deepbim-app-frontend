@@ -18,9 +18,9 @@ function RouteComponent() {
   } 
   switch (fileCode) {
     case 'rac-house-autodesk':
-      return <RacHouseAutodesk/>
+      return <RacHouseAutodesk viewId={'rac-house-autodesk'}/>
     case 'xkt-dtx-APHS':
-      return <XktDtxAPHS/>
+      return <XktDtxAPHS viewId='xkt-dtx-APHS'/>
     default:
       return <MainPageViewer/>      
   }

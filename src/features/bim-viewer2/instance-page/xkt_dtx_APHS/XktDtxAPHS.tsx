@@ -1,13 +1,12 @@
 import ViewerCanvas from "../../components/ViewerCanvas"
 
-export default function XktDtxAPHS() {
+export default function XktDtxAPHS({viewId} : {viewId: string}) {
   const modelConfig = {
     id: "model_1",
-    // src: "/ifc/1749021122068-school_str.xkt",    
-    src: "/ifc/road_3.ifc",
-
-    edges: true,
+    src: "/ifc/APHS.xkt",    
+     edges: true,
+        saoEnabled: false
   }
 
-  return <ViewerCanvas modelConfig={modelConfig} />
+  return <ViewerCanvas modelConfig={modelConfig} viewId={viewId}/>
 }

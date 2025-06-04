@@ -9,6 +9,7 @@ import { ImageDialogViewer } from "./image-viewer/ImageDialogViewer";
 import { UnsupportedFileDialogViewer } from "./UnsupportedFileDialogViewer";
 import MainViewer from "@/pages/bim-viewer/MainViewer";
 import {IFCViewerDialog } from "./IFCViewerDialog";
+import { XKTViewerDialog } from "./XKTViewerDialog";
 
 
 const IMAGE_EXTENSIONS = [
@@ -66,7 +67,9 @@ export const MoveDeleteViewDialogs: React.FC<Props> = ({
 
   const isPdf = fileType === "pdf";
   const isImage = fileType && IMAGE_EXTENSIONS.includes(fileType);
-  const isIfc = fileType ==="ifc";
+  const isIfc = fileType ==="ifc";  
+  const isXkt = fileType ==="xkt";
+
 
 
 
@@ -151,6 +154,17 @@ export const MoveDeleteViewDialogs: React.FC<Props> = ({
       {
         isIfc && (
           <IFCViewerDialog
+            open={fileViewer}
+            onClose={() => setFileViewer(false)}
+            selectedFile={selectedFile}
+          />
+        )
+      }
+
+       {/* Show XKT */}
+      {
+        isXkt && (
+          <XKTViewerDialog
             open={fileViewer}
             onClose={() => setFileViewer(false)}
             selectedFile={selectedFile}
