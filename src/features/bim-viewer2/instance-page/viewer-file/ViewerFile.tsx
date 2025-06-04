@@ -36,5 +36,5 @@ export default function ViewerFile({viewId}: ViewerFileProps) {
         edges: true,
     };
 
-    return <ViewerCanvas modelConfig={modelConfig} />;
+    return <ViewerCanvas modelConfig={modelConfig} viewId={viewId} />;
 }

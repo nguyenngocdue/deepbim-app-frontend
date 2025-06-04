@@ -26,13 +26,15 @@ export interface ViewerCanvasHandle {
 
 interface ViewerCanvasProps {
     modelConfig: XKTLoaderPluginParams
+    viewId: string
 }
 
 const ViewerCanvas = forwardRef<ViewerCanvasHandle, ViewerCanvasProps>(
-    ({ modelConfig }, ref) => {
+    ({ modelConfig, viewId }, ref) => {
         const viewerRef = useRef<Viewer | null>(null)
         const sectionPlanesRef = useRef<SectionPlanesPlugin | null>(null)
         const sectionPlaneIdRef = useRef<string | null>(null)
+        const safeId = `canvas-${viewId}`;
 
         useImperativeHandle(ref, () => ({
             getViewer: () => viewerRef.current,
@@ -40,7 +42,7 @@ const ViewerCanvas = forwardRef<ViewerCanvasHandle, ViewerCanvasProps>(
 
         useEffect(() => {
             const viewer = new Viewer({
-                canvasId: "myCanvas",
+                canvasId: safeId,
                 transparent: true,
                 dtxEnabled: true,
             })
@@ -99,8 +101,8 @@ const ViewerCanvas = forwardRef<ViewerCanvasHandle, ViewerCanvasProps>(
 
         return (
             <>
-                <canvas id="myCanvas" className="fixed inset-0 w-screen h-screen z-0" />
-                <canvas id="myNavCubeCanvas" className="fixed top-4 right-4 w-[200px] h-[200px] z-50" />
+                <canvas id={safeId} className="fixed inset-0 w-screen h-screen z-0" />
+                <canvas id={`myNavCubeCanvas-${safeId}`} className="fixed top-4 right-4 w-[200px] h-[200px] z-50" />
                 <Toolbar
                     onToggleSection={handleToggleSection}
                     onResetView={handleResetView}
