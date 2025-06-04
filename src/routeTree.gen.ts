@@ -46,6 +46,7 @@ import { Route as AuthenticatedAppLayoutImport } from './routes/_authenticated/a
 import { Route as AuthenticatedAdminLayoutImport } from './routes/_authenticated/admin/_layout'
 import { Route as AuthenticatedViewUploadIndexImport } from './routes/_authenticated/view/upload/index'
 import { Route as AuthenticatedExamplesBimViewerIndexImport } from './routes/_authenticated/examples/bim-viewer/index'
+import { Route as AuthenticatedManagementsLayoutWorkflowsImport } from './routes/_authenticated/managements/_layout/workflows'
 import { Route as AuthenticatedManagementsLayoutUsersImport } from './routes/_authenticated/managements/_layout/users'
 import { Route as AuthenticatedManagementsLayoutSpacesImport } from './routes/_authenticated/managements/_layout/spaces'
 import { Route as AuthenticatedManagementsLayoutProjectsImport } from './routes/_authenticated/managements/_layout/projects'
@@ -463,6 +464,13 @@ const AuthenticatedExamplesBimViewerIndexRoute =
     id: '/examples/bim-viewer/',
     path: '/examples/bim-viewer/',
     getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+
+const AuthenticatedManagementsLayoutWorkflowsRoute =
+  AuthenticatedManagementsLayoutWorkflowsImport.update({
+    id: '/workflows',
+    path: '/workflows',
+    getParentRoute: () => AuthenticatedManagementsLayoutRoute,
   } as any)
 
 const AuthenticatedManagementsLayoutUsersRoute =
@@ -1118,6 +1126,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedManagementsLayoutUsersImport
       parentRoute: typeof AuthenticatedManagementsLayoutImport
     }
+    '/_authenticated/managements/_layout/workflows': {
+      id: '/_authenticated/managements/_layout/workflows'
+      path: '/workflows'
+      fullPath: '/managements/workflows'
+      preLoaderRoute: typeof AuthenticatedManagementsLayoutWorkflowsImport
+      parentRoute: typeof AuthenticatedManagementsLayoutImport
+    }
     '/_authenticated/examples/bim-viewer/': {
       id: '/_authenticated/examples/bim-viewer/'
       path: '/examples/bim-viewer'
@@ -1432,6 +1447,7 @@ interface AuthenticatedManagementsLayoutRouteChildren {
   AuthenticatedManagementsLayoutProjectsRoute: typeof AuthenticatedManagementsLayoutProjectsRoute
   AuthenticatedManagementsLayoutSpacesRoute: typeof AuthenticatedManagementsLayoutSpacesRoute
   AuthenticatedManagementsLayoutUsersRoute: typeof AuthenticatedManagementsLayoutUsersRoute
+  AuthenticatedManagementsLayoutWorkflowsRoute: typeof AuthenticatedManagementsLayoutWorkflowsRoute
   AuthenticatedManagementsLayoutSubProjectsIdRoute: typeof AuthenticatedManagementsLayoutSubProjectsIdRoute
   AuthenticatedManagementsLayoutSubProjectsRoute: typeof AuthenticatedManagementsLayoutSubProjectsRouteWithChildren
   AuthenticatedManagementsLayoutTeamsTeamidRoute: typeof AuthenticatedManagementsLayoutTeamsTeamidRoute
@@ -1452,6 +1468,8 @@ const AuthenticatedManagementsLayoutRouteChildren: AuthenticatedManagementsLayou
       AuthenticatedManagementsLayoutSpacesRoute,
     AuthenticatedManagementsLayoutUsersRoute:
       AuthenticatedManagementsLayoutUsersRoute,
+    AuthenticatedManagementsLayoutWorkflowsRoute:
+      AuthenticatedManagementsLayoutWorkflowsRoute,
     AuthenticatedManagementsLayoutSubProjectsIdRoute:
       AuthenticatedManagementsLayoutSubProjectsIdRoute,
     AuthenticatedManagementsLayoutSubProjectsRoute:
@@ -1686,6 +1704,7 @@ export interface FileRoutesByFullPath {
   '/managements/projects': typeof AuthenticatedManagementsLayoutProjectsRoute
   '/managements/spaces': typeof AuthenticatedManagementsLayoutSpacesRoute
   '/managements/users': typeof AuthenticatedManagementsLayoutUsersRoute
+  '/managements/workflows': typeof AuthenticatedManagementsLayoutWorkflowsRoute
   '/examples/bim-viewer': typeof AuthenticatedExamplesBimViewerIndexRoute
   '/view/upload': typeof AuthenticatedViewUploadIndexRoute
   '/managements/sub-projects/$id': typeof AuthenticatedManagementsLayoutSubProjectsIdRoute
@@ -1763,6 +1782,7 @@ export interface FileRoutesByTo {
   '/managements/projects': typeof AuthenticatedManagementsLayoutProjectsRoute
   '/managements/spaces': typeof AuthenticatedManagementsLayoutSpacesRoute
   '/managements/users': typeof AuthenticatedManagementsLayoutUsersRoute
+  '/managements/workflows': typeof AuthenticatedManagementsLayoutWorkflowsRoute
   '/examples/bim-viewer': typeof AuthenticatedExamplesBimViewerIndexRoute
   '/view/upload': typeof AuthenticatedViewUploadIndexRoute
   '/managements/sub-projects/$id': typeof AuthenticatedManagementsLayoutSubProjectsIdRoute
@@ -1845,6 +1865,7 @@ export interface FileRoutesById {
   '/_authenticated/managements/_layout/projects': typeof AuthenticatedManagementsLayoutProjectsRoute
   '/_authenticated/managements/_layout/spaces': typeof AuthenticatedManagementsLayoutSpacesRoute
   '/_authenticated/managements/_layout/users': typeof AuthenticatedManagementsLayoutUsersRoute
+  '/_authenticated/managements/_layout/workflows': typeof AuthenticatedManagementsLayoutWorkflowsRoute
   '/_authenticated/examples/bim-viewer/': typeof AuthenticatedExamplesBimViewerIndexRoute
   '/_authenticated/view/upload/': typeof AuthenticatedViewUploadIndexRoute
   '/_authenticated/managements/_layout/sub-projects/$id': typeof AuthenticatedManagementsLayoutSubProjectsIdRoute
@@ -1928,6 +1949,7 @@ export interface FileRouteTypes {
     | '/managements/projects'
     | '/managements/spaces'
     | '/managements/users'
+    | '/managements/workflows'
     | '/examples/bim-viewer'
     | '/view/upload'
     | '/managements/sub-projects/$id'
@@ -2004,6 +2026,7 @@ export interface FileRouteTypes {
     | '/managements/projects'
     | '/managements/spaces'
     | '/managements/users'
+    | '/managements/workflows'
     | '/examples/bim-viewer'
     | '/view/upload'
     | '/managements/sub-projects/$id'
@@ -2084,6 +2107,7 @@ export interface FileRouteTypes {
     | '/_authenticated/managements/_layout/projects'
     | '/_authenticated/managements/_layout/spaces'
     | '/_authenticated/managements/_layout/users'
+    | '/_authenticated/managements/_layout/workflows'
     | '/_authenticated/examples/bim-viewer/'
     | '/_authenticated/view/upload/'
     | '/_authenticated/managements/_layout/sub-projects/$id'
@@ -2369,6 +2393,7 @@ export const routeTree = rootRoute
         "/_authenticated/managements/_layout/projects",
         "/_authenticated/managements/_layout/spaces",
         "/_authenticated/managements/_layout/users",
+        "/_authenticated/managements/_layout/workflows",
         "/_authenticated/managements/_layout/sub-projects/$id",
         "/_authenticated/managements/_layout/sub-projects",
         "/_authenticated/managements/_layout/teams/$team_id",
@@ -2460,6 +2485,10 @@ export const routeTree = rootRoute
     },
     "/_authenticated/managements/_layout/users": {
       "filePath": "_authenticated/managements/_layout/users.tsx",
+      "parent": "/_authenticated/managements/_layout"
+    },
+    "/_authenticated/managements/_layout/workflows": {
+      "filePath": "_authenticated/managements/_layout/workflows.tsx",
       "parent": "/_authenticated/managements/_layout"
     },
     "/_authenticated/examples/bim-viewer/": {

@@ -74,6 +74,7 @@
     "leaflet": "^1.9.4",
     "leva": "^0.10.0",
     "lil-gui": "^0.20.0",
+    "lucide": "^0.513.0",
     "lucide-react": "^0.468.0",
     "motion": "^12.4.12",
     "pdfjs-dist": "^5.2.133",

@@ -3,19 +3,18 @@ import { Sidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { LogoWord } from "../LogoWord";
-import BreadcrumbsWithIconAndLabel from "@/components/BreadcrumbsWithIconAndLabel";
 import { useTheme } from "@/context/theme-context";
 import { Button } from "../ui/button";
-import { IoPerson } from "react-icons/io5";
 import { MdAdminPanelSettings, MdWorkspaces } from "react-icons/md";
-import { HiHomeModern } from "react-icons/hi2";
-import { GrProjects, GrVirtualStorage } from "react-icons/gr";
+import { GrProjects } from "react-icons/gr";
 import { TiFlowChildren } from "react-icons/ti";
 import { BsChatQuoteFill } from "react-icons/bs";
 import { ThemeSwitch } from "../theme-switch";
 import { ProfileDropdown } from "../common/ProfileDropdown";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import BreadcrumbsWithIconAndLabel2 from "../BreadcrumbsWithIconAndLabel2";
+import { LuWorkflow } from "react-icons/lu";
+import { TbBoxModel2 } from "react-icons/tb";
 
 export default function SidebarLayout({ children }: { children: React.ReactNode }) {
   const [collapsed, setCollapsed] = useState(() => {
@@ -126,16 +125,16 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <MenuItem icon={<HiHomeModern size={22} />} component={<Link to="/managements/home" />}>
-                    Home
+                  <MenuItem icon={<LuWorkflow   size={22} />} component={<Link to="/managements/workflows" />}>
+                    Workflows
                   </MenuItem>
                 </TooltipTrigger>
                 {collapsed && <TooltipContent side="right" className="bg-background text-foreground text-sm py-1.5 px-3 rounded-md">Home</TooltipContent>}
               </Tooltip>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <MenuItem icon={<MdWorkspaces size={22} />} component={<Link to="/managements/spaces" />}>
-                    Spaces
+                  <MenuItem icon={<TbBoxModel2  size={22} />} component={<Link to="/view2" />}>
+                    Model Example
                   </MenuItem>
                 </TooltipTrigger>
                 {collapsed && <TooltipContent side="right" className="bg-background text-foreground text-sm py-1.5 px-3 rounded-md">Spaces</TooltipContent>}
@@ -203,7 +202,7 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
 
           {/* Footer call to action */}
           {!collapsed && (
-            <div className="absolute left-0 right-0 bottom-0 mt-auto px-6 py-8">
+            <div className="absolute left-0 right-0 bottom-0 mt-auto px-6 py-8 hidden sm:block">
               <div className="bg-gradient-to-br from-blue-700 to-indigo-600 rounded-lg p-4 text-center shadow-md">
                 <div className="text-white font-semibold text-sm">Welcome to DeepBIM</div>
                 <div className="text-xs text-white/80">v1.1.0</div>

@@ -5,7 +5,7 @@ interface ModalHeaderProps {
 
 export const ModalHeader = ({ title, subtitle }: ModalHeaderProps) => {
   return (
-    <div>
+    <div className="">
       <h3 className="text-xl sm:text-2xl xl:text-3xl font-bold text-center">
         {title}
       </h3>
