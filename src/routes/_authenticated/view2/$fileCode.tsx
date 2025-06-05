@@ -1,7 +1,7 @@
 import RacHouseAutodesk from '@/features/bim-viewer2/instance-page/rac-house-autodesk/RacHouseAutodesk';
 import ViewerFile from '@/features/bim-viewer2/instance-page/viewer-file/ViewerFile';
 import XktDtxAPHS from '@/features/bim-viewer2/instance-page/xkt_dtx_APHS/XktDtxAPHS';
-import MainPageViewer from '@/features/bim-viewer2/main-page/MainPageViewer';
+import MainPageViewer from '@/features/bim-viewer2/main-page/MainViewerPage';
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_authenticated/view2/$fileCode')({

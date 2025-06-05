@@ -1,11 +1,11 @@
-interface FeatureCardProps {
+interface ModelCardProps {
   imageUrl: string;
   title: string;
   description: string;
   linkUrl?: string;
 }
 
-export default function FeatureCard({ imageUrl, title, description, linkUrl }: FeatureCardProps) {
+export default function ModelCard({ imageUrl, title, description, linkUrl }: ModelCardProps) {
   const CardWrapper = linkUrl
     ? (props: any) => (
         <a href={linkUrl} target="_blank" rel="noopener noreferrer" {...props} />

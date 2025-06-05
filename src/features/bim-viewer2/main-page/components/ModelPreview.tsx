@@ -1,4 +1,7 @@
-import ModelCard from "./components/ModelCard"
+import Header from '@/sections/ Header';
+import ModelCard from './ModelCard';
+import { CLASS_NAME_DEFAULT } from '@/utils/class';
+import ScrollToTopButton from '@/components/common/ScrollToTopButton';
 
 const mockModels = [
   {
@@ -56,31 +59,30 @@ const mockModels = [
   "linkUrl": "/view2/simply_supported_bridge" //K2.ifc
 }
 
-
-
-
-
 ]
 
-export default function MainPageViewer() {
+export default function ModelPreview() {
   return (
-    <div className="p-8 max-w-screen-xl mx-auto space-y-6">
-      {/* Header section */}
-      <div>
-        <h1 className="text-3xl font-bold">
-          <a href="https://xeokit.io" className="text-blue-600 hover:underline">DeepBIM</a> / <span className="text-blue-500">BIMViewer</span> <span className="text-gray-800">Examples</span>
-        </h1>
-        <p className="text-muted-foreground mt-4 leading-relaxed">
-          <span className="font-semibold text-green-500">DeepBIM</span> is an <span className="font-semibold">open-source platform</span> that brings <span className="font-medium">Building Information Modeling (BIM)</span> to the browser, allowing teams to <span className="font-medium">visualize, manage, and collaborate</span> on construction data effortlessly. It offers <span className="font-medium">high-performance 2D/3D rendering</span>, intuitive model inspection tools, and supports common industry formats such as <span className="font-medium">IFC</span>, making it a valuable solution for professionals in <span className="font-medium">architecture, engineering, and construction</span>. Models can be <span className="font-medium">loaded directly</span> from the file system or connected to external data sources, enabling <span className="font-medium">seamless workflows</span> across the project lifecycle. With its <span className="font-medium">clean, modern interface</span> and robust functionality, <span className="font-semibold text-green-500">DeepBIM</span> empowers teams to <span className="font-medium">make informed decisions</span>, <span className="font-medium">reduce errors</span>, and <span className="font-medium">improve collaboration</span> — all within a <span className="font-medium">browser-based environment</span> that requires no installation or plugins.
-        </p>
-      </div>
+    <>
+      <div className={`${CLASS_NAME_DEFAULT.CLASS_NAME_3} p-8  space-y-6 `}>
+        {/* Header section */}
+        <div>
+          <h1 className="text-3xl font-bold">
+            <a href="https://xeokit.io" className="text-blue-600 hover:underline">DeepBIM</a> / <span className="text-blue-500">BIMViewer</span> <span className="text-gray-800 dark:text-gray-200">Examples</span>
+          </h1>
+          <p className="text-muted-foreground mt-4 leading-relaxed">
+            <span className="font-semibold text-green-500">DeepBIM</span> is an <span className="font-semibold">open-source platform</span> that brings <span className="font-medium">Building Information Modeling (BIM)</span> to the browser, allowing teams to <span className="font-medium">visualize, manage, and collaborate</span> on construction data effortlessly. It offers <span className="font-medium">high-performance 2D/3D rendering</span>, intuitive model inspection tools, and supports common industry formats such as <span className="font-medium">IFC</span>, making it a valuable solution for professionals in <span className="font-medium">architecture, engineering, and construction</span>. Models can be <span className="font-medium">loaded directly</span> from the file system or connected to external data sources, enabling <span className="font-medium">seamless workflows</span> across the project lifecycle. With its <span className="font-medium">clean, modern interface</span> and robust functionality, <span className="font-semibold text-green-500">DeepBIM</span> empowers teams to <span className="font-medium">make informed decisions</span>, <span className="font-medium">reduce errors</span>, and <span className="font-medium">improve collaboration</span> — all within a <span className="font-medium">browser-based environment</span> that requires no installation or plugins.
+          </p>
+        </div>
 
-      {/* Model cards grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {mockModels.map((model, idx) => (
-          <ModelCard key={idx} {...model} />
-        ))}
+        {/* Model cards grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {mockModels.map((model, idx) => (
+            <ModelCard key={idx} {...model} />
+          ))}
+        </div>
       </div>
-    </div>
+      <ScrollToTopButton/>
+    </>
   )
 }

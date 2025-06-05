@@ -13,6 +13,7 @@ import { CLASS_NAME_DEFAULT } from '@/utils/class';
 import ParticlesContainer from '@/components/ParticlesContainer';
 import useScrollRestoration from '@/hooks/useScrollRestoration';
 import CustomerChat from '@/features/chats/chat-customer';
+import ScrollToTopButton from '@/components/common/ScrollToTopButton';
 
 
 const HomePage: React.FC = () => {
@@ -49,6 +50,7 @@ const HomePage: React.FC = () => {
           <CallToActionSection />
         </LanguageProvider>
       </div>
+      <ScrollToTopButton />
       <Footer />
       <CustomerChat/>
     </div>

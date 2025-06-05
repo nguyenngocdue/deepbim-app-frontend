@@ -1,3 +1,4 @@
+import ScrollToTopButton from '@/components/common/ScrollToTopButton';
 import ParticlesContainer from '@/components/ParticlesContainer';
 import { LanguageProvider } from '@/context/LanguageContext';
 import Header from '@/sections/ Header';
@@ -17,10 +18,11 @@ export const Route = createRootRoute({
             <Header />
             <Outlet />
           </div>
-            <CallToActionSection />
-            <div className='sm:p-0 pb-12'>
-              <Footer />
-            </div>
+          <ScrollToTopButton />
+          <CallToActionSection />
+          <div className='sm:p-0 pb-12'>
+            <Footer />
+          </div>
         </LanguageProvider>
       </div>
     </div>
