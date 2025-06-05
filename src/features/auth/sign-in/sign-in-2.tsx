@@ -43,22 +43,6 @@ export default function SignIn2() {
         <div className='lg:p-8  h-svh bg-transparent '>
           <div className='mx-auto flex w-full h-full flex-col justify-center space-y-2 sm:w-[500px]'>
             <UserAuthForm />
-            {/* <p className='px-8 text-center text-sm text-muted-foreground'>
-              By clicking login, you agree to our{' '}
-              <a
-                href='/terms'
-                className='underline underline-offset-4 hover:text-primary'
-              >
-                Terms of Service
-              </a>{' '}
-              and{' '}
-              <Link
-                to='/'
-                className='underline underline-offset-4 hover:text-primary'
-              >
-                Privacy Policy
-              </Link>
-            </p> */}
           </div>
         </div>
       </div>

@@ -65,7 +65,7 @@ const HeroSection = () => {
           {t("hero.description")}
         </motion.p>
         <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-          <Link to="/managements/home">
+          <Link to="/managements/workflows">
             <AppButton 
               className="bg-button-1 text-white dark:bg-green-600 dark:text-white hover:bg-zinc-900 dark:hover:bg-zinc-900" 
               falseName={t("hero.start")}

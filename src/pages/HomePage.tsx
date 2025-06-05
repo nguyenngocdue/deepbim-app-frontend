@@ -14,17 +14,28 @@ import ParticlesContainer from '@/components/ParticlesContainer';
 import useScrollRestoration from '@/hooks/useScrollRestoration';
 import CustomerChat from '@/features/chats/chat-customer';
 import ScrollToTopButton from '@/components/common/ScrollToTopButton';
+import { useEffect } from 'react';
 
+interface HomePageProps {
+  onReady: () => void;
+}
 
-const HomePage: React.FC = () => {
+const HomePage: React.FC<HomePageProps> = ({ onReady }) => {
   useScrollRestoration();
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      onReady();
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <div className="bg-behind">
       <div className="relative z-10">
-        <ParticlesContainer/>
+        <ParticlesContainer />
         <LanguageProvider>
           <div className={CLASS_NAME_DEFAULT.CLASS_NAME_3}>
-            <Header/>
+            <Header />
             <HeroSection />
             <SectionWrapper>
               <BenefitsSection />
@@ -52,7 +63,7 @@ const HomePage: React.FC = () => {
       </div>
       <ScrollToTopButton />
       <Footer />
-      <CustomerChat/>
+      <CustomerChat />
     </div>
   );
 };

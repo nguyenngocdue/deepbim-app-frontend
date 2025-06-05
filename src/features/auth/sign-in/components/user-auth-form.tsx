@@ -49,7 +49,9 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const { isLoading, error, handleGoogleLogin } = useGoogleLoginHandler()
   const { isLoadingGitHub, errorGitHub, handleGitHubLogin } = useGitHubLoginHandler();
   const dispatch = useAppDispatch();
-
+  const [rememberMe, setRememberMe] = useState(
+    localStorage.getItem('remember_me') === 'true'
+  );
 
   const [loading, setLoading] = useState(false);
 
@@ -87,9 +89,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         const errorData = await response.json();
         throw new Error(errorData.message || 'Invalid email or password');
       }
-
       const result = await response.json();
-
       if (!result.data.access_token || !result.data.refresh_token) {
         throw new Error('Invalid response from server: Missing tokens');
       }
@@ -119,6 +119,14 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   setTimeout(() => {
     setLoading(false);
   }, 10000)
+
+
+  if (rememberMe) {
+    localStorage.setItem('remember_me', 'true');
+  } else {
+    localStorage.removeItem('remember_me');
+  }
+
 
   return (
     <div className={cn('grid gap-8 h-svh bg-behind w-full p-4 z-50 bg-transparent', className)} {...props}>
@@ -195,6 +203,19 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                 </FormItem>
               )}
             />
+
+            <div className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                id="remember"
+                checked={rememberMe}
+                onChange={() => setRememberMe(!rememberMe)}
+                className="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-500"
+              />
+              <label htmlFor="remember" className="text-sm text-gray-400 select-none">
+                Remember me next time
+              </label>
+            </div>
 
 
             <AppButton
