@@ -18,7 +18,9 @@ export const Route = createRootRoute({
             <Outlet />
           </div>
             <CallToActionSection />
-            <Footer />
+            <div className='sm:p-0 pb-12'>
+              <Footer />
+            </div>
         </LanguageProvider>
       </div>
     </div>

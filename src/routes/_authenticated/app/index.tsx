@@ -1,4 +1,4 @@
-import App from '@/App'
+import HomePage from '@/pages/HomePage'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_authenticated/app/')({
@@ -7,6 +7,6 @@ export const Route = createFileRoute('/_authenticated/app/')({
 
 function RouteComponent() {
   return <>
-      <App/>
+      <HomePage/>
   </>
 }

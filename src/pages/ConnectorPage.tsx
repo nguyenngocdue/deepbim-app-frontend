@@ -6,7 +6,7 @@ import ConnectorMain from '@/sections/ConnectorMain';
 const ConnectorPage: React.FC = () => {
   useScrollRestoration();
   return (
-    <div className="bg-behind h-svh" style={{ background: 'transparent' }}>
+    <div className="bg-behind" style={{ background: 'transparent' }}>
         <ConnectorHeading />
         <ConnectorMain/>
     </div>

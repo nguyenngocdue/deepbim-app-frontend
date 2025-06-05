@@ -34,6 +34,7 @@ function UserLocationMarker() {
 export function SimpleMap({
   lat = 10.7769,
   lng = 106.7009,
+  title = "Project Location",
   name = "Project Location",
   zoom = 17,
   dark = false,
@@ -41,6 +42,7 @@ export function SimpleMap({
 }: {
   lat?: number;
   lng?: number;
+  title?: string;
   name?: string;
   zoom?: number;
   dark?: boolean;
@@ -50,7 +52,7 @@ export function SimpleMap({
     <div className="rounded-xl overflow-hidden shadow-md border p-2 border-gray-200 dark:border-zinc-800">
       <div className="px-4 pt-4 pb-1">
         <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
-          Project Location
+          {title}
         </h3>
         <p className="text-sm text-gray-500 dark:text-gray-400">{name}</p>
       </div>

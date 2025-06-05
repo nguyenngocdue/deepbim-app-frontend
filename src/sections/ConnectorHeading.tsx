@@ -7,7 +7,6 @@ import AnimatedBorderImage3 from "@/components/ui/animated-border-image3";
 import { CLASS_NAME_DEFAULT } from "@/utils/class";
 
 // Tách các class Tailwind
-const sectionClasses = "hero pt-20 flex flex-col md:flex-row items-center justify-between gap-12";
 const textContainerClasses = "w-full md:w-1/2 text-center md:text-left";
 const titleClasses = CLASS_NAME_DEFAULT.CLASS_NAME_4;
 const subtitleClasses = `${CLASS_NAME_DEFAULT.CLASS_NAME_5} `; // Cố định chiều cao, giới hạn 2 dòng
@@ -63,7 +62,7 @@ const ConnectorHeading: React.FC<ConnectorHeadingProps> = ({
 
   return (
     <motion.section
-      className={`${sectionClasses} ${CLASS_NAME_DEFAULT.CLASS_NAME_3}`}
+      className={`${CLASS_NAME_DEFAULT.CLASS_NAME_1}  mt-8`}
       variants={sectionVariants}
       initial="hidden"
       animate="visible"

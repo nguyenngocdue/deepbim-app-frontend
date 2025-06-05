@@ -16,7 +16,7 @@ const ConnectorMain = () => {
   const { t } = useTranslation();
   return (
     <motion.section
-      className={`${CLASS_NAME_DEFAULT.CLASS_NAME_3} flex flex-col md:flex-row items-center justify-between gap-12`}
+       className={CLASS_NAME_DEFAULT.CLASS_NAME_1}
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 1, ease: "easeOut" }}

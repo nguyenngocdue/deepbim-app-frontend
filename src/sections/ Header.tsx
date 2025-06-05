@@ -8,6 +8,7 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import { ProfileDropdown } from "@/components/common/ProfileDropdown";
 import { ThemeSwitch } from "@/components/theme-switch";
 import LanguageButton from "@/components/common/LanguageButton";
+import { LuBadgePlus } from "react-icons/lu";
 
 const Header = () => {
   const { t } = useTranslation();
@@ -54,7 +55,7 @@ const Header = () => {
 
   const links = [
     { href: "/app", label: t("navbar.home"), icon: <FaPlug />, ariaLabel: t("navbar.home") },
-    { href: "/app/connectors", label: t("navbar.connect"), icon: <FaPlug />, ariaLabel: t("navbar.connect") },
+    { href: "/app/connectors", label: t("navbar.connect"), icon: <LuBadgePlus />, ariaLabel: t("navbar.connect") },
     { href: "/app/features", label: t("navbar.features"), icon: <FaStar />, ariaLabel: t("navbar.features") },
     { href: "/app/how-it-works", label: t("navbar.how_it_works"), icon: <FaQuestionCircle />, ariaLabel: t("navbar.how_it_works") },
     { href: "/app/contact-us", label: t("navbar.contact"), icon: <FaEnvelope />, ariaLabel: t("navbar.contact") },
@@ -95,8 +96,8 @@ const Header = () => {
 
       {/* Fixed Bottom Navigation (Mobile Only, Shown on Scroll, Hidden When Scroll Stops) */}
       <nav
-        className={`fixed bottom-0 left-0 w-full z-50 md:hidden flex justify-around items-center py-2 shadow-md transition-all duration-300 ease-in-out 
-        ${showBottomNav ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"}`}
+        className={`z-50 fixed bottom-0 left-0 w-full md:hidden flex justify-around items-center py-2 shadow-md transition-all duration-300 ease-in-out 
+         translate-y-0 bg-background `}
       >
         {links.map((link) => (
           <Link
