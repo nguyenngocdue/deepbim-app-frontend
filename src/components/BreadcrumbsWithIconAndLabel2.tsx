@@ -1,3 +1,4 @@
+// Updated BreadcrumbsWithIconAndLabel2.tsx with icons per segment
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -8,36 +9,33 @@ import {
 } from "@/components/ui/breadcrumb";
 import { ChevronsRight } from "lucide-react";
 import { useLocation } from "@tanstack/react-router";
-import { LogoWord } from "./LogoWord";
 import { useQuery } from "@tanstack/react-query";
+import clsx from "clsx";
+import { AppIcons } from "./icons";
 
-// Define types for the entities configuration
 interface EntityConfig {
   displayName: string;
   apiEndpoint: string;
 }
 
-// Define the entities and their configurations
 const ENTITIES: Record<string, EntityConfig> = {
   "sub-projects": { displayName: "Sub-Projects", apiEndpoint: "sub-projects" },
   "projects": { displayName: "Projects", apiEndpoint: "projects" },
   "teams": { displayName: "Teams", apiEndpoint: "teams" },
 };
 
-// Segments to skip in the breadcrumb (optional)
 const SKIP_SEGMENTS: string[] = ["managements"];
 
-// Define the shape of the fetched entity data
 interface EntityData {
   id: string;
   name: string;
 }
 
-// Define the shape of a breadcrumb item
 interface BreadcrumbItemData {
   displaySegment: string;
   fullPath: string;
   isLast: boolean;
+  icon?: JSX.Element;
 }
 
 const BreadcrumbsWithIconAndLabel2: React.FC = () => {
@@ -45,16 +43,15 @@ const BreadcrumbsWithIconAndLabel2: React.FC = () => {
   const pathname = location.pathname;
   const paths = pathname.split("/").filter(Boolean);
 
-  // Find entity and ID in the URL
   const entityEntry = paths
-    .map((segment: string, index: number) => {
+    .map((segment, index) => {
       const entityKey = Object.keys(ENTITIES).find((key) => key === segment);
-      if (entityKey && index + 1 < paths.length && !isNaN(paths[index + 1])) {
+      if (entityKey && index + 1 < paths.length && !isNaN(Number(paths[index + 1]))) {
         return {
           entity: entityKey,
           id: paths[index + 1],
           entityIndex: index,
-        idIndex: index + 1,
+          idIndex: index + 1,
         };
       }
       return null;
@@ -63,111 +60,82 @@ const BreadcrumbsWithIconAndLabel2: React.FC = () => {
 
   const entity = entityEntry?.entity;
   const id = entityEntry?.id;
+  const token = localStorage.getItem("access_token");
 
-  // Get the authentication token (adjust based on your auth setup)
-  const token = localStorage.getItem("access_token"); // Example: Retrieve token from localStorage
-  // Fetch entity details by ID with authentication
   const { data: entityData, isLoading, error } = useQuery<EntityData | null, Error>({
     queryKey: ["entity", entity, id],
     queryFn: async () => {
-      if (!entity || !id) {
-        console.warn("No entity or ID detected:", { entity, id });
-        return null;
-      }
+      if (!entity || !id || !token) return null;
       const baseUrl = import.meta.env.VITE_API_BASE_URL;
-      if (!baseUrl) {
-        console.error("VITE_API_BASE_URL is not defined in .env");
-        throw new Error("API base URL is missing");
-      }
-      if (!token) {
-        console.error("Authentication token is missing");
-        throw new Error("Authentication token is missing");
-      }
       const endpoint = ENTITIES[entity].apiEndpoint;
       const url = `${baseUrl}/${endpoint}/${id}`;
-      // console.log("Fetching from:", url);
-
       const response = await fetch(url, {
-        method: "GET",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`, // Add Bearer token to headers
+          Authorization: `Bearer ${token}`,
         },
       });
       if (!response.ok) {
         const errorText = await response.text();
-        console.error(`API Error (${response.status}):`, errorText);
-        throw new Error(`Failed to fetch ${entity} with ID ${id}: ${errorText}`);
+        throw new Error(errorText);
       }
-      const {data} = await response.json();
-      return data; // Expect { id: "1", name: "Sub-Project A" }
+      const { data } = await response.json();
+      return data;
     },
-    enabled: !!entity && !!id && !!token, // Only fetch if entity, ID, and token are present
-    staleTime: 5 * 60 * 1000, // Cache for 5 minutes
-    retry: 1, // Retry once on failure
+    enabled: !!entity && !!id && !!token,
+    staleTime: 5 * 60 * 1000,
   });
 
-
-  // Build breadcrumb items
   const breadcrumbItems: BreadcrumbItemData[] = paths
-    .map((segment: string, index: number) => {
+    .map((segment, index) => {
       const fullPath = "/" + paths.slice(0, index + 1).join("/");
       const isLast = index === paths.length - 1;
-
-      // Skip irrelevant segments
       if (SKIP_SEGMENTS.includes(segment)) return null;
-
-      // Skip the ID segment (we'll replace it with the name)
       if (entityEntry && index === entityEntry.idIndex) return null;
 
-      // Resolve segment
       let displaySegment = decodeURIComponent(segment);
+      let icon: JSX.Element | undefined = undefined;
 
-      // Format known entities
       if (ENTITIES[segment]) {
         displaySegment = ENTITIES[segment].displayName;
+        if (segment === "projects") icon = <AppIcons.Projects className="mr-1" />;
+        if (segment === "sub-projects") icon = <AppIcons.SubProjects className="mr-1" />;
+        if (segment === "teams") icon = <AppIcons.Workspaces className="mr-1" />;
       }
 
-      // Replace the entity segment with the fetched name
       if (entityEntry && index === entityEntry.entityIndex) {
-        if (isLoading) {
-          displaySegment = "Loading...";
-        } else if (error) {
-          displaySegment = `Unknown ${ENTITIES[entity].displayName.slice(0, -1)}`; // e.g., "Unknown Sub-Project"
-          console.error("Error fetching entity:", error.message);
-        } else if (!entityData) {
-          displaySegment = `Unknown ${ENTITIES[entity].displayName.slice(0, -1)}`;
-        } else {
-          displaySegment = entityData.name; // Use the fetched name
-        }
+        displaySegment = isLoading
+          ? "Loading..."
+          : error || !entityData
+          ? `Unknown ${ENTITIES[entity].displayName.slice(0, -1)}`
+          : entityData.name;
       }
 
-      // Format other segments (e.g., "data" → "Data")
       if (segment === "data") {
         displaySegment = "Data";
-      } else if (segment === "members") {
-        displaySegment = "Members";
-      } else if (segment === "details") {
-        displaySegment = "Details";
+        icon = <AppIcons.BoxModel className="mr-1" />;
       }
+      if (segment === "members") displaySegment = "Members";
+      if (segment === "details") displaySegment = "Details";
 
       return {
         displaySegment,
         fullPath,
         isLast,
+        icon,
       };
     })
-    .filter(Boolean) as BreadcrumbItemData[]; // Remove null entries
+    .filter(Boolean) as BreadcrumbItemData[];
 
   return (
     <Breadcrumb>
-      <BreadcrumbList className="flex items-center space-x-2">
-        {/* Home */}
+      <BreadcrumbList className="flex items-center space-x-2 bg-white/5 px-4 py-2 rounded-lg shadow-md">
         <BreadcrumbItem>
-          <LogoWord isHiddenText={true} size="sm" path="/images/logo_no_bg.png" />
+          <BreadcrumbLink href="/" className="hover:text-primary transition-all">
+            <AppIcons.Home className="w-5 h-5 text-muted-foreground" />
+          </BreadcrumbLink>
         </BreadcrumbItem>
 
-        {/* Dynamic Breadcrumb Items */}
         {breadcrumbItems.map((item) => (
           <div key={item.fullPath} className="flex items-center">
             <BreadcrumbSeparator>
@@ -175,12 +143,20 @@ const BreadcrumbsWithIconAndLabel2: React.FC = () => {
             </BreadcrumbSeparator>
 
             {item.isLast ? (
-              <BreadcrumbPage className="capitalize text-sm font-medium">
+              <BreadcrumbPage className="capitalize text-sm font-semibold text-foreground flex items-center">
+                {item.icon}
                 {item.displaySegment}
               </BreadcrumbPage>
             ) : (
               <BreadcrumbItem>
-                <BreadcrumbLink href={item.fullPath} className="capitalize text-sm font-medium hover:text-primary">
+                <BreadcrumbLink
+                  href={item.fullPath}
+                  className={clsx(
+                    "capitalize text-sm font-medium transition-colors flex items-center",
+                    "hover:text-primary hover:underline underline-offset-4"
+                  )}
+                >
+                  {item.icon}
                   {item.displaySegment}
                 </BreadcrumbLink>
               </BreadcrumbItem>
