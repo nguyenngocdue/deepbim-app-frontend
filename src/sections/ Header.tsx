@@ -1,11 +1,9 @@
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/context/LanguageContext";
-import { useTheme } from "@/context/theme-context";
 import { LogoWord } from "@/components/LogoWord";
 import { FaPlug, FaStar, FaQuestionCircle, FaEnvelope } from "react-icons/fa";
 import { CLASS_NAME_DEFAULT } from "@/utils/class";
-import LeftHeader from "./LeftHeader";
 import { Link, useRouterState } from "@tanstack/react-router";
 import { ProfileDropdown } from "@/components/common/ProfileDropdown";
 import { ThemeSwitch } from "@/components/theme-switch";
@@ -14,7 +12,6 @@ import LanguageButton from "@/components/common/LanguageButton";
 const Header = () => {
   const { t } = useTranslation();
   const { language, toggleLanguage } = useLanguage();
-  const { theme, setTheme } = useTheme();
   const [showBottomNav, setShowBottomNav] = useState(false);
   const [scrollTimeout, setScrollTimeout] = useState<NodeJS.Timeout | null>(null);
 

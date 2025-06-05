@@ -2,23 +2,64 @@ import ModelCard from "./components/ModelCard"
 
 const mockModels = [
   {
-    title: "RAC House",
-    description: "IFC 4.3 RAC basic sample project from Revit 2023.",
-    imageUrl: "/assets/rac-house.png",
-    linkUrl: "/view2/rac-house-autodesk"
+    title: "Factory Model",
+    description: "An industrial building exported from Tekla in IFC format. You can explore both simple and complex structural components in a fully interactive 3D environment.",
+    imageUrl: "/assets/viewers/factory-model.png",
+    linkUrl: "/view2/factory-tekla"
   },
   {
-    title: "MAP Appartment",
-    description: "Model with double-precision coordinates.",
-    imageUrl: "/assets/map-apartment.png",
-    linkUrl: "/view2/xkt-dtx-APHS"
+    title: "Steel Frame Warehouse",
+    description: "A detailed structural model of a steel-frame warehouse exported in IFC format. Explore beams, columns, and floor slabs in a clean 3D environment designed for structural analysis and coordination.",
+    imageUrl: "/assets/viewers/steel-frame-warehouse-ifc.png",
+    linkUrl: "/view2/factory-tekla"
   },
   {
-    title: "Medical Clinic",
-    description: "Federated BIM model with architectural, HVAC aspects.",
-    imageUrl: "/assets/medical-clinic.png",
-    linkUrl: "/view2/medical-clinic"
+    title: "Civil 3D Road Design",
+    description: "A roadway corridor model designed in Civil 3D, including alignment, profile, assemblies, and terrain surface. Visualize the full geometry of the road within a 3D context for planning and analysis.",
+    imageUrl: "/assets/viewers/civil3d-road.png",
+    linkUrl: "/view2/civil3d-road"
   },
+  {
+  title: "Multi-story Structural Model",
+  description: "A detailed multi-floor concrete structure featuring columns, slabs, and beams. Designed for structural analysis and coordination, this BIM model visualizes the building frame layout and core components clearly in 3D.",
+  imageUrl: "/assets/viewers/multistory-structure.png",
+  linkUrl: "/view2/multistory-structure"
+},
+{
+  "title": "",
+  "description": "",
+  "imageUrl": "/assets/viewers/cantilever-bridge-girder.png",
+  "linkUrl": "/view2/cantilever-bridge-girder"
+},
+{
+  "title": "MEP Coordination Model",
+  "description": "A comprehensive 3D BIM model showcasing MEP systems including HVAC ducting, piping, and electrical routing. Ideal for clash detection, spatial planning, and interdisciplinary coordination in building design.",
+  "imageUrl": "/assets/viewers/mep-coordination.png",
+  "linkUrl": "/view2/mep-coordination"
+},
+{
+  "title": "",
+  "description": "",
+  "imageUrl": "/assets/viewers/bridge-pier-rebar.png",
+  "linkUrl": "/view2/bridge-pier-rebar" //Bridge_Pier_R25.ifc
+},
+{
+  "title": "Mountain Tunnel Excavation",
+  "description": "3D model of a mountain tunnel segment in Japan, showcasing excavation geometry and structural lining for underground infrastructure design and construction analysis.",
+  "imageUrl": "/assets/viewers/mountain-tunnel-japan.jpg",
+  "linkUrl": "/view2/mountain-tunnel-japan" //
+},
+{
+  "title": "Simple Bridge Model",
+  "description": "3D visualization of a simply supported bridge structure, illustrating pier cap, girders, and support detailing. Ideal for structural planning, analysis, and bridge design validation.",
+  "imageUrl": "/assets/viewers/simply_supported_bridge.png",
+  "linkUrl": "/view2/simply_supported_bridge" //K2.ifc
+}
+
+
+
+
+
 ]
 
 export default function MainPageViewer() {
@@ -29,10 +70,8 @@ export default function MainPageViewer() {
         <h1 className="text-3xl font-bold">
           <a href="https://xeokit.io" className="text-blue-600 hover:underline">DeepBIM</a> / <span className="text-blue-500">BIMViewer</span> <span className="text-gray-800">Examples</span>
         </h1>
-        <p className="text-gray-700 mt-4">
-          <span className="font-semibold text-blue-500">DeepBIM</span> is an open-source platform that allows users to visualize and manage Building Information Modeling (BIM) data directly in the browser.
-          Built on top of the powerful <a href="https://xeokit.io" className="text-blue-500 hover:underline">xeokit SDK</a>, DeepBIM supports efficient 2D/3D model rendering and is compatible with industry-standard formats such as IFC.
-          Users can load, inspect, and analyze BIM models from the file system or integrate with existing data management systems. The goal of <span className="text-blue-500 font-semibold">DeepBIM</span> is to help engineers, architects, and project managers collaborate more effectively through a clean and modern interface.
+        <p className="text-muted-foreground mt-4 leading-relaxed">
+          <span className="font-semibold text-green-500">DeepBIM</span> is an <span className="font-semibold">open-source platform</span> that brings <span className="font-medium">Building Information Modeling (BIM)</span> to the browser, allowing teams to <span className="font-medium">visualize, manage, and collaborate</span> on construction data effortlessly. It offers <span className="font-medium">high-performance 2D/3D rendering</span>, intuitive model inspection tools, and supports common industry formats such as <span className="font-medium">IFC</span>, making it a valuable solution for professionals in <span className="font-medium">architecture, engineering, and construction</span>. Models can be <span className="font-medium">loaded directly</span> from the file system or connected to external data sources, enabling <span className="font-medium">seamless workflows</span> across the project lifecycle. With its <span className="font-medium">clean, modern interface</span> and robust functionality, <span className="font-semibold text-green-500">DeepBIM</span> empowers teams to <span className="font-medium">make informed decisions</span>, <span className="font-medium">reduce errors</span>, and <span className="font-medium">improve collaboration</span> — all within a <span className="font-medium">browser-based environment</span> that requires no installation or plugins.
         </p>
       </div>
 
