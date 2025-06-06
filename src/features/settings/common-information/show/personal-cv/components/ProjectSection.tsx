@@ -37,7 +37,7 @@ const projects = [
     ],
     description:
       "A BIM data management platform for organizing, viewing, and analyzing IFC model information in real-time.",
-    linkUrl: "https://deepbim.net",
+    linkUrl: `/examples/bim-viewer`,
     tags: ["NestJS", "ReactJS", "IFC", "Three.js", "Docker"],
   },
 ];
