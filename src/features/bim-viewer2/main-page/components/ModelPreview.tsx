@@ -23,41 +23,41 @@ const mockModels = [
     linkUrl: "/view2/civil3d-road"
   },
   {
-  title: "Multi-story Structural Model",
-  description: "A detailed multi-floor concrete structure featuring columns, slabs, and beams. Designed for structural analysis and coordination, this BIM model visualizes the building frame layout and core components clearly in 3D.",
-  imageUrl: "/assets/viewers/multistory-structure.png",
-  linkUrl: "/view2/multistory-structure"
-},
-{
-  "title": "",
-  "description": "",
-  "imageUrl": "/assets/viewers/cantilever-bridge-girder.png",
-  "linkUrl": "/view2/cantilever-bridge-girder"
-},
-{
-  "title": "MEP Coordination Model",
-  "description": "A comprehensive 3D BIM model showcasing MEP systems including HVAC ducting, piping, and electrical routing. Ideal for clash detection, spatial planning, and interdisciplinary coordination in building design.",
-  "imageUrl": "/assets/viewers/mep-coordination.png",
-  "linkUrl": "/view2/mep-coordination"
-},
-{
-  "title": "",
-  "description": "",
-  "imageUrl": "/assets/viewers/bridge-pier-rebar.png",
-  "linkUrl": "/view2/bridge-pier-rebar" //Bridge_Pier_R25.ifc
-},
-{
-  "title": "Mountain Tunnel Excavation",
-  "description": "3D model of a mountain tunnel segment in Japan, showcasing excavation geometry and structural lining for underground infrastructure design and construction analysis.",
-  "imageUrl": "/assets/viewers/mountain-tunnel-japan.jpg",
-  "linkUrl": "/view2/mountain-tunnel-japan" //
-},
-{
-  "title": "Simple Bridge Model",
-  "description": "3D visualization of a simply supported bridge structure, illustrating pier cap, girders, and support detailing. Ideal for structural planning, analysis, and bridge design validation.",
-  "imageUrl": "/assets/viewers/simply_supported_bridge.png",
-  "linkUrl": "/view2/simply_supported_bridge" //K2.ifc
-}
+    title: "Multi-story Structural Model",
+    description: "A detailed multi-floor concrete structure featuring columns, slabs, and beams. Designed for structural analysis and coordination, this BIM model visualizes the building frame layout and core components clearly in 3D.",
+    imageUrl: "/assets/viewers/multistory-structure.png",
+    linkUrl: "/view2/multistory-structure"
+  },
+  {
+    "title": "",
+    "description": "",
+    "imageUrl": "/assets/viewers/cantilever-bridge-girder.png",
+    "linkUrl": "/view2/cantilever-bridge-girder"
+  },
+  {
+    "title": "MEP Coordination Model",
+    "description": "A comprehensive 3D BIM model showcasing MEP systems including HVAC ducting, piping, and electrical routing. Ideal for clash detection, spatial planning, and interdisciplinary coordination in building design.",
+    "imageUrl": "/assets/viewers/mep-coordination.png",
+    "linkUrl": "/view2/mep-coordination"
+  },
+  {
+    "title": "",
+    "description": "",
+    "imageUrl": "/assets/viewers/bridge-pier-rebar.png",
+    "linkUrl": "/view2/bridge-pier-rebar" //Bridge_Pier_R25.ifc
+  },
+  {
+    "title": "Mountain Tunnel Excavation",
+    "description": "3D model of a mountain tunnel segment in Japan, showcasing excavation geometry and structural lining for underground infrastructure design and construction analysis.",
+    "imageUrl": "/assets/viewers/mountain-tunnel-japan.jpg",
+    "linkUrl": "/view2/mountain-tunnel-japan" //
+  },
+  {
+    "title": "Simple Bridge Model",
+    "description": "3D visualization of a simply supported bridge structure, illustrating pier cap, girders, and support detailing. Ideal for structural planning, analysis, and bridge design validation.",
+    "imageUrl": "/assets/viewers/simply_supported_bridge.png",
+    "linkUrl": "/view2/simply_supported_bridge" //K2.ifc
+  }
 
 ]
 
@@ -71,7 +71,7 @@ export default function ModelPreview() {
             <a href="https://xeokit.io" className="text-blue-600 hover:underline">DeepBIM</a> / <span className="text-blue-500">BIMViewer</span> <span className="text-gray-800 dark:text-gray-200">Examples</span>
           </h1>
           <p className="text-muted-foreground mt-4 leading-relaxed">
-            <span className="font-semibold text-green-500">DeepBIM</span> is an <span className="font-semibold">open-source platform</span> that brings <span className="font-medium">Building Information Modeling (BIM)</span> to the browser, allowing teams to <span className="font-medium">visualize, manage, and collaborate</span> on construction data effortlessly. It offers <span className="font-medium">high-performance 2D/3D rendering</span>, intuitive model inspection tools, and supports common industry formats such as <span className="font-medium">IFC</span>, making it a valuable solution for professionals in <span className="font-medium">architecture, engineering, and construction</span>. Models can be <span className="font-medium">loaded directly</span> from the file system or connected to external data sources, enabling <span className="font-medium">seamless workflows</span> across the project lifecycle. With its <span className="font-medium">clean, modern interface</span> and robust functionality, <span className="font-semibold text-green-500">DeepBIM</span> empowers teams to <span className="font-medium">make informed decisions</span>, <span className="font-medium">reduce errors</span>, and <span className="font-medium">improve collaboration</span> — all within a <span className="font-medium">browser-based environment</span> that requires no installation or plugins.
+            <span className="font-semibold text-green-500">DeepBIM</span> is an <span className="font-semibold">open-source platform</span> for viewing and managing <span className="font-medium">BIM models</span> directly in the browser. It supports <span className="font-medium">2D/3D rendering</span>, <span className="font-medium">IFC files</span>, and offers tools for <span className="font-medium">collaboration, inspection,</span> and <span className="font-medium">data integration</span> — all without installing any software.
           </p>
         </div>
 
@@ -82,7 +82,7 @@ export default function ModelPreview() {
           ))}
         </div>
       </div>
-      <ScrollToTopButton/>
+      <ScrollToTopButton />
     </>
   )
 }

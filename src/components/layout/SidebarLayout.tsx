@@ -132,12 +132,18 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
         </div>
 
         {!collapsed && (
-          <div className="absolute left-0 right-0 bottom-0 px-4 pb-6">
+          <div className="absolute left-0 right-0 bottom-0 px-4 pb-6 hidden md:block">
             <div className="bg-gradient-to-tr from-blue-600 via-indigo-600 to-indigo-700 rounded-xl shadow-lg text-white px-4 py-5 text-center space-y-2">
               <div className="text-base font-semibold">🎉 Welcome to DeepBIM</div>
               <div className="text-xs opacity-80">Version 1.1.0</div>
-              <Button variant="default" className="w-full border-white text-white text-xs font-semibold hover:bg-white/10">
-                Get Started
+             <Button
+                asChild
+                variant="default"
+                className="w-full border-white text-white text-xs font-semibold hover:bg-white/10"
+              >
+                <Link to="/managements/projects" className="block w-full text-center">
+                  Get Started
+                </Link>
               </Button>
             </div>
           </div>
