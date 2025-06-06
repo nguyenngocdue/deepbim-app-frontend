@@ -117,7 +117,7 @@ export function IntroSection() {
       >
         {/* Avatar */}
         <div className="relative">
-          <Avatar className="w-28 h-28 shadow-lg ring-4 ring-green-400 dark:ring-green-600 hover:scale-105 transition-transform duration-300 overflow-hidden">
+          <Avatar className="w-28 h-28 shadow-lg ring-4 ring-blue-400 dark:ring-green-500 hover:scale-105 transition-transform duration-300 overflow-hidden">
             <AvatarImage
               src={avatarUrls[avatarIndex]}
               alt={`Avatar ${avatarIndex + 1}`}

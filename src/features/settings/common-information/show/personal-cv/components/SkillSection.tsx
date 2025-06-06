@@ -105,7 +105,8 @@ function SkillGraph({ nodes, links, showLabels }) {
     svg.append("rect")
       .attr("width", width)
       .attr("height", height)
-      .attr("fill", "url(#grid3d)");
+      .attr("fill", "url(#grid3d)")
+       .attr("opacity", 1);
 
 
 
@@ -237,6 +238,6 @@ function SkillGraph({ nodes, links, showLabels }) {
   }, [nodes, links, showLabels]);
 
   return (
-    <svg ref={ref} className="w-full bg-background mb-10 lg:mb-0 md:mb-0" />
+    <svg ref={ref} className="w-full mb-10 lg:mb-0 md:mb-0 bg-transparent" />
   );
 }
