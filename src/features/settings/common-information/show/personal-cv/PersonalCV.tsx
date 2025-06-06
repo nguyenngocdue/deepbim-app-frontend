@@ -3,6 +3,7 @@ import { IntroSection } from "./components/IntroSection";
 import { ProjectSection } from "./components/ProjectSection";
 import { SkillSection } from "./components/SkillSection";
 import Header from "@/sections/ Header";
+import ThankYouNote from "./components/ThankYouNote";
 export default function PortfolioJill() {
   return (
     <div className="min-h-screen bg-background text-zinc-800 dark:text-zinc-100 px-4 py-6 space-y-16 transition-colors duration-500">
@@ -11,6 +12,7 @@ export default function PortfolioJill() {
       <StepWorkExperience />
       <ProjectSection />
       <SkillSection />
+      <ThankYouNote />
     </div>
   );
 }
