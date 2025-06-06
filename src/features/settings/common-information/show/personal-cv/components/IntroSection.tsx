@@ -119,7 +119,7 @@ useEffect(() => {
       >
         {/* Avatar */}
         <div className="relative">
-          <Avatar className="w-28 h-28 shadow-lg ring-4 ring-amber-400 dark:ring-amber-500 hover:scale-105 transition-transform duration-300 overflow-hidden">
+          <Avatar className="w-28 h-28 shadow-lg ring-4 ring-green-400 dark:ring-green-600 hover:scale-105 transition-transform duration-300 overflow-hidden">
   <AvatarImage
     src={avatarUrls[avatarIndex]}
     alt={`Avatar ${avatarIndex + 1}`}
@@ -134,15 +134,15 @@ useEffect(() => {
 
         {/* Name & Role */}
         <h1 className="text-3xl font-bold text-zinc-900 dark:text-white">
-          Nguyễn Ngọc Duệ <p className="text-sm text-zinc-500 dark:text-zinc-400">(Nissan)</p>
+          Nguyễn Ngọc Duệ <p className="text-sm text-sky-500 dark:text-zinc-400">(Nissan)</p>
         </h1>
-        <p className="text-base font-semibold text-amber-600 dark:text-blue-600">
+        <p className="text-base font-semibold text-blue-600 dark:text-blue-600">
           Fullstack Developer / BIM Engineer
         </p>
 
         {/* Collapsible: Passion for Coding */}
         <Collapsible className="w-full">
-          <CollapsibleTrigger className="flex items-center gap-2 text-sm font-medium text-amber-700 dark:text-sky-400 hover:underline transition group">
+          <CollapsibleTrigger className="flex items-center gap-2 text-sm font-medium text-blue-500 dark:text-sky-400 hover:underline transition group">
             <Sparkles className="w-4 h-4 group-hover:animate-pulse" />
             <span>About my passion for coding</span>
             <ChevronDown className="w-4 h-4 transition-transform group-data-[state=open]:rotate-180" />

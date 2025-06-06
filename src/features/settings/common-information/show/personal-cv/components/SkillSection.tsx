@@ -52,7 +52,7 @@ export function SkillSection() {
   const [showLabels, setShowLabels] = useState(true);
 
   return (
-    <section className="max-w-6xl mx-auto px-4 py-6">
+    <section className="max-w-6xl mx-auto px-4 py-2">
       <SectionTitle
         title="🧠 Skill Visual Map"
         description="Explore grouped development skills in frontend, backend, DevOps, frameworks, databases, and 3D/BIM."
@@ -237,6 +237,6 @@ function SkillGraph({ nodes, links, showLabels }) {
   }, [nodes, links, showLabels]);
 
   return (
-    <svg ref={ref} className="w-full h-[500px] bg-background" />
+    <svg ref={ref} className="w-full bg-background mb-10 lg:mb-0 md:mb-0" />
   );
 }
