@@ -68,11 +68,16 @@ export default function ModelCard({
         </div>
 
         {/* Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex flex-col justify-end px-3 py-4 sm:px-4 sm:py-5 z-[5]">
-          <h3 className="text-white text-base sm:text-lg font-semibold group-hover:text-green-300">
+<div
+  className="absolute inset-0 bg-gradient-to-t
+    from-white/40 via-white/10 to-transparent
+    dark:from-black/70 dark:via-black/30 dark:to-transparent
+    flex flex-col justify-end px-3 py-4 sm:px-4 sm:py-5 z-[5]"
+>
+          <h3 className="text-slate-800 dark:text-slate-200 text-base sm:text-lg font-semibold group-hover:text-green-600 dark:group-hover:text-green-300">
             {title}
           </h3>
-          <p className="mt-1 text-xs md:text-sm text-gray-300 group-hover:text-green-200 hidden md:block">
+          <p className="mt-1 text-xs md:text-sm text-slate-500 dark:text-slate-300 group-hover:text-green-700 dark:group-hover:text-green-200 hidden md:block">
             {description}
           </p>
           {tags.length > 0 && (

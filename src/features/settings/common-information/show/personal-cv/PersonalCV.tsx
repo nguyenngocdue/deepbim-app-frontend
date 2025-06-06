@@ -1,5 +1,3 @@
-import { useEffect, useRef, useState } from "react";
-import * as d3 from "d3";
 import StepWorkExperience from "./components/StepWorkExperience";
 import { IntroSection } from "./components/IntroSection";
 import { ProjectSection } from "./components/ProjectSection";

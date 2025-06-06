@@ -40,6 +40,9 @@ html, body, #root {
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+     --grid-stroke: #1e3452; 
+     --label-color: #1e293b;
+     --link-color: #475569; 
   }
   .dark {
     --background: 210 100% 4.5%;
@@ -74,6 +77,9 @@ html, body, #root {
     --sidebar-accent-foreground: var(--accent-foreground);
     --sidebar-border: var(--border);
     --sidebar-ring: var(--ring);
+     --grid-stroke: #475569; 
+      --label-color: #94a3b8;
+       --link-color: #cbd5e1;
   }
 
   /* styles.css */

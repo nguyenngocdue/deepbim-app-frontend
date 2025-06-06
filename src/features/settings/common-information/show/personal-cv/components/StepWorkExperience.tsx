@@ -1,4 +1,5 @@
 import {
+    Briefcase,
     LucideCheck,
     LucideClock,
     LucideLoader2,
@@ -9,6 +10,9 @@ import * as d3 from "d3";
 import { GiRun, GiRunningNinja } from "react-icons/gi";
 import { RiRunFill } from "react-icons/ri";
 import { FaRunning } from "react-icons/fa";
+import { SectionTitle } from "./SectionTitle";
+import { LiaRunningSolid } from "react-icons/lia";
+import { BiRun } from "react-icons/bi";
 
 const workSteps = [
     {
@@ -46,12 +50,14 @@ function StepWorkExperience() {
     const randomOffsets = useRef<number[]>([]);
     const [runnerPos, setRunnerPos] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
 
-const runnerIcons = [
-  <RiRunFill className="text-zinc-800 dark:text-blue-400" key="0" />,
-  <GiRun className="text-indigo-900 dark:text-indigo-600" key="1" />,
-  <FaRunning className="text-orange-800 dark:text-orange-300" key="2" />,
-  <GiRunningNinja className="text-green-600 dark:text-green-300" key="3" />,
-];
+    const runnerIcons = [
+        <LiaRunningSolid className="text-green-500 dark:text-green-200" key="3" />,
+        <GiRunningNinja className=" text-green-600 dark:text-green-300" key="4" />,
+        // <BiRun className=" text-gray-800 dark:text-gray-500" key="5" />,
+        <RiRunFill className="text-zinc-800 dark:text-blue-400" key="0" />,
+        <GiRun className="text-indigo-900 dark:text-indigo-600" key="1" />,
+        <FaRunning className="text-orange-800 dark:text-orange-300" key="2" />,
+    ];
 
 
     useEffect(() => {
@@ -120,7 +126,12 @@ const runnerIcons = [
 
     return (
         <section className="max-w-6xl mx-auto px-4">
-            <h2 className="text-2xl font-bold text-center mb-12">Work Experience</h2>
+            <SectionTitle
+                title="Work Experience"
+                icon={<Briefcase className="w-6 h-6" />}
+                description="Since graduating and stepping into the professional world, I've been dedicated to learning from experienced mentors, embracing challenges, and continuously improving myself every single day. I strive to grow beyond who I was yesterday — always pushing forward, never standing still."
+            />
+
             <div className="relative pt-16 min-h-[300px]">
                 <svg
                     ref={svgRef}
