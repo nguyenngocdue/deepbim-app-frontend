@@ -89,20 +89,18 @@ const itemVariants = {
 export function IntroSection() {
 
   const avatarUrls = [
-  "/assets/avatars/avatar_1.jpg",
-    "/assets/avatars/avatar_2.jpg",
-  "/assets/avatars/avatar_3.jpg",
-];
+    "/assets/avatars/avatar_1.jpg",
+  ];
 
-const [avatarIndex, setAvatarIndex] = useState(0);
+  const [avatarIndex, setAvatarIndex] = useState(0);
 
-useEffect(() => {
-  const timer = setInterval(() => {
-    setAvatarIndex((prev) => (prev + 1) % avatarUrls.length);
-  }, 3500); // đổi ảnh mỗi 3.5 giây
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setAvatarIndex((prev) => (prev + 1) % avatarUrls.length);
+    }, 3500); // đổi ảnh mỗi 3.5 giây
 
-  return () => clearInterval(timer);
-}, []);
+    return () => clearInterval(timer);
+  }, []);
 
 
   return (
@@ -120,12 +118,12 @@ useEffect(() => {
         {/* Avatar */}
         <div className="relative">
           <Avatar className="w-28 h-28 shadow-lg ring-4 ring-green-400 dark:ring-green-600 hover:scale-105 transition-transform duration-300 overflow-hidden">
-  <AvatarImage
-    src={avatarUrls[avatarIndex]}
-    alt={`Avatar ${avatarIndex + 1}`}
-    className="object-cover w-full h-full"
-  />
-</Avatar>
+            <AvatarImage
+              src={avatarUrls[avatarIndex]}
+              alt={`Avatar ${avatarIndex + 1}`}
+              className="object-cover w-full h-full"
+            />
+          </Avatar>
           <div
             className="absolute bottom-0 right-0 w-4 h-4 rounded-full bg-emerald-500 border-2 border-white dark:border-zinc-800 animate-pulse"
             title="Online"
@@ -242,33 +240,33 @@ useEffect(() => {
                     {group.group}
                   </h3>
                 </div>
-               <div className="p-5">
-  <motion.div
-    className="grid grid-cols-1 md:grid-cols-2 gap-4 relative z-10"
-    variants={containerVariants}
-  >
-    {group.items.map((item, iIdx) => (
-      <motion.div
-        key={iIdx}
-        className="flex items-start gap-3 bg-white dark:bg-zinc-800 rounded-lg p-4 shadow-sm hover:shadow-md transition duration-300"
-        variants={itemVariants}
-        whileHover={{ scale: 1.04 }}
-      >
-        <div className="flex-shrink-0 flex items-center justify-center w-9 h-9 rounded-full bg-zinc-100 dark:bg-zinc-700 border border-zinc-200 dark:border-zinc-600">
-          <div className="w-5 h-5  dark:text-blue-400 text-blue-600">{item.icon}</div>
-        </div>
-        <div>
-          <p className="font-semibold text-zinc-800 dark:text-zinc-100 text-sm">
-            {item.title}
-          </p>
-          <p className="text-sm text-zinc-500 dark:text-zinc-400">
-            {item.desc}
-          </p>
-        </div>
-      </motion.div>
-    ))}
-  </motion.div>
-</div>
+                <div className="p-5">
+                  <motion.div
+                    className="grid grid-cols-1 md:grid-cols-2 gap-4 relative z-10"
+                    variants={containerVariants}
+                  >
+                    {group.items.map((item, iIdx) => (
+                      <motion.div
+                        key={iIdx}
+                        className="flex items-start gap-3 bg-white dark:bg-zinc-800 rounded-lg p-4 shadow-sm hover:shadow-md transition duration-300"
+                        variants={itemVariants}
+                        whileHover={{ scale: 1.04 }}
+                      >
+                        <div className="flex-shrink-0 flex items-center justify-center w-9 h-9 rounded-full bg-zinc-100 dark:bg-zinc-700 border border-zinc-200 dark:border-zinc-600">
+                          <div className="w-5 h-5  dark:text-blue-400 text-blue-600">{item.icon}</div>
+                        </div>
+                        <div>
+                          <p className="font-semibold text-zinc-800 dark:text-zinc-100 text-sm">
+                            {item.title}
+                          </p>
+                          <p className="text-sm text-zinc-500 dark:text-zinc-400">
+                            {item.desc}
+                          </p>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </motion.div>
+                </div>
 
               </div>
             </div>
