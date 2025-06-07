@@ -44,7 +44,7 @@ const mockModels = [
     "title": "",
     "description": "",
     "imageUrl": "/assets/viewers/bridge-pier-rebar.png",
-    "linkUrl": "/view2/bridge-pier-rebar" //Bridge_Pier_R25.ifc
+    "linkUrl": "/view2/view?v=e1441b222bdbdc8d11a7844c" //Bridge_Pier_R25.ifc
   },
   {
     "title": "Mountain Tunnel Excavation",
