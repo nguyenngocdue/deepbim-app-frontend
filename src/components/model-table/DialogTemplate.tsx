@@ -7,7 +7,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { SectionDivider } from "../common/SectionDivider";
-import { IconType } from "react-icons/lib";
 import { DialogTemplateProps } from "./types";
 import { LucideGitPullRequestCreateArrow, X } from "lucide-react";
 import { TiArrowMoveOutline } from "react-icons/ti";
@@ -17,6 +16,8 @@ import { DialogClose } from "@radix-ui/react-dialog";
 import { Button } from "../ui/button";
 import { GrUpdate } from "react-icons/gr";
 
+type DialogIconType = "view" | "create" | "edit" | "move" | "delete";
+
 export function DialogTemplate({
   open,
   onClose,
@@ -25,13 +26,13 @@ export function DialogTemplate({
   children,
   disableOutsideClose = false,
   className = "",
-  iconType="view",
+  iconType = "view",
   onApply,
   onApplyText,
-  onCancelText="Cancel",
-  applyType='button',
+  onCancelText = "Cancel",
+  applyType = 'button',
 
-}: DialogTemplateProps & { iconType?: IconType }) {
+}: DialogTemplateProps & { iconType?: DialogIconType }) {
   const renderIcon = () => {
       switch (iconType) {
         case "create":

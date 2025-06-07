@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { ImageDialogViewer } from "./image-viewer/ImageDialogViewer";
 import { UnsupportedFileDialogViewer } from "./UnsupportedFileDialogViewer";
 import MainViewer from "@/pages/bim-viewer/MainViewer";
-import {IFCViewerDialog } from "./IFCViewerDialog";
+import { IFCViewerDialog } from "./IFCViewerDialog";
 import { XKTViewerDialog } from "./XKTViewerDialog";
 
 
@@ -67,8 +67,8 @@ export const MoveDeleteViewDialogs: React.FC<Props> = ({
 
   const isPdf = fileType === "pdf";
   const isImage = fileType && IMAGE_EXTENSIONS.includes(fileType);
-  const isIfc = fileType ==="ifc";  
-  const isXkt = fileType ==="xkt";
+  const isIfc = fileType === "ifc";
+  const isXkt = fileType === "xkt";
 
 
 
@@ -80,13 +80,10 @@ export const MoveDeleteViewDialogs: React.FC<Props> = ({
         open={!!deleteFile}
         onClose={() => setDeleteFile(null)}
         title="Delete File"
+        iconType="delete"
         description={`Are you sure you want to delete "${deleteFile?.name}"?`}
-        footer={
-          <>
-            <AppButton onClick={() => setDeleteFile(null)} falseName="Cancel" />
-            <AppButton variant="destructive" onClick={onConfirmDelete} falseName="Delete" />
-          </>
-        }
+        onApply={onConfirmDelete}
+        onApplyText="Delete"
       >
         <p className="text-sm">This action cannot be undone.</p>
       </DialogTemplate>
@@ -94,24 +91,15 @@ export const MoveDeleteViewDialogs: React.FC<Props> = ({
       {/* Move Dialog */}
       <DialogTemplate
         open={!!moveFile}
+        iconType="move"
         onClose={() => {
           setMoveFile(null);
           setSelectedFolderId(null);
         }}
         title="Move File"
         description={`Select a folder to move "${moveFile?.name}" into.`}
-        footer={
-          <>
-            <AppButton
-              onClick={() => {
-                setMoveFile(null);
-                setSelectedFolderId(null);
-              }}
-              falseName="Cancel"
-            />
-            <AppButton onClick={onMoveToFolder} isLoading={!selectedFolderId} trueName="Submit" />
-          </>
-        }
+        onApply={onMoveToFolder}
+        onApplyText="Apply"
       >
         <div className="flex flex-col space-y-2 max-h-48 overflow-y-auto">
           {availableFolders.map((folder) => (
@@ -150,7 +138,7 @@ export const MoveDeleteViewDialogs: React.FC<Props> = ({
         />
       }
 
-       {/* Show IFC */}
+      {/* Show IFC */}
       {
         isIfc && (
           <IFCViewerDialog
@@ -161,7 +149,7 @@ export const MoveDeleteViewDialogs: React.FC<Props> = ({
         )
       }
 
-       {/* Show XKT */}
+      {/* Show XKT */}
       {
         isXkt && (
           <XKTViewerDialog
@@ -174,7 +162,7 @@ export const MoveDeleteViewDialogs: React.FC<Props> = ({
 
 
       {/* Fallback: file không hỗ trợ preview */}
-      {fileViewer && !isPdf && !isImage && !isIfc &&(
+      {fileViewer && !isPdf && !isImage && !isIfc && (
         <UnsupportedFileDialogViewer
           open={fileViewer}
           onClose={() => setFileViewer(null)}
@@ -183,7 +171,7 @@ export const MoveDeleteViewDialogs: React.FC<Props> = ({
         />
       )}
 
-     
+
 
 
     </>
