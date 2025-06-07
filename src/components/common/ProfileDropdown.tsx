@@ -70,7 +70,7 @@ export function ProfileDropdown() {
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Link to='/user/show/portfolio'>
+            <Link to='/managements/model-previews'>
               Portfolio
               <DropdownMenuShortcut><HiOutlinePresentationChartLine size={16} /></DropdownMenuShortcut>
             </Link>

@@ -15,8 +15,8 @@ export function IFCViewerDialog({
 
   const handleOpenViewer = () => {
     onClose();
-    // window.open(`/view?v=${fileCode}`, "_blank");
-    window.open(`/view2/show-file?v=${fileCode}`, "_blank");
+    window.open(`/view?v=${fileCode}`, "_blank");
+    // window.open(`/view2/show-file?v=${fileCode}`, "_blank");
   };
 
   return (
