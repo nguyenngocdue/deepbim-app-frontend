@@ -31,7 +31,7 @@ export async function fetchUserRoles(userId: number, roleIds: number[]) {
         body: JSON.stringify({ "role_ids": roleIds })
     });
   }catch (error: any) {
-    toast.error("Error: " + error.message);
+    toast.warning("Warning: " + error.message);
   }
 }
 
@@ -40,7 +40,7 @@ export async function getUsers() {
       const response = await apiGet('/users');
       return response;
     }catch (error: any) {
-      toast.error("Error: " + error.message);
+      toast.warning("Warning: " + error.message);
     }
 }
 
@@ -49,7 +49,7 @@ export async function getUserRoles() {
     const response = await apiGet(`/user-roles`);
     return response;
   }catch (error: any) {
-    toast.error("Error: " + error.message);
+    toast.warning("Warning: " + error.message);
   }
 }
 
