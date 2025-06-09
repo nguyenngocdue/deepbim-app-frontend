@@ -28,6 +28,7 @@ import {
   CollapsibleContent,
 } from "@/components/ui/collapsible";
 import { useEffect, useState } from "react";
+import { Separator } from "@radix-ui/react-separator";
 
 const overviewGroups = [
   {
@@ -157,25 +158,29 @@ export function IntroSection() {
         <h1 className="text-3xl font-bold text-zinc-900 dark:text-white">
           Nguyễn Ngọc Duệ <p className="text-sm text-sky-500 dark:text-zinc-400">(Nissan)</p>
         </h1>
-        <p className="text-base font-semibold text-blue-600 dark:text-blue-600">
-          Fullstack Developer / BIM Engineer
+        <p className="text-base font-semibold text-slate-600 dark:text-slate-400">
+          Tech Enthusiast | Web & BIM Developer | Python & Dynamo Specialist | Crafting Innovative 3D Web Solutions
         </p>
 
         {/* Collapsible: Passion for Coding */}
         <Collapsible className="w-full">
-          <CollapsibleTrigger className="flex items-center gap-2 text-sm font-medium text-blue-500 dark:text-sky-400 hover:underline transition group">
-            <Sparkles className="w-4 h-4 group-hover:animate-pulse" />
-            <span>About my passion for coding</span>
+          <CollapsibleTrigger className="flex items-center gap-2 text-sm font-medium text-slate-600 dark:text-sky-400 hover:underline transition group">
+            <Sparkles className="w-4 h-4 group-hover:animate-pulse text-blue-500" />
+            <span className="text-gray-600 text-md font-heading dark:text-blue-400">About my passion for coding</span>
             <ChevronDown className="w-4 h-4 transition-transform group-data-[state=open]:rotate-180" />
           </CollapsibleTrigger>
-          <CollapsibleContent className="mt-1 pl-4 text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed">
+          <CollapsibleContent className="mt-1 pl-4 text-sm text-green-950 dark:text-gray-200 leading-relaxed font-heading italic">
             Coding isn’t just work for me — it’s what I enjoy doing.
             I love turning simple ideas into powerful tools that help people work better.
             Whether it’s improving BIM workflows or building web apps, I’m always learning, improving, and sharing what I know.
           </CollapsibleContent>
         </Collapsible>
+        <Separator orientation="horizontal" className="bg-gray-400 w-full h-1  z-50 " />
 
-        {/* Contact Info */}
+
+
+
+      {/* Contact Info */}
         <div className="pl-4 space-y-1 text-sm text-zinc-700 dark:text-zinc-300">
           <p className="flex items-center gap-2 group transition-colors hover:text-amber-600 dark:hover:text-amber-400">
             <Mail className="w-4 h-4 text-blue-500 dark:text-blue-400 group-hover:text-amber-600 dark:group-hover:text-amber-400 group-hover:scale-110 transition-all" />
@@ -190,16 +195,21 @@ export function IntroSection() {
             <span className="text-sm">Ho Chi Minh City, Vietnam</span>
           </p>
         </div>
-
+        
+        <Separator orientation="horizontal" className="bg-gray-400 w-full h-1  z-50 " />
 
 
         {/* Collapsible: Social Links */}
         <Collapsible className="mt-2 w-full">
-          <CollapsibleTrigger className="flex items-center gap-2 text-sm font-medium text-sky-700 dark:text-sky-400 hover:underline transition group">
+          <CollapsibleTrigger className="flex items-center gap-2 text-sm font-medium text-slate-600 dark:text-sky-400 hover:underline transition group">
             <Share2 className="w-4 h-4 group-hover:animate-pulse" />
-            <span>Social Links & Portfolio</span>
+            <span className="text-gray-600 text-md font-heading dark:text-blue-400">Social Links & Portfolio</span>
             <ChevronDown className="w-4 h-4 transition-transform group-data-[state=open]:rotate-180" />
           </CollapsibleTrigger>
+
+
+
+
 
           <CollapsibleContent className="mt-3 space-y-2 text-sm text-zinc-700 dark:text-zinc-300">
             <div className="space-y-1 text-sm text-zinc-700 dark:text-zinc-300 font-sans leading-snug pl-4">
@@ -254,6 +264,8 @@ export function IntroSection() {
 
           </CollapsibleContent>
         </Collapsible>
+
+     
       </motion.div>
 
 
