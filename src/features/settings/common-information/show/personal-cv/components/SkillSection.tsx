@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import { SectionTitle } from "./SectionTitle";
+import { useTranslation } from "react-i18next";
 
 const skills = [
   { id: "frontend", label: "Frontend", icon: "🖥️" },
@@ -50,13 +51,15 @@ const links = skills
 
 export function SkillSection() {
   const [showLabels, setShowLabels] = useState(true);
+  const { t } = useTranslation("translation");
+  
 
   return (
     <section className="max-w-6xl mx-auto px-4 py-2">
       <SectionTitle
-        title="🧠 Skill Visual Map"
-        description="Explore grouped development skills in frontend, backend, DevOps, frameworks, databases, and 3D/BIM."
-      />
+  title={t("personal_cv.skill_map.title")}
+  description={t("personal_cv.skill_map.description")}
+/>
 
       <div className="flex items-center mb-4">
         <label className="flex items-center gap-2">
@@ -66,7 +69,7 @@ export function SkillSection() {
             onChange={() => setShowLabels(!showLabels)}
             className="w-4 h-4 accent-blue-600"
           />
-          <span className="text-sm text-slate-700">Show Labels</span>
+          <span className="text-sm text-slate-700">{t("personal_cv.skill_map.show_labels")}</span>
         </label>
       </div>
 

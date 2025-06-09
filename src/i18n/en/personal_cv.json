@@ -1,0 +1,88 @@
+{
+  "name": "Nguyen Ngoc Due",
+  "alias": "(Nissan)",
+  "role": "Tech Enthusiast | Web Developer - BIM Developer | Python & Dynamo Specialist | Crafting Innovative 3D Web Solutions",
+  "passion": {
+    "title": "About my passion for coding",
+    "description": "Coding isn’t just work for me — it’s what I enjoy doing. I love turning simple ideas into powerful tools that help people work better. Whether it’s improving BIM workflows or building web apps, I’m always learning, improving, and sharing what I know."
+  },
+  "contact": {
+    "email": "duengocnguyen@gmail.com",
+    "phone": "+0339001600 (Zalo, WhatsApp)",
+    "location": "Ho Chi Minh City, Vietnam"
+  },
+  "social": {
+    "title": "Social Links & Portfolio"
+  },
+  "overview_groups": [
+    {
+      "group": "BIM Experience",
+      "items": [
+        { "title": "Global Projects", "desc": "2+ years of BIM experience in Japan and Singapore." },
+        { "title": "Major Projects", "desc": "Infrastructure, hospitals, schools, bridges." },
+        { "title": "Design Tools", "desc": "AutoCAD, Revit, Civil 3D, Navisworks" },
+        { "title": "Revit Automation", "desc": "Dynamo, pyRevit, C#, Python Addins." }
+      ]
+    },
+    {
+      "group": "Web Development",
+      "items": [
+        { "title": "Frontend & Backend", "desc": "ReactJS, PHP, Laravel, JavaScript, RESTful API." },
+        { "title": "DevOps", "desc": "Docker, basic Kubernetes (K8s), CI/CD pipelines" },
+        { "title": "System Architecture", "desc": "Microservices, RabbitMQ, distributed design." },
+        { "title": "BIM Viewer Development", "desc": "Three.js, IFC parsers, ThatOpenBIM, IfcOpenShell" }
+      ]
+    },
+    {
+      "group": "Environments & Supporting Skills",
+      "items": [
+        { "title": "Working Environment", "desc": "Linux, Windows, Git, Bitbucket, Nginx." },
+        { "title": "Databases", "desc": "PostgreSQL, MySQL. Proficient in writing and optimizing complex SQL queries." },
+        { "title": "Soft Skills", "desc": "Teamwork, problem-solving, logical thinking, stakeholder communication." }
+      ]
+    }
+  ],
+    "work_experience": {
+  "title": "Work Experience",
+  "description": "These are some of the public projects I’ve worked on, mostly related to data, BIM, and automation. I’ve also contributed to developing WebApps for managing production lines and modular components in factories. If you’d like to learn more about any of these projects, feel free to reach out via the chat support below!"
+},
+
+"workSteps": [
+    {
+        "title": "University of Technical Education HCMC",
+        "description": "Studied engineering and BIM fundamentals at HCMUTE."
+    },
+    {
+        "title": "THE BIM FACTORY",
+        "description": "Develop architectural, structural, and MEP models using Revit & Dynamo tools."
+    },
+    {
+        "title": "TOBIC OF JAPAN, VIET NAM",
+        "description": "Lead BIM models, develop tools with Python/C#, teach programming for automation."
+    },
+    {
+        "title": "TLC - MODULAR",
+        "description": "Fullstack dev: React, Blade, MySQL, Docker for QAQC systems."
+    },
+    {
+        "title": "Remote Software Consultant",
+        "description": "Currently working remotely with international firms on AEC/BIM software development."
+    }
+],
+"projects": {
+  "title": "Projects",
+  "description": "These are some of the public projects I've worked on, mostly related to data, BIM, and automation. If you're curious about any project or want a deeper look, feel free to reach out via the chat support below!"
+},
+"skill_map": {
+  "title": "🧠 Skill Visual Map",
+  "description": "Explore grouped development skills in frontend, backend, DevOps, frameworks, databases, and 3D/BIM.",
+  "show_labels": "Show Labels"
+},
+"thank_you": {
+  "title": "Thank you for visiting!",
+  "note": "I truly appreciate you taking the time to view my profile.\nLooking forward to the opportunity to collaborate in the future!"
+}
+
+  
+  
+}

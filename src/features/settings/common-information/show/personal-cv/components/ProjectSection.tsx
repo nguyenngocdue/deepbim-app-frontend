@@ -2,6 +2,7 @@ import { FolderOpen } from "lucide-react";
 import { motion } from "framer-motion";
 import ModelCard from "./ModelCard";
 import { SectionTitle } from "./SectionTitle";
+import { useTranslation } from "react-i18next";
 
 const projects = [
   {
@@ -67,13 +68,16 @@ const itemVariants = {
 };
 
 export function ProjectSection() {
+      const { t } = useTranslation("translation");
+  
   return (
     <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-      <SectionTitle
-        title="Projects"
-        icon={<FolderOpen className="w-6 h-6" />}
-        description="These are some of the public projects I've worked on, mostly related to data, BIM, and automation. If you're curious about any project or want a deeper look, feel free to reach out via the chat support below!"
-      />
+     <SectionTitle
+  title={t("personal_cv.projects.title")}
+  icon={<FolderOpen className="w-6 h-6" />}
+  description={t("personal_cv.projects.description")}
+/>
+
 
       <motion.div
         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"

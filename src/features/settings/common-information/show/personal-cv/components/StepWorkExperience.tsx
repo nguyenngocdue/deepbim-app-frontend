@@ -12,35 +12,34 @@ import { RiRunFill } from "react-icons/ri";
 import { FaRunning } from "react-icons/fa";
 import { SectionTitle } from "./SectionTitle";
 import { LiaRunningSolid } from "react-icons/lia";
-import { BiRun } from "react-icons/bi";
+import { useTranslation } from "react-i18next";
 
-const workSteps = [
-    {
-        title: "University of Technical Education HCMC",
-        description: "Studied engineering and BIM fundamentals at HCMUTE.",
-    },
-    {
-        title: "THE BIM FACTORY",
-        description:
-            "Develop architectural, structural, and MEP models using Revit & Dynamo tools.",
-    },
-    {
-        title: "TOBIC OF JAPAN, VIET NAM",
-        description:
-            "Lead BIM models, develop tools with Python/C#, teach programming for automation.",
-    },
-    {
-        title: "TLC - MODULAR",
-        description: "Fullstack dev: React, Blade, MySQL, Docker for QAQC systems.",
-    },
-    {
-        title: "Remote Software Consultant",
-        description:
-            "Currently working remotely with international firms on AEC/BIM software development.",
-    },
-];
 
 function StepWorkExperience() {
+    const { t } = useTranslation("translation");
+
+    const workSteps = [
+    {
+        title: t("personal_cv.work_steps.0.title"),
+        description: t("personal_cv.work_steps.0.description"),
+    },
+    {
+        title: t("personal_cv.work_steps.1.title"),
+        description: t("personal_cv.work_steps.1.description"),
+    },
+    {
+        title: t("personal_cv.work_steps.2.title"),
+        description: t("personal_cv.work_steps.2.description"),
+    },
+    {
+        title: t("personal_cv.work_steps.3.title"),
+        description: t("personal_cv.work_steps.3.description"),
+    },
+    {
+        title: t("personal_cv.work_steps.4.title"),
+        description: t("personal_cv.work_steps.4.description"),
+    },
+    ];
     const [progress, setProgress] = useState(0);
     const [runnerIndex, setRunnerIndex] = useState(0);
     const [lastStep, setLastStep] = useState(-1);
@@ -69,14 +68,14 @@ function StepWorkExperience() {
     useEffect(() => {
         const interval = setInterval(() => {
             setProgress((prev) => (prev + 1) % (workSteps.length * 20));
-        }, 150);
+        }, 200);
         return () => clearInterval(interval);
     }, []);
 
     useEffect(() => {
         const toggleRunner = setInterval(() => {
             setRunnerIndex((prev) => (prev + 1) % runnerIcons.length);
-        }, 600);
+        }, 800);
         return () => clearInterval(toggleRunner);
     }, []);
 
@@ -127,9 +126,9 @@ function StepWorkExperience() {
     return (
         <section className="max-w-6xl mx-auto px-4">
             <SectionTitle
-                title="Work Experience"
+                 title={t("personal_cv.work_experience.title")}
                 icon={<Briefcase className="w-6 h-6" />}
-                description="Since graduating and stepping into the professional world, I've been dedicated to learning from experienced mentors, embracing challenges, and continuously improving myself every single day. I strive to grow beyond who I was yesterday — always pushing forward, never standing still."
+                description={t("personal_cv.work_experience.description")}
             />
 
             <div className="relative pt-16 min-h-[300px]">

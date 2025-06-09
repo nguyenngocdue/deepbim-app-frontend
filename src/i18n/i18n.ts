@@ -1,10 +1,13 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
+import enPersonalCV from './en/personal_cv.json';
+import viPersonalCV from './vi/personal_cv.json';
 
 const resources = {
   en: {
     translation: {
+       personal_cv: enPersonalCV,
       contact_us: {
         title: 'Contact Us',
         subtitle: "We’re always happy to hear from you. Whether you have a question, need assistance, or want to share feedback, our team is ready to support you. Feel free to connect with us through any of the channels below.",
@@ -162,6 +165,7 @@ const resources = {
 
   vi: {
     translation: {
+      personal_cv: viPersonalCV,
       contact_us: {
         title: 'Liên hệ với chúng tôi',
         subtitle: "Chúng tôi luôn sẵn sàng lắng nghe bạn. Dù bạn có câu hỏi, cần hỗ trợ hay muốn đóng góp ý kiến, đội ngũ của chúng tôi luôn ở đây để đồng hành cùng bạn. Đừng ngần ngại liên hệ qua bất kỳ kênh nào bên dưới.",

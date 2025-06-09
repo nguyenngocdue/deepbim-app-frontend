@@ -1,0 +1,90 @@
+{
+  "name": "Nguyễn Ngọc Duệ",
+  "alias": "(Nissan)",
+  "role": "Đam mê công nghệ | Phát triển Web, Database & BIM | Python & Dynamo | Sáng tạo giải pháp Web 3D",
+  "passion": {
+    "title": "Niềm đam mê lập trình của tôi",
+    "description": "Lập trình không chỉ là công việc mà còn là niềm yêu thích của tôi. Tôi thích biến những ý tưởng đơn giản thành công cụ hữu ích giúp mọi người làm việc hiệu quả hơn. Dù là cải tiến quy trình BIM hay xây dựng ứng dụng web, tôi luôn học hỏi, cải tiến và chia sẻ kiến thức."
+  },
+  "contact": {
+    "email": "duengocnguyen@gmail.com",
+    "phone": "+0339001600 (Zalo, WhatsApp)",
+    "location": "TP. Hồ Chí Minh, Việt Nam"
+  },
+  "social": {
+    "title": "Mạng xã hội & Portfolio"
+  },
+  "overview_groups": [
+    {
+      "group": "Kinh nghiệm BIM",
+      "items": [
+        { "title": "Dự án toàn cầu", "desc": "Hơn 2 năm kinh nghiệm BIM tại Nhật Bản và Singapore." },
+        { "title": "Dự án lớn", "desc": "Hạ tầng, bệnh viện, trường học, cầu." },
+        { "title": "Công cụ thiết kế", "desc": "AutoCAD, Revit, Civil 3D, Navisworks" },
+        { "title": "Tự động hóa Revit", "desc": "Dynamo, pyRevit, C#, Python Addins." }
+      ]
+    },
+    {
+      "group": "Phát triển Web",
+      "items": [
+        { "title": "Frontend & Backend", "desc": "ReactJS, PHP, Laravel, JavaScript, RESTful API." },
+        { "title": "DevOps", "desc": "Docker, Kubernetes cơ bản, quy trình CI/CD" },
+        { "title": "Kiến trúc hệ thống", "desc": "Microservices, RabbitMQ, thiết kế phân tán." },
+        { "title": "Phát triển BIM Viewer", "desc": "Three.js, IFC parsers, ThatOpenBIM, IfcOpenShell" }
+      ]
+    },
+    {
+      "group": "Môi trường & Kỹ năng hỗ trợ",
+      "items": [
+        { "title": "Môi trường làm việc", "desc": "Linux, Windows, Git, Bitbucket, Nginx." },
+        { "title": "Cơ sở dữ liệu", "desc": "PostgreSQL, MySQL. Thành thạo viết và tối ưu truy vấn SQL phức tạp." },
+        { "title": "Kỹ năng mềm", "desc": "Làm việc nhóm, giải quyết vấn đề, tư duy logic, giao tiếp với các bên liên quan." }
+      ]
+    }
+  ],
+  "work_experience": {
+  "title": "Kinh nghiệm làm việc",
+  "description": "Kể từ khi tốt nghiệp và bước vào môi trường chuyên nghiệp, tôi luôn nỗ lực học hỏi từ những người đi trước, đón nhận thử thách và không ngừng hoàn thiện bản thân mỗi ngày. Tôi luôn cố gắng phát triển bản thân vượt qua chính mình ngày hôm qua — luôn tiến về phía trước, không bao giờ dậm chân tại chỗ."
+},
+
+"work_steps": [
+  {
+    "title": "Trường Đại học Sư phạm Kỹ thuật TP.HCM",
+    "description": "Chuyên ngành kỹ thuật và phát triển các phần mềm cho xây dựng tại HCMUTE."
+  },
+  {
+    "title": "THE BIM FACTORY",
+    "description": "Phát triển mô hình kiến trúc, kết cấu và cơ điện (MEP) bằng công cụ Revit & Dynamo."
+  },
+  {
+    "title": "TOBIC OF JAPAN, VIỆT NAM",
+    "description": "Phụ trách mô hình BIM, phát triển công cụ bằng Python/C#, giảng dạy lập trình tự động hóa."
+  },
+  {
+    "title": "TLC - MODULAR",
+    "description": "Lập trình viên fullstack: sử dụng React, Blade, MySQL, Docker cho hệ thống QAQC."
+  },
+  {
+    "title": "Tư vấn phần mềm từ xa",
+    "description": "Hiện đang làm việc từ xa với các công ty quốc tế trong lĩnh vực phát triển phần mềm AEC/BIM."
+  }
+],
+"projects": {
+  "title": "Dự án",
+  "description": "Đây là một số dự án công khai mà tôi đã thực hiện, chủ yếu liên quan đến dữ liệu, BIM và tự động hóa, tôi cũng từng tham gia viết các WebApp quản lý cho các di chuyền sản xuất linh kiện, modun cho các nhà máy. Nếu bạn muốn tìm hiểu thêm về bất kỳ dự án nào, đừng ngần ngại liên hệ qua phần hỗ trợ trò chuyện bên dưới!"
+},
+"skill_map": {
+  "title": "🧠 Sơ đồ kỹ năng trực quan",
+  "description": "Khám phá các nhóm kỹ năng phát triển liên quan đến frontend, backend, DevOps, framework, cơ sở dữ liệu và 3D/BIM.",
+  "show_labels": "Hiển thị nhãn"
+},
+"thank_you": {
+  "title": "Cảm ơn bạn đã ghé thăm!",
+  "note": "Tôi rất trân trọng việc bạn đã dành thời gian xem hồ sơ của tôi.\nHy vọng sẽ có cơ hội hợp tác cùng bạn trong tương lai!"
+}
+
+
+ 
+
+
+}

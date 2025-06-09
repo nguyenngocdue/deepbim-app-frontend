@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, Handshake } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export default function ThankYouNote() {
   const [visible, setVisible] = useState(true);
@@ -9,6 +10,7 @@ export default function ThankYouNote() {
     const timer = setTimeout(() => setVisible(false), 10000); // 10s
     return () => clearTimeout(timer);
   }, []);
+  const { t } = useTranslation("translation");
 
   return (
     <AnimatePresence>
@@ -27,12 +29,11 @@ export default function ThankYouNote() {
           <div className="flex items-center gap-2 text-amber-500 dark:text-amber-400">
             <Sparkles className="w-5 h-5 animate-bounce" />
             <h2 className="text-base font-semibold text-zinc-800 dark:text-white">
-              Thank you for visiting!
+            {t("personal_cv.thank_you.title")}
             </h2>
           </div>
           <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-snug">
-            I truly appreciate you taking the time to view my profile.<br />
-            Looking forward to the opportunity to collaborate in the future!
+            {t("personal_cv.thank_you.note")}
           </p>
           <div className="flex justify-end text-green-600 dark:text-green-400">
             <Handshake className="w-4 h-4" />
