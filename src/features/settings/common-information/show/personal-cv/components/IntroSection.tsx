@@ -28,6 +28,7 @@ import {
   CollapsibleContent,
 } from "@/components/ui/collapsible";
 import { useEffect, useState } from "react";
+import { Image } from "@radix-ui/react-avatar";
 
 const overviewGroups = [
   {
@@ -224,7 +225,9 @@ export function IntroSection() {
                 </a>
               </p>
               <p className="flex items-center gap-2 group transition-colors hover:text-red-600 dark:hover:text-red-400 text-sm">
-                <Youtube className="w-4 h-4 text-red-500 group-hover:scale-110 transition-transform" />
+                <Avatar className="w-5 h-5">
+                  <AvatarImage src='/icons/youtube.png' />
+                </Avatar>
                 <a
                   href="https://www.youtube.com/@Bim3DM"
                   target="_blank"
