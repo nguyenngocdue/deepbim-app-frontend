@@ -73,7 +73,7 @@ const HeroSection = () => {
               {t("hero.start")}
             </AppButton>
           </Link>
-          <Link to="/managements/me">
+          <Link to="/managements/projects">
             <AppButton 
               className="bg-button-2 text-white bg-gray-700 hover:bg-zinc-900 dark:hover:bg-gray-400" 
               falseName={t("hero.deploy")}

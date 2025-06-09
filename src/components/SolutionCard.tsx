@@ -30,7 +30,7 @@ const SolutionCard = ({ title, description, image, className }: SolutionCardProp
 
         {/* Tiêu đề với hiệu ứng gạch chân */}
         <motion.div className="relative mt-4">
-          <h4 className="text-xl font-bold transition-all">{title}</h4>
+          <h4 className="text-xl font-bold transition-all dark:text-gray-700">{title}</h4>
 
           {/* Hiệu ứng gạch chân xuất hiện khi hover */}
           <motion.div

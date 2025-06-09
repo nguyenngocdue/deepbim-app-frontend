@@ -54,7 +54,7 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
             ))}
           </ul>
 
-          {!collapsed && <div className={`uppercase text-xs font-semibold px-3 mt-5 mb-1 ${mutedText}`}>Project Management</div>}
+          {!collapsed && <div className={`uppercase bg-accent/95 p-2 text-xs font-semibold px-3 mt-5 mb-1 ${mutedText}`}>Project Management</div>}
           <ul className="space-y-1">
             {!collapsed ? (
               <>
@@ -62,7 +62,7 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
                   <AppIcons.Workspaces />
                   <span>Workspaces</span>
                 </li>
-                <ul className="ml-8 space-y-1">
+                <ul className="ml-8 space-y-1 flex flex-col items-start">
                   <li>
                     <Link to="/managements/projects" className={`block ${hoverBg} rounded-md px-2.5 py-2 text-sm ${textColor}`}>
                       <AppIcons.Projects className="inline mr-2" /> Projects
@@ -98,7 +98,7 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
             )}
           </ul>
 
-          {!collapsed && <div className={`uppercase text-xs font-semibold px-3 mt-5 mb-1 ${mutedText}`}>Admin Management</div>}
+          {!collapsed && <div className={`uppercase text-xs bg-accent/95 p-2 font-semibold px-3 mt-5 mb-1 ${mutedText}`}>Admin Management</div>}
           <ul className="space-y-1">
             {[{ text: "User", icon: AppIcons.AdminPanel, to: "/managements/users" }, { text: "Chat", icon: AppIcons.Chat, to: "/managements/chat-support" }].map(({ text, icon: Icon, to }) => (
               <TooltipProvider key={text}>

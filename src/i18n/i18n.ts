@@ -5,7 +5,7 @@ import LanguageDetector from "i18next-browser-languagedetector";
 const resources = {
   en: {
     translation: {
-      contact_us:{
+      contact_us: {
         title: 'Contact Us',
         subtitle: "We’re always happy to hear from you. Whether you have a question, need assistance, or want to share feedback, our team is ready to support you. Feel free to connect with us through any of the channels below.",
         contact_info: {
@@ -31,14 +31,14 @@ const resources = {
             subtitles: "With the Archicad Connector, architects and designers will be able to send BIM models and design data directly from Graphisoft Archicad to Viralution for centralized project access."
           }
         }
-      },      
+      },
       navbar: {
         home: "Home",
         connect: "Connectors",
         features: "Features",
         how_it_works: "How it works",
         contact: "Contact Us",
-        auth:"Sign In",
+        auth: "Sign In",
       },
       panel_alert: {
         message: "You are currently browsing as a guest. Sign in to access advanced features.",
@@ -126,6 +126,11 @@ const resources = {
             title: "Data Utilization & Connectivity",
             desc: "Leverage powerful tools to extract, analyze, and connect your BIM data, enhancing collaboration and efficiency.",
           },
+          bitcoin: {
+            title: "Bitcoin",
+            desc: "Bitcoin is a type of cryptocurrency invented in 2008 by an unknown person or group of people using the name Satoshi Nakamoto.",
+          }
+
         },
       },
 
@@ -151,7 +156,7 @@ const resources = {
         contact: "Contact",
       },
 
-      
+
     },
   },
 
@@ -165,7 +170,7 @@ const resources = {
           email: "deepbim@gmail.com",
           address: "TP. Hồ Chí Minh, Việt Nam"
         }
-      },      
+      },
       connector: {
         title: 'Trình Kết nối',
         subtitle: "Kết nối các công cụ thiết kế của bạn với Viralution bằng cách tải mô hình BIM thông qua các trình kết nối chuyên dụng.",
@@ -183,14 +188,14 @@ const resources = {
             subtitles: "Với Archicad Connector, các kiến trúc sư và nhà thiết kế sẽ có thể gửi mô hình BIM và dữ liệu thiết kế trực tiếp từ Graphisoft Archicad lên Viralution để truy cập dự án tập trung."
           }
         }
-      },      
+      },
       navbar: {
         home: 'Trang Chủ',
         connect: "Trình kết nối",
         features: "Tính năng",
         how_it_works: "Cách thức hoạt động",
         contact: "Liên hệ",
-        auth:"Đăng nhập",
+        auth: "Đăng nhập",
       },
       panel_alert: {
         message: "Bạn đang dùng chế độ khách. Đăng nhập để truy cập các chức năng nâng cao",
@@ -278,6 +283,10 @@ const resources = {
           data_utilization: {
             title: "Khai thác dữ liệu & Kết nối con người",
             desc: "Tận dụng các công cụ mạnh mẽ để khai thác dữ liệu mô hình BIM và kết nối mọi người, thúc đẩy hợp tác và hiệu quả.",
+          },
+          bitcoin: {
+            title: "Bitcoin",
+            desc: "Bitcoin là một loại tiền điện tử được phát minh vào năm 2008 bởi một người hoặc một nhóm người ẩn danh sử dụng tên Satoshi Nakamoto.",
           },
         },
       },

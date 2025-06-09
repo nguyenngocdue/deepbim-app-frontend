@@ -10,18 +10,17 @@ const SolutionsSection = () => {
     {
       title: t("solutions.items.own_data.title"),
       description: t("solutions.items.own_data.desc"),
-      image: "https://viralution.io/own_data.png",
+      image: "https://minio.deepbim.net:9000/deepbim-fe/1749457109215-home_page_3.png",
     },
     {
       title: t("solutions.items.data_utilization.title"),
       description: t("solutions.items.data_utilization.desc"),
-      image: "https://viralution.io/app.png",
+      image: "https://minio.deepbim.net:9000/deepbim-fe/1749456861985-home_page_2.png",
     },
     {
-      title: "Bitcoin",
-      description:
-        "Bitcoin is a cryptocurrency invented in 2008 by an unknown person or group of people using the name Satoshi Nakamoto.",
-      image: "https://viralution.io/bitcoin.png",
+      title: t("solutions.items.bitcoin.title"),
+      description: t("solutions.items.bitcoin.desc"),
+      image: "https://minio.deepbim.net:9000/deepbim-fe/1749456667465-home_page_1.png",
     },
   ];
 
@@ -68,7 +67,7 @@ const SolutionsSection = () => {
           <SolutionCard
             title={t("solutions.items.data_utilization.title")}
             description={t("solutions.items.data_utilization.desc")}
-            image="https://viralution.io/app.png"
+            image="https://minio.deepbim.net:9000/deepbim-fe/1749458903330-model_idea_1.png"
             className="opacity-100 hover:opacity-100 transition-none" // Fix opacity
           />
         </div>

@@ -89,18 +89,27 @@ const itemVariants = {
 export function IntroSection() {
 
   const avatarUrls = [
-    "/assets/avatars/avatar_1.jpg",
+    "/assets/avatars/avatar_1.png",    
+    "/assets/avatars/avatar_2.png",
+    "/assets/avatars/avatar_3.png",
+
   ];
 
   const [avatarIndex, setAvatarIndex] = useState(0);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
+  const [fadeIn, setFadeIn] = useState(true);
+  
+useEffect(() => {
+  const interval = setInterval(() => {
+    setFadeIn(false);
+    setTimeout(() => {
       setAvatarIndex((prev) => (prev + 1) % avatarUrls.length);
-    }, 3500); // đổi ảnh mỗi 3.5 giây
+      setFadeIn(true);
+    }, 250); // Đợi hiệu ứng ẩn xong (300ms)
+  }, 5000);
 
-    return () => clearInterval(timer);
-  }, []);
+  return () => clearInterval(interval);
+}, []);
+
 
 
   return (
@@ -117,11 +126,11 @@ export function IntroSection() {
       >
         {/* Avatar */}
         <div className="relative">
-          <Avatar className="w-28 h-28 shadow-lg ring-4 ring-blue-400 dark:ring-green-500 hover:scale-105 transition-transform duration-300 overflow-hidden">
+          <Avatar className="w-32 h-32 ring-4 ring-blue-500 shadow-green-800 shadow-lg dark:ring-green-600 hover:scale-105 transition-transform duration-300 overflow-hidden">
             <AvatarImage
               src={avatarUrls[avatarIndex]}
               alt={`Avatar ${avatarIndex + 1}`}
-              className="object-cover w-full h-full"
+             className={`object-cover w-full h-full transition-opacity duration-1000 ease-in-out ${fadeIn ? 'opacity-100' : 'opacity-0'}`}
             />
           </Avatar>
           <div
