@@ -6,9 +6,11 @@ import { fetchUserRoles, getUsers, createNewUser } from '@/apis/users/UserSettin
 import { getRoles } from '@/apis/roles/roles'
 import { Button } from '@/components/ui/button'
 import { CreateUserModal } from '@/components/bim-viewer/common/CreateUserModal'
-import { toast } from 'sonner'
-import { error } from 'console'
 import { CLASS_NAME_DEFAULT } from '@/utils/class'
+import { SearchBox } from '@/components/SearchBox'
+import { useSelector } from 'react-redux'
+import { isAdmin } from '@/utils/user'
+import { RootState } from '@/store'
 
 export function UserManagement() {
   const [users, setUsers] = useState<User[]>([])
@@ -16,6 +18,9 @@ export function UserManagement() {
   const [selectedUser, setSelectedUser] = useState<User | null>(null)
   const [openCreateUser, setOpenCreateUser] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [searchTerm, setSearchTerm] = useState('')
+    const currentUser = useSelector((state: RootState) => state.auth.user);
+    const isUserAdmin = isAdmin(currentUser);
 
   useEffect(() => {
     fetchData()
@@ -53,17 +58,43 @@ export function UserManagement() {
     }
   }
 
+  const filteredUsers = users.filter(
+    (user) =>
+      user.user_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.email.toLowerCase().includes(searchTerm.toLowerCase())
+  )
+
+
   if (loading) {
     return <div className="text-sm text-muted-foreground">Loading users and roles...</div>
   }
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-wrap justify-between items-center gap-2">
         <h2 className="text-lg font-semibold text-foreground mb-1">User Management</h2>
-        <Button className={`${CLASS_NAME_DEFAULT.CLASS_APP_BUTTON_CREATE}`} onClick={() => setOpenCreateUser(true)}>+ Create User</Button>
+        <div className="flex gap-2 w-full sm:w-auto sm:flex-row flex-col">
+          <div className="w-full sm:w-64">
+            <SearchBox
+              value={searchTerm}
+              onChange={setSearchTerm}
+              placeholder="Search users..."
+            />
+          </div>
+          {
+            isUserAdmin && 
+            <Button
+              className={`${CLASS_NAME_DEFAULT.CLASS_APP_BUTTON_CREATE}`}
+              onClick={() => setOpenCreateUser(true)}
+            >
+              + Create User
+            </Button>
+          }
+        </div>
       </div>
-      <UserTable users={users} onAssignRole={setSelectedUser} />
+
+      <UserTable users={filteredUsers} onAssignRole={setSelectedUser} />
+
       {selectedUser && (
         <AssignRoleModal
           user={selectedUser}
@@ -72,6 +103,7 @@ export function UserManagement() {
           onSave={handleAssignRoles}
         />
       )}
+
       <CreateUserModal
         open={openCreateUser}
         onClose={() => setOpenCreateUser(false)}

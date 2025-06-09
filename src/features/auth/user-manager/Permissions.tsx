@@ -7,6 +7,9 @@ import { CreatePermissionForm } from './CreatePermissionForm'
 import { createPermissions, deletePermissions, getPermissions } from '@/apis/permissions/permissions'
 import { toast } from 'sonner'
 import { Trash2, ShieldAlert } from 'lucide-react'
+import { useSelector } from 'react-redux'
+import { RootState } from '@/store'
+import { isAdmin } from '@/utils/user'
 
 interface Permission {
   id: number
@@ -15,8 +18,11 @@ interface Permission {
 }
 
 export function PermissionManagement() {
-  const [permissions, setPermissions] = useState<Permission[]>([])
-  const [openCreate, setOpenCreate] = useState(false)
+  const [permissions, setPermissions] = useState<Permission[]>([]);
+  const [openCreate, setOpenCreate] = useState(false);
+  const currentUser = useSelector((state: RootState) => state.auth.user);
+  const isUserAdmin = isAdmin(currentUser);
+
 
   useEffect(() => {
     fetchPermissions()
@@ -49,7 +55,7 @@ export function PermissionManagement() {
     if (!confirm('Delete this permission?')) return
     try {
       const res = await deletePermissions(id)
-      if (res?.statusCode === 200) {
+      if (res.ok) {
         setPermissions((prev) => prev.filter((p) => p.id !== id))
         toast.success('Permission deleted')
       } else toast.error('Failed to delete')
@@ -58,6 +64,7 @@ export function PermissionManagement() {
     }
   }
 
+
   return (
     <div className="space-y-6 p-6 bg-background shadow-md">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -65,16 +72,16 @@ export function PermissionManagement() {
           <h2 className="text-lg font-semibold text-foreground">Permissions</h2>
           <p className="text-sm text-muted-foreground">Manage system-wide permissions efficiently.</p>
         </div>
-        <Button onClick={() => setOpenCreate(true)}>+ New Permission</Button>
+        {isUserAdmin && <Button onClick={() => setOpenCreate(true)}>+ New Permission</Button>}
       </div>
 
       {permissions.length === 0 ? (
         <div className="flex flex-col items-center justify-center p-12 border rounded-2xl bg-muted/10 shadow-inner">
           <ShieldAlert className="w-12 h-12 text-muted-foreground mb-3" />
           <p className="font-medium text-muted-foreground">No permissions yet</p>
-          <Button variant="outline" onClick={() => setOpenCreate(true)} className="mt-4">
+          {isUserAdmin && <Button variant="outline" onClick={() => setOpenCreate(true)} className="mt-4">
             Create First Permission
-          </Button>
+          </Button>}
         </div>
       ) : (
         <div className="grid gap-4 border rounded-md">
@@ -89,14 +96,16 @@ export function PermissionManagement() {
                   <div className="text-sm text-muted-foreground mt-1">{perm.description}</div>
                 )}
               </div>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="hover:bg-destructive/20"
-                onClick={() => handleDelete(perm.id)}
-              >
-                <Trash2 className="h-4 w-4 text-destructive" />
-              </Button>
+              {isUserAdmin &&
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="hover:bg-destructive/20"
+                  onClick={() => handleDelete(perm.id)}
+                >
+                  <Trash2 className="h-4 w-4 text-destructive" />
+                </Button>
+              }
             </div>
           ))}
         </div>

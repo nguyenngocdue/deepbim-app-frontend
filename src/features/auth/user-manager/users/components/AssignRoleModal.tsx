@@ -32,19 +32,9 @@ export function AssignRoleModal({
       title={`Assign Roles to ${user.email}`}
       description="Select one or more roles for this user"
       disableOutsideClose
-      footer={
-        <>
-          <Button variant="ghost" onClick={onClose}>
-            Cancel
-          </Button>
-          <Button
-            onClick={() => onSave(user.id, selected)}
-            disabled={selected.length === 0}
-          >
-            Save
-          </Button>
-        </>
-      }
+      onApply={() => onSave(user.id, selected)}
+      onApplyText='Apply'
+    
     >
       <div className="rounded-md max-h-64 overflow-y-auto border border-border divide-y">
         {roles.map((role) => {
@@ -53,7 +43,7 @@ export function AssignRoleModal({
             <div
               key={role.id}
               className={`flex flex-col sm:flex-row sm:items-center justify-between px-4 py-3 gap-1 sm:gap-4 transition-colors ${
-                isChecked ? 'bg-muted/40' : 'hover:bg-muted/20'
+                isChecked ? 'bg-muted/90' : 'hover:bg-muted/90'
               }`}
             >
               <div className="flex items-center gap-3">

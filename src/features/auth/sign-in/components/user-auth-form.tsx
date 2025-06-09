@@ -4,7 +4,6 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Link, useRouter } from '@tanstack/react-router';
 import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -27,8 +26,8 @@ import { setCurrentUser } from '@/store/slices/AuthSlice';
 import AppButton from '@/components/bim-viewer/common/AppButton';
 import { Loader2 } from 'lucide-react';
 import { CLASS_NAME_DEFAULT } from '@/utils/class';
-import { UserProfile } from '@/types/User';
 import { toast } from 'sonner';
+import { UserProfile } from '@/types/User';
 
 type UserAuthFormProps = HTMLAttributes<HTMLDivElement>;
 

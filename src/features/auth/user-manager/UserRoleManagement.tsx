@@ -11,6 +11,9 @@ import {
   getUsers,
 } from '@/apis/users/UserSettings'
 import { getRoles } from '@/apis/roles/roles'
+import { useSelector } from 'react-redux'
+import { isAdmin } from '@/utils/user'
+import { RootState } from '@/store'
 
 interface User {
   id: number
@@ -71,6 +74,8 @@ export function UserRoleManagement() {
   const [selectedUserId, setSelectedUserId] = useState<number | undefined>()
   const [selectedRoles, setSelectedRoles] = useState<{ label: string; value: number }[]>([])
   const [loading, setLoading] = useState(false)
+  const currentUser = useSelector((state: RootState) => state.auth.user);
+  const isUserAdmin = isAdmin(currentUser);
 
   useEffect(() => {
     fetchData()
@@ -174,61 +179,65 @@ export function UserRoleManagement() {
       </div>
 
       {/* Form: Assign Role */}
-      <div className="w-full bg-muted/60 rounded-md p-4 flex flex-col md:flex-row gap-3 items-end md:items-center">
-        <div className="flex-1 min-w-[160px]">
-          <label className="block text-xs font-medium mb-1 text-muted-foreground">User</label>
-          <Select
-            options={users.map((u) => ({ label: u.user_name, value: u.id }))}
-            value={
-              selectedUserId
-                ? { label: users.find((u) => u.id === selectedUserId)?.user_name || '', value: selectedUserId }
-                : null
-            }
-            onChange={(opt) => setSelectedUserId(opt?.value)}
-            placeholder="Select user..."
-            styles={selectStyles}
-            menuPortalTarget={typeof window !== 'undefined' ? document.body : null}
-            isDisabled={loading}
-            className="react-select-container"
-            classNamePrefix="react-select"
-          />
-        </div>
-        <div className="flex-1 min-w-[180px]">
-          <label className="block text-xs font-medium mb-1 text-muted-foreground">Roles</label>
-          <Select
-            isMulti
-            options={roles.map((role) => ({ label: role.name, value: role.id }))}
-            value={selectedRoles}
-            onChange={(selected) => setSelectedRoles(selected as { label: string; value: number }[])}
-            placeholder="Select roles..."
-            styles={selectStyles}
-            menuPortalTarget={typeof window !== 'undefined' ? document.body : null}
-            isDisabled={loading}
-            className="react-select-container"
-            classNamePrefix="react-select"
-          />
-        </div>
-        <Button
-          onClick={handleAssign}
-          disabled={loading || !selectedUserId || selectedRoles.length === 0}
-          className="h-10 min-w-[90px] md:mt-6"
-        >
-          {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Assign'}
-        </Button>
-      </div>
+      {
+        isUserAdmin && <>
+            <div className="w-full bg-muted/60 rounded-md p-4 flex flex-col md:flex-row gap-3 items-end md:items-center">
+              <div className="flex-1 min-w-[160px]">
+                <label className="block text-xs font-medium mb-1 text-muted-foreground">User</label>
+                <Select
+                  options={users.map((u) => ({ label: u.user_name, value: u.id }))}
+                  value={
+                    selectedUserId
+                      ? { label: users.find((u) => u.id === selectedUserId)?.user_name || '', value: selectedUserId }
+                      : null
+                  }
+                  onChange={(opt) => setSelectedUserId(opt?.value)}
+                  placeholder="Select user..."
+                  styles={selectStyles}
+                  menuPortalTarget={typeof window !== 'undefined' ? document.body : null}
+                  isDisabled={loading}
+                  className="react-select-container"
+                  classNamePrefix="react-select"
+                />
+              </div>
+              <div className="flex-1 min-w-[180px]">
+                <label className="block text-xs font-medium mb-1 text-muted-foreground">Roles</label>
+                <Select
+                  isMulti
+                  options={roles.map((role) => ({ label: role.name, value: role.id }))}
+                  value={selectedRoles}
+                  onChange={(selected) => setSelectedRoles(selected as { label: string; value: number }[])}
+                  placeholder="Select roles..."
+                  styles={selectStyles}
+                  menuPortalTarget={typeof window !== 'undefined' ? document.body : null}
+                  isDisabled={loading}
+                  className="react-select-container"
+                  classNamePrefix="react-select"
+                />
+              </div>
+              <Button
+                onClick={handleAssign}
+                disabled={loading || !selectedUserId || selectedRoles.length === 0}
+                className="h-10 min-w-[90px] md:mt-6"
+              >
+                {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Assign'}
+              </Button>
+            </div>
 
-      {/* Table */}
-      <div className="w-full">
-        {userRoles.length === 0 ? (
-          <div className="p-4 text-center text-sm text-muted-foreground italic">
-            No user-role assignments found.
-          </div>
-        ) : (
-          <div className="rounded-md border bg-background overflow-x-auto">
-            <TableContent key={userRoles.length} table={table} />
-          </div>
-        )}
-      </div>
+            {/* Table */}
+            <div className="w-full">
+              {userRoles.length === 0 ? (
+                <div className="p-4 text-center text-sm text-muted-foreground italic">
+                  No user-role assignments found.
+                </div>
+              ) : (
+                <div className="rounded-md border bg-background overflow-x-auto">
+                  <TableContent key={userRoles.length} table={table} />
+                </div>
+              )}
+            </div>
+        </>
+      }
     </div>
   )
 }

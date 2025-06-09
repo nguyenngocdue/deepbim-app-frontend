@@ -18,10 +18,10 @@ export function useCustomerChatSocket(userId?: number) {
   const [isTyping, setIsTyping] = useState(false);
   const socketRef = useRef<Socket | null>(null);
 
-  const defaultWelcomeMessages: DisplayMessage[] = [
-    { text: "Xin cảm ơn bạn đã đến trang web của chúng tôi.", from: "support" },
-    { text: "Bạn cần điều chi?", from: "support" },
-  ];
+const defaultWelcomeMessages: DisplayMessage[] = [
+  { text: "Thank you for visiting our website.", from: "support" },
+  { text: "How can I help you today?", from: "support" },
+];
 
   useEffect(() => {
     if (open && messages.length === 0) {

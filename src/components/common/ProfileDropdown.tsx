@@ -28,6 +28,7 @@ export function ProfileDropdown() {
   const { navigate } = useRouter();
   const dispatch = useAppDispatch();
 
+
   const onSignout = async () => {
     navigate({ to: '/sign-in' });
     try {
@@ -38,11 +39,17 @@ export function ProfileDropdown() {
       dispatch(clearUser());
     }
   };
-
+  
   const username = user?.user_name || 'guest';
   const email = user?.email || 'anonymous';
   const avatarUrl: string = user?.picture || `https://api.dicebear.com/7.x/adventurer/svg?seed=${username}`;
   const bio = user?.bio;
+
+  const userRoles = user?.userRoles;
+  let roles = [];
+  if(userRoles) {
+    roles = userRoles.map((item) => item.role.name)
+  }
 
   return (
     <DropdownMenu modal={false}>
@@ -78,11 +85,19 @@ export function ProfileDropdown() {
           <DropdownMenuItem>New Team <CustomBadge text='Dev' className="bg-red-700" />
             <DropdownMenuShortcut><GiTeamIdea size={16} /></DropdownMenuShortcut>
           </DropdownMenuItem>
+       
+       <DropdownMenuItem
+          className="cursor-pointer"
+          title={`Roles: ${roles.join(', ')}`}
+        >
+          Role: <span className="ml-1 text-xs text-muted-foreground">{roles.join(', ')}</span>
+          <DropdownMenuShortcut><RiLogoutCircleRLine size={16} /></DropdownMenuShortcut>
+        </DropdownMenuItem>
 
 
           <DropdownMenuGroup>
             <DropdownMenuItem asChild>
-              <Link to="/user/show/cv">My CV
+              <Link to="/user/show/cv">NND CV
                 <DropdownMenuShortcut><VscVersions size={16} /></DropdownMenuShortcut>
               </Link>
             </DropdownMenuItem>

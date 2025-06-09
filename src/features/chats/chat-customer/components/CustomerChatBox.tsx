@@ -1,23 +1,10 @@
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 import { MessageBubble } from "./MessageBubble";
 
-/**
- * CustomerChatBox - The main chat box UI for the customer.
- * 
- * Props:
- * - messages: Array<{text, from, avatar?, userName?}>
- * - input: string
- * - handleInputChange: (e) => void
- * - handleSend: () => void
- * - handleClose: () => void
- * - isTyping: boolean
- * - sessionId: number | null
- * - chatEndRef: React.RefObject<HTMLDivElement>
- */
+
 export function CustomerChatBox({
   messages,
   input,
@@ -37,7 +24,7 @@ export function CustomerChatBox({
     reaction?: React.ReactNode;
   }[];
   input: string;
-  handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleInputChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   handleSend: () => void;
   handleClose: () => void;
   isTyping: boolean;
@@ -98,7 +85,6 @@ export function CustomerChatBox({
           {isTyping && <span>Admin is typing...</span>}
         </div>
 
-        {/* Input area */}
         {/* Input area */}
         <div className="flex gap-2 items-end pt-1">
           <textarea

@@ -44,6 +44,8 @@ export const TeamChatBox: React.FC<TeamChatBoxProps> = ({
   const { user } = useAppSelector((state) => state.auth);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  console.log(messages);
+
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "auto" });
   }, [messages]);

@@ -5,6 +5,9 @@ import { getRoles } from '@/apis/roles/roles'
 import { getPermissions, updatePermissions } from '@/apis/permissions/permissions'
 import { toast } from 'sonner'
 import { getRolePermissions } from '@/apis/role-permissions-api'
+import { useSelector } from 'react-redux'
+import { RootState } from '@/store'
+import { isAdmin } from '@/utils/user'
 
 interface Role {
   id: number
@@ -22,6 +25,8 @@ export function RolePermissionManagement() {
   const [permissions, setPermissions] = useState<Permission[]>([])
   const [matrix, setMatrix] = useState<Record<string, boolean>>({})
   const [loading, setLoading] = useState(false)
+  const currentUser = useSelector((state: RootState) => state.auth.user);
+  const isUserAdmin = isAdmin(currentUser);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -120,7 +125,8 @@ export function RolePermissionManagement() {
                   return (
                     <td key={key} className="px-4 py-2 text-center">
                      <Checkbox
-                          checked={matrix[key] || false}
+                          disabled={!isUserAdmin}
+                          checked={ matrix[key] || false}
                           onCheckedChange={() => togglePermission(role.id, perm.id)}
                           className="mx-auto border-border text-foreground data-[state=checked]:bg-foreground data-[state=checked]:text-background"
                         />

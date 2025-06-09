@@ -75,6 +75,7 @@ export async function createNewUser(data: any){
 
 export async function fetchAdminId(): Promise<number> {
   const res = await fetchWithAuth2('/users/admins');
+  console.log(res);
   return res;
 }
 

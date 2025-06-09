@@ -9,6 +9,7 @@ import {
 import { TableContent } from '@/components/model-table/TableContent'
 import { Badge, getBadgeVariant } from '@/components/ui/badge'
 import { CLASS_NAME_DEFAULT } from '@/utils/class'
+import { AvatarUser } from '@/components/AvatarUser'
 
 export function UserTable({
   users,
@@ -21,7 +22,19 @@ export function UserTable({
     {
       accessorKey: 'email',
       header: 'Email',
-      cell: ({ getValue }) => <span>{getValue<string>()}</span>,
+      cell: ({ row }) => {
+         const email = row.original.email;
+         const picture = row.original.picture;        
+         const id = row.original.id;
+
+         return <>
+            <AvatarUser
+              img={picture}
+              name={email}
+              id={id}
+            />
+         </>
+      },
     },
     {
       accessorKey: 'userRoles',

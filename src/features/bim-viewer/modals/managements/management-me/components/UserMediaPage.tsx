@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
-import { apiGet } from "@/api";
 import { Model } from "@/components/model-table/types";
 import { ModelTable } from "@/components/common/ModelTable";
 import { modelColumnsConfig } from "../../ColumnsConfig";
