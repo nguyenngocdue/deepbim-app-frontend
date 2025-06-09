@@ -68,14 +68,14 @@ function StepWorkExperience() {
     useEffect(() => {
         const interval = setInterval(() => {
             setProgress((prev) => (prev + 1) % (workSteps.length * 20));
-        }, 200);
+        }, 150);
         return () => clearInterval(interval);
     }, []);
 
     useEffect(() => {
         const toggleRunner = setInterval(() => {
             setRunnerIndex((prev) => (prev + 1) % runnerIcons.length);
-        }, 800);
+        }, 600);
         return () => clearInterval(toggleRunner);
     }, []);
 
