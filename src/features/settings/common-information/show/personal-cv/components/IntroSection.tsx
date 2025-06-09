@@ -18,6 +18,7 @@ import {
   Sparkles,
   ChevronDown,
   Share2,
+  Youtube,
 } from "lucide-react";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { motion } from "framer-motion";
@@ -89,7 +90,7 @@ const itemVariants = {
 export function IntroSection() {
 
   const avatarUrls = [
-    "/assets/avatars/avatar_1.png",    
+    "/assets/avatars/avatar_1.png",
     "/assets/avatars/avatar_2.png",
     "/assets/avatars/avatar_3.png",
 
@@ -97,18 +98,18 @@ export function IntroSection() {
 
   const [avatarIndex, setAvatarIndex] = useState(0);
   const [fadeIn, setFadeIn] = useState(true);
-  
-useEffect(() => {
-  const interval = setInterval(() => {
-    setFadeIn(false);
-    setTimeout(() => {
-      setAvatarIndex((prev) => (prev + 1) % avatarUrls.length);
-      setFadeIn(true);
-    }, 250); // Đợi hiệu ứng ẩn xong (300ms)
-  }, 5000);
 
-  return () => clearInterval(interval);
-}, []);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setFadeIn(false);
+      setTimeout(() => {
+        setAvatarIndex((prev) => (prev + 1) % avatarUrls.length);
+        setFadeIn(true);
+      }, 250); // Đợi hiệu ứng ẩn xong (300ms)
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
 
 
 
@@ -130,7 +131,7 @@ useEffect(() => {
             <AvatarImage
               src={avatarUrls[avatarIndex]}
               alt={`Avatar ${avatarIndex + 1}`}
-             className={`object-cover w-full h-full transition-opacity duration-1000 ease-in-out ${fadeIn ? 'opacity-100' : 'opacity-0'}`}
+              className={`object-cover w-full h-full transition-opacity duration-1000 ease-in-out ${fadeIn ? 'opacity-100' : 'opacity-0'}`}
             />
           </Avatar>
           <div
@@ -165,11 +166,11 @@ useEffect(() => {
         <div className="pl-4 space-y-1 text-sm text-zinc-700 dark:text-zinc-300">
           <p className="flex items-center gap-2 group transition-colors hover:text-amber-600 dark:hover:text-amber-400">
             <Mail className="w-4 h-4 text-blue-500 dark:text-blue-400 group-hover:text-amber-600 dark:group-hover:text-amber-400 group-hover:scale-110 transition-all" />
-            <span className="text-sm">jill.anderson@example.com</span>
+            <span className="text-sm">duengocnguyen@gmail.com</span>
           </p>
           <p className="flex items-center gap-2 group transition-colors hover:text-amber-600 dark:hover:text-amber-400">
             <Phone className="w-4 h-4 text-green-500 dark:text-green-400 group-hover:text-amber-600 dark:group-hover:text-amber-400 group-hover:scale-110 transition-all" />
-            <span className="text-sm">+84 912 345 678</span>
+            <span className="text-sm">+0339001600 (zalo , WhatsApp)</span>
           </p>
           <p className="flex items-center gap-2 group transition-colors hover:text-amber-600 dark:hover:text-amber-400">
             <MapPin className="w-4 h-4 text-red-500 dark:text-red-400 group-hover:text-amber-600 dark:group-hover:text-amber-400 group-hover:scale-110 transition-all" />
@@ -195,7 +196,7 @@ useEffect(() => {
                   href="https://www.linkedin.com/in/nguyen-ngoc-due-28a777196/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:underline underline-offset-2"
+                  className="hover:underline underline-offset-2 truncate"
                 >
                   https://www.linkedin.com/in/nguyen-ngoc-due-28a777196/
                 </a>
@@ -203,25 +204,37 @@ useEffect(() => {
               <p className="flex items-center gap-2 group transition-colors hover:text-green-600 dark:hover:text-green-400 text-sm">
                 <Globe className="w-4 h-4 text-green-500 group-hover:scale-110 transition-transform" />
                 <a
-                  href="https://jill-portfolio.com"
+                  href="https://deepbim.net/examples/bim-viewer"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:underline underline-offset-2"
+                  className="hover:underline underline-offset-2 truncate"
                 >
-                  jill-portfolio.com
+                  https://deepbim.net/examples/bim-viewer
                 </a>
               </p>
               <p className="flex items-center gap-2 group transition-colors hover:text-zinc-800 dark:hover:text-white text-sm">
                 <Github className="w-4 h-4 text-zinc-500 group-hover:scale-110 transition-transform" />
                 <a
-                  href="https://github.com/jilldev"
+                  href="https://github.com/nguyenngocdue"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:underline underline-offset-2"
+                  className="hover:underline underline-offset-2 truncate"
                 >
-                  github.com/jilldev
+                  https://github.com/nguyenngocdue
                 </a>
               </p>
+              <p className="flex items-center gap-2 group transition-colors hover:text-red-600 dark:hover:text-red-400 text-sm">
+                <Youtube className="w-4 h-4 text-red-500 group-hover:scale-110 transition-transform" />
+                <a
+                  href="https://www.youtube.com/@Bim3DM"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:underline underline-offset-2 truncate"
+                >
+                  https://www.youtube.com/@Bim3DM
+                </a>
+              </p>
+
             </div>
 
           </CollapsibleContent>
