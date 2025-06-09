@@ -1,7 +1,6 @@
 import React, { useEffect, forwardRef, useImperativeHandle } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { format } from "date-fns";
-import { CalendarIcon } from "lucide-react";
 import {
   Input,
 } from "@/components/ui/input";
@@ -14,13 +13,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Calendar } from "@/components/ui/calendar";
+
+import DatePicker from "react-datepicker";
 import { cn } from "@/lib/utils";
+import "react-datepicker/dist/react-datepicker.css";
 
 interface Field {
   name: string;
@@ -241,54 +237,40 @@ export const EntityForm = forwardRef<any, EntityFormProps>(({
 
           if (field.type === "date") {
             return (
-              <Controller
-                key={index}
-                control={control}
-                name={field.name}
-                rules={{
-                  required: field.required ? `${field.label} is required` : false,
-                }}
-                render={({ field: { onChange, value } }) => {
-                  const dateValue = value ? new Date(value) : null;
-                  return (
-                    <div>
-                      <LabelWithRequired label={field.label} required={field.required} />
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <button
-                            type="button"
-                            className={cn(
-                              "w-full flex items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm font-normal cursor-pointer",
-                              !dateValue && "text-muted-foreground",
-                              errors[field.name] && "border-red-500"
-                            )}
-                          >
-                            {dateValue
-                              ? format(dateValue, "PPP")
-                              : field.placeholder || "Pick a date"}
-                            <CalendarIcon className="ml-2 h-4 w-4 opacity-50" />
-                          </button>
-                        </PopoverTrigger>
-                        <PopoverContent align="start" className="p-0 w-auto">
-                          <Calendar
-                            mode="single"
-                            selected={dateValue || undefined}
-                            onSelect={(date) => {
-                              onChange(date);
-                            }}
-                            initialFocus
-                          />
-                        </PopoverContent>
-                      </Popover>
-                      {errors[field.name] && (
-                        <p className="text-sm text-red-500 mt-1">
-                          {(errors[field.name] as any).message}
-                        </p>
-                      )}
-                    </div>
-                  );
-                }}
-              />
+             
+
+<Controller
+  key={index}
+  control={control}
+  name={field.name}
+  rules={{
+    required: field.required ? `${field.label} is required` : false,
+  }}
+  render={({ field: { onChange, value } }) => {
+    const dateValue = value ? new Date(value) : null;
+    return (
+      <div className="flex flex-col gap-2">
+        <LabelWithRequired  label={field.label} required={field.required} />
+        <DatePicker
+          selected={dateValue}
+          onChange={(date) => onChange(date)}
+          placeholderText={field.placeholder || "Pick a date"}
+          className={cn(
+            "w-full rounded-md border border-input px-3 py-2 text-sm font-normal bg-background",
+            errors[field.name] && "border-red-500"
+          )}
+          dateFormat="PPP"
+        />
+        {errors[field.name] && (
+          <p className="text-sm text-red-500 mt-1">
+            {(errors[field.name] as any).message}
+          </p>
+        )}
+      </div>
+    );
+  }}
+/>
+             
             );
           }
         }

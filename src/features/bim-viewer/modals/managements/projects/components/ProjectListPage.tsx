@@ -16,6 +16,7 @@ import { FormActionButtons } from "@/components/bim-viewer/common/FormActionButt
 import { IoCreateOutline } from "react-icons/io5";
 import { ConfirmDeleteDialog } from "@/components/ConfirmDeleteDialog";
 import { LoadingState } from "@/components/common/LoadingState";
+import { AvatarUser } from "@/components/AvatarUser";
 
 type Mode = "create" | "edit" | "view" | null;
 
@@ -82,7 +83,7 @@ export default function ProjectListPage() {
       header: "Creator",
       cell: ({ getValue }) => {
         const val = getValue() as any;
-        return val?.user_name ?? val?.name ?? val?.label ?? val?.title ?? "-";
+       return <AvatarUser name={val.user_name} img={val.picture} id={val.id}/>
       },
     },
     {
@@ -214,10 +215,10 @@ export default function ProjectListPage() {
 
   // Form submit handler (create or update)
   const handleSubmit = async (formData: any) => {
+    console.log(selectedProject);
     try {
       if (mode === "edit" && selectedProject) {
         await updateProject(selectedProject.id, formData);
-        toast.success("Project updated successfully");
       } else if (mode === "create") {
         await createProjects(formData);
         toast.success("Project created successfully");

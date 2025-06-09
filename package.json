@@ -80,6 +80,7 @@
     "pdfjs-dist": "^5.2.133",
     "react": "^19.1.0",
     "react-arborist": "^3.4.3",
+    "react-datepicker": "^8.4.0",
     "react-dom": "^19.1.0",
     "react-draggable": "^4.4.6",
     "react-hook-form": "^7.54.0",

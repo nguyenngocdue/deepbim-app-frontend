@@ -15,6 +15,7 @@ import { SearchBox } from "@/components/SearchBox"
 import { TableRowActions } from "@/components/bim-viewer/common/TableRowActions"
 import { ConfirmDeleteDialog } from "@/components/ConfirmDeleteDialog"
 import { LoadingState } from "@/components/common/LoadingState"
+import { AvatarUser } from "@/components/AvatarUser"
 
 interface SubProject {
   id: number;
@@ -136,7 +137,7 @@ export default function SubProjectListPage() {
     } catch (error: any) {
       toast.error(`Delete failed: ${error.message || error}`);
     }
-     await fetchData();
+    await fetchData();
   };
 
   const openDeleteModal = (row: SubProject) => {
@@ -226,12 +227,18 @@ export default function SubProjectListPage() {
       {
         accessorKey: "owner",
         header: "Owner",
-        cell: ({ row }) => <span title={`Id: #${row.original.owner?.id}`}>{row.original.owner?.user_name}</span>,
+        cell: ({ getValue }) => {
+          const val = getValue() as any;
+          return <AvatarUser name={val.user_name} img={val.picture} id={val.id} />
+        },
       },
       {
         accessorKey: "creator",
         header: "Creator",
-        cell: ({ row }) => <span title={`Id: #${row.original.creator?.id}`}>{row.original.creator?.user_name}</span>,
+        cell: ({ getValue }) => {
+          const val = getValue() as any;
+          return <AvatarUser name={val.user_name} img={val.picture} id={val.id} />
+        },
       },
       {
         id: "actions",
@@ -351,7 +358,7 @@ export default function SubProjectListPage() {
         countInfo={countInfo}
       >
         {data === null ? (
-           <LoadingState/>
+          <LoadingState />
         ) : (
           <TableContent table={table} key={filteredData.length} />
         )}
