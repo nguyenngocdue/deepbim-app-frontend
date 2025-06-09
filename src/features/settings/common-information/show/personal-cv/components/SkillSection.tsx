@@ -77,7 +77,7 @@ export function SkillSection() {
   );
 }
 
-function SkillGraph({ nodes, links, showLabels }) {
+ function SkillGraph({ nodes, links, showLabels }) {
   const ref = useRef(null);
 
   useEffect(() => {
@@ -98,28 +98,21 @@ function SkillGraph({ nodes, links, showLabels }) {
       .attr("patternUnits", "userSpaceOnUse")
       .append("path")
       .attr("d", "M0 40 L40 0 M40 40 L0 0")
-       .attr("stroke", "var(--grid-stroke)")
-      .attr("stroke-width", 1)           // từ 0.5 ➝ 1
-      .attr("stroke-opacity", 0.1)       // từ 0.4 ➝ 0.8
+      .attr("stroke", "var(--grid-stroke)")
+      .attr("stroke-width", 1)
+      .attr("stroke-opacity", 0.1);
 
     svg.append("rect")
       .attr("width", width)
       .attr("height", height)
       .attr("fill", "url(#grid3d)")
-       .attr("opacity", 1);
-
-
-
-
+      .attr("opacity", 1);
 
     const sim = d3.forceSimulation(nodes)
       .force("link", d3.forceLink(links).id((d) => d.id).distance(110))
       .force("charge", d3.forceManyBody().strength(-120))
       .force("center", d3.forceCenter(width / 2, height / 2))
-      .force("collision", d3.forceCollide().radius(35));
-
-
-    sim
+      .force("collision", d3.forceCollide().radius(35))
       .force("x", d3.forceX((d) => {
         switch (d.parent || d.id) {
           case "frontend": return width * 0.2;
@@ -136,20 +129,18 @@ function SkillGraph({ nodes, links, showLabels }) {
           case "frontend":
           case "backend":
           case "framework":
-            return height * 0.3; // top
+            return height * 0.3;
           case "devops":
           case "db":
           case "bim":
-            return height * 0.75; // bottom
+            return height * 0.75;
           default:
             return height / 2;
         }
       }).strength(0.15));
 
-
-
     const link = svg.append("g")
-      .attr("stroke", "var(--link-color)") 
+      .attr("stroke", "var(--link-color)")
       .attr("stroke-opacity", 0.6)
       .selectAll("line")
       .data(links)
@@ -161,7 +152,15 @@ function SkillGraph({ nodes, links, showLabels }) {
       .data(nodes)
       .join("circle")
       .attr("r", 22)
-      .attr("fill", (d) => (d.parent ? "#60a5fa" : "#2563eb"))
+      .attr("fill", (d) => {
+        if (d.parent === "frontend") return "#3b82f6";
+        if (d.parent === "backend") return "#6366f1";
+        if (d.parent === "devops") return "#10b981";
+        if (d.parent === "db") return "#f59e0b";
+        if (d.parent === "bim") return "#ef4444";
+        if (d.parent === "framework") return "#a855f7";
+        return "#2563eb";
+      })
       .attr("stroke", "#fff")
       .attr("stroke-width", 2)
       .call(
@@ -193,7 +192,7 @@ function SkillGraph({ nodes, links, showLabels }) {
       .attr("font-family", "sans-serif")
       .text((d) => d.icon)
       .attr("pointer-events", "none")
-      .attr("fill", "#fff"); // icon nằm trong node
+      .attr("fill", "#fff");
 
     const label = svg.append("g")
       .selectAll("text.label")
@@ -206,9 +205,8 @@ function SkillGraph({ nodes, links, showLabels }) {
       .attr("font-family", "sans-serif")
       .attr("font-weight", "bold")
       .text((d) => d.label)
-     .attr("fill", "var(--label-color)")
+      .attr("fill", "var(--label-color)")
       .style("opacity", showLabels ? 1 : 0);
-
 
     sim.on("tick", () => {
       nodes.forEach((d) => {
@@ -233,7 +231,6 @@ function SkillGraph({ nodes, links, showLabels }) {
       label
         .attr("x", (d) => d.x)
         .attr("y", (d) => d.y);
-
     });
   }, [nodes, links, showLabels]);
 

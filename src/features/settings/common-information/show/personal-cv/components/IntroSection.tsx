@@ -28,7 +28,6 @@ import {
   CollapsibleContent,
 } from "@/components/ui/collapsible";
 import { useEffect, useState } from "react";
-import { Image } from "@radix-ui/react-avatar";
 
 const overviewGroups = [
   {
@@ -39,7 +38,7 @@ const overviewGroups = [
     items: [
       { icon: <LucideGlobe className="w-5 h-5" />, title: "Global Projects", desc: "2+ years of BIM experience in Japan and Singapore." },
       { icon: <LucideUsers className="w-5 h-5" />, title: "Major Projects", desc: "Infrastructure, hospitals, schools, bridges." },
-      { icon: <LucideLaptop className="w-5 h-5" />, title: "Design Tools", desc: "AutoCAD, Revit, Civil 3D, Navisworks." },
+      { icon: <LucideLaptop className="w-5 h-5" />, title: "Design Tools", desc: "AutoCAD, Revit, Civil 3D, Navisworks" },
       { icon: <LucideSettings2 className="w-5 h-5" />, title: "Revit Automation", desc: "Dynamo, pyRevit, C#, Python Addins." },
     ],
   },
@@ -49,23 +48,30 @@ const overviewGroups = [
     header: "bg-violet-600 dark:bg-[#00E6AC]",
     stripe: "bg-violet-600 dark:bg-[#00E6AC]",
     items: [
-      { icon: <LucideCode className="w-5 h-5" />, title: "Web Dev", desc: "PHP, JS, Laravel, ReactJS, API." },
-      { icon: <LucideServer className="w-5 h-5" />, title: "DevOps Skills", desc: "Docker, K8s, PostgreSQL, MySQL." },
-      { icon: <LucideGitBranch className="w-5 h-5" />, title: "Research & Scale", desc: "Microservices, RabbitMQ, distributed arch." },
-      { icon: <LucideBarChart4 className="w-5 h-5" />, title: "BIM Viewer Dev", desc: "Three.js, IFC parsers, ThatOpenBIM." },
+      { icon: <LucideCode className="w-5 h-5" />, title: "Frontend & Backend", desc: "ReactJS, PHP, Laravel, JavaScript, RESTful API." },
+      { icon: <LucideServer className="w-5 h-5" />, title: "DevOps", desc: "Docker, basic Kubernetes (K8s), CI/CD pipelines" },
+      { icon: <LucideGitBranch className="w-5 h-5" />, title: "System Architecture", desc: "Microservices, RabbitMQ, distributed design." },
+      { icon: <LucideBarChart4 className="w-5 h-5" />, title: "BIM Viewer Development", desc: "Three.js, IFC parsers, ThatOpenBIM, IfcOpenShell" },
     ],
   },
   {
-    group: "Environment & Soft Skills",
+    group: "Environments & Supporting Skills",
     bg: "bg-[#FF456E] dark:bg-[#EA47A1]",
     header: "bg-[#FF456E] dark:bg-[#EA47A1]",
     stripe: "bg-[#FF456E] dark:bg-[#EA47A1]",
     items: [
-      { icon: <LucideTerminalSquare className="w-5 h-5" />, title: "Environment", desc: "Linux, Windows, Git, Bitbucket." },
-      { icon: <LucideCode2 className="w-5 h-5" />, title: "Soft Skills", desc: "Teamwork, logic, stakeholder comms." },
+      { icon: <LucideTerminalSquare className="w-5 h-5" />, title: "Working Environment", desc: "Linux, Windows, Git, Bitbucket, Nginx." },
+      {
+        icon: <LucideServer className="w-5 h-5" />,
+        title: "Databases",
+        desc: "PostgreSQL, MySQL. Proficient in writing and optimizing complex SQL queries."
+      },
+
+      { icon: <LucideCode2 className="w-5 h-5" />, title: "Soft Skills", desc: "Teamwork, problem-solving, logical thinking, stakeholder communication." },
     ],
   },
 ];
+
 
 const containerVariants = {
   hidden: { opacity: 0, y: 40 },
@@ -128,8 +134,8 @@ export function IntroSection() {
       >
         {/* Avatar */}
         <div className="relative">
-          <Avatar 
-           className="w-32 h-32 bg-gradient-to-r from-blue-400 via-cyan-300 to-teal-500 
+          <Avatar
+            className="w-32 h-32 bg-gradient-to-r from-blue-400 via-cyan-300 to-teal-500 
              dark:from-transparent dark:via-transparent dark:to-transparent 
              ring-4 ring-blue-500 dark:ring-green-600 
              shadow-lg shadow-indigo-400/30
