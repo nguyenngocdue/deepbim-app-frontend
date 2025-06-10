@@ -9,7 +9,7 @@ const PcScreen = () => {
   
 
   const videoElement = useMemo(() => Object.assign(document.createElement('video'), {
-    src: '/my-room-3d/assets/3041975.mp4',
+    src: 'https://minio.deepbim.net:9000/deepbim-fe/1749523330397-Sign-in.mp4',
     crossOrigin: 'anonymous',
     loop: true,
     muted: true,

@@ -128,7 +128,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
 
 
   return (
-    <div className={cn('grid gap-8 h-svh bg-behind w-full p-4 z-50 bg-transparent', className)} {...props}>
+    <div className={cn('grid gap-8 h-full bg-behind w-full lg:p-4 md:p-2 z-50 bg-transparent', className)} {...props}>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="grid gap-4">
@@ -239,9 +239,9 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
             </div>
 
             {/* Nút GitHub và Google */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-4">
-              <GitHubLoginButton isLoading={isLoadingGitHub} onClick={handleGitHubLogin} />
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-2">
               <GoogleLoginButton />
+              <GitHubLoginButton isLoading={isLoadingGitHub} onClick={handleGitHubLogin} />
             </div>
 
 

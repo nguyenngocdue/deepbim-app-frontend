@@ -74,11 +74,11 @@ const Header = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-4  ">
+          <nav className="hidden md:flex items-center gap-4 ">
             {links.map((link) => (
               <Link key={link.href} to={link.href} 
                     className={`${navLinkStyle} ${
-                      isActive(link.href) ?  `text-reverse ` : 'text-50'
+                      isActive(link.href) ?  `text-reverse` : 'dark:text-slate-100 text-slate-800'
                     }`}
                     >
                 {link.label}

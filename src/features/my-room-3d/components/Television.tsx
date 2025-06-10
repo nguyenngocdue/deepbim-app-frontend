@@ -9,7 +9,7 @@ const Television = () => {
 
   // ✅ Video setup
   const video = useMemo(() => Object.assign(document.createElement('video'), {
-    src: '/my-room-3d/assets/3004.mp4',
+    src: 'https://minio.deepbim.net:9000/deepbim-fe/1749522957730-Sample_model.mp4',
     crossOrigin: 'anonymous',
     loop: true,
     muted: false,

@@ -9,13 +9,11 @@ import Experience from './utils/Experience'
 import { useShaderMaterial } from './utils/ShaderMaterial'
 import { useRoomModelControls } from './RoomModelControls'
 import PcScreen from './PcScreen'
-import Television from './Television'
 import MacScreen from './MacScreen'
+import Television from './Television'
 
 const RoomModel = () => {
   const room = useGLTF('/my-room-3d/assets/roomModel.glb')
-  const pcScreen = useGLTF('/my-room-3d/assets/pcScreenModel.glb')
-  const macScreen = useGLTF('/my-room-3d/assets/macScreenModel.glb')
   const elgatoLight = useGLTF('/my-room-3d/assets/elgatoLightModel.glb')
   const googleLeds = useGLTF('/my-room-3d/assets/googleHomeLedsModel.glb')
   const loupedeck = useGLTF('/my-room-3d/assets/loupedeckButtonsModel.glb')
@@ -75,6 +73,7 @@ const RoomModel = () => {
       <primitive object={elgatoLight.scene} position={[1.0, 1.1, -1.5]} />
       <primitive object={googleLeds.scene} position={[-0.5, 0.95, -0.8]} />
       <primitive object={loupedeck.scene} position={[0.2, 0.85, -1.0]} />
+      {/* <MultiImageScreens/> */}
       <Television/>
     </group>
   )

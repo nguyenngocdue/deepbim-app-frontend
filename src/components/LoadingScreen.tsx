@@ -9,7 +9,7 @@ interface LoadingScreenProps {
 }
 
 export function LoadingScreen({
-  logoSrc = "/logo.png",
+  logoSrc = "/logo_no_bg.png",
   message = "Welcome to DeepBIM",
   progress = 0,
 }: LoadingScreenProps) {
@@ -23,7 +23,7 @@ export function LoadingScreen({
   }, []);
 
   const overlay = (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#0f172a] text-white">
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#0f172a] text-white ">
       <div className="relative w-[380px] px-8 py-6 rounded-3xl shadow-2xl border border-blue-500/30 bg-white/5 backdrop-blur-md">
         {/* Animated border glow */}
         <span className="absolute inset-0 rounded-3xl pointer-events-none border-glow" />

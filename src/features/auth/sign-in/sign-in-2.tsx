@@ -14,16 +14,16 @@ export default function SignIn2() {
   }, [])
 
   return (
-    <div className='relative z-10 h-svh overflow-hidden'>
+    <div className='relative z-10 h-svh'>
       <ParticlesContainer/>
-      <div className='relative grid flex-col h-full w-full items-center justify-center lg:max-w-none lg:grid-cols-2 lg:px-0'>
+      <div className='relative grid flex-col w-full items-center p-6 lg:max-w-none lg:grid-cols-2 lg:px-0 overflow-auto'>
         <div className='relative h-full flex-col lg:flex'>
           {/* Thay đổi gradient từ emerald sang blue/indigo */}
-          <div className='relative z-20 p-10 flex flex-1  sm:flex-none justify-center sm:justify-start items-center text-lg font-medium '>
+          <div className='relative z-20 p-4 lg:p-5 md:p-2 flex flex-1  sm:flex-none justify-center sm:justify-start items-center text-lg font-medium '>
             <LogoWord size='lg' path="/images/logo_no_bg.png"/>
           </div>
           
-          <div className='absolute bottom-10 left-0 right-0 px-10 z-20 invisible sm:invisible lg:visible'>
+          <div className='absolute bottom-10 left-0 right-0 px-10 z-20 invisible  lg:visible md:visible'>
             <blockquote className='space-y-2'>
               <p className='text-sm font-heading text-subtitle2'>
                 "Deep Bim is a powerful tool for BIM professionals, providing
@@ -35,12 +35,12 @@ export default function SignIn2() {
             </blockquote>
           </div>
           {/* My room 3D */}
-          <div className='w-full h-hull invisible sm:visible lg:visible'>
+          <div className='w-full h-hull invisible lg:visible'>
             <MyRoom showFakeLights={true}/>
           </div>
           
         </div>
-        <div className='lg:p-8  h-svh bg-transparent '>
+        <div className='lg:p-8  h-svh bg-transparent overflow-y-auto'>
           <div className='mx-auto flex w-full h-full flex-col justify-center space-y-2 sm:w-[500px]'>
             <UserAuthForm />
           </div>

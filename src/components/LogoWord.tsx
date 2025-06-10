@@ -6,12 +6,12 @@ interface LogoWordProps {
   size?: 'sm' | 'md' | 'lg' | 'lg-wrap'; // thêm lg-wrap
 }
 
-export const LogoWord = ({ isHiddenText = false, path = "/images/logo.png", size = 'md' }: LogoWordProps) => {
+export const LogoWord = ({ isHiddenText = false, path = "/images/logo_no_bg.png", size = 'md' }: LogoWordProps) => {
   const sizeClasses = {
-    sm: { img: 'h-8', text: 'text-sm', textClass: 'text-green-600 font-heading', layout: 'inline-flex items-center gap-x-1' },
-    md: { img: 'h-12', text: 'text-xl', textClass: 'text-green-600 font-heading', layout: 'inline-flex items-center gap-x-1' },
-    lg: { img: 'h-24', text: 'text-3xl', textClass: 'text-emerald-500 font-heading tracking-wide ml-[-18px]', layout: 'inline-flex items-center gap-x-1' },
-    'lg-wrap': { img: 'h-24', text: 'text-3xl', textClass: 'text-emerald-500 font-heading tracking-wide', layout: 'flex flex-col items-center' },
+    sm: { img: 'h-8', text: 'text-sm', textClass: 'dark:text-[#CFFCF4] text-[#1B2A41] font-heading', layout: 'inline-flex items-center gap-x-1' },
+    md: { img: 'h-12', text: 'text-xl', textClass: 'dark:text-[#CFFCF4] text-[#1B2A41] font-heading', layout: 'inline-flex items-center gap-x-1' },
+    lg: { img: 'h-24', text: 'text-3xl', textClass: 'dark:text-[#CFFCF4]  text-[#1B2A41] font-heading tracking-wide ml-[-18px]', layout: 'inline-flex items-center gap-2' },
+    'lg-wrap': { img: 'h-24', text: 'text-3xl', textClass: 'dark:text-[#CFFCF4]  text-[#1B2A41] font-heading tracking-wide', layout: 'flex flex-col items-center' },
   };
 
   const selectedSize = sizeClasses[size] || sizeClasses['md'];

@@ -49,7 +49,7 @@ export function SimpleMap({
   height?: number;
 }) {
   return (
-    <div className="rounded-xl overflow-hidden shadow-md border p-2 border-gray-200 dark:border-zinc-800">
+    <div className="rounded-xl overflow-hidden shadow-md border p-2 border-gray-200 dark:border-zinc-800 z-40">
       <div className="px-4 pt-4 pb-1">
         <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
           {title}
@@ -62,7 +62,7 @@ export function SimpleMap({
         zoom={zoom}
         scrollWheelZoom={true}
         style={{ height, width: "100%" }}
-        className="rounded-b-xl"
+        className="rounded-b-xl z-40"
       >
         <TileLayer
           attribution='&copy; <a href="https://osm.org/copyright">OpenStreetMap</a>'
