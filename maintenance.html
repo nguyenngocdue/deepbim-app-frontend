@@ -3,46 +3,66 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>We're Updating - DeepBIM</title>
+    <title>DeepBIM - Under Maintenance</title>
     <link rel="icon" href="/logo.png" type="image/png" />
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
       .fade-in {
         animation: fadeIn 1s ease-out forwards;
       }
-
       @keyframes fadeIn {
-        0% {
+        from {
           opacity: 0;
-          transform: translateY(20px);
+          transform: translateY(30px);
         }
-        100% {
+        to {
           opacity: 1;
           transform: translateY(0);
         }
       }
+
+      /* Logo spin animation (subtle) */
+      @keyframes subtleSpin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      .logo-spin {
+        animation: subtleSpin 6s linear infinite;
+      }
     </style>
   </head>
-  <body class="bg-gradient-to-br from-sky-50 via-green-50 to-white min-h-screen flex items-center justify-center px-4 dark:bg-zinc-900">
-    <div
-      class="max-w-md w-full bg-white/70 dark:bg-zinc-800/70 backdrop-blur-md rounded-2xl shadow-xl border border-zinc-200 dark:border-zinc-700 p-8 text-center fade-in"
-    >
-      <!-- Logo -->
+  <body class="bg-gradient-to-br from-indigo-500 via-purple-500 to-blue-500 min-h-screen flex items-center justify-center px-4">
+    <div class="max-w-lg w-full text-center p-10 rounded-3xl bg-white/90 backdrop-blur-md shadow-2xl border border-white/30 fade-in">
+      <!-- Logo with hover + ring + spin -->
+      <div class="flex justify-center mb-6">
+        <img
+          src="https://minio.deepbim.net:9000/deepbim-fe/1749531131956-logo_no_bg.png"
+          alt="DeepBIM Logo"
+          class="w-24 h-24 rounded-full ring-4 ring-white shadow-lg transition-transform duration-300 hover:scale-105 logo-spin"
+        />
+      </div>
+
+      <!-- Illustration -->
       <img
-        src="https://minio.deepbim.net:9000/deepbim-fe/1749531131956-logo_no_bg.png"
-        alt="Company Logo"
-        class="w-20 h-20 mx-auto mb-4 rounded-xl shadow-md hover:scale-105 transition-transform duration-300"
+        src="https://cdn-icons-png.flaticon.com/512/595/595067.png"
+        alt="Maintenance Illustration"
+        class="w-28 h-28 mx-auto mb-4 opacity-90"
       />
 
       <!-- Title -->
-      <h1 class="text-2xl font-semibold text-zinc-800 dark:text-white mb-2">
-        We're Currently Updating Our Website
+      <h1 class="text-3xl font-bold text-zinc-800 mb-2">
+        We're Making Some Improvements!
       </h1>
 
       <!-- Message -->
-      <p class="text-zinc-600 dark:text-zinc-300 text-base">
-        Thank you for your patience. We're making improvements to serve you
-        better. Please check back in a few moments.
+      <p class="text-zinc-600 text-base leading-relaxed">
+        Our team is currently updating the site to improve your experience.
+        Please check back shortly. Thanks for your patience!
       </p>
     </div>
   </body>
