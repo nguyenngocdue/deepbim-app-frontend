@@ -30,7 +30,7 @@ export function GoogleLoginButton() {
          theme: 'filled_blue',    // Có màu xanh đặc trưng Google
           size: 'large',           // To rõ, dễ bấm
           type: 'standard',        // Có cả icon Google + text
-          shape: 'pill',           // Nút bo tròn
+          shape: '',           // Nút bo tròn
           width: '100%',              // Rộng hơn (hoặc '100%' nếu muốn full div)
           text: 'signin_with',     // Chữ: "Đăng nhập với Google"
           logo_alignment: 'left',  // Logo nằm bên trái (default)

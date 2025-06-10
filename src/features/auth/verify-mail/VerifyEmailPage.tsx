@@ -20,7 +20,7 @@ export function VerifyEmailPage() {
       }
       try {
         const res = await verifyEmail(token)
-        if (res.statusCode < 300) {
+        if (res.ok) {
           setStatus('success')
           setMessage('Your email has been verified successfully! Redirecting to sign in...')
           if (res.data && res.data.access_token) {
