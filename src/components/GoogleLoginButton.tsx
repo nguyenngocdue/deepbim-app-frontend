@@ -26,15 +26,14 @@ export function GoogleLoginButton() {
         });
 
         // ✅ Render Google button vào thẻ div của bạn
-        window.google.accounts.id.renderButton(buttonDivRef.current, {
-         theme: 'filled_blue',    // Có màu xanh đặc trưng Google
-          size: 'large',           // To rõ, dễ bấm
-          type: 'standard',        // Có cả icon Google + text
-          shape: '',           // Nút bo tròn
-          width: '100%',              // Rộng hơn (hoặc '100%' nếu muốn full div)
-          text: 'signin_with',     // Chữ: "Đăng nhập với Google"
-          logo_alignment: 'left',  // Logo nằm bên trái (default)
-          locale: 'en'
+       window.google.accounts.id.renderButton(buttonDivRef.current, {
+          theme: 'filled_blue',
+          size: 'large',
+          type: 'standard',
+          shape: 'react',
+          text: 'signin_with',
+          logo_alignment: 'left',
+          locale: 'vi' // Change to Vietnamese locale to match "Đăng nhập"
         });
       }
     };
@@ -49,6 +48,10 @@ export function GoogleLoginButton() {
     } else {
       initializeGoogle();
     }
+    return () => {
+      const script = document.querySelector('script[src="https://accounts.google.com/gsi/client"]');
+      if (script) document.body.removeChild(script);
+    };
   }, [handleGoogleLogin]);
 
   return (
