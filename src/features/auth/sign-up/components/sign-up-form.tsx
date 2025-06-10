@@ -197,11 +197,11 @@ export function SignUpForm({ className, ...props }: HTMLAttributes<HTMLDivElemen
               </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <GitHubLoginButton isLoading={isLoadingGitHub} onClick={handleGitHubLogin} />
+            <div className="grid grid-cols-1 gap-4">
               <div className="w-full flex items-center justify-center overflow-hidden">
                   <GoogleLoginButton isLoading={isLoadingGoogle} onClick={handleGoogleLogin} />
               </div>
+              <GitHubLoginButton isLoading={isLoadingGitHub} onClick={handleGitHubLogin} />
             </div>
           </div>
         </form>

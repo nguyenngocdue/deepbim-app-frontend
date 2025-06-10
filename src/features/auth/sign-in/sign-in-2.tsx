@@ -16,7 +16,7 @@ export default function SignIn2() {
   return (
     <div className='relative z-10 h-svh'>
       <ParticlesContainer/>
-      <div className='relative grid flex-col w-full items-center p-6 lg:max-w-none lg:grid-cols-2 lg:px-0 overflow-auto'>
+      <div className='relative grid flex-col w-full h-full items-center px-4 lg:px-0 md:px-0 lg:max-w-none lg:grid-cols-2 overflow-x-hidden '>
         <div className='relative h-full flex-col lg:flex'>
           {/* Thay đổi gradient từ emerald sang blue/indigo */}
           <div className='relative z-20 p-4 lg:p-5 md:p-2 flex flex-1  sm:flex-none justify-center sm:justify-start items-center text-lg font-medium '>
