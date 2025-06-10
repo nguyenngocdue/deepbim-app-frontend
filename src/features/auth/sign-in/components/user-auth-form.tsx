@@ -239,7 +239,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
             </div>
 
             {/* Nút GitHub và Google */}
-            <div className="grid grid-cols-1  gap-2">
+            <div className="grid grid-cols-1  gap-2 w-full">
               <GoogleLoginButton />
               <GitHubLoginButton isLoading={isLoadingGitHub} onClick={handleGitHubLogin} />
             </div>

@@ -55,7 +55,7 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
           </ul>
 
           {!collapsed && <div className={`uppercase bg-accent/95 p-2 text-xs font-semibold px-3 mt-5 mb-1 ${mutedText}`}>Project Management</div>}
-          <ul className="space-y-1">
+          <ul className="space-y-1 w-full">
             {!collapsed ? (
               <>
                 <li className="flex items-center gap-3 px-3 py-2 text-sm font-medium text-muted-foreground">
@@ -63,12 +63,12 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
                   <span>Workspaces</span>
                 </li>
                 <ul className="ml-8 space-y-1 flex flex-col items-start">
-                  <li>
+                  <li className="w-full text-left">
                     <Link to="/managements/projects" className={`block ${hoverBg} rounded-md px-2.5 py-2 text-sm ${textColor}`}>
                       <AppIcons.Projects className="inline mr-2" /> Projects
                     </Link>
                   </li>
-                  <li>
+                  <li  className="w-full text-left">
                     <Link to="/managements/sub-projects" className={`block ${hoverBg} rounded-md px-2.5 py-2 text-sm ${textColor}`}>
                       <AppIcons.SubProjects className="inline mr-2" /> Sub-Projects
                     </Link>
