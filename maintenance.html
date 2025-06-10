@@ -1,56 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Maintenance Notice</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>We're Updating - DeepBIM</title>
+    <link rel="icon" href="/logo.png" type="image/png" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      .fade-in {
+        animation: fadeIn 1s ease-out forwards;
+      }
 
-    body {
-      font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, #e0f7fa, #f1f8e9);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      color: #333;
-      text-align: center;
-      padding: 1rem;
-    }
+      @keyframes fadeIn {
+        0% {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body class="bg-gradient-to-br from-sky-50 via-green-50 to-white min-h-screen flex items-center justify-center px-4 dark:bg-zinc-900">
+    <div
+      class="max-w-md w-full bg-white/70 dark:bg-zinc-800/70 backdrop-blur-md rounded-2xl shadow-xl border border-zinc-200 dark:border-zinc-700 p-8 text-center fade-in"
+    >
+      <!-- Logo -->
+      <img
+        src="https://minio.deepbim.net:9000/deepbim-fe/1749531131956-logo_no_bg.png"
+        alt="Company Logo"
+        class="w-20 h-20 mx-auto mb-4 rounded-xl shadow-md hover:scale-105 transition-transform duration-300"
+      />
 
-    .container {
-      background: #ffffffcc;
-      backdrop-filter: blur(8px);
-      border-radius: 16px;
-      padding: 2rem 3rem;
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-      max-width: 500px;
-      width: 100%;
-      transition: all 0.3s ease-in-out;
-    }
+      <!-- Title -->
+      <h1 class="text-2xl font-semibold text-zinc-800 dark:text-white mb-2">
+        We're Currently Updating Our Website
+      </h1>
 
-    h1 {
-      font-size: 2rem;
-      margin-bottom: 1rem;
-      color: #222;
-    }
-
-    p {
-      font-size: 1.1rem;
-      color: #555;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>We're Currently Updating Our Website</h1>
-    <p>Please check back in a few moments. Thank you for your patience!</p>
-  </div>
-</body>
+      <!-- Message -->
+      <p class="text-zinc-600 dark:text-zinc-300 text-base">
+        Thank you for your patience. We're making improvements to serve you
+        better. Please check back in a few moments.
+      </p>
+    </div>
+  </body>
 </html>
