@@ -4,7 +4,7 @@ import { GrProjects } from "react-icons/gr";
 import { TiFlowChildren } from "react-icons/ti";
 import { MdWorkspaces, MdAdminPanelSettings } from "react-icons/md";
 import { BsChatQuoteFill } from "react-icons/bs";
-import { ChevronLeft, ChevronRight, Home } from "lucide-react";
+import { ChevronLeft, ChevronRight, Home, Menu, X } from "lucide-react";
 
 export const AppIcons = {
   Workflow: (props: any) => <LuWorkflow size={20} {...props} />,
@@ -16,5 +16,7 @@ export const AppIcons = {
   Chat: (props: any) => <BsChatQuoteFill size={20} {...props} />,
   ChevronLeft: (props: any) => <ChevronLeft size={20} {...props} />,
   ChevronRight: (props: any) => <ChevronRight size={20} {...props} />,
-   Home: (props: any) => <Home size={20} {...props} />,
+  Home: (props: any) => <Home size={20} {...props} />,
+  Menu: (props: any) => <Menu size={20} {...props} />, // Thêm icon Menu
+  X: (props: any) => <X size={20} {...props} />, // Thêm icon X
 };

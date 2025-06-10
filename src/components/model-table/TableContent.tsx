@@ -97,7 +97,7 @@ export function TableContent<T>({ table, showNo = true }: TableContentProps<T>) 
 
   return (
     <div className="rounded-md border border-zinc-400 overflow-auto bg-background shadow-sm max-h-[600px]">
-      <Table className="w-full border-collapse relative">
+      <Table className="w-full border-collapse relative overflow-auto">
         <TableHeader  className="sticky bg-muted top-0 z-10 shadow-sm">
           {headerGroups.map((headerGroup) => (
             <TableRow key={headerGroup.id} className="border-b border-zinc-500">
