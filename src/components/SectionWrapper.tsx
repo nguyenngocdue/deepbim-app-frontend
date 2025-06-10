@@ -9,12 +9,12 @@ interface SectionWrapperProps {
 
 const SectionWrapper = ({ children, className }: SectionWrapperProps) => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: false, margin: "-100px" });
+  const isInView = useInView(ref, { once: false, margin: "-10px" });
 
   const animationVariants = {
     hidden: { opacity: 1, y: 50 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
-    exit: { opacity: 1, y: -50, transition: { duration: 0.6, ease: "easeInOut" } },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.9, ease: "easeOut" } },
+    exit: { opacity: 1, y: -50, transition: { duration: 0.4, ease: "easeInOut" } },
   };
 
   return (

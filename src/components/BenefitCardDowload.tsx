@@ -20,7 +20,7 @@ const BenefitCardDownload = ({
 }: BenefitCardDownloadProps) => {
   return (
     <motion.div
-      className="relative p-2 bg-white shadow-lg shadow-zinc-500 rounded-lg flex flex-col justify-between text-left transition-all overflow-hidden h-full border border-transparent"
+      className="relative p-4 bg-white shadow-lg shadow-zinc-500 rounded-lg flex flex-col justify-between text-left transition-all overflow-hidden h-full border border-transparent"
       whileHover={
         disableDownload
           ? {

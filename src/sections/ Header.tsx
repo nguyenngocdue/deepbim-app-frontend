@@ -13,45 +13,41 @@ import { LuBadgePlus } from "react-icons/lu";
 const Header = () => {
   const { t } = useTranslation();
   const { language, toggleLanguage } = useLanguage();
-  const [showBottomNav, setShowBottomNav] = useState(false);
-  const [scrollTimeout, setScrollTimeout] = useState<NodeJS.Timeout | null>(null);
+  const [showBottomNav, setShowBottomNav] = useState(true); // Mặc định là true
+  const [hideTimeout, setHideTimeout] = useState<NodeJS.Timeout | null>(null);
 
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const isActive = (href: string) => pathname === href;
 
+  // Hàm để reset timer ẩn nav
+  const resetHideTimer = () => {
+    if (hideTimeout) clearTimeout(hideTimeout);
+    const timeout = setTimeout(() => {
+      setShowBottomNav(false);
+    }, 10000); // Ẩn sau 5 giây
+    setHideTimeout(timeout);
+  };
 
-  // Detect scroll to show bottom navigation, and hide after scrolling stops
+  // Detect scroll để hiện nav và reset timer
   useEffect(() => {
     const handleScroll = () => {
-      // Show bottom nav if scrolled down more than 50px
+      // Chỉ hiện khi scroll xuống > 50px
       if (window.scrollY > 50) {
         setShowBottomNav(true);
-      } else {
-        setShowBottomNav(false);
+        resetHideTimer();
       }
-
-      // Clear any existing timeout
-      if (scrollTimeout) {
-        clearTimeout(scrollTimeout);
-      }
-
-      // Set a new timeout to hide the bottom nav after 1 second of no scrolling
-      const timeout = setTimeout(() => {
-        setShowBottomNav(false);
-      }, 1000); // Hide after 1 second of no scrolling
-      setScrollTimeout(timeout);
     };
 
     window.addEventListener("scroll", handleScroll);
+    resetHideTimer(); // Bắt đầu đếm sau khi load xong
+
     return () => {
       window.removeEventListener("scroll", handleScroll);
-      if (scrollTimeout) {
-        clearTimeout(scrollTimeout);
-      }
+      if (hideTimeout) clearTimeout(hideTimeout);
     };
-  }, [scrollTimeout]);
+  }, [hideTimeout]);
 
-  const navLinkStyle = `sm:mt-4 text-sm sm:text-base md:text-lg  `;
+  const navLinkStyle = `sm:mt-4 text-sm sm:text-base md:text-lg`;
 
   const links = [
     { href: "/app", label: t("navbar.home"), icon: <FaPlug />, ariaLabel: t("navbar.home") },
@@ -65,7 +61,7 @@ const Header = () => {
     <>
       {/* Fixed Header */}
       <header
-        className={` ${CLASS_NAME_DEFAULT.CLASS_NAME_3} fixed top-0 left-0 w-full z-50 backdrop-blur-md px-6 shadow-md text-center `}
+        className={`${CLASS_NAME_DEFAULT.CLASS_NAME_3} fixed top-0 left-0 w-full z-50 backdrop-blur-md px-6 shadow-md text-center`}
       >
         <div className="flex justify-between items-center py-2">
           {/* Logo */}
@@ -74,36 +70,42 @@ const Header = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-4 ">
+          <nav className="hidden md:flex items-center gap-4">
             {links.map((link) => (
-              <Link key={link.href} to={link.href} 
-                    className={`${navLinkStyle} ${
-                      isActive(link.href) ?  `text-reverse` : 'dark:text-slate-100 text-slate-800'
-                    }`}
-                    >
+              <Link
+                key={link.href}
+                to={link.href}
+                className={`${navLinkStyle} ${
+                  isActive(link.href)
+                    ? `text-reverse`
+                    : 'dark:text-slate-100 text-slate-800'
+                }`}
+              >
                 {link.label}
               </Link>
             ))}
           </nav>
-          {/* Actions (Always in Header) */}
-            <div className=' flex items-center space-x-4'>
-              <LanguageButton language={language} onClick={toggleLanguage} className=""/>
-              <ThemeSwitch />
-              <ProfileDropdown />
-            </div>
+
+          {/* Actions */}
+          <div className="flex items-center space-x-4">
+            <LanguageButton language={language} onClick={toggleLanguage} className="" />
+            <ThemeSwitch />
+            <ProfileDropdown />
+          </div>
         </div>
       </header>
 
-      {/* Fixed Bottom Navigation (Mobile Only, Shown on Scroll, Hidden When Scroll Stops) */}
+      {/* Fixed Bottom Navigation (Mobile Only) */}
       <nav
-        className={`z-50 fixed bottom-0 left-0 w-full md:hidden flex justify-around items-center py-2 shadow-md transition-all duration-300 ease-in-out 
-         translate-y-0 bg-background `}
+        className={`z-50 fixed bottom-0 left-0 w-full md:hidden flex justify-around items-center py-2 shadow-md transition-all duration-300 ease-in-out bg-background ${
+          showBottomNav ? "translate-y-0" : "translate-y-full"
+        }`}
       >
         {links.map((link) => (
           <Link
             key={link.href}
             to={link.href}
-            className={`${navLinkStyle}  text-xl p-2`}
+            className={`${navLinkStyle} text-xl p-2`}
             aria-label={link.ariaLabel}
           >
             {link.icon}
