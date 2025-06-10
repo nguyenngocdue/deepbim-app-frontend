@@ -96,66 +96,69 @@ export function TableContent<T>({ table, showNo = true }: TableContentProps<T>) 
   const colSpan = (headerGroups[0]?.headers.length || 1) + (showNo ? 1 : 0)
 
   return (
-    <div className="rounded-md border border-zinc-400 overflow-auto bg-background shadow-sm max-h-[600px]">
-      <Table className="w-full border-collapse relative overflow-auto">
-        <TableHeader  className="sticky bg-muted top-0 z-10 shadow-sm">
-          {headerGroups.map((headerGroup) => (
-            <TableRow key={headerGroup.id} className="border-b border-zinc-500">
-              {showNo && (
-                <TableHead className="px-4 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-                  No.
-                </TableHead>
-              )}
-              {headerGroup.headers.map((header) => (
-                <TableHead
-                  key={header.id}
-                  className="px-4 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wide text-center"
-                >
-                  {flexRender(header.column.columnDef.header, header.getContext())}
-                </TableHead>
-              ))}
-            </TableRow>
-          ))}
-        </TableHeader>
+  <div className="w-full overflow-x-auto rounded-md border border-zinc-400 bg-background shadow-sm max-h-[600px]">
+    <Table className="w-full border-collapse relative table-fixed">
+      <TableHeader className="sticky top-0 z-10 bg-muted shadow-sm">
+        {headerGroups.map((headerGroup) => (
+          <TableRow key={headerGroup.id} className="border-b border-zinc-500">
+            {showNo && (
+              <TableHead className="w-[50px] px-4 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                No.
+              </TableHead>
+            )}
+            {headerGroup.headers.map((header) => (
+              <TableHead
+                key={header.id}
+                className="px-4 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wide text-center"
+              >
+                {flexRender(header.column.columnDef.header, header.getContext())}
+              </TableHead>
+            ))}
+          </TableRow>
+        ))}
+      </TableHeader>
 
-        <TableBody>
-          {rows.length > 0 ? (
-            rows.map((row, idx) => {
-              const rowData = row.original
-              return (
-                <TableRow
-                  key={row.id}
-                  className="border-b border-gray-600 hover:bg-muted/50 transition-colors"
-                >
-                  {showNo && (
-                    <TableCell className="px-4 py-2 text-sm text-foreground font-medium">
-                      {idx + 1}
-                    </TableCell>
-                  )}
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell
-                      key={cell.id}
-                      className={
-                        cell.column.id === "name"
-                          ? "px-4 py-2 text-sm text-foreground truncate max-w-[200px]"
-                          : "px-4 py-2 text-sm text-foreground"
-                      }
-                    >
-                      <RenderCell cell={cell} rowData={rowData} />
-                    </TableCell>
-                  ))}
-                </TableRow>
-              )
-            })
-          ) : (
-            <TableRow>
-              <TableCell colSpan={colSpan} className="text-center py-12 text-muted-foreground italic">
-                No data available.
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
-    </div>
-  )
+      <TableBody>
+        {rows.length > 0 ? (
+          rows.map((row, idx) => {
+            const rowData = row.original
+            return (
+              <TableRow
+                key={row.id}
+                className="border-b border-gray-600 hover:bg-muted/50 transition-colors"
+              >
+                {showNo && (
+                  <TableCell className="px-4 py-2 text-sm text-foreground font-medium">
+                    {idx + 1}
+                  </TableCell>
+                )}
+                {row.getVisibleCells().map((cell) => (
+                  <TableCell
+                    key={cell.id}
+                    className={`px-4 py-2 text-sm text-foreground ${
+                      cell.column.id === "name" || cell.column.id === "location"
+                        ? "truncate max-w-[160px] overflow-hidden"
+                        : ""
+                    }`}
+                  >
+                    <RenderCell cell={cell} rowData={rowData} />
+                  </TableCell>
+                ))}
+              </TableRow>
+            )
+          })
+        ) : (
+          <TableRow>
+            <TableCell
+              colSpan={colSpan}
+              className="text-center py-12 text-muted-foreground italic"
+            >
+              No data available.
+            </TableCell>
+          </TableRow>
+        )}
+      </TableBody>
+    </Table>
+  </div>
+)
 }
