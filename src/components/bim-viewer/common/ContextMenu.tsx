@@ -19,7 +19,7 @@ interface ContextMenuProps {
 const ContextMenu: React.FC<ContextMenuProps> = ({ x, y, onAction, onClose }) => {
   return (
     <div
-      className="fixed z-50 bg-accent rounded-lg shadow-lg border text-gray-100"
+      className="fixed z-50 dark:bg-slate-950 bg-slate-800 dark:border-gray-600 border-gray-600 rounded-lg shadow-lg border text-gray-100 "
       style={{ top: y, left: x }}
       onContextMenu={(e) => e.preventDefault()}
     >
@@ -41,7 +41,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ x, y, onAction, onClose }) =>
               onAction(item.action);
               onClose();
             }}
-            className="flex items-center space-x-2 px-3 py-2 rounded hover:bg-background/90 cursor-pointer"
+            className="flex items-center space-x-2 px-3 py-2 rounded dark:hover:bg-slate-600 hover:bg-slate-700 cursor-pointer"
           >
             {item.icon && <span className="text-lg">{item.icon}</span>}
             <span>{item.label}</span>

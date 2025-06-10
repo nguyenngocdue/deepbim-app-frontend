@@ -11,9 +11,13 @@ import { UserManager } from "@/services/UserManager";
 import VisibilityManager from "@/features/bim-viewer/modals/visibility-manger";
 import DraggableRightBarViewer from "@/components/layout/DraggableRightBarViewer";
 import CombineModelManager from "@/features/bim-viewer/modals/combine-model";
+import { ProfileDropdown } from "@/components/common/ProfileDropdown";
+import { ThemeSwitch } from "@/components/theme-switch";
+import { useTheme } from "@/context/theme-context";
+
 
 const MainViewer: React.FC = () => {
-  const { language, toggleLanguage } = useLanguage();
+ 
 
   useEffect(() => {
     const fetchUserSetting = async () => {
@@ -55,13 +59,11 @@ const MainViewer: React.FC = () => {
     }));
   };
 
+  const { theme, setTheme } = useTheme()
   const toggleTheme = () => {
-    setTheme((prev) => (prev === "light" ? "dark" : "light"));
+    setTheme(theme === "light" ? "dark" : "light");
   };
-  const [theme, setTheme] = useState<"light" | "dark">("dark");
-  // const themeClass = theme === "dark" ? "bg-slate-900 text-white" : "bg-gray-100 text-black";
-  const themeClass = theme === "dark" ? "" : "";
-
+  
 
   const sidebarTabs = [
       {
@@ -70,6 +72,7 @@ const MainViewer: React.FC = () => {
         content: <CombineModelManager />,
       }
     ];
+
   
   return (
     <>
@@ -84,16 +87,13 @@ const MainViewer: React.FC = () => {
             states={states}
           />
           
-          <div className={` ${themeClass} h-full`}>
+          <div className={` h-full`}>
             {/* HEADER */}
                 <div className="absolute top-0 z-50 right-0 p-4">
-                  <LeftHeader
-                    toggleLanguage={toggleLanguage}
-                    language={language.toUpperCase()}
-                    toggleTheme={toggleTheme}
-                    theme={theme}
-                    className=""
-                  />
+                  <div className=' flex items-center space-x-4'>
+                    <ThemeSwitch iconColor={theme === "dark" ? "text-slate-600" : "text-yellow-400"} />
+                    <ProfileDropdown />
+                  </div>
                 </div>
                 <ModelIfc
                   {...states}

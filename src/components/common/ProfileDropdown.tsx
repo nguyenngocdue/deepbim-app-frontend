@@ -55,8 +55,8 @@ export function ProfileDropdown() {
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
         <Button variant='ghost' size='icon' className='relative h-8 w-8 rounded-full'>
-          <Avatar className='h-8 w-8 bg-background/40'>
-            <AvatarImage src={avatarUrl} alt='@shadcn' />
+          <Avatar className='h-8 w-8 bg-background/10'>
+            <AvatarImage src={avatarUrl} alt='@shadcn'  className='mt-[1.9px]'/>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
