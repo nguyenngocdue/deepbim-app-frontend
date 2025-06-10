@@ -24,7 +24,7 @@ const Header = () => {
     if (hideTimeout) clearTimeout(hideTimeout);
     const timeout = setTimeout(() => {
       setShowBottomNav(false);
-    }, 10000); // Ẩn sau 5 giây
+    }, 15000); // Ẩn sau 5 giây
     setHideTimeout(timeout);
   };
 
