@@ -45,7 +45,7 @@ const Header = () => {
       window.removeEventListener("scroll", handleScroll);
       if (hideTimeout) clearTimeout(hideTimeout);
     };
-  }, [hideTimeout]);
+  }, []);
 
   const navLinkStyle = `sm:mt-4 text-sm sm:text-base md:text-lg`;
 

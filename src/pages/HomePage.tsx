@@ -22,12 +22,12 @@ interface HomePageProps {
 
 const HomePage: React.FC<HomePageProps> = ({ onReady }) => {
   useScrollRestoration();
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      onReady();
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, []);
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     onReady();
+  //   }, 1000);
+  //   return () => clearTimeout(timer);
+  // }, []);
 
   return (
     <div className="bg-behind">
