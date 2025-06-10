@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { useTheme } from "@/context/theme-context";
 import { LogoWord } from "../LogoWord";
@@ -11,14 +11,23 @@ import { AppIcons } from "../icons";
 
 export default function SidebarLayout({ children }: { children: React.ReactNode }) {
   const [collapsed, setCollapsed] = useState(() => localStorage.getItem("sidebar-collapsed") === "true");
-  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false); // State cho sidebar trên di động
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const { theme } = useTheme();
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const isDark = theme === "dark" || theme === "system";
   const sidebarBg = isDark ? "bg-zinc-900" : "bg-zinc-50";
   const textColor = isDark ? "text-zinc-100" : "text-zinc-800";
   const mutedText = isDark ? "text-zinc-400" : "text-zinc-500";
-  const hoverBg = isDark ? "hover:bg-zinc-800" : "hover:bg-zinc-300";
+  const hoverBg = isDark ? "hover:bg-slate-600" : "hover:bg-slate-300";
   const tooltipContent = isDark ? "text-gray-200" : "text-gray-700";
 
   const toggleCollapse = () => {
@@ -33,9 +42,8 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
 
   return (
     <div className="flex min-h-screen overflow-x-hidden">
-      {/* Sidebar */}
       <aside
-        className={`fixed md:sticky top-0 left-0 z-40 border-r transition-all duration-300 dark:border-gray-600 border-gray-400 ${sidebarBg} ${
+        className={`group fixed md:sticky top-0 left-0 z-40 border-r transition-all duration-300 dark:border-gray-600 border-gray-400 ${sidebarBg} ${
           collapsed ? "w-[60px]" : "w-[250px]"
         } ${isMobileSidebarOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0 h-full`}
       >
@@ -57,23 +65,36 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
               { text: "Workflows", icon: AppIcons.Workflow, to: "/managements/workflows" },
               { text: "Model Previews", icon: AppIcons.BoxModel, to: "/managements/model-previews" },
             ].map(({ text, icon: Icon, to }) => (
-              <TooltipProvider key={text}>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <li>
-                      <Link
-                        to={to}
-                        className={`flex items-center ${collapsed ? "justify-center" : "gap-3"} px-3 py-2 rounded-md ${textColor} ${hoverBg} text-sm font-medium`}
-                        onClick={() => setIsMobileSidebarOpen(false)} // Đóng sidebar khi click trên di động
-                      >
-                        <Icon />
-                        {!collapsed && <span>{text}</span>}
-                      </Link>
-                    </li>
-                  </TooltipTrigger>
-                  {collapsed && <TooltipContent side="right" className={tooltipContent}>{text}</TooltipContent>}
-                </Tooltip>
-              </TooltipProvider>
+              isMobile ? (
+                <li key={text}  >
+                  <Link
+                    to={to}
+                    className={`flex items-center hover:bg-slate-300 dark:hover:bg-slate-500 ${collapsed ? "justify-center" : "gap-3"} px-3 py-2 rounded-md ${textColor} ${hoverBg} text-sm font-medium`}
+                    onClick={() => setIsMobileSidebarOpen(false)}
+                  >
+                    <Icon />
+                    {!collapsed && <span>{text}</span>}
+                  </Link>
+                </li>
+              ) : (
+                <TooltipProvider key={text}>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <li className="">
+                        <Link
+                          to={to}
+                          className={`flex hover:bg-slate-300 dark:hover:bg-slate-500 items-center ${collapsed ? "justify-center" : "gap-3"} px-3 py-2 rounded-md ${textColor} ${hoverBg} text-sm font-medium`}
+                          onClick={() => setIsMobileSidebarOpen(false)}
+                        >
+                          <Icon />
+                          {!collapsed && <span>{text}</span>}
+                        </Link>
+                      </li>
+                    </TooltipTrigger>
+                    {collapsed && <TooltipContent side="right" className={tooltipContent}>{text}</TooltipContent>}
+                  </Tooltip>
+                </TooltipProvider>
+              )
             ))}
           </ul>
 
@@ -89,10 +110,10 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
                   <li className="w-full text-left">
                     <Link
                       to="/managements/projects"
-                      className={`block ${hoverBg} rounded-md px-2.5 py-2 text-sm ${textColor}`}
+                      className={`block ${hoverBg}  rounded-md px-2.5 py-2 text-sm ${textColor}`}
                       onClick={() => setIsMobileSidebarOpen(false)}
                     >
-                      <AppIcons.Projects className="inline mr-2" /> Projects
+                      <AppIcons.Projects className="inline mr-2 " /> Projects
                     </Link>
                   </li>
                   <li className="w-full text-left">
@@ -137,48 +158,66 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
             )}
           </ul>
 
-          {!collapsed && <div className={`uppercase text-xs bg-accent/95 p-2 font-semibold px-3 mt-5 mb-1 ${mutedText}`}>Admin Management</div>}
+          {!collapsed && <div className={`uppercase text-xs bg-accent/95 p-2 font-semibold px-3 mt-5 mb-1 ${mutedText}`} >Admin Management</div>}
           <ul className="space-y-1">
             {[
               { text: "User", icon: AppIcons.AdminPanel, to: "/managements/users" },
               { text: "Chat", icon: AppIcons.Chat, to: "/managements/chat-support" },
             ].map(({ text, icon: Icon, to }) => (
-              <TooltipProvider key={text}>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <li>
-                      <Link
-                        to={to}
-                        className={`flex items-center ${collapsed ? "justify-center" : "gap-3"} px-3 py-2 rounded-md ${textColor} ${hoverBg} text-sm font-medium`}
-                        onClick={() => setIsMobileSidebarOpen(false)}
-                      >
-                        <Icon />
-                        {!collapsed && <span>{text}</span>}
-                      </Link>
-                    </li>
-                  </TooltipTrigger>
-                  {collapsed && <TooltipContent side="right" className={tooltipContent}>{text}</TooltipContent>}
-                </Tooltip>
-              </TooltipProvider>
+              isMobile ? (
+                <li key={text}>
+                  <Link
+                    to={to}
+                    className={`flex items-center ${collapsed ? "justify-center" : "gap-3"} px-3 py-2 rounded-md ${textColor} ${hoverBg} text-sm font-medium`}
+                    onClick={() => setIsMobileSidebarOpen(false)}
+                  >
+                    <Icon />
+                    {!collapsed && <span>{text}</span>}
+                  </Link>
+                </li>
+              ) : (
+                <TooltipProvider key={text}>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <li>
+                        <Link
+                          to={to}
+                          className={`flex items-center ${collapsed ? "justify-center" : "gap-3"} px-3 py-2 rounded-md ${textColor} ${hoverBg} text-sm font-medium`}
+                          onClick={() => setIsMobileSidebarOpen(false)}
+                        >
+                          <Icon />
+                          {!collapsed && <span>{text}</span>}
+                        </Link>
+                      </li>
+                    </TooltipTrigger>
+                    {collapsed && <TooltipContent side="right" className={tooltipContent}>{text}</TooltipContent>}
+                  </Tooltip>
+                </TooltipProvider>
+              )
             ))}
           </ul>
         </nav>
 
-        <div className="absolute top-1/2 -right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 md:block hidden">
+        <div className="absolute top-1/2 -right-4 hidden group-hover:block opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none group-hover:pointer-events-auto md:block">
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button onClick={toggleCollapse} className="rounded-full p-2 border bg-zinc-600 shadow">
+                <Button
+                  onClick={toggleCollapse}
+                  className="rounded-full p-2 border bg-zinc-600 shadow hover:scale-105 transition-transform"
+                >
                   {collapsed ? <AppIcons.ChevronRight /> : <AppIcons.ChevronLeft />}
                 </Button>
               </TooltipTrigger>
-              <TooltipContent className={tooltipContent}>{collapsed ? "Expand Sidebar" : "Collapse Sidebar"}</TooltipContent>
+              <TooltipContent className={tooltipContent}>
+                {collapsed ? "Expand Sidebar" : "Collapse Sidebar"}
+              </TooltipContent>
             </Tooltip>
           </TooltipProvider>
         </div>
 
         {!collapsed && (
-          <div className="absolute left-0 right-0 bottom-0 px-4 pb-6 hidden md:block">
+          <div className="absolute left-0 right-0 bottom-0 px-4 pb-6">
             <div className="bg-gradient-to-tr from-blue-600 via-indigo-600 to-indigo-700 rounded-xl shadow-lg text-white px-4 py-5 text-center space-y-2">
               <div className="text-base font-semibold">🎉 Welcome to DeepBIM</div>
               <div className="text-xs opacity-80">Version 1.1.0</div>
@@ -191,12 +230,15 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
                   Get Started
                 </Link>
               </Button>
+              <div className="flex justify-center gap-4 mt-4 md:hidden">
+                <ThemeSwitch />
+                <ProfileDropdown />
+              </div>
             </div>
           </div>
         )}
       </aside>
 
-      {/* Overlay cho di động */}
       {isMobileSidebarOpen && (
         <div
           className="fixed inset-0 bg-black/50 z-30 md:hidden"
@@ -204,7 +246,6 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
         />
       )}
 
-      {/* Nội dung chính */}
       <div className="flex-1 flex flex-col h-full">
         <header className="flex justify-between items-center px-6 py-4 border-b dark:border-gray-600 border-gray-400">
           <div className="flex items-center gap-4">
@@ -217,7 +258,7 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
             </Button>
             <BreadcrumbsWithIconAndLabel2 />
           </div>
-          <div className="flex items-center gap-4">
+          <div className="hidden md:flex items-center gap-4">
             <ThemeSwitch />
             <ProfileDropdown />
           </div>
