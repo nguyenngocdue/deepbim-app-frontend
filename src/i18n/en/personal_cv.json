@@ -12,7 +12,11 @@
     "location": "Ho Chi Minh City, Vietnam"
   },
   "social": {
-    "title": "Social Links & Portfolio"
+    "title": "CV - Social Links - Portfolio"
+  },
+  "cv": {
+    "title": "CV - Personal Information",
+    "description": "This is my personal CV, showcasing my skills and experiences in the field of BIM and web development. If you have any questions or would like to discuss potential collaborations, feel free to reach out!"
   },
   "overview_groups": [
     {

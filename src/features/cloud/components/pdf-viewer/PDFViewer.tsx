@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { getDocument, GlobalWorkerOptions, PDFDocumentProxy } from "pdfjs-dist";
 import { LoadingState } from "@/components/common/LoadingState";
 
-GlobalWorkerOptions.workerSrc = "/pdf.worker.min.mjs";
+GlobalWorkerOptions.workerSrc = "https://unpkg.com/pdfjs-dist@5.3.31/build/pdf.worker.min.mjs";
 
 type PDFViewerProps = {
   url: string;
@@ -31,7 +31,10 @@ export default function PDFViewer({
   // Fullscreen handlers
   const enterFullscreen = () => {
     if (containerRef.current?.requestFullscreen) {
-      containerRef.current.requestFullscreen();
+       containerRef.current.requestFullscreen().then(() => {
+          setTimeout(() => resetView(), 100); 
+        });
+      resetView();
     }
   };
 

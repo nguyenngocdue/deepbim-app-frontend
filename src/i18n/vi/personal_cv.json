@@ -12,7 +12,11 @@
     "location": "TP. Hồ Chí Minh, Việt Nam"
   },
   "social": {
-    "title": "Mạng xã hội & Portfolio"
+    "title": "CV - Mạng xã hội - Portfolio"
+  },
+  "cv": {
+    "title": "CV - Thông tin cá nhân",
+    "description": "Đây là CV cá nhân của tôi, giới thiệu kỹ năng và kinh nghiệm trong lĩnh vực IT, BIM và phát triển web. Nếu bạn có bất kỳ câu hỏi nào hoặc muốn thảo luận về cơ hội hợp tác, hãy liên hệ với tôi!"
   },
   "overview_groups": [
     {

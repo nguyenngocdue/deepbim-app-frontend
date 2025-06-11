@@ -20,7 +20,8 @@ import { RiLogoutCircleRLine } from 'react-icons/ri';
 import CustomBadge from '@/components/common/CustomBadge';
 import { HiOutlinePresentationChartLine } from 'react-icons/hi2';
 import { GiTeamIdea } from 'react-icons/gi';
-import { VscVersions } from 'react-icons/vsc';
+import { CgProfile } from "react-icons/cg";
+import { BsFileEarmarkRuledFill } from 'react-icons/bs';
 
 export function ProfileDropdown() {
 
@@ -91,14 +92,14 @@ export function ProfileDropdown() {
           title={`Roles: ${roles.join(', ')}`}
         >
           Role: <span className="ml-1 text-xs text-muted-foreground">{roles.join(', ')}</span>
-          <DropdownMenuShortcut><RiLogoutCircleRLine size={16} /></DropdownMenuShortcut>
+          <DropdownMenuShortcut><BsFileEarmarkRuledFill size={16} /></DropdownMenuShortcut>
         </DropdownMenuItem>
 
 
           <DropdownMenuGroup>
             <DropdownMenuItem asChild>
-              <Link to="/user/show/cv">NND CV
-                <DropdownMenuShortcut><VscVersions size={16} /></DropdownMenuShortcut>
+              <Link to="/user/show/cv">Profile Owner
+                <DropdownMenuShortcut><CgProfile    size={16} /></DropdownMenuShortcut>
               </Link>
             </DropdownMenuItem>
           </DropdownMenuGroup>
