@@ -1,23 +1,16 @@
 import { Outlet } from '@tanstack/react-router'
-import { ThemeSwitch } from '@/components/theme-switch'
-import { Header } from './header'
-import { ProfileDropdown } from '@/components/common/ProfileDropdown'
+import { LanguageProvider } from '@/context/LanguageContext'
+import Header from '@/sections/ Header'
 
 export default function Settings() {
   return (
-    <div className="min-h-screen w-full flex flex-col bg-gradient-to-b from-indigo-50 bg-behind dark:from-zinc-950 dark:to-zinc-900 transition-colors duration-300">
-      {/* Header */}
-      <Header className="sticky top-0 z-20 bg-white/80 dark:bg-zinc-900/80 backdrop-blur border-b border-zinc-200 dark:border-zinc-800 shadow-sm">
-        <div className="container mx-auto flex items-center justify-between h-16 px-4">
-          <h1 className="text-xl md:text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
-            Settings
-          </h1>
-          <div className="flex items-center space-x-4">
-            <ThemeSwitch />
-            <ProfileDropdown />
-          </div>
-        </div>
-      </Header>
+    <div className="w-full pt-4 flex flex-col bg-gradient-to-b from-indigo-50 bg-behind dark:from-zinc-950 dark:to-zinc-900 transition-colors duration-300">
+     
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
+                   <LanguageProvider>
+                     <Header />
+                   </LanguageProvider>
+                 </div>
 
       {/* Main Content */}
       <main className="flex-1 w-full">
