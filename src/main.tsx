@@ -64,7 +64,7 @@ const queryClient = new QueryClient({
       if (error instanceof AxiosError) {
         if (error.response?.status === 401) {
           toast({
-            variant: 'destructive',
+            variant: 'warning',
             title: 'Session expired!',
           })
           const redirect = `${router.history.location.href}`

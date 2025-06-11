@@ -19,7 +19,7 @@ const Television = () => {
   }), [])
 
   const texture = useMemo(() => new THREE.VideoTexture(video), [video])
-
+  let _volume = 0
   // ✅ Controls
   const {
     width, height, posX, posY, posZ,
@@ -35,7 +35,7 @@ const Television = () => {
     rotY: { value: -1.57, min: -Math.PI, max: Math.PI, step: 0.001 },
     rotZ: { value: 0.00, min: -Math.PI, max: Math.PI, step: 0.001 },
     play: { value: true, label: '🔈 Play Video' },
-    volume: { value: 0, min: 0, max: 1, step: 0.01, label: '🔊 Volume' },
+    volume: { value: _volume, min: 0, max: 1, step: 0.01, label: '🔊 Volume' },
   }, { collapsed: false })
 
   // ✅ Play/pause + volume update
