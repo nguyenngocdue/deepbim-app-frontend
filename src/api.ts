@@ -52,7 +52,7 @@ export async function fetchWithAuth(
       // Nếu refresh token cũng thất bại, xóa hết token để đăng nhập lại
       localStorage.removeItem('access_token');
       localStorage.removeItem('refresh_token');
-      throw new Error('Session expired. Please log in again.');
+      throw new Error('Session expired. Please log in again to fully experience all features.');
     }
   }
   // Nếu response trả về lỗi, parse lỗi và ném ra error rõ ràng
@@ -197,7 +197,7 @@ export async function fetchWithAuth2<T = any>(
     } catch (err) {
       localStorage.removeItem("access_token");
       localStorage.removeItem("refresh_token");
-      throw new Error("Session expired. Please log in again.");
+      throw new Error("Session expired. Please log in again to fully experience all features.");
     }
   }
 

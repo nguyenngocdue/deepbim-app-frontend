@@ -14,7 +14,6 @@ import ParticlesContainer from '@/components/ParticlesContainer';
 import useScrollRestoration from '@/hooks/useScrollRestoration';
 import CustomerChat from '@/features/chats/chat-customer';
 import ScrollToTopButton from '@/components/common/ScrollToTopButton';
-import { useEffect } from 'react';
 
 interface HomePageProps {
   onReady: () => void;
