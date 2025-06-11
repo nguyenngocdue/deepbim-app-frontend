@@ -4,6 +4,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Progress } from "@/components/ui/progress";
 import { Bell, Folder, Users, CheckCircle, AlertCircle, FileText, MessageSquare } from "lucide-react";
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts";
+import CustomBadge from "@/components/common/CustomBadge";
 
 const progressTrendData = [
   { name: 'Week 1', Completed: 12 },
@@ -36,7 +37,7 @@ export default function SubProjectSmartOverview() {
           </div>
           <div className="flex items-center justify-between text-gray-800 cursor-pointer">
             <span className="flex items-center gap-2">
-              <AlertCircle className="w-4 h-4" /> Issues
+              <AlertCircle className="w-4 h-4" /> Issues  
             </span>
             <span className="text-xs bg-red-200 text-red-800 px-2 rounded-full">5</span>
           </div>

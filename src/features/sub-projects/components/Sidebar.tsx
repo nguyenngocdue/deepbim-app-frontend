@@ -60,11 +60,11 @@ export function Sidebar({ subProject }: Props) {
             <nav className="space-y-2 text-sm mt-4">
               <SidebarItem collapsed={collapsed} label="Dashboard" icon={Folder} count={68} to={`/managements/sub-projects/${subProjectId}/dashboard`} />
               <SidebarItem collapsed={collapsed} label="Document Management" icon={Folder} count={68} to={`/managements/sub-projects/${subProjectId}/data`} />
-              <SidebarItem collapsed={collapsed} label="Your Teams" icon={Users} to={`/managements/sub-projects/${subProjectId}/your-team`} />
-              <SidebarItem collapsed={collapsed} label="Messages" icon={RiMessage2Fill } to={`/managements/sub-projects/${subProjectId}/messages`} />
-              <SidebarItem collapsed={collapsed} label="Notifications" icon={Bell} to={`/managements/sub-projects/${subProjectId}/notifications`} />
-              <SidebarItem collapsed={collapsed} label="Issues" icon={AlertCircle} count={5} color="bg-destructive/20 text-destructive" to={`/managements/sub-projects/${subProjectId}/issues`} />
-              <SidebarItem collapsed={collapsed} label="RFIs" icon={FileText} count={18} color="bg-success/20 text-success" to={`/managements/sub-projects/${subProjectId}/rfis`} />
+              <SidebarItem collapsed={collapsed} label={ <span> Your Teams <span style={{ color: 'red' }}>(Dev)</span></span>} icon={Users} to={`/managements/sub-projects/${subProjectId}/your-team`} />
+              <SidebarItem collapsed={collapsed} label={ <span> Messages <span style={{ color: 'red' }}>(Dev)</span></span>}icon={RiMessage2Fill } to={`/managements/sub-projects/${subProjectId}/messages`} />
+              <SidebarItem collapsed={collapsed}  label={ <span> Notifications <span style={{ color: 'red' }}>(Dev)</span></span>}  icon={Bell} to={`/managements/sub-projects/${subProjectId}/notifications`} />
+              <SidebarItem collapsed={collapsed} label={ <span> Issues <span style={{ color: 'red' }}>(Dev)</span></span>}  icon={AlertCircle} count={5} color="bg-destructive/20 text-destructive" to={`/managements/sub-projects/${subProjectId}/issues`} />
+              <SidebarItem collapsed={collapsed} label={ <span> RFIs <span style={{ color: 'red' }}>(Dev)</span></span>}  icon={FileText} count={18} color="bg-success/20 text-success" to={`/managements/sub-projects/${subProjectId}/rfis`} />
             </nav>
           </>
         ) : <LoadingState />

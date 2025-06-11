@@ -226,17 +226,19 @@ export default function PDFViewer({
         }}
       >
         {error && <div className="text-red-500">{error}</div>}
-        {loading && (<LoadingState/>)}
-        <canvas
-          ref={canvasRef}
-          className="rounded shadow-lg border bg-white dark:bg-zinc-900 mx-auto"
-          style={{
-            maxWidth: isFullscreen ? "100vw" : "90vw",
-            maxHeight: isFullscreen ? "100vh" : "60vh",
-            display: "block",
-            margin: "0 auto",
-          }}
-        />
+        <div className="flex flex-col items-center">
+          {loading && (<LoadingState/>)}
+          <canvas
+            ref={canvasRef}
+            className="rounded shadow-lg border bg-white dark:bg-zinc-900 mx-auto"
+            style={{
+              maxWidth: isFullscreen ? "100vw" : "90vw",
+              maxHeight: isFullscreen ? "100vh" : "60vh",
+              display: "block",
+              margin: "0 auto",
+            }}
+          />
+        </div>
       </div>
     </div>
   );
