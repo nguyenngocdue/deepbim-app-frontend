@@ -56,7 +56,7 @@ export const MoveDeleteViewDialogs: React.FC<Props> = ({
 
   useEffect(() => {
     if (selectedFile) {
-      const url = selectedFile.media.url;
+      const url = selectedFile.media?.url;
       setFileUrl(url);
       setFileName(selectedFile.name);
       setFileType(selectedFile.type

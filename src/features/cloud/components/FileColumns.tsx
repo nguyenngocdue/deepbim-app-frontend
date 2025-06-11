@@ -10,6 +10,12 @@ import { formatFileSize } from "@/utils/format-file-size";
 const columnHelper = createColumnHelper<FileItem>();
 
 export const fileColumns = [
+   columnHelper.display({
+    id: "id",
+    header: "Id",
+    cell: ({row}) => <span className="text-slate-600 dark:text-slate-400">#{row.original.id}</span>,
+    meta: { width: 56 },
+  }),
   columnHelper.display({
     id: "icon",
     header: "Icon",
@@ -19,8 +25,8 @@ export const fileColumns = [
   }),
   columnHelper.accessor("name", {
     header: "Name",
-    cell: info => <span className="truncate">{info.getValue()}</span>,
-    meta: { width: 150 },
+    cell: info => <span title={info.getValue()} className="truncate">{info.getValue()}</span>,
+    meta: { width: 200 },
   }),
   columnHelper.accessor(row => row.media?.extension?.toUpperCase() || "-", {
     id: "type",
@@ -55,7 +61,7 @@ export const fileColumns = [
   columnHelper.display({
     id: "size",
     header: "Size",
-    cell: ({ row }) => formatFileSize(row.original.media.size),
+    cell: ({ row }) => formatFileSize(row.original.media?.size),
     meta: { width: 120 },
   }),
 

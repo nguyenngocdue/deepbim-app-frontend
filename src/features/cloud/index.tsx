@@ -8,6 +8,7 @@ import { CLASS_NAME_DEFAULT } from "@/utils/class";
 import PDFViewer from "./components/pdf-viewer/PDFViewer";
 import { LoadingState } from "@/components/common/LoadingState";
 import { LoadingOverlay } from "@/components/common/LoadingOverlay";
+import { SearchBox } from "@/components/SearchBox";
 
 interface FileItem {
   id: number;
@@ -25,6 +26,7 @@ const CloudManagement = ({ entityId }: { entityId: number }) => {
   const [refreshFlag, setRefreshFlag] = useState(0);
   const [view, setView] = useState<"list" | "grid">("list");
   const [loadingUploadFile, setLoadingUploadFile ] = useState(false);
+   const [searchTerm, setSearchTerm] = useState('')
 
   // Lấy lại id folder đã chọn từ localStorage
 
@@ -41,6 +43,12 @@ const CloudManagement = ({ entityId }: { entityId: number }) => {
   const handleUploadedFile = () => {
     triggerRefreshTree();
   };
+
+  const filteredFiles = folderFiles.filter(
+    (item) =>
+      item.name.toLowerCase().includes(searchTerm.toLowerCase())
+  )
+
 
   return (
     <div className="h-full bg-background text-foreground flex flex-col font-sans">
@@ -81,12 +89,22 @@ const CloudManagement = ({ entityId }: { entityId: number }) => {
           <Panel>
             <div className="h-full overflow-auto p-4 bg-background border border-t-0 border-l-0 border-gray-400 dark:border-gray-700">
               {selectedFolder ? (
-                <FolderContent
-                  files={folderFiles}
-                  view={view}
-                  entityId={entityId}
-                  currentFolderId={Number(selectedFolder.id)}
-                />
+                <>
+                  <div className="w-full sm:w-64 pb-4">
+                              <SearchBox
+                                value={searchTerm}
+                                onChange={setSearchTerm}
+                                placeholder="Search files..."
+                              />
+                  </div>
+                  <FolderContent
+                    files={filteredFiles}
+                    view={view}
+                    entityId={entityId}
+                    currentFolderId={Number(selectedFolder.id)}
+                  />
+                </>
+                
               ) : (
                 <div className="flex flex-col items-center justify-center h-full text-muted-foreground gap-2">
                   <span className="text-6xl">
