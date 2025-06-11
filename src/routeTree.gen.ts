@@ -60,8 +60,8 @@ import { Route as AuthenticatedAppLayoutHowItWorksImport } from './routes/_authe
 import { Route as AuthenticatedAppLayoutFeaturesImport } from './routes/_authenticated/app/_layout/features'
 import { Route as AuthenticatedAppLayoutContactUsImport } from './routes/_authenticated/app/_layout/contact-us'
 import { Route as AuthenticatedAppLayoutConnectorsImport } from './routes/_authenticated/app/_layout/connectors'
+import { Route as AuthenticatedUserShowProfileOwnerIndexImport } from './routes/_authenticated/user/show/profile-owner/index'
 import { Route as AuthenticatedUserShowPortfolioIndexImport } from './routes/_authenticated/user/show/portfolio/index'
-import { Route as AuthenticatedUserShowCvIndexImport } from './routes/_authenticated/user/show/cv/index'
 import { Route as AuthenticatedManagementsLayoutTeamsIndexImport } from './routes/_authenticated/managements/_layout/teams/index'
 import { Route as AuthenticatedManagementsLayoutSubProjectsIndexImport } from './routes/_authenticated/managements/_layout/sub-projects/index'
 import { Route as AuthenticatedUserShowProfileLayoutImport } from './routes/_authenticated/user/show/profile/_layout'
@@ -572,17 +572,17 @@ const AuthenticatedUserSettingsProfileEditRoute =
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 
+const AuthenticatedUserShowProfileOwnerIndexRoute =
+  AuthenticatedUserShowProfileOwnerIndexImport.update({
+    id: '/user/show/profile-owner/',
+    path: '/user/show/profile-owner/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+
 const AuthenticatedUserShowPortfolioIndexRoute =
   AuthenticatedUserShowPortfolioIndexImport.update({
     id: '/user/show/portfolio/',
     path: '/user/show/portfolio/',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any)
-
-const AuthenticatedUserShowCvIndexRoute =
-  AuthenticatedUserShowCvIndexImport.update({
-    id: '/user/show/cv/',
-    path: '/user/show/cv/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 
@@ -1218,18 +1218,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedManagementsLayoutTeamsIndexImport
       parentRoute: typeof AuthenticatedManagementsLayoutImport
     }
-    '/_authenticated/user/show/cv/': {
-      id: '/_authenticated/user/show/cv/'
-      path: '/user/show/cv'
-      fullPath: '/user/show/cv'
-      preLoaderRoute: typeof AuthenticatedUserShowCvIndexImport
-      parentRoute: typeof AuthenticatedRouteImport
-    }
     '/_authenticated/user/show/portfolio/': {
       id: '/_authenticated/user/show/portfolio/'
       path: '/user/show/portfolio'
       fullPath: '/user/show/portfolio'
       preLoaderRoute: typeof AuthenticatedUserShowPortfolioIndexImport
+      parentRoute: typeof AuthenticatedRouteImport
+    }
+    '/_authenticated/user/show/profile-owner/': {
+      id: '/_authenticated/user/show/profile-owner/'
+      path: '/user/show/profile-owner'
+      fullPath: '/user/show/profile-owner'
+      preLoaderRoute: typeof AuthenticatedUserShowProfileOwnerIndexImport
       parentRoute: typeof AuthenticatedRouteImport
     }
     '/_authenticated/user/settings/profile/edit': {
@@ -1610,8 +1610,8 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedExamplesBimViewerIndexRoute: typeof AuthenticatedExamplesBimViewerIndexRoute
   AuthenticatedViewUploadIndexRoute: typeof AuthenticatedViewUploadIndexRoute
   AuthenticatedUserShowProfileRoute: typeof AuthenticatedUserShowProfileRouteWithChildren
-  AuthenticatedUserShowCvIndexRoute: typeof AuthenticatedUserShowCvIndexRoute
   AuthenticatedUserShowPortfolioIndexRoute: typeof AuthenticatedUserShowPortfolioIndexRoute
+  AuthenticatedUserShowProfileOwnerIndexRoute: typeof AuthenticatedUserShowProfileOwnerIndexRoute
   AuthenticatedUserSettingsProfileEditRoute: typeof AuthenticatedUserSettingsProfileEditRouteWithChildren
 }
 
@@ -1658,9 +1658,10 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedViewUploadIndexRoute: AuthenticatedViewUploadIndexRoute,
   AuthenticatedUserShowProfileRoute:
     AuthenticatedUserShowProfileRouteWithChildren,
-  AuthenticatedUserShowCvIndexRoute: AuthenticatedUserShowCvIndexRoute,
   AuthenticatedUserShowPortfolioIndexRoute:
     AuthenticatedUserShowPortfolioIndexRoute,
+  AuthenticatedUserShowProfileOwnerIndexRoute:
+    AuthenticatedUserShowProfileOwnerIndexRoute,
   AuthenticatedUserSettingsProfileEditRoute:
     AuthenticatedUserSettingsProfileEditRouteWithChildren,
 }
@@ -1732,8 +1733,8 @@ export interface FileRoutesByFullPath {
   '/user/show/profile': typeof AuthenticatedUserShowProfileLayoutRouteWithChildren
   '/managements/sub-projects/': typeof AuthenticatedManagementsLayoutSubProjectsIndexRoute
   '/managements/teams': typeof AuthenticatedManagementsLayoutTeamsIndexRoute
-  '/user/show/cv': typeof AuthenticatedUserShowCvIndexRoute
   '/user/show/portfolio': typeof AuthenticatedUserShowPortfolioIndexRoute
+  '/user/show/profile-owner': typeof AuthenticatedUserShowProfileOwnerIndexRoute
   '/user/settings/profile/edit': typeof AuthenticatedUserSettingsProfileEditLayoutRouteWithChildren
   '/user/show/profile/$idUser': typeof AuthenticatedUserShowProfileLayoutIdUserRoute
   '/user/show/profile/': typeof AuthenticatedUserShowProfileLayoutIndexRoute
@@ -1810,8 +1811,8 @@ export interface FileRoutesByTo {
   '/managements/teams/$team_id': typeof AuthenticatedManagementsLayoutTeamsTeamidRoute
   '/user/show/profile': typeof AuthenticatedUserShowProfileLayoutIndexRoute
   '/managements/teams': typeof AuthenticatedManagementsLayoutTeamsIndexRoute
-  '/user/show/cv': typeof AuthenticatedUserShowCvIndexRoute
   '/user/show/portfolio': typeof AuthenticatedUserShowPortfolioIndexRoute
+  '/user/show/profile-owner': typeof AuthenticatedUserShowProfileOwnerIndexRoute
   '/user/settings/profile/edit': typeof AuthenticatedUserSettingsProfileEditLayoutRouteWithChildren
   '/user/show/profile/$idUser': typeof AuthenticatedUserShowProfileLayoutIdUserRoute
   '/managements/sub-projects/$sub_project_id/chat': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidChatRoute
@@ -1897,8 +1898,8 @@ export interface FileRoutesById {
   '/_authenticated/user/show/profile/_layout': typeof AuthenticatedUserShowProfileLayoutRouteWithChildren
   '/_authenticated/managements/_layout/sub-projects/': typeof AuthenticatedManagementsLayoutSubProjectsIndexRoute
   '/_authenticated/managements/_layout/teams/': typeof AuthenticatedManagementsLayoutTeamsIndexRoute
-  '/_authenticated/user/show/cv/': typeof AuthenticatedUserShowCvIndexRoute
   '/_authenticated/user/show/portfolio/': typeof AuthenticatedUserShowPortfolioIndexRoute
+  '/_authenticated/user/show/profile-owner/': typeof AuthenticatedUserShowProfileOwnerIndexRoute
   '/_authenticated/user/settings/profile/edit': typeof AuthenticatedUserSettingsProfileEditRouteWithChildren
   '/_authenticated/user/settings/profile/edit/_layout': typeof AuthenticatedUserSettingsProfileEditLayoutRouteWithChildren
   '/_authenticated/user/show/profile/_layout/$idUser': typeof AuthenticatedUserShowProfileLayoutIdUserRoute
@@ -1980,8 +1981,8 @@ export interface FileRouteTypes {
     | '/user/show/profile'
     | '/managements/sub-projects/'
     | '/managements/teams'
-    | '/user/show/cv'
     | '/user/show/portfolio'
+    | '/user/show/profile-owner'
     | '/user/settings/profile/edit'
     | '/user/show/profile/$idUser'
     | '/user/show/profile/'
@@ -2057,8 +2058,8 @@ export interface FileRouteTypes {
     | '/managements/teams/$team_id'
     | '/user/show/profile'
     | '/managements/teams'
-    | '/user/show/cv'
     | '/user/show/portfolio'
+    | '/user/show/profile-owner'
     | '/user/settings/profile/edit'
     | '/user/show/profile/$idUser'
     | '/managements/sub-projects/$sub_project_id/chat'
@@ -2142,8 +2143,8 @@ export interface FileRouteTypes {
     | '/_authenticated/user/show/profile/_layout'
     | '/_authenticated/managements/_layout/sub-projects/'
     | '/_authenticated/managements/_layout/teams/'
-    | '/_authenticated/user/show/cv/'
     | '/_authenticated/user/show/portfolio/'
+    | '/_authenticated/user/show/profile-owner/'
     | '/_authenticated/user/settings/profile/edit'
     | '/_authenticated/user/settings/profile/edit/_layout'
     | '/_authenticated/user/show/profile/_layout/$idUser'
@@ -2260,8 +2261,8 @@ export const routeTree = rootRoute
         "/_authenticated/examples/bim-viewer/",
         "/_authenticated/view/upload/",
         "/_authenticated/user/show/profile",
-        "/_authenticated/user/show/cv/",
         "/_authenticated/user/show/portfolio/",
+        "/_authenticated/user/show/profile-owner/",
         "/_authenticated/user/settings/profile/edit"
       ]
     },
@@ -2581,12 +2582,12 @@ export const routeTree = rootRoute
       "filePath": "_authenticated/managements/_layout/teams/index.tsx",
       "parent": "/_authenticated/managements/_layout"
     },
-    "/_authenticated/user/show/cv/": {
-      "filePath": "_authenticated/user/show/cv/index.tsx",
-      "parent": "/_authenticated"
-    },
     "/_authenticated/user/show/portfolio/": {
       "filePath": "_authenticated/user/show/portfolio/index.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/user/show/profile-owner/": {
+      "filePath": "_authenticated/user/show/profile-owner/index.tsx",
       "parent": "/_authenticated"
     },
     "/_authenticated/user/settings/profile/edit": {

@@ -98,7 +98,7 @@ export function ProfileDropdown() {
 
           <DropdownMenuGroup>
             <DropdownMenuItem asChild>
-              <Link to="/user/show/cv">Profile Owner
+              <Link to="/user/show/profile-owner">Profile Owner
                 <DropdownMenuShortcut><CgProfile    size={16} /></DropdownMenuShortcut>
               </Link>
             </DropdownMenuItem>

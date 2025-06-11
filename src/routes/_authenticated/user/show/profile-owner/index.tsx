@@ -1,7 +1,7 @@
 import PersonalCV from '@/features/settings/common-information/show/personal-cv/PersonalCV'
 import { createFileRoute } from '@tanstack/react-router'
 
-export const Route = createFileRoute('/_authenticated/user/show/cv/')({
+export const Route = createFileRoute('/_authenticated/user/show/profile-owner/')({
   component: RouteComponent,
 })
 
