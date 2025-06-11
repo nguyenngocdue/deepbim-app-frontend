@@ -26,7 +26,6 @@ export default function CustomerChat() {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, open]);
 
-  console.log(messages);
 
   return (
     <>

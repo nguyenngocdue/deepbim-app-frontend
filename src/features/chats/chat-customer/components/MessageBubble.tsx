@@ -79,9 +79,12 @@ export function MessageBubble({
               {reaction && (
                 <span className="text-lg select-none">{reaction}</span>
               )}
-              <span className="px-1 text-zinc-200/70 dark:text-zinc-600">
+              {
+                createdAt && 
+                <span className="px-1 text-zinc-200/70 dark:text-zinc-600">
                 <TimeOnly isoString={createdAt?.toString() ?? ""} className="text-[10px]" />
               </span>
+              }
             </div>
           </div>
         </div>
