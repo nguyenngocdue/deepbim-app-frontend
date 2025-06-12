@@ -30,6 +30,7 @@ import { Route as AuthenticatedMyRoom3dIndexImport } from './routes/_authenticat
 import { Route as AuthenticatedAppIndexImport } from './routes/_authenticated/app/index'
 import { Route as AuthenticatedView2FileCodeImport } from './routes/_authenticated/view2/$fileCode'
 import { Route as AuthenticatedViewFileCodeImport } from './routes/_authenticated/view/$fileCode'
+import { Route as AuthenticatedTutorialsLayoutImport } from './routes/_authenticated/tutorials/_layout'
 import { Route as AuthenticatedManagementsLayoutImport } from './routes/_authenticated/managements/_layout'
 import { Route as AuthenticatedBlogLayoutImport } from './routes/_authenticated/blog/_layout'
 import { Route as AuthenticatedBimViewerUtWebglClippingV2Import } from './routes/_authenticated/bim-viewer-ut/webgl-clipping-v2'
@@ -42,10 +43,12 @@ import { Route as AuthenticatedBimViewerUtIfcViewerSelectionFamilyImport } from 
 import { Route as AuthenticatedBimViewerUtGeometrySceneViewcubeImport } from './routes/_authenticated/bim-viewer-ut/geometry-scene-viewcube'
 import { Route as AuthenticatedBimViewerUtDemoXeokitIfcImport } from './routes/_authenticated/bim-viewer-ut/demo-xeokit-ifc'
 import { Route as AuthenticatedBimViewerUtIfcViewerSelectionImport } from './routes/_authenticated/bim-viewer-ut/Ifc-viewer-selection'
+import { Route as AuthenticatedAppBlogImport } from './routes/_authenticated/app/blog'
 import { Route as AuthenticatedAppLayoutImport } from './routes/_authenticated/app/_layout'
 import { Route as AuthenticatedAdminLayoutImport } from './routes/_authenticated/admin/_layout'
 import { Route as AuthenticatedViewUploadIndexImport } from './routes/_authenticated/view/upload/index'
 import { Route as AuthenticatedExamplesBimViewerIndexImport } from './routes/_authenticated/examples/bim-viewer/index'
+import { Route as AuthenticatedTutorialsLayoutHomePageImport } from './routes/_authenticated/tutorials/_layout/home-page'
 import { Route as AuthenticatedManagementsLayoutWorkflowsImport } from './routes/_authenticated/managements/_layout/workflows'
 import { Route as AuthenticatedManagementsLayoutUsersImport } from './routes/_authenticated/managements/_layout/users'
 import { Route as AuthenticatedManagementsLayoutSpacesImport } from './routes/_authenticated/managements/_layout/spaces'
@@ -83,6 +86,9 @@ import { Route as AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidCha
 
 // Create Virtual Routes
 
+const AuthenticatedTutorialsImport = createFileRoute(
+  '/_authenticated/tutorials',
+)()
 const AuthenticatedManagementsImport = createFileRoute(
   '/_authenticated/managements',
 )()
@@ -129,6 +135,12 @@ const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
+} as any)
+
+const AuthenticatedTutorialsRoute = AuthenticatedTutorialsImport.update({
+  id: '/tutorials',
+  path: '/tutorials',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 
 const AuthenticatedManagementsRoute = AuthenticatedManagementsImport.update({
@@ -348,6 +360,12 @@ const AuthenticatedViewFileCodeRoute = AuthenticatedViewFileCodeImport.update({
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 
+const AuthenticatedTutorialsLayoutRoute =
+  AuthenticatedTutorialsLayoutImport.update({
+    id: '/_layout',
+    getParentRoute: () => AuthenticatedTutorialsRoute,
+  } as any)
+
 const AuthenticatedManagementsLayoutRoute =
   AuthenticatedManagementsLayoutImport.update({
     id: '/_layout',
@@ -429,6 +447,12 @@ const AuthenticatedBimViewerUtIfcViewerSelectionRoute =
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 
+const AuthenticatedAppBlogRoute = AuthenticatedAppBlogImport.update({
+  id: '/blog',
+  path: '/blog',
+  getParentRoute: () => AuthenticatedAppRoute,
+} as any)
+
 const AuthenticatedAppLayoutRoute = AuthenticatedAppLayoutImport.update({
   id: '/_layout',
   getParentRoute: () => AuthenticatedAppRoute,
@@ -465,6 +489,13 @@ const AuthenticatedExamplesBimViewerIndexRoute =
     id: '/examples/bim-viewer/',
     path: '/examples/bim-viewer/',
     getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+
+const AuthenticatedTutorialsLayoutHomePageRoute =
+  AuthenticatedTutorialsLayoutHomePageImport.update({
+    id: '/home-page',
+    path: '/home-page',
+    getParentRoute: () => AuthenticatedTutorialsLayoutRoute,
   } as any)
 
 const AuthenticatedManagementsLayoutWorkflowsRoute =
@@ -882,6 +913,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppLayoutImport
       parentRoute: typeof AuthenticatedAppRoute
     }
+    '/_authenticated/app/blog': {
+      id: '/_authenticated/app/blog'
+      path: '/blog'
+      fullPath: '/app/blog'
+      preLoaderRoute: typeof AuthenticatedAppBlogImport
+      parentRoute: typeof AuthenticatedAppImport
+    }
     '/_authenticated/bim-viewer-ut/Ifc-viewer-selection': {
       id: '/_authenticated/bim-viewer-ut/Ifc-viewer-selection'
       path: '/bim-viewer-ut/Ifc-viewer-selection'
@@ -979,6 +1017,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/managements'
       preLoaderRoute: typeof AuthenticatedManagementsLayoutImport
       parentRoute: typeof AuthenticatedManagementsRoute
+    }
+    '/_authenticated/tutorials': {
+      id: '/_authenticated/tutorials'
+      path: '/tutorials'
+      fullPath: '/tutorials'
+      preLoaderRoute: typeof AuthenticatedTutorialsImport
+      parentRoute: typeof AuthenticatedRouteImport
+    }
+    '/_authenticated/tutorials/_layout': {
+      id: '/_authenticated/tutorials/_layout'
+      path: '/tutorials'
+      fullPath: '/tutorials'
+      preLoaderRoute: typeof AuthenticatedTutorialsLayoutImport
+      parentRoute: typeof AuthenticatedTutorialsRoute
     }
     '/_authenticated/view/$fileCode': {
       id: '/_authenticated/view/$fileCode'
@@ -1147,6 +1199,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/managements/workflows'
       preLoaderRoute: typeof AuthenticatedManagementsLayoutWorkflowsImport
       parentRoute: typeof AuthenticatedManagementsLayoutImport
+    }
+    '/_authenticated/tutorials/_layout/home-page': {
+      id: '/_authenticated/tutorials/_layout/home-page'
+      path: '/home-page'
+      fullPath: '/tutorials/home-page'
+      preLoaderRoute: typeof AuthenticatedTutorialsLayoutHomePageImport
+      parentRoute: typeof AuthenticatedTutorialsLayoutImport
     }
     '/_authenticated/examples/bim-viewer/': {
       id: '/_authenticated/examples/bim-viewer/'
@@ -1363,11 +1422,13 @@ const AuthenticatedAppLayoutRouteWithChildren =
 
 interface AuthenticatedAppRouteChildren {
   AuthenticatedAppLayoutRoute: typeof AuthenticatedAppLayoutRouteWithChildren
+  AuthenticatedAppBlogRoute: typeof AuthenticatedAppBlogRoute
   AuthenticatedAppIndexRoute: typeof AuthenticatedAppIndexRoute
 }
 
 const AuthenticatedAppRouteChildren: AuthenticatedAppRouteChildren = {
   AuthenticatedAppLayoutRoute: AuthenticatedAppLayoutRouteWithChildren,
+  AuthenticatedAppBlogRoute: AuthenticatedAppBlogRoute,
   AuthenticatedAppIndexRoute: AuthenticatedAppIndexRoute,
 }
 
@@ -1518,6 +1579,36 @@ const AuthenticatedManagementsRouteWithChildren =
     AuthenticatedManagementsRouteChildren,
   )
 
+interface AuthenticatedTutorialsLayoutRouteChildren {
+  AuthenticatedTutorialsLayoutHomePageRoute: typeof AuthenticatedTutorialsLayoutHomePageRoute
+}
+
+const AuthenticatedTutorialsLayoutRouteChildren: AuthenticatedTutorialsLayoutRouteChildren =
+  {
+    AuthenticatedTutorialsLayoutHomePageRoute:
+      AuthenticatedTutorialsLayoutHomePageRoute,
+  }
+
+const AuthenticatedTutorialsLayoutRouteWithChildren =
+  AuthenticatedTutorialsLayoutRoute._addFileChildren(
+    AuthenticatedTutorialsLayoutRouteChildren,
+  )
+
+interface AuthenticatedTutorialsRouteChildren {
+  AuthenticatedTutorialsLayoutRoute: typeof AuthenticatedTutorialsLayoutRouteWithChildren
+}
+
+const AuthenticatedTutorialsRouteChildren: AuthenticatedTutorialsRouteChildren =
+  {
+    AuthenticatedTutorialsLayoutRoute:
+      AuthenticatedTutorialsLayoutRouteWithChildren,
+  }
+
+const AuthenticatedTutorialsRouteWithChildren =
+  AuthenticatedTutorialsRoute._addFileChildren(
+    AuthenticatedTutorialsRouteChildren,
+  )
+
 interface AuthenticatedUserShowProfileLayoutRouteChildren {
   AuthenticatedUserShowProfileLayoutIdUserRoute: typeof AuthenticatedUserShowProfileLayoutIdUserRoute
   AuthenticatedUserShowProfileLayoutIndexRoute: typeof AuthenticatedUserShowProfileLayoutIndexRoute
@@ -1599,6 +1690,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedBimViewerUtWebglClippingV2Route: typeof AuthenticatedBimViewerUtWebglClippingV2Route
   AuthenticatedBlogRoute: typeof AuthenticatedBlogRouteWithChildren
   AuthenticatedManagementsRoute: typeof AuthenticatedManagementsRouteWithChildren
+  AuthenticatedTutorialsRoute: typeof AuthenticatedTutorialsRouteWithChildren
   AuthenticatedViewFileCodeRoute: typeof AuthenticatedViewFileCodeRoute
   AuthenticatedView2FileCodeRoute: typeof AuthenticatedView2FileCodeRoute
   AuthenticatedBimViewerUtIfcLoaderLazyRoute: typeof AuthenticatedBimViewerUtIfcLoaderLazyRoute
@@ -1642,6 +1734,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
     AuthenticatedBimViewerUtWebglClippingV2Route,
   AuthenticatedBlogRoute: AuthenticatedBlogRouteWithChildren,
   AuthenticatedManagementsRoute: AuthenticatedManagementsRouteWithChildren,
+  AuthenticatedTutorialsRoute: AuthenticatedTutorialsRouteWithChildren,
   AuthenticatedViewFileCodeRoute: AuthenticatedViewFileCodeRoute,
   AuthenticatedView2FileCodeRoute: AuthenticatedView2FileCodeRoute,
   AuthenticatedBimViewerUtIfcLoaderLazyRoute:
@@ -1689,6 +1782,7 @@ export interface FileRoutesByFullPath {
   '/503': typeof errors503LazyRoute
   '/admin': typeof AuthenticatedAdminLayoutRoute
   '/app': typeof AuthenticatedAppLayoutRouteWithChildren
+  '/app/blog': typeof AuthenticatedAppBlogRoute
   '/bim-viewer-ut/Ifc-viewer-selection': typeof AuthenticatedBimViewerUtIfcViewerSelectionRoute
   '/bim-viewer-ut/demo-xeokit-ifc': typeof AuthenticatedBimViewerUtDemoXeokitIfcRoute
   '/bim-viewer-ut/geometry-scene-viewcube': typeof AuthenticatedBimViewerUtGeometrySceneViewcubeRoute
@@ -1701,6 +1795,7 @@ export interface FileRoutesByFullPath {
   '/bim-viewer-ut/webgl-clipping-v2': typeof AuthenticatedBimViewerUtWebglClippingV2Route
   '/blog': typeof AuthenticatedBlogLayoutRouteWithChildren
   '/managements': typeof AuthenticatedManagementsLayoutRouteWithChildren
+  '/tutorials': typeof AuthenticatedTutorialsLayoutRouteWithChildren
   '/view/$fileCode': typeof AuthenticatedViewFileCodeRoute
   '/view2/$fileCode': typeof AuthenticatedView2FileCodeRoute
   '/bim-viewer-ut/ifc-loader': typeof AuthenticatedBimViewerUtIfcLoaderLazyRoute
@@ -1725,6 +1820,7 @@ export interface FileRoutesByFullPath {
   '/managements/spaces': typeof AuthenticatedManagementsLayoutSpacesRoute
   '/managements/users': typeof AuthenticatedManagementsLayoutUsersRoute
   '/managements/workflows': typeof AuthenticatedManagementsLayoutWorkflowsRoute
+  '/tutorials/home-page': typeof AuthenticatedTutorialsLayoutHomePageRoute
   '/examples/bim-viewer': typeof AuthenticatedExamplesBimViewerIndexRoute
   '/view/upload': typeof AuthenticatedViewUploadIndexRoute
   '/managements/sub-projects/$id': typeof AuthenticatedManagementsLayoutSubProjectsIdRoute
@@ -1769,6 +1865,7 @@ export interface FileRoutesByTo {
   '/503': typeof errors503LazyRoute
   '/admin': typeof AuthenticatedAdminLayoutRoute
   '/app': typeof AuthenticatedAppIndexRoute
+  '/app/blog': typeof AuthenticatedAppBlogRoute
   '/bim-viewer-ut/Ifc-viewer-selection': typeof AuthenticatedBimViewerUtIfcViewerSelectionRoute
   '/bim-viewer-ut/demo-xeokit-ifc': typeof AuthenticatedBimViewerUtDemoXeokitIfcRoute
   '/bim-viewer-ut/geometry-scene-viewcube': typeof AuthenticatedBimViewerUtGeometrySceneViewcubeRoute
@@ -1781,6 +1878,7 @@ export interface FileRoutesByTo {
   '/bim-viewer-ut/webgl-clipping-v2': typeof AuthenticatedBimViewerUtWebglClippingV2Route
   '/blog': typeof AuthenticatedBlogLayoutRouteWithChildren
   '/managements': typeof AuthenticatedManagementsLayoutRouteWithChildren
+  '/tutorials': typeof AuthenticatedTutorialsLayoutRouteWithChildren
   '/view/$fileCode': typeof AuthenticatedViewFileCodeRoute
   '/view2/$fileCode': typeof AuthenticatedView2FileCodeRoute
   '/bim-viewer-ut/ifc-loader': typeof AuthenticatedBimViewerUtIfcLoaderLazyRoute
@@ -1804,6 +1902,7 @@ export interface FileRoutesByTo {
   '/managements/spaces': typeof AuthenticatedManagementsLayoutSpacesRoute
   '/managements/users': typeof AuthenticatedManagementsLayoutUsersRoute
   '/managements/workflows': typeof AuthenticatedManagementsLayoutWorkflowsRoute
+  '/tutorials/home-page': typeof AuthenticatedTutorialsLayoutHomePageRoute
   '/examples/bim-viewer': typeof AuthenticatedExamplesBimViewerIndexRoute
   '/view/upload': typeof AuthenticatedViewUploadIndexRoute
   '/managements/sub-projects/$id': typeof AuthenticatedManagementsLayoutSubProjectsIdRoute
@@ -1850,6 +1949,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/_layout': typeof AuthenticatedAdminLayoutRoute
   '/_authenticated/app': typeof AuthenticatedAppRouteWithChildren
   '/_authenticated/app/_layout': typeof AuthenticatedAppLayoutRouteWithChildren
+  '/_authenticated/app/blog': typeof AuthenticatedAppBlogRoute
   '/_authenticated/bim-viewer-ut/Ifc-viewer-selection': typeof AuthenticatedBimViewerUtIfcViewerSelectionRoute
   '/_authenticated/bim-viewer-ut/demo-xeokit-ifc': typeof AuthenticatedBimViewerUtDemoXeokitIfcRoute
   '/_authenticated/bim-viewer-ut/geometry-scene-viewcube': typeof AuthenticatedBimViewerUtGeometrySceneViewcubeRoute
@@ -1864,6 +1964,8 @@ export interface FileRoutesById {
   '/_authenticated/blog/_layout': typeof AuthenticatedBlogLayoutRouteWithChildren
   '/_authenticated/managements': typeof AuthenticatedManagementsRouteWithChildren
   '/_authenticated/managements/_layout': typeof AuthenticatedManagementsLayoutRouteWithChildren
+  '/_authenticated/tutorials': typeof AuthenticatedTutorialsRouteWithChildren
+  '/_authenticated/tutorials/_layout': typeof AuthenticatedTutorialsLayoutRouteWithChildren
   '/_authenticated/view/$fileCode': typeof AuthenticatedViewFileCodeRoute
   '/_authenticated/view2/$fileCode': typeof AuthenticatedView2FileCodeRoute
   '/_authenticated/bim-viewer-ut/ifc-loader': typeof AuthenticatedBimViewerUtIfcLoaderLazyRoute
@@ -1888,6 +1990,7 @@ export interface FileRoutesById {
   '/_authenticated/managements/_layout/spaces': typeof AuthenticatedManagementsLayoutSpacesRoute
   '/_authenticated/managements/_layout/users': typeof AuthenticatedManagementsLayoutUsersRoute
   '/_authenticated/managements/_layout/workflows': typeof AuthenticatedManagementsLayoutWorkflowsRoute
+  '/_authenticated/tutorials/_layout/home-page': typeof AuthenticatedTutorialsLayoutHomePageRoute
   '/_authenticated/examples/bim-viewer/': typeof AuthenticatedExamplesBimViewerIndexRoute
   '/_authenticated/view/upload/': typeof AuthenticatedViewUploadIndexRoute
   '/_authenticated/managements/_layout/sub-projects/$id': typeof AuthenticatedManagementsLayoutSubProjectsIdRoute
@@ -1937,6 +2040,7 @@ export interface FileRouteTypes {
     | '/503'
     | '/admin'
     | '/app'
+    | '/app/blog'
     | '/bim-viewer-ut/Ifc-viewer-selection'
     | '/bim-viewer-ut/demo-xeokit-ifc'
     | '/bim-viewer-ut/geometry-scene-viewcube'
@@ -1949,6 +2053,7 @@ export interface FileRouteTypes {
     | '/bim-viewer-ut/webgl-clipping-v2'
     | '/blog'
     | '/managements'
+    | '/tutorials'
     | '/view/$fileCode'
     | '/view2/$fileCode'
     | '/bim-viewer-ut/ifc-loader'
@@ -1973,6 +2078,7 @@ export interface FileRouteTypes {
     | '/managements/spaces'
     | '/managements/users'
     | '/managements/workflows'
+    | '/tutorials/home-page'
     | '/examples/bim-viewer'
     | '/view/upload'
     | '/managements/sub-projects/$id'
@@ -2016,6 +2122,7 @@ export interface FileRouteTypes {
     | '/503'
     | '/admin'
     | '/app'
+    | '/app/blog'
     | '/bim-viewer-ut/Ifc-viewer-selection'
     | '/bim-viewer-ut/demo-xeokit-ifc'
     | '/bim-viewer-ut/geometry-scene-viewcube'
@@ -2028,6 +2135,7 @@ export interface FileRouteTypes {
     | '/bim-viewer-ut/webgl-clipping-v2'
     | '/blog'
     | '/managements'
+    | '/tutorials'
     | '/view/$fileCode'
     | '/view2/$fileCode'
     | '/bim-viewer-ut/ifc-loader'
@@ -2051,6 +2159,7 @@ export interface FileRouteTypes {
     | '/managements/spaces'
     | '/managements/users'
     | '/managements/workflows'
+    | '/tutorials/home-page'
     | '/examples/bim-viewer'
     | '/view/upload'
     | '/managements/sub-projects/$id'
@@ -2095,6 +2204,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/_layout'
     | '/_authenticated/app'
     | '/_authenticated/app/_layout'
+    | '/_authenticated/app/blog'
     | '/_authenticated/bim-viewer-ut/Ifc-viewer-selection'
     | '/_authenticated/bim-viewer-ut/demo-xeokit-ifc'
     | '/_authenticated/bim-viewer-ut/geometry-scene-viewcube'
@@ -2109,6 +2219,8 @@ export interface FileRouteTypes {
     | '/_authenticated/blog/_layout'
     | '/_authenticated/managements'
     | '/_authenticated/managements/_layout'
+    | '/_authenticated/tutorials'
+    | '/_authenticated/tutorials/_layout'
     | '/_authenticated/view/$fileCode'
     | '/_authenticated/view2/$fileCode'
     | '/_authenticated/bim-viewer-ut/ifc-loader'
@@ -2133,6 +2245,7 @@ export interface FileRouteTypes {
     | '/_authenticated/managements/_layout/spaces'
     | '/_authenticated/managements/_layout/users'
     | '/_authenticated/managements/_layout/workflows'
+    | '/_authenticated/tutorials/_layout/home-page'
     | '/_authenticated/examples/bim-viewer/'
     | '/_authenticated/view/upload/'
     | '/_authenticated/managements/_layout/sub-projects/$id'
@@ -2250,6 +2363,7 @@ export const routeTree = rootRoute
         "/_authenticated/bim-viewer-ut/webgl-clipping-v2",
         "/_authenticated/blog",
         "/_authenticated/managements",
+        "/_authenticated/tutorials",
         "/_authenticated/view/$fileCode",
         "/_authenticated/view2/$fileCode",
         "/_authenticated/bim-viewer-ut/ifc-loader",
@@ -2333,6 +2447,7 @@ export const routeTree = rootRoute
       "parent": "/_authenticated",
       "children": [
         "/_authenticated/app/_layout",
+        "/_authenticated/app/blog",
         "/_authenticated/app/"
       ]
     },
@@ -2345,6 +2460,10 @@ export const routeTree = rootRoute
         "/_authenticated/app/_layout/features",
         "/_authenticated/app/_layout/how-it-works"
       ]
+    },
+    "/_authenticated/app/blog": {
+      "filePath": "_authenticated/app/blog.tsx",
+      "parent": "/_authenticated/app"
     },
     "/_authenticated/bim-viewer-ut/Ifc-viewer-selection": {
       "filePath": "_authenticated/bim-viewer-ut/Ifc-viewer-selection.tsx",
@@ -2424,6 +2543,20 @@ export const routeTree = rootRoute
         "/_authenticated/managements/_layout/sub-projects",
         "/_authenticated/managements/_layout/teams/$team_id",
         "/_authenticated/managements/_layout/teams/"
+      ]
+    },
+    "/_authenticated/tutorials": {
+      "filePath": "_authenticated/tutorials",
+      "parent": "/_authenticated",
+      "children": [
+        "/_authenticated/tutorials/_layout"
+      ]
+    },
+    "/_authenticated/tutorials/_layout": {
+      "filePath": "_authenticated/tutorials/_layout.tsx",
+      "parent": "/_authenticated/tutorials",
+      "children": [
+        "/_authenticated/tutorials/_layout/home-page"
       ]
     },
     "/_authenticated/view/$fileCode": {
@@ -2520,6 +2653,10 @@ export const routeTree = rootRoute
     "/_authenticated/managements/_layout/workflows": {
       "filePath": "_authenticated/managements/_layout/workflows.tsx",
       "parent": "/_authenticated/managements/_layout"
+    },
+    "/_authenticated/tutorials/_layout/home-page": {
+      "filePath": "_authenticated/tutorials/_layout/home-page.tsx",
+      "parent": "/_authenticated/tutorials/_layout"
     },
     "/_authenticated/examples/bim-viewer/": {
       "filePath": "_authenticated/examples/bim-viewer/index.tsx",
