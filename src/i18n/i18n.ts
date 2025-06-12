@@ -42,6 +42,8 @@ const resources = {
         how_it_works: "How it works",
         contact: "Contact Us",
         auth: "Sign In",
+        tutorial: "Tutorial",
+        blog: "Blog"
       },
       panel_alert: {
         message: "You are currently browsing as a guest. Sign in to access advanced features.",
@@ -200,6 +202,9 @@ const resources = {
         how_it_works: "Cách thức hoạt động",
         contact: "Liên hệ",
         auth: "Đăng nhập",
+        tutorial: "Khóa học",
+        blog: "Blog"
+
       },
       panel_alert: {
         message: "Bạn đang dùng chế độ khách. Đăng nhập để truy cập các chức năng nâng cao",

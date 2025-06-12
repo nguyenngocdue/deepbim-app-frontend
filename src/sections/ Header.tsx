@@ -9,6 +9,8 @@ import { ProfileDropdown } from "@/components/common/ProfileDropdown";
 import { ThemeSwitch } from "@/components/theme-switch";
 import LanguageButton from "@/components/common/LanguageButton";
 import { LuBadgePlus } from "react-icons/lu";
+import { VscRemoteExplorer } from "react-icons/vsc";
+import CustomBadge from "@/components/common/CustomBadge";
 
 const Header = () => {
   const { t } = useTranslation();
@@ -55,6 +57,8 @@ const Header = () => {
     { href: "/app/features", label: t("navbar.features"), icon: <FaStar />, ariaLabel: t("navbar.features") },
     { href: "/app/how-it-works", label: t("navbar.how_it_works"), icon: <FaQuestionCircle />, ariaLabel: t("navbar.how_it_works") },
     { href: "/app/contact-us", label: t("navbar.contact"), icon: <FaEnvelope />, ariaLabel: t("navbar.contact") },
+    { href: "/app/tutorial", label: t("navbar.tutorial"), icon: <VscRemoteExplorer />, ariaLabel: t("navbar.tutorial"), isDev: true},
+    { href: "/app/blog", label: t("navbar.blog"), icon: <VscRemoteExplorer />, ariaLabel: t("navbar.blog"), isDev: true },
   ];
 
   return (
@@ -78,10 +82,10 @@ const Header = () => {
                 className={`${navLinkStyle} ${
                   isActive(link.href)
                     ? `text-reverse`
-                    : 'dark:text-slate-100 text-slate-800'
+                    : 'dark:text-slate-100 text-slate-800 hover:text-[#40DBCB] dark:hover:text-[#40DBCB]'
                 }`}
               >
-                {link.label}
+                {link.label} {link?.isDev && <CustomBadge text="dev" className="bg-red-400 dark:bg-red-400"/>}
               </Link>
             ))}
           </nav>
