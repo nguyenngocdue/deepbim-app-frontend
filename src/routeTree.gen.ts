@@ -57,6 +57,7 @@ import { Route as AuthenticatedManagementsLayoutModelPreviewsImport } from './ro
 import { Route as AuthenticatedManagementsLayoutMeImport } from './routes/_authenticated/managements/_layout/me'
 import { Route as AuthenticatedManagementsLayoutHomeImport } from './routes/_authenticated/managements/_layout/home'
 import { Route as AuthenticatedManagementsLayoutChatSupportImport } from './routes/_authenticated/managements/_layout/chat-support'
+import { Route as AuthenticatedLearningLessonsForNewbiesLayoutImport } from './routes/_authenticated/learning/lessons-for-newbies/_layout'
 import { Route as AuthenticatedBlogLayoutContactImport } from './routes/_authenticated/blog/_layout/contact'
 import { Route as AuthenticatedBlogLayoutAboutImport } from './routes/_authenticated/blog/_layout/about'
 import { Route as AuthenticatedAppLayoutHowItWorksImport } from './routes/_authenticated/app/_layout/how-it-works'
@@ -67,6 +68,7 @@ import { Route as AuthenticatedUserShowProfileOwnerIndexImport } from './routes/
 import { Route as AuthenticatedUserShowPortfolioIndexImport } from './routes/_authenticated/user/show/portfolio/index'
 import { Route as AuthenticatedManagementsLayoutTeamsIndexImport } from './routes/_authenticated/managements/_layout/teams/index'
 import { Route as AuthenticatedManagementsLayoutSubProjectsIndexImport } from './routes/_authenticated/managements/_layout/sub-projects/index'
+import { Route as AuthenticatedLearningLessonsForNewbiesLayoutIndexImport } from './routes/_authenticated/learning/lessons-for-newbies/_layout/index'
 import { Route as AuthenticatedUserShowProfileLayoutImport } from './routes/_authenticated/user/show/profile/_layout'
 import { Route as AuthenticatedManagementsLayoutTeamsTeamidImport } from './routes/_authenticated/managements/_layout/teams/$team_id'
 import { Route as AuthenticatedManagementsLayoutSubProjectsLayoutImport } from './routes/_authenticated/managements/_layout/sub-projects/_layout'
@@ -104,6 +106,9 @@ const authSignUpLazyImport = createFileRoute('/(auth)/sign-up')()
 const authSignIn2LazyImport = createFileRoute('/(auth)/sign-in-2')()
 const authForgotPasswordLazyImport = createFileRoute(
   '/(auth)/forgot-password',
+)()
+const AuthenticatedLearningLessonsForNewbiesImport = createFileRoute(
+  '/_authenticated/learning/lessons-for-newbies',
 )()
 const AuthenticatedBimViewerUtViewerLazyImport = createFileRoute(
   '/_authenticated/bim-viewer-ut/viewer',
@@ -280,6 +285,13 @@ const auth500Route = auth500Import.update({
   path: '/500',
   getParentRoute: () => rootRoute,
 } as any)
+
+const AuthenticatedLearningLessonsForNewbiesRoute =
+  AuthenticatedLearningLessonsForNewbiesImport.update({
+    id: '/learning/lessons-for-newbies',
+    path: '/learning/lessons-for-newbies',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 const ExampleModelIfcIndexRoute = ExampleModelIfcIndexImport.update({
   id: '/example-model/ifc/',
@@ -554,6 +566,12 @@ const AuthenticatedManagementsLayoutChatSupportRoute =
     getParentRoute: () => AuthenticatedManagementsLayoutRoute,
   } as any)
 
+const AuthenticatedLearningLessonsForNewbiesLayoutRoute =
+  AuthenticatedLearningLessonsForNewbiesLayoutImport.update({
+    id: '/_layout',
+    getParentRoute: () => AuthenticatedLearningLessonsForNewbiesRoute,
+  } as any)
+
 const AuthenticatedBlogLayoutContactRoute =
   AuthenticatedBlogLayoutContactImport.update({
     id: '/contact',
@@ -629,6 +647,13 @@ const AuthenticatedManagementsLayoutSubProjectsIndexRoute =
     id: '/',
     path: '/',
     getParentRoute: () => AuthenticatedManagementsLayoutSubProjectsRoute,
+  } as any)
+
+const AuthenticatedLearningLessonsForNewbiesLayoutIndexRoute =
+  AuthenticatedLearningLessonsForNewbiesLayoutIndexImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedLearningLessonsForNewbiesLayoutRoute,
   } as any)
 
 const AuthenticatedUserShowProfileLayoutRoute =
@@ -1144,6 +1169,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedBlogLayoutContactImport
       parentRoute: typeof AuthenticatedBlogLayoutImport
     }
+    '/_authenticated/learning/lessons-for-newbies': {
+      id: '/_authenticated/learning/lessons-for-newbies'
+      path: '/learning/lessons-for-newbies'
+      fullPath: '/learning/lessons-for-newbies'
+      preLoaderRoute: typeof AuthenticatedLearningLessonsForNewbiesImport
+      parentRoute: typeof AuthenticatedRouteImport
+    }
+    '/_authenticated/learning/lessons-for-newbies/_layout': {
+      id: '/_authenticated/learning/lessons-for-newbies/_layout'
+      path: '/learning/lessons-for-newbies'
+      fullPath: '/learning/lessons-for-newbies'
+      preLoaderRoute: typeof AuthenticatedLearningLessonsForNewbiesLayoutImport
+      parentRoute: typeof AuthenticatedLearningLessonsForNewbiesRoute
+    }
     '/_authenticated/managements/_layout/chat-support': {
       id: '/_authenticated/managements/_layout/chat-support'
       path: '/chat-support'
@@ -1262,6 +1301,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/user/show/profile'
       preLoaderRoute: typeof AuthenticatedUserShowProfileLayoutImport
       parentRoute: typeof AuthenticatedUserShowProfileRoute
+    }
+    '/_authenticated/learning/lessons-for-newbies/_layout/': {
+      id: '/_authenticated/learning/lessons-for-newbies/_layout/'
+      path: '/'
+      fullPath: '/learning/lessons-for-newbies/'
+      preLoaderRoute: typeof AuthenticatedLearningLessonsForNewbiesLayoutIndexImport
+      parentRoute: typeof AuthenticatedLearningLessonsForNewbiesLayoutImport
     }
     '/_authenticated/managements/_layout/sub-projects/': {
       id: '/_authenticated/managements/_layout/sub-projects/'
@@ -1609,6 +1655,36 @@ const AuthenticatedTutorialsRouteWithChildren =
     AuthenticatedTutorialsRouteChildren,
   )
 
+interface AuthenticatedLearningLessonsForNewbiesLayoutRouteChildren {
+  AuthenticatedLearningLessonsForNewbiesLayoutIndexRoute: typeof AuthenticatedLearningLessonsForNewbiesLayoutIndexRoute
+}
+
+const AuthenticatedLearningLessonsForNewbiesLayoutRouteChildren: AuthenticatedLearningLessonsForNewbiesLayoutRouteChildren =
+  {
+    AuthenticatedLearningLessonsForNewbiesLayoutIndexRoute:
+      AuthenticatedLearningLessonsForNewbiesLayoutIndexRoute,
+  }
+
+const AuthenticatedLearningLessonsForNewbiesLayoutRouteWithChildren =
+  AuthenticatedLearningLessonsForNewbiesLayoutRoute._addFileChildren(
+    AuthenticatedLearningLessonsForNewbiesLayoutRouteChildren,
+  )
+
+interface AuthenticatedLearningLessonsForNewbiesRouteChildren {
+  AuthenticatedLearningLessonsForNewbiesLayoutRoute: typeof AuthenticatedLearningLessonsForNewbiesLayoutRouteWithChildren
+}
+
+const AuthenticatedLearningLessonsForNewbiesRouteChildren: AuthenticatedLearningLessonsForNewbiesRouteChildren =
+  {
+    AuthenticatedLearningLessonsForNewbiesLayoutRoute:
+      AuthenticatedLearningLessonsForNewbiesLayoutRouteWithChildren,
+  }
+
+const AuthenticatedLearningLessonsForNewbiesRouteWithChildren =
+  AuthenticatedLearningLessonsForNewbiesRoute._addFileChildren(
+    AuthenticatedLearningLessonsForNewbiesRouteChildren,
+  )
+
 interface AuthenticatedUserShowProfileLayoutRouteChildren {
   AuthenticatedUserShowProfileLayoutIdUserRoute: typeof AuthenticatedUserShowProfileLayoutIdUserRoute
   AuthenticatedUserShowProfileLayoutIndexRoute: typeof AuthenticatedUserShowProfileLayoutIndexRoute
@@ -1699,6 +1775,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedMyRoom3dIndexRoute: typeof AuthenticatedMyRoom3dIndexRoute
   AuthenticatedViewIndexRoute: typeof AuthenticatedViewIndexRoute
   AuthenticatedView2IndexRoute: typeof AuthenticatedView2IndexRoute
+  AuthenticatedLearningLessonsForNewbiesRoute: typeof AuthenticatedLearningLessonsForNewbiesRouteWithChildren
   AuthenticatedExamplesBimViewerIndexRoute: typeof AuthenticatedExamplesBimViewerIndexRoute
   AuthenticatedViewUploadIndexRoute: typeof AuthenticatedViewUploadIndexRoute
   AuthenticatedUserShowProfileRoute: typeof AuthenticatedUserShowProfileRouteWithChildren
@@ -1746,6 +1823,8 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedMyRoom3dIndexRoute: AuthenticatedMyRoom3dIndexRoute,
   AuthenticatedViewIndexRoute: AuthenticatedViewIndexRoute,
   AuthenticatedView2IndexRoute: AuthenticatedView2IndexRoute,
+  AuthenticatedLearningLessonsForNewbiesRoute:
+    AuthenticatedLearningLessonsForNewbiesRouteWithChildren,
   AuthenticatedExamplesBimViewerIndexRoute:
     AuthenticatedExamplesBimViewerIndexRoute,
   AuthenticatedViewUploadIndexRoute: AuthenticatedViewUploadIndexRoute,
@@ -1812,6 +1891,7 @@ export interface FileRoutesByFullPath {
   '/app/how-it-works': typeof AuthenticatedAppLayoutHowItWorksRoute
   '/blog/about': typeof AuthenticatedBlogLayoutAboutRoute
   '/blog/contact': typeof AuthenticatedBlogLayoutContactRoute
+  '/learning/lessons-for-newbies': typeof AuthenticatedLearningLessonsForNewbiesLayoutRouteWithChildren
   '/managements/chat-support': typeof AuthenticatedManagementsLayoutChatSupportRoute
   '/managements/home': typeof AuthenticatedManagementsLayoutHomeRoute
   '/managements/me': typeof AuthenticatedManagementsLayoutMeRoute
@@ -1827,6 +1907,7 @@ export interface FileRoutesByFullPath {
   '/managements/sub-projects': typeof AuthenticatedManagementsLayoutSubProjectsLayoutRouteWithChildren
   '/managements/teams/$team_id': typeof AuthenticatedManagementsLayoutTeamsTeamidRoute
   '/user/show/profile': typeof AuthenticatedUserShowProfileLayoutRouteWithChildren
+  '/learning/lessons-for-newbies/': typeof AuthenticatedLearningLessonsForNewbiesLayoutIndexRoute
   '/managements/sub-projects/': typeof AuthenticatedManagementsLayoutSubProjectsIndexRoute
   '/managements/teams': typeof AuthenticatedManagementsLayoutTeamsIndexRoute
   '/user/show/portfolio': typeof AuthenticatedUserShowPortfolioIndexRoute
@@ -1894,6 +1975,7 @@ export interface FileRoutesByTo {
   '/app/how-it-works': typeof AuthenticatedAppLayoutHowItWorksRoute
   '/blog/about': typeof AuthenticatedBlogLayoutAboutRoute
   '/blog/contact': typeof AuthenticatedBlogLayoutContactRoute
+  '/learning/lessons-for-newbies': typeof AuthenticatedLearningLessonsForNewbiesLayoutIndexRoute
   '/managements/chat-support': typeof AuthenticatedManagementsLayoutChatSupportRoute
   '/managements/home': typeof AuthenticatedManagementsLayoutHomeRoute
   '/managements/me': typeof AuthenticatedManagementsLayoutMeRoute
@@ -1982,6 +2064,8 @@ export interface FileRoutesById {
   '/_authenticated/app/_layout/how-it-works': typeof AuthenticatedAppLayoutHowItWorksRoute
   '/_authenticated/blog/_layout/about': typeof AuthenticatedBlogLayoutAboutRoute
   '/_authenticated/blog/_layout/contact': typeof AuthenticatedBlogLayoutContactRoute
+  '/_authenticated/learning/lessons-for-newbies': typeof AuthenticatedLearningLessonsForNewbiesRouteWithChildren
+  '/_authenticated/learning/lessons-for-newbies/_layout': typeof AuthenticatedLearningLessonsForNewbiesLayoutRouteWithChildren
   '/_authenticated/managements/_layout/chat-support': typeof AuthenticatedManagementsLayoutChatSupportRoute
   '/_authenticated/managements/_layout/home': typeof AuthenticatedManagementsLayoutHomeRoute
   '/_authenticated/managements/_layout/me': typeof AuthenticatedManagementsLayoutMeRoute
@@ -1999,6 +2083,7 @@ export interface FileRoutesById {
   '/_authenticated/managements/_layout/teams/$team_id': typeof AuthenticatedManagementsLayoutTeamsTeamidRoute
   '/_authenticated/user/show/profile': typeof AuthenticatedUserShowProfileRouteWithChildren
   '/_authenticated/user/show/profile/_layout': typeof AuthenticatedUserShowProfileLayoutRouteWithChildren
+  '/_authenticated/learning/lessons-for-newbies/_layout/': typeof AuthenticatedLearningLessonsForNewbiesLayoutIndexRoute
   '/_authenticated/managements/_layout/sub-projects/': typeof AuthenticatedManagementsLayoutSubProjectsIndexRoute
   '/_authenticated/managements/_layout/teams/': typeof AuthenticatedManagementsLayoutTeamsIndexRoute
   '/_authenticated/user/show/portfolio/': typeof AuthenticatedUserShowPortfolioIndexRoute
@@ -2070,6 +2155,7 @@ export interface FileRouteTypes {
     | '/app/how-it-works'
     | '/blog/about'
     | '/blog/contact'
+    | '/learning/lessons-for-newbies'
     | '/managements/chat-support'
     | '/managements/home'
     | '/managements/me'
@@ -2085,6 +2171,7 @@ export interface FileRouteTypes {
     | '/managements/sub-projects'
     | '/managements/teams/$team_id'
     | '/user/show/profile'
+    | '/learning/lessons-for-newbies/'
     | '/managements/sub-projects/'
     | '/managements/teams'
     | '/user/show/portfolio'
@@ -2151,6 +2238,7 @@ export interface FileRouteTypes {
     | '/app/how-it-works'
     | '/blog/about'
     | '/blog/contact'
+    | '/learning/lessons-for-newbies'
     | '/managements/chat-support'
     | '/managements/home'
     | '/managements/me'
@@ -2237,6 +2325,8 @@ export interface FileRouteTypes {
     | '/_authenticated/app/_layout/how-it-works'
     | '/_authenticated/blog/_layout/about'
     | '/_authenticated/blog/_layout/contact'
+    | '/_authenticated/learning/lessons-for-newbies'
+    | '/_authenticated/learning/lessons-for-newbies/_layout'
     | '/_authenticated/managements/_layout/chat-support'
     | '/_authenticated/managements/_layout/home'
     | '/_authenticated/managements/_layout/me'
@@ -2254,6 +2344,7 @@ export interface FileRouteTypes {
     | '/_authenticated/managements/_layout/teams/$team_id'
     | '/_authenticated/user/show/profile'
     | '/_authenticated/user/show/profile/_layout'
+    | '/_authenticated/learning/lessons-for-newbies/_layout/'
     | '/_authenticated/managements/_layout/sub-projects/'
     | '/_authenticated/managements/_layout/teams/'
     | '/_authenticated/user/show/portfolio/'
@@ -2372,6 +2463,7 @@ export const routeTree = rootRoute
         "/_authenticated/my-room-3d/",
         "/_authenticated/view/",
         "/_authenticated/view2/",
+        "/_authenticated/learning/lessons-for-newbies",
         "/_authenticated/examples/bim-viewer/",
         "/_authenticated/view/upload/",
         "/_authenticated/user/show/profile",
@@ -2622,6 +2714,20 @@ export const routeTree = rootRoute
       "filePath": "_authenticated/blog/_layout/contact.tsx",
       "parent": "/_authenticated/blog/_layout"
     },
+    "/_authenticated/learning/lessons-for-newbies": {
+      "filePath": "_authenticated/learning/lessons-for-newbies",
+      "parent": "/_authenticated",
+      "children": [
+        "/_authenticated/learning/lessons-for-newbies/_layout"
+      ]
+    },
+    "/_authenticated/learning/lessons-for-newbies/_layout": {
+      "filePath": "_authenticated/learning/lessons-for-newbies/_layout.tsx",
+      "parent": "/_authenticated/learning/lessons-for-newbies",
+      "children": [
+        "/_authenticated/learning/lessons-for-newbies/_layout/"
+      ]
+    },
     "/_authenticated/managements/_layout/chat-support": {
       "filePath": "_authenticated/managements/_layout/chat-support.tsx",
       "parent": "/_authenticated/managements/_layout"
@@ -2710,6 +2816,10 @@ export const routeTree = rootRoute
         "/_authenticated/user/show/profile/_layout/$idUser",
         "/_authenticated/user/show/profile/_layout/"
       ]
+    },
+    "/_authenticated/learning/lessons-for-newbies/_layout/": {
+      "filePath": "_authenticated/learning/lessons-for-newbies/_layout/index.tsx",
+      "parent": "/_authenticated/learning/lessons-for-newbies/_layout"
     },
     "/_authenticated/managements/_layout/sub-projects/": {
       "filePath": "_authenticated/managements/_layout/sub-projects/index.tsx",

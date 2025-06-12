@@ -1,12 +1,16 @@
 import { useState, useRef, useEffect } from "react";
 import { Home, Book, FileText, Users, LogOut, ChevronLeft, ChevronRight } from "lucide-react";
 
-export function TutorialSidebar() {
-  const [isOpen, setIsOpen] = useState(false);
+interface TutorialSidebarProps {
+  isOpen: boolean;
+  onToggle: (open: boolean) => void;
+}
+
+export function TutorialSidebar({ isOpen, onToggle }: TutorialSidebarProps) {
   const sidebarRef = useRef<HTMLDivElement>(null);
 
   const handleToggle = () => {
-    setIsOpen((prev) => !prev);
+    onToggle(!isOpen);
   };
 
   const menuItems = [
@@ -43,21 +47,16 @@ export function TutorialSidebar() {
             ))}
           </nav>
 
-          {/* New Hover Toggle Button */}
+          {/* Toggle Button */}
           <div className="absolute top-1/2 -right-4 hidden group-hover:block opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none group-hover:pointer-events-auto md:block">
             <button
               onClick={handleToggle}
-              className={`absolute bottom-16 right-[2px] bg-transparent w-6 h-6 bg-gray-800 hover:bg-gray-700 text-white flex items-center justify-center rounded-full shadow-lg transition-opacity duration-500 opacity-0 group-hover:opacity-100`}
+              className={`absolute -right-2 bg-transparent w-6 h-6 bg-gray-800 hover:bg-gray-700 text-white flex items-center justify-center rounded-full shadow-lg transition-opacity duration-500 opacity-0 group-hover:opacity-100`}
               title={isOpen ? "Thu gọn" : "Mở rộng"}
             >
-              {isOpen ? (
-                <ChevronLeft size={20} />
-              ) : (
-                <ChevronRight size={20} />
-              )}
+              {isOpen ? <ChevronLeft size={20} /> : <ChevronRight size={20} />}
             </button>
           </div>
-
         </div>
       </aside>
 

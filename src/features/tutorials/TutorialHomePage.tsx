@@ -13,7 +13,6 @@ export default function TutorialHomePage() {
                 <TutorialHeader />
                 <TutorialSearchBanner/>
                 <TutorialCourseList />
-                <TutorialFooter />
             </SearchProvider>
         </div>
     );
