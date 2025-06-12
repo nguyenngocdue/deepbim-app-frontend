@@ -31,7 +31,7 @@ export function GoogleLoginButton() {
           size: 'large',
           type: 'standard',
           shape: 'react',
-          text: 'signin_with',
+          // text: 'signin_with',
           logo_alignment: 'left',
           locale: 'vi' // Change to Vietnamese locale to match "Đăng nhập"
         });
