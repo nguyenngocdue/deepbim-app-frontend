@@ -28,6 +28,7 @@ import { Loader2 } from 'lucide-react';
 import { CLASS_NAME_DEFAULT } from '@/utils/class';
 import { toast } from 'sonner';
 import { UserProfile } from '@/types/User';
+import { GoogleLoginButton2 } from '@/components/GoogleLoginButton2';
 
 type UserAuthFormProps = HTMLAttributes<HTMLDivElement>;
 
@@ -239,11 +240,12 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
             </div>
 
             {/* Nút GitHub và Google */}
-            <div className="grid grid-cols-12 gap-2 w-full">
+            <div className="grid lg:grid-cols-12 gap-2 w-full">
               <div className='col-span-6'>
                   <GitHubLoginButton isLoading={isLoadingGitHub} onClick={handleGitHubLogin} />
               </div>
                <div className='col-span-6'>
+                  {/* <GoogleLoginButton2/> */}
                   <GoogleLoginButton />
                </div>
             </div>
