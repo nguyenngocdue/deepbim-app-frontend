@@ -1,53 +1,78 @@
-import {
-  SidebarProvider,
-  SidebarTrigger,
-  Sidebar,
-  SidebarContent,
-} from "@/components/ui/sidebar";
-import { Button } from "@/components/ui/button";
-import { Home, Book, Users, Settings, LogOut } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
+import { Home, Book, FileText, Users, LogOut, ChevronLeft, ChevronRight } from "lucide-react";
 
 export function TutorialSidebar() {
+  const [isOpen, setIsOpen] = useState(false);
+  const sidebarRef = useRef<HTMLDivElement>(null);
+
+  const handleToggle = () => {
+    setIsOpen((prev) => !prev);
+  };
+
+  const menuItems = [
+    { icon: Home, label: "Trang chủ" },
+    { icon: Book, label: "Khóa học" },
+    { icon: FileText, label: "Bài viết" },
+    { icon: Users, label: "Cộng đồng" },
+  ];
+
   return (
-    <SidebarProvider>
-      <Sidebar>
-        <SidebarTrigger />
-        <SidebarContent>
-          <div className="p-2">
-            <h2 className="text-xl font-bold mb-4">Tutorial Hub</h2>
-            <div>
-              <Button variant="ghost" className="w-full justify-start mb-2">
-                <Home className="mr-2 h-4 w-4" />
-                Trang chủ
-              </Button>
-            </div>
-            <div>
-              <Button variant="ghost" className="w-full justify-start mb-2">
-                <Book className="mr-2 h-4 w-4" />
-                Khóa học
-              </Button>
-            </div>
-            <div>
-              <Button variant="ghost" className="w-full justify-start mb-2">
-                <Users className="mr-2 h-4 w-4" />
-                Cộng đồng
-              </Button>
-            </div>
-            <div>
-              <Button variant="ghost" className="w-full justify-start mb-2">
-                <Settings className="mr-2 h-4 w-4" />
-                Cài đặt
-              </Button>
-            </div>
-            <div className="mt-auto">
-              <Button variant="outline" className="w-full justify-start">
-                <LogOut className="mr-2 h-4 w-4" />
-                Đăng xuất
-              </Button>
-            </div>
+    <>
+      {/* Sidebar for medium and larger screens */}
+      <aside
+        ref={sidebarRef}
+        className={`fixed top-0 left-0 h-screen bg-gray-900 text-white transition-all duration-300 ease-in-out z-20 ${isOpen ? "w-64" : "w-16"
+          } hidden md:flex flex-col items-center py-6 px-2 group`}
+      >
+        <div className="relative w-full h-full">
+          <div className="mb-8">
+            <span className={`text-lg font-semibold ${!isOpen ? "hidden" : ""}`}>
+              Tutorial Hub
+            </span>
           </div>
-        </SidebarContent>
-      </Sidebar>
-    </SidebarProvider>
+          <nav className="flex flex-col space-y-4 flex-1 w-full">
+            {menuItems.map((item, index) => (
+              <button
+                key={index}
+                className={`w-full h-12 rounded-lg bg-gray-800 hover:bg-gray-700 flex items-center justify-start px-4 transition-colors duration-200 ${!isOpen ? "justify-center" : ""
+                  }`}
+              >
+                <item.icon className="h-6 w-6 text-white" />
+                {isOpen && <span className="ml-4 text-sm font-medium">{item.label}</span>}
+              </button>
+            ))}
+          </nav>
+
+          {/* New Hover Toggle Button */}
+          <div className="absolute top-1/2 -right-4 hidden group-hover:block opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none group-hover:pointer-events-auto md:block">
+            <button
+              onClick={handleToggle}
+              className={`absolute bottom-16 right-[2px] bg-transparent w-6 h-6 bg-gray-800 hover:bg-gray-700 text-white flex items-center justify-center rounded-full shadow-lg transition-opacity duration-500 opacity-0 group-hover:opacity-100`}
+              title={isOpen ? "Thu gọn" : "Mở rộng"}
+            >
+              {isOpen ? (
+                <ChevronLeft size={20} />
+              ) : (
+                <ChevronRight size={20} />
+              )}
+            </button>
+          </div>
+
+        </div>
+      </aside>
+
+      {/* Horizontal navbar for small screens */}
+      <nav className="md:hidden bg-gray-900 text-white p-4 flex justify-around items-center fixed bottom-0 left-0 w-full z-20 shadow-lg">
+        {menuItems.map((item, index) => (
+          <button
+            key={index}
+            className="flex flex-col items-center space-y-1"
+          >
+            <item.icon className="h-6 w-6 text-white" />
+            <span className="text-xs font-medium">{item.label}</span>
+          </button>
+        ))}
+      </nav>
+    </>
   );
 }

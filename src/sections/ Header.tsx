@@ -57,7 +57,7 @@ const Header = () => {
     { href: "/app/features", label: t("navbar.features"), icon: <FaStar />, ariaLabel: t("navbar.features") },
     { href: "/app/how-it-works", label: t("navbar.how_it_works"), icon: <FaQuestionCircle />, ariaLabel: t("navbar.how_it_works") },
     { href: "/app/contact-us", label: t("navbar.contact"), icon: <FaEnvelope />, ariaLabel: t("navbar.contact") },
-    { href: "/app/tutorial", label: t("navbar.tutorial"), icon: <VscRemoteExplorer />, ariaLabel: t("navbar.tutorial"), isDev: true},
+    { href: "/tutorials/home-page", label: t("navbar.tutorial"), icon: <VscRemoteExplorer />, ariaLabel: t("navbar.tutorial"), isDev: true},
     { href: "/app/blog", label: t("navbar.blog"), icon: <VscRemoteExplorer />, ariaLabel: t("navbar.blog"), isDev: true },
   ];
 
