@@ -21,7 +21,7 @@ export function TutorialSidebar() {
       {/* Sidebar for medium and larger screens */}
       <aside
         ref={sidebarRef}
-        className={`fixed top-0 left-0 h-screen bg-gray-900 text-white transition-all duration-300 ease-in-out z-20 ${isOpen ? "w-64" : "w-16"
+        className={`fixed top-20 left-0 h-screen bg-gray-900 text-white transition-all duration-300 ease-in-out z-20 ${isOpen ? "w-64" : "w-16"
           } hidden md:flex flex-col items-center py-6 px-2 group`}
       >
         <div className="relative w-full h-full">

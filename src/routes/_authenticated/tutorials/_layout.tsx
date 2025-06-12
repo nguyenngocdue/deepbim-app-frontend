@@ -5,7 +5,9 @@ export const Route = createRootRoute({
   component: () => (
     <div className="max-h-screen">
         <TutorialSidebar/>
-        <Outlet/>    
+        <div className='mt-24'>
+          <Outlet/>    
+        </div>
     </div>
   ),
 });
