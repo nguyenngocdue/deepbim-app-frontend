@@ -7,11 +7,11 @@ export function GoogleLoginButton2() {
   const { isLoading, triggerGoogleRedirect } = useGoogleLoginHandler();
 
   return (
-    <div className="w-full flex justify-center px-4 sm:px-0">
+    <div className="w-full flex justify-center ">
       <Button
         onClick={triggerGoogleRedirect}
         disabled={isLoading}
-        className="w-full  max-w-sm flex items-center justify-center gap-2 px-4 py-2 rounded-md shadow bg-white border border-gray-300 text-gray-800 hover:bg-gray-100"
+        className="w-full  max-w-sm flex items-center justify-center gap-2 px-4 py-2 rounded-md shadow bg-blue-400 border border-gray-300 text-gray-800 hover:bg-gray-100"
       >
         {isLoading ? (
           <Loader2 className="animate-spin w-4 h-4" />

@@ -36,7 +36,7 @@ export default function SignIn2() {
           </div>
           {/* My room 3D */}
           <div className='w-full h-hull invisible lg:visible'>
-            <MyRoom showFakeLights={true}/>
+            {/* <MyRoom showFakeLights={true}/> */}
           </div>
           
         </div>

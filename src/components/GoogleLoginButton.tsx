@@ -30,10 +30,11 @@ export function GoogleLoginButton() {
           theme: 'filled_blue',
           size: 'large',
           type: 'standard',
-          shape: 'react',
           // text: 'signin_with',
+          shape: 'rectangular',
           logo_alignment: 'left',
-          locale: 'vi' // Change to Vietnamese locale to match "Đăng nhập"
+          locale: 'vi', // Change to Vietnamese locale to match "Đăng nhập"
+          width: '100%',
         });
       }
     };
@@ -56,7 +57,7 @@ export function GoogleLoginButton() {
 
   return (
     <div className="w-full h-full flex justify-center">
-      <div ref={buttonDivRef} className="w-full" />
+      <div ref={buttonDivRef}  className="w-full max-w-full"  />
     </div>
   );
 }
