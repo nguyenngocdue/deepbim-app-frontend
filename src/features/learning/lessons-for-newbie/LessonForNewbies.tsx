@@ -5,6 +5,12 @@ import LessonContent from "./components/LessonContent";
 import { fetchLessonTreeByCourseId } from "@/apis/lesson-api";
 import { useLocation } from "@tanstack/react-router";
 
+type Lesson = {
+  id: number;
+  title: string;
+  video_url?: string; // Make video_url optional to match imported type
+};
+
 
 export default function LessonForNewbies() {
   const [lessons, setLessons] = useState([]);
@@ -12,6 +18,7 @@ export default function LessonForNewbies() {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const courseId = searchParams.get("course_id");
+  const [selectedLesson, setSelectedLesson] = useState<Lesson | null>(null);
 
   useEffect(() => {
     if (courseId) {
@@ -24,8 +31,6 @@ export default function LessonForNewbies() {
         });
     }
   }, [courseId]);
-
-  console.log(lessons)
 
   const contentData = {
     title: "Mô hình Client - Server là gì?",
@@ -40,14 +45,13 @@ export default function LessonForNewbies() {
     ],
   };
 
-  console.log(lessons)
   return (
     <div className="min-h-screen w-full bg-gradient-to-b from-gray-900/95 to-black/95 text-white">
       <main className="flex flex-col gap-6 p-4 sm:p-6 lg:grid lg:grid-cols-12 lg:gap-8 max-h-screen overflow-hidden">
         {/* Player + Content */}
         <div className="lg:col-span-8 max-h-screen overflow-y-auto">
           <div className="w-full aspect-video rounded-2xl shadow-2xl mb-6 sm:mb-8 bg-gradient-to-tr from-gray-800 to-gray-900">
-            <Player videoId="vyiY9eKR4NY" />
+            <Player videoUrl={selectedLesson?.video_url ?? ""} />
           </div>
           <LessonContent
             title={contentData.title}
@@ -59,7 +63,7 @@ export default function LessonForNewbies() {
 
         {/* Sidebar */}
         <div className="lg:col-span-4">
-          <LessonSidebar sections={lessons} />
+          <LessonSidebar sections={lessons} onLessonSelect={(lesson) => setSelectedLesson(lesson)} />
         </div>
       </main>
     </div>

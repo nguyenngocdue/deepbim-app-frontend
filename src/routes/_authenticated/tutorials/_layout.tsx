@@ -1,4 +1,5 @@
 import { TutorialFooter } from "@/features/tutorials/components/TutorialFooter";
+import { TutorialHeader } from "@/features/tutorials/components/TutorialHeader";
 import { TutorialSidebar } from "@/features/tutorials/components/TutorialSidebar";
 import { createFileRoute, createRootRoute, Outlet } from "@tanstack/react-router";
 import { useState, useEffect, useRef } from "react";
@@ -37,6 +38,7 @@ export const Route = createRootRoute({
           ref={contentRef}
           className="mt-24 min-h-screen transition-all duration-300 ease-in-out md:ml-[--sidebar-width]"
         >
+          <TutorialHeader />
           <Outlet />
         </div>
         <TutorialFooter />

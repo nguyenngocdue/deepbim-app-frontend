@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Home, Book, FileText, Users, LogOut, ChevronLeft, ChevronRight } from "lucide-react";
+import CustomBadge from "@/components/common/CustomBadge";
 
 interface TutorialSidebarProps {
   isOpen: boolean;
@@ -25,12 +26,11 @@ export function TutorialSidebar({ isOpen, onToggle }: TutorialSidebarProps) {
     localStorage.setItem("tutorial-sidebar-open", String(isOpen));
   }, [isOpen]);
 
-
   const menuItems = [
-    { icon: Home, label: "Trang chủ" },
-    { icon: Book, label: "Khóa học" },
-    { icon: FileText, label: "Bài viết" },
-    { icon: Users, label: "Cộng đồng" },
+    { icon: Home, label: "Trang chủ", url: "/" },
+    { icon: Book, label: "Khóa học", url: "/tutorials/home-page" },
+    { icon: FileText, label: "Bài viết", url: "/articles", status: <CustomBadge text="dev" className="ml-4  bg-red-800"/>},
+    { icon: Users, label: "Cộng đồng", url: "/community", status: <CustomBadge text="dev" className="ml-4 bg-red-800"/> },
   ];
 
   return (
@@ -49,14 +49,18 @@ export function TutorialSidebar({ isOpen, onToggle }: TutorialSidebarProps) {
           </div>
           <nav className="flex flex-col space-y-4 flex-1 w-full">
             {menuItems.map((item, index) => (
-              <button
+              <a
                 key={index}
+                href={item.url}
                 className={`w-full h-12 rounded-lg bg-gray-800 hover:bg-gray-700 flex items-center justify-start px-4 transition-colors duration-200 ${!isOpen ? "justify-center" : ""
                   }`}
               >
                 <item.icon className="h-6 w-6 text-white" />
                 {isOpen && <span className="ml-4 text-sm font-medium">{item.label}</span>}
-              </button>
+                {
+                  item?.status && item.status
+                }
+              </a>
             ))}
           </nav>
 
@@ -76,13 +80,14 @@ export function TutorialSidebar({ isOpen, onToggle }: TutorialSidebarProps) {
       {/* Horizontal navbar for small screens */}
       <nav className="md:hidden bg-gray-900 text-white p-4 flex justify-around items-center fixed bottom-0 left-0 w-full z-20 shadow-lg">
         {menuItems.map((item, index) => (
-          <button
+          <a
             key={index}
+            href={item.url}
             className="flex flex-col items-center space-y-1"
           >
             <item.icon className="h-6 w-6 text-white" />
             <span className="text-xs font-medium">{item.label}</span>
-          </button>
+          </a>
         ))}
       </nav>
     </>

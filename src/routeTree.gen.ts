@@ -48,6 +48,7 @@ import { Route as AuthenticatedAppLayoutImport } from './routes/_authenticated/a
 import { Route as AuthenticatedAdminLayoutImport } from './routes/_authenticated/admin/_layout'
 import { Route as AuthenticatedViewUploadIndexImport } from './routes/_authenticated/view/upload/index'
 import { Route as AuthenticatedExamplesBimViewerIndexImport } from './routes/_authenticated/examples/bim-viewer/index'
+import { Route as AuthenticatedTutorialsLayoutIntroductionCourseImport } from './routes/_authenticated/tutorials/_layout/introduction-course'
 import { Route as AuthenticatedTutorialsLayoutHomePageImport } from './routes/_authenticated/tutorials/_layout/home-page'
 import { Route as AuthenticatedManagementsLayoutWorkflowsImport } from './routes/_authenticated/managements/_layout/workflows'
 import { Route as AuthenticatedManagementsLayoutUsersImport } from './routes/_authenticated/managements/_layout/users'
@@ -501,6 +502,13 @@ const AuthenticatedExamplesBimViewerIndexRoute =
     id: '/examples/bim-viewer/',
     path: '/examples/bim-viewer/',
     getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+
+const AuthenticatedTutorialsLayoutIntroductionCourseRoute =
+  AuthenticatedTutorialsLayoutIntroductionCourseImport.update({
+    id: '/introduction-course',
+    path: '/introduction-course',
+    getParentRoute: () => AuthenticatedTutorialsLayoutRoute,
   } as any)
 
 const AuthenticatedTutorialsLayoutHomePageRoute =
@@ -1233,6 +1241,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedTutorialsLayoutHomePageImport
       parentRoute: typeof AuthenticatedTutorialsLayoutImport
     }
+    '/_authenticated/tutorials/_layout/introduction-course': {
+      id: '/_authenticated/tutorials/_layout/introduction-course'
+      path: '/introduction-course'
+      fullPath: '/tutorials/introduction-course'
+      preLoaderRoute: typeof AuthenticatedTutorialsLayoutIntroductionCourseImport
+      parentRoute: typeof AuthenticatedTutorialsLayoutImport
+    }
     '/_authenticated/examples/bim-viewer/': {
       id: '/_authenticated/examples/bim-viewer/'
       path: '/examples/bim-viewer'
@@ -1628,12 +1643,15 @@ const AuthenticatedManagementsRouteWithChildren =
 
 interface AuthenticatedTutorialsLayoutRouteChildren {
   AuthenticatedTutorialsLayoutHomePageRoute: typeof AuthenticatedTutorialsLayoutHomePageRoute
+  AuthenticatedTutorialsLayoutIntroductionCourseRoute: typeof AuthenticatedTutorialsLayoutIntroductionCourseRoute
 }
 
 const AuthenticatedTutorialsLayoutRouteChildren: AuthenticatedTutorialsLayoutRouteChildren =
   {
     AuthenticatedTutorialsLayoutHomePageRoute:
       AuthenticatedTutorialsLayoutHomePageRoute,
+    AuthenticatedTutorialsLayoutIntroductionCourseRoute:
+      AuthenticatedTutorialsLayoutIntroductionCourseRoute,
   }
 
 const AuthenticatedTutorialsLayoutRouteWithChildren =
@@ -1901,6 +1919,7 @@ export interface FileRoutesByFullPath {
   '/managements/users': typeof AuthenticatedManagementsLayoutUsersRoute
   '/managements/workflows': typeof AuthenticatedManagementsLayoutWorkflowsRoute
   '/tutorials/home-page': typeof AuthenticatedTutorialsLayoutHomePageRoute
+  '/tutorials/introduction-course': typeof AuthenticatedTutorialsLayoutIntroductionCourseRoute
   '/examples/bim-viewer': typeof AuthenticatedExamplesBimViewerIndexRoute
   '/view/upload': typeof AuthenticatedViewUploadIndexRoute
   '/managements/sub-projects/$id': typeof AuthenticatedManagementsLayoutSubProjectsIdRoute
@@ -1985,6 +2004,7 @@ export interface FileRoutesByTo {
   '/managements/users': typeof AuthenticatedManagementsLayoutUsersRoute
   '/managements/workflows': typeof AuthenticatedManagementsLayoutWorkflowsRoute
   '/tutorials/home-page': typeof AuthenticatedTutorialsLayoutHomePageRoute
+  '/tutorials/introduction-course': typeof AuthenticatedTutorialsLayoutIntroductionCourseRoute
   '/examples/bim-viewer': typeof AuthenticatedExamplesBimViewerIndexRoute
   '/view/upload': typeof AuthenticatedViewUploadIndexRoute
   '/managements/sub-projects/$id': typeof AuthenticatedManagementsLayoutSubProjectsIdRoute
@@ -2074,6 +2094,7 @@ export interface FileRoutesById {
   '/_authenticated/managements/_layout/users': typeof AuthenticatedManagementsLayoutUsersRoute
   '/_authenticated/managements/_layout/workflows': typeof AuthenticatedManagementsLayoutWorkflowsRoute
   '/_authenticated/tutorials/_layout/home-page': typeof AuthenticatedTutorialsLayoutHomePageRoute
+  '/_authenticated/tutorials/_layout/introduction-course': typeof AuthenticatedTutorialsLayoutIntroductionCourseRoute
   '/_authenticated/examples/bim-viewer/': typeof AuthenticatedExamplesBimViewerIndexRoute
   '/_authenticated/view/upload/': typeof AuthenticatedViewUploadIndexRoute
   '/_authenticated/managements/_layout/sub-projects/$id': typeof AuthenticatedManagementsLayoutSubProjectsIdRoute
@@ -2165,6 +2186,7 @@ export interface FileRouteTypes {
     | '/managements/users'
     | '/managements/workflows'
     | '/tutorials/home-page'
+    | '/tutorials/introduction-course'
     | '/examples/bim-viewer'
     | '/view/upload'
     | '/managements/sub-projects/$id'
@@ -2248,6 +2270,7 @@ export interface FileRouteTypes {
     | '/managements/users'
     | '/managements/workflows'
     | '/tutorials/home-page'
+    | '/tutorials/introduction-course'
     | '/examples/bim-viewer'
     | '/view/upload'
     | '/managements/sub-projects/$id'
@@ -2335,6 +2358,7 @@ export interface FileRouteTypes {
     | '/_authenticated/managements/_layout/users'
     | '/_authenticated/managements/_layout/workflows'
     | '/_authenticated/tutorials/_layout/home-page'
+    | '/_authenticated/tutorials/_layout/introduction-course'
     | '/_authenticated/examples/bim-viewer/'
     | '/_authenticated/view/upload/'
     | '/_authenticated/managements/_layout/sub-projects/$id'
@@ -2649,7 +2673,8 @@ export const routeTree = rootRoute
       "filePath": "_authenticated/tutorials/_layout.tsx",
       "parent": "/_authenticated/tutorials",
       "children": [
-        "/_authenticated/tutorials/_layout/home-page"
+        "/_authenticated/tutorials/_layout/home-page",
+        "/_authenticated/tutorials/_layout/introduction-course"
       ]
     },
     "/_authenticated/view/$fileCode": {
@@ -2749,6 +2774,10 @@ export const routeTree = rootRoute
     },
     "/_authenticated/tutorials/_layout/home-page": {
       "filePath": "_authenticated/tutorials/_layout/home-page.tsx",
+      "parent": "/_authenticated/tutorials/_layout"
+    },
+    "/_authenticated/tutorials/_layout/introduction-course": {
+      "filePath": "_authenticated/tutorials/_layout/introduction-course.tsx",
       "parent": "/_authenticated/tutorials/_layout"
     },
     "/_authenticated/examples/bim-viewer/": {

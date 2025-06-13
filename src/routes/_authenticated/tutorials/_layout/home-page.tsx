@@ -1,3 +1,4 @@
+import { TutorialHeader } from '@/features/tutorials/components/TutorialHeader'
 import TutorialHomePage from '@/features/tutorials/TutorialHomePage'
 import { createFileRoute } from '@tanstack/react-router'
 
@@ -6,7 +7,7 @@ export const Route = createFileRoute('/_authenticated/tutorials/_layout/home-pag
 })
 
 function RouteComponent() {
-  return <div>
+  return <>
     <TutorialHomePage/>
-  </div>
+  </>
 }
