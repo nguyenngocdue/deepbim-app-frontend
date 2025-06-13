@@ -54,7 +54,7 @@ export function TutorialCourseList() {
             oldPrice={`${(course.old_price || 0).toLocaleString("vi-VN")}đ`}
             newPrice={`${(course.new_price || 0).toLocaleString("vi-VN")}đ`}
             description={course.description}
-            url={`/learning/lessons/${course.id}`}
+            url={`/tutorials/learning/lessons-for-newbies/?course_id=${course.id}`}
             statusLabel={course.status?.name}
             statusClassName={course.status?.class_name}
           />

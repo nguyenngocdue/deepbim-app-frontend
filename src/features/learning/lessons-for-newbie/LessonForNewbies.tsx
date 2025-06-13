@@ -1,10 +1,31 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import LessonSidebar from "./components/LessonSidebar";
 import Player from "./components/Player";
 import LessonContent from "./components/LessonContent";
+import { fetchLessonTreeByCourseId } from "@/apis/lesson-api";
+import { useLocation } from "@tanstack/react-router";
+
 
 export default function LessonForNewbies() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [lessons, setLessons] = useState([]);
+
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const courseId = searchParams.get("course_id");
+
+  useEffect(() => {
+    if (courseId) {
+      fetchLessonTreeByCourseId(Number(courseId))
+        .then((res) => {
+          setLessons(res.data);
+        })
+        .catch((err) => {
+          console.error("Failed to load lessons:", err);
+        });
+    }
+  }, [courseId]);
+
+  console.log(lessons)
 
   const contentData = {
     title: "Mô hình Client - Server là gì?",
@@ -19,6 +40,7 @@ export default function LessonForNewbies() {
     ],
   };
 
+  console.log(lessons)
   return (
     <div className="min-h-screen w-full bg-gradient-to-b from-gray-900/95 to-black/95 text-white">
       <main className="flex flex-col gap-6 p-4 sm:p-6 lg:grid lg:grid-cols-12 lg:gap-8 max-h-screen overflow-hidden">
@@ -37,7 +59,7 @@ export default function LessonForNewbies() {
 
         {/* Sidebar */}
         <div className="lg:col-span-4">
-          <LessonSidebar />
+          <LessonSidebar sections={lessons} />
         </div>
       </main>
     </div>
