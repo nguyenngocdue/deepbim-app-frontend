@@ -13,6 +13,19 @@ export function TutorialSidebar({ isOpen, onToggle }: TutorialSidebarProps) {
     onToggle(!isOpen);
   };
 
+  useEffect(() => {
+    const savedState = localStorage.getItem("tutorial-sidebar-open");
+    if (savedState !== null) {
+      onToggle(savedState === "true");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("tutorial-sidebar-open", String(isOpen));
+  }, [isOpen]);
+
+
   const menuItems = [
     { icon: Home, label: "Trang chủ" },
     { icon: Book, label: "Khóa học" },
@@ -25,7 +38,7 @@ export function TutorialSidebar({ isOpen, onToggle }: TutorialSidebarProps) {
       {/* Sidebar for medium and larger screens */}
       <aside
         ref={sidebarRef}
-        className={`fixed top-20 left-0 h-screen bg-gray-900 text-white transition-all duration-300 ease-in-out z-20 ${isOpen ? "w-64" : "w-16"
+        className={`fixed top-[60px] left-0 h-screen bg-gray-900 text-white transition-all duration-300 ease-in-out z-20 ${isOpen ? "w-64" : "w-16"
           } hidden md:flex flex-col items-center py-6 px-2 group`}
       >
         <div className="relative w-full h-full">

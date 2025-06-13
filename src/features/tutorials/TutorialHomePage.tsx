@@ -1,6 +1,5 @@
 import { SearchProvider } from "@/context/search-context";
 import { TutorialCourseList } from "./components/TutorialCourseList";
-import { TutorialFooter } from "./components/TutorialFooter";
 import { TutorialSearchBanner } from "./components/TutorialCarouselBanner";
 import { TutorialHeader } from "./components/TutorialHeader";
 

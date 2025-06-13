@@ -1,5 +1,6 @@
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@radix-ui/react-collapsible";
 import { ChevronRight } from "lucide-react";
+import { useState } from "react";
 
 const sections = [
   {
@@ -53,34 +54,53 @@ const sections = [
 ];
 
 export default function LessonSidebar() {
+  const [activeLessonId, setActiveLessonId] = useState<number | null>(null);
+
+
   return (
-    <aside className="w-full sm:w-80 bg-gradient-to-br from-gray-900 to-zinc-800 h-full overflow-y-auto rounded-xl shadow-xl">
-      {/* Header */}
-      <div className="bg-gradient-to-r from-blue-800 to-indigo-900 p-4 rounded-t-xl shadow-md mb-4">
-        <h2 className="text-xl font-bold text-white">Nội dung khóa học</h2>
+    <div className="flex flex-col h-full w-full bg-gradient-to-b from-gray-900 to-black shadow-xl">
+      {/* Fixed Header (outside scrollable area) */}
+      <div className="bg-gradient-to-r from-orange-500 to-orange-600 p-4">
+        <h2 className="text-lg font-semibold text-white tracking-tight sm:text-xl md:text-lg lg:text-xl">
+          Nội dung khóa học
+        </h2>
       </div>
 
-      {/* Lesson Sections */}
-      <div className="p-4 space-y-3">
+      {/* Scrollable Section List */}
+      <aside className="flex-1 overflow-y-auto px-2 py-4 space-y-3">
         {sections.map((section, i) => (
-          <Collapsible key={i} className="border border-zinc-700 rounded-lg">
-            <CollapsibleTrigger className="flex items-center justify-between w-full p-3 bg-zinc-800 hover:bg-zinc-700 transition-colors duration-200 text-white font-semibold rounded-lg">
-              <span>{section.title}</span>
-              <ChevronRight className="h-5 w-5 transition-transform duration-200" />
+          <Collapsible
+            key={i}
+            defaultOpen={i === 0}
+            className="border border-gray-700 rounded-xl overflow-hidden shadow-sm"
+          >
+            <CollapsibleTrigger className="flex items-center justify-between w-full p-3 sm:p-4 bg-gray-800/80 hover:bg-gray-700/80 transition-colors duration-300 text-white font-medium text-sm sm:text-base md:text-sm lg:text-base group">
+              <span className="truncate max-w-[85%]">{section.title}</span>
+              <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5 text-gray-300 group-data-[state=open]:rotate-90 transition-transform duration-300 ease-in-out" />
             </CollapsibleTrigger>
-            <CollapsibleContent className="space-y-2">
+            <CollapsibleContent className="bg-gray-900/60">
               {section.lessons.map((lesson) => (
-                <div
-                  key={lesson.id}
-                  className="p-3 bg-zinc-700/50 hover:bg-zinc-600/70 transition-colors duration-200 text-sm text-gray-200 rounded cursor-pointer"
-                >
-                  {lesson.title} <span className="text-gray-400">({lesson.duration})</span>
-                </div>
+                 <button
+                      key={lesson.id}
+                      onClick={() => setActiveLessonId(lesson.id)}
+                      className={`w-full text-left p-3 sm:p-4 text-sm sm:text-base flex justify-between items-center transition-colors duration-300 rounded-lg ${
+                        activeLessonId === lesson.id
+                          ? "bg-orange-500/30 text-orange-200 border-l-4 border-orange-500"
+                          : "bg-gray-800/60 hover:bg-gray-700/90 text-gray-200"
+                      }`}
+                      aria-label={`Chọn bài học: ${lesson.title}`}
+                    >
+                      <span className="truncate max-w-[70%] sm:max-w-[75%]">{lesson.title}</span>
+                      <span className="text-xs sm:text-sm text-gray-400 flex-shrink-0">
+                        {lesson.duration}
+                      </span>
+                    </button>
               ))}
             </CollapsibleContent>
           </Collapsible>
         ))}
-      </div>
-    </aside>
+      </aside>
+    </div>
   );
 }
+

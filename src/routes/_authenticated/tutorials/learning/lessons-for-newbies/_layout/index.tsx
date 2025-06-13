@@ -2,7 +2,7 @@ import LessonForNewbies from '@/features/learning/lessons-for-newbie/LessonForNe
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute(
-  '/_authenticated/learning/lessons-for-newbies/_layout/',
+  '/_authenticated/tutorials/learning/lessons-for-newbies/_layout/',
 )({
   component: RouteComponent,
 })

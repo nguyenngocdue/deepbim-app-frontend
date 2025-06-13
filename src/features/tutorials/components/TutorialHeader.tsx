@@ -7,7 +7,7 @@ export function TutorialHeader() {
   const [isFocused, setIsFocused] = useState(false);
 
   return (
-    <header className="w-full bg-gray-50 dark:bg-gray-900 shadow-lg dark:shadow-gray-800/50 fixed top-0 left-0 z-50 px-4 py-3 sm:px-6 sm:py-4 lg:px-8 lg:py-5 transition-all duration-300">
+    <header className="w-full bg-gray-50 dark:bg-gray-900 shadow-lg dark:shadow-gray-800/50 fixed top-0 left-0 z-50 px-4 py-3 sm:px-6 sm:py-4 lg:px-8 lg:py-2 transition-all duration-300">
       <div className="flex flex-col items-center gap-2 sm:gap-3 transition-all duration-300">
         
         {/* Top Row: Logo + Search Inline + Actions */}

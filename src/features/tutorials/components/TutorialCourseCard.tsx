@@ -1,15 +1,6 @@
 import { Users, Eye } from "lucide-react";
-
-export interface CourseCardProps {
-  title: string;
-  author: string;
-  image: string;
-  avatar: string;
-  students: number;
-  views: number;
-  oldPrice: string;
-  newPrice: string;
-}
+import { cn } from "@/lib/utils";
+import { CourseCardProps } from "./Type";
 
 export function TutorialCourseCard({
   title,
@@ -20,13 +11,29 @@ export function TutorialCourseCard({
   views,
   oldPrice,
   newPrice,
+  description,
+  url,
 }: CourseCardProps) {
   return (
-    <div className="bg-white rounded-2xl shadow-md overflow-hidden w-72 sm:w-80 flex flex-col">
-      <img src={image} alt={title} className="w-full h-40 object-cover" />
+    <div
+      className={cn(
+        "relative bg-white rounded-2xl shadow-lg shadow-slate-800 dark:shadow-slate-800 border border-slate-200 dark:border-slate-600 transition-all duration-300 overflow-hidden w-72 sm:w-80 flex flex-col cursor-pointer group hover:shadow-[0_0_25px_4px_rgba(34,197,94,0.4)] hover:-translate-y-1"
+      )}
+    >
+      <a href={url || "#"} target="_blank" rel="noopener noreferrer">
+        <img
+          src={image}
+          alt={title}
+          className="w-full h-40 object-cover group-hover:scale-[1.03] transition-transform duration-300"
+        />
+      </a>
 
-      <div className="flex justify-center -mt-5">
-        <img src={avatar} alt={author} className="w-10 h-10 rounded-full border-4 border-white object-cover" />
+      <div className="flex justify-center -mt-5 z-50">
+        <img
+          src={avatar}
+          alt={author}
+          className="w-10 h-10 rounded-full border-4 border-slate-300 object-cover"
+        />
       </div>
 
       <div className="text-center px-4 mt-2">
@@ -34,6 +41,11 @@ export function TutorialCourseCard({
         <div className="text-base font-semibold text-gray-900 mt-1 leading-tight">
           {title}
         </div>
+        {description && (
+          <p className="text-xs text-gray-500 mt-1 line-clamp-2">
+            {description}
+          </p>
+        )}
       </div>
 
       <div className="flex justify-center gap-6 mt-4 text-gray-500 text-sm">

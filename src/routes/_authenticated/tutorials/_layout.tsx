@@ -5,11 +5,15 @@ import { useState, useEffect, useRef } from "react";
 
 export const Route = createRootRoute({
   component: () => {
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [isSidebarOpen, setSidebarOpen] = useState(() => {
+      const saved = localStorage.getItem("tutorial-sidebar-open");
+      return saved === null ? true : saved === "true";
+    });
+
     const contentRef = useRef<HTMLDivElement>(null);
 
     const handleSidebarToggle = (open: boolean) => {
-      setIsSidebarOpen(open);
+      setSidebarOpen(open);
     };
 
     // Update CSS custom property for dynamic width adjustment
@@ -21,6 +25,7 @@ export const Route = createRootRoute({
         );
       }
     }, [isSidebarOpen]);
+
 
     return (
       <div className="max-h-screen ">
@@ -34,7 +39,7 @@ export const Route = createRootRoute({
         >
           <Outlet />
         </div>
-         <TutorialFooter />
+        <TutorialFooter />
       </div>
     );
   },
