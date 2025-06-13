@@ -1,21 +1,66 @@
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+} from "@/components/ui/carousel";
 
-export default function CourseHeader() {
+interface Banner {
+  title: string;
+  desc: string;
+  button: string;
+  gradient: string;
+}
+
+interface CourseHeaderProps {
+  banners: Banner[];
+}
+
+export function CourseHeader({ banners }: CourseHeaderProps) {
+  const [api, setApi] = useState<any>(null);
+
+  useEffect(() => {
+    if (api) {
+      const interval = setInterval(() => {
+        api.scrollNext();
+      }, 5000);
+      return () => clearInterval(interval);
+    }
+  }, [api]);
+
   return (
-    <div className="flex flex-col lg:flex-row items-center gap-8 p-6 bg-gradient-to-r from-blue-900/80 via-purple-900/80 to-indigo-900/80 rounded-2xl shadow-xl">
-      <img
-        src="https://minio.deepbim.net:9000/deepbim-fe/dynamo-2025-all-new.png"
-        alt="Course Banner"
-        className="rounded-xl w-full lg:w-[400px] h-[240px] object-cover shadow-md transition-transform hover:scale-105"
-      />
-      <div className="flex-1 space-y-4 text-white">
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent">
-          Dynamo Từ Cơ Bản Đến Nâng Cao 2025
-        </h1>
-        <p className="text-sm text-gray-300 leading-relaxed">
-          Giáo viên: <span className="font-semibold">Nguyễn Ngọc Duệ</span> • Phân loại: Dynamo, BIM, 2025
-        </p>
-      </div>
+    <div className="p-2">
+      <Carousel setApi={setApi} className="mx-auto relative">
+        <CarouselContent className="">
+          {banners.map((banner, idx) => (
+            <CarouselItem key={idx} className="flex justify-center">
+              <section
+                className={`w-full bg-gradient-to-br ${banner.gradient} text-white rounded-xl p-3 sm:p-6 space-y-3 sm:space-y-4 min-h-[180px] sm:min-h-[220px] flex flex-col justify-between shadow-lg`}
+              >
+                <div className="flex-grow">
+                  <h2 className="text-base sm:text-lg md:text-xl font-bold mb-1 sm:mb-2">{banner.title}</h2>
+                  <p className="text-xs sm:text-sm leading-relaxed opacity-90 line-clamp-3">{banner.desc}</p>
+                </div>
+                <div className="text-center">
+                  <Button
+                    variant="outline"
+                    className="border-white text-white hover:bg-white hover:text-black rounded-full px-3 sm:px-4 py-1 sm:py-2 text-xs sm:text-sm w-full sm:w-auto"
+                  >
+                    {banner.button}
+                  </Button>
+                </div>
+              </section>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+
+        {/* Ẩn nút chuyển slide trên mobile */}
+        <CarouselPrevious className="hidden sm:flex absolute -left-4 top-1/2 -translate-y-1/2 text-white bg-black/30 hover:bg-black/50 rounded-full p-2 z-10" />
+        <CarouselNext className="hidden sm:flex absolute -right-4 top-1/2 -translate-y-1/2 text-white bg-black/30 hover:bg-black/50 rounded-full p-2 z-10" />
+      </Carousel>
     </div>
   );
 }

@@ -11,4 +11,5 @@ export interface CourseCardProps {
   url?: string; 
    statusLabel?: string,
   statusClassName?: string,
+  courseId:number
 }

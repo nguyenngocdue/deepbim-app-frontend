@@ -29,8 +29,6 @@ export function TutorialCourseList() {
     fetchData();
   }, []);
 
-  console.log(courses)
-
 
   return (
     <section className="py-10 px-4">
@@ -57,6 +55,7 @@ export function TutorialCourseList() {
             url={`/tutorials/learning/lessons-for-newbies/?course_id=${course.id}`}
             statusLabel={course.status?.name}
             statusClassName={course.status?.class_name}
+            courseId={course.id}
           />
         ))}
       </div>

@@ -2,6 +2,7 @@ import { Users, Eye } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { CourseCardProps } from "./Type";
+import { Link } from "@tanstack/react-router";
 
 export function TutorialCourseCard({
   title,
@@ -16,6 +17,7 @@ export function TutorialCourseCard({
   url,
   statusLabel,
   statusClassName,
+  courseId,
 }: CourseCardProps) {
   return (
     <div
@@ -80,6 +82,28 @@ export function TutorialCourseCard({
       <div className="flex justify-center gap-2 my-4">
         <span className="line-through text-gray-400 text-sm">{oldPrice}</span>
         <span className="text-green-600 font-bold">{newPrice}</span>
+      </div>
+
+      {/* Action Buttons */}
+      <div className="flex justify-center gap-3 mb-4">
+        <a href={url || "#"} target="_blank" rel="noopener noreferrer">
+          <Badge
+            className={cn(
+              "text-xs px-3 py-1 rounded-full bg-green-500 text-white hover:bg-green-600 transition-colors duration-200"
+            )}
+          >
+            Học ngay
+          </Badge>
+        </a>
+        <Link to={`/tutorials/introduction-course/?course_id=${courseId}`} rel="noopener noreferrer">
+          <Badge
+            className={cn(
+              "text-xs px-3 py-1 rounded-full bg-orange-500 text-white hover:bg-orange-600 transition-colors duration-200"
+            )}
+          >
+            Tìm Hiểu
+          </Badge>
+        </Link>
       </div>
     </div>
   );

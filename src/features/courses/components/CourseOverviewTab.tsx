@@ -2,7 +2,7 @@ import { Card, CardContent } from "@/components/ui/card";
 
 export default function CourseOverviewTab() {
   return (
-    <Card className="bg-gradient-to-br from-gray-900/90 via-indigo-900/80 to-purple-900/80 border border-gray-700/50 text-white rounded-2xl shadow-2xl overflow-hidden transition-all duration-300 hover:shadow-3xl">
+    <Card className="bg-gradient-to-br from-gray-900/90 via-indigo-900/80 to-purple-900/80  text-white overflow-hidden transition-all duration-300 hover:shadow-3xl">
       {/* Giới thiệu tổng quan */}
       <CardContent className="p-6 pt-8 space-y-6">
         <h2 className="text-2xl font-bold text-green-400 bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent animate-pulse-slow">

@@ -1,10 +1,13 @@
 import { TutorialFooter } from "@/features/tutorials/components/TutorialFooter";
 import { TutorialHeader } from "@/features/tutorials/components/TutorialHeader";
 import { TutorialSidebar } from "@/features/tutorials/components/TutorialSidebar";
-import { createFileRoute, createRootRoute, Outlet } from "@tanstack/react-router";
+import { createFileRoute, Outlet } from "@tanstack/react-router";
 import { useState, useEffect, useRef } from "react";
 
-export const Route = createRootRoute({
+
+
+
+export const Route = createFileRoute('/_authenticated/tutorials/_layout')({
   component: () => {
     const [isSidebarOpen, setSidebarOpen] = useState(() => {
       const saved = localStorage.getItem("tutorial-sidebar-open");
@@ -40,9 +43,10 @@ export const Route = createRootRoute({
         >
           <TutorialHeader />
           <Outlet />
+          <TutorialFooter />
         </div>
-        <TutorialFooter />
       </div>
     );
   },
 });
+

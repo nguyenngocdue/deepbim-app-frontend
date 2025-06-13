@@ -1,30 +1,36 @@
 import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselPrevious,
-  CarouselNext,
-} from "@/components/ui/carousel";
+import { CourseHeader } from "@/features/courses/components/CourseHeader";
 
 export function TutorialSearchBanner() {
   const [api, setApi] = useState<any>(null);
 
-  const banners = [
-    {
-      title: "F8 trên Youtube",
-      desc: "F8 được nhắc tới ở mọi nơi, ở đâu có cơ hội việc làm cho nghề IT và có những con người yêu thích lập trình F8 sẽ ở đó.",
-      button: "ĐĂNG KÝ KÊNH",
-      gradient: "from-pink-500 to-orange-400",
-    },
-    {
-      title: "Học ReactJS Miễn Phí!",
-      desc: "Khóa học ReactJS từ cơ bản tới nâng cao. Kết quả là bạn có thể làm hầu hết các dự án thường gặp với ReactJS.",
-      button: "ĐĂNG KÝ NGAY",
-      gradient: "from-blue-500 to-violet-600",
-    },
-  ];
+const banners = [
+  {
+    title: "Học Lập Trình Tại DeepBIM",
+    desc: "DeepBIM là nơi đào tạo bài bản về lập trình, từ cơ bản đến nâng cao. Học viên được thực chiến với dự án thật và mentor kèm sát.",
+    button: "KHÁM PHÁ KHÓA HỌC",
+    gradient: "from-cyan-500 to-blue-500",
+  },
+  {
+    title: "Java Từ A đến Z",
+    desc: "Khóa học Java toàn diện, phù hợp từ người mới bắt đầu đến người đã đi làm muốn nâng cấp kỹ năng backend & hệ thống.",
+    button: "XEM NGAY",
+    gradient: "from-yellow-500 to-red-500",
+  },
+  {
+    title: "Frontend Mastery",
+    desc: "Thành thạo HTML, CSS, JavaScript, React và hơn thế nữa. Cập nhật công nghệ UI/UX mới nhất.",
+    button: "BẮT ĐẦU NGAY",
+    gradient: "from-purple-500 to-indigo-500",
+  },
+  {
+    title: "Thực chiến với dự án thật",
+    desc: "Không chỉ học lý thuyết. DeepBIM giúp bạn áp dụng kiến thức vào thực tế qua các mini project và real-case.",
+    button: "THAM GIA NGAY",
+    gradient: "from-emerald-500 to-lime-500",
+  },
+];
+
 
   useEffect(() => {
     if (api) {
@@ -36,35 +42,6 @@ export function TutorialSearchBanner() {
   }, [api]);
 
   return (
-    <div className="p-2">
-      <Carousel setApi={setApi} className="w-[90%]  mx-auto relative">
-        <CarouselContent className="">
-          {banners.map((banner, idx) => (
-            <CarouselItem key={idx} className=" flex justify-center">
-              <section
-                className={`w-full bg-gradient-to-br ${banner.gradient} text-white rounded-xl p-3 sm:p-6 space-y-3 sm:space-y-4 min-h-[180px] sm:min-h-[220px] flex flex-col justify-between shadow-lg`}
-              >
-                <div className="flex-grow">
-                  <h2 className="text-base sm:text-lg md:text-xl font-bold mb-1 sm:mb-2">{banner.title}</h2>
-                  <p className="text-xs sm:text-sm leading-relaxed opacity-90 line-clamp-3">{banner.desc}</p>
-                </div>
-                <div className="text-center">
-                  <Button
-                    variant="outline"
-                    className="border-white text-white hover:bg-white hover:text-black rounded-full px-3 sm:px-4 py-1 sm:py-2 text-xs sm:text-sm w-full sm:w-auto"
-                  >
-                    {banner.button}
-                  </Button>
-                </div>
-              </section>
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-
-        {/* Ẩn nút chuyển slide trên mobile */}
-        <CarouselPrevious className="hidden sm:flex absolute -left-4 top-1/2 -translate-y-1/2 text-white bg-black/30 hover:bg-black/50 rounded-full p-2 z-10" />
-        <CarouselNext className="hidden sm:flex absolute -right-4 top-1/2 -translate-y-1/2 text-white bg-black/30 hover:bg-black/50 rounded-full p-2 z-10" />
-      </Carousel>
-    </div>
+      <CourseHeader banners={banners} />
   );
 }
