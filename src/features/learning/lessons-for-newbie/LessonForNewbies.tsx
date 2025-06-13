@@ -19,30 +19,27 @@ export default function LessonForNewbies() {
     ],
   };
 
- return (
-  <div className="min-h-screen w-full bg-gradient-to-b from-gray-900/95 to-black/95 text-white">
-    <main className="grid grid-cols-12 gap-6 p-4 sm:p-6">
-      
-      {/* Player + Content */}
-      <div className="col-span-12 lg:col-span-8">
-        <div className="w-full aspect-video rounded-2xl overflow-hidden shadow-2xl mb-6 sm:mb-8 bg-gradient-to-tr from-gray-800 to-gray-900">
-          <Player videoId="vyiY9eKR4NY" />
+  return (
+    <div className="min-h-screen w-full bg-gradient-to-b from-gray-900/95 to-black/95 text-white">
+      <main className="flex flex-col gap-6 p-4 sm:p-6 lg:grid lg:grid-cols-12 lg:gap-8 max-h-screen overflow-hidden">
+        {/* Player + Content */}
+        <div className="lg:col-span-8 max-h-screen overflow-y-auto">
+          <div className="w-full aspect-video rounded-2xl shadow-2xl mb-6 sm:mb-8 bg-gradient-to-tr from-gray-800 to-gray-900">
+            <Player videoId="vyiY9eKR4NY" />
+          </div>
+          <LessonContent
+            title={contentData.title}
+            updateDate={contentData.updateDate}
+            description={contentData.description}
+            links={contentData.links}
+          />
         </div>
-        <LessonContent
-          title={contentData.title}
-          updateDate={contentData.updateDate}
-          description={contentData.description}
-          links={contentData.links}
-        />
-      </div>
 
-      {/* Sidebar */}
-      <div className="col-span-12 lg:col-span-4">
-        <LessonSidebar />
-      </div>
-      
-    </main>
-  </div>
-);
-
+        {/* Sidebar */}
+        <div className="lg:col-span-4">
+          <LessonSidebar />
+        </div>
+      </main>
+    </div>
+  );
 }

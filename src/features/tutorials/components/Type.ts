@@ -9,4 +9,6 @@ export interface CourseCardProps {
   newPrice: string;
   description?: string;
   url?: string; 
+   statusLabel?: string,
+  statusClassName?: string,
 }

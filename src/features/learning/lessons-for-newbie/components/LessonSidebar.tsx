@@ -3,63 +3,108 @@ import { ChevronRight } from "lucide-react";
 import { useState } from "react";
 
 const sections = [
-  {
-    title: "1. Khái niệm kỹ thuật cần biết",
+ {
+    title: "I. Dynamo and Visual Studio Code",
     lessons: [
-      { id: 1, title: "Mô hình Client - Server là gì?", duration: "11:35" },
-      { id: 2, title: "Domain là gì? Tên miền là gì?", duration: "10:24" },
-      { id: 3, title: "Mua áo F8 | Đăng ký học Offline", duration: "11:00" },
+      { id: 1, title: "Part 1-1: Introduction – Install softwares for Dynamo API.", duration: "", url: "" },
+      { id: 2, title: "Part 1-2: Introduction – Install softwares for Dynamo API.", duration: "", url: "" },
+      { id: 3, title: "Part 1-3: Introduction – Install softwares for Dynamo API.", duration: "", url: "" },
+      { id: 4, title: "Part 1-4: Introduction – Install softwares for Dynamo API.", duration: "", url: "" },
     ],
   },
   {
-    title: "2. Môi trường, con người IT",
+    title: "II. Selection",
     lessons: [
-      { id: 4, title: "Học IT cần tố chất gì?", duration: "24:10" },
-      { id: 5, title: "Sinh viên IT đi thực tập...", duration: "34:51" },
-      { id: 6, title: "Trải nghiệm thực tế...", duration: "47:13" },
+      { id: 5, title: "Part 2: Interaction with elements selection 01", duration: "", url: "" },
+      { id: 6, title: "Part 2: Interaction with elements selection 02", duration: "", url: "" },
+      { id: 7, title: "Part 2: Interaction with elements selection 03", duration: "", url: "" },
+      { id: 8, title: "Part 2: Interaction with elements selection 04", duration: "", url: "" },
+      { id: 9, title: "Part 2: Interaction with elements selection 05", duration: "", url: "" },
     ],
   },
   {
-    title: "3. Lập trình cơ bản",
+    title: "III. Filtering",
     lessons: [
-      { id: 7, title: "Giới thiệu về HTML", duration: "15:30" },
-      { id: 8, title: "Cú pháp CSS cơ bản", duration: "20:45" },
-      { id: 9, title: "JavaScript cho người mới", duration: "25:10" },
+      { id: 10, title: "Part 3: Interaction with elements filtering 01", duration: "", url: "" },
+      { id: 11, title: "Part 3: Interaction with elements filtering 02", duration: "", url: "" },
+      { id: 12, title: "Part 3: Interaction with elements filtering 03", duration: "", url: "" },
+      { id: 13, title: "Part 3: Interaction with elements filtering 04", duration: "", url: "" },
+      { id: 14, title: "Part 3: Interaction with elements filtering 05", duration: "", url: "" },
+      { id: 15, title: "Part 3: Interaction with elements filtering 06", duration: "", url: "" },
+      { id: 16, title: "Part 3: Interaction with elements filtering 07", duration: "", url: "" },
+      { id: 17, title: "Part 3: Interaction with elements filtering 08", duration: "", url: "" },
+      { id: 18, title: "Part 3: Interaction with elements filtering 09", duration: "", url: "" },
     ],
   },
   {
-    title: "4. Phát triển Web",
+    title: "IV. Parameter",
     lessons: [
-      { id: 10, title: "Xây dựng trang web tĩnh", duration: "18:20" },
-      { id: 11, title: "Sử dụng React cơ bản", duration: "30:00" },
-      { id: 12, title: "Tích hợp API", duration: "22:15" },
+      { id: 19, title: "Interacting with objects through parameters 1", duration: "", url: "" },
+      { id: 20, title: "Interacting with objects through parameters 2", duration: "", url: "" },
+      { id: 21, title: "Interacting with objects through parameters 3", duration: "", url: "" },
     ],
   },
   {
-    title: "5. Cơ sở dữ liệu",
+    title: "V. Geometry",
     lessons: [
-      { id: 13, title: "Giới thiệu về SQL", duration: "19:40" },
-      { id: 14, title: "Quản lý dữ liệu với MySQL", duration: "25:50" },
-      { id: 15, title: "Tối ưu hóa truy vấn", duration: "17:30" },
+      { id: 22, title: "Part 3-1: Geometric elements.", duration: "", url: "" },
+      { id: 23, title: "Part 3-2: Geometric elements.", duration: "", url: "" },
+      { id: 24, title: "Part 3-3: Geometric elements.", duration: "", url: "" },
+      { id: 25, title: "Part 3-4: Geometric elements.", duration: "", url: "" },
+      { id: 26, title: "Part 3-5: Geometric elements.", duration: "", url: "" },
+      { id: 27, title: "Part 3-6: Geometric elements.", duration: "", url: "" },
+      { id: 28, title: "Part 3-7: Geometric elements.", duration: "", url: "" },
+      { id: 29, title: "Part 3-8: Geometric elements.", duration: "", url: "" },
+      { id: 30, title: "Part 3-9: Geometric elements.", duration: "", url: "" },
+      { id: 31, title: "Part 3-10: Geometric elements.", duration: "", url: "" },
+      { id: 32, title: "Part 3-11: Geometric elements.", duration: "", url: "" },
+      { id: 33, title: "Part 3-12: Geometric elements.", duration: "", url: "" },
+      { id: 34, title: "Part 3-13: Geometric elements.", duration: "", url: "" },
+      { id: 35, title: "Part 3-14: Geometric elements.", duration: "", url: "" },
     ],
   },
   {
-    title: "6. An ninh mạng",
+    title: "VI. Autocad",
     lessons: [
-      { id: 16, title: "Cơ bản về bảo mật", duration: "21:00" },
-      { id: 17, title: "Ngăn chặn tấn công DDoS", duration: "28:15" },
-      { id: 18, title: "Mã hóa dữ liệu", duration: "23:45" },
+      { id: 36, title: "How to extract points (XYZ) of AutoCAD files", duration: "", url: "" },
+      { id: 37, title: "Filtering the layer names of AutoCAD files", duration: "", url: "" },
+      { id: 38, title: "Finding intersection points of lines of AutoCAD file", duration: "", url: "" },
+    ],
+  },
+  {
+    title: "VII. Winform",
+    lessons: [
+      { id: 39, title: "Creating a user interface using WinForm 1", duration: "", url: "" },
+      { id: 40, title: "Creating a user interface using WinForm 2", duration: "", url: "" },
+      { id: 41, title: "Creating a user interface using WinForm 3", duration: "", url: "" },
+      { id: 42, title: "Creating a user interface using WinForm 4", duration: "", url: "" },
+      { id: 43, title: "Creating a user interface using WinForm 5", duration: "", url: "" },
+    ],
+  },
+  {
+    title: "VIII. WPF",
+    lessons: [
+      { id: 44, title: "Creating a user interface using WPF 1", duration: "", url: "" },
+      { id: 45, title: "Creating a user interface using WPF 2", duration: "", url: "" },
+      { id: 46, title: "Creating a user interface using WPF 3", duration: "", url: "" },
+      { id: 47, title: "Creating a user interface using WPF 4", duration: "", url: "" },
+      { id: 48, title: "Creating a user interface using WPF 5", duration: "", url: "" },
+      { id: 49, title: "Creating a user interface using WPF 6", duration: "", url: "" },
+      { id: 50, title: "Creating a user interface using WPF 7", duration: "", url: "" },
+      { id: 51, title: "Creating a user interface using WPF 8", duration: "", url: "" },
+      { id: 52, title: "Creating a user interface using WPF 9", duration: "", url: "" },
     ],
   },
 ];
 
-export default function LessonSidebar() {
-  const [activeLessonId, setActiveLessonId] = useState<number | null>(null);
 
+
+export default function LessonSidebar() {
+  const [activeLessonId, setActiveLessonId] = useState(null);
 
   return (
     <div className="flex flex-col h-full w-full bg-gradient-to-b from-gray-900 to-black shadow-xl">
-      {/* Fixed Header (outside scrollable area) */}
+      {/* Fixed Header */}
       <div className="bg-gradient-to-r from-orange-500 to-orange-600 p-4">
         <h2 className="text-lg font-semibold text-white tracking-tight sm:text-xl md:text-lg lg:text-xl">
           Nội dung khóa học
@@ -67,7 +112,7 @@ export default function LessonSidebar() {
       </div>
 
       {/* Scrollable Section List */}
-      <aside className="flex-1 overflow-y-auto px-2 py-4 space-y-3">
+      <aside className="flex-1 max-h-[calc(100vh-80px)] overflow-y-auto px-2 py-4 space-y-3">
         {sections.map((section, i) => (
           <Collapsible
             key={i}
@@ -80,21 +125,21 @@ export default function LessonSidebar() {
             </CollapsibleTrigger>
             <CollapsibleContent className="bg-gray-900/60">
               {section.lessons.map((lesson) => (
-                 <button
-                      key={lesson.id}
-                      onClick={() => setActiveLessonId(lesson.id)}
-                      className={`w-full text-left p-3 sm:p-4 text-sm sm:text-base flex justify-between items-center transition-colors duration-300 rounded-lg ${
-                        activeLessonId === lesson.id
-                          ? "bg-orange-500/30 text-orange-200 border-l-4 border-orange-500"
-                          : "bg-gray-800/60 hover:bg-gray-700/90 text-gray-200"
-                      }`}
-                      aria-label={`Chọn bài học: ${lesson.title}`}
-                    >
-                      <span className="truncate max-w-[70%] sm:max-w-[75%]">{lesson.title}</span>
-                      <span className="text-xs sm:text-sm text-gray-400 flex-shrink-0">
-                        {lesson.duration}
-                      </span>
-                    </button>
+                <button
+                  key={lesson.id}
+                  onClick={() => setActiveLessonId(lesson.id)}
+                  className={`w-full text-left p-3 sm:p-4 text-sm sm:text-base flex justify-between items-center transition-colors duration-300 rounded-lg ${
+                    activeLessonId === lesson.id
+                      ? "bg-orange-500/30 text-orange-200 border-l-4 border-orange-500"
+                      : "bg-gray-800/60 hover:bg-gray-700/90 text-gray-200"
+                  }`}
+                  aria-label={`Chọn bài học: ${lesson.title}`}
+                >
+                  <span className="truncate max-w-[70%] sm:max-w-[75%]">{lesson.title}</span>
+                  <span className="text-xs sm:text-sm text-gray-400 flex-shrink-0">
+                    {lesson.duration}
+                  </span>
+                </button>
               ))}
             </CollapsibleContent>
           </Collapsible>
@@ -103,4 +148,3 @@ export default function LessonSidebar() {
     </div>
   );
 }
-

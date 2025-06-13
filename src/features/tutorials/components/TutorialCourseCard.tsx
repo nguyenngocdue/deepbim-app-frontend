@@ -1,5 +1,6 @@
 import { Users, Eye } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
 import { CourseCardProps } from "./Type";
 
 export function TutorialCourseCard({
@@ -13,6 +14,8 @@ export function TutorialCourseCard({
   newPrice,
   description,
   url,
+  statusLabel,
+  statusClassName,
 }: CourseCardProps) {
   return (
     <div
@@ -20,6 +23,19 @@ export function TutorialCourseCard({
         "relative bg-white rounded-2xl shadow-lg shadow-slate-800 dark:shadow-slate-800 border border-slate-200 dark:border-slate-600 transition-all duration-300 overflow-hidden w-72 sm:w-80 flex flex-col cursor-pointer group hover:shadow-[0_0_25px_4px_rgba(34,197,94,0.4)] hover:-translate-y-1"
       )}
     >
+      {/* ✅ Status Badge bằng ShadCN */}
+      {statusLabel && statusClassName && (
+        <Badge
+          className={cn(
+            "absolute top-2 right-2 z-10 text-xs px-2 py-0.5 rounded-full",
+            statusClassName
+          )}
+        >
+          {statusLabel}
+        </Badge>
+      )}
+
+      {/* Cover Image */}
       <a href={url || "#"} target="_blank" rel="noopener noreferrer">
         <img
           src={image}
@@ -28,6 +44,7 @@ export function TutorialCourseCard({
         />
       </a>
 
+      {/* Author avatar */}
       <div className="flex justify-center -mt-5 z-50">
         <img
           src={avatar}
@@ -36,6 +53,7 @@ export function TutorialCourseCard({
         />
       </div>
 
+      {/* Course info */}
       <div className="text-center px-4 mt-2">
         <div className="text-sm font-medium text-gray-700">{author}</div>
         <div className="text-base font-semibold text-gray-900 mt-1 leading-tight">
@@ -48,6 +66,7 @@ export function TutorialCourseCard({
         )}
       </div>
 
+      {/* Stats */}
       <div className="flex justify-center gap-6 mt-4 text-gray-500 text-sm">
         <div className="flex items-center gap-1">
           <Users size={14} /> {students}
@@ -57,6 +76,7 @@ export function TutorialCourseCard({
         </div>
       </div>
 
+      {/* Pricing */}
       <div className="flex justify-center gap-2 my-4">
         <span className="line-through text-gray-400 text-sm">{oldPrice}</span>
         <span className="text-green-600 font-bold">{newPrice}</span>
