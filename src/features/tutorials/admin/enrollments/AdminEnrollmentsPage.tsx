@@ -29,8 +29,6 @@ export default function AdminEnrollmentsPage() {
       getEnrollments(),
     ]);
 
-    console.log(courseRes);
-
     setAllUsers(
       userRes.data.map((user: any) => ({
         label: user.user_name,
@@ -107,13 +105,14 @@ export default function AdminEnrollmentsPage() {
           handleSubmit={handleSubmit}
         />
       )}
-      renderDeleteDialog={({ modalOpenDel, handleDelete, closeModal }) => (
+     renderDeleteDialog={({ modalOpenDel, handleDelete, closeModal }) => (
         <EnrollmentDeleteDialog
           modalOpenDel={modalOpenDel}
-          handleDeleteCourse={handleDelete}
           closeModal={closeModal}
+          onConfirm={handleDelete}
         />
       )}
+
     />
   );
 }

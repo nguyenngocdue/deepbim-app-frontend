@@ -36,7 +36,7 @@ type DialogProps<T> = {
 
 type DeleteDialogProps = {
   modalOpenDel: boolean;
-  handleDelete: () => void;
+  handleDelete: (id : number) => void;
   closeModal: () => void;
 };
 

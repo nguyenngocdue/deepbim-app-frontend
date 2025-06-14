@@ -47,6 +47,12 @@ export const CourseFormConfig = ({ statuses, allUsers, selectedRow }: CourseForm
       options: statuses,
       required: true,
     },
+     {
+      name: "thumbnail_url",
+      label: "Thumbnail Url",
+      placeholder: "https://...",
+      type: "text",
+    },
     {
       name: "owner_id",
       label: "Owner",

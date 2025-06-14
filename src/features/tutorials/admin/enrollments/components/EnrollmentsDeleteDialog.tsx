@@ -3,18 +3,18 @@ import { EntityDeleteDialog } from "@/features/tutorials/functions/EntityDeleteD
 interface EnrollmentDeleteDialogProps {
   modalOpenDel: boolean;
   closeModal: () => void;
-  handleDeleteEnrollment: () => Promise<void>;
+  onConfirm: () => Promise<void>; // ✅ đổi tên chuẩn
 }
 
 export const EnrollmentDeleteDialog = ({
   modalOpenDel,
   closeModal,
-  handleDeleteEnrollment,
+  onConfirm,
 }: EnrollmentDeleteDialogProps) => (
   <EntityDeleteDialog
     open={modalOpenDel}
     onClose={closeModal}
-    onConfirm={handleDeleteEnrollment}
+    onConfirm={onConfirm}
     entityName="this enrollment"
   />
 );

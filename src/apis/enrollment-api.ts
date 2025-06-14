@@ -16,19 +16,19 @@ type CreateEnrollmentsDto = {
 };
 
 export async function getEnrollments() {
-    const response = await fetchWithAuth2('/enrollments');
-    return response;
+  const response = await fetchWithAuth2('/enrollments');
+  return response;
 }
 
-export async function getEnrollmentsBuyEnrollmentsId(course_id : number) {
-    const response = await fetchWithAuth2(`/lessons/by-course?course_id=${course_id}`);
-    return response;
+export async function getEnrollmentsBuyEnrollmentsId(course_id: number) {
+  const response = await fetchWithAuth2(`/enrollments/by-course?course_id=${course_id}`);
+  return response;
 }
 
 
-export async function fetchEnrollmentsTreeByEnrollmentsId(course_id : number) {
-    const response = await fetchWithAuth2(`/lessons/${course_id}/lessons-with-sections`);
-    return response;
+export async function fetchEnrollmentsTreeByEnrollmentsId(course_id: number) {
+  const response = await fetchWithAuth2(`/enrollments/${course_id}/enrollments-with-sections`);
+  return response;
 }
 
 
@@ -44,13 +44,13 @@ export async function createEnrollment(data: any) {
     content: data.content?.toString().trim() || null,
     is_locked:
       data.is_locked === 'true' || data.is_locked === true ? true :
-      data.is_locked === 'false' || data.is_locked === false ? false :
-      true, // default true
+        data.is_locked === 'false' || data.is_locked === false ? false :
+          true, // default true
     owner_id: data.owner_id ? parseInt(data.owner_id, 10) : null,
     section_id: data.section_id ? parseInt(data.section_id, 10) : null,
   };
 
-  const response = await fetchWithAuth2('/lessons', {
+  const response = await fetchWithAuth2('/enrollments', {
     method: 'POST',
     body: JSON.stringify(parsedData),
   });
@@ -59,34 +59,21 @@ export async function createEnrollment(data: any) {
 }
 
 
-export async function updateEnrollment(courseId: number, data: any) {
-  const _data = {
-    name: data.name,
-    title: data.title,
-    description: data.description,
-    thumbnail_url: data.thumbnail_url,
-    is_free: data.is_free === "true" || data.is_free === true,
-    old_price: Number(data.old_price),
-    new_price: Number(data.new_price),
-    status_id: Number(data.status_id),
-    owner_id: Number(data.owner_id),
-  };
-
-  const response = await fetchWithAuth2(`/lessons/${courseId}`, {
+export async function updateEnrollment(enrollmentId: number, data: any) {
+  const response = await fetchWithAuth2(`/enrollments/${enrollmentId}`, {
     method: "PATCH",
-    body: JSON.stringify(_data),
+    body: JSON.stringify(data),
   });
-
   return response;
 }
 
 
-  export async function deleteEnrollment(lessonId : number) {
-    const response = await fetchWithAuth2(`/lessons/${lessonId}/soft-remove`,
-      {
-        method: 'DELETE'
-      }
-    );
-    return response;
+export async function deleteEnrollment(enrollmentId: number) {
+  const response = await fetchWithAuth2(`/enrollments/${enrollmentId}/soft-remove`,
+    {
+      method: 'DELETE'
+    }
+  );
+  return response;
 }
 
