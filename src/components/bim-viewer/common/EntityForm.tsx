@@ -197,35 +197,52 @@ export const EntityForm = forwardRef<any, EntityFormProps>(({
             return (
               <div key={index}>
                 <LabelWithRequired label={field.label} required={field.required} />
-                <Controller
-                  control={control}
-                  name={field.name}
-                  rules={{
-                    required: field.required ? `${field.label} is required` : false,
-                  }}
-                  render={({ field: { onChange, value } }) => (
-                    <Select value={value ?? ""} onValueChange={onChange}>
-                      <SelectTrigger
-                        className={cn("mt-1", errors[field.name] && "border-red-500")}
-                      >
-                        <SelectValue placeholder={field.placeholder} />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {field.options?.map((opt, i) =>
-                          typeof opt === "string" ? (
-                            <SelectItem key={i} value={opt}>
-                              {opt}
-                            </SelectItem>
-                          ) : (
-                            <SelectItem key={i} value={opt.value}>
-                              {opt.label}
-                            </SelectItem>
-                          )
-                        )}
-                      </SelectContent>
-                    </Select>
-                  )}
-                />
+                
+                
+                
+<Controller
+  control={control}
+  name={field.name}
+  rules={{
+    required: field.required ? `${field.label} is required` : false,
+  }}
+  render={({ field: { onChange, value } }) => (
+    <Select
+      value={String(value ?? "")}
+      onValueChange={(val) => {
+        let parsed: any = val;
+
+        if (field.castType === "boolean") {
+          parsed = val === "true"; // "true" → true | "false" → false
+        } else if (field.castType === "number") {
+          parsed = Number(val); // "1" → 1
+        }
+
+        onChange(parsed);
+      }}
+    >
+      <SelectTrigger>
+        <SelectValue placeholder={field.placeholder} />
+      </SelectTrigger>
+      <SelectContent>
+        {field.options?.map((opt, i) => {
+          const { label, value } = normalizeOption(opt);
+          return (
+            <SelectItem key={i} value={String(value)}>
+              {label}
+            </SelectItem>
+          );
+        })}
+      </SelectContent>
+    </Select>
+  )}
+/>
+
+
+
+
+
+
                 {errors[field.name] && (
                   <p className="text-sm text-red-500 mt-1">
                     {(errors[field.name] as any).message}
@@ -280,3 +297,17 @@ export const EntityForm = forwardRef<any, EntityFormProps>(({
     </form>
   );
 });
+
+
+
+function normalizeOption(opt: string | boolean | { label: string; value: string | boolean }) {
+  if (typeof opt === "string") {
+    return { label: opt, value: opt };
+  }
+
+  if (typeof opt === "boolean") {
+    return { label: opt ? "True" : "False", value: String(opt) };
+  }
+
+  return opt; // dạng { label, value }
+}

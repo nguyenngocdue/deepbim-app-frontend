@@ -91,7 +91,7 @@ export function TutorialCourseCard({
 
         {/* Action Buttons */}
         <div className="flex justify-center gap-3 mb-4">
-          <a href={url || "#"} target="_blank" rel="noopener noreferrer">
+          <Link to={`/tutorials/learning/lessons-for-newbies/?course_id=${courseId}`} rel="noopener noreferrer">
             <Badge
               className={cn(
                 "text-xs px-3 py-1 rounded-full bg-green-500 text-white hover:bg-green-600 transition-colors duration-200"
@@ -99,7 +99,7 @@ export function TutorialCourseCard({
             >
               Học ngay
             </Badge>
-          </a>
+            </Link>
           <Link to={`/tutorials/introduction-course/?course_id=${courseId}`} rel="noopener noreferrer">
             <Badge
               className={cn(

@@ -70,6 +70,10 @@ import { Route as AuthenticatedManagementsLayoutTeamsIndexImport } from './route
 import { Route as AuthenticatedManagementsLayoutSubProjectsIndexImport } from './routes/_authenticated/managements/_layout/sub-projects/index'
 import { Route as AuthenticatedUserShowProfileLayoutImport } from './routes/_authenticated/user/show/profile/_layout'
 import { Route as AuthenticatedTutorialsLearningLessonsForNewbiesLayoutImport } from './routes/_authenticated/tutorials/learning/lessons-for-newbies/_layout'
+import { Route as AuthenticatedTutorialsLayoutAdminMembersImport } from './routes/_authenticated/tutorials/_layout/admin/members'
+import { Route as AuthenticatedTutorialsLayoutAdminLessonsImport } from './routes/_authenticated/tutorials/_layout/admin/lessons'
+import { Route as AuthenticatedTutorialsLayoutAdminEnrollmentsImport } from './routes/_authenticated/tutorials/_layout/admin/enrollments'
+import { Route as AuthenticatedTutorialsLayoutAdminCoursesImport } from './routes/_authenticated/tutorials/_layout/admin/courses'
 import { Route as AuthenticatedManagementsLayoutTeamsTeamidImport } from './routes/_authenticated/managements/_layout/teams/$team_id'
 import { Route as AuthenticatedManagementsLayoutSubProjectsLayoutImport } from './routes/_authenticated/managements/_layout/sub-projects/_layout'
 import { Route as AuthenticatedManagementsLayoutSubProjectsIdImport } from './routes/_authenticated/managements/_layout/sub-projects/$id'
@@ -661,6 +665,34 @@ const AuthenticatedTutorialsLearningLessonsForNewbiesLayoutRoute =
   AuthenticatedTutorialsLearningLessonsForNewbiesLayoutImport.update({
     id: '/_layout',
     getParentRoute: () => AuthenticatedTutorialsLearningLessonsForNewbiesRoute,
+  } as any)
+
+const AuthenticatedTutorialsLayoutAdminMembersRoute =
+  AuthenticatedTutorialsLayoutAdminMembersImport.update({
+    id: '/admin/members',
+    path: '/admin/members',
+    getParentRoute: () => AuthenticatedTutorialsLayoutRoute,
+  } as any)
+
+const AuthenticatedTutorialsLayoutAdminLessonsRoute =
+  AuthenticatedTutorialsLayoutAdminLessonsImport.update({
+    id: '/admin/lessons',
+    path: '/admin/lessons',
+    getParentRoute: () => AuthenticatedTutorialsLayoutRoute,
+  } as any)
+
+const AuthenticatedTutorialsLayoutAdminEnrollmentsRoute =
+  AuthenticatedTutorialsLayoutAdminEnrollmentsImport.update({
+    id: '/admin/enrollments',
+    path: '/admin/enrollments',
+    getParentRoute: () => AuthenticatedTutorialsLayoutRoute,
+  } as any)
+
+const AuthenticatedTutorialsLayoutAdminCoursesRoute =
+  AuthenticatedTutorialsLayoutAdminCoursesImport.update({
+    id: '/admin/courses',
+    path: '/admin/courses',
+    getParentRoute: () => AuthenticatedTutorialsLayoutRoute,
   } as any)
 
 const AuthenticatedManagementsLayoutTeamsTeamidRoute =
@@ -1290,6 +1322,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedManagementsLayoutTeamsTeamidImport
       parentRoute: typeof AuthenticatedManagementsLayoutImport
     }
+    '/_authenticated/tutorials/_layout/admin/courses': {
+      id: '/_authenticated/tutorials/_layout/admin/courses'
+      path: '/admin/courses'
+      fullPath: '/tutorials/admin/courses'
+      preLoaderRoute: typeof AuthenticatedTutorialsLayoutAdminCoursesImport
+      parentRoute: typeof AuthenticatedTutorialsLayoutImport
+    }
+    '/_authenticated/tutorials/_layout/admin/enrollments': {
+      id: '/_authenticated/tutorials/_layout/admin/enrollments'
+      path: '/admin/enrollments'
+      fullPath: '/tutorials/admin/enrollments'
+      preLoaderRoute: typeof AuthenticatedTutorialsLayoutAdminEnrollmentsImport
+      parentRoute: typeof AuthenticatedTutorialsLayoutImport
+    }
+    '/_authenticated/tutorials/_layout/admin/lessons': {
+      id: '/_authenticated/tutorials/_layout/admin/lessons'
+      path: '/admin/lessons'
+      fullPath: '/tutorials/admin/lessons'
+      preLoaderRoute: typeof AuthenticatedTutorialsLayoutAdminLessonsImport
+      parentRoute: typeof AuthenticatedTutorialsLayoutImport
+    }
+    '/_authenticated/tutorials/_layout/admin/members': {
+      id: '/_authenticated/tutorials/_layout/admin/members'
+      path: '/admin/members'
+      fullPath: '/tutorials/admin/members'
+      preLoaderRoute: typeof AuthenticatedTutorialsLayoutAdminMembersImport
+      parentRoute: typeof AuthenticatedTutorialsLayoutImport
+    }
     '/_authenticated/tutorials/learning/lessons-for-newbies': {
       id: '/_authenticated/tutorials/learning/lessons-for-newbies'
       path: '/learning/lessons-for-newbies'
@@ -1644,6 +1704,10 @@ const AuthenticatedManagementsRouteWithChildren =
 interface AuthenticatedTutorialsLayoutRouteChildren {
   AuthenticatedTutorialsLayoutHomePageRoute: typeof AuthenticatedTutorialsLayoutHomePageRoute
   AuthenticatedTutorialsLayoutIntroductionCourseRoute: typeof AuthenticatedTutorialsLayoutIntroductionCourseRoute
+  AuthenticatedTutorialsLayoutAdminCoursesRoute: typeof AuthenticatedTutorialsLayoutAdminCoursesRoute
+  AuthenticatedTutorialsLayoutAdminEnrollmentsRoute: typeof AuthenticatedTutorialsLayoutAdminEnrollmentsRoute
+  AuthenticatedTutorialsLayoutAdminLessonsRoute: typeof AuthenticatedTutorialsLayoutAdminLessonsRoute
+  AuthenticatedTutorialsLayoutAdminMembersRoute: typeof AuthenticatedTutorialsLayoutAdminMembersRoute
 }
 
 const AuthenticatedTutorialsLayoutRouteChildren: AuthenticatedTutorialsLayoutRouteChildren =
@@ -1652,6 +1716,14 @@ const AuthenticatedTutorialsLayoutRouteChildren: AuthenticatedTutorialsLayoutRou
       AuthenticatedTutorialsLayoutHomePageRoute,
     AuthenticatedTutorialsLayoutIntroductionCourseRoute:
       AuthenticatedTutorialsLayoutIntroductionCourseRoute,
+    AuthenticatedTutorialsLayoutAdminCoursesRoute:
+      AuthenticatedTutorialsLayoutAdminCoursesRoute,
+    AuthenticatedTutorialsLayoutAdminEnrollmentsRoute:
+      AuthenticatedTutorialsLayoutAdminEnrollmentsRoute,
+    AuthenticatedTutorialsLayoutAdminLessonsRoute:
+      AuthenticatedTutorialsLayoutAdminLessonsRoute,
+    AuthenticatedTutorialsLayoutAdminMembersRoute:
+      AuthenticatedTutorialsLayoutAdminMembersRoute,
   }
 
 const AuthenticatedTutorialsLayoutRouteWithChildren =
@@ -1925,6 +1997,10 @@ export interface FileRoutesByFullPath {
   '/managements/sub-projects/$id': typeof AuthenticatedManagementsLayoutSubProjectsIdRoute
   '/managements/sub-projects': typeof AuthenticatedManagementsLayoutSubProjectsLayoutRouteWithChildren
   '/managements/teams/$team_id': typeof AuthenticatedManagementsLayoutTeamsTeamidRoute
+  '/tutorials/admin/courses': typeof AuthenticatedTutorialsLayoutAdminCoursesRoute
+  '/tutorials/admin/enrollments': typeof AuthenticatedTutorialsLayoutAdminEnrollmentsRoute
+  '/tutorials/admin/lessons': typeof AuthenticatedTutorialsLayoutAdminLessonsRoute
+  '/tutorials/admin/members': typeof AuthenticatedTutorialsLayoutAdminMembersRoute
   '/tutorials/learning/lessons-for-newbies': typeof AuthenticatedTutorialsLearningLessonsForNewbiesLayoutRouteWithChildren
   '/user/show/profile': typeof AuthenticatedUserShowProfileLayoutRouteWithChildren
   '/managements/sub-projects/': typeof AuthenticatedManagementsLayoutSubProjectsIndexRoute
@@ -2010,6 +2086,10 @@ export interface FileRoutesByTo {
   '/managements/sub-projects/$id': typeof AuthenticatedManagementsLayoutSubProjectsIdRoute
   '/managements/sub-projects': typeof AuthenticatedManagementsLayoutSubProjectsIndexRoute
   '/managements/teams/$team_id': typeof AuthenticatedManagementsLayoutTeamsTeamidRoute
+  '/tutorials/admin/courses': typeof AuthenticatedTutorialsLayoutAdminCoursesRoute
+  '/tutorials/admin/enrollments': typeof AuthenticatedTutorialsLayoutAdminEnrollmentsRoute
+  '/tutorials/admin/lessons': typeof AuthenticatedTutorialsLayoutAdminLessonsRoute
+  '/tutorials/admin/members': typeof AuthenticatedTutorialsLayoutAdminMembersRoute
   '/tutorials/learning/lessons-for-newbies': typeof AuthenticatedTutorialsLearningLessonsForNewbiesLayoutIndexRoute
   '/user/show/profile': typeof AuthenticatedUserShowProfileLayoutIndexRoute
   '/managements/teams': typeof AuthenticatedManagementsLayoutTeamsIndexRoute
@@ -2101,6 +2181,10 @@ export interface FileRoutesById {
   '/_authenticated/managements/_layout/sub-projects': typeof AuthenticatedManagementsLayoutSubProjectsRouteWithChildren
   '/_authenticated/managements/_layout/sub-projects/_layout': typeof AuthenticatedManagementsLayoutSubProjectsLayoutRouteWithChildren
   '/_authenticated/managements/_layout/teams/$team_id': typeof AuthenticatedManagementsLayoutTeamsTeamidRoute
+  '/_authenticated/tutorials/_layout/admin/courses': typeof AuthenticatedTutorialsLayoutAdminCoursesRoute
+  '/_authenticated/tutorials/_layout/admin/enrollments': typeof AuthenticatedTutorialsLayoutAdminEnrollmentsRoute
+  '/_authenticated/tutorials/_layout/admin/lessons': typeof AuthenticatedTutorialsLayoutAdminLessonsRoute
+  '/_authenticated/tutorials/_layout/admin/members': typeof AuthenticatedTutorialsLayoutAdminMembersRoute
   '/_authenticated/tutorials/learning/lessons-for-newbies': typeof AuthenticatedTutorialsLearningLessonsForNewbiesRouteWithChildren
   '/_authenticated/tutorials/learning/lessons-for-newbies/_layout': typeof AuthenticatedTutorialsLearningLessonsForNewbiesLayoutRouteWithChildren
   '/_authenticated/user/show/profile': typeof AuthenticatedUserShowProfileRouteWithChildren
@@ -2192,6 +2276,10 @@ export interface FileRouteTypes {
     | '/managements/sub-projects/$id'
     | '/managements/sub-projects'
     | '/managements/teams/$team_id'
+    | '/tutorials/admin/courses'
+    | '/tutorials/admin/enrollments'
+    | '/tutorials/admin/lessons'
+    | '/tutorials/admin/members'
     | '/tutorials/learning/lessons-for-newbies'
     | '/user/show/profile'
     | '/managements/sub-projects/'
@@ -2276,6 +2364,10 @@ export interface FileRouteTypes {
     | '/managements/sub-projects/$id'
     | '/managements/sub-projects'
     | '/managements/teams/$team_id'
+    | '/tutorials/admin/courses'
+    | '/tutorials/admin/enrollments'
+    | '/tutorials/admin/lessons'
+    | '/tutorials/admin/members'
     | '/tutorials/learning/lessons-for-newbies'
     | '/user/show/profile'
     | '/managements/teams'
@@ -2365,6 +2457,10 @@ export interface FileRouteTypes {
     | '/_authenticated/managements/_layout/sub-projects'
     | '/_authenticated/managements/_layout/sub-projects/_layout'
     | '/_authenticated/managements/_layout/teams/$team_id'
+    | '/_authenticated/tutorials/_layout/admin/courses'
+    | '/_authenticated/tutorials/_layout/admin/enrollments'
+    | '/_authenticated/tutorials/_layout/admin/lessons'
+    | '/_authenticated/tutorials/_layout/admin/members'
     | '/_authenticated/tutorials/learning/lessons-for-newbies'
     | '/_authenticated/tutorials/learning/lessons-for-newbies/_layout'
     | '/_authenticated/user/show/profile'
@@ -2674,7 +2770,11 @@ export const routeTree = rootRoute
       "parent": "/_authenticated/tutorials",
       "children": [
         "/_authenticated/tutorials/_layout/home-page",
-        "/_authenticated/tutorials/_layout/introduction-course"
+        "/_authenticated/tutorials/_layout/introduction-course",
+        "/_authenticated/tutorials/_layout/admin/courses",
+        "/_authenticated/tutorials/_layout/admin/enrollments",
+        "/_authenticated/tutorials/_layout/admin/lessons",
+        "/_authenticated/tutorials/_layout/admin/members"
       ]
     },
     "/_authenticated/view/$fileCode": {
@@ -2817,6 +2917,22 @@ export const routeTree = rootRoute
     "/_authenticated/managements/_layout/teams/$team_id": {
       "filePath": "_authenticated/managements/_layout/teams/$team_id.tsx",
       "parent": "/_authenticated/managements/_layout"
+    },
+    "/_authenticated/tutorials/_layout/admin/courses": {
+      "filePath": "_authenticated/tutorials/_layout/admin/courses.tsx",
+      "parent": "/_authenticated/tutorials/_layout"
+    },
+    "/_authenticated/tutorials/_layout/admin/enrollments": {
+      "filePath": "_authenticated/tutorials/_layout/admin/enrollments.tsx",
+      "parent": "/_authenticated/tutorials/_layout"
+    },
+    "/_authenticated/tutorials/_layout/admin/lessons": {
+      "filePath": "_authenticated/tutorials/_layout/admin/lessons.tsx",
+      "parent": "/_authenticated/tutorials/_layout"
+    },
+    "/_authenticated/tutorials/_layout/admin/members": {
+      "filePath": "_authenticated/tutorials/_layout/admin/members.tsx",
+      "parent": "/_authenticated/tutorials/_layout"
     },
     "/_authenticated/tutorials/learning/lessons-for-newbies": {
       "filePath": "_authenticated/tutorials/learning/lessons-for-newbies",

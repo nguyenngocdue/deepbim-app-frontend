@@ -1,6 +1,11 @@
 import { fetchWithAuth2 } from "@/api";
+import { toast } from "sonner";
 
 export async function getUsers() {
-    const response = await fetchWithAuth2('/users');
-    return response;
+    try {
+      const response = await fetchWithAuth2('/users');
+      return response;
+    }catch (error: any) {
+      toast.warning("Warning: " + error.message);
+    }
 }
