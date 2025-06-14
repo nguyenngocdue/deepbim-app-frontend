@@ -228,8 +228,11 @@ export const EntityForm = forwardRef<any, EntityFormProps>(({
         {field.options?.map((opt, i) => {
           const { label, value } = normalizeOption(opt);
           return (
-            <SelectItem key={i} value={String(value)}>
-              {label}
+            <SelectItem key={i} value={String(value)} >
+             <div className="flex items-center justify-between gap-2 w-full text-sm">
+                <span className="flex-1 truncate">{label}</span>
+                <span className="text-muted-foreground text-right whitespace-nowrap">(#{value})</span>
+              </div>
             </SelectItem>
           );
         })}
