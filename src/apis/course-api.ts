@@ -42,7 +42,11 @@ export async function updateCourse(courseId: number, data: any) {
 }
 
 
-  export async function deleteCourse() {
-    const response = await fetchWithAuth2('/courses');
+  export async function deleteCourse(courseId : number) {
+    const response = await fetchWithAuth2(`/courses/${courseId}/soft-remove`,
+      {
+        method: 'PATCH'
+      }
+    );
     return response;
 }

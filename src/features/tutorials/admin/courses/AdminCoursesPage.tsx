@@ -101,10 +101,6 @@ export default function AdminCoursesPage() {
     }, [fetchData]);
 
 
-
-
-
-
     const formatDate = (str: string) => new Date(str).toISOString().slice(0, 10);
 
     const filteredData = useMemo(() => {
@@ -146,16 +142,15 @@ export default function AdminCoursesPage() {
     };
 
     const handleDeleteCourse = async () => {
+
         try {
             const res = await deleteCourse(selectedRow.id);
             if (res.ok) {
                 toast.success("Course deleted successfully");
-            } else {
-                toast.error("Failed to delete course");
-            }
+            } 
             await fetchData();
         } catch (err) {
-            toast.error("Delete failed");
+            toast.error(`Delete failed: ${err && typeof err === "object" && "message" in err ? (err as any).message : "Unknown error"}`);
         }
     };
 
