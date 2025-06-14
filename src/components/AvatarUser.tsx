@@ -25,7 +25,7 @@ export function AvatarUser({
 
   return (
     <div className="flex items-center gap-2" title={`Id: #${id}`}>
-      <Avatar className={`${avatarSize} bg-muted`}>
+      <Avatar className={`${avatarSize} bg-gray-200 dark:bg-slate-600`}>
         <AvatarImage src={img} alt={name} />
         <AvatarFallback className="bg-muted text-primary font-semibold">
           {fallback}
@@ -33,8 +33,8 @@ export function AvatarUser({
       </Avatar>
 
       {showName && (
-        <div className="text-sm leading-tight">
-          <div className="font-medium text-foreground italic">{name}</div>
+        <div className="text-sm leading-tight text-start">
+          <div className="font-medium text-foreground italic border-b dark:border-gray-700 border-gray-400 ">{name}</div>
           {email && (
             <div className="text-xs text-muted-foreground">{email}</div>
           )}

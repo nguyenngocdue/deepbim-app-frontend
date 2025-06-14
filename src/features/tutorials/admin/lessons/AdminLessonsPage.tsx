@@ -2,52 +2,64 @@ import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { EntityListLayout } from "@/features/bim-viewer/modals/managements/components/EntityListLayout";
 import {
-  getCourses,
-  createCourse,
-  updateCourse,
-  deleteCourse,
-} from "@/apis/course-api";
+  getLessons,
+  createLesson,
+  updateLesson,
+  deleteLesson,
+} from "@/apis/lesson-api";
 import { getUsers } from "@/apis/user-api";
 import { getStatuses } from "@/apis/status-api";
-import { CourseSearchAndActions } from "./components/CourseSearchAndActions";
-import { CourseDialog } from "./components/CourseDialog";
-import { CourseTable } from "./components/CourseTable";
-import { CourseDeleteDialog } from "./components/CourseDeleteDialog";
-import { Course, FormOption } from "./components/types";
+import { LessonDialog } from "./components/LessonDialog";
+import { LessonTable } from "./components/LessonTable";
+import { LessonDeleteDialog } from "./components/LessonDeleteDialog";
+import { Lesson, FormOption } from "./components/types";
+import { LessonSearchAndActions } from "./components/LessonSearchAndActions";
+import { getCourses } from "@/apis/course-api";
+import { geLessonSections } from "@/apis/lesson-section-api";
 
 
 type Mode = "create" | "edit" | "view" | null;
 
-export default function AdminCoursesPage() {
-  const [data, setData] = useState<Course[] | null>(null);
+export default function AdminLessonsPage() {
+  const [data, setData] = useState<Lesson[] | null>(null);
   const [filter, setFilter] = useState("");
   const [mode, setMode] = useState<Mode>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalOpenDel, setModalOpenDel] = useState(false);
-  const [selectedRow, setSelectedRow] = useState<Course | null>(null);
-  const [statuses, setStatuses] = useState<FormOption[]>([]);
+  const [selectedRow, setSelectedRow] = useState<Lesson | null>(null);
   const [allUsers, setAllUsers] = useState<FormOption[]>([]);
+
+  const  [allCourses, setAllCourses] = useState([]);
+  const  [sections, setSections] = useState([]);
 
   const fetchFormData = useCallback(async () => {
     try {
-      const [usersRes, statusesRes] = await Promise.all([getUsers(), getStatuses()]);
+      const [usersRes, coursesRes, sectionsRef] = await Promise.all([getUsers(), getCourses(), geLessonSections()]);
       const optionUsers = usersRes?.data?.map((user: any) => ({
         label: user.user_name,
         value: String(user.id),
       })) || [];
-      const optionStatuses = statusesRes?.data?.map((status: any) => ({
-        label: status.name,
-        value: String(status.id),
+
+      const optionCourses = coursesRes?.data?.map((course: any) => ({
+        label: course.title,
+        value: String(course.id),
       })) || [];
+
+      const optionSections = sectionsRef?.data?.map((sec: any) => ({
+        label: sec.title,
+        value: String(sec.id),
+      })) || [];
+
+      setAllCourses(optionCourses);
+      setSections(optionSections);
       setAllUsers(optionUsers);
-      setStatuses(optionStatuses);
     } catch (err) {
       console.error("Failed to fetch form data:", err);
       setAllUsers([]);
-      setStatuses([]);
       toast.error("Failed to fetch users or statuses");
     }
   }, []);
+
 
   useEffect(() => {
     if (modalOpen) {
@@ -57,15 +69,15 @@ export default function AdminCoursesPage() {
 
   const fetchData = useCallback(async () => {
     try {
-      const res = await getCourses();
+      const res = await getLessons();
       const formatted = res.data.map((item: any) => ({
         ...item,
         updated_at: new Date(item.updated_at).toISOString().slice(0, 10),
       }));
       setData(formatted);
     } catch (err) {
-      console.error("Failed to fetch courses:", err);
-      toast.error("Failed to fetch courses");
+      console.error("Failed to fetch lessons:", err);
+      toast.error("Failed to fetch lessons");
       setData([]);
     }
   }, []);
@@ -80,19 +92,19 @@ export default function AdminCoursesPage() {
     setModalOpen(true);
   };
 
-  const openEditModal = (row: Course) => {
+  const openEditModal = (row: Lesson) => {
     setSelectedRow(row);
     setMode("edit");
     setModalOpen(true);
   };
 
-  const openViewModal = (row: Course) => {
+  const openViewModal = (row: Lesson) => {
     setSelectedRow(row);
     setMode("view");
     setModalOpen(true);
   };
 
-  const openDeleteModal = (row: Course) => {
+  const openDeleteModal = (row: Lesson) => {
     setSelectedRow(row);
     setModalOpenDel(true);
   };
@@ -104,11 +116,11 @@ export default function AdminCoursesPage() {
     setModalOpenDel(false);
   };
 
-  const handleDeleteCourse = async () => {
+  const handleDeleteLesson = async () => {
     if (!selectedRow) return;
     try {
-      await deleteCourse(selectedRow.id);
-      toast.success("Course deleted successfully");
+      await deleteLesson(selectedRow.id);
+      toast.success("Lesson deleted successfully");
       await fetchData();
       closeModal();
     } catch (err) {
@@ -125,7 +137,7 @@ export default function AdminCoursesPage() {
 
   const handleCreate = async (formData: any) => {
     try {
-      await createCourse(formData);
+      await createLesson(formData);
       toast.success("Created course successfully");
       await fetchData();
       closeModal();
@@ -138,7 +150,7 @@ export default function AdminCoursesPage() {
   const handleEdit = async (formData: any) => {
     if (!selectedRow) return;
     try {
-      await updateCourse(selectedRow.id, {
+      await updateLesson(selectedRow.id, {
         ...formData,
         is_free: formData.is_free === "true",
         old_price: Number(formData.old_price),
@@ -165,39 +177,40 @@ export default function AdminCoursesPage() {
 
   return (
     <EntityListLayout
-      title="Courses"
+      title="Lessons"
       description="Manage your published and draft courses."
       searchBar={
-        <CourseSearchAndActions
+        <LessonSearchAndActions
           filter={filter}
           setFilter={setFilter}
           openCreateModal={openCreateModal}
         />
       }
       countInfo={`Showing ${filteredCount} of ${data?.length ?? 0}`}
-      dialog={
-        <CourseDialog
-          mode={mode}
-          modalOpen={modalOpen}
-          selectedRow={selectedRow}
-          statuses={statuses}
-          allUsers={allUsers}
-          closeModal={closeModal}
-          handleSubmit={handleSubmit}
-        />
-      }
-    >
-      <CourseTable
+          dialog={
+              <LessonDialog
+                  mode={mode}
+                  modalOpen={modalOpen}
+                  selectedRow={selectedRow}
+                  allUsers={allUsers}
+                  allCourses={allCourses}
+                  sections={sections}
+                  closeModal={closeModal}
+                  handleSubmit={handleSubmit}
+              />
+          }
+      >
+      <LessonTable
         data={data}
         filter={filter}
         onEdit={openEditModal}
         onDelete={openDeleteModal}
         onView={openViewModal}
       />
-      <CourseDeleteDialog
+      <LessonDeleteDialog
         modalOpenDel={modalOpenDel}
         closeModal={closeModal}
-        handleDeleteCourse={handleDeleteCourse}
+        handleDeleteLesson={handleDeleteLesson}
       />
     </EntityListLayout>
   );
