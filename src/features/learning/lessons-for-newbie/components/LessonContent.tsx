@@ -21,7 +21,7 @@ export default function LessonContent({ contents, selectedLesson }: LessonConten
   const renderHeader = () => (
     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-6">
       <div>
-        <h1 className="text-2xl sm:text-3xl font-semibold text-white tracking-tight text-ellipsis overflow-hidden hover:text-orange-300 transition-colors duration-200">
+        <h1 className="text-2xl sm:text-2xl font-semibold text-white tracking-tight text-ellipsis overflow-hidden hover:text-orange-300 transition-colors duration-200">
           {selectedLesson?.title || "Không có tiêu đề"}
         </h1>
         {contents?.updateDate && (
@@ -54,7 +54,7 @@ export default function LessonContent({ contents, selectedLesson }: LessonConten
 
   if (!contents || !contents.description_lesson) {
     return (
-      <div className="w-full mx-auto bg-gradient-to-b from-gray-900 to-blue-900 dark:from-gray-950 dark:to-black p-6 sm:p-8 rounded-3xl shadow-lg mt-6">
+      <div className="w-full mx-auto bg-gradient-to-b from-gray-900 to-blue-900 dark:from-gray-950 dark:to-black p-8 sm:p-8 rounded-3xl shadow-lg mt-6">
         {renderHeader()}
         <div className="text-center">
           <div className="flex justify-center mb-4">
@@ -78,7 +78,7 @@ export default function LessonContent({ contents, selectedLesson }: LessonConten
               ></path>
             </svg>
           </div>
-          <h2 className="text-xl sm:text-2xl font-semibold text-white mb-4">
+          <h2 className="text-xl sm:text-md font-semibold text-white mb-4">
             Chúng tôi đang cập nhật
           </h2>
           <p className="text-gray-400 text-sm sm:text-base mb-6">
@@ -97,7 +97,7 @@ export default function LessonContent({ contents, selectedLesson }: LessonConten
   const { updateDate, description_lesson, links = [], tags = [], progress = 0 } = contents;
 
   return (
-    <div className="w-full mx-auto bg-gradient-to-b from-gray-900 to-blue-900 dark:from-gray-950 dark:to-black p-6 sm:p-8 rounded-3xl shadow-lg mt-6">
+    <div className="w-full mx-auto bg-gradient-to-b from-gray-900 to-blue-900 dark:from-gray-950 dark:to-black p-8 sm:p-8 rounded-3xl shadow-lg mt-6">
       {renderHeader()}
 
       {progress > 0 && (

@@ -6,6 +6,7 @@ import { getLesson } from "@/apis/lesson-api";
 import { useLocation } from "@tanstack/react-router";
 import { useLessonData } from "@/features/courses/hooks/useLessonData";
 import { toast } from "sonner";
+import { WelcomeLessonMessage } from "./components/WelcomeLessonMessage";
 
 export default function LessonForNewbies() {
   const location = useLocation();
@@ -48,22 +49,36 @@ export default function LessonForNewbies() {
     window.history.pushState({}, "", url);
   };
 
-  return (
-    <div className="min-h-screen w-full bg-gradient-to-b from-gray-900/95 to-black/95 text-white">
-      <main className="flex flex-col gap-6 p-4 sm:p-6 lg:grid lg:grid-cols-12 lg:gap-8 max-h-screen overflow-hidden">
-        {/* Player + Content */}
-        <div className="lg:col-span-8 max-h-screen overflow-y-auto">
+return (
+  <div className="min-h-screen w-full bg-gradient-to-b from-gray-900/95 to-black/95 text-white">
+    <main className="flex flex-col gap-6 p-4 sm:p-6 lg:grid lg:grid-cols-12 lg:gap-8 h-screen overflow-hidden">
+      {/* Player + Content */}
+      <div className="lg:col-span-8 max-h-screen overflow-y-auto">
+        <div className="flex flex-col h-full">
           <div className="w-full aspect-video rounded-2xl shadow-2xl mb-6 sm:mb-8 bg-gradient-to-tr from-gray-800 to-gray-900">
             <Player videoUrl={selectedLesson?.video_url ?? ""} />
           </div>
-             {lessonContent && <LessonContent contents={lessonContent} selectedLesson={selectedLesson}/> }
+          <div className="flex-1 pb-20 px-4">
+            {lessonContent ? 
+              <LessonContent
+                contents={lessonContent}
+                selectedLesson={selectedLesson}
+              /> : <WelcomeLessonMessage/>
+            }
+          </div>
         </div>
+      </div>
 
-        {/* Sidebar */}
-        <div className="lg:col-span-4">
-          <LessonSidebar sections={lessons} onLessonSelect={handleLessonSelect} lessonId={lessonId}/>
-        </div>
-      </main>
-    </div>
-  );
+      {/* Sidebar */}
+      <div className="lg:col-span-4 h-full overflow-y-auto">
+        <LessonSidebar
+          sections={lessons}
+          onLessonSelect={handleLessonSelect}
+          lessonId={lessonId}
+        />
+      </div>
+    </main>
+  </div>
+);
+
 }
