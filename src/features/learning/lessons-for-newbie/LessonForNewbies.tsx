@@ -56,12 +56,12 @@ export default function LessonForNewbies() {
           <div className="w-full aspect-video rounded-2xl shadow-2xl mb-6 sm:mb-8 bg-gradient-to-tr from-gray-800 to-gray-900">
             <Player videoUrl={selectedLesson?.video_url ?? ""} />
           </div>
-             {lessonContent && <LessonContent contents={lessonContent}/> }
+             {lessonContent && <LessonContent contents={lessonContent} selectedLesson={selectedLesson}/> }
         </div>
 
         {/* Sidebar */}
         <div className="lg:col-span-4">
-          <LessonSidebar sections={lessons} onLessonSelect={handleLessonSelect} />
+          <LessonSidebar sections={lessons} onLessonSelect={handleLessonSelect} lessonId={lessonId}/>
         </div>
       </main>
     </div>
