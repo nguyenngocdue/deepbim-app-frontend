@@ -44,7 +44,7 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
     <div className="flex min-h-screen overflow-x-hidden">
       <aside
         className={`group fixed md:sticky top-0 left-0 z-40 border-r transition-all duration-300 dark:border-gray-600 border-gray-400 ${sidebarBg} ${
-          collapsed ? "w-[60px]" : "w-[250px]"
+          collapsed ? "w-[60px]" : "min-w-[250px]"
         } ${isMobileSidebarOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0 h-full`}
       >
         <div className="flex items-center justify-between h-20 border-b bg-background dark:border-gray-600 border-gray-400 px-4">
