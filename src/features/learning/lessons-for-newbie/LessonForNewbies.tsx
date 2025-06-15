@@ -2,47 +2,50 @@ import { useEffect, useState } from "react";
 import LessonSidebar from "./components/LessonSidebar";
 import Player from "./components/Player";
 import LessonContent from "./components/LessonContent";
-import { fetchLessonTreeByCourseId } from "@/apis/lesson-api";
+import { getLesson } from "@/apis/lesson-api";
 import { useLocation } from "@tanstack/react-router";
-
-type Lesson = {
-  id: number;
-  title: string;
-  video_url?: string; // Make video_url optional to match imported type
-};
-
+import { useLessonData } from "@/features/courses/hooks/useLessonData";
+import { toast } from "sonner";
 
 export default function LessonForNewbies() {
-  const [lessons, setLessons] = useState([]);
-
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const courseId = searchParams.get("course_id");
-  const [selectedLesson, setSelectedLesson] = useState<Lesson | null>(null);
+  const lessonId = searchParams.get("lesson_id");
 
+  const { lessons, selectedLesson, setSelectedLesson } = useLessonData(courseId);
+  const [lessonContent, setLessonContent] = useState(null);
+
+  // Fetch lesson by ID from URL if needed
   useEffect(() => {
-    if (courseId) {
-      fetchLessonTreeByCourseId(Number(courseId))
+    if (lessonId && !selectedLesson) {
+      getLesson(Number(lessonId))
         .then((res) => {
-          setLessons(res.data);
+          setSelectedLesson(res.data);
         })
         .catch((err) => {
-          console.error("Failed to load lessons:", err);
+          const errorMessage = err instanceof Error ? err.message : String(err);
+          toast.error(`Failed to fetch lesson: ${errorMessage}`);
         });
     }
-  }, [courseId]);
+    if(selectedLesson  && selectedLesson.content){
+        try {
+          const parsed = JSON.parse(selectedLesson.content);
+          setLessonContent(parsed);
+        } catch (error) {
+          setLessonContent(null);
+        }
+    }
 
-  const contentData = {
-    title: "Mô hình Client - Server là gì?",
-    updateDate: "Cập nhật tháng 11 năm 2022",
-    description:
-      "Tham gia cộng đồng để cùng học hỏi, chia sẻ và 'thấm thía' xem F8 đã cố gắng như thế nào!",
-    links: [
-      { href: "https://www.facebook.com/f8vnofficial", text: "Fanpage" },
-      { href: "https://www.facebook.com/groups/649972919142215", text: "Group" },
-      { href: "https://www.youtube.com/F8VNOfficial", text: "Youtube" },
-      { href: "https://www.facebook.com/sondnf8", text: "Sơn Đặng" },
-    ],
+  }, [lessonId, selectedLesson, setSelectedLesson]);
+
+
+  // Handle lesson selection from sidebar
+  const handleLessonSelect = (lesson: any) => {
+    setSelectedLesson(lesson);
+    const url = new URL(window.location.href);
+    url.searchParams.set("lesson_id", lesson.id.toString());
+    window.history.pushState({}, "", url);
   };
 
   return (
@@ -53,17 +56,12 @@ export default function LessonForNewbies() {
           <div className="w-full aspect-video rounded-2xl shadow-2xl mb-6 sm:mb-8 bg-gradient-to-tr from-gray-800 to-gray-900">
             <Player videoUrl={selectedLesson?.video_url ?? ""} />
           </div>
-          <LessonContent
-            title={contentData.title}
-            updateDate={contentData.updateDate}
-            description={contentData.description}
-            links={contentData.links}
-          />
+             {lessonContent && <LessonContent contents={lessonContent}/> }
         </div>
 
         {/* Sidebar */}
         <div className="lg:col-span-4">
-          <LessonSidebar sections={lessons} onLessonSelect={(lesson) => setSelectedLesson(lesson)} />
+          <LessonSidebar sections={lessons} onLessonSelect={handleLessonSelect} />
         </div>
       </main>
     </div>

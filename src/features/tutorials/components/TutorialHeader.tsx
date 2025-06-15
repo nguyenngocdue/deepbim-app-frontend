@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ProfileDropdown } from "@/components/common/ProfileDropdown";
 import { ThemeSwitch } from "@/components/theme-switch";
 import { Search } from "lucide-react";
+import { LogoWord } from "@/components/LogoWord";
 
 export function TutorialHeader() {
   const [isFocused, setIsFocused] = useState(false);
@@ -14,14 +15,7 @@ export function TutorialHeader() {
         <div className="flex w-full items-center justify-between gap-2">
           {/* Logo */}
           <div className="flex items-center space-x-2 sm:space-x-3">
-            <img
-              src="/images/logo_no_bg.png"
-              alt="Logo"
-              className="h-8 w-auto sm:h-10 transition-all duration-200 hover:scale-105"
-            />
-            <span className="hidden xs:inline text-sm font-bold text-gray-900 dark:text-gray-100 sm:text-lg lg:text-2xl transition-colors duration-200 hover:text-orange-500 dark:hover:text-orange-400">
-              Học Lập Trình Đời Lắm
-            </span>
+           <LogoWord/>
           </div>
 
           {/* Search Inline (small size) */}

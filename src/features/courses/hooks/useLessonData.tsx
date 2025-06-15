@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { fetchLessonTreeByCourseId } from "@/apis/lesson-api";
 import { useLocation } from "@tanstack/react-router";
+import { fetchLessonTreeByLessonId } from "@/apis/lesson-api";
 
 type Lesson = {
   id: number;
@@ -18,7 +18,7 @@ export function useLessonData(courseId?: string | null) {
 
   useEffect(() => {
     if (id) {
-      fetchLessonTreeByCourseId(Number(id))
+      fetchLessonTreeByLessonId(Number(id))
         .then((res) => {
           setLessons(res.data);
         })
@@ -27,6 +27,7 @@ export function useLessonData(courseId?: string | null) {
         });
     }
   }, [id]);
+
 
   return { lessons, selectedLesson, setSelectedLesson };
 }

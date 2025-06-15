@@ -20,6 +20,11 @@ export async function getLessons() {
     return response;
 }
 
+export async function getLesson(id : number) {
+    const response = await fetchWithAuth2(`/lessons/${id}`);
+    return response;
+}
+
 export async function getLessonsBuyLessonId(course_id : number) {
     const response = await fetchWithAuth2(`/lessons/by-course?course_id=${course_id}`);
     return response;
@@ -27,7 +32,7 @@ export async function getLessonsBuyLessonId(course_id : number) {
 
 
 export async function fetchLessonTreeByLessonId(course_id : number) {
-    const response = await fetchWithAuth2(`/lessons/${course_id}/lessons-with-sections`);
+    const response = await fetchWithAuth2(`/courses/${course_id}/lessons-with-sections`);
     return response;
 }
 
@@ -90,6 +95,3 @@ export async function updateLesson(courseId: number, data: any) {
     return response;
 }
 
-export async function fetchLessonTreeByCourseId() {
-    return true;
-}
