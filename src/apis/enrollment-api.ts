@@ -2,18 +2,17 @@ import { fetchWithAuth2 } from "@/api";
 
 // Define CreateEnrollmentsDto type if not imported from elsewhere
 type CreateEnrollmentsDto = {
+  user_id: number;
   course_id: number;
-  name: string | null;
-  title: string;
-  description: string | null;
-  video_url: string | null;
-  duration: string | null;
+  status_id: number;
+  full_name: string | null;
   order_no: string | null;
-  content: string | null;
-  is_locked: boolean;
-  owner_id: number | null;
-  section_id: number | null;
+  phone: string | null;
+  email: string | null;
+  linked_link: string | null;
+  zalo_link: string | null;
 };
+
 
 export async function getEnrollments() {
   const response = await fetchWithAuth2('/enrollments');
@@ -34,22 +33,15 @@ export async function fetchEnrollmentsTreeByEnrollmentsId(course_id: number) {
 
 export async function createEnrollment(data: any) {
   const parsedData: CreateEnrollmentsDto = {
-    course_id: parseInt(data.course_id, 10),
-    name: data.name?.toString().trim() || null,
-    title: data.title?.toString().trim() || '',
-    description: data.description?.toString().trim() || null,
-    video_url: data.video_url?.toString().trim() || null,
-    duration: data.duration?.toString().trim() || null,
-    order_no: data.order_no?.toString().trim() || null,
-    content: data.content?.toString().trim() || null,
-    is_locked:
-      data.is_locked === 'true' || data.is_locked === true ? true :
-        data.is_locked === 'false' || data.is_locked === false ? false :
-          true, // default true
-    owner_id: data.owner_id ? parseInt(data.owner_id, 10) : null,
-    section_id: data.section_id ? parseInt(data.section_id, 10) : null,
+    user_id: Number(data.user_id),
+    course_id: Number(data.course_id),
+    status_id: Number(data.status_id),
+    full_name: data.full_name?.trim() || null,
+    phone:  data.order_no?.trim() || null,
+    email:  data.email?.trim() || null,
+    linked_link:  data.linked_link?.trim() || null,
+    zalo_link:  data.zalo_link?.trim() || null,
   };
-
   const response = await fetchWithAuth2('/enrollments', {
     method: 'POST',
     body: JSON.stringify(parsedData),

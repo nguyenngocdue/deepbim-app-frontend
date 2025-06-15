@@ -56,7 +56,7 @@ export const EnrollmentTable = ({
       header: "Course",
       cell: ({ getValue }) => {
         const val = getValue() as Enrollment["course"];
-        return <span>{val?.title}</span>;
+        return <span title={`Course Id: #${val.id}`}>{val?.title}</span>;
       },
     },
     {

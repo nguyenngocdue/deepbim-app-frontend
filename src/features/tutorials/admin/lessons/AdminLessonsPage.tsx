@@ -152,7 +152,7 @@ export default function AdminLessonsPage() {
     try {
       await updateLesson(selectedRow.id, {
         ...formData,
-        is_free: formData.is_free === "true",
+        is_locked: formData.is_locked,
         old_price: Number(formData.old_price),
         new_price: Number(formData.new_price),
         owner_id: Number(formData.owner_id),

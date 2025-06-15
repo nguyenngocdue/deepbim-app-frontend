@@ -4,6 +4,7 @@ import { AvatarUser } from "@/components/AvatarUser";
 import { DateTimeDisplay } from "@/components/bim-viewer/common/DateTimeDisplay";
 import { TableRowActions } from "@/components/bim-viewer/common/TableRowActions";
 import { Lesson } from "./types";
+import { BooleanDisplay } from "@/components/bim-viewer/common/BooleanDisplay";
 
 interface LessonColumnsProps {
   onEdit: (row: Lesson) => void;
@@ -39,11 +40,15 @@ export const LessonColumns = ({ onEdit, onDelete, onView }: LessonColumnsProps):
   { accessorKey: "video_url", header: "Video Url" },
   { accessorKey: "duration", header: "duration" },
   { accessorKey: "content", header: "content" },
-  { accessorKey: "is_locked", header: "Is Locked" },
+  { 
+    accessorKey: "is_locked", 
+    header: "Is Locked",
+    cell: ({ row }) => <BooleanDisplay value={row.original.is_locked} />,
+  },
    {
      accessorKey: "course",
      header: "Course",
-     cell: ({ row }) => <span>{row.original.course.title}</span>,
+     cell: ({ row }) => <span title={`Course Id: #${row.original.course.id}`}>{row.original.course.title}</span>,
    },
  {
      accessorKey: "section",

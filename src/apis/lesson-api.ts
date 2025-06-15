@@ -70,7 +70,7 @@ export async function updateLesson(courseId: number, data: any) {
     title: data.title,
     description: data.description,
     thumbnail_url: data.thumbnail_url,
-    is_free: data.is_free === "true" || data.is_free === true,
+    is_locked: data.is_locked  ?? true,
     old_price: Number(data.old_price),
     new_price: Number(data.new_price),
     status_id: Number(data.status_id),

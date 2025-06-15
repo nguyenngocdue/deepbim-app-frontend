@@ -34,6 +34,14 @@ export const EnrollmentFormConfig = ({
       required: true,
       castType: "number",
     },
+      {
+      name: "email",
+      label: "Email",
+      placeholder: "Enter your email...",
+      type: "text",
+      options: allCourses,
+      required: true,
+    },
     {
       name: "status_id",
       label: "Status",
@@ -42,6 +50,31 @@ export const EnrollmentFormConfig = ({
       options: statuses,
       required: true,
       castType: "number",
+    },
+    {
+      name: "full_name",
+      label: "Full Name",
+      placeholder: "Enter display order...",
+      type: "text",
+      required: true,
+    },
+      {
+      name: "linked_link",
+      label: "Linked Link",
+      placeholder: "Enter Linked link...",
+      type: "text",
+    },
+    {
+     name: "zalo_link",
+     label: "Zalo Link",
+     placeholder: "Enter Zalo link ...",
+     type: "text",
+   },
+      {
+      name: "phone",
+      label: "Phone",
+      placeholder: "Enter phone number ...",
+      type: "text",
     },
   ];
 
