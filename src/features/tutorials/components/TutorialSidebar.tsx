@@ -47,7 +47,7 @@ export function TutorialSidebar({ isOpen, onToggle}: TutorialSidebarProps) {
     { icon: BookOpen, label: "Courses", url: "/tutorials/admin/courses" },
     { icon: List, label: "Lessons", url: "/tutorials/admin/lessons" },
     { icon: FileCheck, label: "Enrollments", url: "/tutorials/admin/enrollments" },
-    { icon: MdCardMembership , label: "Users", url: "/tutorials/admin/members" },
+    { icon: MdCardMembership , label: "User Enrollments", url: "/tutorials/admin/user-enrollments" },
   ];
 
   const isAdmin = currentUser?.email === "duengocnguyen@gmail.com" && currentUser?.id === 101 ;

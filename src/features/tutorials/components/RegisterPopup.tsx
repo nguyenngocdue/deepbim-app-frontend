@@ -19,7 +19,7 @@ import { SuccessDialog } from "./SuccessDialog";
 import { useState } from "react";
 
 interface RegisterFormData {
-    name: string;
+    full_name: string;
     age: number | null;
     occupation: string;
     note: string;
@@ -52,7 +52,7 @@ export function RegisterPopup({
         formState: { errors },
     } = useForm<RegisterFormData>({
         defaultValues: {
-            name: currentUser?.user_name,
+            full_name: currentUser?.user_name,
             age: null,
             occupation: "",
             note: "",
@@ -98,15 +98,15 @@ export function RegisterPopup({
                     <form onSubmit={handleSubmit(onSubmit)} className="grid gap-5">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
-                                <Label htmlFor="name">Họ và tên <span className="text-orange-300">*</span></Label>
+                                <Label htmlFor="full_name">Họ và tên <span className="text-orange-300">*</span></Label>
                                 <Input
-                                    id="name"
-                                    {...register("name", { required: "Vui lòng nhập họ và tên" })}
+                                    id="full_name"
+                                    {...register("full_name", { required: "Vui lòng nhập họ và tên" })}
                                     className="mt-1 bg-gray-900 border border-gray-600 text-white placeholder:text-gray-400"
                                     placeholder="Nhập họ và tên"
                                 />
-                                {errors.name && (
-                                    <p className="text-orange-300 text-xs mt-1">{errors.name.message}</p>
+                                {errors.full_name && (
+                                    <p className="text-orange-300 text-xs mt-1">{errors.full_name.message}</p>
                                 )}
                             </div>
                             <div>

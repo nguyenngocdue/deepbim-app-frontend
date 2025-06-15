@@ -86,6 +86,23 @@ export const EnrollmentTable = ({
         <DateTimeDisplay isoDate={row.original.updated_at} />
       ),
     },
+       {
+      accessorKey: "full_name",
+      header: "Full Name",
+    },
+      {
+      accessorKey: "email",
+      header: "Email",
+    },
+      {
+      accessorKey: "phone",
+      header: "Phone",
+    },
+     {
+      accessorKey: "zalo_link",
+      header: "Zalo Link",
+    },
+
   ];
 
   const columns = useMemo(

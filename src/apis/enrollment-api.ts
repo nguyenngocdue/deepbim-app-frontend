@@ -77,3 +77,7 @@ export async function deleteEnrollment(enrollmentId: number) {
   return response;
 }
 
+export async function getUserEnrollments() {
+  const response = await fetchWithAuth2('/enrollments/user-enrollments');
+  return response;
+}
