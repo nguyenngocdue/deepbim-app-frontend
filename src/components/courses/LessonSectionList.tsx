@@ -48,11 +48,12 @@ export default function LessonSectionList({
           <CollapsibleContent className="space-y-1 p-2">
             {section.lessons.map((lesson) => (
               <button
+                title={`Lesson Id: ${lesson.id}`}
                 key={lesson.id}
                 onClick={() => onLessonSelect(lesson)}
                 disabled={lesson.isLocked}
                 className={`w-full flex justify-between items-center p-2 sm:p-3 rounded-md transition-colors duration-300 ${
-                  lesson.id === activeLessonId
+                  Number(lesson.id) === Number(activeLessonId)
                     ? "bg-orange-500/30 text-orange-200 border-l-4 border-orange-500"
                     : "bg-gray-800/60 hover:bg-gray-700/80 text-gray-200"
                 }`}
@@ -63,8 +64,8 @@ export default function LessonSectionList({
 
                 <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-400">
                   <span>{lesson.duration || "N/A"}</span>
-                  {lesson.isLocked ? (
-                    <Lock className="w-4 h-4 text-red-500" />
+                  {lesson.is_locked ? (
+                    <Lock  className="w-4 h-4 text-red-500" />
                   ) : (
                     <Unlock className="w-4 h-4 text-green-500" />
                   )}

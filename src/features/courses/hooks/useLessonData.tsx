@@ -1,33 +1,36 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "@tanstack/react-router";
-import { fetchLessonTreeByLessonId } from "@/apis/lesson-api";
+import { fetchLessonsSectionsByUser } from "@/apis/lesson-api";
+import { Lesson } from "@/components/courses/Types";
+import { toast } from "sonner";
 
-type Lesson = {
-  id: number;
-  title: string;
-  video_url?: string;
-};
+
 
 export function useLessonData(courseId?: string | null) {
   const [lessons, setLessons] = useState<Lesson[]>([]);
-  const [selectedLesson, setSelectedLesson] = useState<Lesson | null>(null);
+  const [selectedLesson, setSelectedLesson] = useState<Lesson | null | undefined>(undefined);
 
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const id = courseId ?? searchParams.get("course_id");
 
   useEffect(() => {
-    if (id) {
-      fetchLessonTreeByLessonId(Number(id))
-        .then((res) => {
-          setLessons(res.data);
-        })
-        .catch((err) => {
-          console.error("Failed to load lessons:", err);
-        });
+    const fetchLesson =  async () => {
+      const [ lessonsRes ] = await Promise.all([ fetchLessonsSectionsByUser(Number(id))])
+      try {
+        if(lessonsRes.ok) {
+          setLessons(lessonsRes.data);
+        }
+      } catch(err) {
+        if (err instanceof Error) {
+          toast.error(`Failed to load user-lesson-accesses: ${err.message}`);
+        } else {
+          toast.error("Failed to load user-lesson-accesses");
+        }
+      }
     }
-  }, [id]);
-
+    fetchLesson();
+  }, [id])
 
   return { lessons, selectedLesson, setSelectedLesson };
 }

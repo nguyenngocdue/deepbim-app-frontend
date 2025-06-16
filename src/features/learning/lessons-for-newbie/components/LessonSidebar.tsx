@@ -22,6 +22,7 @@ export default function LessonSidebar({
     setActiveLessonId(lessonId);
   }, [lessonId]);
 
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);

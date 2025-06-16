@@ -10,4 +10,5 @@ export interface LessonSection {
   title: string;
   order: number;
   lessons: Lesson[];
+  is_locked: boolean
 }

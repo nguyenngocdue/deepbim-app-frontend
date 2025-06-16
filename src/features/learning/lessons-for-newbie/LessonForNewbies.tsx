@@ -13,6 +13,7 @@ export default function LessonForNewbies() {
   const searchParams = new URLSearchParams(location.search);
   const courseId = searchParams.get("course_id");
   const lessonId = searchParams.get("lesson_id");
+  const [videoUrl, setVideoUrl] = useState("");
 
   const { lessons, selectedLesson, setSelectedLesson } = useLessonData(courseId);
   const [lessonContent, setLessonContent] = useState(null);
@@ -44,6 +45,7 @@ export default function LessonForNewbies() {
   // Handle lesson selection from sidebar
   const handleLessonSelect = (lesson: any) => {
     setSelectedLesson(lesson);
+    lesson.is_locked ? setVideoUrl("") : setVideoUrl(lesson.video_url);
     const url = new URL(window.location.href);
     url.searchParams.set("lesson_id", lesson.id.toString());
     window.history.pushState({}, "", url);
@@ -56,7 +58,7 @@ return (
       <div className="lg:col-span-8 max-h-screen overflow-y-auto">
         <div className="flex flex-col h-full">
           <div className="w-full aspect-video rounded-2xl shadow-2xl mb-6 sm:mb-8 bg-gradient-to-tr from-gray-800 to-gray-900">
-            <Player videoUrl={selectedLesson?.video_url ?? ""} />
+            <Player videoUrl={videoUrl} selectedLesson={selectedLesson}/>
           </div>
           <div className="flex-1 pb-20 px-4">
             {lessonContent ? 

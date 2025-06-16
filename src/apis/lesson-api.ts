@@ -35,6 +35,10 @@ export async function fetchLessonTreeByLessonId(course_id : number) {
     const response = await fetchWithAuth2(`/courses/${course_id}/lessons-with-sections`);
     return response;
 }
+export async function fetchLessonsSectionsByUser(course_id : number) {
+    const response = await fetchWithAuth2(`/courses/${course_id}/lessons-with-sections-by-user`);
+    return response;
+}
 
 
 export async function createLesson(data: any) {
