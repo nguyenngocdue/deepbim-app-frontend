@@ -28,7 +28,7 @@ export default function CourseHeader({
   const progress = Math.min(100, Math.max(0, progressPercent));
 
   return (
-    <header className="flex items-center justify-between px-4 sm:px-6 md:px-8 h-14 sm:h-16 bg-background border-background/50 sticky top-0 z-10">
+    <header className="flex items-center justify-between px-4 sm:px-6 md:px-8 h-14 sm:h-14 bg-background border-background/50 sticky top-0 z-10">
       {/* Left */}
       <div className="flex items-center gap-2">
         {onBack && (

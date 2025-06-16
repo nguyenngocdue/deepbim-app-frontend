@@ -30,7 +30,6 @@ export default function LessonSectionList({
     });
   };
 
-
   return (
     <div className="space-y-3">
       {sections.map((section) => (
@@ -38,11 +37,11 @@ export default function LessonSectionList({
           key={section.id}
           open={openSections.has(section.id)}
           onOpenChange={() => toggleSection(section.id)}
-          className="border border-gray-700 rounded-xl overflow-hidden shadow-sm"
+          className="border border-gray-300 dark:border-gray-600 rounded-xl overflow-hidden shadow-sm"
         >
-          <CollapsibleTrigger className="flex items-center justify-between w-full p-3 sm:p-4 bg-gray-800/80 hover:bg-gray-700/80 transition-colors duration-300 text-white font-medium text-sm sm:text-base group">
+          <CollapsibleTrigger className="flex items-center justify-between w-full p-3 sm:p-4 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-300 text-gray-900 dark:text-gray-100 font-medium text-sm sm:text-base group">
             <span className="truncate max-w-[85%]">{section.title}</span>
-            <ChevronRight className="h-4 w-4 text-gray-300 group-data-[state=open]:rotate-90 transition-transform duration-300" />
+            <ChevronRight className="h-4 w-4 text-gray-500 dark:text-gray-300 group-data-[state=open]:rotate-90 transition-transform duration-300" />
           </CollapsibleTrigger>
 
           <CollapsibleContent className="space-y-1 p-2">
@@ -54,18 +53,18 @@ export default function LessonSectionList({
                 disabled={lesson.isLocked}
                 className={`w-full flex justify-between items-center p-2 sm:p-3 rounded-md transition-colors duration-300 ${
                   Number(lesson.id) === Number(activeLessonId)
-                    ? "bg-orange-500/30 text-orange-200 border-l-4 border-orange-500"
-                    : "bg-gray-800/60 hover:bg-gray-700/80 text-gray-200"
+                    ? "bg-blue-600/10 text-blue-800 dark:text-blue-200 border-l-4 border-blue-600"
+                    : "bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200"
                 }`}
               >
                 <div className="flex items-center gap-2 truncate max-w-[75%]">
                   <span className="truncate">{lesson.title}</span>
                 </div>
 
-                <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-400">
+                <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                   <span>{lesson.duration || "N/A"}</span>
                   {lesson.is_locked ? (
-                    <Lock  className="w-4 h-4 text-red-500" />
+                    <Lock className="w-4 h-4 text-red-500" />
                   ) : (
                     <Unlock className="w-4 h-4 text-green-500" />
                   )}

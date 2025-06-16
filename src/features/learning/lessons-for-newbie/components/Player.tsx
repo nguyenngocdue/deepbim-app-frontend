@@ -1,3 +1,4 @@
+// File: Player.tsx
 import ReactPlayer from "react-player";
 import { Lesson } from "./Type";
 import { LoadingState } from "@/components/common/LoadingState";
@@ -11,15 +12,13 @@ interface PlayerProps {
 export default function Player({ videoUrl, selectedLesson }: PlayerProps) {
   const isValid = !!videoUrl;
 
-  // CASE 0: still loading (selectedLesson === null)
   if (selectedLesson === null) {
     return <LoadingState />;
   }
 
-  // CASE 1: no lesson selected yet (undefined)
   if (selectedLesson === undefined) {
     return (
-      <div className="w-full aspect-video bg-zinc-900 relative rounded-2xl overflow-hidden">
+      <div className="w-full aspect-video bg-white dark:bg-zinc-900 relative rounded-2xl overflow-hidden">
         <div className="w-full h-full flex items-center justify-center p-4">
           <PromptCard
             title="Please select a lesson to get started"
@@ -30,10 +29,9 @@ export default function Player({ videoUrl, selectedLesson }: PlayerProps) {
     );
   }
 
-  // CASE 2: lesson is locked
   if (selectedLesson.is_locked) {
     return (
-      <div className="w-full aspect-video bg-zinc-900 relative rounded-2xl overflow-hidden">
+      <div className="w-full aspect-video bg-white dark:bg-zinc-900 relative rounded-2xl overflow-hidden">
         <div className="w-full h-full flex items-center justify-center p-4">
           <PromptCard
             title="Subscribe to Unlock This Lesson"
@@ -41,7 +39,7 @@ export default function Player({ videoUrl, selectedLesson }: PlayerProps) {
             action={
               <a
                 href="/subscribe"
-                className="inline-block px-6 py-2 text-sm sm:text-base font-medium text-white bg-blue-600 rounded-full hover:bg-blue-700 transition-colors"
+                className="inline-block px-6 py-2 text-sm sm:text-base font-medium text-white bg-orange-600 rounded-full hover:bg-orange-700 dark:hover:bg-orange-500 transition-colors"
               >
                 Subscribe Now
               </a>
@@ -52,10 +50,9 @@ export default function Player({ videoUrl, selectedLesson }: PlayerProps) {
     );
   }
 
-  // CASE 3: valid video
   if (isValid) {
     return (
-      <div className="w-full aspect-video bg-zinc-900 relative rounded-2xl overflow-hidden">
+      <div className="w-full aspect-video bg-white dark:bg-zinc-900 relative rounded-2xl overflow-hidden">
         <ReactPlayer
           url={videoUrl}
           width="100%"
@@ -68,9 +65,8 @@ export default function Player({ videoUrl, selectedLesson }: PlayerProps) {
     );
   }
 
-  // CASE 4: fallback - invalid video
   return (
-    <div className="w-full aspect-video bg-zinc-900 relative rounded-2xl overflow-hidden">
+    <div className="w-full aspect-video bg-white dark:bg-zinc-900 relative rounded-2xl overflow-hidden">
       <div className="w-full h-full flex items-center justify-center p-4">
         <PromptCard
           title="Invalid Video"

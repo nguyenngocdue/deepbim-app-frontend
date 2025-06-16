@@ -14,7 +14,7 @@ export function PromptCard({
   action,
 }: PromptCardProps) {
   return (
-    <div className="w-[95%] max-w-[32rem] mx-auto text-center p-3 sm:p-4 rounded-2xl bg-muted/10 backdrop-blur-sm shadow-lg border border-border/90 flex flex-col items-center justify-center gap-2 sm:gap-3">
+    <div className="w-[95%] max-w-[32rem] mx-auto text-center p-3 sm:p-4 rounded-2xl bg-muted/10 backdrop-blur-sm shadow-lg border border-gray-200 dark:border-gray-600 flex flex-col items-center justify-center gap-2 sm:gap-3">
       {/* Logo */}
       <div className="flex flex-col items-center gap-1">
         <img
@@ -44,7 +44,7 @@ export function PromptCard({
         <p className="text-[clamp(0.75rem,2vw,0.875rem)] text-muted-foreground leading-relaxed max-w-[90%]">
           {description}
         </p>
-        {action && <div className="mt-2">{action}</div>}
+        {action && <div className="mt-2 animate-soft-bounce">{action}</div>}
       </div>
     </div>
   );

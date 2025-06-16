@@ -52,7 +52,7 @@ export default function LessonForNewbies() {
   };
 
 return (
-  <div className="min-h-screen w-full bg-gradient-to-b from-gray-900/95 to-black/95 text-white">
+  <div className="min-h-screen w-full bg-background">
     <main className="flex flex-col gap-6 p-4 sm:p-6 lg:grid lg:grid-cols-12 lg:gap-8 h-screen overflow-hidden">
       {/* Player + Content */}
       <div className="lg:col-span-8 max-h-screen overflow-y-auto">
