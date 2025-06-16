@@ -24,7 +24,10 @@ import { Toaster } from 'sonner';
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import { LanguageProvider } from './context/LanguageContext'
 
-console.log("VITE_API_BASE_URL from main", import.meta.env.VITE_API_BASE_URL)
+
+if(import.meta.env.VITE_ENV !='production'){
+  console.log("VITE_API_BASE_URL from main", import.meta.env.VITE_API_BASE_URL)
+}
 
 const queryClient = new QueryClient({
   defaultOptions: {
