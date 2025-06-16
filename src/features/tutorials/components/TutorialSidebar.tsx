@@ -57,7 +57,7 @@ export function TutorialSidebar({ isOpen, onToggle }: TutorialSidebarProps) {
     <>
       <aside
         ref={sidebarRef}
-        className={`fixed top-[80px] left-4 h-auto bg-gradient-to-br from-zinc-900 via-gray-900 to-neutral-800 backdrop-blur-lg border border-zinc-700 text-white transition-all duration-300 ease-in-out z-20 ${
+        className={`fixed ${isOpen ? 'top-40' : 'top-1/4'} left-4 h-auto bg-gradient-to-br from-zinc-900 via-gray-900 to-neutral-800 backdrop-blur-lg border border-zinc-700 text-white transition-all duration-300 ease-in-out z-20 ${
           isOpen ? "w-64" : "w-16"
         } hidden md:flex flex-col items-center py-6 px-2 group rounded-[2rem] shadow-[0_10px_40px_rgba(0,0,0,0.6)]`}
       >
