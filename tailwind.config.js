@@ -20,9 +20,14 @@ export default {
     			'spin-slow': 'spinSlow 2s linear infinite',
     			'accordion-down': 'accordion-down 0.2s ease-out',
     			'accordion-up': 'accordion-up 0.2s ease-out',
-    			'slide-in': 'slideIn 0.7s ease-out'
+    			'slide-in': 'slideIn 0.7s ease-out',
+				'soft-bounce': 'softBounce 2.5s ease-in-out infinite',
     		},
     		keyframes: {
+				 softBounce: {
+					'0%, 100%': { transform: 'translateY(0)' },
+					'50%': { transform: 'translateY(-6px)' },
+					},
     			spinSlow: {
     				'0%': {
     					transform: 'rotate(0deg)'

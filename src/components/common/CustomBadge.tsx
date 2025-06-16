@@ -1,10 +1,29 @@
 import { Badge } from "@/components/ui/badge";
+import clsx from "clsx";
 
-export default function CustomBadge({ text, className = "" }: { text: string, className?: string }) {
+type BadgeType = "dev" | "new";
+
+interface CustomBadgeProps {
+  text: string;
+  type?: BadgeType;
+  className?: string;
+}
+
+export default function CustomBadge({
+  text,
+  type = "dev",
+  className = "",
+}: CustomBadgeProps) {
+  const baseStyle = "text-white text-xs font-medium tracking-wide shadow-md transition-all duration-200";
+
+  const typeClass = {
+    dev: "bg-yellow-400",
+    new: "bg-green-600",
+  };
+
   return (
-    <Badge  className={`hover:bg-gray-600 dark:bg-slate-500 rounded-full px-2 py-0.5 text-white text-xs font-semibold tracking-wide shadow-sm ${className}`}>
+    <Badge className={clsx(baseStyle, typeClass[type], className)}>
       {text}
     </Badge>
   );
 }
-

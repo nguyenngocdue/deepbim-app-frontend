@@ -42,6 +42,7 @@ export function ProfileDropdown() {
   };
   
   const username = user?.user_name || 'guest';
+  const id = user?.id || '';
   const email = user?.email || 'anonymous';
   const avatarUrl: string = user?.picture || `https://api.dicebear.com/7.x/adventurer/svg?seed=${username}`;
   const bio = user?.bio;
@@ -62,7 +63,7 @@ export function ProfileDropdown() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className='w-56' align='end' forceMount>
-        <DropdownMenuLabel className='font-normal'>
+        <DropdownMenuLabel title={`User Id: #${id}`} className='font-normal'>
           <div className='flex flex-col space-y-1'>
             <p className='text-sm leading-none font-medium'>{username}</p>
             <p className='text-muted-foreground text-xs leading-none'>{email}</p>

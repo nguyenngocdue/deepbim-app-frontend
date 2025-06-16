@@ -1,48 +1,66 @@
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { TutorialCourseCard } from "./TutorialCourseCard";
+import { getCourses } from "@/apis/course-api";
 
-const courseData = [
-  {
-    title: "SQL từ cơ bản đến nâng cao (Vĩnh viễn)",
-    author: "Thân Triệu",
-    image: "https://minio.deepbim.net:9000/deepbim-fe/1749736340773-course.jpg",
-    avatar: "https://i.pravatar.cc/40?img=1",
-    students: 209,
-    views: 61,
-    oldPrice: "1,499,000đ",
-    newPrice: "399,000đ",
-  },
-  {
-    title: "Lập trình C++ OOP từ A đến Z",
-    author: "Thân Triệu",
-    image: "https://minio.deepbim.net:9000/deepbim-fe/1749736340773-course.jpg",
-    avatar: "https://i.pravatar.cc/40?img=2",
-    students: 322,
-    views: 112,
-    oldPrice: "1,699,000đ",
-    newPrice: "499,000đ",
-  },
-  {
-    title: "React & TypeScript Cơ Bản",
-    author: "Thân Triệu",
-    image: "https://minio.deepbim.net:9000/deepbim-fe/1749736340773-course.jpg",
-    avatar: "https://i.pravatar.cc/40?img=3",
-    students: 175,
-    views: 97,
-    oldPrice: "1,299,000đ",
-    newPrice: "299,000đ",
-  },
-];
+type Course = {
+  id: string | number;
+  title: string;
+  thumbnail_url: string;
+  students_count?: number;
+  views?: number;
+  old_price?: number;
+  new_price?: number;
+  description: string;
+};
+
 export function TutorialCourseList() {
+  const [courses, setCourses] = useState<Course[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await getCourses(); 
+        setCourses(response.data);
+      } catch (error) {
+        console.error("Failed to load courses:", error);
+      }
+    };
+    fetchData();
+  }, []);
+
+
   return (
     <section className="py-10 px-4">
-      <h2 className="text-2xl font-bold mb-2">Các khóa học Vĩnh Viễn 2024</h2>
-      <p className="mb-4">Xuất bản cuối năm 2024. Chất lượng miễn lo giá cả dễ tiếp cận hơn.</p>
-     <div className="flex flex-wrap gap-6 justify-center mt-10">
-      {courseData.map((course, idx) => (
-        <TutorialCourseCard key={idx} {...course} />
-      ))}
-    </div>
+      <h2 className="text-3xl font-bold text-gray-900 dark:text-white ">
+        Các Khóa Học Vĩnh Viễn 2025
+      </h2>
+      <p className="text-gray-600 dark:text-gray-300 mt-2 text-sm sm:text-base">
+        Xuất bản cuối năm 2024. Chất lượng miễn lo, giá cả dễ tiếp cận hơn.
+      </p>
+
+    <div className="flex flex-wrap gap-6 justify-center mt-10">
+        {courses.map((course, idx) => (
+          <TutorialCourseCard
+            key={idx}
+            title={course.title}
+            author="Nguyễn Ngọc Duệ"
+            image={course.thumbnail_url}
+            avatar="/images/logo_no_bg.png"
+            students={course.students_count || 0}
+            views={course.views || 0}
+            oldPrice={`${(course.old_price || 0).toLocaleString("vi-VN")}đ`}
+            newPrice={`${(course.new_price || 0).toLocaleString("vi-VN")}đ`}
+            description={course.description}
+            url={`/tutorials/learning/lessons-for-newbies/?course_id=${course.id}`}
+            statusLabel={course.status?.name}
+            statusClassName={course.status?.class_name}
+            courseId={course.id}
+          />
+        ))}
+      </div>
+
+
       <div className="mt-6">
         <Button>XEM TẤT CẢ</Button>
       </div>

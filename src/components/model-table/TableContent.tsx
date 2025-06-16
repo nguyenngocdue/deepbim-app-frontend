@@ -96,20 +96,23 @@ export function TableContent<T>({ table, showNo = true }: TableContentProps<T>) 
   const colSpan = (headerGroups[0]?.headers.length || 1) + (showNo ? 1 : 0)
 
   return (
-  <div className="w-full overflow-x-auto rounded-md border border-zinc-400 bg-background shadow-sm max-h-[600px]">
-    <Table className="w-full border-collapse relative table-fixed">
-      <TableHeader className="sticky top-0 z-10 bg-muted shadow-sm">
+<div className="w-full overflow-x-auto rounded-md border border-zinc-400 bg-background shadow-sm">
+  <div className="max-h-[600px] overflow-y-auto">
+    <Table className="min-w-max border-collapse relative">
+      <TableHeader>
         {headerGroups.map((headerGroup) => (
           <TableRow key={headerGroup.id} className="border-b border-zinc-500">
             {showNo && (
-              <TableHead className="w-[50px] px-4 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+              <TableHead
+                className="sticky top-0 left-0 z-30 bg-muted px-4 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wide shadow-md whitespace-nowrap"
+              >
                 No.
               </TableHead>
             )}
             {headerGroup.headers.map((header) => (
               <TableHead
                 key={header.id}
-                className="px-4 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wide text-center"
+                className="sticky top-0 z-20 bg-muted px-4 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wide text-left whitespace-nowrap shadow-md"
               >
                 {flexRender(header.column.columnDef.header, header.getContext())}
               </TableHead>
@@ -121,23 +124,23 @@ export function TableContent<T>({ table, showNo = true }: TableContentProps<T>) 
       <TableBody>
         {rows.length > 0 ? (
           rows.map((row, idx) => {
-            const rowData = row.original
+            const rowData = row.original;
             return (
               <TableRow
                 key={row.id}
                 className="border-b border-gray-600 hover:bg-muted/50 transition-colors"
               >
                 {showNo && (
-                  <TableCell className="px-4 py-2 text-sm text-foreground font-medium">
+                  <TableCell className="sticky left-0 z-10 bg-background px-4 py-2 text-sm text-foreground font-medium shadow-md">
                     {idx + 1}
                   </TableCell>
                 )}
                 {row.getVisibleCells().map((cell) => (
                   <TableCell
                     key={cell.id}
-                    className={`px-4 py-2 text-sm text-foreground ${
+                    className={`px-4 py-2 text-sm text-foreground whitespace-nowrap ${
                       cell.column.id === "name" || cell.column.id === "location"
-                        ? "truncate max-w-[160px] overflow-hidden"
+                        ? "truncate max-w-[200px] overflow-hidden"
                         : ""
                     }`}
                   >
@@ -145,7 +148,7 @@ export function TableContent<T>({ table, showNo = true }: TableContentProps<T>) 
                   </TableCell>
                 ))}
               </TableRow>
-            )
+            );
           })
         ) : (
           <TableRow>
@@ -160,5 +163,10 @@ export function TableContent<T>({ table, showNo = true }: TableContentProps<T>) 
       </TableBody>
     </Table>
   </div>
+</div>
+
+
+
+
 )
 }

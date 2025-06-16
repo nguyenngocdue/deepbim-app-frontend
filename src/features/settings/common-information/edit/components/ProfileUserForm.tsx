@@ -72,7 +72,6 @@ export function ProfileUserForm({ profile }: { profile: any }) {
         }
         if (avatarFile) {
             try {
-
                 const avatarMedia = await uploadAvatar(avatarData);
                 if (avatarMedia.ok) {
                     toast.success('Update your avatar success!');
@@ -88,10 +87,13 @@ export function ProfileUserForm({ profile }: { profile: any }) {
                 toast.success('Update profile success!');
                 setLoading(false)
                 window.location.reload();
-            } else {
-                toast.error('Update profile failed!');
-            }
+            } 
         } catch (error) {
+            const errorMessage =
+                error && typeof error === "object" && "message" in error
+                    ? (error as { message: string }).message
+                    : String(error);
+            toast.error(`Failed to upload your profile information: ${errorMessage}`)
             setLoading(false)
         }
     };
