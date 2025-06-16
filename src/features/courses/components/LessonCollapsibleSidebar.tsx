@@ -1,5 +1,6 @@
-import LessonSectionList from "@/components/courses/LessonSectionList";
 import { useState } from "react";
+import LessonSectionList from "@/components/courses/LessonSectionList";
+import { Lesson } from "@/components/courses/Types";
 
 interface LessonCollapsibleSidebarProps {
   sections: Section[];
@@ -16,6 +17,7 @@ export default function LessonCollapsibleSidebar({
   );
 
   const handleLessonSelect = (lesson: Lesson) => {
+    console.log(lesson)
     setActiveLessonId(lesson.id);
     onLessonSelect(lesson);
   };
@@ -37,18 +39,16 @@ export default function LessonCollapsibleSidebar({
   };
 
   return (
-    <div className="w-full bg-gray-900 rounded-xl shadow-lg">
-      {/* Toolbar */}
-      <div className="bg-gray-800 p-2 flex justify-end items-center space-x-2">
+    <div className="w-full rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 shadow-md">
+      <div className="bg-gray-100 dark:bg-gray-800 px-4 py-3 flex justify-between items-center rounded-t-xl border-b border-gray-200 dark:border-gray-700">
+        <h2 className="text-sm font-semibold text-gray-700 dark:text-gray-300">Chương trình học</h2>
         <button
           onClick={toggleExpandAll}
-          className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-all duration-200"
+          className="text-xs px-3 py-1 rounded-md bg-blue-500 text-white hover:bg-blue-600 dark:hover:bg-blue-700 transition"
         >
           {openSections.size === sections.length ? "Thu nhỏ tất cả" : "Mở rộng tất cả"}
         </button>
       </div>
-
-      {/* Section List */}
       <div className="p-4">
         <LessonSectionList
           sections={sections}

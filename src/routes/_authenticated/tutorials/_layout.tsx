@@ -1,6 +1,7 @@
 import { TutorialFooter } from "@/features/tutorials/components/TutorialFooter";
 import { TutorialHeader } from "@/features/tutorials/components/TutorialHeader";
 import { TutorialSidebar } from "@/features/tutorials/components/TutorialSidebar";
+import Footer from "@/sections/Footer";
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 import { useState, useEffect, useRef } from "react";
 
@@ -43,8 +44,8 @@ export const Route = createFileRoute('/_authenticated/tutorials/_layout')({
         >
           <TutorialHeader />
           <Outlet />
-          <TutorialFooter />
         </div>
+          <Footer/>
       </div>
     );
   },

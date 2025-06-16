@@ -2,14 +2,10 @@ import { FaBookOpen } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import { CarouselPanel } from "@/components/courses/CarouselPanel";
 import { useLocation } from "@tanstack/react-router";
+import { Banner } from "./Type";
 
 // WelcomeLessonMessage Component
-interface Banner {
-  title: string;
-  desc: string;
-  button: string;
-  gradient: string;
-}
+
 
 export function WelcomeLessonMessage() {
   const location = useLocation();
@@ -48,8 +44,9 @@ export function WelcomeLessonMessage() {
     {
       title: "Viết Add-in Revit Bằng Python",
       desc: "Học cách tạo Add-in Revit chuyên nghiệp bằng Python, tương tự như C#, để tối ưu hóa quy trình làm việc của bạn.",
-      button: "",
+      button: "TÌM HIỂU THÊM",
       gradient: "from-teal-500 to-green-500",
+      link: "#",
     },
     {
       title: "Kết Nối Với Cộng Đồng",

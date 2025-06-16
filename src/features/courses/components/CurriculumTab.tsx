@@ -28,8 +28,10 @@ export default function CurriculumTab({ sections }: CurriculumTabProps) {
   };
 
   return (
-    <div className="text-white p-6 bg-gray-900/80 rounded-xl shadow-lg space-y-6">
-      <h2 className="text-2xl font-bold text-green-400 tracking-tight">Chương Trình Đào Tạo</h2>
+    <div className="p-6 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 overflow-hidden transition-all duration-300 hover:shadow-lg rounded-xl shadow-md space-y-6 border border-gray-200 dark:border-gray-700">
+      <h2 className="text-2xl font-bold bg-gradient-to-r from-blue-500 to-emerald-500 bg-clip-text text-transparent tracking-tight">
+        Chương Trình Đào Tạo
+      </h2>
       <div className="grid grid-cols-12 lg:grid-cols-12 gap-8">
         <div className="lg:col-span-12">
           <LessonCollapsibleSidebar sections={sections} onLessonSelect={handleLessonSelect} />

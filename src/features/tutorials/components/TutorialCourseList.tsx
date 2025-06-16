@@ -33,7 +33,7 @@ export function TutorialCourseList() {
   return (
     <section className="py-10 px-4">
       <h2 className="text-3xl font-bold text-gray-900 dark:text-white ">
-        Các Khóa Học Vĩnh Viễn 2024
+        Các Khóa Học Vĩnh Viễn 2025
       </h2>
       <p className="text-gray-600 dark:text-gray-300 mt-2 text-sm sm:text-base">
         Xuất bản cuối năm 2024. Chất lượng miễn lo, giá cả dễ tiếp cận hơn.

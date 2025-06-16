@@ -12,3 +12,11 @@ export interface LessonSection {
   lessons: Lesson[];
   is_locked: boolean
 }
+
+export interface Banner {
+  title: string;
+  desc: string;
+  button: string;
+  gradient: string;
+  link: string;
+}
