@@ -5,10 +5,10 @@ import Header from '@/sections/ Header';
 import CallToActionSection from '@/sections/CallToActionSection';
 import Footer from '@/sections/Footer';
 import { CLASS_NAME_DEFAULT } from '@/utils/class';
-import { Outlet } from '@tanstack/react-router';
+import { Outlet, createFileRoute } from '@tanstack/react-router';
 import { createRootRoute } from '@tanstack/react-router';
 
-export const Route = createRootRoute({
+export const Route = createRootRoute('/_authenticated/app/_layout')({
   component: () => (
     <div className="max-h-screen">
       <div className="relative z-10">
