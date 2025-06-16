@@ -21,7 +21,7 @@ export default function LessonContent({ contents, selectedLesson }: LessonConten
   const renderHeader = () => (
     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-6">
       <div>
-        <h1 className="text-2xl sm:text-2xl font-semibold text-slate-100 tracking-tight text-ellipsis overflow-hidden hover:text-lime-300 transition-colors duration-200">
+        <h1 className="text-xl sm:text-xl font-semibold text-slate-100 tracking-tight text-ellipsis overflow-hidden hover:text-lime-300 transition-colors duration-200">
           {selectedLesson?.title || "Không có tiêu đề"}
         </h1>
         {contents?.updateDate && (
@@ -78,7 +78,7 @@ export default function LessonContent({ contents, selectedLesson }: LessonConten
               ></path>
             </svg>
           </div>
-          <h2 className="text-xl sm:text-md font-semibold text-slate-100 mb-4">Chúng tôi đang cập nhật</h2>
+          <h2 className="text-md sm:text-md font-semibold text-slate-100 mb-4">Chúng tôi đang cập nhật</h2>
           <p className="text-slate-400 text-sm sm:text-base mb-6">
             Nội dung đang được chuẩn bị. Vui lòng quay lại sau!
           </p>

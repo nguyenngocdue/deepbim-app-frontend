@@ -65,12 +65,12 @@ export default function LessonSectionList({
                 aria-label={`Chọn bài học: ${lesson.title}`}
                 key={lesson.id}
                 onClick={() => onLessonSelect(lesson)}
-                disabled={lesson.is_locked}
+                // disabled={lesson.is_locked}
                 className={`w-full flex justify-between items-center p-2 sm:p-3 rounded-md transition-all duration-300 font-smooth ${
                   Number(lesson.id) === Number(activeLessonId)
                     ? "bg-blue-50 dark:bg-gray-700 text-blue-600 dark:text-emerald-400 border-l-4 border-blue-500"
                     : "bg-white dark:bg-gray-900 hover:bg-blue-50 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200"
-                } ${lesson.is_locked ? "cursor-not-allowed opacity-75" : ""}`}
+                } ${lesson.is_locked ? "//cursor-not-allowed //opacity-75" : ""}`}
               >
                 <div className="flex items-center gap-2 truncate max-w-[75%]">
                   <span className="truncate">{lesson.title}</span>

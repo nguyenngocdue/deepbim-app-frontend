@@ -3,6 +3,7 @@ import ReactPlayer from "react-player";
 import { Lesson } from "./Type";
 import { LoadingState } from "@/components/common/LoadingState";
 import { PromptCard } from "./PromptCard";
+import { Link } from "@tanstack/react-router";
 
 interface PlayerProps {
   videoUrl: string;
@@ -37,12 +38,12 @@ export default function Player({ videoUrl, selectedLesson }: PlayerProps) {
             title="Subscribe to Unlock This Lesson"
             description="This lesson is locked. Subscribe now to access this content and continue your learning journey!"
             action={
-              <a
-                href="/subscribe"
+              <Link
+                 to={`/tutorials/purchase-course?course_id=${selectedLesson?.course_id}&title=${encodeURIComponent(selectedLesson?.course?.title)}`}
                 className="inline-block px-6 py-2 text-sm sm:text-base font-medium text-white bg-orange-600 rounded-full hover:bg-orange-700 dark:hover:bg-orange-500 transition-colors"
               >
                 Subscribe Now
-              </a>
+              </Link>
             }
           />
         </div>

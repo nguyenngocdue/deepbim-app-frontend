@@ -58,6 +58,9 @@ return (
       <div className="lg:col-span-8 max-h-screen overflow-y-auto">
         <div className="flex flex-col h-full">
           <div className="w-full aspect-video rounded-2xl shadow-2xl mb-6 sm:mb-8 bg-gradient-to-tr from-gray-800 to-gray-900">
+             <div className="sm:text-xl bg-background text-muted-foreground px-4 py-2 text-left text-2xl font-medium shadow-md backdrop-blur-sm">
+            {selectedLesson?.course?.title ?? "Khóa học"}
+          </div>
             <Player videoUrl={videoUrl} selectedLesson={selectedLesson}/>
           </div>
           <div className="flex-1 pb-20 px-4">

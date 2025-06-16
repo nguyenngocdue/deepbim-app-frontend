@@ -44,7 +44,7 @@
     "@reduxjs/toolkit": "^2.6.1",
     "@tabler/icons-react": "^3.24.0",
     "@tanstack/react-query": "^5.62.3",
-    "@tanstack/react-router": "^1.86.1",
+    "@tanstack/react-router": "^1.121.16",
     "@tanstack/react-table": "^8.20.5",
     "@thatopen/components": "^2.4.10",
     "@thatopen/components-front": "^2.4.10",

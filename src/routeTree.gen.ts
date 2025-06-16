@@ -10,322 +10,280 @@
 
 import { createFileRoute } from '@tanstack/react-router'
 
-// Import Routes
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedHowItWorksRouteImport } from './routes/_authenticated/how-it-works'
+import { Route as AuthenticatedFeaturesRouteImport } from './routes/_authenticated/features'
+import { Route as AuthenticatedContactUsRouteImport } from './routes/_authenticated/contact-us'
+import { Route as authVerifyEmailRouteImport } from './routes/(auth)/verify-email'
+import { Route as authSignInRouteImport } from './routes/(auth)/sign-in'
+import { Route as authResetPasswordRouteImport } from './routes/(auth)/reset-password'
+import { Route as authCallbackRouteImport } from './routes/(auth)/callback'
+import { Route as auth500RouteImport } from './routes/(auth)/500'
+import { Route as ExampleModelIfcIndexRouteImport } from './routes/example-model/ifc/index'
+import { Route as AuthenticatedView2IndexRouteImport } from './routes/_authenticated/view2/index'
+import { Route as AuthenticatedViewIndexRouteImport } from './routes/_authenticated/view/index'
+import { Route as AuthenticatedMyRoom3dIndexRouteImport } from './routes/_authenticated/my-room-3d/index'
+import { Route as AuthenticatedAppIndexRouteImport } from './routes/_authenticated/app/index'
+import { Route as AuthenticatedView2FileCodeRouteImport } from './routes/_authenticated/view2/$fileCode'
+import { Route as AuthenticatedViewFileCodeRouteImport } from './routes/_authenticated/view/$fileCode'
+import { Route as AuthenticatedTutorialsLayoutRouteImport } from './routes/_authenticated/tutorials/_layout'
+import { Route as AuthenticatedManagementsLayoutRouteImport } from './routes/_authenticated/managements/_layout'
+import { Route as AuthenticatedBlogLayoutRouteImport } from './routes/_authenticated/blog/_layout'
+import { Route as AuthenticatedBimViewerUtWebglClippingV2RouteImport } from './routes/_authenticated/bim-viewer-ut/webgl-clipping-v2'
+import { Route as AuthenticatedBimViewerUtWebglClippingV1RouteImport } from './routes/_authenticated/bim-viewer-ut/webgl-clipping-v1'
+import { Route as AuthenticatedBimViewerUtWebglClippingStencilIfcRouteImport } from './routes/_authenticated/bim-viewer-ut/webgl-clipping-stencil-ifc'
+import { Route as AuthenticatedBimViewerUtWebglClippingStencilRouteImport } from './routes/_authenticated/bim-viewer-ut/webgl-clipping-stencil'
+import { Route as AuthenticatedBimViewerUtWebglClippingCubeRouteImport } from './routes/_authenticated/bim-viewer-ut/webgl-clipping-cube'
+import { Route as AuthenticatedBimViewerUtViewCubeRouteImport } from './routes/_authenticated/bim-viewer-ut/view-cube'
+import { Route as AuthenticatedBimViewerUtIfcViewerSelectionFamilyRouteImport } from './routes/_authenticated/bim-viewer-ut/ifc-viewer-selection-family'
+import { Route as AuthenticatedBimViewerUtGeometrySceneViewcubeRouteImport } from './routes/_authenticated/bim-viewer-ut/geometry-scene-viewcube'
+import { Route as AuthenticatedBimViewerUtDemoXeokitIfcRouteImport } from './routes/_authenticated/bim-viewer-ut/demo-xeokit-ifc'
+import { Route as AuthenticatedBimViewerUtIfcViewerSelectionRouteImport } from './routes/_authenticated/bim-viewer-ut/Ifc-viewer-selection'
+import { Route as AuthenticatedAppBlogRouteImport } from './routes/_authenticated/app/blog'
+import { Route as AuthenticatedAppLayoutRouteImport } from './routes/_authenticated/app/_layout'
+import { Route as AuthenticatedAdminLayoutRouteImport } from './routes/_authenticated/admin/_layout'
+import { Route as AuthenticatedViewUploadIndexRouteImport } from './routes/_authenticated/view/upload/index'
+import { Route as AuthenticatedExamplesBimViewerIndexRouteImport } from './routes/_authenticated/examples/bim-viewer/index'
+import { Route as AuthenticatedTutorialsLayoutPurchaseCourseRouteImport } from './routes/_authenticated/tutorials/_layout/purchase-course'
+import { Route as AuthenticatedTutorialsLayoutIntroductionCourseRouteImport } from './routes/_authenticated/tutorials/_layout/introduction-course'
+import { Route as AuthenticatedTutorialsLayoutHomePageRouteImport } from './routes/_authenticated/tutorials/_layout/home-page'
+import { Route as AuthenticatedManagementsLayoutWorkflowsRouteImport } from './routes/_authenticated/managements/_layout/workflows'
+import { Route as AuthenticatedManagementsLayoutUsersRouteImport } from './routes/_authenticated/managements/_layout/users'
+import { Route as AuthenticatedManagementsLayoutSpacesRouteImport } from './routes/_authenticated/managements/_layout/spaces'
+import { Route as AuthenticatedManagementsLayoutProjectsRouteImport } from './routes/_authenticated/managements/_layout/projects'
+import { Route as AuthenticatedManagementsLayoutModelPreviewsRouteImport } from './routes/_authenticated/managements/_layout/model-previews'
+import { Route as AuthenticatedManagementsLayoutMeRouteImport } from './routes/_authenticated/managements/_layout/me'
+import { Route as AuthenticatedManagementsLayoutHomeRouteImport } from './routes/_authenticated/managements/_layout/home'
+import { Route as AuthenticatedManagementsLayoutChatSupportRouteImport } from './routes/_authenticated/managements/_layout/chat-support'
+import { Route as AuthenticatedBlogLayoutContactRouteImport } from './routes/_authenticated/blog/_layout/contact'
+import { Route as AuthenticatedBlogLayoutAboutRouteImport } from './routes/_authenticated/blog/_layout/about'
+import { Route as AuthenticatedAppLayoutHowItWorksRouteImport } from './routes/_authenticated/app/_layout/how-it-works'
+import { Route as AuthenticatedAppLayoutFeaturesRouteImport } from './routes/_authenticated/app/_layout/features'
+import { Route as AuthenticatedAppLayoutContactUsRouteImport } from './routes/_authenticated/app/_layout/contact-us'
+import { Route as AuthenticatedAppLayoutConnectorsRouteImport } from './routes/_authenticated/app/_layout/connectors'
+import { Route as AuthenticatedUserShowProfileOwnerIndexRouteImport } from './routes/_authenticated/user/show/profile-owner/index'
+import { Route as AuthenticatedUserShowPortfolioIndexRouteImport } from './routes/_authenticated/user/show/portfolio/index'
+import { Route as AuthenticatedManagementsLayoutTeamsIndexRouteImport } from './routes/_authenticated/managements/_layout/teams/index'
+import { Route as AuthenticatedManagementsLayoutSubProjectsIndexRouteImport } from './routes/_authenticated/managements/_layout/sub-projects/index'
+import { Route as AuthenticatedUserShowProfileLayoutRouteImport } from './routes/_authenticated/user/show/profile/_layout'
+import { Route as AuthenticatedTutorialsLearningLessonsForNewbiesLayoutRouteImport } from './routes/_authenticated/tutorials/learning/lessons-for-newbies/_layout'
+import { Route as AuthenticatedTutorialsLayoutAdminUserEnrollmentsRouteImport } from './routes/_authenticated/tutorials/_layout/admin/user-enrollments'
+import { Route as AuthenticatedTutorialsLayoutAdminMembersRouteImport } from './routes/_authenticated/tutorials/_layout/admin/members'
+import { Route as AuthenticatedTutorialsLayoutAdminLessonsRouteImport } from './routes/_authenticated/tutorials/_layout/admin/lessons'
+import { Route as AuthenticatedTutorialsLayoutAdminEnrollmentsRouteImport } from './routes/_authenticated/tutorials/_layout/admin/enrollments'
+import { Route as AuthenticatedTutorialsLayoutAdminCoursesRouteImport } from './routes/_authenticated/tutorials/_layout/admin/courses'
+import { Route as AuthenticatedManagementsLayoutTeamsTeam_idRouteImport } from './routes/_authenticated/managements/_layout/teams/$team_id'
+import { Route as AuthenticatedManagementsLayoutSubProjectsLayoutRouteImport } from './routes/_authenticated/managements/_layout/sub-projects/_layout'
+import { Route as AuthenticatedManagementsLayoutSubProjectsIdRouteImport } from './routes/_authenticated/managements/_layout/sub-projects/$id'
+import { Route as AuthenticatedUserShowProfileLayoutIndexRouteImport } from './routes/_authenticated/user/show/profile/_layout/index'
+import { Route as AuthenticatedTutorialsLearningLessonsForNewbiesLayoutIndexRouteImport } from './routes/_authenticated/tutorials/learning/lessons-for-newbies/_layout/index'
+import { Route as AuthenticatedUserShowProfileLayoutIdUserRouteImport } from './routes/_authenticated/user/show/profile/_layout/$idUser'
+import { Route as AuthenticatedUserSettingsProfileEditLayoutRouteImport } from './routes/_authenticated/user/settings/profile/edit/_layout'
+import { Route as AuthenticatedUserSettingsProfileEditLayoutIdUserRouteImport } from './routes/_authenticated/user/settings/profile/edit/_layout/$idUser'
+import { Route as AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idYourTeamRouteImport } from './routes/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/your-team'
+import { Route as AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idRfisRouteImport } from './routes/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/rfis'
+import { Route as AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idNotificationsRouteImport } from './routes/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/notifications'
+import { Route as AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idMessagesRouteImport } from './routes/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/messages'
+import { Route as AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idIssuesRouteImport } from './routes/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/issues'
+import { Route as AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idDataRouteImport } from './routes/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/data'
+import { Route as AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idDashboardRouteImport } from './routes/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/dashboard'
+import { Route as AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idChatRouteImport } from './routes/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/chat'
 
-import { Route as rootRoute } from './routes/__root'
-import { Route as AuthenticatedRouteImport } from './routes/_authenticated/route'
-import { Route as IndexImport } from './routes/index'
-import { Route as AuthenticatedHowItWorksImport } from './routes/_authenticated/how-it-works'
-import { Route as AuthenticatedFeaturesImport } from './routes/_authenticated/features'
-import { Route as AuthenticatedContactUsImport } from './routes/_authenticated/contact-us'
-import { Route as authVerifyEmailImport } from './routes/(auth)/verify-email'
-import { Route as authSignInImport } from './routes/(auth)/sign-in'
-import { Route as authResetPasswordImport } from './routes/(auth)/reset-password'
-import { Route as authCallbackImport } from './routes/(auth)/callback'
-import { Route as auth500Import } from './routes/(auth)/500'
-import { Route as ExampleModelIfcIndexImport } from './routes/example-model/ifc/index'
-import { Route as AuthenticatedView2IndexImport } from './routes/_authenticated/view2/index'
-import { Route as AuthenticatedViewIndexImport } from './routes/_authenticated/view/index'
-import { Route as AuthenticatedMyRoom3dIndexImport } from './routes/_authenticated/my-room-3d/index'
-import { Route as AuthenticatedAppIndexImport } from './routes/_authenticated/app/index'
-import { Route as AuthenticatedView2FileCodeImport } from './routes/_authenticated/view2/$fileCode'
-import { Route as AuthenticatedViewFileCodeImport } from './routes/_authenticated/view/$fileCode'
-import { Route as AuthenticatedTutorialsLayoutImport } from './routes/_authenticated/tutorials/_layout'
-import { Route as AuthenticatedManagementsLayoutImport } from './routes/_authenticated/managements/_layout'
-import { Route as AuthenticatedBlogLayoutImport } from './routes/_authenticated/blog/_layout'
-import { Route as AuthenticatedBimViewerUtWebglClippingV2Import } from './routes/_authenticated/bim-viewer-ut/webgl-clipping-v2'
-import { Route as AuthenticatedBimViewerUtWebglClippingV1Import } from './routes/_authenticated/bim-viewer-ut/webgl-clipping-v1'
-import { Route as AuthenticatedBimViewerUtWebglClippingStencilIfcImport } from './routes/_authenticated/bim-viewer-ut/webgl-clipping-stencil-ifc'
-import { Route as AuthenticatedBimViewerUtWebglClippingStencilImport } from './routes/_authenticated/bim-viewer-ut/webgl-clipping-stencil'
-import { Route as AuthenticatedBimViewerUtWebglClippingCubeImport } from './routes/_authenticated/bim-viewer-ut/webgl-clipping-cube'
-import { Route as AuthenticatedBimViewerUtViewCubeImport } from './routes/_authenticated/bim-viewer-ut/view-cube'
-import { Route as AuthenticatedBimViewerUtIfcViewerSelectionFamilyImport } from './routes/_authenticated/bim-viewer-ut/ifc-viewer-selection-family'
-import { Route as AuthenticatedBimViewerUtGeometrySceneViewcubeImport } from './routes/_authenticated/bim-viewer-ut/geometry-scene-viewcube'
-import { Route as AuthenticatedBimViewerUtDemoXeokitIfcImport } from './routes/_authenticated/bim-viewer-ut/demo-xeokit-ifc'
-import { Route as AuthenticatedBimViewerUtIfcViewerSelectionImport } from './routes/_authenticated/bim-viewer-ut/Ifc-viewer-selection'
-import { Route as AuthenticatedAppBlogImport } from './routes/_authenticated/app/blog'
-import { Route as AuthenticatedAppLayoutImport } from './routes/_authenticated/app/_layout'
-import { Route as AuthenticatedAdminLayoutImport } from './routes/_authenticated/admin/_layout'
-import { Route as AuthenticatedViewUploadIndexImport } from './routes/_authenticated/view/upload/index'
-import { Route as AuthenticatedExamplesBimViewerIndexImport } from './routes/_authenticated/examples/bim-viewer/index'
-import { Route as AuthenticatedTutorialsLayoutIntroductionCourseImport } from './routes/_authenticated/tutorials/_layout/introduction-course'
-import { Route as AuthenticatedTutorialsLayoutHomePageImport } from './routes/_authenticated/tutorials/_layout/home-page'
-import { Route as AuthenticatedManagementsLayoutWorkflowsImport } from './routes/_authenticated/managements/_layout/workflows'
-import { Route as AuthenticatedManagementsLayoutUsersImport } from './routes/_authenticated/managements/_layout/users'
-import { Route as AuthenticatedManagementsLayoutSpacesImport } from './routes/_authenticated/managements/_layout/spaces'
-import { Route as AuthenticatedManagementsLayoutProjectsImport } from './routes/_authenticated/managements/_layout/projects'
-import { Route as AuthenticatedManagementsLayoutModelPreviewsImport } from './routes/_authenticated/managements/_layout/model-previews'
-import { Route as AuthenticatedManagementsLayoutMeImport } from './routes/_authenticated/managements/_layout/me'
-import { Route as AuthenticatedManagementsLayoutHomeImport } from './routes/_authenticated/managements/_layout/home'
-import { Route as AuthenticatedManagementsLayoutChatSupportImport } from './routes/_authenticated/managements/_layout/chat-support'
-import { Route as AuthenticatedBlogLayoutContactImport } from './routes/_authenticated/blog/_layout/contact'
-import { Route as AuthenticatedBlogLayoutAboutImport } from './routes/_authenticated/blog/_layout/about'
-import { Route as AuthenticatedAppLayoutHowItWorksImport } from './routes/_authenticated/app/_layout/how-it-works'
-import { Route as AuthenticatedAppLayoutFeaturesImport } from './routes/_authenticated/app/_layout/features'
-import { Route as AuthenticatedAppLayoutContactUsImport } from './routes/_authenticated/app/_layout/contact-us'
-import { Route as AuthenticatedAppLayoutConnectorsImport } from './routes/_authenticated/app/_layout/connectors'
-import { Route as AuthenticatedUserShowProfileOwnerIndexImport } from './routes/_authenticated/user/show/profile-owner/index'
-import { Route as AuthenticatedUserShowPortfolioIndexImport } from './routes/_authenticated/user/show/portfolio/index'
-import { Route as AuthenticatedManagementsLayoutTeamsIndexImport } from './routes/_authenticated/managements/_layout/teams/index'
-import { Route as AuthenticatedManagementsLayoutSubProjectsIndexImport } from './routes/_authenticated/managements/_layout/sub-projects/index'
-import { Route as AuthenticatedUserShowProfileLayoutImport } from './routes/_authenticated/user/show/profile/_layout'
-import { Route as AuthenticatedTutorialsLearningLessonsForNewbiesLayoutImport } from './routes/_authenticated/tutorials/learning/lessons-for-newbies/_layout'
-import { Route as AuthenticatedTutorialsLayoutAdminUserEnrollmentsImport } from './routes/_authenticated/tutorials/_layout/admin/user-enrollments'
-import { Route as AuthenticatedTutorialsLayoutAdminMembersImport } from './routes/_authenticated/tutorials/_layout/admin/members'
-import { Route as AuthenticatedTutorialsLayoutAdminLessonsImport } from './routes/_authenticated/tutorials/_layout/admin/lessons'
-import { Route as AuthenticatedTutorialsLayoutAdminEnrollmentsImport } from './routes/_authenticated/tutorials/_layout/admin/enrollments'
-import { Route as AuthenticatedTutorialsLayoutAdminCoursesImport } from './routes/_authenticated/tutorials/_layout/admin/courses'
-import { Route as AuthenticatedManagementsLayoutTeamsTeamidImport } from './routes/_authenticated/managements/_layout/teams/$team_id'
-import { Route as AuthenticatedManagementsLayoutSubProjectsLayoutImport } from './routes/_authenticated/managements/_layout/sub-projects/_layout'
-import { Route as AuthenticatedManagementsLayoutSubProjectsIdImport } from './routes/_authenticated/managements/_layout/sub-projects/$id'
-import { Route as AuthenticatedUserShowProfileLayoutIndexImport } from './routes/_authenticated/user/show/profile/_layout/index'
-import { Route as AuthenticatedTutorialsLearningLessonsForNewbiesLayoutIndexImport } from './routes/_authenticated/tutorials/learning/lessons-for-newbies/_layout/index'
-import { Route as AuthenticatedUserShowProfileLayoutIdUserImport } from './routes/_authenticated/user/show/profile/_layout/$idUser'
-import { Route as AuthenticatedUserSettingsProfileEditLayoutImport } from './routes/_authenticated/user/settings/profile/edit/_layout'
-import { Route as AuthenticatedUserSettingsProfileEditLayoutIdUserImport } from './routes/_authenticated/user/settings/profile/edit/_layout/$idUser'
-import { Route as AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidYourTeamImport } from './routes/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/your-team'
-import { Route as AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidRfisImport } from './routes/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/rfis'
-import { Route as AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidNotificationsImport } from './routes/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/notifications'
-import { Route as AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidMessagesImport } from './routes/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/messages'
-import { Route as AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidIssuesImport } from './routes/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/issues'
-import { Route as AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidDataImport } from './routes/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/data'
-import { Route as AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidDashboardImport } from './routes/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/dashboard'
-import { Route as AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidChatImport } from './routes/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/chat'
-
-// Create Virtual Routes
-
-const AuthenticatedTutorialsImport = createFileRoute(
+const AuthenticatedTutorialsRouteImport = createFileRoute(
   '/_authenticated/tutorials',
 )()
-const AuthenticatedManagementsImport = createFileRoute(
+const AuthenticatedManagementsRouteImport = createFileRoute(
   '/_authenticated/managements',
 )()
-const AuthenticatedBlogImport = createFileRoute('/_authenticated/blog')()
-const AuthenticatedAppImport = createFileRoute('/_authenticated/app')()
-const AuthenticatedAdminImport = createFileRoute('/_authenticated/admin')()
-const errors503LazyImport = createFileRoute('/(errors)/503')()
-const errors500LazyImport = createFileRoute('/(errors)/500')()
-const errors404LazyImport = createFileRoute('/(errors)/404')()
-const errors403LazyImport = createFileRoute('/(errors)/403')()
-const errors401LazyImport = createFileRoute('/(errors)/401')()
-const authSignUpLazyImport = createFileRoute('/(auth)/sign-up')()
-const authSignIn2LazyImport = createFileRoute('/(auth)/sign-in-2')()
-const authForgotPasswordLazyImport = createFileRoute(
+const AuthenticatedBlogRouteImport = createFileRoute('/_authenticated/blog')()
+const AuthenticatedAppRouteImport = createFileRoute('/_authenticated/app')()
+const AuthenticatedAdminRouteImport = createFileRoute('/_authenticated/admin')()
+const errors503LazyRouteImport = createFileRoute('/(errors)/503')()
+const errors404LazyRouteImport = createFileRoute('/(errors)/404')()
+const errors403LazyRouteImport = createFileRoute('/(errors)/403')()
+const errors401LazyRouteImport = createFileRoute('/(errors)/401')()
+const authSignUpLazyRouteImport = createFileRoute('/(auth)/sign-up')()
+const authSignIn2LazyRouteImport = createFileRoute('/(auth)/sign-in-2')()
+const authForgotPasswordLazyRouteImport = createFileRoute(
   '/(auth)/forgot-password',
 )()
-const AuthenticatedBimViewerUtViewerLazyImport = createFileRoute(
+const AuthenticatedBimViewerUtViewerLazyRouteImport = createFileRoute(
   '/_authenticated/bim-viewer-ut/viewer',
 )()
-const AuthenticatedBimViewerUtInstancedMeshLazyImport = createFileRoute(
+const AuthenticatedBimViewerUtInstancedMeshLazyRouteImport = createFileRoute(
   '/_authenticated/bim-viewer-ut/instanced-mesh',
 )()
-const AuthenticatedBimViewerUtIfcLoaderLazyImport = createFileRoute(
+const AuthenticatedBimViewerUtIfcLoaderLazyRouteImport = createFileRoute(
   '/_authenticated/bim-viewer-ut/ifc-loader',
 )()
-const AuthenticatedUserShowProfileImport = createFileRoute(
+const AuthenticatedUserShowProfileRouteImport = createFileRoute(
   '/_authenticated/user/show/profile',
 )()
-const AuthenticatedTutorialsLearningLessonsForNewbiesImport = createFileRoute(
-  '/_authenticated/tutorials/learning/lessons-for-newbies',
-)()
-const AuthenticatedManagementsLayoutSubProjectsImport = createFileRoute(
+const AuthenticatedTutorialsLearningLessonsForNewbiesRouteImport =
+  createFileRoute('/_authenticated/tutorials/learning/lessons-for-newbies')()
+const AuthenticatedManagementsLayoutSubProjectsRouteImport = createFileRoute(
   '/_authenticated/managements/_layout/sub-projects',
 )()
-const AuthenticatedUserSettingsProfileEditImport = createFileRoute(
+const AuthenticatedUserSettingsProfileEditRouteImport = createFileRoute(
   '/_authenticated/user/settings/profile/edit',
 )()
 
-// Create/Update Routes
-
-const AuthenticatedRouteRoute = AuthenticatedRouteImport.update({
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const IndexRoute = IndexImport.update({
+const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const AuthenticatedTutorialsRoute = AuthenticatedTutorialsImport.update({
+const AuthenticatedTutorialsRoute = AuthenticatedTutorialsRouteImport.update({
   id: '/tutorials',
   path: '/tutorials',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-
-const AuthenticatedManagementsRoute = AuthenticatedManagementsImport.update({
-  id: '/managements',
-  path: '/managements',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-
-const AuthenticatedBlogRoute = AuthenticatedBlogImport.update({
+const AuthenticatedManagementsRoute =
+  AuthenticatedManagementsRouteImport.update({
+    id: '/managements',
+    path: '/managements',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedBlogRoute = AuthenticatedBlogRouteImport.update({
   id: '/blog',
   path: '/blog',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-
-const AuthenticatedAppRoute = AuthenticatedAppImport.update({
+const AuthenticatedAppRoute = AuthenticatedAppRouteImport.update({
   id: '/app',
   path: '/app',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-
-const AuthenticatedAdminRoute = AuthenticatedAdminImport.update({
+const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   id: '/admin',
   path: '/admin',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-
-const errors503LazyRoute = errors503LazyImport
+const errors503LazyRoute = errors503LazyRouteImport
   .update({
     id: '/(errors)/503',
     path: '/503',
-    getParentRoute: () => rootRoute,
+    getParentRoute: () => rootRouteImport,
   } as any)
   .lazy(() => import('./routes/(errors)/503.lazy').then((d) => d.Route))
-
-const errors500LazyRoute = errors500LazyImport
-  .update({
-    id: '/(errors)/500',
-    path: '/500',
-    getParentRoute: () => rootRoute,
-  } as any)
-  .lazy(() => import('./routes/(errors)/500.lazy').then((d) => d.Route))
-
-const errors404LazyRoute = errors404LazyImport
+const errors404LazyRoute = errors404LazyRouteImport
   .update({
     id: '/(errors)/404',
     path: '/404',
-    getParentRoute: () => rootRoute,
+    getParentRoute: () => rootRouteImport,
   } as any)
   .lazy(() => import('./routes/(errors)/404.lazy').then((d) => d.Route))
-
-const errors403LazyRoute = errors403LazyImport
+const errors403LazyRoute = errors403LazyRouteImport
   .update({
     id: '/(errors)/403',
     path: '/403',
-    getParentRoute: () => rootRoute,
+    getParentRoute: () => rootRouteImport,
   } as any)
   .lazy(() => import('./routes/(errors)/403.lazy').then((d) => d.Route))
-
-const errors401LazyRoute = errors401LazyImport
+const errors401LazyRoute = errors401LazyRouteImport
   .update({
     id: '/(errors)/401',
     path: '/401',
-    getParentRoute: () => rootRoute,
+    getParentRoute: () => rootRouteImport,
   } as any)
   .lazy(() => import('./routes/(errors)/401.lazy').then((d) => d.Route))
-
-const authSignUpLazyRoute = authSignUpLazyImport
+const authSignUpLazyRoute = authSignUpLazyRouteImport
   .update({
     id: '/(auth)/sign-up',
     path: '/sign-up',
-    getParentRoute: () => rootRoute,
+    getParentRoute: () => rootRouteImport,
   } as any)
   .lazy(() => import('./routes/(auth)/sign-up.lazy').then((d) => d.Route))
-
-const authSignIn2LazyRoute = authSignIn2LazyImport
+const authSignIn2LazyRoute = authSignIn2LazyRouteImport
   .update({
     id: '/(auth)/sign-in-2',
     path: '/sign-in-2',
-    getParentRoute: () => rootRoute,
+    getParentRoute: () => rootRouteImport,
   } as any)
   .lazy(() => import('./routes/(auth)/sign-in-2.lazy').then((d) => d.Route))
-
-const authForgotPasswordLazyRoute = authForgotPasswordLazyImport
+const authForgotPasswordLazyRoute = authForgotPasswordLazyRouteImport
   .update({
     id: '/(auth)/forgot-password',
     path: '/forgot-password',
-    getParentRoute: () => rootRoute,
+    getParentRoute: () => rootRouteImport,
   } as any)
   .lazy(() =>
     import('./routes/(auth)/forgot-password.lazy').then((d) => d.Route),
   )
-
-const AuthenticatedHowItWorksRoute = AuthenticatedHowItWorksImport.update({
+const AuthenticatedHowItWorksRoute = AuthenticatedHowItWorksRouteImport.update({
   id: '/how-it-works',
   path: '/how-it-works',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-
-const AuthenticatedFeaturesRoute = AuthenticatedFeaturesImport.update({
+const AuthenticatedFeaturesRoute = AuthenticatedFeaturesRouteImport.update({
   id: '/features',
   path: '/features',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-
-const AuthenticatedContactUsRoute = AuthenticatedContactUsImport.update({
+const AuthenticatedContactUsRoute = AuthenticatedContactUsRouteImport.update({
   id: '/contact-us',
   path: '/contact-us',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-
-const authVerifyEmailRoute = authVerifyEmailImport.update({
+const authVerifyEmailRoute = authVerifyEmailRouteImport.update({
   id: '/(auth)/verify-email',
   path: '/verify-email',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const authSignInRoute = authSignInImport.update({
+const authSignInRoute = authSignInRouteImport.update({
   id: '/(auth)/sign-in',
   path: '/sign-in',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const authResetPasswordRoute = authResetPasswordImport.update({
+const authResetPasswordRoute = authResetPasswordRouteImport.update({
   id: '/(auth)/reset-password',
   path: '/reset-password',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const authCallbackRoute = authCallbackImport.update({
+const authCallbackRoute = authCallbackRouteImport.update({
   id: '/(auth)/callback',
   path: '/callback',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const auth500Route = auth500Import.update({
+const auth500Route = auth500RouteImport.update({
   id: '/(auth)/500',
   path: '/500',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const ExampleModelIfcIndexRoute = ExampleModelIfcIndexImport.update({
+const ExampleModelIfcIndexRoute = ExampleModelIfcIndexRouteImport.update({
   id: '/example-model/ifc/',
   path: '/example-model/ifc/',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const AuthenticatedView2IndexRoute = AuthenticatedView2IndexImport.update({
+const AuthenticatedView2IndexRoute = AuthenticatedView2IndexRouteImport.update({
   id: '/view2/',
   path: '/view2/',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-
-const AuthenticatedViewIndexRoute = AuthenticatedViewIndexImport.update({
+const AuthenticatedViewIndexRoute = AuthenticatedViewIndexRouteImport.update({
   id: '/view/',
   path: '/view/',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-
-const AuthenticatedMyRoom3dIndexRoute = AuthenticatedMyRoom3dIndexImport.update(
-  {
+const AuthenticatedMyRoom3dIndexRoute =
+  AuthenticatedMyRoom3dIndexRouteImport.update({
     id: '/my-room-3d/',
     path: '/my-room-3d/',
     getParentRoute: () => AuthenticatedRouteRoute,
-  } as any,
-)
-
-const AuthenticatedAppIndexRoute = AuthenticatedAppIndexImport.update({
+  } as any)
+const AuthenticatedAppIndexRoute = AuthenticatedAppIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AuthenticatedAppRoute,
 } as any)
-
 const AuthenticatedBimViewerUtViewerLazyRoute =
-  AuthenticatedBimViewerUtViewerLazyImport.update({
+  AuthenticatedBimViewerUtViewerLazyRouteImport.update({
     id: '/bim-viewer-ut/viewer',
     path: '/bim-viewer-ut/viewer',
     getParentRoute: () => AuthenticatedRouteRoute,
@@ -334,9 +292,8 @@ const AuthenticatedBimViewerUtViewerLazyRoute =
       (d) => d.Route,
     ),
   )
-
 const AuthenticatedBimViewerUtInstancedMeshLazyRoute =
-  AuthenticatedBimViewerUtInstancedMeshLazyImport.update({
+  AuthenticatedBimViewerUtInstancedMeshLazyRouteImport.update({
     id: '/bim-viewer-ut/instanced-mesh',
     path: '/bim-viewer-ut/instanced-mesh',
     getParentRoute: () => AuthenticatedRouteRoute,
@@ -345,9 +302,8 @@ const AuthenticatedBimViewerUtInstancedMeshLazyRoute =
       (d) => d.Route,
     ),
   )
-
 const AuthenticatedBimViewerUtIfcLoaderLazyRoute =
-  AuthenticatedBimViewerUtIfcLoaderLazyImport.update({
+  AuthenticatedBimViewerUtIfcLoaderLazyRouteImport.update({
     id: '/bim-viewer-ut/ifc-loader',
     path: '/bim-viewer-ut/ifc-loader',
     getParentRoute: () => AuthenticatedRouteRoute,
@@ -356,410 +312,357 @@ const AuthenticatedBimViewerUtIfcLoaderLazyRoute =
       (d) => d.Route,
     ),
   )
-
-const AuthenticatedView2FileCodeRoute = AuthenticatedView2FileCodeImport.update(
-  {
+const AuthenticatedView2FileCodeRoute =
+  AuthenticatedView2FileCodeRouteImport.update({
     id: '/view2/$fileCode',
     path: '/view2/$fileCode',
     getParentRoute: () => AuthenticatedRouteRoute,
-  } as any,
-)
-
-const AuthenticatedViewFileCodeRoute = AuthenticatedViewFileCodeImport.update({
-  id: '/view/$fileCode',
-  path: '/view/$fileCode',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-
+  } as any)
+const AuthenticatedViewFileCodeRoute =
+  AuthenticatedViewFileCodeRouteImport.update({
+    id: '/view/$fileCode',
+    path: '/view/$fileCode',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedTutorialsLayoutRoute =
-  AuthenticatedTutorialsLayoutImport.update({
+  AuthenticatedTutorialsLayoutRouteImport.update({
     id: '/_layout',
     getParentRoute: () => AuthenticatedTutorialsRoute,
   } as any)
-
 const AuthenticatedManagementsLayoutRoute =
-  AuthenticatedManagementsLayoutImport.update({
+  AuthenticatedManagementsLayoutRouteImport.update({
     id: '/_layout',
     getParentRoute: () => AuthenticatedManagementsRoute,
   } as any)
-
-const AuthenticatedBlogLayoutRoute = AuthenticatedBlogLayoutImport.update({
+const AuthenticatedBlogLayoutRoute = AuthenticatedBlogLayoutRouteImport.update({
   id: '/_layout',
   getParentRoute: () => AuthenticatedBlogRoute,
 } as any)
-
 const AuthenticatedBimViewerUtWebglClippingV2Route =
-  AuthenticatedBimViewerUtWebglClippingV2Import.update({
+  AuthenticatedBimViewerUtWebglClippingV2RouteImport.update({
     id: '/bim-viewer-ut/webgl-clipping-v2',
     path: '/bim-viewer-ut/webgl-clipping-v2',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
-
 const AuthenticatedBimViewerUtWebglClippingV1Route =
-  AuthenticatedBimViewerUtWebglClippingV1Import.update({
+  AuthenticatedBimViewerUtWebglClippingV1RouteImport.update({
     id: '/bim-viewer-ut/webgl-clipping-v1',
     path: '/bim-viewer-ut/webgl-clipping-v1',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
-
 const AuthenticatedBimViewerUtWebglClippingStencilIfcRoute =
-  AuthenticatedBimViewerUtWebglClippingStencilIfcImport.update({
+  AuthenticatedBimViewerUtWebglClippingStencilIfcRouteImport.update({
     id: '/bim-viewer-ut/webgl-clipping-stencil-ifc',
     path: '/bim-viewer-ut/webgl-clipping-stencil-ifc',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
-
 const AuthenticatedBimViewerUtWebglClippingStencilRoute =
-  AuthenticatedBimViewerUtWebglClippingStencilImport.update({
+  AuthenticatedBimViewerUtWebglClippingStencilRouteImport.update({
     id: '/bim-viewer-ut/webgl-clipping-stencil',
     path: '/bim-viewer-ut/webgl-clipping-stencil',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
-
 const AuthenticatedBimViewerUtWebglClippingCubeRoute =
-  AuthenticatedBimViewerUtWebglClippingCubeImport.update({
+  AuthenticatedBimViewerUtWebglClippingCubeRouteImport.update({
     id: '/bim-viewer-ut/webgl-clipping-cube',
     path: '/bim-viewer-ut/webgl-clipping-cube',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
-
 const AuthenticatedBimViewerUtViewCubeRoute =
-  AuthenticatedBimViewerUtViewCubeImport.update({
+  AuthenticatedBimViewerUtViewCubeRouteImport.update({
     id: '/bim-viewer-ut/view-cube',
     path: '/bim-viewer-ut/view-cube',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
-
 const AuthenticatedBimViewerUtIfcViewerSelectionFamilyRoute =
-  AuthenticatedBimViewerUtIfcViewerSelectionFamilyImport.update({
+  AuthenticatedBimViewerUtIfcViewerSelectionFamilyRouteImport.update({
     id: '/bim-viewer-ut/ifc-viewer-selection-family',
     path: '/bim-viewer-ut/ifc-viewer-selection-family',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
-
 const AuthenticatedBimViewerUtGeometrySceneViewcubeRoute =
-  AuthenticatedBimViewerUtGeometrySceneViewcubeImport.update({
+  AuthenticatedBimViewerUtGeometrySceneViewcubeRouteImport.update({
     id: '/bim-viewer-ut/geometry-scene-viewcube',
     path: '/bim-viewer-ut/geometry-scene-viewcube',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
-
 const AuthenticatedBimViewerUtDemoXeokitIfcRoute =
-  AuthenticatedBimViewerUtDemoXeokitIfcImport.update({
+  AuthenticatedBimViewerUtDemoXeokitIfcRouteImport.update({
     id: '/bim-viewer-ut/demo-xeokit-ifc',
     path: '/bim-viewer-ut/demo-xeokit-ifc',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
-
 const AuthenticatedBimViewerUtIfcViewerSelectionRoute =
-  AuthenticatedBimViewerUtIfcViewerSelectionImport.update({
+  AuthenticatedBimViewerUtIfcViewerSelectionRouteImport.update({
     id: '/bim-viewer-ut/Ifc-viewer-selection',
     path: '/bim-viewer-ut/Ifc-viewer-selection',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
-
-const AuthenticatedAppBlogRoute = AuthenticatedAppBlogImport.update({
+const AuthenticatedAppBlogRoute = AuthenticatedAppBlogRouteImport.update({
   id: '/blog',
   path: '/blog',
   getParentRoute: () => AuthenticatedAppRoute,
 } as any)
-
-const AuthenticatedAppLayoutRoute = AuthenticatedAppLayoutImport.update({
+const AuthenticatedAppLayoutRoute = AuthenticatedAppLayoutRouteImport.update({
   id: '/_layout',
   getParentRoute: () => AuthenticatedAppRoute,
 } as any)
-
-const AuthenticatedAdminLayoutRoute = AuthenticatedAdminLayoutImport.update({
-  id: '/_layout',
-  getParentRoute: () => AuthenticatedAdminRoute,
-} as any)
-
+const AuthenticatedAdminLayoutRoute =
+  AuthenticatedAdminLayoutRouteImport.update({
+    id: '/_layout',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedUserShowProfileRoute =
-  AuthenticatedUserShowProfileImport.update({
+  AuthenticatedUserShowProfileRouteImport.update({
     id: '/user/show/profile',
     path: '/user/show/profile',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
-
 const AuthenticatedTutorialsLearningLessonsForNewbiesRoute =
-  AuthenticatedTutorialsLearningLessonsForNewbiesImport.update({
+  AuthenticatedTutorialsLearningLessonsForNewbiesRouteImport.update({
     id: '/learning/lessons-for-newbies',
     path: '/learning/lessons-for-newbies',
     getParentRoute: () => AuthenticatedTutorialsRoute,
   } as any)
-
 const AuthenticatedManagementsLayoutSubProjectsRoute =
-  AuthenticatedManagementsLayoutSubProjectsImport.update({
+  AuthenticatedManagementsLayoutSubProjectsRouteImport.update({
     id: '/sub-projects',
     path: '/sub-projects',
     getParentRoute: () => AuthenticatedManagementsLayoutRoute,
   } as any)
-
 const AuthenticatedViewUploadIndexRoute =
-  AuthenticatedViewUploadIndexImport.update({
+  AuthenticatedViewUploadIndexRouteImport.update({
     id: '/view/upload/',
     path: '/view/upload/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
-
 const AuthenticatedExamplesBimViewerIndexRoute =
-  AuthenticatedExamplesBimViewerIndexImport.update({
+  AuthenticatedExamplesBimViewerIndexRouteImport.update({
     id: '/examples/bim-viewer/',
     path: '/examples/bim-viewer/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
-
+const AuthenticatedTutorialsLayoutPurchaseCourseRoute =
+  AuthenticatedTutorialsLayoutPurchaseCourseRouteImport.update({
+    id: '/purchase-course',
+    path: '/purchase-course',
+    getParentRoute: () => AuthenticatedTutorialsLayoutRoute,
+  } as any)
 const AuthenticatedTutorialsLayoutIntroductionCourseRoute =
-  AuthenticatedTutorialsLayoutIntroductionCourseImport.update({
+  AuthenticatedTutorialsLayoutIntroductionCourseRouteImport.update({
     id: '/introduction-course',
     path: '/introduction-course',
     getParentRoute: () => AuthenticatedTutorialsLayoutRoute,
   } as any)
-
 const AuthenticatedTutorialsLayoutHomePageRoute =
-  AuthenticatedTutorialsLayoutHomePageImport.update({
+  AuthenticatedTutorialsLayoutHomePageRouteImport.update({
     id: '/home-page',
     path: '/home-page',
     getParentRoute: () => AuthenticatedTutorialsLayoutRoute,
   } as any)
-
 const AuthenticatedManagementsLayoutWorkflowsRoute =
-  AuthenticatedManagementsLayoutWorkflowsImport.update({
+  AuthenticatedManagementsLayoutWorkflowsRouteImport.update({
     id: '/workflows',
     path: '/workflows',
     getParentRoute: () => AuthenticatedManagementsLayoutRoute,
   } as any)
-
 const AuthenticatedManagementsLayoutUsersRoute =
-  AuthenticatedManagementsLayoutUsersImport.update({
+  AuthenticatedManagementsLayoutUsersRouteImport.update({
     id: '/users',
     path: '/users',
     getParentRoute: () => AuthenticatedManagementsLayoutRoute,
   } as any)
-
 const AuthenticatedManagementsLayoutSpacesRoute =
-  AuthenticatedManagementsLayoutSpacesImport.update({
+  AuthenticatedManagementsLayoutSpacesRouteImport.update({
     id: '/spaces',
     path: '/spaces',
     getParentRoute: () => AuthenticatedManagementsLayoutRoute,
   } as any)
-
 const AuthenticatedManagementsLayoutProjectsRoute =
-  AuthenticatedManagementsLayoutProjectsImport.update({
+  AuthenticatedManagementsLayoutProjectsRouteImport.update({
     id: '/projects',
     path: '/projects',
     getParentRoute: () => AuthenticatedManagementsLayoutRoute,
   } as any)
-
 const AuthenticatedManagementsLayoutModelPreviewsRoute =
-  AuthenticatedManagementsLayoutModelPreviewsImport.update({
+  AuthenticatedManagementsLayoutModelPreviewsRouteImport.update({
     id: '/model-previews',
     path: '/model-previews',
     getParentRoute: () => AuthenticatedManagementsLayoutRoute,
   } as any)
-
 const AuthenticatedManagementsLayoutMeRoute =
-  AuthenticatedManagementsLayoutMeImport.update({
+  AuthenticatedManagementsLayoutMeRouteImport.update({
     id: '/me',
     path: '/me',
     getParentRoute: () => AuthenticatedManagementsLayoutRoute,
   } as any)
-
 const AuthenticatedManagementsLayoutHomeRoute =
-  AuthenticatedManagementsLayoutHomeImport.update({
+  AuthenticatedManagementsLayoutHomeRouteImport.update({
     id: '/home',
     path: '/home',
     getParentRoute: () => AuthenticatedManagementsLayoutRoute,
   } as any)
-
 const AuthenticatedManagementsLayoutChatSupportRoute =
-  AuthenticatedManagementsLayoutChatSupportImport.update({
+  AuthenticatedManagementsLayoutChatSupportRouteImport.update({
     id: '/chat-support',
     path: '/chat-support',
     getParentRoute: () => AuthenticatedManagementsLayoutRoute,
   } as any)
-
 const AuthenticatedBlogLayoutContactRoute =
-  AuthenticatedBlogLayoutContactImport.update({
+  AuthenticatedBlogLayoutContactRouteImport.update({
     id: '/contact',
     path: '/contact',
     getParentRoute: () => AuthenticatedBlogLayoutRoute,
   } as any)
-
 const AuthenticatedBlogLayoutAboutRoute =
-  AuthenticatedBlogLayoutAboutImport.update({
+  AuthenticatedBlogLayoutAboutRouteImport.update({
     id: '/about',
     path: '/about',
     getParentRoute: () => AuthenticatedBlogLayoutRoute,
   } as any)
-
 const AuthenticatedAppLayoutHowItWorksRoute =
-  AuthenticatedAppLayoutHowItWorksImport.update({
+  AuthenticatedAppLayoutHowItWorksRouteImport.update({
     id: '/how-it-works',
     path: '/how-it-works',
     getParentRoute: () => AuthenticatedAppLayoutRoute,
   } as any)
-
 const AuthenticatedAppLayoutFeaturesRoute =
-  AuthenticatedAppLayoutFeaturesImport.update({
+  AuthenticatedAppLayoutFeaturesRouteImport.update({
     id: '/features',
     path: '/features',
     getParentRoute: () => AuthenticatedAppLayoutRoute,
   } as any)
-
 const AuthenticatedAppLayoutContactUsRoute =
-  AuthenticatedAppLayoutContactUsImport.update({
+  AuthenticatedAppLayoutContactUsRouteImport.update({
     id: '/contact-us',
     path: '/contact-us',
     getParentRoute: () => AuthenticatedAppLayoutRoute,
   } as any)
-
 const AuthenticatedAppLayoutConnectorsRoute =
-  AuthenticatedAppLayoutConnectorsImport.update({
+  AuthenticatedAppLayoutConnectorsRouteImport.update({
     id: '/connectors',
     path: '/connectors',
     getParentRoute: () => AuthenticatedAppLayoutRoute,
   } as any)
-
 const AuthenticatedUserSettingsProfileEditRoute =
-  AuthenticatedUserSettingsProfileEditImport.update({
+  AuthenticatedUserSettingsProfileEditRouteImport.update({
     id: '/user/settings/profile/edit',
     path: '/user/settings/profile/edit',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
-
 const AuthenticatedUserShowProfileOwnerIndexRoute =
-  AuthenticatedUserShowProfileOwnerIndexImport.update({
+  AuthenticatedUserShowProfileOwnerIndexRouteImport.update({
     id: '/user/show/profile-owner/',
     path: '/user/show/profile-owner/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
-
 const AuthenticatedUserShowPortfolioIndexRoute =
-  AuthenticatedUserShowPortfolioIndexImport.update({
+  AuthenticatedUserShowPortfolioIndexRouteImport.update({
     id: '/user/show/portfolio/',
     path: '/user/show/portfolio/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
-
 const AuthenticatedManagementsLayoutTeamsIndexRoute =
-  AuthenticatedManagementsLayoutTeamsIndexImport.update({
+  AuthenticatedManagementsLayoutTeamsIndexRouteImport.update({
     id: '/teams/',
     path: '/teams/',
     getParentRoute: () => AuthenticatedManagementsLayoutRoute,
   } as any)
-
 const AuthenticatedManagementsLayoutSubProjectsIndexRoute =
-  AuthenticatedManagementsLayoutSubProjectsIndexImport.update({
+  AuthenticatedManagementsLayoutSubProjectsIndexRouteImport.update({
     id: '/',
     path: '/',
     getParentRoute: () => AuthenticatedManagementsLayoutSubProjectsRoute,
   } as any)
-
 const AuthenticatedUserShowProfileLayoutRoute =
-  AuthenticatedUserShowProfileLayoutImport.update({
+  AuthenticatedUserShowProfileLayoutRouteImport.update({
     id: '/_layout',
     getParentRoute: () => AuthenticatedUserShowProfileRoute,
   } as any)
-
 const AuthenticatedTutorialsLearningLessonsForNewbiesLayoutRoute =
-  AuthenticatedTutorialsLearningLessonsForNewbiesLayoutImport.update({
+  AuthenticatedTutorialsLearningLessonsForNewbiesLayoutRouteImport.update({
     id: '/_layout',
     getParentRoute: () => AuthenticatedTutorialsLearningLessonsForNewbiesRoute,
   } as any)
-
 const AuthenticatedTutorialsLayoutAdminUserEnrollmentsRoute =
-  AuthenticatedTutorialsLayoutAdminUserEnrollmentsImport.update({
+  AuthenticatedTutorialsLayoutAdminUserEnrollmentsRouteImport.update({
     id: '/admin/user-enrollments',
     path: '/admin/user-enrollments',
     getParentRoute: () => AuthenticatedTutorialsLayoutRoute,
   } as any)
-
 const AuthenticatedTutorialsLayoutAdminMembersRoute =
-  AuthenticatedTutorialsLayoutAdminMembersImport.update({
+  AuthenticatedTutorialsLayoutAdminMembersRouteImport.update({
     id: '/admin/members',
     path: '/admin/members',
     getParentRoute: () => AuthenticatedTutorialsLayoutRoute,
   } as any)
-
 const AuthenticatedTutorialsLayoutAdminLessonsRoute =
-  AuthenticatedTutorialsLayoutAdminLessonsImport.update({
+  AuthenticatedTutorialsLayoutAdminLessonsRouteImport.update({
     id: '/admin/lessons',
     path: '/admin/lessons',
     getParentRoute: () => AuthenticatedTutorialsLayoutRoute,
   } as any)
-
 const AuthenticatedTutorialsLayoutAdminEnrollmentsRoute =
-  AuthenticatedTutorialsLayoutAdminEnrollmentsImport.update({
+  AuthenticatedTutorialsLayoutAdminEnrollmentsRouteImport.update({
     id: '/admin/enrollments',
     path: '/admin/enrollments',
     getParentRoute: () => AuthenticatedTutorialsLayoutRoute,
   } as any)
-
 const AuthenticatedTutorialsLayoutAdminCoursesRoute =
-  AuthenticatedTutorialsLayoutAdminCoursesImport.update({
+  AuthenticatedTutorialsLayoutAdminCoursesRouteImport.update({
     id: '/admin/courses',
     path: '/admin/courses',
     getParentRoute: () => AuthenticatedTutorialsLayoutRoute,
   } as any)
-
-const AuthenticatedManagementsLayoutTeamsTeamidRoute =
-  AuthenticatedManagementsLayoutTeamsTeamidImport.update({
+const AuthenticatedManagementsLayoutTeamsTeam_idRoute =
+  AuthenticatedManagementsLayoutTeamsTeam_idRouteImport.update({
     id: '/teams/$team_id',
     path: '/teams/$team_id',
     getParentRoute: () => AuthenticatedManagementsLayoutRoute,
   } as any)
-
 const AuthenticatedManagementsLayoutSubProjectsLayoutRoute =
-  AuthenticatedManagementsLayoutSubProjectsLayoutImport.update({
+  AuthenticatedManagementsLayoutSubProjectsLayoutRouteImport.update({
     id: '/_layout',
     getParentRoute: () => AuthenticatedManagementsLayoutSubProjectsRoute,
   } as any)
-
 const AuthenticatedManagementsLayoutSubProjectsIdRoute =
-  AuthenticatedManagementsLayoutSubProjectsIdImport.update({
+  AuthenticatedManagementsLayoutSubProjectsIdRouteImport.update({
     id: '/sub-projects/$id',
     path: '/sub-projects/$id',
     getParentRoute: () => AuthenticatedManagementsLayoutRoute,
   } as any)
-
 const AuthenticatedUserShowProfileLayoutIndexRoute =
-  AuthenticatedUserShowProfileLayoutIndexImport.update({
+  AuthenticatedUserShowProfileLayoutIndexRouteImport.update({
     id: '/',
     path: '/',
     getParentRoute: () => AuthenticatedUserShowProfileLayoutRoute,
   } as any)
-
 const AuthenticatedTutorialsLearningLessonsForNewbiesLayoutIndexRoute =
-  AuthenticatedTutorialsLearningLessonsForNewbiesLayoutIndexImport.update({
+  AuthenticatedTutorialsLearningLessonsForNewbiesLayoutIndexRouteImport.update({
     id: '/',
     path: '/',
     getParentRoute: () =>
       AuthenticatedTutorialsLearningLessonsForNewbiesLayoutRoute,
   } as any)
-
 const AuthenticatedUserShowProfileLayoutIdUserRoute =
-  AuthenticatedUserShowProfileLayoutIdUserImport.update({
+  AuthenticatedUserShowProfileLayoutIdUserRouteImport.update({
     id: '/$idUser',
     path: '/$idUser',
     getParentRoute: () => AuthenticatedUserShowProfileLayoutRoute,
   } as any)
-
 const AuthenticatedUserSettingsProfileEditLayoutRoute =
-  AuthenticatedUserSettingsProfileEditLayoutImport.update({
+  AuthenticatedUserSettingsProfileEditLayoutRouteImport.update({
     id: '/_layout',
     getParentRoute: () => AuthenticatedUserSettingsProfileEditRoute,
   } as any)
-
 const AuthenticatedUserSettingsProfileEditLayoutIdUserRoute =
-  AuthenticatedUserSettingsProfileEditLayoutIdUserImport.update({
+  AuthenticatedUserSettingsProfileEditLayoutIdUserRouteImport.update({
     id: '/$idUser',
     path: '/$idUser',
     getParentRoute: () => AuthenticatedUserSettingsProfileEditLayoutRoute,
   } as any)
-
-const AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidYourTeamRoute =
-  AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidYourTeamImport.update(
+const AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idYourTeamRoute =
+  AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idYourTeamRouteImport.update(
     {
       id: '/$sub_project_id/your-team',
       path: '/$sub_project_id/your-team',
@@ -767,16 +670,17 @@ const AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidYourTeamRoute =
         AuthenticatedManagementsLayoutSubProjectsLayoutRoute,
     } as any,
   )
-
-const AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidRfisRoute =
-  AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidRfisImport.update({
-    id: '/$sub_project_id/rfis',
-    path: '/$sub_project_id/rfis',
-    getParentRoute: () => AuthenticatedManagementsLayoutSubProjectsLayoutRoute,
-  } as any)
-
-const AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidNotificationsRoute =
-  AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidNotificationsImport.update(
+const AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idRfisRoute =
+  AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idRfisRouteImport.update(
+    {
+      id: '/$sub_project_id/rfis',
+      path: '/$sub_project_id/rfis',
+      getParentRoute: () =>
+        AuthenticatedManagementsLayoutSubProjectsLayoutRoute,
+    } as any,
+  )
+const AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idNotificationsRoute =
+  AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idNotificationsRouteImport.update(
     {
       id: '/$sub_project_id/notifications',
       path: '/$sub_project_id/notifications',
@@ -784,9 +688,8 @@ const AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidNotificationsRo
         AuthenticatedManagementsLayoutSubProjectsLayoutRoute,
     } as any,
   )
-
-const AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidMessagesRoute =
-  AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidMessagesImport.update(
+const AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idMessagesRoute =
+  AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idMessagesRouteImport.update(
     {
       id: '/$sub_project_id/messages',
       path: '/$sub_project_id/messages',
@@ -794,9 +697,8 @@ const AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidMessagesRoute =
         AuthenticatedManagementsLayoutSubProjectsLayoutRoute,
     } as any,
   )
-
-const AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidIssuesRoute =
-  AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidIssuesImport.update(
+const AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idIssuesRoute =
+  AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idIssuesRouteImport.update(
     {
       id: '/$sub_project_id/issues',
       path: '/$sub_project_id/issues',
@@ -804,16 +706,17 @@ const AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidIssuesRoute =
         AuthenticatedManagementsLayoutSubProjectsLayoutRoute,
     } as any,
   )
-
-const AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidDataRoute =
-  AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidDataImport.update({
-    id: '/$sub_project_id/data',
-    path: '/$sub_project_id/data',
-    getParentRoute: () => AuthenticatedManagementsLayoutSubProjectsLayoutRoute,
-  } as any)
-
-const AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidDashboardRoute =
-  AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidDashboardImport.update(
+const AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idDataRoute =
+  AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idDataRouteImport.update(
+    {
+      id: '/$sub_project_id/data',
+      path: '/$sub_project_id/data',
+      getParentRoute: () =>
+        AuthenticatedManagementsLayoutSubProjectsLayoutRoute,
+    } as any,
+  )
+const AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idDashboardRoute =
+  AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idDashboardRouteImport.update(
     {
       id: '/$sub_project_id/dashboard',
       path: '/$sub_project_id/dashboard',
@@ -821,708 +724,1280 @@ const AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidDashboardRoute 
         AuthenticatedManagementsLayoutSubProjectsLayoutRoute,
     } as any,
   )
+const AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idChatRoute =
+  AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idChatRouteImport.update(
+    {
+      id: '/$sub_project_id/chat',
+      path: '/$sub_project_id/chat',
+      getParentRoute: () =>
+        AuthenticatedManagementsLayoutSubProjectsLayoutRoute,
+    } as any,
+  )
 
-const AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidChatRoute =
-  AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidChatImport.update({
-    id: '/$sub_project_id/chat',
-    path: '/$sub_project_id/chat',
-    getParentRoute: () => AuthenticatedManagementsLayoutSubProjectsLayoutRoute,
-  } as any)
-
-// Populate the FileRoutesByPath interface
+export interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
+  '/500': typeof auth500Route
+  '/callback': typeof authCallbackRoute
+  '/reset-password': typeof authResetPasswordRoute
+  '/sign-in': typeof authSignInRoute
+  '/verify-email': typeof authVerifyEmailRoute
+  '/contact-us': typeof AuthenticatedContactUsRoute
+  '/features': typeof AuthenticatedFeaturesRoute
+  '/how-it-works': typeof AuthenticatedHowItWorksRoute
+  '/forgot-password': typeof authForgotPasswordLazyRoute
+  '/sign-in-2': typeof authSignIn2LazyRoute
+  '/sign-up': typeof authSignUpLazyRoute
+  '/401': typeof errors401LazyRoute
+  '/403': typeof errors403LazyRoute
+  '/404': typeof errors404LazyRoute
+  '/503': typeof errors503LazyRoute
+  '/admin': typeof AuthenticatedAdminLayoutRoute
+  '/app': typeof AuthenticatedAppLayoutRouteWithChildren
+  '/app/blog': typeof AuthenticatedAppBlogRoute
+  '/bim-viewer-ut/Ifc-viewer-selection': typeof AuthenticatedBimViewerUtIfcViewerSelectionRoute
+  '/bim-viewer-ut/demo-xeokit-ifc': typeof AuthenticatedBimViewerUtDemoXeokitIfcRoute
+  '/bim-viewer-ut/geometry-scene-viewcube': typeof AuthenticatedBimViewerUtGeometrySceneViewcubeRoute
+  '/bim-viewer-ut/ifc-viewer-selection-family': typeof AuthenticatedBimViewerUtIfcViewerSelectionFamilyRoute
+  '/bim-viewer-ut/view-cube': typeof AuthenticatedBimViewerUtViewCubeRoute
+  '/bim-viewer-ut/webgl-clipping-cube': typeof AuthenticatedBimViewerUtWebglClippingCubeRoute
+  '/bim-viewer-ut/webgl-clipping-stencil': typeof AuthenticatedBimViewerUtWebglClippingStencilRoute
+  '/bim-viewer-ut/webgl-clipping-stencil-ifc': typeof AuthenticatedBimViewerUtWebglClippingStencilIfcRoute
+  '/bim-viewer-ut/webgl-clipping-v1': typeof AuthenticatedBimViewerUtWebglClippingV1Route
+  '/bim-viewer-ut/webgl-clipping-v2': typeof AuthenticatedBimViewerUtWebglClippingV2Route
+  '/blog': typeof AuthenticatedBlogLayoutRouteWithChildren
+  '/managements': typeof AuthenticatedManagementsLayoutRouteWithChildren
+  '/tutorials': typeof AuthenticatedTutorialsLayoutRouteWithChildren
+  '/view/$fileCode': typeof AuthenticatedViewFileCodeRoute
+  '/view2/$fileCode': typeof AuthenticatedView2FileCodeRoute
+  '/bim-viewer-ut/ifc-loader': typeof AuthenticatedBimViewerUtIfcLoaderLazyRoute
+  '/bim-viewer-ut/instanced-mesh': typeof AuthenticatedBimViewerUtInstancedMeshLazyRoute
+  '/bim-viewer-ut/viewer': typeof AuthenticatedBimViewerUtViewerLazyRoute
+  '/app/': typeof AuthenticatedAppIndexRoute
+  '/my-room-3d': typeof AuthenticatedMyRoom3dIndexRoute
+  '/view': typeof AuthenticatedViewIndexRoute
+  '/view2': typeof AuthenticatedView2IndexRoute
+  '/example-model/ifc': typeof ExampleModelIfcIndexRoute
+  '/app/connectors': typeof AuthenticatedAppLayoutConnectorsRoute
+  '/app/contact-us': typeof AuthenticatedAppLayoutContactUsRoute
+  '/app/features': typeof AuthenticatedAppLayoutFeaturesRoute
+  '/app/how-it-works': typeof AuthenticatedAppLayoutHowItWorksRoute
+  '/blog/about': typeof AuthenticatedBlogLayoutAboutRoute
+  '/blog/contact': typeof AuthenticatedBlogLayoutContactRoute
+  '/managements/chat-support': typeof AuthenticatedManagementsLayoutChatSupportRoute
+  '/managements/home': typeof AuthenticatedManagementsLayoutHomeRoute
+  '/managements/me': typeof AuthenticatedManagementsLayoutMeRoute
+  '/managements/model-previews': typeof AuthenticatedManagementsLayoutModelPreviewsRoute
+  '/managements/projects': typeof AuthenticatedManagementsLayoutProjectsRoute
+  '/managements/spaces': typeof AuthenticatedManagementsLayoutSpacesRoute
+  '/managements/users': typeof AuthenticatedManagementsLayoutUsersRoute
+  '/managements/workflows': typeof AuthenticatedManagementsLayoutWorkflowsRoute
+  '/tutorials/home-page': typeof AuthenticatedTutorialsLayoutHomePageRoute
+  '/tutorials/introduction-course': typeof AuthenticatedTutorialsLayoutIntroductionCourseRoute
+  '/tutorials/purchase-course': typeof AuthenticatedTutorialsLayoutPurchaseCourseRoute
+  '/examples/bim-viewer': typeof AuthenticatedExamplesBimViewerIndexRoute
+  '/view/upload': typeof AuthenticatedViewUploadIndexRoute
+  '/managements/sub-projects/$id': typeof AuthenticatedManagementsLayoutSubProjectsIdRoute
+  '/managements/sub-projects': typeof AuthenticatedManagementsLayoutSubProjectsLayoutRouteWithChildren
+  '/managements/teams/$team_id': typeof AuthenticatedManagementsLayoutTeamsTeam_idRoute
+  '/tutorials/admin/courses': typeof AuthenticatedTutorialsLayoutAdminCoursesRoute
+  '/tutorials/admin/enrollments': typeof AuthenticatedTutorialsLayoutAdminEnrollmentsRoute
+  '/tutorials/admin/lessons': typeof AuthenticatedTutorialsLayoutAdminLessonsRoute
+  '/tutorials/admin/members': typeof AuthenticatedTutorialsLayoutAdminMembersRoute
+  '/tutorials/admin/user-enrollments': typeof AuthenticatedTutorialsLayoutAdminUserEnrollmentsRoute
+  '/tutorials/learning/lessons-for-newbies': typeof AuthenticatedTutorialsLearningLessonsForNewbiesLayoutRouteWithChildren
+  '/user/show/profile': typeof AuthenticatedUserShowProfileLayoutRouteWithChildren
+  '/managements/sub-projects/': typeof AuthenticatedManagementsLayoutSubProjectsIndexRoute
+  '/managements/teams': typeof AuthenticatedManagementsLayoutTeamsIndexRoute
+  '/user/show/portfolio': typeof AuthenticatedUserShowPortfolioIndexRoute
+  '/user/show/profile-owner': typeof AuthenticatedUserShowProfileOwnerIndexRoute
+  '/user/settings/profile/edit': typeof AuthenticatedUserSettingsProfileEditLayoutRouteWithChildren
+  '/user/show/profile/$idUser': typeof AuthenticatedUserShowProfileLayoutIdUserRoute
+  '/tutorials/learning/lessons-for-newbies/': typeof AuthenticatedTutorialsLearningLessonsForNewbiesLayoutIndexRoute
+  '/user/show/profile/': typeof AuthenticatedUserShowProfileLayoutIndexRoute
+  '/managements/sub-projects/$sub_project_id/chat': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idChatRoute
+  '/managements/sub-projects/$sub_project_id/dashboard': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idDashboardRoute
+  '/managements/sub-projects/$sub_project_id/data': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idDataRoute
+  '/managements/sub-projects/$sub_project_id/issues': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idIssuesRoute
+  '/managements/sub-projects/$sub_project_id/messages': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idMessagesRoute
+  '/managements/sub-projects/$sub_project_id/notifications': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idNotificationsRoute
+  '/managements/sub-projects/$sub_project_id/rfis': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idRfisRoute
+  '/managements/sub-projects/$sub_project_id/your-team': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idYourTeamRoute
+  '/user/settings/profile/edit/$idUser': typeof AuthenticatedUserSettingsProfileEditLayoutIdUserRoute
+}
+export interface FileRoutesByTo {
+  '/': typeof IndexRoute
+  '/500': typeof auth500Route
+  '/callback': typeof authCallbackRoute
+  '/reset-password': typeof authResetPasswordRoute
+  '/sign-in': typeof authSignInRoute
+  '/verify-email': typeof authVerifyEmailRoute
+  '/contact-us': typeof AuthenticatedContactUsRoute
+  '/features': typeof AuthenticatedFeaturesRoute
+  '/how-it-works': typeof AuthenticatedHowItWorksRoute
+  '/forgot-password': typeof authForgotPasswordLazyRoute
+  '/sign-in-2': typeof authSignIn2LazyRoute
+  '/sign-up': typeof authSignUpLazyRoute
+  '/401': typeof errors401LazyRoute
+  '/403': typeof errors403LazyRoute
+  '/404': typeof errors404LazyRoute
+  '/503': typeof errors503LazyRoute
+  '/admin': typeof AuthenticatedAdminLayoutRoute
+  '/app': typeof AuthenticatedAppIndexRoute
+  '/app/blog': typeof AuthenticatedAppBlogRoute
+  '/bim-viewer-ut/Ifc-viewer-selection': typeof AuthenticatedBimViewerUtIfcViewerSelectionRoute
+  '/bim-viewer-ut/demo-xeokit-ifc': typeof AuthenticatedBimViewerUtDemoXeokitIfcRoute
+  '/bim-viewer-ut/geometry-scene-viewcube': typeof AuthenticatedBimViewerUtGeometrySceneViewcubeRoute
+  '/bim-viewer-ut/ifc-viewer-selection-family': typeof AuthenticatedBimViewerUtIfcViewerSelectionFamilyRoute
+  '/bim-viewer-ut/view-cube': typeof AuthenticatedBimViewerUtViewCubeRoute
+  '/bim-viewer-ut/webgl-clipping-cube': typeof AuthenticatedBimViewerUtWebglClippingCubeRoute
+  '/bim-viewer-ut/webgl-clipping-stencil': typeof AuthenticatedBimViewerUtWebglClippingStencilRoute
+  '/bim-viewer-ut/webgl-clipping-stencil-ifc': typeof AuthenticatedBimViewerUtWebglClippingStencilIfcRoute
+  '/bim-viewer-ut/webgl-clipping-v1': typeof AuthenticatedBimViewerUtWebglClippingV1Route
+  '/bim-viewer-ut/webgl-clipping-v2': typeof AuthenticatedBimViewerUtWebglClippingV2Route
+  '/blog': typeof AuthenticatedBlogLayoutRouteWithChildren
+  '/managements': typeof AuthenticatedManagementsLayoutRouteWithChildren
+  '/tutorials': typeof AuthenticatedTutorialsLayoutRouteWithChildren
+  '/view/$fileCode': typeof AuthenticatedViewFileCodeRoute
+  '/view2/$fileCode': typeof AuthenticatedView2FileCodeRoute
+  '/bim-viewer-ut/ifc-loader': typeof AuthenticatedBimViewerUtIfcLoaderLazyRoute
+  '/bim-viewer-ut/instanced-mesh': typeof AuthenticatedBimViewerUtInstancedMeshLazyRoute
+  '/bim-viewer-ut/viewer': typeof AuthenticatedBimViewerUtViewerLazyRoute
+  '/my-room-3d': typeof AuthenticatedMyRoom3dIndexRoute
+  '/view': typeof AuthenticatedViewIndexRoute
+  '/view2': typeof AuthenticatedView2IndexRoute
+  '/example-model/ifc': typeof ExampleModelIfcIndexRoute
+  '/app/connectors': typeof AuthenticatedAppLayoutConnectorsRoute
+  '/app/contact-us': typeof AuthenticatedAppLayoutContactUsRoute
+  '/app/features': typeof AuthenticatedAppLayoutFeaturesRoute
+  '/app/how-it-works': typeof AuthenticatedAppLayoutHowItWorksRoute
+  '/blog/about': typeof AuthenticatedBlogLayoutAboutRoute
+  '/blog/contact': typeof AuthenticatedBlogLayoutContactRoute
+  '/managements/chat-support': typeof AuthenticatedManagementsLayoutChatSupportRoute
+  '/managements/home': typeof AuthenticatedManagementsLayoutHomeRoute
+  '/managements/me': typeof AuthenticatedManagementsLayoutMeRoute
+  '/managements/model-previews': typeof AuthenticatedManagementsLayoutModelPreviewsRoute
+  '/managements/projects': typeof AuthenticatedManagementsLayoutProjectsRoute
+  '/managements/spaces': typeof AuthenticatedManagementsLayoutSpacesRoute
+  '/managements/users': typeof AuthenticatedManagementsLayoutUsersRoute
+  '/managements/workflows': typeof AuthenticatedManagementsLayoutWorkflowsRoute
+  '/tutorials/home-page': typeof AuthenticatedTutorialsLayoutHomePageRoute
+  '/tutorials/introduction-course': typeof AuthenticatedTutorialsLayoutIntroductionCourseRoute
+  '/tutorials/purchase-course': typeof AuthenticatedTutorialsLayoutPurchaseCourseRoute
+  '/examples/bim-viewer': typeof AuthenticatedExamplesBimViewerIndexRoute
+  '/view/upload': typeof AuthenticatedViewUploadIndexRoute
+  '/managements/sub-projects/$id': typeof AuthenticatedManagementsLayoutSubProjectsIdRoute
+  '/managements/sub-projects': typeof AuthenticatedManagementsLayoutSubProjectsIndexRoute
+  '/managements/teams/$team_id': typeof AuthenticatedManagementsLayoutTeamsTeam_idRoute
+  '/tutorials/admin/courses': typeof AuthenticatedTutorialsLayoutAdminCoursesRoute
+  '/tutorials/admin/enrollments': typeof AuthenticatedTutorialsLayoutAdminEnrollmentsRoute
+  '/tutorials/admin/lessons': typeof AuthenticatedTutorialsLayoutAdminLessonsRoute
+  '/tutorials/admin/members': typeof AuthenticatedTutorialsLayoutAdminMembersRoute
+  '/tutorials/admin/user-enrollments': typeof AuthenticatedTutorialsLayoutAdminUserEnrollmentsRoute
+  '/tutorials/learning/lessons-for-newbies': typeof AuthenticatedTutorialsLearningLessonsForNewbiesLayoutIndexRoute
+  '/user/show/profile': typeof AuthenticatedUserShowProfileLayoutIndexRoute
+  '/managements/teams': typeof AuthenticatedManagementsLayoutTeamsIndexRoute
+  '/user/show/portfolio': typeof AuthenticatedUserShowPortfolioIndexRoute
+  '/user/show/profile-owner': typeof AuthenticatedUserShowProfileOwnerIndexRoute
+  '/user/settings/profile/edit': typeof AuthenticatedUserSettingsProfileEditLayoutRouteWithChildren
+  '/user/show/profile/$idUser': typeof AuthenticatedUserShowProfileLayoutIdUserRoute
+  '/managements/sub-projects/$sub_project_id/chat': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idChatRoute
+  '/managements/sub-projects/$sub_project_id/dashboard': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idDashboardRoute
+  '/managements/sub-projects/$sub_project_id/data': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idDataRoute
+  '/managements/sub-projects/$sub_project_id/issues': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idIssuesRoute
+  '/managements/sub-projects/$sub_project_id/messages': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idMessagesRoute
+  '/managements/sub-projects/$sub_project_id/notifications': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idNotificationsRoute
+  '/managements/sub-projects/$sub_project_id/rfis': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idRfisRoute
+  '/managements/sub-projects/$sub_project_id/your-team': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idYourTeamRoute
+  '/user/settings/profile/edit/$idUser': typeof AuthenticatedUserSettingsProfileEditLayoutIdUserRoute
+}
+export interface FileRoutesById {
+  __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/(auth)/500': typeof auth500Route
+  '/(auth)/callback': typeof authCallbackRoute
+  '/(auth)/reset-password': typeof authResetPasswordRoute
+  '/(auth)/sign-in': typeof authSignInRoute
+  '/(auth)/verify-email': typeof authVerifyEmailRoute
+  '/_authenticated/contact-us': typeof AuthenticatedContactUsRoute
+  '/_authenticated/features': typeof AuthenticatedFeaturesRoute
+  '/_authenticated/how-it-works': typeof AuthenticatedHowItWorksRoute
+  '/(auth)/forgot-password': typeof authForgotPasswordLazyRoute
+  '/(auth)/sign-in-2': typeof authSignIn2LazyRoute
+  '/(auth)/sign-up': typeof authSignUpLazyRoute
+  '/(errors)/401': typeof errors401LazyRoute
+  '/(errors)/403': typeof errors403LazyRoute
+  '/(errors)/404': typeof errors404LazyRoute
+  '/(errors)/503': typeof errors503LazyRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
+  '/_authenticated/admin/_layout': typeof AuthenticatedAdminLayoutRoute
+  '/_authenticated/app': typeof AuthenticatedAppRouteWithChildren
+  '/_authenticated/app/_layout': typeof AuthenticatedAppLayoutRouteWithChildren
+  '/_authenticated/app/blog': typeof AuthenticatedAppBlogRoute
+  '/_authenticated/bim-viewer-ut/Ifc-viewer-selection': typeof AuthenticatedBimViewerUtIfcViewerSelectionRoute
+  '/_authenticated/bim-viewer-ut/demo-xeokit-ifc': typeof AuthenticatedBimViewerUtDemoXeokitIfcRoute
+  '/_authenticated/bim-viewer-ut/geometry-scene-viewcube': typeof AuthenticatedBimViewerUtGeometrySceneViewcubeRoute
+  '/_authenticated/bim-viewer-ut/ifc-viewer-selection-family': typeof AuthenticatedBimViewerUtIfcViewerSelectionFamilyRoute
+  '/_authenticated/bim-viewer-ut/view-cube': typeof AuthenticatedBimViewerUtViewCubeRoute
+  '/_authenticated/bim-viewer-ut/webgl-clipping-cube': typeof AuthenticatedBimViewerUtWebglClippingCubeRoute
+  '/_authenticated/bim-viewer-ut/webgl-clipping-stencil': typeof AuthenticatedBimViewerUtWebglClippingStencilRoute
+  '/_authenticated/bim-viewer-ut/webgl-clipping-stencil-ifc': typeof AuthenticatedBimViewerUtWebglClippingStencilIfcRoute
+  '/_authenticated/bim-viewer-ut/webgl-clipping-v1': typeof AuthenticatedBimViewerUtWebglClippingV1Route
+  '/_authenticated/bim-viewer-ut/webgl-clipping-v2': typeof AuthenticatedBimViewerUtWebglClippingV2Route
+  '/_authenticated/blog': typeof AuthenticatedBlogRouteWithChildren
+  '/_authenticated/blog/_layout': typeof AuthenticatedBlogLayoutRouteWithChildren
+  '/_authenticated/managements': typeof AuthenticatedManagementsRouteWithChildren
+  '/_authenticated/managements/_layout': typeof AuthenticatedManagementsLayoutRouteWithChildren
+  '/_authenticated/tutorials': typeof AuthenticatedTutorialsRouteWithChildren
+  '/_authenticated/tutorials/_layout': typeof AuthenticatedTutorialsLayoutRouteWithChildren
+  '/_authenticated/view/$fileCode': typeof AuthenticatedViewFileCodeRoute
+  '/_authenticated/view2/$fileCode': typeof AuthenticatedView2FileCodeRoute
+  '/_authenticated/bim-viewer-ut/ifc-loader': typeof AuthenticatedBimViewerUtIfcLoaderLazyRoute
+  '/_authenticated/bim-viewer-ut/instanced-mesh': typeof AuthenticatedBimViewerUtInstancedMeshLazyRoute
+  '/_authenticated/bim-viewer-ut/viewer': typeof AuthenticatedBimViewerUtViewerLazyRoute
+  '/_authenticated/app/': typeof AuthenticatedAppIndexRoute
+  '/_authenticated/my-room-3d/': typeof AuthenticatedMyRoom3dIndexRoute
+  '/_authenticated/view/': typeof AuthenticatedViewIndexRoute
+  '/_authenticated/view2/': typeof AuthenticatedView2IndexRoute
+  '/example-model/ifc/': typeof ExampleModelIfcIndexRoute
+  '/_authenticated/app/_layout/connectors': typeof AuthenticatedAppLayoutConnectorsRoute
+  '/_authenticated/app/_layout/contact-us': typeof AuthenticatedAppLayoutContactUsRoute
+  '/_authenticated/app/_layout/features': typeof AuthenticatedAppLayoutFeaturesRoute
+  '/_authenticated/app/_layout/how-it-works': typeof AuthenticatedAppLayoutHowItWorksRoute
+  '/_authenticated/blog/_layout/about': typeof AuthenticatedBlogLayoutAboutRoute
+  '/_authenticated/blog/_layout/contact': typeof AuthenticatedBlogLayoutContactRoute
+  '/_authenticated/managements/_layout/chat-support': typeof AuthenticatedManagementsLayoutChatSupportRoute
+  '/_authenticated/managements/_layout/home': typeof AuthenticatedManagementsLayoutHomeRoute
+  '/_authenticated/managements/_layout/me': typeof AuthenticatedManagementsLayoutMeRoute
+  '/_authenticated/managements/_layout/model-previews': typeof AuthenticatedManagementsLayoutModelPreviewsRoute
+  '/_authenticated/managements/_layout/projects': typeof AuthenticatedManagementsLayoutProjectsRoute
+  '/_authenticated/managements/_layout/spaces': typeof AuthenticatedManagementsLayoutSpacesRoute
+  '/_authenticated/managements/_layout/users': typeof AuthenticatedManagementsLayoutUsersRoute
+  '/_authenticated/managements/_layout/workflows': typeof AuthenticatedManagementsLayoutWorkflowsRoute
+  '/_authenticated/tutorials/_layout/home-page': typeof AuthenticatedTutorialsLayoutHomePageRoute
+  '/_authenticated/tutorials/_layout/introduction-course': typeof AuthenticatedTutorialsLayoutIntroductionCourseRoute
+  '/_authenticated/tutorials/_layout/purchase-course': typeof AuthenticatedTutorialsLayoutPurchaseCourseRoute
+  '/_authenticated/examples/bim-viewer/': typeof AuthenticatedExamplesBimViewerIndexRoute
+  '/_authenticated/view/upload/': typeof AuthenticatedViewUploadIndexRoute
+  '/_authenticated/managements/_layout/sub-projects/$id': typeof AuthenticatedManagementsLayoutSubProjectsIdRoute
+  '/_authenticated/managements/_layout/sub-projects': typeof AuthenticatedManagementsLayoutSubProjectsRouteWithChildren
+  '/_authenticated/managements/_layout/sub-projects/_layout': typeof AuthenticatedManagementsLayoutSubProjectsLayoutRouteWithChildren
+  '/_authenticated/managements/_layout/teams/$team_id': typeof AuthenticatedManagementsLayoutTeamsTeam_idRoute
+  '/_authenticated/tutorials/_layout/admin/courses': typeof AuthenticatedTutorialsLayoutAdminCoursesRoute
+  '/_authenticated/tutorials/_layout/admin/enrollments': typeof AuthenticatedTutorialsLayoutAdminEnrollmentsRoute
+  '/_authenticated/tutorials/_layout/admin/lessons': typeof AuthenticatedTutorialsLayoutAdminLessonsRoute
+  '/_authenticated/tutorials/_layout/admin/members': typeof AuthenticatedTutorialsLayoutAdminMembersRoute
+  '/_authenticated/tutorials/_layout/admin/user-enrollments': typeof AuthenticatedTutorialsLayoutAdminUserEnrollmentsRoute
+  '/_authenticated/tutorials/learning/lessons-for-newbies': typeof AuthenticatedTutorialsLearningLessonsForNewbiesRouteWithChildren
+  '/_authenticated/tutorials/learning/lessons-for-newbies/_layout': typeof AuthenticatedTutorialsLearningLessonsForNewbiesLayoutRouteWithChildren
+  '/_authenticated/user/show/profile': typeof AuthenticatedUserShowProfileRouteWithChildren
+  '/_authenticated/user/show/profile/_layout': typeof AuthenticatedUserShowProfileLayoutRouteWithChildren
+  '/_authenticated/managements/_layout/sub-projects/': typeof AuthenticatedManagementsLayoutSubProjectsIndexRoute
+  '/_authenticated/managements/_layout/teams/': typeof AuthenticatedManagementsLayoutTeamsIndexRoute
+  '/_authenticated/user/show/portfolio/': typeof AuthenticatedUserShowPortfolioIndexRoute
+  '/_authenticated/user/show/profile-owner/': typeof AuthenticatedUserShowProfileOwnerIndexRoute
+  '/_authenticated/user/settings/profile/edit': typeof AuthenticatedUserSettingsProfileEditRouteWithChildren
+  '/_authenticated/user/settings/profile/edit/_layout': typeof AuthenticatedUserSettingsProfileEditLayoutRouteWithChildren
+  '/_authenticated/user/show/profile/_layout/$idUser': typeof AuthenticatedUserShowProfileLayoutIdUserRoute
+  '/_authenticated/tutorials/learning/lessons-for-newbies/_layout/': typeof AuthenticatedTutorialsLearningLessonsForNewbiesLayoutIndexRoute
+  '/_authenticated/user/show/profile/_layout/': typeof AuthenticatedUserShowProfileLayoutIndexRoute
+  '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/chat': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idChatRoute
+  '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/dashboard': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idDashboardRoute
+  '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/data': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idDataRoute
+  '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/issues': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idIssuesRoute
+  '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/messages': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idMessagesRoute
+  '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/notifications': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idNotificationsRoute
+  '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/rfis': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idRfisRoute
+  '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/your-team': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idYourTeamRoute
+  '/_authenticated/user/settings/profile/edit/_layout/$idUser': typeof AuthenticatedUserSettingsProfileEditLayoutIdUserRoute
+}
+export interface FileRouteTypes {
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths:
+    | '/'
+    | '/500'
+    | '/callback'
+    | '/reset-password'
+    | '/sign-in'
+    | '/verify-email'
+    | '/contact-us'
+    | '/features'
+    | '/how-it-works'
+    | '/forgot-password'
+    | '/sign-in-2'
+    | '/sign-up'
+    | '/401'
+    | '/403'
+    | '/404'
+    | '/503'
+    | '/admin'
+    | '/app'
+    | '/app/blog'
+    | '/bim-viewer-ut/Ifc-viewer-selection'
+    | '/bim-viewer-ut/demo-xeokit-ifc'
+    | '/bim-viewer-ut/geometry-scene-viewcube'
+    | '/bim-viewer-ut/ifc-viewer-selection-family'
+    | '/bim-viewer-ut/view-cube'
+    | '/bim-viewer-ut/webgl-clipping-cube'
+    | '/bim-viewer-ut/webgl-clipping-stencil'
+    | '/bim-viewer-ut/webgl-clipping-stencil-ifc'
+    | '/bim-viewer-ut/webgl-clipping-v1'
+    | '/bim-viewer-ut/webgl-clipping-v2'
+    | '/blog'
+    | '/managements'
+    | '/tutorials'
+    | '/view/$fileCode'
+    | '/view2/$fileCode'
+    | '/bim-viewer-ut/ifc-loader'
+    | '/bim-viewer-ut/instanced-mesh'
+    | '/bim-viewer-ut/viewer'
+    | '/app/'
+    | '/my-room-3d'
+    | '/view'
+    | '/view2'
+    | '/example-model/ifc'
+    | '/app/connectors'
+    | '/app/contact-us'
+    | '/app/features'
+    | '/app/how-it-works'
+    | '/blog/about'
+    | '/blog/contact'
+    | '/managements/chat-support'
+    | '/managements/home'
+    | '/managements/me'
+    | '/managements/model-previews'
+    | '/managements/projects'
+    | '/managements/spaces'
+    | '/managements/users'
+    | '/managements/workflows'
+    | '/tutorials/home-page'
+    | '/tutorials/introduction-course'
+    | '/tutorials/purchase-course'
+    | '/examples/bim-viewer'
+    | '/view/upload'
+    | '/managements/sub-projects/$id'
+    | '/managements/sub-projects'
+    | '/managements/teams/$team_id'
+    | '/tutorials/admin/courses'
+    | '/tutorials/admin/enrollments'
+    | '/tutorials/admin/lessons'
+    | '/tutorials/admin/members'
+    | '/tutorials/admin/user-enrollments'
+    | '/tutorials/learning/lessons-for-newbies'
+    | '/user/show/profile'
+    | '/managements/sub-projects/'
+    | '/managements/teams'
+    | '/user/show/portfolio'
+    | '/user/show/profile-owner'
+    | '/user/settings/profile/edit'
+    | '/user/show/profile/$idUser'
+    | '/tutorials/learning/lessons-for-newbies/'
+    | '/user/show/profile/'
+    | '/managements/sub-projects/$sub_project_id/chat'
+    | '/managements/sub-projects/$sub_project_id/dashboard'
+    | '/managements/sub-projects/$sub_project_id/data'
+    | '/managements/sub-projects/$sub_project_id/issues'
+    | '/managements/sub-projects/$sub_project_id/messages'
+    | '/managements/sub-projects/$sub_project_id/notifications'
+    | '/managements/sub-projects/$sub_project_id/rfis'
+    | '/managements/sub-projects/$sub_project_id/your-team'
+    | '/user/settings/profile/edit/$idUser'
+  fileRoutesByTo: FileRoutesByTo
+  to:
+    | '/'
+    | '/500'
+    | '/callback'
+    | '/reset-password'
+    | '/sign-in'
+    | '/verify-email'
+    | '/contact-us'
+    | '/features'
+    | '/how-it-works'
+    | '/forgot-password'
+    | '/sign-in-2'
+    | '/sign-up'
+    | '/401'
+    | '/403'
+    | '/404'
+    | '/503'
+    | '/admin'
+    | '/app'
+    | '/app/blog'
+    | '/bim-viewer-ut/Ifc-viewer-selection'
+    | '/bim-viewer-ut/demo-xeokit-ifc'
+    | '/bim-viewer-ut/geometry-scene-viewcube'
+    | '/bim-viewer-ut/ifc-viewer-selection-family'
+    | '/bim-viewer-ut/view-cube'
+    | '/bim-viewer-ut/webgl-clipping-cube'
+    | '/bim-viewer-ut/webgl-clipping-stencil'
+    | '/bim-viewer-ut/webgl-clipping-stencil-ifc'
+    | '/bim-viewer-ut/webgl-clipping-v1'
+    | '/bim-viewer-ut/webgl-clipping-v2'
+    | '/blog'
+    | '/managements'
+    | '/tutorials'
+    | '/view/$fileCode'
+    | '/view2/$fileCode'
+    | '/bim-viewer-ut/ifc-loader'
+    | '/bim-viewer-ut/instanced-mesh'
+    | '/bim-viewer-ut/viewer'
+    | '/my-room-3d'
+    | '/view'
+    | '/view2'
+    | '/example-model/ifc'
+    | '/app/connectors'
+    | '/app/contact-us'
+    | '/app/features'
+    | '/app/how-it-works'
+    | '/blog/about'
+    | '/blog/contact'
+    | '/managements/chat-support'
+    | '/managements/home'
+    | '/managements/me'
+    | '/managements/model-previews'
+    | '/managements/projects'
+    | '/managements/spaces'
+    | '/managements/users'
+    | '/managements/workflows'
+    | '/tutorials/home-page'
+    | '/tutorials/introduction-course'
+    | '/tutorials/purchase-course'
+    | '/examples/bim-viewer'
+    | '/view/upload'
+    | '/managements/sub-projects/$id'
+    | '/managements/sub-projects'
+    | '/managements/teams/$team_id'
+    | '/tutorials/admin/courses'
+    | '/tutorials/admin/enrollments'
+    | '/tutorials/admin/lessons'
+    | '/tutorials/admin/members'
+    | '/tutorials/admin/user-enrollments'
+    | '/tutorials/learning/lessons-for-newbies'
+    | '/user/show/profile'
+    | '/managements/teams'
+    | '/user/show/portfolio'
+    | '/user/show/profile-owner'
+    | '/user/settings/profile/edit'
+    | '/user/show/profile/$idUser'
+    | '/managements/sub-projects/$sub_project_id/chat'
+    | '/managements/sub-projects/$sub_project_id/dashboard'
+    | '/managements/sub-projects/$sub_project_id/data'
+    | '/managements/sub-projects/$sub_project_id/issues'
+    | '/managements/sub-projects/$sub_project_id/messages'
+    | '/managements/sub-projects/$sub_project_id/notifications'
+    | '/managements/sub-projects/$sub_project_id/rfis'
+    | '/managements/sub-projects/$sub_project_id/your-team'
+    | '/user/settings/profile/edit/$idUser'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/(auth)/500'
+    | '/(auth)/callback'
+    | '/(auth)/reset-password'
+    | '/(auth)/sign-in'
+    | '/(auth)/verify-email'
+    | '/_authenticated/contact-us'
+    | '/_authenticated/features'
+    | '/_authenticated/how-it-works'
+    | '/(auth)/forgot-password'
+    | '/(auth)/sign-in-2'
+    | '/(auth)/sign-up'
+    | '/(errors)/401'
+    | '/(errors)/403'
+    | '/(errors)/404'
+    | '/(errors)/503'
+    | '/_authenticated/admin'
+    | '/_authenticated/admin/_layout'
+    | '/_authenticated/app'
+    | '/_authenticated/app/_layout'
+    | '/_authenticated/app/blog'
+    | '/_authenticated/bim-viewer-ut/Ifc-viewer-selection'
+    | '/_authenticated/bim-viewer-ut/demo-xeokit-ifc'
+    | '/_authenticated/bim-viewer-ut/geometry-scene-viewcube'
+    | '/_authenticated/bim-viewer-ut/ifc-viewer-selection-family'
+    | '/_authenticated/bim-viewer-ut/view-cube'
+    | '/_authenticated/bim-viewer-ut/webgl-clipping-cube'
+    | '/_authenticated/bim-viewer-ut/webgl-clipping-stencil'
+    | '/_authenticated/bim-viewer-ut/webgl-clipping-stencil-ifc'
+    | '/_authenticated/bim-viewer-ut/webgl-clipping-v1'
+    | '/_authenticated/bim-viewer-ut/webgl-clipping-v2'
+    | '/_authenticated/blog'
+    | '/_authenticated/blog/_layout'
+    | '/_authenticated/managements'
+    | '/_authenticated/managements/_layout'
+    | '/_authenticated/tutorials'
+    | '/_authenticated/tutorials/_layout'
+    | '/_authenticated/view/$fileCode'
+    | '/_authenticated/view2/$fileCode'
+    | '/_authenticated/bim-viewer-ut/ifc-loader'
+    | '/_authenticated/bim-viewer-ut/instanced-mesh'
+    | '/_authenticated/bim-viewer-ut/viewer'
+    | '/_authenticated/app/'
+    | '/_authenticated/my-room-3d/'
+    | '/_authenticated/view/'
+    | '/_authenticated/view2/'
+    | '/example-model/ifc/'
+    | '/_authenticated/app/_layout/connectors'
+    | '/_authenticated/app/_layout/contact-us'
+    | '/_authenticated/app/_layout/features'
+    | '/_authenticated/app/_layout/how-it-works'
+    | '/_authenticated/blog/_layout/about'
+    | '/_authenticated/blog/_layout/contact'
+    | '/_authenticated/managements/_layout/chat-support'
+    | '/_authenticated/managements/_layout/home'
+    | '/_authenticated/managements/_layout/me'
+    | '/_authenticated/managements/_layout/model-previews'
+    | '/_authenticated/managements/_layout/projects'
+    | '/_authenticated/managements/_layout/spaces'
+    | '/_authenticated/managements/_layout/users'
+    | '/_authenticated/managements/_layout/workflows'
+    | '/_authenticated/tutorials/_layout/home-page'
+    | '/_authenticated/tutorials/_layout/introduction-course'
+    | '/_authenticated/tutorials/_layout/purchase-course'
+    | '/_authenticated/examples/bim-viewer/'
+    | '/_authenticated/view/upload/'
+    | '/_authenticated/managements/_layout/sub-projects/$id'
+    | '/_authenticated/managements/_layout/sub-projects'
+    | '/_authenticated/managements/_layout/sub-projects/_layout'
+    | '/_authenticated/managements/_layout/teams/$team_id'
+    | '/_authenticated/tutorials/_layout/admin/courses'
+    | '/_authenticated/tutorials/_layout/admin/enrollments'
+    | '/_authenticated/tutorials/_layout/admin/lessons'
+    | '/_authenticated/tutorials/_layout/admin/members'
+    | '/_authenticated/tutorials/_layout/admin/user-enrollments'
+    | '/_authenticated/tutorials/learning/lessons-for-newbies'
+    | '/_authenticated/tutorials/learning/lessons-for-newbies/_layout'
+    | '/_authenticated/user/show/profile'
+    | '/_authenticated/user/show/profile/_layout'
+    | '/_authenticated/managements/_layout/sub-projects/'
+    | '/_authenticated/managements/_layout/teams/'
+    | '/_authenticated/user/show/portfolio/'
+    | '/_authenticated/user/show/profile-owner/'
+    | '/_authenticated/user/settings/profile/edit'
+    | '/_authenticated/user/settings/profile/edit/_layout'
+    | '/_authenticated/user/show/profile/_layout/$idUser'
+    | '/_authenticated/tutorials/learning/lessons-for-newbies/_layout/'
+    | '/_authenticated/user/show/profile/_layout/'
+    | '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/chat'
+    | '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/dashboard'
+    | '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/data'
+    | '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/issues'
+    | '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/messages'
+    | '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/notifications'
+    | '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/rfis'
+    | '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/your-team'
+    | '/_authenticated/user/settings/profile/edit/_layout/$idUser'
+  fileRoutesById: FileRoutesById
+}
+export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  auth500Route: typeof auth500Route
+  authCallbackRoute: typeof authCallbackRoute
+  authResetPasswordRoute: typeof authResetPasswordRoute
+  authSignInRoute: typeof authSignInRoute
+  authVerifyEmailRoute: typeof authVerifyEmailRoute
+  authForgotPasswordLazyRoute: typeof authForgotPasswordLazyRoute
+  authSignIn2LazyRoute: typeof authSignIn2LazyRoute
+  authSignUpLazyRoute: typeof authSignUpLazyRoute
+  errors401LazyRoute: typeof errors401LazyRoute
+  errors403LazyRoute: typeof errors403LazyRoute
+  errors404LazyRoute: typeof errors404LazyRoute
+  errors503LazyRoute: typeof errors503LazyRoute
+  ExampleModelIfcIndexRoute: typeof ExampleModelIfcIndexRoute
+}
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexImport
-      parentRoute: typeof rootRoute
-    }
     '/_authenticated': {
       id: '/_authenticated'
       path: ''
       fullPath: ''
-      preLoaderRoute: typeof AuthenticatedRouteImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/(auth)/500': {
-      id: '/(auth)/500'
-      path: '/500'
-      fullPath: '/500'
-      preLoaderRoute: typeof auth500Import
-      parentRoute: typeof rootRoute
-    }
-    '/(auth)/callback': {
-      id: '/(auth)/callback'
-      path: '/callback'
-      fullPath: '/callback'
-      preLoaderRoute: typeof authCallbackImport
-      parentRoute: typeof rootRoute
-    }
-    '/(auth)/reset-password': {
-      id: '/(auth)/reset-password'
-      path: '/reset-password'
-      fullPath: '/reset-password'
-      preLoaderRoute: typeof authResetPasswordImport
-      parentRoute: typeof rootRoute
-    }
-    '/(auth)/sign-in': {
-      id: '/(auth)/sign-in'
-      path: '/sign-in'
-      fullPath: '/sign-in'
-      preLoaderRoute: typeof authSignInImport
-      parentRoute: typeof rootRoute
-    }
-    '/(auth)/verify-email': {
-      id: '/(auth)/verify-email'
-      path: '/verify-email'
-      fullPath: '/verify-email'
-      preLoaderRoute: typeof authVerifyEmailImport
-      parentRoute: typeof rootRoute
-    }
-    '/_authenticated/contact-us': {
-      id: '/_authenticated/contact-us'
-      path: '/contact-us'
-      fullPath: '/contact-us'
-      preLoaderRoute: typeof AuthenticatedContactUsImport
-      parentRoute: typeof AuthenticatedRouteImport
-    }
-    '/_authenticated/features': {
-      id: '/_authenticated/features'
-      path: '/features'
-      fullPath: '/features'
-      preLoaderRoute: typeof AuthenticatedFeaturesImport
-      parentRoute: typeof AuthenticatedRouteImport
-    }
-    '/_authenticated/how-it-works': {
-      id: '/_authenticated/how-it-works'
-      path: '/how-it-works'
-      fullPath: '/how-it-works'
-      preLoaderRoute: typeof AuthenticatedHowItWorksImport
-      parentRoute: typeof AuthenticatedRouteImport
-    }
-    '/(auth)/forgot-password': {
-      id: '/(auth)/forgot-password'
-      path: '/forgot-password'
-      fullPath: '/forgot-password'
-      preLoaderRoute: typeof authForgotPasswordLazyImport
-      parentRoute: typeof rootRoute
-    }
-    '/(auth)/sign-in-2': {
-      id: '/(auth)/sign-in-2'
-      path: '/sign-in-2'
-      fullPath: '/sign-in-2'
-      preLoaderRoute: typeof authSignIn2LazyImport
-      parentRoute: typeof rootRoute
-    }
-    '/(auth)/sign-up': {
-      id: '/(auth)/sign-up'
-      path: '/sign-up'
-      fullPath: '/sign-up'
-      preLoaderRoute: typeof authSignUpLazyImport
-      parentRoute: typeof rootRoute
-    }
-    '/(errors)/401': {
-      id: '/(errors)/401'
-      path: '/401'
-      fullPath: '/401'
-      preLoaderRoute: typeof errors401LazyImport
-      parentRoute: typeof rootRoute
-    }
-    '/(errors)/403': {
-      id: '/(errors)/403'
-      path: '/403'
-      fullPath: '/403'
-      preLoaderRoute: typeof errors403LazyImport
-      parentRoute: typeof rootRoute
-    }
-    '/(errors)/404': {
-      id: '/(errors)/404'
-      path: '/404'
-      fullPath: '/404'
-      preLoaderRoute: typeof errors404LazyImport
-      parentRoute: typeof rootRoute
-    }
-    '/(errors)/500': {
-      id: '/(errors)/500'
-      path: '/500'
-      fullPath: '/500'
-      preLoaderRoute: typeof errors500LazyImport
-      parentRoute: typeof rootRoute
-    }
-    '/(errors)/503': {
-      id: '/(errors)/503'
-      path: '/503'
-      fullPath: '/503'
-      preLoaderRoute: typeof errors503LazyImport
-      parentRoute: typeof rootRoute
-    }
-    '/_authenticated/admin': {
-      id: '/_authenticated/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AuthenticatedAdminImport
-      parentRoute: typeof AuthenticatedRouteImport
-    }
-    '/_authenticated/admin/_layout': {
-      id: '/_authenticated/admin/_layout'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AuthenticatedAdminLayoutImport
-      parentRoute: typeof AuthenticatedAdminRoute
-    }
-    '/_authenticated/app': {
-      id: '/_authenticated/app'
-      path: '/app'
-      fullPath: '/app'
-      preLoaderRoute: typeof AuthenticatedAppImport
-      parentRoute: typeof AuthenticatedRouteImport
-    }
-    '/_authenticated/app/_layout': {
-      id: '/_authenticated/app/_layout'
-      path: '/app'
-      fullPath: '/app'
-      preLoaderRoute: typeof AuthenticatedAppLayoutImport
-      parentRoute: typeof AuthenticatedAppRoute
-    }
-    '/_authenticated/app/blog': {
-      id: '/_authenticated/app/blog'
-      path: '/blog'
-      fullPath: '/app/blog'
-      preLoaderRoute: typeof AuthenticatedAppBlogImport
-      parentRoute: typeof AuthenticatedAppImport
-    }
-    '/_authenticated/bim-viewer-ut/Ifc-viewer-selection': {
-      id: '/_authenticated/bim-viewer-ut/Ifc-viewer-selection'
-      path: '/bim-viewer-ut/Ifc-viewer-selection'
-      fullPath: '/bim-viewer-ut/Ifc-viewer-selection'
-      preLoaderRoute: typeof AuthenticatedBimViewerUtIfcViewerSelectionImport
-      parentRoute: typeof AuthenticatedRouteImport
-    }
-    '/_authenticated/bim-viewer-ut/demo-xeokit-ifc': {
-      id: '/_authenticated/bim-viewer-ut/demo-xeokit-ifc'
-      path: '/bim-viewer-ut/demo-xeokit-ifc'
-      fullPath: '/bim-viewer-ut/demo-xeokit-ifc'
-      preLoaderRoute: typeof AuthenticatedBimViewerUtDemoXeokitIfcImport
-      parentRoute: typeof AuthenticatedRouteImport
-    }
-    '/_authenticated/bim-viewer-ut/geometry-scene-viewcube': {
-      id: '/_authenticated/bim-viewer-ut/geometry-scene-viewcube'
-      path: '/bim-viewer-ut/geometry-scene-viewcube'
-      fullPath: '/bim-viewer-ut/geometry-scene-viewcube'
-      preLoaderRoute: typeof AuthenticatedBimViewerUtGeometrySceneViewcubeImport
-      parentRoute: typeof AuthenticatedRouteImport
-    }
-    '/_authenticated/bim-viewer-ut/ifc-viewer-selection-family': {
-      id: '/_authenticated/bim-viewer-ut/ifc-viewer-selection-family'
-      path: '/bim-viewer-ut/ifc-viewer-selection-family'
-      fullPath: '/bim-viewer-ut/ifc-viewer-selection-family'
-      preLoaderRoute: typeof AuthenticatedBimViewerUtIfcViewerSelectionFamilyImport
-      parentRoute: typeof AuthenticatedRouteImport
-    }
-    '/_authenticated/bim-viewer-ut/view-cube': {
-      id: '/_authenticated/bim-viewer-ut/view-cube'
-      path: '/bim-viewer-ut/view-cube'
-      fullPath: '/bim-viewer-ut/view-cube'
-      preLoaderRoute: typeof AuthenticatedBimViewerUtViewCubeImport
-      parentRoute: typeof AuthenticatedRouteImport
-    }
-    '/_authenticated/bim-viewer-ut/webgl-clipping-cube': {
-      id: '/_authenticated/bim-viewer-ut/webgl-clipping-cube'
-      path: '/bim-viewer-ut/webgl-clipping-cube'
-      fullPath: '/bim-viewer-ut/webgl-clipping-cube'
-      preLoaderRoute: typeof AuthenticatedBimViewerUtWebglClippingCubeImport
-      parentRoute: typeof AuthenticatedRouteImport
-    }
-    '/_authenticated/bim-viewer-ut/webgl-clipping-stencil': {
-      id: '/_authenticated/bim-viewer-ut/webgl-clipping-stencil'
-      path: '/bim-viewer-ut/webgl-clipping-stencil'
-      fullPath: '/bim-viewer-ut/webgl-clipping-stencil'
-      preLoaderRoute: typeof AuthenticatedBimViewerUtWebglClippingStencilImport
-      parentRoute: typeof AuthenticatedRouteImport
-    }
-    '/_authenticated/bim-viewer-ut/webgl-clipping-stencil-ifc': {
-      id: '/_authenticated/bim-viewer-ut/webgl-clipping-stencil-ifc'
-      path: '/bim-viewer-ut/webgl-clipping-stencil-ifc'
-      fullPath: '/bim-viewer-ut/webgl-clipping-stencil-ifc'
-      preLoaderRoute: typeof AuthenticatedBimViewerUtWebglClippingStencilIfcImport
-      parentRoute: typeof AuthenticatedRouteImport
-    }
-    '/_authenticated/bim-viewer-ut/webgl-clipping-v1': {
-      id: '/_authenticated/bim-viewer-ut/webgl-clipping-v1'
-      path: '/bim-viewer-ut/webgl-clipping-v1'
-      fullPath: '/bim-viewer-ut/webgl-clipping-v1'
-      preLoaderRoute: typeof AuthenticatedBimViewerUtWebglClippingV1Import
-      parentRoute: typeof AuthenticatedRouteImport
-    }
-    '/_authenticated/bim-viewer-ut/webgl-clipping-v2': {
-      id: '/_authenticated/bim-viewer-ut/webgl-clipping-v2'
-      path: '/bim-viewer-ut/webgl-clipping-v2'
-      fullPath: '/bim-viewer-ut/webgl-clipping-v2'
-      preLoaderRoute: typeof AuthenticatedBimViewerUtWebglClippingV2Import
-      parentRoute: typeof AuthenticatedRouteImport
-    }
-    '/_authenticated/blog': {
-      id: '/_authenticated/blog'
-      path: '/blog'
-      fullPath: '/blog'
-      preLoaderRoute: typeof AuthenticatedBlogImport
-      parentRoute: typeof AuthenticatedRouteImport
-    }
-    '/_authenticated/blog/_layout': {
-      id: '/_authenticated/blog/_layout'
-      path: '/blog'
-      fullPath: '/blog'
-      preLoaderRoute: typeof AuthenticatedBlogLayoutImport
-      parentRoute: typeof AuthenticatedBlogRoute
-    }
-    '/_authenticated/managements': {
-      id: '/_authenticated/managements'
-      path: '/managements'
-      fullPath: '/managements'
-      preLoaderRoute: typeof AuthenticatedManagementsImport
-      parentRoute: typeof AuthenticatedRouteImport
-    }
-    '/_authenticated/managements/_layout': {
-      id: '/_authenticated/managements/_layout'
-      path: '/managements'
-      fullPath: '/managements'
-      preLoaderRoute: typeof AuthenticatedManagementsLayoutImport
-      parentRoute: typeof AuthenticatedManagementsRoute
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_authenticated/tutorials': {
       id: '/_authenticated/tutorials'
       path: '/tutorials'
       fullPath: '/tutorials'
-      preLoaderRoute: typeof AuthenticatedTutorialsImport
-      parentRoute: typeof AuthenticatedRouteImport
+      preLoaderRoute: typeof AuthenticatedTutorialsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/tutorials/_layout': {
-      id: '/_authenticated/tutorials/_layout'
-      path: '/tutorials'
-      fullPath: '/tutorials'
-      preLoaderRoute: typeof AuthenticatedTutorialsLayoutImport
-      parentRoute: typeof AuthenticatedTutorialsRoute
+    '/_authenticated/managements': {
+      id: '/_authenticated/managements'
+      path: '/managements'
+      fullPath: '/managements'
+      preLoaderRoute: typeof AuthenticatedManagementsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/view/$fileCode': {
-      id: '/_authenticated/view/$fileCode'
-      path: '/view/$fileCode'
-      fullPath: '/view/$fileCode'
-      preLoaderRoute: typeof AuthenticatedViewFileCodeImport
-      parentRoute: typeof AuthenticatedRouteImport
+    '/_authenticated/blog': {
+      id: '/_authenticated/blog'
+      path: '/blog'
+      fullPath: '/blog'
+      preLoaderRoute: typeof AuthenticatedBlogRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/view2/$fileCode': {
-      id: '/_authenticated/view2/$fileCode'
-      path: '/view2/$fileCode'
-      fullPath: '/view2/$fileCode'
-      preLoaderRoute: typeof AuthenticatedView2FileCodeImport
-      parentRoute: typeof AuthenticatedRouteImport
+    '/_authenticated/app': {
+      id: '/_authenticated/app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AuthenticatedAppRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/bim-viewer-ut/ifc-loader': {
-      id: '/_authenticated/bim-viewer-ut/ifc-loader'
-      path: '/bim-viewer-ut/ifc-loader'
-      fullPath: '/bim-viewer-ut/ifc-loader'
-      preLoaderRoute: typeof AuthenticatedBimViewerUtIfcLoaderLazyImport
-      parentRoute: typeof AuthenticatedRouteImport
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/bim-viewer-ut/instanced-mesh': {
-      id: '/_authenticated/bim-viewer-ut/instanced-mesh'
-      path: '/bim-viewer-ut/instanced-mesh'
-      fullPath: '/bim-viewer-ut/instanced-mesh'
-      preLoaderRoute: typeof AuthenticatedBimViewerUtInstancedMeshLazyImport
-      parentRoute: typeof AuthenticatedRouteImport
+    '/(errors)/503': {
+      id: '/(errors)/503'
+      path: '/503'
+      fullPath: '/503'
+      preLoaderRoute: typeof errors503LazyRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/bim-viewer-ut/viewer': {
-      id: '/_authenticated/bim-viewer-ut/viewer'
-      path: '/bim-viewer-ut/viewer'
-      fullPath: '/bim-viewer-ut/viewer'
-      preLoaderRoute: typeof AuthenticatedBimViewerUtViewerLazyImport
-      parentRoute: typeof AuthenticatedRouteImport
+    '/(errors)/404': {
+      id: '/(errors)/404'
+      path: '/404'
+      fullPath: '/404'
+      preLoaderRoute: typeof errors404LazyRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/app/': {
-      id: '/_authenticated/app/'
-      path: '/'
-      fullPath: '/app/'
-      preLoaderRoute: typeof AuthenticatedAppIndexImport
-      parentRoute: typeof AuthenticatedAppImport
+    '/(errors)/403': {
+      id: '/(errors)/403'
+      path: '/403'
+      fullPath: '/403'
+      preLoaderRoute: typeof errors403LazyRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/my-room-3d/': {
-      id: '/_authenticated/my-room-3d/'
-      path: '/my-room-3d'
-      fullPath: '/my-room-3d'
-      preLoaderRoute: typeof AuthenticatedMyRoom3dIndexImport
-      parentRoute: typeof AuthenticatedRouteImport
+    '/(errors)/401': {
+      id: '/(errors)/401'
+      path: '/401'
+      fullPath: '/401'
+      preLoaderRoute: typeof errors401LazyRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/view/': {
-      id: '/_authenticated/view/'
-      path: '/view'
-      fullPath: '/view'
-      preLoaderRoute: typeof AuthenticatedViewIndexImport
-      parentRoute: typeof AuthenticatedRouteImport
+    '/(auth)/sign-up': {
+      id: '/(auth)/sign-up'
+      path: '/sign-up'
+      fullPath: '/sign-up'
+      preLoaderRoute: typeof authSignUpLazyRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/view2/': {
-      id: '/_authenticated/view2/'
-      path: '/view2'
-      fullPath: '/view2'
-      preLoaderRoute: typeof AuthenticatedView2IndexImport
-      parentRoute: typeof AuthenticatedRouteImport
+    '/(auth)/sign-in-2': {
+      id: '/(auth)/sign-in-2'
+      path: '/sign-in-2'
+      fullPath: '/sign-in-2'
+      preLoaderRoute: typeof authSignIn2LazyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(auth)/forgot-password': {
+      id: '/(auth)/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/forgot-password'
+      preLoaderRoute: typeof authForgotPasswordLazyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/how-it-works': {
+      id: '/_authenticated/how-it-works'
+      path: '/how-it-works'
+      fullPath: '/how-it-works'
+      preLoaderRoute: typeof AuthenticatedHowItWorksRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/features': {
+      id: '/_authenticated/features'
+      path: '/features'
+      fullPath: '/features'
+      preLoaderRoute: typeof AuthenticatedFeaturesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/contact-us': {
+      id: '/_authenticated/contact-us'
+      path: '/contact-us'
+      fullPath: '/contact-us'
+      preLoaderRoute: typeof AuthenticatedContactUsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/(auth)/verify-email': {
+      id: '/(auth)/verify-email'
+      path: '/verify-email'
+      fullPath: '/verify-email'
+      preLoaderRoute: typeof authVerifyEmailRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(auth)/sign-in': {
+      id: '/(auth)/sign-in'
+      path: '/sign-in'
+      fullPath: '/sign-in'
+      preLoaderRoute: typeof authSignInRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(auth)/reset-password': {
+      id: '/(auth)/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof authResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(auth)/callback': {
+      id: '/(auth)/callback'
+      path: '/callback'
+      fullPath: '/callback'
+      preLoaderRoute: typeof authCallbackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(auth)/500': {
+      id: '/(auth)/500'
+      path: '/500'
+      fullPath: '/500'
+      preLoaderRoute: typeof auth500RouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/example-model/ifc/': {
       id: '/example-model/ifc/'
       path: '/example-model/ifc'
       fullPath: '/example-model/ifc'
-      preLoaderRoute: typeof ExampleModelIfcIndexImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof ExampleModelIfcIndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/app/_layout/connectors': {
-      id: '/_authenticated/app/_layout/connectors'
-      path: '/connectors'
-      fullPath: '/app/connectors'
-      preLoaderRoute: typeof AuthenticatedAppLayoutConnectorsImport
-      parentRoute: typeof AuthenticatedAppLayoutImport
+    '/_authenticated/view2/': {
+      id: '/_authenticated/view2/'
+      path: '/view2'
+      fullPath: '/view2'
+      preLoaderRoute: typeof AuthenticatedView2IndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/app/_layout/contact-us': {
-      id: '/_authenticated/app/_layout/contact-us'
-      path: '/contact-us'
-      fullPath: '/app/contact-us'
-      preLoaderRoute: typeof AuthenticatedAppLayoutContactUsImport
-      parentRoute: typeof AuthenticatedAppLayoutImport
+    '/_authenticated/view/': {
+      id: '/_authenticated/view/'
+      path: '/view'
+      fullPath: '/view'
+      preLoaderRoute: typeof AuthenticatedViewIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/app/_layout/features': {
-      id: '/_authenticated/app/_layout/features'
-      path: '/features'
-      fullPath: '/app/features'
-      preLoaderRoute: typeof AuthenticatedAppLayoutFeaturesImport
-      parentRoute: typeof AuthenticatedAppLayoutImport
+    '/_authenticated/my-room-3d/': {
+      id: '/_authenticated/my-room-3d/'
+      path: '/my-room-3d'
+      fullPath: '/my-room-3d'
+      preLoaderRoute: typeof AuthenticatedMyRoom3dIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/app/_layout/how-it-works': {
-      id: '/_authenticated/app/_layout/how-it-works'
-      path: '/how-it-works'
-      fullPath: '/app/how-it-works'
-      preLoaderRoute: typeof AuthenticatedAppLayoutHowItWorksImport
-      parentRoute: typeof AuthenticatedAppLayoutImport
+    '/_authenticated/app/': {
+      id: '/_authenticated/app/'
+      path: '/'
+      fullPath: '/app/'
+      preLoaderRoute: typeof AuthenticatedAppIndexRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
     }
-    '/_authenticated/blog/_layout/about': {
-      id: '/_authenticated/blog/_layout/about'
-      path: '/about'
-      fullPath: '/blog/about'
-      preLoaderRoute: typeof AuthenticatedBlogLayoutAboutImport
-      parentRoute: typeof AuthenticatedBlogLayoutImport
+    '/_authenticated/bim-viewer-ut/viewer': {
+      id: '/_authenticated/bim-viewer-ut/viewer'
+      path: '/bim-viewer-ut/viewer'
+      fullPath: '/bim-viewer-ut/viewer'
+      preLoaderRoute: typeof AuthenticatedBimViewerUtViewerLazyRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/blog/_layout/contact': {
-      id: '/_authenticated/blog/_layout/contact'
-      path: '/contact'
-      fullPath: '/blog/contact'
-      preLoaderRoute: typeof AuthenticatedBlogLayoutContactImport
-      parentRoute: typeof AuthenticatedBlogLayoutImport
+    '/_authenticated/bim-viewer-ut/instanced-mesh': {
+      id: '/_authenticated/bim-viewer-ut/instanced-mesh'
+      path: '/bim-viewer-ut/instanced-mesh'
+      fullPath: '/bim-viewer-ut/instanced-mesh'
+      preLoaderRoute: typeof AuthenticatedBimViewerUtInstancedMeshLazyRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/managements/_layout/chat-support': {
-      id: '/_authenticated/managements/_layout/chat-support'
-      path: '/chat-support'
-      fullPath: '/managements/chat-support'
-      preLoaderRoute: typeof AuthenticatedManagementsLayoutChatSupportImport
-      parentRoute: typeof AuthenticatedManagementsLayoutImport
+    '/_authenticated/bim-viewer-ut/ifc-loader': {
+      id: '/_authenticated/bim-viewer-ut/ifc-loader'
+      path: '/bim-viewer-ut/ifc-loader'
+      fullPath: '/bim-viewer-ut/ifc-loader'
+      preLoaderRoute: typeof AuthenticatedBimViewerUtIfcLoaderLazyRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/managements/_layout/home': {
-      id: '/_authenticated/managements/_layout/home'
-      path: '/home'
-      fullPath: '/managements/home'
-      preLoaderRoute: typeof AuthenticatedManagementsLayoutHomeImport
-      parentRoute: typeof AuthenticatedManagementsLayoutImport
+    '/_authenticated/view2/$fileCode': {
+      id: '/_authenticated/view2/$fileCode'
+      path: '/view2/$fileCode'
+      fullPath: '/view2/$fileCode'
+      preLoaderRoute: typeof AuthenticatedView2FileCodeRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/managements/_layout/me': {
-      id: '/_authenticated/managements/_layout/me'
-      path: '/me'
-      fullPath: '/managements/me'
-      preLoaderRoute: typeof AuthenticatedManagementsLayoutMeImport
-      parentRoute: typeof AuthenticatedManagementsLayoutImport
+    '/_authenticated/view/$fileCode': {
+      id: '/_authenticated/view/$fileCode'
+      path: '/view/$fileCode'
+      fullPath: '/view/$fileCode'
+      preLoaderRoute: typeof AuthenticatedViewFileCodeRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/managements/_layout/model-previews': {
-      id: '/_authenticated/managements/_layout/model-previews'
-      path: '/model-previews'
-      fullPath: '/managements/model-previews'
-      preLoaderRoute: typeof AuthenticatedManagementsLayoutModelPreviewsImport
-      parentRoute: typeof AuthenticatedManagementsLayoutImport
+    '/_authenticated/tutorials/_layout': {
+      id: '/_authenticated/tutorials/_layout'
+      path: '/tutorials'
+      fullPath: '/tutorials'
+      preLoaderRoute: typeof AuthenticatedTutorialsLayoutRouteImport
+      parentRoute: typeof AuthenticatedTutorialsRoute
     }
-    '/_authenticated/managements/_layout/projects': {
-      id: '/_authenticated/managements/_layout/projects'
-      path: '/projects'
-      fullPath: '/managements/projects'
-      preLoaderRoute: typeof AuthenticatedManagementsLayoutProjectsImport
-      parentRoute: typeof AuthenticatedManagementsLayoutImport
+    '/_authenticated/managements/_layout': {
+      id: '/_authenticated/managements/_layout'
+      path: '/managements'
+      fullPath: '/managements'
+      preLoaderRoute: typeof AuthenticatedManagementsLayoutRouteImport
+      parentRoute: typeof AuthenticatedManagementsRoute
     }
-    '/_authenticated/managements/_layout/spaces': {
-      id: '/_authenticated/managements/_layout/spaces'
-      path: '/spaces'
-      fullPath: '/managements/spaces'
-      preLoaderRoute: typeof AuthenticatedManagementsLayoutSpacesImport
-      parentRoute: typeof AuthenticatedManagementsLayoutImport
+    '/_authenticated/blog/_layout': {
+      id: '/_authenticated/blog/_layout'
+      path: '/blog'
+      fullPath: '/blog'
+      preLoaderRoute: typeof AuthenticatedBlogLayoutRouteImport
+      parentRoute: typeof AuthenticatedBlogRoute
     }
-    '/_authenticated/managements/_layout/users': {
-      id: '/_authenticated/managements/_layout/users'
-      path: '/users'
-      fullPath: '/managements/users'
-      preLoaderRoute: typeof AuthenticatedManagementsLayoutUsersImport
-      parentRoute: typeof AuthenticatedManagementsLayoutImport
+    '/_authenticated/bim-viewer-ut/webgl-clipping-v2': {
+      id: '/_authenticated/bim-viewer-ut/webgl-clipping-v2'
+      path: '/bim-viewer-ut/webgl-clipping-v2'
+      fullPath: '/bim-viewer-ut/webgl-clipping-v2'
+      preLoaderRoute: typeof AuthenticatedBimViewerUtWebglClippingV2RouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/managements/_layout/workflows': {
-      id: '/_authenticated/managements/_layout/workflows'
-      path: '/workflows'
-      fullPath: '/managements/workflows'
-      preLoaderRoute: typeof AuthenticatedManagementsLayoutWorkflowsImport
-      parentRoute: typeof AuthenticatedManagementsLayoutImport
+    '/_authenticated/bim-viewer-ut/webgl-clipping-v1': {
+      id: '/_authenticated/bim-viewer-ut/webgl-clipping-v1'
+      path: '/bim-viewer-ut/webgl-clipping-v1'
+      fullPath: '/bim-viewer-ut/webgl-clipping-v1'
+      preLoaderRoute: typeof AuthenticatedBimViewerUtWebglClippingV1RouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/tutorials/_layout/home-page': {
-      id: '/_authenticated/tutorials/_layout/home-page'
-      path: '/home-page'
-      fullPath: '/tutorials/home-page'
-      preLoaderRoute: typeof AuthenticatedTutorialsLayoutHomePageImport
-      parentRoute: typeof AuthenticatedTutorialsLayoutImport
+    '/_authenticated/bim-viewer-ut/webgl-clipping-stencil-ifc': {
+      id: '/_authenticated/bim-viewer-ut/webgl-clipping-stencil-ifc'
+      path: '/bim-viewer-ut/webgl-clipping-stencil-ifc'
+      fullPath: '/bim-viewer-ut/webgl-clipping-stencil-ifc'
+      preLoaderRoute: typeof AuthenticatedBimViewerUtWebglClippingStencilIfcRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/tutorials/_layout/introduction-course': {
-      id: '/_authenticated/tutorials/_layout/introduction-course'
-      path: '/introduction-course'
-      fullPath: '/tutorials/introduction-course'
-      preLoaderRoute: typeof AuthenticatedTutorialsLayoutIntroductionCourseImport
-      parentRoute: typeof AuthenticatedTutorialsLayoutImport
+    '/_authenticated/bim-viewer-ut/webgl-clipping-stencil': {
+      id: '/_authenticated/bim-viewer-ut/webgl-clipping-stencil'
+      path: '/bim-viewer-ut/webgl-clipping-stencil'
+      fullPath: '/bim-viewer-ut/webgl-clipping-stencil'
+      preLoaderRoute: typeof AuthenticatedBimViewerUtWebglClippingStencilRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/examples/bim-viewer/': {
-      id: '/_authenticated/examples/bim-viewer/'
-      path: '/examples/bim-viewer'
-      fullPath: '/examples/bim-viewer'
-      preLoaderRoute: typeof AuthenticatedExamplesBimViewerIndexImport
-      parentRoute: typeof AuthenticatedRouteImport
+    '/_authenticated/bim-viewer-ut/webgl-clipping-cube': {
+      id: '/_authenticated/bim-viewer-ut/webgl-clipping-cube'
+      path: '/bim-viewer-ut/webgl-clipping-cube'
+      fullPath: '/bim-viewer-ut/webgl-clipping-cube'
+      preLoaderRoute: typeof AuthenticatedBimViewerUtWebglClippingCubeRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/view/upload/': {
-      id: '/_authenticated/view/upload/'
-      path: '/view/upload'
-      fullPath: '/view/upload'
-      preLoaderRoute: typeof AuthenticatedViewUploadIndexImport
-      parentRoute: typeof AuthenticatedRouteImport
+    '/_authenticated/bim-viewer-ut/view-cube': {
+      id: '/_authenticated/bim-viewer-ut/view-cube'
+      path: '/bim-viewer-ut/view-cube'
+      fullPath: '/bim-viewer-ut/view-cube'
+      preLoaderRoute: typeof AuthenticatedBimViewerUtViewCubeRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/managements/_layout/sub-projects/$id': {
-      id: '/_authenticated/managements/_layout/sub-projects/$id'
-      path: '/sub-projects/$id'
-      fullPath: '/managements/sub-projects/$id'
-      preLoaderRoute: typeof AuthenticatedManagementsLayoutSubProjectsIdImport
-      parentRoute: typeof AuthenticatedManagementsLayoutImport
+    '/_authenticated/bim-viewer-ut/ifc-viewer-selection-family': {
+      id: '/_authenticated/bim-viewer-ut/ifc-viewer-selection-family'
+      path: '/bim-viewer-ut/ifc-viewer-selection-family'
+      fullPath: '/bim-viewer-ut/ifc-viewer-selection-family'
+      preLoaderRoute: typeof AuthenticatedBimViewerUtIfcViewerSelectionFamilyRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/managements/_layout/sub-projects': {
-      id: '/_authenticated/managements/_layout/sub-projects'
-      path: '/sub-projects'
-      fullPath: '/managements/sub-projects'
-      preLoaderRoute: typeof AuthenticatedManagementsLayoutSubProjectsImport
-      parentRoute: typeof AuthenticatedManagementsLayoutImport
+    '/_authenticated/bim-viewer-ut/geometry-scene-viewcube': {
+      id: '/_authenticated/bim-viewer-ut/geometry-scene-viewcube'
+      path: '/bim-viewer-ut/geometry-scene-viewcube'
+      fullPath: '/bim-viewer-ut/geometry-scene-viewcube'
+      preLoaderRoute: typeof AuthenticatedBimViewerUtGeometrySceneViewcubeRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/managements/_layout/sub-projects/_layout': {
-      id: '/_authenticated/managements/_layout/sub-projects/_layout'
-      path: '/sub-projects'
-      fullPath: '/managements/sub-projects'
-      preLoaderRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutImport
-      parentRoute: typeof AuthenticatedManagementsLayoutSubProjectsRoute
+    '/_authenticated/bim-viewer-ut/demo-xeokit-ifc': {
+      id: '/_authenticated/bim-viewer-ut/demo-xeokit-ifc'
+      path: '/bim-viewer-ut/demo-xeokit-ifc'
+      fullPath: '/bim-viewer-ut/demo-xeokit-ifc'
+      preLoaderRoute: typeof AuthenticatedBimViewerUtDemoXeokitIfcRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/managements/_layout/teams/$team_id': {
-      id: '/_authenticated/managements/_layout/teams/$team_id'
-      path: '/teams/$team_id'
-      fullPath: '/managements/teams/$team_id'
-      preLoaderRoute: typeof AuthenticatedManagementsLayoutTeamsTeamidImport
-      parentRoute: typeof AuthenticatedManagementsLayoutImport
+    '/_authenticated/bim-viewer-ut/Ifc-viewer-selection': {
+      id: '/_authenticated/bim-viewer-ut/Ifc-viewer-selection'
+      path: '/bim-viewer-ut/Ifc-viewer-selection'
+      fullPath: '/bim-viewer-ut/Ifc-viewer-selection'
+      preLoaderRoute: typeof AuthenticatedBimViewerUtIfcViewerSelectionRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/tutorials/_layout/admin/courses': {
-      id: '/_authenticated/tutorials/_layout/admin/courses'
-      path: '/admin/courses'
-      fullPath: '/tutorials/admin/courses'
-      preLoaderRoute: typeof AuthenticatedTutorialsLayoutAdminCoursesImport
-      parentRoute: typeof AuthenticatedTutorialsLayoutImport
+    '/_authenticated/app/blog': {
+      id: '/_authenticated/app/blog'
+      path: '/blog'
+      fullPath: '/app/blog'
+      preLoaderRoute: typeof AuthenticatedAppBlogRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
     }
-    '/_authenticated/tutorials/_layout/admin/enrollments': {
-      id: '/_authenticated/tutorials/_layout/admin/enrollments'
-      path: '/admin/enrollments'
-      fullPath: '/tutorials/admin/enrollments'
-      preLoaderRoute: typeof AuthenticatedTutorialsLayoutAdminEnrollmentsImport
-      parentRoute: typeof AuthenticatedTutorialsLayoutImport
+    '/_authenticated/app/_layout': {
+      id: '/_authenticated/app/_layout'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AuthenticatedAppLayoutRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
     }
-    '/_authenticated/tutorials/_layout/admin/lessons': {
-      id: '/_authenticated/tutorials/_layout/admin/lessons'
-      path: '/admin/lessons'
-      fullPath: '/tutorials/admin/lessons'
-      preLoaderRoute: typeof AuthenticatedTutorialsLayoutAdminLessonsImport
-      parentRoute: typeof AuthenticatedTutorialsLayoutImport
-    }
-    '/_authenticated/tutorials/_layout/admin/members': {
-      id: '/_authenticated/tutorials/_layout/admin/members'
-      path: '/admin/members'
-      fullPath: '/tutorials/admin/members'
-      preLoaderRoute: typeof AuthenticatedTutorialsLayoutAdminMembersImport
-      parentRoute: typeof AuthenticatedTutorialsLayoutImport
-    }
-    '/_authenticated/tutorials/_layout/admin/user-enrollments': {
-      id: '/_authenticated/tutorials/_layout/admin/user-enrollments'
-      path: '/admin/user-enrollments'
-      fullPath: '/tutorials/admin/user-enrollments'
-      preLoaderRoute: typeof AuthenticatedTutorialsLayoutAdminUserEnrollmentsImport
-      parentRoute: typeof AuthenticatedTutorialsLayoutImport
-    }
-    '/_authenticated/tutorials/learning/lessons-for-newbies': {
-      id: '/_authenticated/tutorials/learning/lessons-for-newbies'
-      path: '/learning/lessons-for-newbies'
-      fullPath: '/tutorials/learning/lessons-for-newbies'
-      preLoaderRoute: typeof AuthenticatedTutorialsLearningLessonsForNewbiesImport
-      parentRoute: typeof AuthenticatedTutorialsImport
-    }
-    '/_authenticated/tutorials/learning/lessons-for-newbies/_layout': {
-      id: '/_authenticated/tutorials/learning/lessons-for-newbies/_layout'
-      path: '/learning/lessons-for-newbies'
-      fullPath: '/tutorials/learning/lessons-for-newbies'
-      preLoaderRoute: typeof AuthenticatedTutorialsLearningLessonsForNewbiesLayoutImport
-      parentRoute: typeof AuthenticatedTutorialsLearningLessonsForNewbiesRoute
+    '/_authenticated/admin/_layout': {
+      id: '/_authenticated/admin/_layout'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminLayoutRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
     }
     '/_authenticated/user/show/profile': {
       id: '/_authenticated/user/show/profile'
       path: '/user/show/profile'
       fullPath: '/user/show/profile'
-      preLoaderRoute: typeof AuthenticatedUserShowProfileImport
-      parentRoute: typeof AuthenticatedRouteImport
+      preLoaderRoute: typeof AuthenticatedUserShowProfileRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/user/show/profile/_layout': {
-      id: '/_authenticated/user/show/profile/_layout'
-      path: '/user/show/profile'
-      fullPath: '/user/show/profile'
-      preLoaderRoute: typeof AuthenticatedUserShowProfileLayoutImport
-      parentRoute: typeof AuthenticatedUserShowProfileRoute
+    '/_authenticated/tutorials/learning/lessons-for-newbies': {
+      id: '/_authenticated/tutorials/learning/lessons-for-newbies'
+      path: '/learning/lessons-for-newbies'
+      fullPath: '/tutorials/learning/lessons-for-newbies'
+      preLoaderRoute: typeof AuthenticatedTutorialsLearningLessonsForNewbiesRouteImport
+      parentRoute: typeof AuthenticatedTutorialsRoute
     }
-    '/_authenticated/managements/_layout/sub-projects/': {
-      id: '/_authenticated/managements/_layout/sub-projects/'
-      path: '/'
-      fullPath: '/managements/sub-projects/'
-      preLoaderRoute: typeof AuthenticatedManagementsLayoutSubProjectsIndexImport
-      parentRoute: typeof AuthenticatedManagementsLayoutSubProjectsImport
+    '/_authenticated/managements/_layout/sub-projects': {
+      id: '/_authenticated/managements/_layout/sub-projects'
+      path: '/sub-projects'
+      fullPath: '/managements/sub-projects'
+      preLoaderRoute: typeof AuthenticatedManagementsLayoutSubProjectsRouteImport
+      parentRoute: typeof AuthenticatedManagementsLayoutRoute
     }
-    '/_authenticated/managements/_layout/teams/': {
-      id: '/_authenticated/managements/_layout/teams/'
-      path: '/teams'
-      fullPath: '/managements/teams'
-      preLoaderRoute: typeof AuthenticatedManagementsLayoutTeamsIndexImport
-      parentRoute: typeof AuthenticatedManagementsLayoutImport
+    '/_authenticated/view/upload/': {
+      id: '/_authenticated/view/upload/'
+      path: '/view/upload'
+      fullPath: '/view/upload'
+      preLoaderRoute: typeof AuthenticatedViewUploadIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/user/show/portfolio/': {
-      id: '/_authenticated/user/show/portfolio/'
-      path: '/user/show/portfolio'
-      fullPath: '/user/show/portfolio'
-      preLoaderRoute: typeof AuthenticatedUserShowPortfolioIndexImport
-      parentRoute: typeof AuthenticatedRouteImport
+    '/_authenticated/examples/bim-viewer/': {
+      id: '/_authenticated/examples/bim-viewer/'
+      path: '/examples/bim-viewer'
+      fullPath: '/examples/bim-viewer'
+      preLoaderRoute: typeof AuthenticatedExamplesBimViewerIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/user/show/profile-owner/': {
-      id: '/_authenticated/user/show/profile-owner/'
-      path: '/user/show/profile-owner'
-      fullPath: '/user/show/profile-owner'
-      preLoaderRoute: typeof AuthenticatedUserShowProfileOwnerIndexImport
-      parentRoute: typeof AuthenticatedRouteImport
+    '/_authenticated/tutorials/_layout/purchase-course': {
+      id: '/_authenticated/tutorials/_layout/purchase-course'
+      path: '/purchase-course'
+      fullPath: '/tutorials/purchase-course'
+      preLoaderRoute: typeof AuthenticatedTutorialsLayoutPurchaseCourseRouteImport
+      parentRoute: typeof AuthenticatedTutorialsLayoutRoute
+    }
+    '/_authenticated/tutorials/_layout/introduction-course': {
+      id: '/_authenticated/tutorials/_layout/introduction-course'
+      path: '/introduction-course'
+      fullPath: '/tutorials/introduction-course'
+      preLoaderRoute: typeof AuthenticatedTutorialsLayoutIntroductionCourseRouteImport
+      parentRoute: typeof AuthenticatedTutorialsLayoutRoute
+    }
+    '/_authenticated/tutorials/_layout/home-page': {
+      id: '/_authenticated/tutorials/_layout/home-page'
+      path: '/home-page'
+      fullPath: '/tutorials/home-page'
+      preLoaderRoute: typeof AuthenticatedTutorialsLayoutHomePageRouteImport
+      parentRoute: typeof AuthenticatedTutorialsLayoutRoute
+    }
+    '/_authenticated/managements/_layout/workflows': {
+      id: '/_authenticated/managements/_layout/workflows'
+      path: '/workflows'
+      fullPath: '/managements/workflows'
+      preLoaderRoute: typeof AuthenticatedManagementsLayoutWorkflowsRouteImport
+      parentRoute: typeof AuthenticatedManagementsLayoutRoute
+    }
+    '/_authenticated/managements/_layout/users': {
+      id: '/_authenticated/managements/_layout/users'
+      path: '/users'
+      fullPath: '/managements/users'
+      preLoaderRoute: typeof AuthenticatedManagementsLayoutUsersRouteImport
+      parentRoute: typeof AuthenticatedManagementsLayoutRoute
+    }
+    '/_authenticated/managements/_layout/spaces': {
+      id: '/_authenticated/managements/_layout/spaces'
+      path: '/spaces'
+      fullPath: '/managements/spaces'
+      preLoaderRoute: typeof AuthenticatedManagementsLayoutSpacesRouteImport
+      parentRoute: typeof AuthenticatedManagementsLayoutRoute
+    }
+    '/_authenticated/managements/_layout/projects': {
+      id: '/_authenticated/managements/_layout/projects'
+      path: '/projects'
+      fullPath: '/managements/projects'
+      preLoaderRoute: typeof AuthenticatedManagementsLayoutProjectsRouteImport
+      parentRoute: typeof AuthenticatedManagementsLayoutRoute
+    }
+    '/_authenticated/managements/_layout/model-previews': {
+      id: '/_authenticated/managements/_layout/model-previews'
+      path: '/model-previews'
+      fullPath: '/managements/model-previews'
+      preLoaderRoute: typeof AuthenticatedManagementsLayoutModelPreviewsRouteImport
+      parentRoute: typeof AuthenticatedManagementsLayoutRoute
+    }
+    '/_authenticated/managements/_layout/me': {
+      id: '/_authenticated/managements/_layout/me'
+      path: '/me'
+      fullPath: '/managements/me'
+      preLoaderRoute: typeof AuthenticatedManagementsLayoutMeRouteImport
+      parentRoute: typeof AuthenticatedManagementsLayoutRoute
+    }
+    '/_authenticated/managements/_layout/home': {
+      id: '/_authenticated/managements/_layout/home'
+      path: '/home'
+      fullPath: '/managements/home'
+      preLoaderRoute: typeof AuthenticatedManagementsLayoutHomeRouteImport
+      parentRoute: typeof AuthenticatedManagementsLayoutRoute
+    }
+    '/_authenticated/managements/_layout/chat-support': {
+      id: '/_authenticated/managements/_layout/chat-support'
+      path: '/chat-support'
+      fullPath: '/managements/chat-support'
+      preLoaderRoute: typeof AuthenticatedManagementsLayoutChatSupportRouteImport
+      parentRoute: typeof AuthenticatedManagementsLayoutRoute
+    }
+    '/_authenticated/blog/_layout/contact': {
+      id: '/_authenticated/blog/_layout/contact'
+      path: '/contact'
+      fullPath: '/blog/contact'
+      preLoaderRoute: typeof AuthenticatedBlogLayoutContactRouteImport
+      parentRoute: typeof AuthenticatedBlogLayoutRoute
+    }
+    '/_authenticated/blog/_layout/about': {
+      id: '/_authenticated/blog/_layout/about'
+      path: '/about'
+      fullPath: '/blog/about'
+      preLoaderRoute: typeof AuthenticatedBlogLayoutAboutRouteImport
+      parentRoute: typeof AuthenticatedBlogLayoutRoute
+    }
+    '/_authenticated/app/_layout/how-it-works': {
+      id: '/_authenticated/app/_layout/how-it-works'
+      path: '/how-it-works'
+      fullPath: '/app/how-it-works'
+      preLoaderRoute: typeof AuthenticatedAppLayoutHowItWorksRouteImport
+      parentRoute: typeof AuthenticatedAppLayoutRoute
+    }
+    '/_authenticated/app/_layout/features': {
+      id: '/_authenticated/app/_layout/features'
+      path: '/features'
+      fullPath: '/app/features'
+      preLoaderRoute: typeof AuthenticatedAppLayoutFeaturesRouteImport
+      parentRoute: typeof AuthenticatedAppLayoutRoute
+    }
+    '/_authenticated/app/_layout/contact-us': {
+      id: '/_authenticated/app/_layout/contact-us'
+      path: '/contact-us'
+      fullPath: '/app/contact-us'
+      preLoaderRoute: typeof AuthenticatedAppLayoutContactUsRouteImport
+      parentRoute: typeof AuthenticatedAppLayoutRoute
+    }
+    '/_authenticated/app/_layout/connectors': {
+      id: '/_authenticated/app/_layout/connectors'
+      path: '/connectors'
+      fullPath: '/app/connectors'
+      preLoaderRoute: typeof AuthenticatedAppLayoutConnectorsRouteImport
+      parentRoute: typeof AuthenticatedAppLayoutRoute
     }
     '/_authenticated/user/settings/profile/edit': {
       id: '/_authenticated/user/settings/profile/edit'
       path: '/user/settings/profile/edit'
       fullPath: '/user/settings/profile/edit'
-      preLoaderRoute: typeof AuthenticatedUserSettingsProfileEditImport
-      parentRoute: typeof AuthenticatedRouteImport
+      preLoaderRoute: typeof AuthenticatedUserSettingsProfileEditRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/user/settings/profile/edit/_layout': {
-      id: '/_authenticated/user/settings/profile/edit/_layout'
-      path: '/user/settings/profile/edit'
-      fullPath: '/user/settings/profile/edit'
-      preLoaderRoute: typeof AuthenticatedUserSettingsProfileEditLayoutImport
-      parentRoute: typeof AuthenticatedUserSettingsProfileEditRoute
+    '/_authenticated/user/show/profile-owner/': {
+      id: '/_authenticated/user/show/profile-owner/'
+      path: '/user/show/profile-owner'
+      fullPath: '/user/show/profile-owner'
+      preLoaderRoute: typeof AuthenticatedUserShowProfileOwnerIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/user/show/profile/_layout/$idUser': {
-      id: '/_authenticated/user/show/profile/_layout/$idUser'
-      path: '/$idUser'
-      fullPath: '/user/show/profile/$idUser'
-      preLoaderRoute: typeof AuthenticatedUserShowProfileLayoutIdUserImport
-      parentRoute: typeof AuthenticatedUserShowProfileLayoutImport
+    '/_authenticated/user/show/portfolio/': {
+      id: '/_authenticated/user/show/portfolio/'
+      path: '/user/show/portfolio'
+      fullPath: '/user/show/portfolio'
+      preLoaderRoute: typeof AuthenticatedUserShowPortfolioIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/tutorials/learning/lessons-for-newbies/_layout/': {
-      id: '/_authenticated/tutorials/learning/lessons-for-newbies/_layout/'
+    '/_authenticated/managements/_layout/teams/': {
+      id: '/_authenticated/managements/_layout/teams/'
+      path: '/teams'
+      fullPath: '/managements/teams'
+      preLoaderRoute: typeof AuthenticatedManagementsLayoutTeamsIndexRouteImport
+      parentRoute: typeof AuthenticatedManagementsLayoutRoute
+    }
+    '/_authenticated/managements/_layout/sub-projects/': {
+      id: '/_authenticated/managements/_layout/sub-projects/'
       path: '/'
-      fullPath: '/tutorials/learning/lessons-for-newbies/'
-      preLoaderRoute: typeof AuthenticatedTutorialsLearningLessonsForNewbiesLayoutIndexImport
-      parentRoute: typeof AuthenticatedTutorialsLearningLessonsForNewbiesLayoutImport
+      fullPath: '/managements/sub-projects/'
+      preLoaderRoute: typeof AuthenticatedManagementsLayoutSubProjectsIndexRouteImport
+      parentRoute: typeof AuthenticatedManagementsLayoutSubProjectsRoute
+    }
+    '/_authenticated/user/show/profile/_layout': {
+      id: '/_authenticated/user/show/profile/_layout'
+      path: '/user/show/profile'
+      fullPath: '/user/show/profile'
+      preLoaderRoute: typeof AuthenticatedUserShowProfileLayoutRouteImport
+      parentRoute: typeof AuthenticatedUserShowProfileRoute
+    }
+    '/_authenticated/tutorials/learning/lessons-for-newbies/_layout': {
+      id: '/_authenticated/tutorials/learning/lessons-for-newbies/_layout'
+      path: '/learning/lessons-for-newbies'
+      fullPath: '/tutorials/learning/lessons-for-newbies'
+      preLoaderRoute: typeof AuthenticatedTutorialsLearningLessonsForNewbiesLayoutRouteImport
+      parentRoute: typeof AuthenticatedTutorialsLearningLessonsForNewbiesRoute
+    }
+    '/_authenticated/tutorials/_layout/admin/user-enrollments': {
+      id: '/_authenticated/tutorials/_layout/admin/user-enrollments'
+      path: '/admin/user-enrollments'
+      fullPath: '/tutorials/admin/user-enrollments'
+      preLoaderRoute: typeof AuthenticatedTutorialsLayoutAdminUserEnrollmentsRouteImport
+      parentRoute: typeof AuthenticatedTutorialsLayoutRoute
+    }
+    '/_authenticated/tutorials/_layout/admin/members': {
+      id: '/_authenticated/tutorials/_layout/admin/members'
+      path: '/admin/members'
+      fullPath: '/tutorials/admin/members'
+      preLoaderRoute: typeof AuthenticatedTutorialsLayoutAdminMembersRouteImport
+      parentRoute: typeof AuthenticatedTutorialsLayoutRoute
+    }
+    '/_authenticated/tutorials/_layout/admin/lessons': {
+      id: '/_authenticated/tutorials/_layout/admin/lessons'
+      path: '/admin/lessons'
+      fullPath: '/tutorials/admin/lessons'
+      preLoaderRoute: typeof AuthenticatedTutorialsLayoutAdminLessonsRouteImport
+      parentRoute: typeof AuthenticatedTutorialsLayoutRoute
+    }
+    '/_authenticated/tutorials/_layout/admin/enrollments': {
+      id: '/_authenticated/tutorials/_layout/admin/enrollments'
+      path: '/admin/enrollments'
+      fullPath: '/tutorials/admin/enrollments'
+      preLoaderRoute: typeof AuthenticatedTutorialsLayoutAdminEnrollmentsRouteImport
+      parentRoute: typeof AuthenticatedTutorialsLayoutRoute
+    }
+    '/_authenticated/tutorials/_layout/admin/courses': {
+      id: '/_authenticated/tutorials/_layout/admin/courses'
+      path: '/admin/courses'
+      fullPath: '/tutorials/admin/courses'
+      preLoaderRoute: typeof AuthenticatedTutorialsLayoutAdminCoursesRouteImport
+      parentRoute: typeof AuthenticatedTutorialsLayoutRoute
+    }
+    '/_authenticated/managements/_layout/teams/$team_id': {
+      id: '/_authenticated/managements/_layout/teams/$team_id'
+      path: '/teams/$team_id'
+      fullPath: '/managements/teams/$team_id'
+      preLoaderRoute: typeof AuthenticatedManagementsLayoutTeamsTeam_idRouteImport
+      parentRoute: typeof AuthenticatedManagementsLayoutRoute
+    }
+    '/_authenticated/managements/_layout/sub-projects/_layout': {
+      id: '/_authenticated/managements/_layout/sub-projects/_layout'
+      path: '/sub-projects'
+      fullPath: '/managements/sub-projects'
+      preLoaderRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutRouteImport
+      parentRoute: typeof AuthenticatedManagementsLayoutSubProjectsRoute
+    }
+    '/_authenticated/managements/_layout/sub-projects/$id': {
+      id: '/_authenticated/managements/_layout/sub-projects/$id'
+      path: '/sub-projects/$id'
+      fullPath: '/managements/sub-projects/$id'
+      preLoaderRoute: typeof AuthenticatedManagementsLayoutSubProjectsIdRouteImport
+      parentRoute: typeof AuthenticatedManagementsLayoutRoute
     }
     '/_authenticated/user/show/profile/_layout/': {
       id: '/_authenticated/user/show/profile/_layout/'
       path: '/'
       fullPath: '/user/show/profile/'
-      preLoaderRoute: typeof AuthenticatedUserShowProfileLayoutIndexImport
-      parentRoute: typeof AuthenticatedUserShowProfileLayoutImport
+      preLoaderRoute: typeof AuthenticatedUserShowProfileLayoutIndexRouteImport
+      parentRoute: typeof AuthenticatedUserShowProfileLayoutRoute
     }
-    '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/chat': {
-      id: '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/chat'
-      path: '/$sub_project_id/chat'
-      fullPath: '/managements/sub-projects/$sub_project_id/chat'
-      preLoaderRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidChatImport
-      parentRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutImport
+    '/_authenticated/tutorials/learning/lessons-for-newbies/_layout/': {
+      id: '/_authenticated/tutorials/learning/lessons-for-newbies/_layout/'
+      path: '/'
+      fullPath: '/tutorials/learning/lessons-for-newbies/'
+      preLoaderRoute: typeof AuthenticatedTutorialsLearningLessonsForNewbiesLayoutIndexRouteImport
+      parentRoute: typeof AuthenticatedTutorialsLearningLessonsForNewbiesLayoutRoute
     }
-    '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/dashboard': {
-      id: '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/dashboard'
-      path: '/$sub_project_id/dashboard'
-      fullPath: '/managements/sub-projects/$sub_project_id/dashboard'
-      preLoaderRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidDashboardImport
-      parentRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutImport
+    '/_authenticated/user/show/profile/_layout/$idUser': {
+      id: '/_authenticated/user/show/profile/_layout/$idUser'
+      path: '/$idUser'
+      fullPath: '/user/show/profile/$idUser'
+      preLoaderRoute: typeof AuthenticatedUserShowProfileLayoutIdUserRouteImport
+      parentRoute: typeof AuthenticatedUserShowProfileLayoutRoute
     }
-    '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/data': {
-      id: '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/data'
-      path: '/$sub_project_id/data'
-      fullPath: '/managements/sub-projects/$sub_project_id/data'
-      preLoaderRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidDataImport
-      parentRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutImport
-    }
-    '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/issues': {
-      id: '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/issues'
-      path: '/$sub_project_id/issues'
-      fullPath: '/managements/sub-projects/$sub_project_id/issues'
-      preLoaderRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidIssuesImport
-      parentRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutImport
-    }
-    '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/messages': {
-      id: '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/messages'
-      path: '/$sub_project_id/messages'
-      fullPath: '/managements/sub-projects/$sub_project_id/messages'
-      preLoaderRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidMessagesImport
-      parentRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutImport
-    }
-    '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/notifications': {
-      id: '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/notifications'
-      path: '/$sub_project_id/notifications'
-      fullPath: '/managements/sub-projects/$sub_project_id/notifications'
-      preLoaderRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidNotificationsImport
-      parentRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutImport
-    }
-    '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/rfis': {
-      id: '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/rfis'
-      path: '/$sub_project_id/rfis'
-      fullPath: '/managements/sub-projects/$sub_project_id/rfis'
-      preLoaderRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidRfisImport
-      parentRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutImport
-    }
-    '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/your-team': {
-      id: '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/your-team'
-      path: '/$sub_project_id/your-team'
-      fullPath: '/managements/sub-projects/$sub_project_id/your-team'
-      preLoaderRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidYourTeamImport
-      parentRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutImport
+    '/_authenticated/user/settings/profile/edit/_layout': {
+      id: '/_authenticated/user/settings/profile/edit/_layout'
+      path: '/user/settings/profile/edit'
+      fullPath: '/user/settings/profile/edit'
+      preLoaderRoute: typeof AuthenticatedUserSettingsProfileEditLayoutRouteImport
+      parentRoute: typeof AuthenticatedUserSettingsProfileEditRoute
     }
     '/_authenticated/user/settings/profile/edit/_layout/$idUser': {
       id: '/_authenticated/user/settings/profile/edit/_layout/$idUser'
       path: '/$idUser'
       fullPath: '/user/settings/profile/edit/$idUser'
-      preLoaderRoute: typeof AuthenticatedUserSettingsProfileEditLayoutIdUserImport
-      parentRoute: typeof AuthenticatedUserSettingsProfileEditLayoutImport
+      preLoaderRoute: typeof AuthenticatedUserSettingsProfileEditLayoutIdUserRouteImport
+      parentRoute: typeof AuthenticatedUserSettingsProfileEditLayoutRoute
+    }
+    '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/your-team': {
+      id: '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/your-team'
+      path: '/$sub_project_id/your-team'
+      fullPath: '/managements/sub-projects/$sub_project_id/your-team'
+      preLoaderRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idYourTeamRouteImport
+      parentRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutRoute
+    }
+    '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/rfis': {
+      id: '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/rfis'
+      path: '/$sub_project_id/rfis'
+      fullPath: '/managements/sub-projects/$sub_project_id/rfis'
+      preLoaderRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idRfisRouteImport
+      parentRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutRoute
+    }
+    '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/notifications': {
+      id: '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/notifications'
+      path: '/$sub_project_id/notifications'
+      fullPath: '/managements/sub-projects/$sub_project_id/notifications'
+      preLoaderRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idNotificationsRouteImport
+      parentRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutRoute
+    }
+    '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/messages': {
+      id: '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/messages'
+      path: '/$sub_project_id/messages'
+      fullPath: '/managements/sub-projects/$sub_project_id/messages'
+      preLoaderRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idMessagesRouteImport
+      parentRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutRoute
+    }
+    '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/issues': {
+      id: '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/issues'
+      path: '/$sub_project_id/issues'
+      fullPath: '/managements/sub-projects/$sub_project_id/issues'
+      preLoaderRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idIssuesRouteImport
+      parentRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutRoute
+    }
+    '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/data': {
+      id: '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/data'
+      path: '/$sub_project_id/data'
+      fullPath: '/managements/sub-projects/$sub_project_id/data'
+      preLoaderRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idDataRouteImport
+      parentRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutRoute
+    }
+    '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/dashboard': {
+      id: '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/dashboard'
+      path: '/$sub_project_id/dashboard'
+      fullPath: '/managements/sub-projects/$sub_project_id/dashboard'
+      preLoaderRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idDashboardRouteImport
+      parentRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutRoute
+    }
+    '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/chat': {
+      id: '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/chat'
+      path: '/$sub_project_id/chat'
+      fullPath: '/managements/sub-projects/$sub_project_id/chat'
+      preLoaderRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idChatRouteImport
+      parentRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutRoute
     }
   }
 }
-
-// Create and export the route tree
 
 interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminLayoutRoute: typeof AuthenticatedAdminLayoutRoute
@@ -1600,34 +2075,34 @@ const AuthenticatedBlogRouteWithChildren =
   AuthenticatedBlogRoute._addFileChildren(AuthenticatedBlogRouteChildren)
 
 interface AuthenticatedManagementsLayoutSubProjectsLayoutRouteChildren {
-  AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidChatRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidChatRoute
-  AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidDashboardRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidDashboardRoute
-  AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidDataRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidDataRoute
-  AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidIssuesRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidIssuesRoute
-  AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidMessagesRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidMessagesRoute
-  AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidNotificationsRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidNotificationsRoute
-  AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidRfisRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidRfisRoute
-  AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidYourTeamRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidYourTeamRoute
+  AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idChatRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idChatRoute
+  AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idDashboardRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idDashboardRoute
+  AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idDataRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idDataRoute
+  AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idIssuesRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idIssuesRoute
+  AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idMessagesRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idMessagesRoute
+  AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idNotificationsRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idNotificationsRoute
+  AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idRfisRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idRfisRoute
+  AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idYourTeamRoute: typeof AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idYourTeamRoute
 }
 
 const AuthenticatedManagementsLayoutSubProjectsLayoutRouteChildren: AuthenticatedManagementsLayoutSubProjectsLayoutRouteChildren =
   {
-    AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidChatRoute:
-      AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidChatRoute,
-    AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidDashboardRoute:
-      AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidDashboardRoute,
-    AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidDataRoute:
-      AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidDataRoute,
-    AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidIssuesRoute:
-      AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidIssuesRoute,
-    AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidMessagesRoute:
-      AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidMessagesRoute,
-    AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidNotificationsRoute:
-      AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidNotificationsRoute,
-    AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidRfisRoute:
-      AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidRfisRoute,
-    AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidYourTeamRoute:
-      AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidYourTeamRoute,
+    AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idChatRoute:
+      AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idChatRoute,
+    AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idDashboardRoute:
+      AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idDashboardRoute,
+    AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idDataRoute:
+      AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idDataRoute,
+    AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idIssuesRoute:
+      AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idIssuesRoute,
+    AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idMessagesRoute:
+      AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idMessagesRoute,
+    AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idNotificationsRoute:
+      AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idNotificationsRoute,
+    AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idRfisRoute:
+      AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idRfisRoute,
+    AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idYourTeamRoute:
+      AuthenticatedManagementsLayoutSubProjectsLayoutSub_project_idYourTeamRoute,
   }
 
 const AuthenticatedManagementsLayoutSubProjectsLayoutRouteWithChildren =
@@ -1664,7 +2139,7 @@ interface AuthenticatedManagementsLayoutRouteChildren {
   AuthenticatedManagementsLayoutWorkflowsRoute: typeof AuthenticatedManagementsLayoutWorkflowsRoute
   AuthenticatedManagementsLayoutSubProjectsIdRoute: typeof AuthenticatedManagementsLayoutSubProjectsIdRoute
   AuthenticatedManagementsLayoutSubProjectsRoute: typeof AuthenticatedManagementsLayoutSubProjectsRouteWithChildren
-  AuthenticatedManagementsLayoutTeamsTeamidRoute: typeof AuthenticatedManagementsLayoutTeamsTeamidRoute
+  AuthenticatedManagementsLayoutTeamsTeam_idRoute: typeof AuthenticatedManagementsLayoutTeamsTeam_idRoute
   AuthenticatedManagementsLayoutTeamsIndexRoute: typeof AuthenticatedManagementsLayoutTeamsIndexRoute
 }
 
@@ -1690,8 +2165,8 @@ const AuthenticatedManagementsLayoutRouteChildren: AuthenticatedManagementsLayou
       AuthenticatedManagementsLayoutSubProjectsIdRoute,
     AuthenticatedManagementsLayoutSubProjectsRoute:
       AuthenticatedManagementsLayoutSubProjectsRouteWithChildren,
-    AuthenticatedManagementsLayoutTeamsTeamidRoute:
-      AuthenticatedManagementsLayoutTeamsTeamidRoute,
+    AuthenticatedManagementsLayoutTeamsTeam_idRoute:
+      AuthenticatedManagementsLayoutTeamsTeam_idRoute,
     AuthenticatedManagementsLayoutTeamsIndexRoute:
       AuthenticatedManagementsLayoutTeamsIndexRoute,
   }
@@ -1719,6 +2194,7 @@ const AuthenticatedManagementsRouteWithChildren =
 interface AuthenticatedTutorialsLayoutRouteChildren {
   AuthenticatedTutorialsLayoutHomePageRoute: typeof AuthenticatedTutorialsLayoutHomePageRoute
   AuthenticatedTutorialsLayoutIntroductionCourseRoute: typeof AuthenticatedTutorialsLayoutIntroductionCourseRoute
+  AuthenticatedTutorialsLayoutPurchaseCourseRoute: typeof AuthenticatedTutorialsLayoutPurchaseCourseRoute
   AuthenticatedTutorialsLayoutAdminCoursesRoute: typeof AuthenticatedTutorialsLayoutAdminCoursesRoute
   AuthenticatedTutorialsLayoutAdminEnrollmentsRoute: typeof AuthenticatedTutorialsLayoutAdminEnrollmentsRoute
   AuthenticatedTutorialsLayoutAdminLessonsRoute: typeof AuthenticatedTutorialsLayoutAdminLessonsRoute
@@ -1732,6 +2208,8 @@ const AuthenticatedTutorialsLayoutRouteChildren: AuthenticatedTutorialsLayoutRou
       AuthenticatedTutorialsLayoutHomePageRoute,
     AuthenticatedTutorialsLayoutIntroductionCourseRoute:
       AuthenticatedTutorialsLayoutIntroductionCourseRoute,
+    AuthenticatedTutorialsLayoutPurchaseCourseRoute:
+      AuthenticatedTutorialsLayoutPurchaseCourseRoute,
     AuthenticatedTutorialsLayoutAdminCoursesRoute:
       AuthenticatedTutorialsLayoutAdminCoursesRoute,
     AuthenticatedTutorialsLayoutAdminEnrollmentsRoute:
@@ -1950,585 +2428,6 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
 const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
-export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '': typeof AuthenticatedRouteRouteWithChildren
-  '/500': typeof errors500LazyRoute
-  '/callback': typeof authCallbackRoute
-  '/reset-password': typeof authResetPasswordRoute
-  '/sign-in': typeof authSignInRoute
-  '/verify-email': typeof authVerifyEmailRoute
-  '/contact-us': typeof AuthenticatedContactUsRoute
-  '/features': typeof AuthenticatedFeaturesRoute
-  '/how-it-works': typeof AuthenticatedHowItWorksRoute
-  '/forgot-password': typeof authForgotPasswordLazyRoute
-  '/sign-in-2': typeof authSignIn2LazyRoute
-  '/sign-up': typeof authSignUpLazyRoute
-  '/401': typeof errors401LazyRoute
-  '/403': typeof errors403LazyRoute
-  '/404': typeof errors404LazyRoute
-  '/503': typeof errors503LazyRoute
-  '/admin': typeof AuthenticatedAdminLayoutRoute
-  '/app': typeof AuthenticatedAppLayoutRouteWithChildren
-  '/app/blog': typeof AuthenticatedAppBlogRoute
-  '/bim-viewer-ut/Ifc-viewer-selection': typeof AuthenticatedBimViewerUtIfcViewerSelectionRoute
-  '/bim-viewer-ut/demo-xeokit-ifc': typeof AuthenticatedBimViewerUtDemoXeokitIfcRoute
-  '/bim-viewer-ut/geometry-scene-viewcube': typeof AuthenticatedBimViewerUtGeometrySceneViewcubeRoute
-  '/bim-viewer-ut/ifc-viewer-selection-family': typeof AuthenticatedBimViewerUtIfcViewerSelectionFamilyRoute
-  '/bim-viewer-ut/view-cube': typeof AuthenticatedBimViewerUtViewCubeRoute
-  '/bim-viewer-ut/webgl-clipping-cube': typeof AuthenticatedBimViewerUtWebglClippingCubeRoute
-  '/bim-viewer-ut/webgl-clipping-stencil': typeof AuthenticatedBimViewerUtWebglClippingStencilRoute
-  '/bim-viewer-ut/webgl-clipping-stencil-ifc': typeof AuthenticatedBimViewerUtWebglClippingStencilIfcRoute
-  '/bim-viewer-ut/webgl-clipping-v1': typeof AuthenticatedBimViewerUtWebglClippingV1Route
-  '/bim-viewer-ut/webgl-clipping-v2': typeof AuthenticatedBimViewerUtWebglClippingV2Route
-  '/blog': typeof AuthenticatedBlogLayoutRouteWithChildren
-  '/managements': typeof AuthenticatedManagementsLayoutRouteWithChildren
-  '/tutorials': typeof AuthenticatedTutorialsLayoutRouteWithChildren
-  '/view/$fileCode': typeof AuthenticatedViewFileCodeRoute
-  '/view2/$fileCode': typeof AuthenticatedView2FileCodeRoute
-  '/bim-viewer-ut/ifc-loader': typeof AuthenticatedBimViewerUtIfcLoaderLazyRoute
-  '/bim-viewer-ut/instanced-mesh': typeof AuthenticatedBimViewerUtInstancedMeshLazyRoute
-  '/bim-viewer-ut/viewer': typeof AuthenticatedBimViewerUtViewerLazyRoute
-  '/app/': typeof AuthenticatedAppIndexRoute
-  '/my-room-3d': typeof AuthenticatedMyRoom3dIndexRoute
-  '/view': typeof AuthenticatedViewIndexRoute
-  '/view2': typeof AuthenticatedView2IndexRoute
-  '/example-model/ifc': typeof ExampleModelIfcIndexRoute
-  '/app/connectors': typeof AuthenticatedAppLayoutConnectorsRoute
-  '/app/contact-us': typeof AuthenticatedAppLayoutContactUsRoute
-  '/app/features': typeof AuthenticatedAppLayoutFeaturesRoute
-  '/app/how-it-works': typeof AuthenticatedAppLayoutHowItWorksRoute
-  '/blog/about': typeof AuthenticatedBlogLayoutAboutRoute
-  '/blog/contact': typeof AuthenticatedBlogLayoutContactRoute
-  '/managements/chat-support': typeof AuthenticatedManagementsLayoutChatSupportRoute
-  '/managements/home': typeof AuthenticatedManagementsLayoutHomeRoute
-  '/managements/me': typeof AuthenticatedManagementsLayoutMeRoute
-  '/managements/model-previews': typeof AuthenticatedManagementsLayoutModelPreviewsRoute
-  '/managements/projects': typeof AuthenticatedManagementsLayoutProjectsRoute
-  '/managements/spaces': typeof AuthenticatedManagementsLayoutSpacesRoute
-  '/managements/users': typeof AuthenticatedManagementsLayoutUsersRoute
-  '/managements/workflows': typeof AuthenticatedManagementsLayoutWorkflowsRoute
-  '/tutorials/home-page': typeof AuthenticatedTutorialsLayoutHomePageRoute
-  '/tutorials/introduction-course': typeof AuthenticatedTutorialsLayoutIntroductionCourseRoute
-  '/examples/bim-viewer': typeof AuthenticatedExamplesBimViewerIndexRoute
-  '/view/upload': typeof AuthenticatedViewUploadIndexRoute
-  '/managements/sub-projects/$id': typeof AuthenticatedManagementsLayoutSubProjectsIdRoute
-  '/managements/sub-projects': typeof AuthenticatedManagementsLayoutSubProjectsLayoutRouteWithChildren
-  '/managements/teams/$team_id': typeof AuthenticatedManagementsLayoutTeamsTeamidRoute
-  '/tutorials/admin/courses': typeof AuthenticatedTutorialsLayoutAdminCoursesRoute
-  '/tutorials/admin/enrollments': typeof AuthenticatedTutorialsLayoutAdminEnrollmentsRoute
-  '/tutorials/admin/lessons': typeof AuthenticatedTutorialsLayoutAdminLessonsRoute
-  '/tutorials/admin/members': typeof AuthenticatedTutorialsLayoutAdminMembersRoute
-  '/tutorials/admin/user-enrollments': typeof AuthenticatedTutorialsLayoutAdminUserEnrollmentsRoute
-  '/tutorials/learning/lessons-for-newbies': typeof AuthenticatedTutorialsLearningLessonsForNewbiesLayoutRouteWithChildren
-  '/user/show/profile': typeof AuthenticatedUserShowProfileLayoutRouteWithChildren
-  '/managements/sub-projects/': typeof AuthenticatedManagementsLayoutSubProjectsIndexRoute
-  '/managements/teams': typeof AuthenticatedManagementsLayoutTeamsIndexRoute
-  '/user/show/portfolio': typeof AuthenticatedUserShowPortfolioIndexRoute
-  '/user/show/profile-owner': typeof AuthenticatedUserShowProfileOwnerIndexRoute
-  '/user/settings/profile/edit': typeof AuthenticatedUserSettingsProfileEditLayoutRouteWithChildren
-  '/user/show/profile/$idUser': typeof AuthenticatedUserShowProfileLayoutIdUserRoute
-  '/tutorials/learning/lessons-for-newbies/': typeof AuthenticatedTutorialsLearningLessonsForNewbiesLayoutIndexRoute
-  '/user/show/profile/': typeof AuthenticatedUserShowProfileLayoutIndexRoute
-  '/managements/sub-projects/$sub_project_id/chat': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidChatRoute
-  '/managements/sub-projects/$sub_project_id/dashboard': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidDashboardRoute
-  '/managements/sub-projects/$sub_project_id/data': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidDataRoute
-  '/managements/sub-projects/$sub_project_id/issues': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidIssuesRoute
-  '/managements/sub-projects/$sub_project_id/messages': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidMessagesRoute
-  '/managements/sub-projects/$sub_project_id/notifications': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidNotificationsRoute
-  '/managements/sub-projects/$sub_project_id/rfis': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidRfisRoute
-  '/managements/sub-projects/$sub_project_id/your-team': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidYourTeamRoute
-  '/user/settings/profile/edit/$idUser': typeof AuthenticatedUserSettingsProfileEditLayoutIdUserRoute
-}
-
-export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '': typeof AuthenticatedRouteRouteWithChildren
-  '/500': typeof errors500LazyRoute
-  '/callback': typeof authCallbackRoute
-  '/reset-password': typeof authResetPasswordRoute
-  '/sign-in': typeof authSignInRoute
-  '/verify-email': typeof authVerifyEmailRoute
-  '/contact-us': typeof AuthenticatedContactUsRoute
-  '/features': typeof AuthenticatedFeaturesRoute
-  '/how-it-works': typeof AuthenticatedHowItWorksRoute
-  '/forgot-password': typeof authForgotPasswordLazyRoute
-  '/sign-in-2': typeof authSignIn2LazyRoute
-  '/sign-up': typeof authSignUpLazyRoute
-  '/401': typeof errors401LazyRoute
-  '/403': typeof errors403LazyRoute
-  '/404': typeof errors404LazyRoute
-  '/503': typeof errors503LazyRoute
-  '/admin': typeof AuthenticatedAdminLayoutRoute
-  '/app': typeof AuthenticatedAppIndexRoute
-  '/app/blog': typeof AuthenticatedAppBlogRoute
-  '/bim-viewer-ut/Ifc-viewer-selection': typeof AuthenticatedBimViewerUtIfcViewerSelectionRoute
-  '/bim-viewer-ut/demo-xeokit-ifc': typeof AuthenticatedBimViewerUtDemoXeokitIfcRoute
-  '/bim-viewer-ut/geometry-scene-viewcube': typeof AuthenticatedBimViewerUtGeometrySceneViewcubeRoute
-  '/bim-viewer-ut/ifc-viewer-selection-family': typeof AuthenticatedBimViewerUtIfcViewerSelectionFamilyRoute
-  '/bim-viewer-ut/view-cube': typeof AuthenticatedBimViewerUtViewCubeRoute
-  '/bim-viewer-ut/webgl-clipping-cube': typeof AuthenticatedBimViewerUtWebglClippingCubeRoute
-  '/bim-viewer-ut/webgl-clipping-stencil': typeof AuthenticatedBimViewerUtWebglClippingStencilRoute
-  '/bim-viewer-ut/webgl-clipping-stencil-ifc': typeof AuthenticatedBimViewerUtWebglClippingStencilIfcRoute
-  '/bim-viewer-ut/webgl-clipping-v1': typeof AuthenticatedBimViewerUtWebglClippingV1Route
-  '/bim-viewer-ut/webgl-clipping-v2': typeof AuthenticatedBimViewerUtWebglClippingV2Route
-  '/blog': typeof AuthenticatedBlogLayoutRouteWithChildren
-  '/managements': typeof AuthenticatedManagementsLayoutRouteWithChildren
-  '/tutorials': typeof AuthenticatedTutorialsLayoutRouteWithChildren
-  '/view/$fileCode': typeof AuthenticatedViewFileCodeRoute
-  '/view2/$fileCode': typeof AuthenticatedView2FileCodeRoute
-  '/bim-viewer-ut/ifc-loader': typeof AuthenticatedBimViewerUtIfcLoaderLazyRoute
-  '/bim-viewer-ut/instanced-mesh': typeof AuthenticatedBimViewerUtInstancedMeshLazyRoute
-  '/bim-viewer-ut/viewer': typeof AuthenticatedBimViewerUtViewerLazyRoute
-  '/my-room-3d': typeof AuthenticatedMyRoom3dIndexRoute
-  '/view': typeof AuthenticatedViewIndexRoute
-  '/view2': typeof AuthenticatedView2IndexRoute
-  '/example-model/ifc': typeof ExampleModelIfcIndexRoute
-  '/app/connectors': typeof AuthenticatedAppLayoutConnectorsRoute
-  '/app/contact-us': typeof AuthenticatedAppLayoutContactUsRoute
-  '/app/features': typeof AuthenticatedAppLayoutFeaturesRoute
-  '/app/how-it-works': typeof AuthenticatedAppLayoutHowItWorksRoute
-  '/blog/about': typeof AuthenticatedBlogLayoutAboutRoute
-  '/blog/contact': typeof AuthenticatedBlogLayoutContactRoute
-  '/managements/chat-support': typeof AuthenticatedManagementsLayoutChatSupportRoute
-  '/managements/home': typeof AuthenticatedManagementsLayoutHomeRoute
-  '/managements/me': typeof AuthenticatedManagementsLayoutMeRoute
-  '/managements/model-previews': typeof AuthenticatedManagementsLayoutModelPreviewsRoute
-  '/managements/projects': typeof AuthenticatedManagementsLayoutProjectsRoute
-  '/managements/spaces': typeof AuthenticatedManagementsLayoutSpacesRoute
-  '/managements/users': typeof AuthenticatedManagementsLayoutUsersRoute
-  '/managements/workflows': typeof AuthenticatedManagementsLayoutWorkflowsRoute
-  '/tutorials/home-page': typeof AuthenticatedTutorialsLayoutHomePageRoute
-  '/tutorials/introduction-course': typeof AuthenticatedTutorialsLayoutIntroductionCourseRoute
-  '/examples/bim-viewer': typeof AuthenticatedExamplesBimViewerIndexRoute
-  '/view/upload': typeof AuthenticatedViewUploadIndexRoute
-  '/managements/sub-projects/$id': typeof AuthenticatedManagementsLayoutSubProjectsIdRoute
-  '/managements/sub-projects': typeof AuthenticatedManagementsLayoutSubProjectsIndexRoute
-  '/managements/teams/$team_id': typeof AuthenticatedManagementsLayoutTeamsTeamidRoute
-  '/tutorials/admin/courses': typeof AuthenticatedTutorialsLayoutAdminCoursesRoute
-  '/tutorials/admin/enrollments': typeof AuthenticatedTutorialsLayoutAdminEnrollmentsRoute
-  '/tutorials/admin/lessons': typeof AuthenticatedTutorialsLayoutAdminLessonsRoute
-  '/tutorials/admin/members': typeof AuthenticatedTutorialsLayoutAdminMembersRoute
-  '/tutorials/admin/user-enrollments': typeof AuthenticatedTutorialsLayoutAdminUserEnrollmentsRoute
-  '/tutorials/learning/lessons-for-newbies': typeof AuthenticatedTutorialsLearningLessonsForNewbiesLayoutIndexRoute
-  '/user/show/profile': typeof AuthenticatedUserShowProfileLayoutIndexRoute
-  '/managements/teams': typeof AuthenticatedManagementsLayoutTeamsIndexRoute
-  '/user/show/portfolio': typeof AuthenticatedUserShowPortfolioIndexRoute
-  '/user/show/profile-owner': typeof AuthenticatedUserShowProfileOwnerIndexRoute
-  '/user/settings/profile/edit': typeof AuthenticatedUserSettingsProfileEditLayoutRouteWithChildren
-  '/user/show/profile/$idUser': typeof AuthenticatedUserShowProfileLayoutIdUserRoute
-  '/managements/sub-projects/$sub_project_id/chat': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidChatRoute
-  '/managements/sub-projects/$sub_project_id/dashboard': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidDashboardRoute
-  '/managements/sub-projects/$sub_project_id/data': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidDataRoute
-  '/managements/sub-projects/$sub_project_id/issues': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidIssuesRoute
-  '/managements/sub-projects/$sub_project_id/messages': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidMessagesRoute
-  '/managements/sub-projects/$sub_project_id/notifications': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidNotificationsRoute
-  '/managements/sub-projects/$sub_project_id/rfis': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidRfisRoute
-  '/managements/sub-projects/$sub_project_id/your-team': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidYourTeamRoute
-  '/user/settings/profile/edit/$idUser': typeof AuthenticatedUserSettingsProfileEditLayoutIdUserRoute
-}
-
-export interface FileRoutesById {
-  __root__: typeof rootRoute
-  '/': typeof IndexRoute
-  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
-  '/(auth)/500': typeof auth500Route
-  '/(auth)/callback': typeof authCallbackRoute
-  '/(auth)/reset-password': typeof authResetPasswordRoute
-  '/(auth)/sign-in': typeof authSignInRoute
-  '/(auth)/verify-email': typeof authVerifyEmailRoute
-  '/_authenticated/contact-us': typeof AuthenticatedContactUsRoute
-  '/_authenticated/features': typeof AuthenticatedFeaturesRoute
-  '/_authenticated/how-it-works': typeof AuthenticatedHowItWorksRoute
-  '/(auth)/forgot-password': typeof authForgotPasswordLazyRoute
-  '/(auth)/sign-in-2': typeof authSignIn2LazyRoute
-  '/(auth)/sign-up': typeof authSignUpLazyRoute
-  '/(errors)/401': typeof errors401LazyRoute
-  '/(errors)/403': typeof errors403LazyRoute
-  '/(errors)/404': typeof errors404LazyRoute
-  '/(errors)/500': typeof errors500LazyRoute
-  '/(errors)/503': typeof errors503LazyRoute
-  '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
-  '/_authenticated/admin/_layout': typeof AuthenticatedAdminLayoutRoute
-  '/_authenticated/app': typeof AuthenticatedAppRouteWithChildren
-  '/_authenticated/app/_layout': typeof AuthenticatedAppLayoutRouteWithChildren
-  '/_authenticated/app/blog': typeof AuthenticatedAppBlogRoute
-  '/_authenticated/bim-viewer-ut/Ifc-viewer-selection': typeof AuthenticatedBimViewerUtIfcViewerSelectionRoute
-  '/_authenticated/bim-viewer-ut/demo-xeokit-ifc': typeof AuthenticatedBimViewerUtDemoXeokitIfcRoute
-  '/_authenticated/bim-viewer-ut/geometry-scene-viewcube': typeof AuthenticatedBimViewerUtGeometrySceneViewcubeRoute
-  '/_authenticated/bim-viewer-ut/ifc-viewer-selection-family': typeof AuthenticatedBimViewerUtIfcViewerSelectionFamilyRoute
-  '/_authenticated/bim-viewer-ut/view-cube': typeof AuthenticatedBimViewerUtViewCubeRoute
-  '/_authenticated/bim-viewer-ut/webgl-clipping-cube': typeof AuthenticatedBimViewerUtWebglClippingCubeRoute
-  '/_authenticated/bim-viewer-ut/webgl-clipping-stencil': typeof AuthenticatedBimViewerUtWebglClippingStencilRoute
-  '/_authenticated/bim-viewer-ut/webgl-clipping-stencil-ifc': typeof AuthenticatedBimViewerUtWebglClippingStencilIfcRoute
-  '/_authenticated/bim-viewer-ut/webgl-clipping-v1': typeof AuthenticatedBimViewerUtWebglClippingV1Route
-  '/_authenticated/bim-viewer-ut/webgl-clipping-v2': typeof AuthenticatedBimViewerUtWebglClippingV2Route
-  '/_authenticated/blog': typeof AuthenticatedBlogRouteWithChildren
-  '/_authenticated/blog/_layout': typeof AuthenticatedBlogLayoutRouteWithChildren
-  '/_authenticated/managements': typeof AuthenticatedManagementsRouteWithChildren
-  '/_authenticated/managements/_layout': typeof AuthenticatedManagementsLayoutRouteWithChildren
-  '/_authenticated/tutorials': typeof AuthenticatedTutorialsRouteWithChildren
-  '/_authenticated/tutorials/_layout': typeof AuthenticatedTutorialsLayoutRouteWithChildren
-  '/_authenticated/view/$fileCode': typeof AuthenticatedViewFileCodeRoute
-  '/_authenticated/view2/$fileCode': typeof AuthenticatedView2FileCodeRoute
-  '/_authenticated/bim-viewer-ut/ifc-loader': typeof AuthenticatedBimViewerUtIfcLoaderLazyRoute
-  '/_authenticated/bim-viewer-ut/instanced-mesh': typeof AuthenticatedBimViewerUtInstancedMeshLazyRoute
-  '/_authenticated/bim-viewer-ut/viewer': typeof AuthenticatedBimViewerUtViewerLazyRoute
-  '/_authenticated/app/': typeof AuthenticatedAppIndexRoute
-  '/_authenticated/my-room-3d/': typeof AuthenticatedMyRoom3dIndexRoute
-  '/_authenticated/view/': typeof AuthenticatedViewIndexRoute
-  '/_authenticated/view2/': typeof AuthenticatedView2IndexRoute
-  '/example-model/ifc/': typeof ExampleModelIfcIndexRoute
-  '/_authenticated/app/_layout/connectors': typeof AuthenticatedAppLayoutConnectorsRoute
-  '/_authenticated/app/_layout/contact-us': typeof AuthenticatedAppLayoutContactUsRoute
-  '/_authenticated/app/_layout/features': typeof AuthenticatedAppLayoutFeaturesRoute
-  '/_authenticated/app/_layout/how-it-works': typeof AuthenticatedAppLayoutHowItWorksRoute
-  '/_authenticated/blog/_layout/about': typeof AuthenticatedBlogLayoutAboutRoute
-  '/_authenticated/blog/_layout/contact': typeof AuthenticatedBlogLayoutContactRoute
-  '/_authenticated/managements/_layout/chat-support': typeof AuthenticatedManagementsLayoutChatSupportRoute
-  '/_authenticated/managements/_layout/home': typeof AuthenticatedManagementsLayoutHomeRoute
-  '/_authenticated/managements/_layout/me': typeof AuthenticatedManagementsLayoutMeRoute
-  '/_authenticated/managements/_layout/model-previews': typeof AuthenticatedManagementsLayoutModelPreviewsRoute
-  '/_authenticated/managements/_layout/projects': typeof AuthenticatedManagementsLayoutProjectsRoute
-  '/_authenticated/managements/_layout/spaces': typeof AuthenticatedManagementsLayoutSpacesRoute
-  '/_authenticated/managements/_layout/users': typeof AuthenticatedManagementsLayoutUsersRoute
-  '/_authenticated/managements/_layout/workflows': typeof AuthenticatedManagementsLayoutWorkflowsRoute
-  '/_authenticated/tutorials/_layout/home-page': typeof AuthenticatedTutorialsLayoutHomePageRoute
-  '/_authenticated/tutorials/_layout/introduction-course': typeof AuthenticatedTutorialsLayoutIntroductionCourseRoute
-  '/_authenticated/examples/bim-viewer/': typeof AuthenticatedExamplesBimViewerIndexRoute
-  '/_authenticated/view/upload/': typeof AuthenticatedViewUploadIndexRoute
-  '/_authenticated/managements/_layout/sub-projects/$id': typeof AuthenticatedManagementsLayoutSubProjectsIdRoute
-  '/_authenticated/managements/_layout/sub-projects': typeof AuthenticatedManagementsLayoutSubProjectsRouteWithChildren
-  '/_authenticated/managements/_layout/sub-projects/_layout': typeof AuthenticatedManagementsLayoutSubProjectsLayoutRouteWithChildren
-  '/_authenticated/managements/_layout/teams/$team_id': typeof AuthenticatedManagementsLayoutTeamsTeamidRoute
-  '/_authenticated/tutorials/_layout/admin/courses': typeof AuthenticatedTutorialsLayoutAdminCoursesRoute
-  '/_authenticated/tutorials/_layout/admin/enrollments': typeof AuthenticatedTutorialsLayoutAdminEnrollmentsRoute
-  '/_authenticated/tutorials/_layout/admin/lessons': typeof AuthenticatedTutorialsLayoutAdminLessonsRoute
-  '/_authenticated/tutorials/_layout/admin/members': typeof AuthenticatedTutorialsLayoutAdminMembersRoute
-  '/_authenticated/tutorials/_layout/admin/user-enrollments': typeof AuthenticatedTutorialsLayoutAdminUserEnrollmentsRoute
-  '/_authenticated/tutorials/learning/lessons-for-newbies': typeof AuthenticatedTutorialsLearningLessonsForNewbiesRouteWithChildren
-  '/_authenticated/tutorials/learning/lessons-for-newbies/_layout': typeof AuthenticatedTutorialsLearningLessonsForNewbiesLayoutRouteWithChildren
-  '/_authenticated/user/show/profile': typeof AuthenticatedUserShowProfileRouteWithChildren
-  '/_authenticated/user/show/profile/_layout': typeof AuthenticatedUserShowProfileLayoutRouteWithChildren
-  '/_authenticated/managements/_layout/sub-projects/': typeof AuthenticatedManagementsLayoutSubProjectsIndexRoute
-  '/_authenticated/managements/_layout/teams/': typeof AuthenticatedManagementsLayoutTeamsIndexRoute
-  '/_authenticated/user/show/portfolio/': typeof AuthenticatedUserShowPortfolioIndexRoute
-  '/_authenticated/user/show/profile-owner/': typeof AuthenticatedUserShowProfileOwnerIndexRoute
-  '/_authenticated/user/settings/profile/edit': typeof AuthenticatedUserSettingsProfileEditRouteWithChildren
-  '/_authenticated/user/settings/profile/edit/_layout': typeof AuthenticatedUserSettingsProfileEditLayoutRouteWithChildren
-  '/_authenticated/user/show/profile/_layout/$idUser': typeof AuthenticatedUserShowProfileLayoutIdUserRoute
-  '/_authenticated/tutorials/learning/lessons-for-newbies/_layout/': typeof AuthenticatedTutorialsLearningLessonsForNewbiesLayoutIndexRoute
-  '/_authenticated/user/show/profile/_layout/': typeof AuthenticatedUserShowProfileLayoutIndexRoute
-  '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/chat': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidChatRoute
-  '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/dashboard': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidDashboardRoute
-  '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/data': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidDataRoute
-  '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/issues': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidIssuesRoute
-  '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/messages': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidMessagesRoute
-  '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/notifications': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidNotificationsRoute
-  '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/rfis': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidRfisRoute
-  '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/your-team': typeof AuthenticatedManagementsLayoutSubProjectsLayoutSubprojectidYourTeamRoute
-  '/_authenticated/user/settings/profile/edit/_layout/$idUser': typeof AuthenticatedUserSettingsProfileEditLayoutIdUserRoute
-}
-
-export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | ''
-    | '/500'
-    | '/callback'
-    | '/reset-password'
-    | '/sign-in'
-    | '/verify-email'
-    | '/contact-us'
-    | '/features'
-    | '/how-it-works'
-    | '/forgot-password'
-    | '/sign-in-2'
-    | '/sign-up'
-    | '/401'
-    | '/403'
-    | '/404'
-    | '/503'
-    | '/admin'
-    | '/app'
-    | '/app/blog'
-    | '/bim-viewer-ut/Ifc-viewer-selection'
-    | '/bim-viewer-ut/demo-xeokit-ifc'
-    | '/bim-viewer-ut/geometry-scene-viewcube'
-    | '/bim-viewer-ut/ifc-viewer-selection-family'
-    | '/bim-viewer-ut/view-cube'
-    | '/bim-viewer-ut/webgl-clipping-cube'
-    | '/bim-viewer-ut/webgl-clipping-stencil'
-    | '/bim-viewer-ut/webgl-clipping-stencil-ifc'
-    | '/bim-viewer-ut/webgl-clipping-v1'
-    | '/bim-viewer-ut/webgl-clipping-v2'
-    | '/blog'
-    | '/managements'
-    | '/tutorials'
-    | '/view/$fileCode'
-    | '/view2/$fileCode'
-    | '/bim-viewer-ut/ifc-loader'
-    | '/bim-viewer-ut/instanced-mesh'
-    | '/bim-viewer-ut/viewer'
-    | '/app/'
-    | '/my-room-3d'
-    | '/view'
-    | '/view2'
-    | '/example-model/ifc'
-    | '/app/connectors'
-    | '/app/contact-us'
-    | '/app/features'
-    | '/app/how-it-works'
-    | '/blog/about'
-    | '/blog/contact'
-    | '/managements/chat-support'
-    | '/managements/home'
-    | '/managements/me'
-    | '/managements/model-previews'
-    | '/managements/projects'
-    | '/managements/spaces'
-    | '/managements/users'
-    | '/managements/workflows'
-    | '/tutorials/home-page'
-    | '/tutorials/introduction-course'
-    | '/examples/bim-viewer'
-    | '/view/upload'
-    | '/managements/sub-projects/$id'
-    | '/managements/sub-projects'
-    | '/managements/teams/$team_id'
-    | '/tutorials/admin/courses'
-    | '/tutorials/admin/enrollments'
-    | '/tutorials/admin/lessons'
-    | '/tutorials/admin/members'
-    | '/tutorials/admin/user-enrollments'
-    | '/tutorials/learning/lessons-for-newbies'
-    | '/user/show/profile'
-    | '/managements/sub-projects/'
-    | '/managements/teams'
-    | '/user/show/portfolio'
-    | '/user/show/profile-owner'
-    | '/user/settings/profile/edit'
-    | '/user/show/profile/$idUser'
-    | '/tutorials/learning/lessons-for-newbies/'
-    | '/user/show/profile/'
-    | '/managements/sub-projects/$sub_project_id/chat'
-    | '/managements/sub-projects/$sub_project_id/dashboard'
-    | '/managements/sub-projects/$sub_project_id/data'
-    | '/managements/sub-projects/$sub_project_id/issues'
-    | '/managements/sub-projects/$sub_project_id/messages'
-    | '/managements/sub-projects/$sub_project_id/notifications'
-    | '/managements/sub-projects/$sub_project_id/rfis'
-    | '/managements/sub-projects/$sub_project_id/your-team'
-    | '/user/settings/profile/edit/$idUser'
-  fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | ''
-    | '/500'
-    | '/callback'
-    | '/reset-password'
-    | '/sign-in'
-    | '/verify-email'
-    | '/contact-us'
-    | '/features'
-    | '/how-it-works'
-    | '/forgot-password'
-    | '/sign-in-2'
-    | '/sign-up'
-    | '/401'
-    | '/403'
-    | '/404'
-    | '/503'
-    | '/admin'
-    | '/app'
-    | '/app/blog'
-    | '/bim-viewer-ut/Ifc-viewer-selection'
-    | '/bim-viewer-ut/demo-xeokit-ifc'
-    | '/bim-viewer-ut/geometry-scene-viewcube'
-    | '/bim-viewer-ut/ifc-viewer-selection-family'
-    | '/bim-viewer-ut/view-cube'
-    | '/bim-viewer-ut/webgl-clipping-cube'
-    | '/bim-viewer-ut/webgl-clipping-stencil'
-    | '/bim-viewer-ut/webgl-clipping-stencil-ifc'
-    | '/bim-viewer-ut/webgl-clipping-v1'
-    | '/bim-viewer-ut/webgl-clipping-v2'
-    | '/blog'
-    | '/managements'
-    | '/tutorials'
-    | '/view/$fileCode'
-    | '/view2/$fileCode'
-    | '/bim-viewer-ut/ifc-loader'
-    | '/bim-viewer-ut/instanced-mesh'
-    | '/bim-viewer-ut/viewer'
-    | '/my-room-3d'
-    | '/view'
-    | '/view2'
-    | '/example-model/ifc'
-    | '/app/connectors'
-    | '/app/contact-us'
-    | '/app/features'
-    | '/app/how-it-works'
-    | '/blog/about'
-    | '/blog/contact'
-    | '/managements/chat-support'
-    | '/managements/home'
-    | '/managements/me'
-    | '/managements/model-previews'
-    | '/managements/projects'
-    | '/managements/spaces'
-    | '/managements/users'
-    | '/managements/workflows'
-    | '/tutorials/home-page'
-    | '/tutorials/introduction-course'
-    | '/examples/bim-viewer'
-    | '/view/upload'
-    | '/managements/sub-projects/$id'
-    | '/managements/sub-projects'
-    | '/managements/teams/$team_id'
-    | '/tutorials/admin/courses'
-    | '/tutorials/admin/enrollments'
-    | '/tutorials/admin/lessons'
-    | '/tutorials/admin/members'
-    | '/tutorials/admin/user-enrollments'
-    | '/tutorials/learning/lessons-for-newbies'
-    | '/user/show/profile'
-    | '/managements/teams'
-    | '/user/show/portfolio'
-    | '/user/show/profile-owner'
-    | '/user/settings/profile/edit'
-    | '/user/show/profile/$idUser'
-    | '/managements/sub-projects/$sub_project_id/chat'
-    | '/managements/sub-projects/$sub_project_id/dashboard'
-    | '/managements/sub-projects/$sub_project_id/data'
-    | '/managements/sub-projects/$sub_project_id/issues'
-    | '/managements/sub-projects/$sub_project_id/messages'
-    | '/managements/sub-projects/$sub_project_id/notifications'
-    | '/managements/sub-projects/$sub_project_id/rfis'
-    | '/managements/sub-projects/$sub_project_id/your-team'
-    | '/user/settings/profile/edit/$idUser'
-  id:
-    | '__root__'
-    | '/'
-    | '/_authenticated'
-    | '/(auth)/500'
-    | '/(auth)/callback'
-    | '/(auth)/reset-password'
-    | '/(auth)/sign-in'
-    | '/(auth)/verify-email'
-    | '/_authenticated/contact-us'
-    | '/_authenticated/features'
-    | '/_authenticated/how-it-works'
-    | '/(auth)/forgot-password'
-    | '/(auth)/sign-in-2'
-    | '/(auth)/sign-up'
-    | '/(errors)/401'
-    | '/(errors)/403'
-    | '/(errors)/404'
-    | '/(errors)/500'
-    | '/(errors)/503'
-    | '/_authenticated/admin'
-    | '/_authenticated/admin/_layout'
-    | '/_authenticated/app'
-    | '/_authenticated/app/_layout'
-    | '/_authenticated/app/blog'
-    | '/_authenticated/bim-viewer-ut/Ifc-viewer-selection'
-    | '/_authenticated/bim-viewer-ut/demo-xeokit-ifc'
-    | '/_authenticated/bim-viewer-ut/geometry-scene-viewcube'
-    | '/_authenticated/bim-viewer-ut/ifc-viewer-selection-family'
-    | '/_authenticated/bim-viewer-ut/view-cube'
-    | '/_authenticated/bim-viewer-ut/webgl-clipping-cube'
-    | '/_authenticated/bim-viewer-ut/webgl-clipping-stencil'
-    | '/_authenticated/bim-viewer-ut/webgl-clipping-stencil-ifc'
-    | '/_authenticated/bim-viewer-ut/webgl-clipping-v1'
-    | '/_authenticated/bim-viewer-ut/webgl-clipping-v2'
-    | '/_authenticated/blog'
-    | '/_authenticated/blog/_layout'
-    | '/_authenticated/managements'
-    | '/_authenticated/managements/_layout'
-    | '/_authenticated/tutorials'
-    | '/_authenticated/tutorials/_layout'
-    | '/_authenticated/view/$fileCode'
-    | '/_authenticated/view2/$fileCode'
-    | '/_authenticated/bim-viewer-ut/ifc-loader'
-    | '/_authenticated/bim-viewer-ut/instanced-mesh'
-    | '/_authenticated/bim-viewer-ut/viewer'
-    | '/_authenticated/app/'
-    | '/_authenticated/my-room-3d/'
-    | '/_authenticated/view/'
-    | '/_authenticated/view2/'
-    | '/example-model/ifc/'
-    | '/_authenticated/app/_layout/connectors'
-    | '/_authenticated/app/_layout/contact-us'
-    | '/_authenticated/app/_layout/features'
-    | '/_authenticated/app/_layout/how-it-works'
-    | '/_authenticated/blog/_layout/about'
-    | '/_authenticated/blog/_layout/contact'
-    | '/_authenticated/managements/_layout/chat-support'
-    | '/_authenticated/managements/_layout/home'
-    | '/_authenticated/managements/_layout/me'
-    | '/_authenticated/managements/_layout/model-previews'
-    | '/_authenticated/managements/_layout/projects'
-    | '/_authenticated/managements/_layout/spaces'
-    | '/_authenticated/managements/_layout/users'
-    | '/_authenticated/managements/_layout/workflows'
-    | '/_authenticated/tutorials/_layout/home-page'
-    | '/_authenticated/tutorials/_layout/introduction-course'
-    | '/_authenticated/examples/bim-viewer/'
-    | '/_authenticated/view/upload/'
-    | '/_authenticated/managements/_layout/sub-projects/$id'
-    | '/_authenticated/managements/_layout/sub-projects'
-    | '/_authenticated/managements/_layout/sub-projects/_layout'
-    | '/_authenticated/managements/_layout/teams/$team_id'
-    | '/_authenticated/tutorials/_layout/admin/courses'
-    | '/_authenticated/tutorials/_layout/admin/enrollments'
-    | '/_authenticated/tutorials/_layout/admin/lessons'
-    | '/_authenticated/tutorials/_layout/admin/members'
-    | '/_authenticated/tutorials/_layout/admin/user-enrollments'
-    | '/_authenticated/tutorials/learning/lessons-for-newbies'
-    | '/_authenticated/tutorials/learning/lessons-for-newbies/_layout'
-    | '/_authenticated/user/show/profile'
-    | '/_authenticated/user/show/profile/_layout'
-    | '/_authenticated/managements/_layout/sub-projects/'
-    | '/_authenticated/managements/_layout/teams/'
-    | '/_authenticated/user/show/portfolio/'
-    | '/_authenticated/user/show/profile-owner/'
-    | '/_authenticated/user/settings/profile/edit'
-    | '/_authenticated/user/settings/profile/edit/_layout'
-    | '/_authenticated/user/show/profile/_layout/$idUser'
-    | '/_authenticated/tutorials/learning/lessons-for-newbies/_layout/'
-    | '/_authenticated/user/show/profile/_layout/'
-    | '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/chat'
-    | '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/dashboard'
-    | '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/data'
-    | '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/issues'
-    | '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/messages'
-    | '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/notifications'
-    | '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/rfis'
-    | '/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/your-team'
-    | '/_authenticated/user/settings/profile/edit/_layout/$idUser'
-  fileRoutesById: FileRoutesById
-}
-
-export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
-  auth500Route: typeof auth500Route
-  authCallbackRoute: typeof authCallbackRoute
-  authResetPasswordRoute: typeof authResetPasswordRoute
-  authSignInRoute: typeof authSignInRoute
-  authVerifyEmailRoute: typeof authVerifyEmailRoute
-  authForgotPasswordLazyRoute: typeof authForgotPasswordLazyRoute
-  authSignIn2LazyRoute: typeof authSignIn2LazyRoute
-  authSignUpLazyRoute: typeof authSignUpLazyRoute
-  errors401LazyRoute: typeof errors401LazyRoute
-  errors403LazyRoute: typeof errors403LazyRoute
-  errors404LazyRoute: typeof errors404LazyRoute
-  errors500LazyRoute: typeof errors500LazyRoute
-  errors503LazyRoute: typeof errors503LazyRoute
-  ExampleModelIfcIndexRoute: typeof ExampleModelIfcIndexRoute
-}
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
@@ -2543,533 +2442,9 @@ const rootRouteChildren: RootRouteChildren = {
   errors401LazyRoute: errors401LazyRoute,
   errors403LazyRoute: errors403LazyRoute,
   errors404LazyRoute: errors404LazyRoute,
-  errors500LazyRoute: errors500LazyRoute,
   errors503LazyRoute: errors503LazyRoute,
   ExampleModelIfcIndexRoute: ExampleModelIfcIndexRoute,
 }
-
-export const routeTree = rootRoute
+export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-/* ROUTE_MANIFEST_START
-{
-  "routes": {
-    "__root__": {
-      "filePath": "__root.tsx",
-      "children": [
-        "/",
-        "/_authenticated",
-        "/(auth)/500",
-        "/(auth)/callback",
-        "/(auth)/reset-password",
-        "/(auth)/sign-in",
-        "/(auth)/verify-email",
-        "/(auth)/forgot-password",
-        "/(auth)/sign-in-2",
-        "/(auth)/sign-up",
-        "/(errors)/401",
-        "/(errors)/403",
-        "/(errors)/404",
-        "/(errors)/500",
-        "/(errors)/503",
-        "/example-model/ifc/"
-      ]
-    },
-    "/": {
-      "filePath": "index.tsx"
-    },
-    "/_authenticated": {
-      "filePath": "_authenticated/route.tsx",
-      "children": [
-        "/_authenticated/contact-us",
-        "/_authenticated/features",
-        "/_authenticated/how-it-works",
-        "/_authenticated/admin",
-        "/_authenticated/app",
-        "/_authenticated/bim-viewer-ut/Ifc-viewer-selection",
-        "/_authenticated/bim-viewer-ut/demo-xeokit-ifc",
-        "/_authenticated/bim-viewer-ut/geometry-scene-viewcube",
-        "/_authenticated/bim-viewer-ut/ifc-viewer-selection-family",
-        "/_authenticated/bim-viewer-ut/view-cube",
-        "/_authenticated/bim-viewer-ut/webgl-clipping-cube",
-        "/_authenticated/bim-viewer-ut/webgl-clipping-stencil",
-        "/_authenticated/bim-viewer-ut/webgl-clipping-stencil-ifc",
-        "/_authenticated/bim-viewer-ut/webgl-clipping-v1",
-        "/_authenticated/bim-viewer-ut/webgl-clipping-v2",
-        "/_authenticated/blog",
-        "/_authenticated/managements",
-        "/_authenticated/tutorials",
-        "/_authenticated/view/$fileCode",
-        "/_authenticated/view2/$fileCode",
-        "/_authenticated/bim-viewer-ut/ifc-loader",
-        "/_authenticated/bim-viewer-ut/instanced-mesh",
-        "/_authenticated/bim-viewer-ut/viewer",
-        "/_authenticated/my-room-3d/",
-        "/_authenticated/view/",
-        "/_authenticated/view2/",
-        "/_authenticated/examples/bim-viewer/",
-        "/_authenticated/view/upload/",
-        "/_authenticated/user/show/profile",
-        "/_authenticated/user/show/portfolio/",
-        "/_authenticated/user/show/profile-owner/",
-        "/_authenticated/user/settings/profile/edit"
-      ]
-    },
-    "/(auth)/500": {
-      "filePath": "(auth)/500.tsx"
-    },
-    "/(auth)/callback": {
-      "filePath": "(auth)/callback.tsx"
-    },
-    "/(auth)/reset-password": {
-      "filePath": "(auth)/reset-password.tsx"
-    },
-    "/(auth)/sign-in": {
-      "filePath": "(auth)/sign-in.tsx"
-    },
-    "/(auth)/verify-email": {
-      "filePath": "(auth)/verify-email.tsx"
-    },
-    "/_authenticated/contact-us": {
-      "filePath": "_authenticated/contact-us.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/features": {
-      "filePath": "_authenticated/features.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/how-it-works": {
-      "filePath": "_authenticated/how-it-works.tsx",
-      "parent": "/_authenticated"
-    },
-    "/(auth)/forgot-password": {
-      "filePath": "(auth)/forgot-password.lazy.tsx"
-    },
-    "/(auth)/sign-in-2": {
-      "filePath": "(auth)/sign-in-2.lazy.tsx"
-    },
-    "/(auth)/sign-up": {
-      "filePath": "(auth)/sign-up.lazy.tsx"
-    },
-    "/(errors)/401": {
-      "filePath": "(errors)/401.lazy.tsx"
-    },
-    "/(errors)/403": {
-      "filePath": "(errors)/403.lazy.tsx"
-    },
-    "/(errors)/404": {
-      "filePath": "(errors)/404.lazy.tsx"
-    },
-    "/(errors)/500": {
-      "filePath": "(errors)/500.lazy.tsx"
-    },
-    "/(errors)/503": {
-      "filePath": "(errors)/503.lazy.tsx"
-    },
-    "/_authenticated/admin": {
-      "filePath": "_authenticated/admin",
-      "parent": "/_authenticated",
-      "children": [
-        "/_authenticated/admin/_layout"
-      ]
-    },
-    "/_authenticated/admin/_layout": {
-      "filePath": "_authenticated/admin/_layout.tsx",
-      "parent": "/_authenticated/admin"
-    },
-    "/_authenticated/app": {
-      "filePath": "_authenticated/app",
-      "parent": "/_authenticated",
-      "children": [
-        "/_authenticated/app/_layout",
-        "/_authenticated/app/blog",
-        "/_authenticated/app/"
-      ]
-    },
-    "/_authenticated/app/_layout": {
-      "filePath": "_authenticated/app/_layout.tsx",
-      "parent": "/_authenticated/app",
-      "children": [
-        "/_authenticated/app/_layout/connectors",
-        "/_authenticated/app/_layout/contact-us",
-        "/_authenticated/app/_layout/features",
-        "/_authenticated/app/_layout/how-it-works"
-      ]
-    },
-    "/_authenticated/app/blog": {
-      "filePath": "_authenticated/app/blog.tsx",
-      "parent": "/_authenticated/app"
-    },
-    "/_authenticated/bim-viewer-ut/Ifc-viewer-selection": {
-      "filePath": "_authenticated/bim-viewer-ut/Ifc-viewer-selection.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/bim-viewer-ut/demo-xeokit-ifc": {
-      "filePath": "_authenticated/bim-viewer-ut/demo-xeokit-ifc.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/bim-viewer-ut/geometry-scene-viewcube": {
-      "filePath": "_authenticated/bim-viewer-ut/geometry-scene-viewcube.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/bim-viewer-ut/ifc-viewer-selection-family": {
-      "filePath": "_authenticated/bim-viewer-ut/ifc-viewer-selection-family.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/bim-viewer-ut/view-cube": {
-      "filePath": "_authenticated/bim-viewer-ut/view-cube.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/bim-viewer-ut/webgl-clipping-cube": {
-      "filePath": "_authenticated/bim-viewer-ut/webgl-clipping-cube.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/bim-viewer-ut/webgl-clipping-stencil": {
-      "filePath": "_authenticated/bim-viewer-ut/webgl-clipping-stencil.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/bim-viewer-ut/webgl-clipping-stencil-ifc": {
-      "filePath": "_authenticated/bim-viewer-ut/webgl-clipping-stencil-ifc.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/bim-viewer-ut/webgl-clipping-v1": {
-      "filePath": "_authenticated/bim-viewer-ut/webgl-clipping-v1.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/bim-viewer-ut/webgl-clipping-v2": {
-      "filePath": "_authenticated/bim-viewer-ut/webgl-clipping-v2.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/blog": {
-      "filePath": "_authenticated/blog",
-      "parent": "/_authenticated",
-      "children": [
-        "/_authenticated/blog/_layout"
-      ]
-    },
-    "/_authenticated/blog/_layout": {
-      "filePath": "_authenticated/blog/_layout.tsx",
-      "parent": "/_authenticated/blog",
-      "children": [
-        "/_authenticated/blog/_layout/about",
-        "/_authenticated/blog/_layout/contact"
-      ]
-    },
-    "/_authenticated/managements": {
-      "filePath": "_authenticated/managements",
-      "parent": "/_authenticated",
-      "children": [
-        "/_authenticated/managements/_layout"
-      ]
-    },
-    "/_authenticated/managements/_layout": {
-      "filePath": "_authenticated/managements/_layout.tsx",
-      "parent": "/_authenticated/managements",
-      "children": [
-        "/_authenticated/managements/_layout/chat-support",
-        "/_authenticated/managements/_layout/home",
-        "/_authenticated/managements/_layout/me",
-        "/_authenticated/managements/_layout/model-previews",
-        "/_authenticated/managements/_layout/projects",
-        "/_authenticated/managements/_layout/spaces",
-        "/_authenticated/managements/_layout/users",
-        "/_authenticated/managements/_layout/workflows",
-        "/_authenticated/managements/_layout/sub-projects/$id",
-        "/_authenticated/managements/_layout/sub-projects",
-        "/_authenticated/managements/_layout/teams/$team_id",
-        "/_authenticated/managements/_layout/teams/"
-      ]
-    },
-    "/_authenticated/tutorials": {
-      "filePath": "_authenticated/tutorials",
-      "parent": "/_authenticated",
-      "children": [
-        "/_authenticated/tutorials/_layout",
-        "/_authenticated/tutorials/learning/lessons-for-newbies"
-      ]
-    },
-    "/_authenticated/tutorials/_layout": {
-      "filePath": "_authenticated/tutorials/_layout.tsx",
-      "parent": "/_authenticated/tutorials",
-      "children": [
-        "/_authenticated/tutorials/_layout/home-page",
-        "/_authenticated/tutorials/_layout/introduction-course",
-        "/_authenticated/tutorials/_layout/admin/courses",
-        "/_authenticated/tutorials/_layout/admin/enrollments",
-        "/_authenticated/tutorials/_layout/admin/lessons",
-        "/_authenticated/tutorials/_layout/admin/members",
-        "/_authenticated/tutorials/_layout/admin/user-enrollments"
-      ]
-    },
-    "/_authenticated/view/$fileCode": {
-      "filePath": "_authenticated/view/$fileCode.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/view2/$fileCode": {
-      "filePath": "_authenticated/view2/$fileCode.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/bim-viewer-ut/ifc-loader": {
-      "filePath": "_authenticated/bim-viewer-ut/ifc-loader.lazy.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/bim-viewer-ut/instanced-mesh": {
-      "filePath": "_authenticated/bim-viewer-ut/instanced-mesh.lazy.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/bim-viewer-ut/viewer": {
-      "filePath": "_authenticated/bim-viewer-ut/viewer.lazy.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/app/": {
-      "filePath": "_authenticated/app/index.tsx",
-      "parent": "/_authenticated/app"
-    },
-    "/_authenticated/my-room-3d/": {
-      "filePath": "_authenticated/my-room-3d/index.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/view/": {
-      "filePath": "_authenticated/view/index.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/view2/": {
-      "filePath": "_authenticated/view2/index.tsx",
-      "parent": "/_authenticated"
-    },
-    "/example-model/ifc/": {
-      "filePath": "example-model/ifc/index.ts"
-    },
-    "/_authenticated/app/_layout/connectors": {
-      "filePath": "_authenticated/app/_layout/connectors.tsx",
-      "parent": "/_authenticated/app/_layout"
-    },
-    "/_authenticated/app/_layout/contact-us": {
-      "filePath": "_authenticated/app/_layout/contact-us.tsx",
-      "parent": "/_authenticated/app/_layout"
-    },
-    "/_authenticated/app/_layout/features": {
-      "filePath": "_authenticated/app/_layout/features.tsx",
-      "parent": "/_authenticated/app/_layout"
-    },
-    "/_authenticated/app/_layout/how-it-works": {
-      "filePath": "_authenticated/app/_layout/how-it-works.tsx",
-      "parent": "/_authenticated/app/_layout"
-    },
-    "/_authenticated/blog/_layout/about": {
-      "filePath": "_authenticated/blog/_layout/about.tsx",
-      "parent": "/_authenticated/blog/_layout"
-    },
-    "/_authenticated/blog/_layout/contact": {
-      "filePath": "_authenticated/blog/_layout/contact.tsx",
-      "parent": "/_authenticated/blog/_layout"
-    },
-    "/_authenticated/managements/_layout/chat-support": {
-      "filePath": "_authenticated/managements/_layout/chat-support.tsx",
-      "parent": "/_authenticated/managements/_layout"
-    },
-    "/_authenticated/managements/_layout/home": {
-      "filePath": "_authenticated/managements/_layout/home.tsx",
-      "parent": "/_authenticated/managements/_layout"
-    },
-    "/_authenticated/managements/_layout/me": {
-      "filePath": "_authenticated/managements/_layout/me.tsx",
-      "parent": "/_authenticated/managements/_layout"
-    },
-    "/_authenticated/managements/_layout/model-previews": {
-      "filePath": "_authenticated/managements/_layout/model-previews.tsx",
-      "parent": "/_authenticated/managements/_layout"
-    },
-    "/_authenticated/managements/_layout/projects": {
-      "filePath": "_authenticated/managements/_layout/projects.tsx",
-      "parent": "/_authenticated/managements/_layout"
-    },
-    "/_authenticated/managements/_layout/spaces": {
-      "filePath": "_authenticated/managements/_layout/spaces.tsx",
-      "parent": "/_authenticated/managements/_layout"
-    },
-    "/_authenticated/managements/_layout/users": {
-      "filePath": "_authenticated/managements/_layout/users.tsx",
-      "parent": "/_authenticated/managements/_layout"
-    },
-    "/_authenticated/managements/_layout/workflows": {
-      "filePath": "_authenticated/managements/_layout/workflows.tsx",
-      "parent": "/_authenticated/managements/_layout"
-    },
-    "/_authenticated/tutorials/_layout/home-page": {
-      "filePath": "_authenticated/tutorials/_layout/home-page.tsx",
-      "parent": "/_authenticated/tutorials/_layout"
-    },
-    "/_authenticated/tutorials/_layout/introduction-course": {
-      "filePath": "_authenticated/tutorials/_layout/introduction-course.tsx",
-      "parent": "/_authenticated/tutorials/_layout"
-    },
-    "/_authenticated/examples/bim-viewer/": {
-      "filePath": "_authenticated/examples/bim-viewer/index.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/view/upload/": {
-      "filePath": "_authenticated/view/upload/index.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/managements/_layout/sub-projects/$id": {
-      "filePath": "_authenticated/managements/_layout/sub-projects/$id.tsx",
-      "parent": "/_authenticated/managements/_layout"
-    },
-    "/_authenticated/managements/_layout/sub-projects": {
-      "filePath": "_authenticated/managements/_layout/sub-projects",
-      "parent": "/_authenticated/managements/_layout",
-      "children": [
-        "/_authenticated/managements/_layout/sub-projects/_layout",
-        "/_authenticated/managements/_layout/sub-projects/"
-      ]
-    },
-    "/_authenticated/managements/_layout/sub-projects/_layout": {
-      "filePath": "_authenticated/managements/_layout/sub-projects/_layout.tsx",
-      "parent": "/_authenticated/managements/_layout/sub-projects",
-      "children": [
-        "/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/chat",
-        "/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/dashboard",
-        "/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/data",
-        "/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/issues",
-        "/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/messages",
-        "/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/notifications",
-        "/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/rfis",
-        "/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/your-team"
-      ]
-    },
-    "/_authenticated/managements/_layout/teams/$team_id": {
-      "filePath": "_authenticated/managements/_layout/teams/$team_id.tsx",
-      "parent": "/_authenticated/managements/_layout"
-    },
-    "/_authenticated/tutorials/_layout/admin/courses": {
-      "filePath": "_authenticated/tutorials/_layout/admin/courses.tsx",
-      "parent": "/_authenticated/tutorials/_layout"
-    },
-    "/_authenticated/tutorials/_layout/admin/enrollments": {
-      "filePath": "_authenticated/tutorials/_layout/admin/enrollments.tsx",
-      "parent": "/_authenticated/tutorials/_layout"
-    },
-    "/_authenticated/tutorials/_layout/admin/lessons": {
-      "filePath": "_authenticated/tutorials/_layout/admin/lessons.tsx",
-      "parent": "/_authenticated/tutorials/_layout"
-    },
-    "/_authenticated/tutorials/_layout/admin/members": {
-      "filePath": "_authenticated/tutorials/_layout/admin/members.tsx",
-      "parent": "/_authenticated/tutorials/_layout"
-    },
-    "/_authenticated/tutorials/_layout/admin/user-enrollments": {
-      "filePath": "_authenticated/tutorials/_layout/admin/user-enrollments.tsx",
-      "parent": "/_authenticated/tutorials/_layout"
-    },
-    "/_authenticated/tutorials/learning/lessons-for-newbies": {
-      "filePath": "_authenticated/tutorials/learning/lessons-for-newbies",
-      "parent": "/_authenticated/tutorials",
-      "children": [
-        "/_authenticated/tutorials/learning/lessons-for-newbies/_layout"
-      ]
-    },
-    "/_authenticated/tutorials/learning/lessons-for-newbies/_layout": {
-      "filePath": "_authenticated/tutorials/learning/lessons-for-newbies/_layout.tsx",
-      "parent": "/_authenticated/tutorials/learning/lessons-for-newbies",
-      "children": [
-        "/_authenticated/tutorials/learning/lessons-for-newbies/_layout/"
-      ]
-    },
-    "/_authenticated/user/show/profile": {
-      "filePath": "_authenticated/user/show/profile",
-      "parent": "/_authenticated",
-      "children": [
-        "/_authenticated/user/show/profile/_layout"
-      ]
-    },
-    "/_authenticated/user/show/profile/_layout": {
-      "filePath": "_authenticated/user/show/profile/_layout.tsx",
-      "parent": "/_authenticated/user/show/profile",
-      "children": [
-        "/_authenticated/user/show/profile/_layout/$idUser",
-        "/_authenticated/user/show/profile/_layout/"
-      ]
-    },
-    "/_authenticated/managements/_layout/sub-projects/": {
-      "filePath": "_authenticated/managements/_layout/sub-projects/index.tsx",
-      "parent": "/_authenticated/managements/_layout/sub-projects"
-    },
-    "/_authenticated/managements/_layout/teams/": {
-      "filePath": "_authenticated/managements/_layout/teams/index.tsx",
-      "parent": "/_authenticated/managements/_layout"
-    },
-    "/_authenticated/user/show/portfolio/": {
-      "filePath": "_authenticated/user/show/portfolio/index.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/user/show/profile-owner/": {
-      "filePath": "_authenticated/user/show/profile-owner/index.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/user/settings/profile/edit": {
-      "filePath": "_authenticated/user/settings/profile/edit",
-      "parent": "/_authenticated",
-      "children": [
-        "/_authenticated/user/settings/profile/edit/_layout"
-      ]
-    },
-    "/_authenticated/user/settings/profile/edit/_layout": {
-      "filePath": "_authenticated/user/settings/profile/edit/_layout.tsx",
-      "parent": "/_authenticated/user/settings/profile/edit",
-      "children": [
-        "/_authenticated/user/settings/profile/edit/_layout/$idUser"
-      ]
-    },
-    "/_authenticated/user/show/profile/_layout/$idUser": {
-      "filePath": "_authenticated/user/show/profile/_layout/$idUser.tsx",
-      "parent": "/_authenticated/user/show/profile/_layout"
-    },
-    "/_authenticated/tutorials/learning/lessons-for-newbies/_layout/": {
-      "filePath": "_authenticated/tutorials/learning/lessons-for-newbies/_layout/index.tsx",
-      "parent": "/_authenticated/tutorials/learning/lessons-for-newbies/_layout"
-    },
-    "/_authenticated/user/show/profile/_layout/": {
-      "filePath": "_authenticated/user/show/profile/_layout/index.tsx",
-      "parent": "/_authenticated/user/show/profile/_layout"
-    },
-    "/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/chat": {
-      "filePath": "_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/chat.tsx",
-      "parent": "/_authenticated/managements/_layout/sub-projects/_layout"
-    },
-    "/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/dashboard": {
-      "filePath": "_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/dashboard.tsx",
-      "parent": "/_authenticated/managements/_layout/sub-projects/_layout"
-    },
-    "/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/data": {
-      "filePath": "_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/data.tsx",
-      "parent": "/_authenticated/managements/_layout/sub-projects/_layout"
-    },
-    "/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/issues": {
-      "filePath": "_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/issues.tsx",
-      "parent": "/_authenticated/managements/_layout/sub-projects/_layout"
-    },
-    "/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/messages": {
-      "filePath": "_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/messages.tsx",
-      "parent": "/_authenticated/managements/_layout/sub-projects/_layout"
-    },
-    "/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/notifications": {
-      "filePath": "_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/notifications.tsx",
-      "parent": "/_authenticated/managements/_layout/sub-projects/_layout"
-    },
-    "/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/rfis": {
-      "filePath": "_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/rfis.tsx",
-      "parent": "/_authenticated/managements/_layout/sub-projects/_layout"
-    },
-    "/_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/your-team": {
-      "filePath": "_authenticated/managements/_layout/sub-projects/_layout/$sub_project_id/your-team.tsx",
-      "parent": "/_authenticated/managements/_layout/sub-projects/_layout"
-    },
-    "/_authenticated/user/settings/profile/edit/_layout/$idUser": {
-      "filePath": "_authenticated/user/settings/profile/edit/_layout/$idUser.tsx",
-      "parent": "/_authenticated/user/settings/profile/edit/_layout"
-    }
-  }
-}
-ROUTE_MANIFEST_END */

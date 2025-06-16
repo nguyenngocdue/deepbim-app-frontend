@@ -1,4 +1,3 @@
-import { TutorialFooter } from "@/features/tutorials/components/TutorialFooter";
 import { TutorialHeader } from "@/features/tutorials/components/TutorialHeader";
 import { TutorialSidebar } from "@/features/tutorials/components/TutorialSidebar";
 import Footer from "@/sections/Footer";

@@ -1,7 +1,6 @@
 // components/SuccessDialog.tsx
 import { Dialog, DialogContent, DialogHeader, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { DialogTitle } from "@radix-ui/react-dialog";
 
 interface SuccessDialogProps {
   open: boolean;
