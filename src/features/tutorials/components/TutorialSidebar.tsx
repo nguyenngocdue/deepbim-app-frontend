@@ -39,8 +39,8 @@ export function TutorialSidebar({ isOpen, onToggle}: TutorialSidebarProps) {
   const menuItems = [
     { icon: Home, label: "Trang chủ", url: "/" },
     { icon: Book, label: "Khóa học", url: "/tutorials/home-page" },
-    { icon: FileText, label: "Bài viết", url: "/tutorials/articles", status: <CustomBadge text="Dev" className="ml-2 bg-red-800" /> },
-    { icon: Users, label: "Cộng đồng", url: "/tutorials/community", status: <CustomBadge text="Dev" className="ml-2 bg-red-800" /> },
+    { icon: FileText, label: "Bài viết", url: "/tutorials/home-page", status: <CustomBadge text="Dev" className="ml-2 bg-red-800" /> },
+    { icon: Users, label: "Cộng đồng", url: "/tutorials/home-page", status: <CustomBadge text="Dev" className="ml-2 bg-red-800" /> },
   ];
 
   const adminMenuItems = [

@@ -1,4 +1,3 @@
-import { TutorialHeader } from '@/features/tutorials/components/TutorialHeader'
 import TutorialHomePage from '@/features/tutorials/TutorialHomePage'
 import { createFileRoute } from '@tanstack/react-router'
 
