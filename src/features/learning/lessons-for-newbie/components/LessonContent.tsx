@@ -54,7 +54,7 @@ export default function LessonContent({ contents, selectedLesson }: LessonConten
 
   if (!contents || !contents.description_lesson) {
     return (
-      <div className="w-full mx-auto bg-gradient-to-b from-slate-950 to-gray-900 p-8 sm:p-8 rounded-3xl shadow-lg mt-6">
+      <div className="w-full mx-auto bg-gradient-to-b from-slate-950 to-gray-900 p-8 sm:p-8 rounded-3xl shadow-lg">
         {renderHeader()}
         <div className="text-center">
           <div className="flex justify-center mb-4">

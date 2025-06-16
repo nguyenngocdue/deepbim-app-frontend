@@ -51,7 +51,7 @@ export default function LessonSectionList({
           key={section.id}
           open={openSections.has(section.id)}
           onOpenChange={() => toggleSection(section.id)}
-          className="border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden shadow-sm"
+          className="border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden shadow-sm "
         >
           <CollapsibleTrigger className="flex items-center justify-between w-full p-3 sm:p-4 bg-gray-100 dark:bg-gray-800 hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors duration-300 text-gray-900 dark:text-gray-100 font-medium text-sm sm:text-base group">
             <span className="truncate max-w-[85%] font-smooth">{section.title}</span>
