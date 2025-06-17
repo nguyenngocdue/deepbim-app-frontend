@@ -78,7 +78,7 @@ const AppButton2: React.FC<AppButtonProps> = ({
       variant={variant}
       onClick={onClick}
       className={cn(
-        "transition-all duration-200 font-semibold shadow-md px-4 py-2 text-sm",
+        "transition-all duration-200 font-semibold shadow-md px-4 py-2 text-sm z-50",
         styleByType,
         className
       )}

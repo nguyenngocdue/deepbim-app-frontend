@@ -8,6 +8,9 @@ import { useLessonData } from "@/features/courses/hooks/useLessonData";
 import { toast } from "sonner";
 import { WelcomeLessonMessage } from "./components/WelcomeLessonMessage";
 import { BookOpen } from "lucide-react";
+import { useSelector } from "react-redux";
+import { PromptCard } from "./components/PromptCard";
+import AppButton2 from "@/components/bim-viewer/common/AppButton2";
 
 export default function LessonForNewbies() {
   const location = useLocation();
@@ -18,6 +21,9 @@ export default function LessonForNewbies() {
 
   const { lessons, selectedLesson, setSelectedLesson, course } = useLessonData(courseId);
   const [lessonContent, setLessonContent] = useState(null);
+
+
+  const currentUser = useSelector((state: RootState) => state.auth.user);
 
 
   // Fetch lesson by ID from URL if needed
@@ -54,40 +60,60 @@ export default function LessonForNewbies() {
   };
 
   return (
-    <div className="min-h-screen w-full bg-background">
-      <span className="flex items-center gap-2 py-4 px-6 text-xl font-semibold text-indigo-600 dark:text-indigo-400">
-        <BookOpen className="w-6 h-6 text-indigo-500 dark:text-indigo-300" />
-        Khóa học: {course?.title ?? "Khóa học"}
-      </span>
+    <>
+      <div className="min-h-screen w-full bg-background relative">
+        <span className="flex items-center gap-2 py-4 px-6 text-xl font-semibold text-indigo-600 dark:text-indigo-400">
+          <BookOpen className="w-6 h-6 text-indigo-500 dark:text-indigo-300" />
+          Khóa học: {course?.title ?? ""}
+        </span>
 
-      <main className="flex flex-col gap-2 p-4 sm:p-6 lg:grid lg:grid-cols-12 lg:gap-1 h-screen overflow-hidden">
-        {/* Player + Content */}
-        <div className="lg:col-span-8 max-h-screen overflow-y-auto mb-8">
-          <div className="flex flex-col h-full">
-            <div className="w-full aspect-video rounded-2xl shadow-2xl mb-2 sm:mb-6 bg-background ">
-              <Player videoUrl={videoUrl} selectedLesson={selectedLesson} />
-            </div>
-            <div className="flex-1 pb-20 px-4">
-              {lessonContent ?
-                <LessonContent
-                  contents={lessonContent}
-                  selectedLesson={selectedLesson}
-                /> : <WelcomeLessonMessage />
-              }
+        <main className="flex flex-col gap-2 p-4 sm:p-6 lg:grid lg:grid-cols-12 lg:gap-1 h-screen overflow-hidden">
+          {/* Player + Content */}
+          <div className="lg:col-span-8 max-h-screen overflow-y-auto mb-8">
+            <div className="flex flex-col h-full">
+              <div className="w-full aspect-video rounded-2xl shadow-2xl mb-2 sm:mb-6 bg-background ">
+                <Player videoUrl={videoUrl} selectedLesson={selectedLesson} />
+              </div>
+              <div className="flex-1 pb-20 px-4">
+                {lessonContent ?
+                  <LessonContent
+                    contents={lessonContent}
+                    selectedLesson={selectedLesson}
+                  /> : <WelcomeLessonMessage />
+                }
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Sidebar */}
-        <div className="lg:col-span-4 h-full overflow-y-auto">
-          <LessonSidebar
-            sections={lessons}
-            onLessonSelect={handleLessonSelect}
-            lessonId={lessonId}
-          />
-        </div>
-      </main>
-    </div>
+          {/* Sidebar */}
+          <div className="lg:col-span-4 h-full overflow-y-auto">
+            <LessonSidebar
+              sections={lessons}
+              onLessonSelect={handleLessonSelect}
+              lessonId={lessonId}
+            />
+          </div>
+        </main>
+        {!currentUser && (
+          <div className="fixed inset-0 z-[9999] bg-background/10 backdrop-blur-sm flex items-center justify-center">
+            <PromptCard
+              title="Bạn cần đăng nhập"
+              description="Vui lòng đăng nhập để học tập nhé."
+              imageUrl="https://minio.deepbim.net:9000/deepbim-fe/1750073553293-login.gif"
+              action={
+                <AppButton2
+                  btnType="move"
+                  isLoading={false}
+                  onClick={() => (window.location.href = "/sign-in")}
+                  falseName="Đăng nhập nhé"
+                />
+              }
+            />
+          </div>
+        )}
+
+      </div>
+    </>
   );
 
 }
