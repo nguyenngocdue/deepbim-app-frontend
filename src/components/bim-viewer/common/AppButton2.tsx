@@ -3,6 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { renderIcon } from "@/components/model-table/IconType";
 import { cn } from "@/lib/utils";
+import { GiRunningNinja } from "react-icons/gi";
 
 interface AppButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   isLoading?: boolean;
@@ -70,7 +71,7 @@ const AppButton2: React.FC<AppButtonProps> = ({
   trueName ,
   falseName ,
   className = "",
-  loadingIcon,
+  loadingIcon=<GiRunningNinja />,
   defaultIcon,
   href,
   variant = "default",
