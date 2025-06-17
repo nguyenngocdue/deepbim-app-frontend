@@ -44,7 +44,7 @@ export function TutorialCourseList() {
           <TutorialCourseCard
             key={idx}
             title={course.title}
-            author="Nguyễn Ngọc Duệ"
+            author={course.owner.full_name ?? course.owner.user_name}
             image={course.thumbnail_url}
             avatar="/images/logo_no_bg.png"
             students={course.students_count || 0}
