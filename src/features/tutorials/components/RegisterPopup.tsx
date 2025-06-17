@@ -65,6 +65,7 @@ export function RegisterPopup({
 
 
     const onSubmit = async (data: RegisterFormData) => {
+        setIsSubmitting(true);
         try {
             const response = await registerCourse(courseId, data);
             if (response.ok) {
