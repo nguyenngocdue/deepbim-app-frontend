@@ -62,58 +62,54 @@ export default function LessonForNewbies() {
 
   return (
     <>
-      <div className="min-h-screen w-full bg-background relative">
-        <span className="flex items-center gap-2 py-4 px-6 text-xl font-semibold text-indigo-600 dark:text-indigo-400">
-          <BookOpen className="w-6 h-6 text-indigo-500 dark:text-indigo-300" />
-          Khóa học: {course?.title ?? ""}
-        </span>
-
-        <main className="flex flex-col gap-2 p-4 sm:p-6 lg:grid lg:grid-cols-12 lg:gap-1 h-screen overflow-hidden">
-          {/* Player + Content */}
-          <div className="lg:col-span-8 max-h-screen overflow-y-auto mb-8">
-            <div className="flex flex-col h-full">
-              <div className="w-full aspect-video rounded-2xl shadow-2xl mb-2 sm:mb-6 bg-background ">
-                <Player videoUrl={videoUrl} selectedLesson={selectedLesson} />
-              </div>
-              <div className="flex-1 pb-20 px-4">
-                {lessonContent ?
-                  <LessonContent
-                    contents={lessonContent}
-                    selectedLesson={selectedLesson}
-                  /> : <WelcomeLessonMessage />
-                }
-              </div>
+    <div className="min-h-screen w-full bg-background relative">
+      <main className="flex flex-col gap-4 p-2 sm:p-4 md:p-6 lg:grid lg:grid-cols-12 lg:gap-4 h-[calc(100vh-4rem)] overflow-hidden">
+        {/* Player + Content */}
+        <div className="lg:col-span-8 max-h-[calc(100vh-4rem)] overflow-y-auto">
+          <span className="flex items-center gap-2 py-3 px-4 sm:px-6 text-lg sm:text-xl font-semibold text-indigo-600 dark:text-indigo-400">
+            <BookOpen className="w-5 h-5 sm:w-6 sm:h-6 text-indigo-500 dark:text-indigo-300" />
+            Khóa học: {course?.title ?? ''}
+          </span>
+          <div className="flex flex-col h-full">
+            <div className="w-full aspect-video rounded-xl sm:rounded-2xl shadow-lg sm:shadow-2xl mb-4 sm:mb-6 bg-background">
+              <Player videoUrl={videoUrl} selectedLesson={selectedLesson} />
+            </div>
+            <div className="flex-1 pb-16 sm:pb-20 px-2 sm:px-4">
+              {lessonContent ? (
+                <LessonContent contents={lessonContent} selectedLesson={selectedLesson} />
+              ) : (
+                <WelcomeLessonMessage />
+              )}
             </div>
           </div>
-
-          {/* Sidebar */}
-          <div className="lg:col-span-4 h-full overflow-y-auto">
-            <LessonSidebar
-              sections={lessons}
-              onLessonSelect={handleLessonSelect}
-              lessonId={lessonId}
-            />
-          </div>
-        </main>
-        {!currentUser && (
-          <div className="fixed inset-0 z-[9999] bg-background/10 backdrop-blur-sm flex items-center justify-center">
-            <PromptCard
-              title="Bạn cần đăng nhập"
-              description="Vui lòng đăng nhập để học tập nhé."
-              imageUrl="https://minio.deepbim.net:9000/deepbim-fe/1750073553293-login.gif"
-              action={
-                <AppButton2
-                  btnType="move"
-                  isLoading={false}
-                  onClick={() => (window.location.href = "/sign-in")}
-                  falseName="Đăng nhập nhé"
-                />
-              }
-            />
-          </div>
-        )}
-
-      </div>
+        </div>
+        {/* Sidebar */}
+        <div className="lg:col-span-4 max-h-[calc(100vh-4rem)] overflow-y-auto">
+          <LessonSidebar
+            sections={lessons}
+            onLessonSelect={handleLessonSelect}
+            lessonId={lessonId}
+          />
+        </div>
+      </main>
+      {!currentUser && (
+        <div className="fixed inset-0 z-[9999] bg-background/50 backdrop-blur-[2px] flex items-center justify-center p-4">
+          <PromptCard
+            title="Bạn cần đăng nhập"
+            description="Vui lòng đăng nhập để học tập nhé."
+            imageUrl="https://minio.deepbim.net:9000/deepbim-fe/1750073553293-login.gif"
+            action={
+              <AppButton2
+                btnType="move"
+                isLoading={false}
+                onClick={() => (window.location.href = '/sign-in')}
+                falseName="Đăng nhập nhé"
+              />
+            }
+          />
+        </div>
+      )}
+    </div>
     </>
   );
 
