@@ -39,7 +39,7 @@ export const Route = createFileRoute('/_authenticated/tutorials/_layout')({
         />
         <div
           ref={contentRef}
-          className=" min-h-screen transition-all duration-300 ease-in-out md:ml-[--sidebar-width]"
+          className=" min-h-screen transition-all duration-300 ease-in-out md:ml-[--sidebar-width] pt-20"
         >
           <TutorialHeader />
           <Outlet />
