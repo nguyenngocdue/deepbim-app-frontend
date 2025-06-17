@@ -11,7 +11,7 @@ export function TutorialHeader() {
     <header
       className="w-full bg-gray-50 dark:bg-gray-900  fixed top-0 left-0 z-50 px-4 sm:px-6 lg:px-8 py-3 sm:py-4 transition-all duration-300"
     >
-      <div className="mx-auto max-w-7xl flex items-center justify-between gap-2 xs:gap-3 sm:gap-4">
+      <div className="mx-auto  max-w-[1550px] flex items-center justify-between gap-2 xs:gap-3 sm:gap-4">
         {/* Logo */}
         <div className="flex items-center flex-shrink-0">
           <LogoWord />

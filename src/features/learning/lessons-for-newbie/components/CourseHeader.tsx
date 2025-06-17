@@ -50,7 +50,7 @@ const CourseHeader: React.FC<CourseHeaderProps> = ({
     <header
       className={`${CLASS_NAME_DEFAULT.CLASS_NAME_3} fixed top-0 left-0 w-full z-50 backdrop-blur-md px-4 sm:px-6 lg:px-8 shadow-md bg-white/80 dark:bg-slate-900/80`}
     >
-      <div className="mx-auto max-w-7xl flex items-center justify-between py-3 gap-2 sm:gap-4">
+      <div className="mx-auto  max-w-[1550px] flex items-center justify-between py-3 gap-2 sm:gap-4">
         {/* Left Section: Back Button, Logo, Title */}
         <div className="flex items-center gap-2 flex-shrink-0">
           {onBack && (

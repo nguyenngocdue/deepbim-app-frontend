@@ -72,7 +72,7 @@ const Header: React.FC = () => {
   return (
     <>
       <header className={`${CLASS_NAME_DEFAULT.CLASS_NAME_3} fixed top-0 left-0 w-full z-50 backdrop-blur-md px-4 sm:px-6 lg:px-8 shadow-md bg-white/80 dark:bg-slate-900/80`}>
-        <div className="mx-auto max-w-7xl flex flex-wrap justify-between items-center py-3 gap-y-2">
+        <div className="mx-auto max-w-[1550px] flex flex-wrap justify-between items-center py-3 gap-y-2">
           {/* Logo */}
           <div className="flex items-center flex-shrink-0">
             <LogoWord />
