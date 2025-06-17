@@ -1,5 +1,4 @@
 import { useForm } from "react-hook-form";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -17,6 +16,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@react-three/fiber";
 import { SuccessDialog } from "./SuccessDialog";
 import { useState } from "react";
+import AppButton2 from "@/components/bim-viewer/common/AppButton2";
 
 interface RegisterFormData {
     full_name: string;
@@ -45,7 +45,7 @@ export function RegisterPopup({
 
     const currentUser = useSelector((state: RootState) => state.auth.user);
     const [showSuccess, setShowSuccess] = useState(false);
-
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const {
         register,
         handleSubmit,
@@ -67,16 +67,18 @@ export function RegisterPopup({
     const onSubmit = async (data: RegisterFormData) => {
         try {
             const response = await registerCourse(courseId, data);
-            console.log(response);
             if (response.ok) {
                 toast.success(response.data.message);
                 setShowSuccess(true);
                 onClose();
+                setIsSubmitting(false);
             } else {
                 toast.error("Đăng ký thất bại. Vui lòng thử lại.");
+                setIsSubmitting(false);
             }
         } catch (error) {
             toast.error("Có lỗi xảy ra. Vui lòng thử lại.");
+            setIsSubmitting(false);
         }
     };
 
@@ -84,33 +86,31 @@ export function RegisterPopup({
         <>
             <SuccessDialog open={showSuccess} onClose={() => setShowSuccess(false)} />
             <Dialog open={open} onOpenChange={onClose}>
-                <DialogContent className="sm:max-w-[960px] p-6 rounded-xl bg-gradient-to-br from-blue-700 to-purple-600 dark:from-blue-900 dark:to-purple-800 text-white">
+                <DialogContent className="sm:max-w-[960px] p-6 rounded-xl bg-[#0f172a] text-white border border-[#40dbcb]/30 shadow-xl">
                     <DialogHeader>
-                        <DialogTitle className="text-2xl font-bold text-center">
+                        <DialogTitle className="text-2xl font-bold text-center text-[#40DBCB]">
                             Đăng ký khóa học: {title}
                         </DialogTitle>
                     </DialogHeader>
 
                     <div className="grid gap-6 md:grid-cols-2">
                         {/* Form */}
-                        <Card className="bg-gray-800/90 backdrop-blur-sm border border-gray-600 rounded-lg">
+                        <Card className="bg-[#1e293b]/90 backdrop-blur-md border border-[#40dbcb]/20 rounded-lg">
                             <CardContent className="p-6">
                                 <form onSubmit={handleSubmit(onSubmit)} className="grid gap-5">
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         <div>
-                                            <Label htmlFor="full_name">Họ và tên <span className="text-orange-300">*</span></Label>
+                                            <Label htmlFor="full_name" className="text-slate-200 dark:text-slate-100">Họ và tên <span className="text-orange-300">*</span></Label>
                                             <Input
                                                 id="full_name"
                                                 {...register("full_name", { required: "Vui lòng nhập họ và tên" })}
-                                                className="mt-1 bg-gray-900 border border-gray-600 text-white placeholder:text-gray-400"
+                                                className="mt-1 bg-slate-800 border border-[#40dbcb]/30 text-white placeholder:text-slate-400 focus:border-[#40DBCB] focus:ring-[#40DBCB]"
                                                 placeholder="Nhập họ và tên"
                                             />
-                                            {errors.full_name && (
-                                                <p className="text-orange-300 text-xs mt-1">{errors.full_name.message}</p>
-                                            )}
+                                            {errors.full_name && <p className="text-orange-300 text-xs mt-1">{errors.full_name.message}</p>}
                                         </div>
                                         <div>
-                                            <Label htmlFor="email">Email <span className="text-orange-300">*</span></Label>
+                                            <Label htmlFor="email" className="text-slate-200 dark:text-slate-100">Email <span className="text-orange-300">*</span></Label>
                                             <Input
                                                 id="email"
                                                 type="email"
@@ -121,18 +121,16 @@ export function RegisterPopup({
                                                         message: "Email không hợp lệ",
                                                     },
                                                 })}
-                                                className="mt-1 bg-gray-900 border border-gray-600 text-white placeholder:text-gray-400"
+                                                className="mt-1 bg-slate-800 border border-[#40dbcb]/30 text-white placeholder:text-slate-400 focus:border-[#40DBCB] focus:ring-[#40DBCB]"
                                                 placeholder="Nhập email"
                                             />
-                                            {errors.email && (
-                                                <p className="text-orange-300 text-xs mt-1">{errors.email.message}</p>
-                                            )}
+                                            {errors.email && <p className="text-orange-300 text-xs mt-1">{errors.email.message}</p>}
                                         </div>
                                     </div>
 
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         <div>
-                                            <Label htmlFor="phone">Số điện thoại <span className="text-orange-300">*</span></Label>
+                                            <Label htmlFor="phone" className="text-slate-200 dark:text-slate-100">Số điện thoại <span className="text-orange-300">*</span></Label>
                                             <Input
                                                 id="phone"
                                                 {...register("phone", {
@@ -142,15 +140,13 @@ export function RegisterPopup({
                                                         message: "Số điện thoại không hợp lệ",
                                                     },
                                                 })}
-                                                className="mt-1 bg-gray-900 border border-gray-600 text-white placeholder:text-gray-400"
+                                                className="mt-1 bg-slate-800 border border-[#40dbcb]/30 text-white placeholder:text-slate-400 focus:border-[#40DBCB] focus:ring-[#40DBCB]"
                                                 placeholder="Nhập số điện thoại"
                                             />
-                                            {errors.phone && (
-                                                <p className="text-orange-300 text-xs mt-1">{errors.phone.message}</p>
-                                            )}
+                                            {errors.phone && <p className="text-orange-300 text-xs mt-1">{errors.phone.message}</p>}
                                         </div>
                                         <div>
-                                            <Label htmlFor="age">Tuổi</Label>
+                                            <Label htmlFor="age" className="text-slate-200 dark:text-slate-100">Tuổi</Label>
                                             <Input
                                                 id="age"
                                                 type="number"
@@ -159,82 +155,74 @@ export function RegisterPopup({
                                                     min: { value: 11, message: "Tuổi phải lớn hơn 10" },
                                                     max: { value: 69, message: "Tuổi phải nhỏ hơn 70" },
                                                 })}
-                                                className="mt-1 bg-gray-900 border border-gray-600 text-white placeholder:text-gray-400"
+                                                className="mt-1 bg-slate-800 border border-[#40dbcb]/30 text-white placeholder:text-slate-400 focus:border-[#40DBCB] focus:ring-[#40DBCB]"
                                                 placeholder="Nhập tuổi"
                                             />
-                                            {errors.age && (
-                                                <p className="text-orange-300 text-xs mt-1">{errors.age.message}</p>
-                                            )}
+                                            {errors.age && <p className="text-orange-300 text-xs mt-1">{errors.age.message}</p>}
                                         </div>
                                     </div>
 
                                     <div>
-                                        <Label htmlFor="occupation">Nghề nghiệp</Label>
+                                        <Label htmlFor="occupation" className="text-slate-200 dark:text-slate-100">Nghề nghiệp</Label>
                                         <Input
                                             id="occupation"
                                             {...register("occupation")}
-                                            className="mt-1 bg-gray-900 border border-gray-600 text-white placeholder:text-gray-400"
+                                            className="mt-1 bg-slate-800 border border-[#40dbcb]/30 text-white placeholder:text-slate-400 focus:border-[#40DBCB] focus:ring-[#40DBCB]"
                                             placeholder="Nhập nghề nghiệp"
                                         />
                                     </div>
 
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         <div>
-                                            <Label htmlFor="note">Zalo Link</Label>
+                                            <Label htmlFor="zalo_link" className="text-slate-200 dark:text-slate-100">Zalo Link</Label>
                                             <Input
                                                 id="zalo_link"
                                                 {...register("zalo_link")}
-                                                className="mt-1 bg-gray-900 border border-gray-600 text-white placeholder:text-gray-400"
+                                                className="mt-1 bg-slate-800 border border-[#40dbcb]/30 text-white placeholder:text-slate-400 focus:border-[#40DBCB] focus:ring-[#40DBCB]"
                                                 placeholder="Link Zalo cá nhân"
                                             />
                                         </div>
                                         <div>
-                                            <Label htmlFor="note">Linked Link</Label>
+                                            <Label htmlFor="linked_link" className="text-slate-200 dark:text-slate-100">Linked Link</Label>
                                             <Input
                                                 id="linked_link"
                                                 {...register("linked_link")}
-                                                className="mt-1 bg-gray-900 border border-gray-600 text-white placeholder:text-gray-400"
+                                                className="mt-1 bg-slate-800 border border-[#40dbcb]/30 text-white placeholder:text-slate-400 focus:border-[#40DBCB] focus:ring-[#40DBCB]"
                                                 placeholder="Link Linked cá nhân"
                                             />
                                         </div>
                                     </div>
 
                                     <div>
-                                        <Label htmlFor="note">Ghi chú</Label>
+                                        <Label htmlFor="note" className="text-slate-200 dark:text-slate-100">Ghi chú</Label>
                                         <Textarea
                                             id="note"
                                             {...register("note")}
-                                            className="mt-1 bg-gray-900 border border-gray-600 text-white placeholder:text-gray-400"
+                                            className="mt-1 bg-slate-800 border border-[#40dbcb]/30 text-white placeholder:text-slate-400 focus:border-[#40DBCB] focus:ring-[#40DBCB]"
                                             placeholder="Nhập ghi chú (nếu có)"
                                             rows={4}
                                         />
                                     </div>
 
                                     <DialogFooter className="flex flex-col sm:flex-row gap-2 pt-4">
-                                        <Button
-                                            type="button"
-                                            variant="outline"
-                                            onClick={onClose}
-                                            className="w-full sm:w-auto border-gray-600 text-white hover:bg-gray-700/50"
-                                        >
-                                            Hủy
-                                        </Button>
-                                        <Button
+                                        <AppButton2 falseName="Huỷ bỏ" btnType="cancel" onClick={onClose} />
+                                        <AppButton2
                                             type="submit"
-                                            className="w-full sm:w-auto bg-purple-600 text-white hover:bg-purple-500"
-                                        >
-                                            Gửi đăng ký
-                                        </Button>
+                                            falseName="Gửi đăng ký"
+                                            trueName="Đang gửi..."
+                                            isLoading={isSubmitting}
+                                            btnType="create"
+                                        />
                                     </DialogFooter>
                                 </form>
                             </CardContent>
                         </Card>
 
-                        {/* Payment Info and QR */}
-                        <Card className="bg-gray-800/90 backdrop-blur-sm border border-gray-600 rounded-lg">
-                            <CardContent className="p-6 flex flex-col justify-between h-full">
+                        {/* Payment Info */}
+                        <Card className="bg-[#1e293b]/90 backdrop-blur-md border border-[#40dbcb]/20 rounded-lg">
+                            <CardContent className="p-6 flex flex-col justify-between h-full text-white">
                                 <div>
-                                    <h3 className="text-lg font-bold">Thông tin thanh toán</h3>
+                                    <h3 className="text-lg font-bold text-[#40DBCB]">Thông tin thanh toán</h3>
                                     <p className="text-sm mt-2">Vui lòng chuyển khoản đến:</p>
                                     <ul className="mt-2 text-sm space-y-1">
                                         <li><strong>Ngân hàng:</strong> ABC</li>
@@ -246,7 +234,7 @@ export function RegisterPopup({
                                     <img
                                         src="https://minio.deepbim.net:9000/deepbim-fe/1749836342572-qr_nguyen_ngoc_due.jfif"
                                         alt="QR Code"
-                                        className="w-72 h-72 object-contain rounded-lg border border-gray-600"
+                                        className="w-72 h-72 object-contain rounded-lg border border-[#40dbcb]/30 shadow-md"
                                     />
                                 </div>
                             </CardContent>

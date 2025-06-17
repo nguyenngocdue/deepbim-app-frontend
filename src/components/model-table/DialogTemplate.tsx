@@ -16,6 +16,7 @@ import { BiSolidShow } from "react-icons/bi";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { Button } from "../ui/button";
 import { GrUpdate } from "react-icons/gr";
+import { renderIcon } from "./IconType";
 
 type DialogIconType = "view" | "create" | "edit" | "move" | "delete";
 
@@ -47,23 +48,6 @@ export function DialogTemplate({
     }
   };
 
-  const renderIcon = () => {
-    switch (iconType) {
-      case "create":
-        return <LucideGitPullRequestCreateArrow className="h-5 w-5 text-blue-500 dark:text-green-900" />;
-      case "move":
-        return <TiArrowMoveOutline className="h-5 w-5 text-blue-500 dark:text-green-900" />;
-      case "edit":
-        return <LuPencil className="h-5 w-5 text-yellow-500 dark:text-yellow-900" />;
-      case "delete":
-        return <LuTrash2 className="h-5 w-5 text-red-500 dark:text-red-900" />;
-      case "view":
-        return <BiSolidShow className="h-5 w-5 text-indigo-500 dark:text-indigo-700" />;
-      default:
-        return null;
-    }
-  };
-
   return (
     <Dialog open={open} onOpenChange={onClose} modal>
       <DialogContent
@@ -77,7 +61,7 @@ export function DialogTemplate({
           if (disableOutsideClose) e.preventDefault();
         }}
       >
-        {renderIcon()}
+        {renderIcon(iconType)}
         <DialogHeader className="flex-shrink-0">
           <DialogTitle className="text-base md:text-lg lg:text-xl">
             {title}

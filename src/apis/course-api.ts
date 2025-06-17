@@ -7,11 +7,11 @@ export async function getCourses() {
 
 
 export async function registerCourse(courseId : number, data: any) {
-    const response = await fetchWithAuth2(`/courses/${courseId}/register`, {
-         method: "POST",
-       body: JSON.stringify(data)
-    });
-    return response;
+  const response = await fetchWithAuth2(`/courses/${courseId}/register`, {
+    method: "POST",
+    body: JSON.stringify(data)
+  });
+  return response;
 }
 
 
