@@ -51,7 +51,7 @@ export function TutorialSidebar({ isOpen, onToggle }: TutorialSidebarProps) {
     { icon: MdCardMembership, label: "User Enrollments", url: "/tutorials/admin/user-enrollments" },
   ];
 
-  const isAdmin = currentUser?.email === "duengocnguyen@gmail.com" && currentUser?.id === 101;
+  const isAdmin = currentUser?.email === "duengocnguyen@gmail.com";
 
   return (
     <>
