@@ -17,6 +17,10 @@ import { RootState } from "@react-three/fiber";
 import { SuccessDialog } from "./SuccessDialog";
 import { useState } from "react";
 import AppButton2 from "@/components/bim-viewer/common/AppButton2";
+import { PromptCard } from "@/features/learning/lessons-for-newbie/components/PromptCard";
+import AppButton from "@/components/bim-viewer/common/AppButton";
+import { CLASS_NAME_DEFAULT } from "@/utils/class";
+import { Loader2 } from "lucide-react";
 
 interface RegisterFormData {
     full_name: string;

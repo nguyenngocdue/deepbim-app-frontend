@@ -75,7 +75,6 @@ export function PurchasePage({ courseId, title }: PurchasePageProps) {
   });
 
   const onSubmit = async (data: RegisterFormData) => {
-    console.log(data);
     try {
       const response = await registerCourse(courseId, data);
       if (response.ok) {

@@ -1,10 +1,14 @@
 import { useState } from "react";
-import { Users, Eye, Star } from "lucide-react";
+import { Users, Eye, Star, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "@tanstack/react-router";
 import { RegisterPopup } from "./RegisterPopup";
 import { CourseCardProps } from "./Type";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
+import { PromptCard } from "@/features/learning/lessons-for-newbie/components/PromptCard";
+import AppButton2 from "@/components/bim-viewer/common/AppButton2";
 
 export function TutorialCourseCard({
   title,
@@ -22,6 +26,7 @@ export function TutorialCourseCard({
   courseId,
 }: CourseCardProps) {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+ const currentUser = useSelector((state: RootState) => state.auth.user);
 
   return (
     <>
@@ -109,12 +114,41 @@ export function TutorialCourseCard({
   </div>
 </div>
 
+{
+      (!currentUser && isPopupOpen) && (
+        <div className="fixed inset-0 z-[9999] bg-background/50 backdrop-blur-lg flex items-center justify-center p-4">
+          <PromptCard
+            title="Bạn cần đăng nhập"
+            description="Vui lòng đăng nhập để đăng ký học nhé."
+            imageUrl="https://minio.deepbim.net:9000/deepbim-fe/1750073553293-login.gif"
+            action={
+              <AppButton2
+                btnType="move"
+                isLoading={false}
+                onClick={() => (window.location.href = '/sign-in')}
+                falseName="Đăng nhập nhé"
+              />
+            }
+          />
+        </div>
+      )
+}
+
+{
+   (currentUser && isPopupOpen) && 
       <RegisterPopup
         courseId={courseId}
         title={title}
         onClose={() => setIsPopupOpen(false)}
         open={isPopupOpen}
       />
+}
+
+
+
+
+
+
     </>
   );
 }
