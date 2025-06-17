@@ -59,11 +59,11 @@ export default function LessonForNewbies() {
         Khóa học: {selectedLesson?.course?.title ?? "Khóa học"}
       </span>
 
-      <main className="flex flex-col gap-4 p-4 sm:p-6 lg:grid lg:grid-cols-12 lg:gap-4 h-screen overflow-hidden">
+      <main className="flex flex-col gap-2 p-4 sm:p-6 lg:grid lg:grid-cols-12 lg:gap-1 h-screen overflow-hidden">
         {/* Player + Content */}
         <div className="lg:col-span-8 max-h-screen overflow-y-auto mb-8">
           <div className="flex flex-col h-full">
-            <div className="w-full aspect-video rounded-2xl shadow-2xl mb-2 sm:mb-2 bg-background pr-2">
+            <div className="w-full aspect-video rounded-2xl shadow-2xl mb-2 sm:mb-6 bg-background ">
               <Player videoUrl={videoUrl} selectedLesson={selectedLesson} />
             </div>
             <div className="flex-1 pb-20 px-4">

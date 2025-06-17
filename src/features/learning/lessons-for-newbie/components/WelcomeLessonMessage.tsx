@@ -13,7 +13,7 @@ export function WelcomeLessonMessage() {
   const courseId = searchParams.get("course_id");
 
   const banners: Banner[] = [
-       {
+    {
       title: "Khám Phá Dynamo Cho Revit",
       desc: "Học cách sử dụng Dynamo để tự động hóa quy trình Revit với Python. Áp dụng kinh nghiệm thực tế từ các dự án Kết Cấu & Kiến Trúc.",
       button: "BẮT ĐẦU HỌC",
@@ -57,7 +57,7 @@ export function WelcomeLessonMessage() {
     },
   ];
 
-const renderBanner = (banner: Banner, idx: number) => (
+  const renderBanner = (banner: Banner, idx: number) => (
     <section
       className={`w-full bg-gradient-to-br ${banner.gradient} text-white rounded-xl p-3 sm:p-6 space-y-3 sm:space-y-4 min-h-[180px] sm:min-h-[220px] flex flex-col justify-between shadow-lg`}
     >
@@ -66,13 +66,14 @@ const renderBanner = (banner: Banner, idx: number) => (
         <p className="text-xs sm:text-sm leading-relaxed opacity-90 line-clamp-3">{banner.desc}</p>
       </div>
       {
-        banner.button && 
+        banner.button &&
         <div className="text-center">
           <Button
             variant="outline"
-            className="border-white text-white hover:bg-white hover:text-black rounded-full px-3 sm:px-4 py-1 sm:py-2 text-xs sm:text-sm w-full sm:w-auto"
+            className="bg-[#40DBCB] text-white hover:bg-[#2fcbb8] dark:hover:bg-[#52e1d0] rounded-full px-3 sm:px-4 py-1 sm:py-2 text-xs sm:text-sm w-full sm:w-auto transition-colors shadow-md"
             asChild
           >
+
             <a href={banner.link} target="_blank" rel="noopener noreferrer">
               {banner.button}
             </a>
@@ -81,7 +82,7 @@ const renderBanner = (banner: Banner, idx: number) => (
       }
     </section>
   );
-  
+
   return (
     <div className=" mx-auto py-8 px-4 sm:px-6 flex flex-col items-center justify-center gap-8 bg-gradient-to-br from-gray-800/80 to-gray-900/90 rounded-xl shadow-lg border dark:border-gray-600 border-gray-400">
       {/* Welcome Header with Icon */}

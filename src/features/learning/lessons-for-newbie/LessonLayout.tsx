@@ -15,7 +15,7 @@ export default function LessonLayout() {
         />
 
         {/* Main layout */}
-        <div className="flex flex-1 overflow-hidden mt-14">
+        <div className="flex flex-1 overflow-hidden pt-16 bg-background">
           <Outlet />
         </div>
       </div>

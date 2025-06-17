@@ -37,50 +37,51 @@ export function TutorialCourseCard({
 
         )}
 
-        <a href={url || "#"} target="_blank" rel="noopener noreferrer">
+        <a href={url || `/tutorials/introduction-course/?course_id=${courseId}`} target="_blank" rel="noopener noreferrer">
           <img
             src={image}
             alt={title}
             className="w-full h-36 object-cover rounded-t-2xl group-hover:scale-[1.04] transition-transform duration-500 ease-in-out"
           />
+
+          <div className="flex justify-center -mt-6 z-50">
+            <img
+              src={avatar}
+              alt={author}
+              className="w-12 h-12 rounded-full border-4 border-white dark:border-slate-700 object-cover shadow-md"
+            />
+          </div>
+
+          <div className="text-center px-4 mt-2">
+            <div className="text-xs font-medium text-gray-600 dark:text-gray-300 line-clamp-1">{author}</div>
+            <div className="text-base font-bold text-gray-900 dark:text-white mt-1 leading-snug line-clamp-2">
+              {title}
+            </div>
+            <div className="flex justify-center gap-0.5 mt-1 text-amber-400 text-[10px]">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} size={12} fill="currentColor" stroke="none" />
+              ))}
+            </div>
+            <p className="text-[11px] text-gray-500 dark:text-gray-400 mt-1.5 line-clamp-3 min-h-[3.4em]">
+              {description || <span className="opacity-0">empty filler</span>}
+            </p>
+          </div>
+
+          <div className="flex justify-center gap-4 mt-3 text-gray-500 dark:text-gray-400 text-xs">
+            <div className="flex items-center gap-1">
+              <Users size={12} /> {students}
+            </div>
+            <div className="flex items-center gap-1">
+              <Eye size={12} /> {views}
+            </div>
+          </div>
+
+          <div className="flex justify-center gap-2 mt-3 mb-2">
+            <span className="line-through text-gray-400 text-xs">{oldPrice}</span>
+            <span className="text-emerald-600 dark:text-emerald-400 font-bold text-base">{newPrice}</span>
+          </div>
         </a>
 
-        <div className="flex justify-center -mt-6 z-50">
-          <img
-            src={avatar}
-            alt={author}
-            className="w-12 h-12 rounded-full border-4 border-white dark:border-slate-700 object-cover shadow-md"
-          />
-        </div>
-
-        <div className="text-center px-4 mt-2">
-          <div className="text-xs font-medium text-gray-600 dark:text-gray-300 line-clamp-1">{author}</div>
-          <div className="text-base font-bold text-gray-900 dark:text-white mt-1 leading-snug line-clamp-2">
-            {title}
-          </div>
-          <div className="flex justify-center gap-0.5 mt-1 text-amber-400 text-[10px]">
-            {[...Array(5)].map((_, i) => (
-              <Star key={i} size={12} fill="currentColor" stroke="none" />
-            ))}
-          </div>
-          <p className="text-[11px] text-gray-500 dark:text-gray-400 mt-1.5 line-clamp-3 min-h-[3.4em]">
-            {description || <span className="opacity-0">empty filler</span>}
-          </p>
-        </div>
-
-        <div className="flex justify-center gap-4 mt-3 text-gray-500 dark:text-gray-400 text-xs">
-          <div className="flex items-center gap-1">
-            <Users size={12} /> {students}
-          </div>
-          <div className="flex items-center gap-1">
-            <Eye size={12} /> {views}
-          </div>
-        </div>
-
-        <div className="flex justify-center gap-2 mt-3 mb-2">
-          <span className="line-through text-gray-400 text-xs">{oldPrice}</span>
-          <span className="text-emerald-600 dark:text-emerald-400 font-bold text-base">{newPrice}</span>
-        </div>
 
         <div className="flex justify-center gap-2 mb-4 px-3 mt-auto">
           <Link

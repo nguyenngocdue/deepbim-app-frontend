@@ -43,7 +43,7 @@ export default function CourseHeader({
             </button>
           )}
           <div className="flex items-center gap-2">
-            <LogoWord size="sm" />
+            <LogoWord  />
             <h1 className="text-sm sm:text-base font-medium tracking-tight truncate max-w-[160px] sm:max-w-[240px] md:max-w-[320px] text-foreground">
               {courseTitle}
             </h1>
