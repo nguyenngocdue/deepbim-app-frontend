@@ -11,6 +11,7 @@ import { BookOpen } from "lucide-react";
 import { useSelector } from "react-redux";
 import { PromptCard } from "./components/PromptCard";
 import AppButton2 from "@/components/bim-viewer/common/AppButton2";
+import { RootState } from "@/store";
 
 export default function LessonForNewbies() {
   const location = useLocation();
