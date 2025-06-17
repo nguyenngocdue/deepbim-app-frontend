@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import CourseInfoSidebar from "./components/CourseInfoSidebar";
 import TabNavigation from "./components/TabNavigation";
 import CurriculumTab from "./components/CurriculumTab";
@@ -6,10 +6,33 @@ import MentorTab from "./components/MentorTab";
 import CourseOverviewTab from "./components/CourseOverviewTab";
 import { useLessonData } from "./hooks/useLessonData";
 import { CoursePanel } from "./components/CoursePanel";
+import { useLocation } from "@tanstack/react-router";
+import { getCourseById } from "@/apis/course-api";
 
 export default function CoursePage() {
   const [tabIndex, setTabIndex] = useState(0);
-  const { lessons, selectedLesson, setSelectedLesson } = useLessonData(1);
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const courseId = searchParams.get("course_id");
+  const [course , setCourse] = useState();
+
+
+  const { lessons, selectedLesson, setSelectedLesson } = useLessonData(courseId);
+
+  const fetchData = useCallback( async () => {
+    if(courseId) {
+      const courseData = await getCourseById(Number(courseId));
+      if(courseData.ok) {
+        setCourse(courseData.data);
+      }
+
+    }
+  }, [courseId])
+  useEffect(()=> {
+    fetchData();
+  }, [fetchData])
+
+
 
   const courseInfo = {
     totalLessons: 292,
@@ -23,9 +46,9 @@ export default function CoursePage() {
   };
 
   const mentor = {
-    name: "Nguyễn Ngọc Duệ",
-    avatar: "/assets/avatars/avatar_1.png",
-    bio: "Mentor giàu kinh nghiệm chuyên Dynamo và giảng dạy hiệu quả.",
+    name: course?.owner?.user_name,
+    avatar: course?.owner?.picture,
+    bio: "Mentor giàu kinh nghiệm chuyên giảng dạy, áp dụng các dự án thực tế và hiệu quả.",
   };
 
   const banners = [
@@ -53,7 +76,7 @@ export default function CoursePage() {
             <TabNavigation onTabChange={setTabIndex} />
             <div className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-2xl sm:p-5 shadow-lg backdrop-blur-sm border border-gray-200 dark:border-gray-700 transition-all">
               {/* Modern card with subtle border and shadow */}
-              {tabIndex === 0 && <CourseOverviewTab />}
+              {tabIndex === 0 && <CourseOverviewTab lessons={lessons}/>}
               {tabIndex === 1 && <CurriculumTab sections={lessons} />}
               {tabIndex === 2 && <MentorTab {...mentor} />}
             </div>

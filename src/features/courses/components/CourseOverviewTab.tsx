@@ -1,6 +1,14 @@
+import { Lesson } from "@/components/courses/Types";
 import { Card, CardContent } from "@/components/ui/card";
+import UpdatingContentCard from "@/components/UpdatingContentCard";
 
-export default function CourseOverviewTab() {
+export default function CourseOverviewTab({ lessons }: { lessons: Lesson[] }) {
+  if (!lessons || lessons.length === 0) {
+    return (
+      <UpdatingContentCard />
+    );
+  }
+
   return (
     <Card className="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 overflow-hidden transition-all duration-300 hover:shadow-lg border border-gray-200 dark:border-gray-700">
       {/* Giới thiệu tổng quan */}
@@ -9,7 +17,7 @@ export default function CourseOverviewTab() {
           Giới Thiệu Khóa Học
         </h2>
         <p className="text-lg leading-relaxed text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 p-4 rounded-lg transition-all duration-300 hover:bg-blue-50 dark:hover:bg-gray-700">
-          Khóa học <strong className="text-blue-500 dark:text-emerald-400">Ứng Dụng Dynamo và Python vào Revit</strong> cung cấp hơn <strong className="text-blue-500 dark:text-emerald-400">150+ bài học</strong> từ cơ bản đến nâng cao, giúp tối ưu hóa quy trình làm việc. 
+          Khóa học <strong className="text-blue-500 dark:text-emerald-400">Ứng Dụng Dynamo và Python vào Revit</strong> cung cấp hơn <strong className="text-blue-500 dark:text-emerald-400">150+ bài học</strong> từ cơ bản đến nâng cao, giúp tối ưu hóa quy trình làm việc.
           Phù hợp cho mọi đối tượng, từ người mới bắt đầu với BIM đến kỹ sư Revit muốn tăng tốc hiệu suất và tự động hóa công việc.
         </p>
       </CardContent>

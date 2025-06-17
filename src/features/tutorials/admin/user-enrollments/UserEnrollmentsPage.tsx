@@ -76,7 +76,7 @@ export default function UserEnrollmentsPage() {
   };
 
   return (
-    <div className="min-h-screen p-6 bg-gradient-to-b from-gray-950 to-black text-white">
+    <div className="min-h-screen p-6 bg-background text-white">
       <h1 className="text-2xl font-bold mb-6 text-orange-400">
         Lesson Access Control
       </h1>

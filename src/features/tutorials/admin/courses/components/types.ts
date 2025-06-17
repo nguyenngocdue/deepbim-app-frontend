@@ -6,6 +6,7 @@ export interface Course {
   old_price: number;
   new_price: number;
   is_free: boolean;
+  order_no: string;
   students_count: number;
   updated_at: string;
   owner_id?: number;

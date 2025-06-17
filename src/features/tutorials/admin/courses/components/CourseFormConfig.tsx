@@ -84,6 +84,12 @@ export const CourseFormConfig = ({ statuses, allUsers, selectedRow }: CourseForm
       type: "text",
       required: true,
     },
+     {
+      name: "order_no",
+      label: "Order No",
+      placeholder: "Enter number as 010, 020, 030 ...",
+      type: "text",
+    },
   ];
 
   const editDefaultValues = selectedRow

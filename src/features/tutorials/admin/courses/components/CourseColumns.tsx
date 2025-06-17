@@ -62,6 +62,14 @@ export const CourseColumns = ({ onEdit, onDelete, onView }: CourseColumnsProps):
       return <CustomBadge text={val?.name || ""} className={val?.class_name || ""} />;
     },
   },
+   {
+    accessorKey: "order_no",
+    header: "Order No",
+    cell: ({ getValue }) => {
+      const val = getValue() as Course["order_no"];
+      return <CustomBadge text={val}  className="bg-slate-600 dark:bg-slate-500"/>;
+    },
+  },
   {
     id: "actions",
     header: "Actions",

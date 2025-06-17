@@ -5,6 +5,11 @@ export async function getCourses() {
     return response;
 }
 
+export async function getCourseById(id: number) {
+    const response = await fetchWithAuth2(`/courses/${id}`);
+    return response;
+}
+
 
 export async function registerCourse(courseId : number, data: any) {
   const response = await fetchWithAuth2(`/courses/${courseId}/register`, {
@@ -55,6 +60,7 @@ export async function updateCourse(courseId: number, data: any) {
     new_price: Number(data.new_price),
     status_id: Number(data.status_id),
     owner_id: Number(data.owner_id),
+    order_no: data.order_no
   };
 
   const response = await fetchWithAuth2(`/courses/${courseId}`, {

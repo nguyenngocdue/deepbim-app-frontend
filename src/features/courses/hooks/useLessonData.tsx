@@ -8,7 +8,7 @@ import { toast } from "sonner";
 
 export function useLessonData(courseId?: string | null) {
   const [lessons, setLessons] = useState<Lesson[]>([]);
-  const [selectedLesson, setSelectedLesson] = useState<Lesson | null | undefined>(undefined);
+  const [selectedLesson, setSelectedLesson] = useState<Lesson | null | []>([]);
 
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
