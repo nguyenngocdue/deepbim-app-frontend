@@ -16,8 +16,9 @@ export default function LessonForNewbies() {
   const lessonId = searchParams.get("lesson_id");
   const [videoUrl, setVideoUrl] = useState("");
 
-  const { lessons, selectedLesson, setSelectedLesson } = useLessonData(courseId);
+  const { lessons, selectedLesson, setSelectedLesson, course } = useLessonData(courseId);
   const [lessonContent, setLessonContent] = useState(null);
+
 
   // Fetch lesson by ID from URL if needed
   useEffect(() => {
@@ -56,7 +57,7 @@ export default function LessonForNewbies() {
     <div className="min-h-screen w-full bg-background">
       <span className="flex items-center gap-2 py-4 px-6 text-xl font-semibold text-indigo-600 dark:text-indigo-400">
         <BookOpen className="w-6 h-6 text-indigo-500 dark:text-indigo-300" />
-        Khóa học: {selectedLesson?.course?.title ?? "Khóa học"}
+        Khóa học: {course?.title ?? "Khóa học"}
       </span>
 
       <main className="flex flex-col gap-2 p-4 sm:p-6 lg:grid lg:grid-cols-12 lg:gap-1 h-screen overflow-hidden">

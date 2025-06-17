@@ -29,7 +29,7 @@ export default function AppMediaPage({ hasAction = true }: AppMediaPageProps) {
           status: item.is_public ? "Public" : "Private",
           size: item.size * 1 / (1024 * 1024),
           uploader: {
-            email: "duengocnguyen@gmail.com",
+            email: "deepbimnet@gmail.com",
             avatar: "https://lh3.googleusercontent.com/a/ACg8ocKi6JqRVGqhLlyiqQ99c9P44TF7vfWXUZeLJS0x2xbur9HAJDA=s96-c",
           },
           modified: new Date(item.updatedAt).toLocaleDateString("en-GB"),
