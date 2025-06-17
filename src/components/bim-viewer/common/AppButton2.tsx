@@ -18,7 +18,18 @@ interface AppButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   btnType?: string;
 }
 
-type ButtonType = "delete" | "create" | "update" | "cancel" | "edit" | "move" | "view";
+type ButtonType =
+  | "delete"
+  | "create"
+  | "update"
+  | "cancel"
+  | "edit"
+  | "move"
+  | "view"
+  | "apply"
+  | "signin"
+  | "signout"
+  | "back";
 
 const buttonTypeStyles: Record<ButtonType, string> = {
   delete: "bg-red-600 dark:bg-red-800 hover:bg-red-700 dark:hover:bg-red-700 text-white dark:text-slate-200",
@@ -28,12 +39,36 @@ const buttonTypeStyles: Record<ButtonType, string> = {
   edit: "bg-yellow-500 dark:bg-yellow-600 hover:bg-yellow-600 dark:hover:bg-yellow-500 text-white dark:text-slate-200",
   move: "bg-cyan-600 dark:bg-cyan-800 hover:bg-cyan-700 dark:hover:bg-cyan-700 text-white dark:text-slate-200",
   view: "bg-indigo-600 dark:bg-indigo-800 hover:bg-indigo-700 dark:hover:bg-indigo-700 text-white dark:text-slate-200",
+  apply: "bg-emerald-600 dark:bg-emerald-700 hover:bg-emerald-700 dark:hover:bg-emerald-600 text-white dark:text-slate-200",
+  signin: "bg-orange-500 dark:bg-orange-600 hover:bg-orange-600 dark:hover:bg-orange-500 text-white dark:text-slate-200",
+  signout: "bg-rose-600 dark:bg-rose-700 hover:bg-rose-700 dark:hover:bg-rose-600 text-white dark:text-slate-200",
+  back: "bg-slate-600 dark:bg-slate-700 hover:bg-slate-700 dark:hover:bg-slate-600 text-white dark:text-slate-200",
 };
+
+
+
+const defaultNames: Record<ButtonType, string> = {
+  delete: "Delete",
+  create: "Create",
+  update: "Update",
+  cancel: "Cancel",
+  edit: "Edit",
+  move: "Move",
+  view: "View",
+  apply: "Apply",
+  signin: "Sign In",
+  signout: "Sign Out",
+  back: "Back",
+};
+
+
+
+
 
 const AppButton2: React.FC<AppButtonProps> = ({
   isLoading = false,
-  trueName = "Loading...",
-  falseName = "Submit",
+  trueName ,
+  falseName ,
   className = "",
   loadingIcon,
   defaultIcon,
@@ -45,15 +80,16 @@ const AppButton2: React.FC<AppButtonProps> = ({
   ...props
 }) => {
   const styleByType =
-    btnType && (["delete", "create", "update", "cancel", "edit", "move", "view"] as const).includes(btnType as ButtonType)
+    btnType && (["delete", "create", "update", "cancel", "edit", "move", "view", "apply", "signin", "signout", "back"] as const).includes(btnType as ButtonType)
       ? buttonTypeStyles[btnType as ButtonType]
       : "";
-  const autoIcon = icon ?? renderIcon((btnType && (["delete", "create", "update", "cancel", "edit", "move", "view"] as const).includes(btnType as ButtonType) ? btnType : "create") as ButtonType);
+  const autoIcon = icon ?? renderIcon((btnType && (["delete", "create", "update", "cancel", "edit", "move", "view", "apply", "signin", "signout", "back"] as const).includes(btnType as ButtonType) ? btnType : "create") as ButtonType);
+  const nameToShow = isLoading ? trueName : falseName ?? (btnType && defaultNames[btnType as ButtonType]) ?? "Submit";
 
   const content = (
     <span className="inline-flex items-center gap-2 font-heading">
       {isLoading ? loadingIcon : autoIcon}
-      {isLoading ? trueName : falseName}
+      {nameToShow}
     </span>
   );
 

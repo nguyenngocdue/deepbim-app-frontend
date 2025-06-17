@@ -16,7 +16,6 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedHowItWorksRouteImport } from './routes/_authenticated/how-it-works'
 import { Route as AuthenticatedFeaturesRouteImport } from './routes/_authenticated/features'
 import { Route as AuthenticatedContactUsRouteImport } from './routes/_authenticated/contact-us'
-import { Route as AuthenticatedComingSoonRouteImport } from './routes/_authenticated/coming-soon'
 import { Route as authVerifyEmailRouteImport } from './routes/(auth)/verify-email'
 import { Route as authSignInRouteImport } from './routes/(auth)/sign-in'
 import { Route as authResetPasswordRouteImport } from './routes/(auth)/reset-password'
@@ -42,6 +41,7 @@ import { Route as AuthenticatedBimViewerUtIfcViewerSelectionFamilyRouteImport } 
 import { Route as AuthenticatedBimViewerUtGeometrySceneViewcubeRouteImport } from './routes/_authenticated/bim-viewer-ut/geometry-scene-viewcube'
 import { Route as AuthenticatedBimViewerUtDemoXeokitIfcRouteImport } from './routes/_authenticated/bim-viewer-ut/demo-xeokit-ifc'
 import { Route as AuthenticatedBimViewerUtIfcViewerSelectionRouteImport } from './routes/_authenticated/bim-viewer-ut/Ifc-viewer-selection'
+import { Route as AuthenticatedAppDevelopingRouteImport } from './routes/_authenticated/app/developing'
 import { Route as AuthenticatedAppBlogRouteImport } from './routes/_authenticated/app/blog'
 import { Route as AuthenticatedAppLayoutRouteImport } from './routes/_authenticated/app/_layout'
 import { Route as AuthenticatedAdminLayoutRouteImport } from './routes/_authenticated/admin/_layout'
@@ -232,11 +232,6 @@ const AuthenticatedContactUsRoute = AuthenticatedContactUsRouteImport.update({
   path: '/contact-us',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AuthenticatedComingSoonRoute = AuthenticatedComingSoonRouteImport.update({
-  id: '/coming-soon',
-  path: '/coming-soon',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
 const authVerifyEmailRoute = authVerifyEmailRouteImport.update({
   id: '/(auth)/verify-email',
   path: '/verify-email',
@@ -403,6 +398,12 @@ const AuthenticatedBimViewerUtIfcViewerSelectionRoute =
     id: '/bim-viewer-ut/Ifc-viewer-selection',
     path: '/bim-viewer-ut/Ifc-viewer-selection',
     getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedAppDevelopingRoute =
+  AuthenticatedAppDevelopingRouteImport.update({
+    id: '/developing',
+    path: '/developing',
+    getParentRoute: () => AuthenticatedAppRoute,
   } as any)
 const AuthenticatedAppBlogRoute = AuthenticatedAppBlogRouteImport.update({
   id: '/blog',
@@ -747,7 +748,6 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof authResetPasswordRoute
   '/sign-in': typeof authSignInRoute
   '/verify-email': typeof authVerifyEmailRoute
-  '/coming-soon': typeof AuthenticatedComingSoonRoute
   '/contact-us': typeof AuthenticatedContactUsRoute
   '/features': typeof AuthenticatedFeaturesRoute
   '/how-it-works': typeof AuthenticatedHowItWorksRoute
@@ -761,6 +761,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AuthenticatedAdminLayoutRoute
   '/app': typeof AuthenticatedAppLayoutRouteWithChildren
   '/app/blog': typeof AuthenticatedAppBlogRoute
+  '/app/developing': typeof AuthenticatedAppDevelopingRoute
   '/bim-viewer-ut/Ifc-viewer-selection': typeof AuthenticatedBimViewerUtIfcViewerSelectionRoute
   '/bim-viewer-ut/demo-xeokit-ifc': typeof AuthenticatedBimViewerUtDemoXeokitIfcRoute
   '/bim-viewer-ut/geometry-scene-viewcube': typeof AuthenticatedBimViewerUtGeometrySceneViewcubeRoute
@@ -838,7 +839,6 @@ export interface FileRoutesByTo {
   '/reset-password': typeof authResetPasswordRoute
   '/sign-in': typeof authSignInRoute
   '/verify-email': typeof authVerifyEmailRoute
-  '/coming-soon': typeof AuthenticatedComingSoonRoute
   '/contact-us': typeof AuthenticatedContactUsRoute
   '/features': typeof AuthenticatedFeaturesRoute
   '/how-it-works': typeof AuthenticatedHowItWorksRoute
@@ -852,6 +852,7 @@ export interface FileRoutesByTo {
   '/admin': typeof AuthenticatedAdminLayoutRoute
   '/app': typeof AuthenticatedAppIndexRoute
   '/app/blog': typeof AuthenticatedAppBlogRoute
+  '/app/developing': typeof AuthenticatedAppDevelopingRoute
   '/bim-viewer-ut/Ifc-viewer-selection': typeof AuthenticatedBimViewerUtIfcViewerSelectionRoute
   '/bim-viewer-ut/demo-xeokit-ifc': typeof AuthenticatedBimViewerUtDemoXeokitIfcRoute
   '/bim-viewer-ut/geometry-scene-viewcube': typeof AuthenticatedBimViewerUtGeometrySceneViewcubeRoute
@@ -927,7 +928,6 @@ export interface FileRoutesById {
   '/(auth)/reset-password': typeof authResetPasswordRoute
   '/(auth)/sign-in': typeof authSignInRoute
   '/(auth)/verify-email': typeof authVerifyEmailRoute
-  '/_authenticated/coming-soon': typeof AuthenticatedComingSoonRoute
   '/_authenticated/contact-us': typeof AuthenticatedContactUsRoute
   '/_authenticated/features': typeof AuthenticatedFeaturesRoute
   '/_authenticated/how-it-works': typeof AuthenticatedHowItWorksRoute
@@ -943,6 +943,7 @@ export interface FileRoutesById {
   '/_authenticated/app': typeof AuthenticatedAppRouteWithChildren
   '/_authenticated/app/_layout': typeof AuthenticatedAppLayoutRouteWithChildren
   '/_authenticated/app/blog': typeof AuthenticatedAppBlogRoute
+  '/_authenticated/app/developing': typeof AuthenticatedAppDevelopingRoute
   '/_authenticated/bim-viewer-ut/Ifc-viewer-selection': typeof AuthenticatedBimViewerUtIfcViewerSelectionRoute
   '/_authenticated/bim-viewer-ut/demo-xeokit-ifc': typeof AuthenticatedBimViewerUtDemoXeokitIfcRoute
   '/_authenticated/bim-viewer-ut/geometry-scene-viewcube': typeof AuthenticatedBimViewerUtGeometrySceneViewcubeRoute
@@ -1029,7 +1030,6 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/sign-in'
     | '/verify-email'
-    | '/coming-soon'
     | '/contact-us'
     | '/features'
     | '/how-it-works'
@@ -1043,6 +1043,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/app'
     | '/app/blog'
+    | '/app/developing'
     | '/bim-viewer-ut/Ifc-viewer-selection'
     | '/bim-viewer-ut/demo-xeokit-ifc'
     | '/bim-viewer-ut/geometry-scene-viewcube'
@@ -1120,7 +1121,6 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/sign-in'
     | '/verify-email'
-    | '/coming-soon'
     | '/contact-us'
     | '/features'
     | '/how-it-works'
@@ -1134,6 +1134,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/app'
     | '/app/blog'
+    | '/app/developing'
     | '/bim-viewer-ut/Ifc-viewer-selection'
     | '/bim-viewer-ut/demo-xeokit-ifc'
     | '/bim-viewer-ut/geometry-scene-viewcube'
@@ -1208,7 +1209,6 @@ export interface FileRouteTypes {
     | '/(auth)/reset-password'
     | '/(auth)/sign-in'
     | '/(auth)/verify-email'
-    | '/_authenticated/coming-soon'
     | '/_authenticated/contact-us'
     | '/_authenticated/features'
     | '/_authenticated/how-it-works'
@@ -1224,6 +1224,7 @@ export interface FileRouteTypes {
     | '/_authenticated/app'
     | '/_authenticated/app/_layout'
     | '/_authenticated/app/blog'
+    | '/_authenticated/app/developing'
     | '/_authenticated/bim-viewer-ut/Ifc-viewer-selection'
     | '/_authenticated/bim-viewer-ut/demo-xeokit-ifc'
     | '/_authenticated/bim-viewer-ut/geometry-scene-viewcube'
@@ -1441,13 +1442,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedContactUsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/coming-soon': {
-      id: '/_authenticated/coming-soon'
-      path: '/coming-soon'
-      fullPath: '/coming-soon'
-      preLoaderRoute: typeof AuthenticatedComingSoonRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
     '/(auth)/verify-email': {
       id: '/(auth)/verify-email'
       path: '/verify-email'
@@ -1643,6 +1637,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/bim-viewer-ut/Ifc-viewer-selection'
       preLoaderRoute: typeof AuthenticatedBimViewerUtIfcViewerSelectionRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/app/developing': {
+      id: '/_authenticated/app/developing'
+      path: '/developing'
+      fullPath: '/app/developing'
+      preLoaderRoute: typeof AuthenticatedAppDevelopingRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
     }
     '/_authenticated/app/blog': {
       id: '/_authenticated/app/blog'
@@ -2054,12 +2055,14 @@ const AuthenticatedAppLayoutRouteWithChildren =
 interface AuthenticatedAppRouteChildren {
   AuthenticatedAppLayoutRoute: typeof AuthenticatedAppLayoutRouteWithChildren
   AuthenticatedAppBlogRoute: typeof AuthenticatedAppBlogRoute
+  AuthenticatedAppDevelopingRoute: typeof AuthenticatedAppDevelopingRoute
   AuthenticatedAppIndexRoute: typeof AuthenticatedAppIndexRoute
 }
 
 const AuthenticatedAppRouteChildren: AuthenticatedAppRouteChildren = {
   AuthenticatedAppLayoutRoute: AuthenticatedAppLayoutRouteWithChildren,
   AuthenticatedAppBlogRoute: AuthenticatedAppBlogRoute,
+  AuthenticatedAppDevelopingRoute: AuthenticatedAppDevelopingRoute,
   AuthenticatedAppIndexRoute: AuthenticatedAppIndexRoute,
 }
 
@@ -2358,7 +2361,6 @@ const AuthenticatedUserSettingsProfileEditRouteWithChildren =
   )
 
 interface AuthenticatedRouteRouteChildren {
-  AuthenticatedComingSoonRoute: typeof AuthenticatedComingSoonRoute
   AuthenticatedContactUsRoute: typeof AuthenticatedContactUsRoute
   AuthenticatedFeaturesRoute: typeof AuthenticatedFeaturesRoute
   AuthenticatedHowItWorksRoute: typeof AuthenticatedHowItWorksRoute
@@ -2394,7 +2396,6 @@ interface AuthenticatedRouteRouteChildren {
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
-  AuthenticatedComingSoonRoute: AuthenticatedComingSoonRoute,
   AuthenticatedContactUsRoute: AuthenticatedContactUsRoute,
   AuthenticatedFeaturesRoute: AuthenticatedFeaturesRoute,
   AuthenticatedHowItWorksRoute: AuthenticatedHowItWorksRoute,

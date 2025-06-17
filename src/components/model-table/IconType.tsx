@@ -1,9 +1,9 @@
 import { LucideGitPullRequestCreateArrow } from "lucide-react";
-import { BiSolidShow } from "react-icons/bi";
-import { LuPencil, LuTrash2 } from "react-icons/lu";
-import { TbAdjustmentsCancel } from "react-icons/tb";
 import { TiArrowMoveOutline } from "react-icons/ti";
-
+import { LuPencil, LuTrash2, LuLogIn, LuLogOut, LuArrowLeft } from "react-icons/lu";
+import { BiSolidShow } from "react-icons/bi";
+import { TbAdjustmentsCancel } from "react-icons/tb";
+import { FaRegPaperPlane } from "react-icons/fa"; // dùng cho apply
 
 export const renderIcon = (iconType: string) => {
   switch (iconType) {
@@ -20,6 +20,14 @@ export const renderIcon = (iconType: string) => {
       return <BiSolidShow className="h-5 w-5 text-indigo-400 dark:text-indigo-300" />;
     case "cancel":
       return <TbAdjustmentsCancel className="h-5 w-5 text-gray-400 dark:text-gray-300" />;
+    case "apply":
+      return <FaRegPaperPlane className="h-5 w-5 text-emerald-400 dark:text-emerald-300" />;
+    case "signin":
+      return <LuLogIn className="h-5 w-5 text-orange-400 dark:text-orange-300" />;
+    case "signout":
+      return <LuLogOut className="h-5 w-5 text-rose-400 dark:text-rose-300" />;
+    case "back":
+      return <LuArrowLeft className="h-5 w-5 text-slate-400 dark:text-slate-300" />;
     default:
       return null;
   }
