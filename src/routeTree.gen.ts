@@ -60,6 +60,7 @@ import { Route as AuthenticatedManagementsLayoutHomeRouteImport } from './routes
 import { Route as AuthenticatedManagementsLayoutChatSupportRouteImport } from './routes/_authenticated/managements/_layout/chat-support'
 import { Route as AuthenticatedBlogLayoutContactRouteImport } from './routes/_authenticated/blog/_layout/contact'
 import { Route as AuthenticatedBlogLayoutAboutRouteImport } from './routes/_authenticated/blog/_layout/about'
+import { Route as AuthenticatedAppViewerViewerRouteImport } from './routes/_authenticated/app/viewer/viewer'
 import { Route as AuthenticatedAppLayoutHowItWorksRouteImport } from './routes/_authenticated/app/_layout/how-it-works'
 import { Route as AuthenticatedAppLayoutFeaturesRouteImport } from './routes/_authenticated/app/_layout/features'
 import { Route as AuthenticatedAppLayoutContactUsRouteImport } from './routes/_authenticated/app/_layout/contact-us'
@@ -526,6 +527,12 @@ const AuthenticatedBlogLayoutAboutRoute =
     path: '/about',
     getParentRoute: () => AuthenticatedBlogLayoutRoute,
   } as any)
+const AuthenticatedAppViewerViewerRoute =
+  AuthenticatedAppViewerViewerRouteImport.update({
+    id: '/viewer/viewer',
+    path: '/viewer/viewer',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
 const AuthenticatedAppLayoutHowItWorksRoute =
   AuthenticatedAppLayoutHowItWorksRouteImport.update({
     id: '/how-it-works',
@@ -788,6 +795,7 @@ export interface FileRoutesByFullPath {
   '/app/contact-us': typeof AuthenticatedAppLayoutContactUsRoute
   '/app/features': typeof AuthenticatedAppLayoutFeaturesRoute
   '/app/how-it-works': typeof AuthenticatedAppLayoutHowItWorksRoute
+  '/app/viewer/viewer': typeof AuthenticatedAppViewerViewerRoute
   '/blog/about': typeof AuthenticatedBlogLayoutAboutRoute
   '/blog/contact': typeof AuthenticatedBlogLayoutContactRoute
   '/managements/chat-support': typeof AuthenticatedManagementsLayoutChatSupportRoute
@@ -878,6 +886,7 @@ export interface FileRoutesByTo {
   '/app/contact-us': typeof AuthenticatedAppLayoutContactUsRoute
   '/app/features': typeof AuthenticatedAppLayoutFeaturesRoute
   '/app/how-it-works': typeof AuthenticatedAppLayoutHowItWorksRoute
+  '/app/viewer/viewer': typeof AuthenticatedAppViewerViewerRoute
   '/blog/about': typeof AuthenticatedBlogLayoutAboutRoute
   '/blog/contact': typeof AuthenticatedBlogLayoutContactRoute
   '/managements/chat-support': typeof AuthenticatedManagementsLayoutChatSupportRoute
@@ -973,6 +982,7 @@ export interface FileRoutesById {
   '/_authenticated/app/_layout/contact-us': typeof AuthenticatedAppLayoutContactUsRoute
   '/_authenticated/app/_layout/features': typeof AuthenticatedAppLayoutFeaturesRoute
   '/_authenticated/app/_layout/how-it-works': typeof AuthenticatedAppLayoutHowItWorksRoute
+  '/_authenticated/app/viewer/viewer': typeof AuthenticatedAppViewerViewerRoute
   '/_authenticated/blog/_layout/about': typeof AuthenticatedBlogLayoutAboutRoute
   '/_authenticated/blog/_layout/contact': typeof AuthenticatedBlogLayoutContactRoute
   '/_authenticated/managements/_layout/chat-support': typeof AuthenticatedManagementsLayoutChatSupportRoute
@@ -1070,6 +1080,7 @@ export interface FileRouteTypes {
     | '/app/contact-us'
     | '/app/features'
     | '/app/how-it-works'
+    | '/app/viewer/viewer'
     | '/blog/about'
     | '/blog/contact'
     | '/managements/chat-support'
@@ -1160,6 +1171,7 @@ export interface FileRouteTypes {
     | '/app/contact-us'
     | '/app/features'
     | '/app/how-it-works'
+    | '/app/viewer/viewer'
     | '/blog/about'
     | '/blog/contact'
     | '/managements/chat-support'
@@ -1254,6 +1266,7 @@ export interface FileRouteTypes {
     | '/_authenticated/app/_layout/contact-us'
     | '/_authenticated/app/_layout/features'
     | '/_authenticated/app/_layout/how-it-works'
+    | '/_authenticated/app/viewer/viewer'
     | '/_authenticated/blog/_layout/about'
     | '/_authenticated/blog/_layout/contact'
     | '/_authenticated/managements/_layout/chat-support'
@@ -1791,6 +1804,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedBlogLayoutAboutRouteImport
       parentRoute: typeof AuthenticatedBlogLayoutRoute
     }
+    '/_authenticated/app/viewer/viewer': {
+      id: '/_authenticated/app/viewer/viewer'
+      path: '/viewer/viewer'
+      fullPath: '/app/viewer/viewer'
+      preLoaderRoute: typeof AuthenticatedAppViewerViewerRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
     '/_authenticated/app/_layout/how-it-works': {
       id: '/_authenticated/app/_layout/how-it-works'
       path: '/how-it-works'
@@ -2055,12 +2075,14 @@ interface AuthenticatedAppRouteChildren {
   AuthenticatedAppLayoutRoute: typeof AuthenticatedAppLayoutRouteWithChildren
   AuthenticatedAppBlogRoute: typeof AuthenticatedAppBlogRoute
   AuthenticatedAppIndexRoute: typeof AuthenticatedAppIndexRoute
+  AuthenticatedAppViewerViewerRoute: typeof AuthenticatedAppViewerViewerRoute
 }
 
 const AuthenticatedAppRouteChildren: AuthenticatedAppRouteChildren = {
   AuthenticatedAppLayoutRoute: AuthenticatedAppLayoutRouteWithChildren,
   AuthenticatedAppBlogRoute: AuthenticatedAppBlogRoute,
   AuthenticatedAppIndexRoute: AuthenticatedAppIndexRoute,
+  AuthenticatedAppViewerViewerRoute: AuthenticatedAppViewerViewerRoute,
 }
 
 const AuthenticatedAppRouteWithChildren =
