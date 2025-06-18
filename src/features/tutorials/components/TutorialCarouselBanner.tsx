@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { CourseHeader } from "@/features/courses/components/CoursePanel";
 import { CarouselPanel } from "@/components/courses/CarouselPanel";
 import { useLocation } from "@tanstack/react-router";
 import { Banner } from "@/features/learning/lessons-for-newbie/components/Type";
