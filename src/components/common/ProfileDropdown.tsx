@@ -54,15 +54,15 @@ export function ProfileDropdown() {
   }
 
   return (
-    <DropdownMenu modal={false}>
-      <DropdownMenuTrigger asChild>
+    <DropdownMenu modal={false} >
+      <DropdownMenuTrigger asChild className='border border-slate-200 dark:border-slate-500'>
         <Button variant='ghost' size='icon' className='relative h-8 w-8 rounded-full'>
           <Avatar className='h-8 w-8 bg-background/10'>
             <AvatarImage src={avatarUrl} alt='@shadcn'  />
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className='w-56' align='end' forceMount>
+      <DropdownMenuContent   className='w-56 border border-slate-300 dark:border-slate-500' forceMount  align='end'>
         <DropdownMenuLabel title={`User Id: #${id}`} className='font-normal'>
           <div className='flex flex-col space-y-1'>
             <p className='text-sm leading-none font-medium'>{username}</p>
