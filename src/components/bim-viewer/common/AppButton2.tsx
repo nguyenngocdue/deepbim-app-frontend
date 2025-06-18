@@ -28,6 +28,7 @@ type ButtonType =
   | "move"
   | "view"
   | "apply"
+  | "ok"
   | "signin"
   | "signout"
   | "back";
@@ -41,6 +42,7 @@ const buttonTypeStyles: Record<ButtonType, string> = {
   move: "bg-cyan-600 dark:bg-cyan-800 hover:bg-cyan-700 dark:hover:bg-cyan-700 text-white dark:text-slate-200",
   view: "bg-indigo-600 dark:bg-indigo-800 hover:bg-indigo-700 dark:hover:bg-indigo-700 text-white dark:text-slate-200",
   apply: "bg-emerald-600 dark:bg-emerald-700 hover:bg-emerald-700 dark:hover:bg-emerald-600 text-white dark:text-slate-200",
+  ok: "bg-emerald-600 dark:bg-emerald-700 hover:bg-emerald-700 dark:hover:bg-emerald-600 text-white dark:text-slate-200",
   signin: "bg-orange-500 dark:bg-orange-600 hover:bg-orange-600 dark:hover:bg-orange-500 text-white dark:text-slate-200",
   signout: "bg-rose-600 dark:bg-rose-700 hover:bg-rose-700 dark:hover:bg-rose-600 text-white dark:text-slate-200",
   back: "bg-slate-600 dark:bg-slate-700 hover:bg-slate-700 dark:hover:bg-slate-600 text-white dark:text-slate-200",
@@ -57,13 +59,14 @@ const defaultNames: Record<ButtonType, string> = {
   move: "Move",
   view: "View",
   apply: "Apply",
+  ok: "Ok",
   signin: "Sign In",
   signout: "Sign Out",
   back: "Back",
 };
 
 
-
+const _btnType = ["delete", "create", "update", "cancel", "edit", "move", "view", "apply", "signin", "signout", "back", "ok"];
 
 
 const AppButton2: React.FC<AppButtonProps> = ({
@@ -81,10 +84,10 @@ const AppButton2: React.FC<AppButtonProps> = ({
   ...props
 }) => {
   const styleByType =
-    btnType && (["delete", "create", "update", "cancel", "edit", "move", "view", "apply", "signin", "signout", "back"] as const).includes(btnType as ButtonType)
+    btnType && _btnType.includes(btnType as ButtonType)
       ? buttonTypeStyles[btnType as ButtonType]
       : "";
-  const autoIcon = icon ?? renderIcon((btnType && (["delete", "create", "update", "cancel", "edit", "move", "view", "apply", "signin", "signout", "back"] as const).includes(btnType as ButtonType) ? btnType : "create") as ButtonType);
+  const autoIcon = icon ?? renderIcon((btnType && _btnType.includes(btnType as ButtonType) ? btnType : "create") as ButtonType);
   const nameToShow = isLoading ? trueName : falseName ?? (btnType && defaultNames[btnType as ButtonType]) ?? "Submit";
 
   const content = (

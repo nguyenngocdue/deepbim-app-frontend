@@ -4,6 +4,7 @@ import { LuPencil, LuTrash2, LuLogIn, LuLogOut, LuArrowLeft } from "react-icons/
 import { BiSolidShow } from "react-icons/bi";
 import { TbAdjustmentsCancel } from "react-icons/tb";
 import { FaRegPaperPlane } from "react-icons/fa"; // dùng cho apply
+import { MdOutlineDoneOutline } from "react-icons/md";
 
 export const renderIcon = (iconType: string) => {
   switch (iconType) {
@@ -22,6 +23,8 @@ export const renderIcon = (iconType: string) => {
       return <TbAdjustmentsCancel className="h-5 w-5 text-gray-400 dark:text-gray-300" />;
     case "apply":
       return <FaRegPaperPlane className="h-5 w-5 text-emerald-400 dark:text-emerald-300" />;
+    case "ok":
+      return <MdOutlineDoneOutline  className="h-5 w-5 text-teal-500 dark:text-teal-400" />;
     case "signin":
       return <LuLogIn className="h-5 w-5 text-orange-400 dark:text-orange-300" />;
     case "signout":

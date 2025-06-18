@@ -17,10 +17,6 @@ import { RootState } from "@react-three/fiber";
 import { SuccessDialog } from "./SuccessDialog";
 import { useState } from "react";
 import AppButton2 from "@/components/bim-viewer/common/AppButton2";
-import { PromptCard } from "@/features/learning/lessons-for-newbie/components/PromptCard";
-import AppButton from "@/components/bim-viewer/common/AppButton";
-import { CLASS_NAME_DEFAULT } from "@/utils/class";
-import { Loader2 } from "lucide-react";
 
 interface RegisterFormData {
     full_name: string;
@@ -70,42 +66,53 @@ export function RegisterPopup({
 
     const onSubmit = async (data: RegisterFormData) => {
         setIsSubmitting(true);
+        if (!currentUser) {
+            toast.error("Please log in to register for this course.");
+            setIsSubmitting(false);
+            return;
+        }
         try {
             const response = await registerCourse(courseId, data);
             if (response.ok) {
-                toast.success(response.data.message);
+                toast.success(response.data.message || "Successfully registered for the course.");
                 setShowSuccess(true);
-                onClose();
-                setIsSubmitting(false);
             } else {
-                toast.error("Đăng ký thất bại. Vui lòng thử lại.");
-                setIsSubmitting(false);
+                toast.error("Registration failed. Please try again.");
             }
         } catch (error) {
-            toast.error("Có lỗi xảy ra. Vui lòng thử lại.");
+            const errMsg = (error instanceof Error) ? error.message : String(error);
+            toast.error(`An error occurred. Please try again. ${errMsg}`);
+        } finally {
             setIsSubmitting(false);
         }
     };
 
+
     return (
         <>
-            <SuccessDialog open={showSuccess} onClose={() => setShowSuccess(false)} />
+            <SuccessDialog open={showSuccess} onClose={() =>{
+                setShowSuccess(false)
+                onClose()
+            }} />
             <Dialog open={open} onOpenChange={onClose}>
-                <DialogContent className="sm:max-w-[960px] p-6 rounded-xl bg-[#0f172a] text-white border border-[#40dbcb]/30 shadow-xl">
+                <DialogContent
+                    className="sm:max-w-[960px] w-full max-h-screen overflow-y-auto p-4 sm:p-6 md:lg:rounded-xl bg-[#0f172a] text-white  md:lg:border border-[#40dbcb]/30 shadow-xl"
+                >
+
                     <DialogHeader>
-                        <DialogTitle className="text-2xl font-bold text-center text-[#40DBCB]">
+                        <DialogTitle className="text-xl sm:text-2xl font-bold text-center text-[#40DBCB]">
                             Đăng ký khóa học: {title}
                         </DialogTitle>
                     </DialogHeader>
 
-                    <div className="grid gap-6 md:grid-cols-2">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                         {/* Form */}
-                        <Card className="bg-[#1e293b]/90 backdrop-blur-md border border-[#40dbcb]/20 rounded-lg">
-                            <CardContent className="p-6">
+                        <Card className="bg-[#1e293b]/90 backdrop-blur-md md:lg:border border-[#40dbcb]/20 md:lg:rounded-lg">
+                            <CardContent className="p-4 sm:p-6">
                                 <form onSubmit={handleSubmit(onSubmit)} className="grid gap-5">
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         <div>
-                                            <Label htmlFor="full_name" className="text-slate-200 dark:text-slate-100">Họ và tên <span className="text-orange-300">*</span></Label>
+                                            <Label htmlFor="full_name" className="text-slate-200">Họ và tên <span className="text-orange-300">*</span></Label>
                                             <Input
                                                 id="full_name"
                                                 {...register("full_name", { required: "Vui lòng nhập họ và tên" })}
@@ -115,7 +122,7 @@ export function RegisterPopup({
                                             {errors.full_name && <p className="text-orange-300 text-xs mt-1">{errors.full_name.message}</p>}
                                         </div>
                                         <div>
-                                            <Label htmlFor="email" className="text-slate-200 dark:text-slate-100">Email <span className="text-orange-300">*</span></Label>
+                                            <Label htmlFor="email" className="text-slate-200">Email <span className="text-orange-300">*</span></Label>
                                             <Input
                                                 id="email"
                                                 type="email"
@@ -135,7 +142,7 @@ export function RegisterPopup({
 
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         <div>
-                                            <Label htmlFor="phone" className="text-slate-200 dark:text-slate-100">Số điện thoại <span className="text-orange-300">*</span></Label>
+                                            <Label htmlFor="phone" className="text-slate-200">Số điện thoại <span className="text-orange-300">*</span></Label>
                                             <Input
                                                 id="phone"
                                                 {...register("phone", {
@@ -151,7 +158,7 @@ export function RegisterPopup({
                                             {errors.phone && <p className="text-orange-300 text-xs mt-1">{errors.phone.message}</p>}
                                         </div>
                                         <div>
-                                            <Label htmlFor="age" className="text-slate-200 dark:text-slate-100">Tuổi</Label>
+                                            <Label htmlFor="age" className="text-slate-200">Tuổi</Label>
                                             <Input
                                                 id="age"
                                                 type="number"
@@ -168,7 +175,7 @@ export function RegisterPopup({
                                     </div>
 
                                     <div>
-                                        <Label htmlFor="occupation" className="text-slate-200 dark:text-slate-100">Nghề nghiệp</Label>
+                                        <Label htmlFor="occupation" className="text-slate-200">Nghề nghiệp</Label>
                                         <Input
                                             id="occupation"
                                             {...register("occupation")}
@@ -179,7 +186,7 @@ export function RegisterPopup({
 
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         <div>
-                                            <Label htmlFor="zalo_link" className="text-slate-200 dark:text-slate-100">Zalo Link</Label>
+                                            <Label htmlFor="zalo_link" className="text-slate-200">Zalo Link</Label>
                                             <Input
                                                 id="zalo_link"
                                                 {...register("zalo_link")}
@@ -188,7 +195,7 @@ export function RegisterPopup({
                                             />
                                         </div>
                                         <div>
-                                            <Label htmlFor="linked_link" className="text-slate-200 dark:text-slate-100">Linked Link</Label>
+                                            <Label htmlFor="linked_link" className="text-slate-200">Linked Link</Label>
                                             <Input
                                                 id="linked_link"
                                                 {...register("linked_link")}
@@ -199,7 +206,7 @@ export function RegisterPopup({
                                     </div>
 
                                     <div>
-                                        <Label htmlFor="note" className="text-slate-200 dark:text-slate-100">Ghi chú</Label>
+                                        <Label htmlFor="note" className="text-slate-200">Ghi chú</Label>
                                         <Textarea
                                             id="note"
                                             {...register("note")}
@@ -225,7 +232,7 @@ export function RegisterPopup({
 
                         {/* Payment Info */}
                         <Card className="bg-[#1e293b]/90 backdrop-blur-md border border-[#40dbcb]/20 rounded-lg">
-                            <CardContent className="p-6 flex flex-col justify-between h-full text-white">
+                            <CardContent className="p-4 sm:p-6 flex flex-col justify-between h-full text-white">
                                 <div>
                                     <h3 className="text-lg font-bold text-[#40DBCB]">Thông tin thanh toán</h3>
                                     <p className="text-sm mt-2">Vui lòng chuyển khoản đến:</p>
@@ -235,11 +242,11 @@ export function RegisterPopup({
                                         <li><strong>Chủ tài khoản:</strong> NGUYEN NGOC DUE</li>
                                     </ul>
                                 </div>
-                                <div className="flex justify-center items-center mt-6">
+                                <div className="flex justify-center items-center mt-4 sm:mt-6">
                                     <img
                                         src="https://minio.deepbim.net:9000/deepbim-fe/1749836342572-qr_nguyen_ngoc_due.jfif"
                                         alt="QR Code"
-                                        className="w-72 h-72 object-contain rounded-lg border border-[#40dbcb]/30 shadow-md"
+                                        className="w-56 sm:w-72 h-auto object-contain rounded-lg border border-[#40dbcb]/30 shadow-md"
                                     />
                                 </div>
                             </CardContent>
@@ -247,6 +254,7 @@ export function RegisterPopup({
                     </div>
                 </DialogContent>
             </Dialog>
+
         </>
     );
 }
