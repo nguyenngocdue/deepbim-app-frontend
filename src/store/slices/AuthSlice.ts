@@ -5,11 +5,13 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 interface AuthState {
   user: UserProfile | null;
   loading: boolean;
+  hasTried: boolean; 
 }
 
 const initialState: AuthState = {
   user: null,
   loading: true, // ✅ Khi app load lần đầu, đang kiểm tra user
+  hasTried: false, 
 };
 
 // ✅ Thunk: gọi API /auth/me để lấy user hiện tại
@@ -51,10 +53,12 @@ const authSlice = createSlice({
       .addCase(fetchCurrentUser.fulfilled, (state, action) => {
         state.user = action.payload;
         state.loading = false;
+        state.hasTried = true;
       })
       .addCase(fetchCurrentUser.rejected, (state) => {
         state.user = null;
         state.loading = false;
+        state.hasTried = true;
       });
   },
 });

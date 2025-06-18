@@ -12,6 +12,7 @@ import { useSelector } from "react-redux";
 import { PromptCard } from "./components/PromptCard";
 import AppButton2 from "@/components/bim-viewer/common/AppButton2";
 import { RootState } from "@/store";
+import AuthGate from "@/features/auth/AuthGate";
 
 export default function LessonForNewbies() {
   const location = useLocation();
@@ -23,8 +24,7 @@ export default function LessonForNewbies() {
   const { lessons, selectedLesson, setSelectedLesson, course } = useLessonData(courseId);
   const [lessonContent, setLessonContent] = useState(null);
 
-
-  const currentUser = useSelector((state: RootState) => state.auth.user);
+  const { user: currentUser } = useSelector((state: RootState) => state.auth);
 
 
   // Fetch lesson by ID from URL if needed
@@ -62,6 +62,7 @@ export default function LessonForNewbies() {
 
   return (
     <>
+     <AuthGate fallback={null}>
     <div className="min-h-screen w-full bg-background relative">
       <main className="flex flex-col gap-4 p-2 sm:p-4 md:p-6 lg:grid lg:grid-cols-12 lg:gap-4 h-[calc(100vh-4rem)] overflow-hidden">
         {/* Player + Content */}
@@ -110,6 +111,7 @@ export default function LessonForNewbies() {
         </div>
       )}
     </div>
+    </AuthGate>
     </>
   );
 
