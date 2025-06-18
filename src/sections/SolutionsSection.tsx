@@ -18,9 +18,10 @@ const SolutionsSection = () => {
       image: "https://minio.deepbim.net:9000/deepbim-fe/1749456861985-home_page_2.png",
     },
     {
-      title: t("solutions.items.bitcoin.title"),
-      description: t("solutions.items.bitcoin.desc"),
-      image: "https://minio.deepbim.net:9000/deepbim-fe/1749456667465-home_page_1.png",
+      title: t("solutions.items.bim.title"),
+      description: t("solutions.items.bim.desc"),
+      image: "https://minio.deepbim.net:9000/deepbim-fe/1750232359263-bim.png",
+      // image: "https://minio.deepbim.net:9000/deepbim-fe/1750232191586-whatbim.png",
     },
   ];
 
@@ -33,7 +34,7 @@ const SolutionsSection = () => {
       {/* Wrapper chứa Slider + Card Cố Định */}
       <div className="flex flex-col md:flex-row justify-center items-center gap-10 mt-10">
         {/* Slider Container */}
-        <div className="relative w-full max-w-2xl overflow-hidden p-5 border rounded-2xl border-zinc-600 ">
+        <div className="relative w-full max-w-2xl overflow-hidden p-5 border rounded-2xl dark:border-gray-500 border-gray-300 shadow-lg shadow-zinc-950 dark:shadow-lg dark:shadow-slate-500">
           <motion.div
             className="flex gap-6"
             animate={{ x: ["0%", "-100%"] }}

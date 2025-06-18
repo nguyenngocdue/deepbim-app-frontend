@@ -131,9 +131,9 @@ const resources = {
             title: "Data Utilization & Connectivity",
             desc: "Leverage powerful tools to extract, analyze, and connect your BIM data, enhancing collaboration and efficiency.",
           },
-          bitcoin: {
-            title: "Bitcoin",
-            desc: "Bitcoin is a type of cryptocurrency invented in 2008 by an unknown person or group of people using the name Satoshi Nakamoto.",
+          bim: {
+            title: "What is BIM?",
+            desc: "BIM is a digital method for designing, building, and managing projects using smart 3D models to improve accuracy, collaboration, and efficiency.",
           }
 
         },
@@ -293,9 +293,9 @@ const resources = {
             title: "Khai thác dữ liệu & Kết nối con người",
             desc: "Tận dụng các công cụ mạnh mẽ để khai thác dữ liệu mô hình BIM và kết nối mọi người, thúc đẩy hợp tác và hiệu quả.",
           },
-          bitcoin: {
-            title: "Bitcoin",
-            desc: "Bitcoin là một loại tiền điện tử được phát minh vào năm 2008 bởi một người hoặc một nhóm người ẩn danh sử dụng tên Satoshi Nakamoto.",
+          bim: {
+            title: "BIM là gì?",
+            desc: "BIM là một phương pháp kỹ thuật số để thiết kế, xây dựng và quản lý các dự án bằng cách sử dụng các mô hình 3D thông minh nhằm nâng cao độ chính xác, sự cộng tác và hiệu quả."
           },
         },
       },
