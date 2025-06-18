@@ -3,6 +3,7 @@ import { useRef } from "react";
 import { DialogTemplate } from "@/components/model-table/DialogTemplate";
 import { EntityForm } from "@/components/bim-viewer/common/EntityForm";
 import { FieldConfig } from "@/components/bim-viewer/common/EntityForm/types";
+import { DialogTemplate2 } from "@/components/model-table/DialogTemplate2";
 
 export type Mode = "create" | "edit" | "view" | null;
 
@@ -31,7 +32,7 @@ export function EntityDialog<T>({
   defaultValues,
   maxWidth = "max-w-3xl",
 }: EntityDialogProps<T>) {
-  const formRef = useRef<{ submit: () => void }>(null);
+ const formRef = useRef<{ submit: () => Promise<void> }>(null);
 
   const resolvedTitle =
     title ??
@@ -50,7 +51,7 @@ export function EntityDialog<T>({
       : `Fill in details to create new ${entityName}.`);
 
   return (
-    <DialogTemplate
+    <DialogTemplate2
       open={open}
       onClose={onClose}
       title={resolvedTitle}
@@ -59,9 +60,6 @@ export function EntityDialog<T>({
       iconType={mode}
       className={maxWidth}
       onApply={() => formRef.current?.submit()}
-      onApplyText="Apply"
-      onCancelText="Cancel"
-      applyType="button"
     >
       <EntityForm
         ref={formRef}
@@ -73,6 +71,6 @@ export function EntityDialog<T>({
         cancelLabel="Cancel"
         showFooter
       />
-    </DialogTemplate>
+    </DialogTemplate2>
   );
 }

@@ -1,10 +1,6 @@
-import { useRef } from "react";
-import { DialogTemplate } from "@/components/model-table/DialogTemplate";
-import { EntityForm } from "@/components/bim-viewer/common/EntityForm";
+import { EntityDialog } from "@/features/tutorials/functions/EntityDialog";
 import { CourseFormConfig } from "./CourseFormConfig";
-import { Course, FormOption } from "./types";
-
-type Mode = "create" | "edit" | "view" | null;
+import { Course, FormOption, Mode } from "./types";
 
 interface CourseDialogProps {
   mode: Mode;
@@ -14,6 +10,7 @@ interface CourseDialogProps {
   allUsers: FormOption[];
   closeModal: () => void;
   handleSubmit: (formData: any) => void;
+  fetchFormData?: () => void;
 }
 
 export const CourseDialog = ({
@@ -25,8 +22,6 @@ export const CourseDialog = ({
   closeModal,
   handleSubmit,
 }: CourseDialogProps) => {
-  const formRef = useRef<{ submit: () => void }>(null);
-
   const { courseFields, editDefaultValues } = CourseFormConfig({
     statuses,
     allUsers,
@@ -34,31 +29,14 @@ export const CourseDialog = ({
   });
 
   return (
-    <DialogTemplate
+    <EntityDialog<Course>
+      mode={mode}
       open={modalOpen}
       onClose={closeModal}
-      title={mode === "edit" ? "Edit Course" : mode === "view" ? "View Course" : "Create New Course"}
-      description={
-        mode === "edit" ? "Update course details." : mode === "view" ? "View course details." : "Fill in details to create new course."
-      }
-      disableOutsideClose
-      iconType={mode}
-      className="max-w-3xl"
-      onApply={() => formRef.current?.submit()}
-      onApplyText="Apply"
-      onCancelText="Cancel"
-      applyType="button"
-    >
-      <EntityForm
-        ref={formRef}
-        fields={courseFields}
-        defaultValues={editDefaultValues}
-        onSubmit={handleSubmit}
-        mode={mode}
-        onCancel={closeModal}
-        cancelLabel="Cancel"
-        showFooter
-      />
-    </DialogTemplate>
+      onSubmit={handleSubmit}
+      fields={courseFields}
+      defaultValues={editDefaultValues}
+      entityName="Course"
+    />
   );
 };

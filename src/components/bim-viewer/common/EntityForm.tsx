@@ -48,13 +48,21 @@ export const EntityForm = forwardRef<any, EntityFormProps>(({
     formState: { errors },
   } = useForm({ defaultValues, mode: "onChange" });
 
-  useImperativeHandle(ref, () => ({
-    submit: () => {
-      if (onSubmit) {
-        handleSubmit(onSubmit)();
-      }
-    },
-  }));
+useImperativeHandle(ref, () => ({
+  submit: () =>
+    new Promise<void>((resolve, reject) => {
+      handleSubmit(async (data) => {
+        try {
+          await onSubmit?.(data); // xử lý form
+          resolve();              // ✅ báo thành công
+        } catch (err) {
+          reject(err);            // ❌ để giữ lại loading
+        }
+      })();
+    }),
+}));
+
+
 
   useEffect(() => {
     reset(defaultValues);

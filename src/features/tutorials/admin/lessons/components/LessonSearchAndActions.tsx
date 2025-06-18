@@ -18,7 +18,7 @@ export const LessonSearchAndActions = ({
       onClick={openCreateModal}
       className={CLASS_NAME_DEFAULT.CLASS_APP_BUTTON_CREATE}
     >
-      + Create Course
+      + Create Lesson
     </Button>
     <SearchBox
       value={filter}

@@ -142,9 +142,18 @@ export function AdminEntityPage<T>({
     }
   };
 
-  const handleSubmit = (formData: any) => {
-    mode === "edit" ? handleEdit(formData) : handleCreate(formData);
-  };
+const handleSubmit = async (formData: any) => {
+  try {
+    if (mode === "edit") {
+      await handleEdit(formData);   // ✅ phải có await
+    } else {
+      await handleCreate(formData); // ✅ phải có await
+    }
+  } catch (err) {
+    console.error("Submit error:", err);
+    throw err; // ❗ Bắt buộc để DialogTemplate2 giữ loading khi lỗi
+  }
+};
 
   const filteredCount = useMemo(
     () => data?.filter((item: any) =>
