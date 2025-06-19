@@ -26,6 +26,7 @@ import { useThree } from "@react-three/fiber";
 import GlobalInteractionHandler from "./GlobalInteractionHandler";
 import CameraActionsController, { CameraActions } from "./CameraActionsController";
 import FileUpload from "./FileUpload";
+import { LoadingOverlay } from "../common/LoadingOverlay";
 
 const SKIP_IFC_INITIALIZATION_FOR_TEST = false;
 
@@ -66,6 +67,53 @@ export default function ViewerContent() {
   const [leftPanelCollapsed, setLeftPanelCollapsed] = useState(false);
   const [rightPanelCollapsed, setRightPanelCollapsed] = useState(false);
   const [hasAutoLoadedModels, setHasAutoLoadedModels] = useState(false);
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [loadingMessage, setLoadingMessage] = useState("Uploading");
+  const [loadingProgress, setLoadingProgress] = useState(0);
+  const progressIntervalRef = useRef<NodeJS.Timeout | null>(null);
+
+
+  const simulateProgress = useCallback((duration: number = 5000) => {
+    setLoadingProgress(0);
+    console.log("Starting progress simulation, duration:", duration);
+    const increment = 100 / (duration / 100); // Increase every 100ms
+    progressIntervalRef.current = setInterval(() => {
+      setLoadingProgress((prev) => {
+        const next = prev + increment;
+        if (next >= 90) {
+          clearInterval(progressIntervalRef.current!);
+          progressIntervalRef.current = null;
+          return 90;
+        }
+        return next;
+      });
+    }, 100);
+  }, []);
+const handleUploadStart = useCallback((message: string, duration: number = 5000) => {
+    console.log("Upload started, isLoading = true, message:", message);
+    setIsLoading(true);
+    setLoadingMessage(message);
+    simulateProgress(duration);
+  }, [simulateProgress]);
+
+  const handleUploadComplete = useCallback((error?: string) => {
+    console.log("Upload completed, isLoading = false, error:", error || "none");
+    if (progressIntervalRef.current) {
+      clearInterval(progressIntervalRef.current);
+      progressIntervalRef.current = null;
+    }
+    setLoadingProgress(100);
+    setTimeout(() => {
+      setIsLoading(false);
+      setLoadingProgress(0);
+      if (error) {
+        // Handle error display if needed
+        console.error("Upload error:", error);
+      }
+    }, 500); // Delay to show 100% briefly
+  }, []);
+
 
   const OUTLINE_SELECTION_LAYER = 10;
 
@@ -673,8 +721,10 @@ export default function ViewerContent() {
     );
   }
 
+
   return (
     <div className="flex h-full w-full relative overflow-hidden" style={{ isolation: 'isolate' }}>
+      {/* <LoadingOverlay open={isLoading}  message={loadingMessage} progress={loadingProgress} /> */}
       <div
         style={{
           position: "absolute",
@@ -928,7 +978,17 @@ export default function ViewerContent() {
             )}
             {loadedModels.length === 0 && ifcEngineReady && !SKIP_IFC_INITIALIZATION_FOR_TEST && (
               <div className="absolute inset-0 flex items-center justify-center bg-background/50 backdrop-blur-sm z-10 pointer-events-auto">
-                <FileUpload key={`file-upload-main-${settingsVersion}`} isAdding={false} />
+                {/* <FileUpload key={`file-upload-main-${settingsVersion}`} isAdding={false} /> */}
+
+
+                <FileUpload
+                    key={`file-upload-main-${settingsVersion}`}
+                    isAdding={false}
+                    onUploadStart={handleUploadStart}
+                    onUploadComplete={handleUploadComplete}
+                  />
+
+
               </div>
             )}
             {ifcEngineReady && !webGLContextLost && (

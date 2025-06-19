@@ -11,7 +11,6 @@ import {
 import { UploadCloud, PlusSquare } from "lucide-react";
 import { useIFCContext } from "@/context/ifc-context";
 import { useTranslation } from "react-i18next";
-import { LoadingOverlay } from "../common/LoadingOverlay";
 
 interface ModelSource {
   name: string;
@@ -20,20 +19,18 @@ interface ModelSource {
 
 interface FileUploadProps {
   isAdding?: boolean;
+  onUploadStart?: (message: string, duration?: number) => void;
+  onUploadComplete?: (error?: string) => void;
 }
 
-export default function FileUpload({ isAdding = false }: FileUploadProps) {
+export default function FileUpload({ isAdding = false, onUploadStart, onUploadComplete }: FileUploadProps) {
   const { replaceIFCModel, addIFCModel } = useIFCContext();
   const { t } = useTranslation();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [demoModels, setDemoModels] = useState<ModelSource[]>([]);
   const [savedModels, setSavedModels] = useState<ModelSource[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [loadingMessage, setLoadingMessage] = useState("Uploading");
 
-
-  // Load demo and saved models on mount
   useEffect(() => {
     const fetchDemo = async () => {
       try {
@@ -62,65 +59,57 @@ export default function FileUpload({ isAdding = false }: FileUploadProps) {
     }
   }, [t]);
 
-  // Cleanup Object URLs on unmount
   useEffect(() => {
     return () => {
-      // Revoke any lingering Object URLs if component unmounts
-      // This assumes handleFileChange stores URLs if needed
+      // Cleanup Object URLs if needed
     };
   }, []);
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || !e.target.files[0]) {
       setError(t("error.noFileSelected"));
+      onUploadComplete?.(t("error.noFileSelected"));
       return;
     }
 
     const file = e.target.files[0];
     if (!file.name.toLowerCase().endsWith(".ifc")) {
       setError(t("error.invalidFileType"));
+      onUploadComplete?.(t("error.invalidFileType"));
       if (fileInputRef.current) fileInputRef.current.value = "";
       return;
     }
 
     const url = URL.createObjectURL(file);
-    
-    setIsLoading(true);
-    setLoadingMessage(t("uploadingFile"));
-
+    onUploadStart?.(t("uploadingFile"), 5000);
     try {
-      if (isAdding) {
-        await  addIFCModel(url, file.name);
-      } else {
-        await  replaceIFCModel(url, file.name);
-      }
+      await Promise.resolve(
+        isAdding ? addIFCModel(url, file.name) : replaceIFCModel(url, file.name)
+      );
       setError(null);
+      onUploadComplete?.();
     } catch (err) {
       console.error("Failed to load IFC model:", err);
       setError(t("error.loadModel"));
       URL.revokeObjectURL(url);
-    }finally {
-      setIsLoading(false);
+      onUploadComplete?.(t("error.loadModel"));
+    } finally {
       if (fileInputRef.current) fileInputRef.current.value = "";
     }
-
   };
 
-  const handleLoadModel = async(model: ModelSource) => {
-    setIsLoading(true);
-    setLoadingMessage(t("loadingModel"));
+  const handleLoadModel = async (model: ModelSource) => {
+    onUploadStart?.(t("loadingModel"), 3000);
     try {
-      if (isAdding) {
-        await addIFCModel(model.url, model.name);
-      } else {
-        await replaceIFCModel(model.url, model.name);
-      }
+      await Promise.resolve(
+        isAdding ? addIFCModel(model.url, model.name) : replaceIFCModel(model.url, model.name)
+      );
       setError(null);
+      onUploadComplete?.();
     } catch (err) {
       console.error("Failed to load model:", err);
       setError(t("error.loadModel"));
-    }finally {
-      setIsLoading(false);
+      onUploadComplete?.(t("error.loadModel"));
     }
   };
 
@@ -135,7 +124,6 @@ export default function FileUpload({ isAdding = false }: FileUploadProps) {
       // Show dropdown if there are saved or demo models
       return (
         <div className="relative">
-          <LoadingOverlay open={isLoading} message={loadingMessage} progress={0}/>
           <input
             type="file"
             accept=".ifc"
