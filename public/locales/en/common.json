@@ -308,6 +308,7 @@
     "description": "Enhance your 3D model workflow, ensure absolute data control, and leverage powerful BIM analytics. By applying AI, automatically detect design conflicts, predict risks, and optimize costs, enabling higher efficiency and smarter decision-making for investors, businesses, and engineers. Elevate your projects with AI & BIM technology! 🚀",
     "start": "Discovery",
     "demo": "Demo",
+    "deploy_ifc": "Upload Your IFC",
     "deploy": "Deploy Yourself"
   },
   "benefits": {

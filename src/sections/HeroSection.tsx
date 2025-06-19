@@ -75,7 +75,7 @@ const HeroSection = () => {
           </Link>
           <Link to="/managements/projects">
             <AppButton 
-              className="bg-button-2 text-white bg-gray-700 hover:bg-zinc-900 dark:hover:bg-gray-400" 
+              className="bg-button-2 text-white  bg-gray-700 hover:bg-zinc-900 dark:hover:bg-gray-400" 
               falseName={t("hero.deploy")}
               >
               {t("hero.deploy")}
@@ -84,10 +84,19 @@ const HeroSection = () => {
 
           <Link to="/examples/bim-viewer">
             <AppButton 
-              className="bg-button-1 text-white dark:bg-blue-600 dark:text-white hover:bg-zinc-900 dark:hover:bg-zinc-900" 
+              className="bg-red-950 text-white dark:text-white  dark:bg-orange-800  hover:bg-zinc-900 dark:hover:bg-zinc-500" 
               falseName={t("hero.demo")}
               >
               {t("hero.demo")}
+            </AppButton>
+          </Link>
+
+             <Link to="/app/viewer">
+            <AppButton 
+              className=" text-white bg-purple-700 dark:bg-slate-800 dark:text-white hover:bg-zinc-900 dark:hover:bg-zinc-500" 
+              falseName={t("hero.deploy_ifc")}
+              >
+              {t("hero.deploy_ifc")}
             </AppButton>
           </Link>
 

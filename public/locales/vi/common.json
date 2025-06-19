@@ -309,6 +309,7 @@
     "description": "Tối ưu quy trình làm việc với mô hình 3D, đảm bảo quyền kiểm soát dữ liệu tuyệt đối và nâng cao phân tích BIM mạnh mẽ. Ứng dụng AI giúp tự động phát hiện lỗi thiết kế, dự đoán rủi ro, tối ưu chi phí, mang lại hiệu suất cao hơn và quyết định chính xác hơn cho chủ đầu tư, doanh nghiệp và kỹ sư. Nâng tầm dự án của bạn với công nghệ AI & BIM!🚀",
     "start": "Khám phá",
     "demo": "Mô hình mẫu",
+    "deploy_ifc": "Tải nhanh IFC",
     "deploy": "Tự triển khai"
   },
   "benefits": {
