@@ -22,6 +22,7 @@ import {
   IFCRELASSOCIATESMATERIAL,
   Properties,
 } from "web-ifc"; // Import IfcAPI type and constants
+import { addGrid, centerObjectAtOrigin, fitCameraToObject } from "./FitCameraToObject";
 
 interface IFCModelProps {
   modelData: LoadedModelData;
@@ -562,66 +563,82 @@ export function IFCModel({ modelData, outlineLayer }: IFCModelProps) {
     [ifcApi]
   );
 
-  const createMeshes = useCallback(() => {
-    if (!ifcApi || ownModelID.current === null) return;
-    if (meshesRef.current) {
-      console.log("meshesRefmeshesRefmeshesRefmeshesRefmeshesRefmeshesRefmeshesRef", meshesRef)
+const createMeshes = useCallback(() => {
+  if (!ifcApi || ownModelID.current === null) return;
 
-
-      scene.remove(meshesRef.current);
-      meshesRef.current.traverse((child) => {
-        if (child instanceof THREE.Mesh) {
-          child.geometry.dispose();
-          if (Array.isArray(child.material))
-            child.material.forEach((m) => m.dispose());
-          else child.material.dispose();
-        }
-      });
-    }
-    const group = new THREE.Group();
-    group.name = `IFCModelGroup_${modelData.id}_${ownModelID.current}`;
-    meshesRef.current = group;
-    try {
-      const flatMeshes = ifcApi.LoadAllGeometry(ownModelID.current!);
-      for (let i = 0; i < flatMeshes.size(); i++) {
-        const flatMesh = flatMeshes.get(i);
-        const elementExpressID = flatMesh.expressID;
-        const placedGeometries = flatMesh.geometries;
-        for (let j = 0; j < placedGeometries.size(); j++) {
-          const placedGeometry = placedGeometries.get(j);
-          const ifcGeometryData = ifcApi.GetGeometry(
-            ownModelID.current!,
-            placedGeometry.geometryExpressID
-          );
-          const threeJsGeometry = createThreeJSGeometry(ifcGeometryData);
-          const color = placedGeometry.color;
-          const material = new THREE.MeshStandardMaterial({
-            color: new THREE.Color(color.x, color.y, color.z),
-            side: THREE.DoubleSide,
-            transparent: color.w < 1,
-            opacity: color.w,
-          });
-          const mesh = new THREE.Mesh(threeJsGeometry, material);
-          const matrix = placedGeometry.flatTransformation;
-          const mat = new THREE.Matrix4();
-          mat.fromArray(matrix);
-          mesh.applyMatrix4(mat);
-          mesh.userData = {
-            expressID: elementExpressID,
-            modelID: ownModelID.current,
-          };
-          group.add(mesh);
-        }
+  if (meshesRef.current) {
+    scene.remove(meshesRef.current);
+    meshesRef.current.traverse((child) => {
+      if (child instanceof THREE.Mesh) {
+        child.geometry.dispose();
+        if (Array.isArray(child.material))
+          child.material.forEach((m) => m.dispose());
+        else child.material.dispose();
       }
-      group.applyMatrix4(modelTransformRef.current);
-      scene.add(group); // Add this model's group to the main scene
-    } catch (error) {
-      console.error(
-        `IFCModel (${modelData.id}): Error creating meshes:`,
-        error
-      );
+    });
+  }
+
+  const group = new THREE.Group();
+  group.name = `IFCModelGroup_${modelData.id}_${ownModelID.current}`;
+  meshesRef.current = group;
+
+  try {
+    const flatMeshes = ifcApi.LoadAllGeometry(ownModelID.current!);
+    for (let i = 0; i < flatMeshes.size(); i++) {
+      const flatMesh = flatMeshes.get(i);
+      const elementExpressID = flatMesh.expressID;
+      const placedGeometries = flatMesh.geometries;
+      for (let j = 0; j < placedGeometries.size(); j++) {
+        const placedGeometry = placedGeometries.get(j);
+        const ifcGeometryData = ifcApi.GetGeometry(
+          ownModelID.current!,
+          placedGeometry.geometryExpressID
+        );
+        const threeJsGeometry = createThreeJSGeometry(ifcGeometryData);
+        const color = placedGeometry.color;
+        const material = new THREE.MeshStandardMaterial({
+          color: new THREE.Color(color.x, color.y, color.z),
+          side: THREE.DoubleSide,
+          transparent: color.w < 1,
+          opacity: color.w,
+        });
+        const mesh = new THREE.Mesh(threeJsGeometry, material);
+        const matrix = placedGeometry.flatTransformation;
+        const mat = new THREE.Matrix4();
+        mat.fromArray(matrix);
+        mesh.applyMatrix4(mat);
+        mesh.userData = {
+          expressID: elementExpressID,
+          modelID: ownModelID.current,
+        };
+        group.add(mesh);
+      }
     }
-  }, [ifcApi, scene, modelData.id, createThreeJSGeometry]);
+
+    // Tính bounding box và tâm
+    const box = new THREE.Box3().setFromObject(group);
+    const center = box.getCenter(new THREE.Vector3());
+    const size = box.getSize(new THREE.Vector3());
+
+    // Dời toàn bộ model sao cho tâm nằm tại gốc (0,0,0)
+    group.position.sub(center);
+
+    // Cập nhật camera vô cực nếu cần
+    if (camera && camera.isPerspectiveCamera) {
+      camera.far = size.length() * 10;
+      camera.updateProjectionMatrix();
+    }
+
+    scene.add(group);
+  } catch (error) {
+    console.error(
+      `IFCModel (${modelData.id}): Error creating meshes:`,
+      error
+    );
+  }
+}, [ifcApi, scene, modelData.id, createThreeJSGeometry, camera]);
+
+
 
   // Load this specific IFC model
   useEffect(() => {
@@ -714,7 +731,7 @@ export function IFCModel({ modelData, outlineLayer }: IFCModelProps) {
         createMeshes(); // This populates meshesRef.current
         // Note: setModelMeshesProcessedForInitialView is NOT set here directly,
         // it will be handled by the new useEffect that depends on meshesRef.current becoming available.
-
+        addGrid(scene)
         console.log(
           `IFCModel (${modelData.id}): Extracting data for modelID ${newIfcModelID}...`
         );
