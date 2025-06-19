@@ -47,6 +47,7 @@ import { Route as AuthenticatedAppLayoutRouteImport } from './routes/_authentica
 import { Route as AuthenticatedAdminLayoutRouteImport } from './routes/_authenticated/admin/_layout'
 import { Route as AuthenticatedViewUploadIndexRouteImport } from './routes/_authenticated/view/upload/index'
 import { Route as AuthenticatedExamplesBimViewerIndexRouteImport } from './routes/_authenticated/examples/bim-viewer/index'
+import { Route as AuthenticatedAppViewerIndexRouteImport } from './routes/_authenticated/app/viewer/index'
 import { Route as AuthenticatedTutorialsLayoutPurchaseCourseRouteImport } from './routes/_authenticated/tutorials/_layout/purchase-course'
 import { Route as AuthenticatedTutorialsLayoutIntroductionCourseRouteImport } from './routes/_authenticated/tutorials/_layout/introduction-course'
 import { Route as AuthenticatedTutorialsLayoutHomePageRouteImport } from './routes/_authenticated/tutorials/_layout/home-page'
@@ -60,7 +61,6 @@ import { Route as AuthenticatedManagementsLayoutHomeRouteImport } from './routes
 import { Route as AuthenticatedManagementsLayoutChatSupportRouteImport } from './routes/_authenticated/managements/_layout/chat-support'
 import { Route as AuthenticatedBlogLayoutContactRouteImport } from './routes/_authenticated/blog/_layout/contact'
 import { Route as AuthenticatedBlogLayoutAboutRouteImport } from './routes/_authenticated/blog/_layout/about'
-import { Route as AuthenticatedAppViewerViewerRouteImport } from './routes/_authenticated/app/viewer/viewer'
 import { Route as AuthenticatedAppLayoutHowItWorksRouteImport } from './routes/_authenticated/app/_layout/how-it-works'
 import { Route as AuthenticatedAppLayoutFeaturesRouteImport } from './routes/_authenticated/app/_layout/features'
 import { Route as AuthenticatedAppLayoutContactUsRouteImport } from './routes/_authenticated/app/_layout/contact-us'
@@ -449,6 +449,12 @@ const AuthenticatedExamplesBimViewerIndexRoute =
     path: '/examples/bim-viewer/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedAppViewerIndexRoute =
+  AuthenticatedAppViewerIndexRouteImport.update({
+    id: '/viewer/',
+    path: '/viewer/',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
 const AuthenticatedTutorialsLayoutPurchaseCourseRoute =
   AuthenticatedTutorialsLayoutPurchaseCourseRouteImport.update({
     id: '/purchase-course',
@@ -526,12 +532,6 @@ const AuthenticatedBlogLayoutAboutRoute =
     id: '/about',
     path: '/about',
     getParentRoute: () => AuthenticatedBlogLayoutRoute,
-  } as any)
-const AuthenticatedAppViewerViewerRoute =
-  AuthenticatedAppViewerViewerRouteImport.update({
-    id: '/viewer/viewer',
-    path: '/viewer/viewer',
-    getParentRoute: () => AuthenticatedAppRoute,
   } as any)
 const AuthenticatedAppLayoutHowItWorksRoute =
   AuthenticatedAppLayoutHowItWorksRouteImport.update({
@@ -795,7 +795,6 @@ export interface FileRoutesByFullPath {
   '/app/contact-us': typeof AuthenticatedAppLayoutContactUsRoute
   '/app/features': typeof AuthenticatedAppLayoutFeaturesRoute
   '/app/how-it-works': typeof AuthenticatedAppLayoutHowItWorksRoute
-  '/app/viewer/viewer': typeof AuthenticatedAppViewerViewerRoute
   '/blog/about': typeof AuthenticatedBlogLayoutAboutRoute
   '/blog/contact': typeof AuthenticatedBlogLayoutContactRoute
   '/managements/chat-support': typeof AuthenticatedManagementsLayoutChatSupportRoute
@@ -809,6 +808,7 @@ export interface FileRoutesByFullPath {
   '/tutorials/home-page': typeof AuthenticatedTutorialsLayoutHomePageRoute
   '/tutorials/introduction-course': typeof AuthenticatedTutorialsLayoutIntroductionCourseRoute
   '/tutorials/purchase-course': typeof AuthenticatedTutorialsLayoutPurchaseCourseRoute
+  '/app/viewer': typeof AuthenticatedAppViewerIndexRoute
   '/examples/bim-viewer': typeof AuthenticatedExamplesBimViewerIndexRoute
   '/view/upload': typeof AuthenticatedViewUploadIndexRoute
   '/managements/sub-projects/$id': typeof AuthenticatedManagementsLayoutSubProjectsIdRoute
@@ -886,7 +886,6 @@ export interface FileRoutesByTo {
   '/app/contact-us': typeof AuthenticatedAppLayoutContactUsRoute
   '/app/features': typeof AuthenticatedAppLayoutFeaturesRoute
   '/app/how-it-works': typeof AuthenticatedAppLayoutHowItWorksRoute
-  '/app/viewer/viewer': typeof AuthenticatedAppViewerViewerRoute
   '/blog/about': typeof AuthenticatedBlogLayoutAboutRoute
   '/blog/contact': typeof AuthenticatedBlogLayoutContactRoute
   '/managements/chat-support': typeof AuthenticatedManagementsLayoutChatSupportRoute
@@ -900,6 +899,7 @@ export interface FileRoutesByTo {
   '/tutorials/home-page': typeof AuthenticatedTutorialsLayoutHomePageRoute
   '/tutorials/introduction-course': typeof AuthenticatedTutorialsLayoutIntroductionCourseRoute
   '/tutorials/purchase-course': typeof AuthenticatedTutorialsLayoutPurchaseCourseRoute
+  '/app/viewer': typeof AuthenticatedAppViewerIndexRoute
   '/examples/bim-viewer': typeof AuthenticatedExamplesBimViewerIndexRoute
   '/view/upload': typeof AuthenticatedViewUploadIndexRoute
   '/managements/sub-projects/$id': typeof AuthenticatedManagementsLayoutSubProjectsIdRoute
@@ -982,7 +982,6 @@ export interface FileRoutesById {
   '/_authenticated/app/_layout/contact-us': typeof AuthenticatedAppLayoutContactUsRoute
   '/_authenticated/app/_layout/features': typeof AuthenticatedAppLayoutFeaturesRoute
   '/_authenticated/app/_layout/how-it-works': typeof AuthenticatedAppLayoutHowItWorksRoute
-  '/_authenticated/app/viewer/viewer': typeof AuthenticatedAppViewerViewerRoute
   '/_authenticated/blog/_layout/about': typeof AuthenticatedBlogLayoutAboutRoute
   '/_authenticated/blog/_layout/contact': typeof AuthenticatedBlogLayoutContactRoute
   '/_authenticated/managements/_layout/chat-support': typeof AuthenticatedManagementsLayoutChatSupportRoute
@@ -996,6 +995,7 @@ export interface FileRoutesById {
   '/_authenticated/tutorials/_layout/home-page': typeof AuthenticatedTutorialsLayoutHomePageRoute
   '/_authenticated/tutorials/_layout/introduction-course': typeof AuthenticatedTutorialsLayoutIntroductionCourseRoute
   '/_authenticated/tutorials/_layout/purchase-course': typeof AuthenticatedTutorialsLayoutPurchaseCourseRoute
+  '/_authenticated/app/viewer/': typeof AuthenticatedAppViewerIndexRoute
   '/_authenticated/examples/bim-viewer/': typeof AuthenticatedExamplesBimViewerIndexRoute
   '/_authenticated/view/upload/': typeof AuthenticatedViewUploadIndexRoute
   '/_authenticated/managements/_layout/sub-projects/$id': typeof AuthenticatedManagementsLayoutSubProjectsIdRoute
@@ -1080,7 +1080,6 @@ export interface FileRouteTypes {
     | '/app/contact-us'
     | '/app/features'
     | '/app/how-it-works'
-    | '/app/viewer/viewer'
     | '/blog/about'
     | '/blog/contact'
     | '/managements/chat-support'
@@ -1094,6 +1093,7 @@ export interface FileRouteTypes {
     | '/tutorials/home-page'
     | '/tutorials/introduction-course'
     | '/tutorials/purchase-course'
+    | '/app/viewer'
     | '/examples/bim-viewer'
     | '/view/upload'
     | '/managements/sub-projects/$id'
@@ -1171,7 +1171,6 @@ export interface FileRouteTypes {
     | '/app/contact-us'
     | '/app/features'
     | '/app/how-it-works'
-    | '/app/viewer/viewer'
     | '/blog/about'
     | '/blog/contact'
     | '/managements/chat-support'
@@ -1185,6 +1184,7 @@ export interface FileRouteTypes {
     | '/tutorials/home-page'
     | '/tutorials/introduction-course'
     | '/tutorials/purchase-course'
+    | '/app/viewer'
     | '/examples/bim-viewer'
     | '/view/upload'
     | '/managements/sub-projects/$id'
@@ -1266,7 +1266,6 @@ export interface FileRouteTypes {
     | '/_authenticated/app/_layout/contact-us'
     | '/_authenticated/app/_layout/features'
     | '/_authenticated/app/_layout/how-it-works'
-    | '/_authenticated/app/viewer/viewer'
     | '/_authenticated/blog/_layout/about'
     | '/_authenticated/blog/_layout/contact'
     | '/_authenticated/managements/_layout/chat-support'
@@ -1280,6 +1279,7 @@ export interface FileRouteTypes {
     | '/_authenticated/tutorials/_layout/home-page'
     | '/_authenticated/tutorials/_layout/introduction-course'
     | '/_authenticated/tutorials/_layout/purchase-course'
+    | '/_authenticated/app/viewer/'
     | '/_authenticated/examples/bim-viewer/'
     | '/_authenticated/view/upload/'
     | '/_authenticated/managements/_layout/sub-projects/$id'
@@ -1713,6 +1713,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedExamplesBimViewerIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/app/viewer/': {
+      id: '/_authenticated/app/viewer/'
+      path: '/viewer'
+      fullPath: '/app/viewer'
+      preLoaderRoute: typeof AuthenticatedAppViewerIndexRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
     '/_authenticated/tutorials/_layout/purchase-course': {
       id: '/_authenticated/tutorials/_layout/purchase-course'
       path: '/purchase-course'
@@ -1803,13 +1810,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/blog/about'
       preLoaderRoute: typeof AuthenticatedBlogLayoutAboutRouteImport
       parentRoute: typeof AuthenticatedBlogLayoutRoute
-    }
-    '/_authenticated/app/viewer/viewer': {
-      id: '/_authenticated/app/viewer/viewer'
-      path: '/viewer/viewer'
-      fullPath: '/app/viewer/viewer'
-      preLoaderRoute: typeof AuthenticatedAppViewerViewerRouteImport
-      parentRoute: typeof AuthenticatedAppRoute
     }
     '/_authenticated/app/_layout/how-it-works': {
       id: '/_authenticated/app/_layout/how-it-works'
@@ -2075,14 +2075,14 @@ interface AuthenticatedAppRouteChildren {
   AuthenticatedAppLayoutRoute: typeof AuthenticatedAppLayoutRouteWithChildren
   AuthenticatedAppBlogRoute: typeof AuthenticatedAppBlogRoute
   AuthenticatedAppIndexRoute: typeof AuthenticatedAppIndexRoute
-  AuthenticatedAppViewerViewerRoute: typeof AuthenticatedAppViewerViewerRoute
+  AuthenticatedAppViewerIndexRoute: typeof AuthenticatedAppViewerIndexRoute
 }
 
 const AuthenticatedAppRouteChildren: AuthenticatedAppRouteChildren = {
   AuthenticatedAppLayoutRoute: AuthenticatedAppLayoutRouteWithChildren,
   AuthenticatedAppBlogRoute: AuthenticatedAppBlogRoute,
   AuthenticatedAppIndexRoute: AuthenticatedAppIndexRoute,
-  AuthenticatedAppViewerViewerRoute: AuthenticatedAppViewerViewerRoute,
+  AuthenticatedAppViewerIndexRoute: AuthenticatedAppViewerIndexRoute,
 }
 
 const AuthenticatedAppRouteWithChildren =

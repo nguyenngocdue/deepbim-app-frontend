@@ -4,7 +4,7 @@ import I18nClientProvider from '@/features/bim-viewer3/i18n-client-provider';
 import HeaderViewer from '@/sections/HeaderViewer';
 import { createFileRoute } from '@tanstack/react-router'
 
-export const Route = createFileRoute('/_authenticated/app/viewer/viewer')({
+export const Route = createFileRoute('/_authenticated/app/viewer/')({
   component: RouteComponent,
 })
 
