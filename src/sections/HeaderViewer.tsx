@@ -4,11 +4,11 @@ import { Shapes, HelpCircle, ChevronDown } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import DocumentationModal from "@/components/ifc-classifier/docs/DocumentationModal";
 import LanguageButton from "@/components/common/LanguageButton";
-import { ProfileDropdown } from "@/components/ProfileDropdown";
 import { ThemeSwitch } from "@/components/theme-switch";
 import { useLanguage } from "@/context/LanguageContext";
 import { useTranslation } from "react-i18next";
 import { LogoWord } from "@/components/LogoWord";
+import { ProfileDropdown } from "@/components/common/ProfileDropdown";
 
 const Menubar = () => {
   const { t } = useTranslation();
