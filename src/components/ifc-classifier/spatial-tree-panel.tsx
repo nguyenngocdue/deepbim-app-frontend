@@ -289,7 +289,7 @@ const TreeNode: React.FC<TreeNodeProps> = ({
       <div
         ref={shouldScrollToThisNode ? selectedNodeActualRef : null}
         className={cn(
-          "flex items-center py-1.5 px-2 rounded-md hover:bg-accent group",
+          "flex items-center py-1.5 px-2 rounded-md hover:bg-accent group text-left",
           isSelected && "bg-accent text-accent-foreground font-semibold",
           !isSelected && matchesSearch && "bg-primary/10",
           isRootModelNode ? "cursor-default" : "cursor-pointer",
