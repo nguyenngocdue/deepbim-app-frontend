@@ -22,7 +22,7 @@ import {
   IFCRELASSOCIATESMATERIAL,
   Properties,
 } from "web-ifc"; // Import IfcAPI type and constants
-import { addGrid, centerObjectAtOrigin, fitCameraToObject } from "./FitCameraToObject";
+import { addDefaultLights, addGrid, centerObjectAtOrigin, fitCameraToObject } from "./FitCameraToObject";
 
 interface IFCModelProps {
   modelData: LoadedModelData;
@@ -601,6 +601,8 @@ const createMeshes = useCallback(() => {
           side: THREE.DoubleSide,
           transparent: color.w < 1,
           opacity: color.w,
+          metalness: 0.1,
+          roughness: 0.1 
         });
         const mesh = new THREE.Mesh(threeJsGeometry, material);
         const matrix = placedGeometry.flatTransformation;
@@ -732,6 +734,8 @@ const createMeshes = useCallback(() => {
         // Note: setModelMeshesProcessedForInitialView is NOT set here directly,
         // it will be handled by the new useEffect that depends on meshesRef.current becoming available.
         addGrid(scene)
+        addDefaultLights(scene)
+
         console.log(
           `IFCModel (${modelData.id}): Extracting data for modelID ${newIfcModelID}...`
         );
