@@ -565,6 +565,9 @@ export function IFCModel({ modelData, outlineLayer }: IFCModelProps) {
   const createMeshes = useCallback(() => {
     if (!ifcApi || ownModelID.current === null) return;
     if (meshesRef.current) {
+      console.log("meshesRefmeshesRefmeshesRefmeshesRefmeshesRefmeshesRefmeshesRef", meshesRef)
+
+
       scene.remove(meshesRef.current);
       meshesRef.current.traverse((child) => {
         if (child instanceof THREE.Mesh) {
