@@ -306,7 +306,7 @@ function ViewToolbar({
 
   return (
     <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-20 pointer-events-auto">
-      <div className="flex items-center gap-1 p-2 bg-background/95 backdrop-blur-md border border-border rounded-xl shadow-2xl">
+      <div className="flex items-center gap-1 p-2 bg-background/95 backdrop-blur-md border border-border rounded-xl shadow-2xl border-color-standard">
         {/* Camera Controls Group */}
         <div className="flex items-center gap-1 px-1">
           <Button
@@ -1806,8 +1806,8 @@ function ViewerContent() {
         >
           {/* Inner div has the gradient */}
           <div className="h-full flex flex-col shadow-lg bg-gradient-to-r from-[hsl(var(--card))]">
-            <div className="p-2 border-b flex justify-between items-center shrink-0">
-              <h3 className="text-sm font-semibold px-2">{t('modelExplorer')}</h3>
+            <div className="p-2 border-b  border-color-standard flex justify-between items-center shrink-0">
+              <h3 className="text-sm font-semibold px-2 ">{t('modelExplorer')}</h3>
               <FileUpload key={`file-upload-sidebar-${settingsVersion}`} isAdding={true} />
             </div>
 
@@ -1823,10 +1823,10 @@ function ViewerContent() {
 
               <Panel id="properties-panel" defaultSize={30} minSize={20}>
                 <div className="h-full flex flex-col">
-                  <div className="p-1 border-b">
+                  <div className="p-1 border-b border-color-standard">
                     <h3 className="text-sm font-semibold px-2">{t('properties')}</h3>
                   </div>
-                  <div className="p-2 overflow-y-auto flex-grow">
+                  <div className="p-2 overflow-y-auto flex-grow ">
                     <ModelInfo />
                   </div>
                 </div>
@@ -1852,7 +1852,7 @@ function ViewerContent() {
             {/* Search Bar - Top Right */}
             {ifcEngineReady && !webGLContextLost && (
               <div className="absolute top-4 right-4 z-20 pointer-events-auto">
-                <div className="flex items-center gap-2 p-1 bg-background/80 backdrop-blur-sm border border-border rounded-lg shadow-lg">
+                <div className="flex items-center gap-2 p-1 bg-background/80 backdrop-blur-sm border border-border rounded-lg shadow-lg border-color-standard">
                   <TooltipProvider delayDuration={300}>
                     <Tooltip>
                       <TooltipTrigger asChild>

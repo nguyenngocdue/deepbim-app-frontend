@@ -1,4 +1,3 @@
-import React from "react";
 import { Home, Zap, LayoutDashboard, ChevronsRight, Cog, Info, Tags } from "lucide-react";
 import welcome from "@/docs/welcome";
 import gettingStarted from "@/docs/getting-started";

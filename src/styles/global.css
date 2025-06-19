@@ -53,6 +53,8 @@ p {
   --text-button:#172220;
   --text-form-title:#172220;
 
+  --border-color-standard: #D1D5DB;
+
   /* BUTTON */
   --bg-button-2: #dadada;
   --bg-button-hover: #e4f5ea;
@@ -115,6 +117,9 @@ p {
   
   /* TEXT */
   --text-form-title:#e9f0ef;
+
+  --border-color-standard: #4B5563;
+
 
 }
 
@@ -232,6 +237,10 @@ footer nav a:hover {
   letter-spacing: 0.01em;
   margin-bottom: 4px;
   display: block;
+}
+
+.border-color-standard {
+  border-color: var(--border-color-standard, #ccc);
 }
 
 
