@@ -1,0 +1,528 @@
+{
+  "openDocs": "Open Documentation",
+  "docModalTitle": "IfcClassifier Guide",
+  "prev": "Previous",
+  "next": "Next",
+  "doc_welcome_title": "Welcome!",
+  "doc_getting_started_title": "Getting Started",
+  "doc_ui_title": "Interface & 3D",
+  "doc_classifications_title": "Classifications",
+  "doc_rules_title": "Rules",
+  "doc_settings_title": "Settings",
+  "doc_workflow_title": "Typical Workflow",
+  "closeDocs": "Close documentation",
+  "viewSchema": "View Schema",
+  "pageNotFoundTitle": "404 - Page Not Found",
+  "pageNotFoundMessage": "The page you're looking for doesn't exist.",
+  "returnHome": "Return Home",
+  "loadingTranslations": "Loading translations...",
+  "stepOf": "Step {{current}} of {{total}}",
+  "yes": "Yes",
+  "no": "No",
+  "notSet": "Not set",
+  "emptyList": "Empty list",
+  "listCount": "List ({{count}} items)",
+  "complexData": "Complex data",
+  "loadingSchemaPreview": "Loading schema preview...",
+  "clickToExploreFullDocumentation": "Click to explore full documentation",
+  "materials": "Materials",
+  "set": "set",
+  "sets": "sets",
+  "apiNotReady": "IFC API not yet initialized.",
+  "modelInitializing": "{{name}} - Initializing...",
+  "modelLoadingStructure": "{{name}} - Loading structure...",
+  "loadingWebIFCEngine": "Loading WebIFC Engine...",
+  "pleaseWaitMoment": "Please wait a moment.",
+  "webglContextLost": "WebGL Context Lost",
+  "webglContextLostMessage": "The 3D rendering context has been lost.",
+  "refreshPage": "Please try refreshing the page.",
+  "addAnotherModel": "Add another IFC model",
+  "loadInitialModel": "Load initial IFC model",
+  "myModels": "My Models",
+  "demoModels": "Demo Models",
+  "languageSelector": "Language selector",
+  "toggleTheme": "Toggle theme",
+  "complexExample": "This is a <1>complex</1> example with <3>HTML elements</3>.",
+  "modelExplorer": "Model Explorer",
+  "properties": "",
+  "classificationsPanel": "Classifications",
+  "rulesPanel": "Rules",
+  "settingsPanel": "Settings",
+  "original": "Original",
+  "colors": "Colors",
+  "ifcModelViewer": "IFC Model Viewer",
+  "uploadIFCFile": "Upload an IFC file to get started or choose a demo model",
+  "loadIFCFile": "Load IFC File",
+  "noModelsLoaded": "No models loaded.",
+  "clickElementToView": "Click on an element in 3D view or tree to view.",
+  "noClassificationsAdded": "No classifications added yet.",
+  "addClassification": "Add a classification to start organizing your IFC elements.",
+  "rulesEngine": "Rules Engine",
+  "noRulesDefined": "No rules defined yet.",
+  "createRulesDescription": "Create rules to automatically classify elements based on their properties.",
+  "applicationSettings": "Application Settings",
+  "alerts": {
+    "pleaseSelectModel": "Please select a model to export.",
+    "selectedModelNotAvailable": "Selected model is not available for export or its data is missing.",
+    "noClassifiedElementsToExport": "There are no classifications with assigned elements to export.",
+    "noClassifiedElements": "No classifications have elements assigned. Nothing to export."
+  },
+  "header": {
+    "home": "Home",
+    "files": "Files",
+    "settings": "Settings",
+    "help": "Help",
+    "about": "About"
+  },
+  "navigation": {
+    "model": "Model",
+    "properties": "Properties",
+    "classificationsTab": "Classifications",
+    "rules": "Rules"
+  },
+  "settings": {
+    "defaultClassification": "Default Classification",
+    "alwaysApplyOnLoad": "Always apply on load",
+    "alwaysApplyOnLoadCombined": "Always apply on load",
+    "alwaysApplyOnLoadCombinedShort": "Always apply on load",
+    "modelUrls": "Model URLs",
+    "demoModels": "Demo Models",
+    "name": "Name",
+    "url": "URL",
+    "addThisUrl": "Add this URL",
+    "none": "None"
+  },
+  "buttons": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "apply": "Apply",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "uploadFile": "Upload IFC File",
+    "addNewRule": "Add New Rule",
+    "addNewClassification": "Add New Classification",
+    "removeAll": "Remove All",
+    "assignSelected": "Assign Selected Element",
+    "removeSelected": "Remove Selected from Classification",
+    "clearFromAll": "Clear from All Classifications",
+    "export": "Export",
+    "load": "Load",
+    "loading": "Loading...",
+    "removeAllClassifications": "Remove All Classifications",
+    "loadUniclass": "Load Uniclass Pr ({{count}})",
+    "loadEbkph": "Load eBKP-H ({{count}})",
+    "noUniclassFound": "No Uniclass Pr items found.",
+    "noEbkphFound": "No eBKP-H items found.",
+    "loadingUniclass": "Loading Uniclass Pr...",
+    "loadingEbkph": "Loading eBKP-H...",
+    "uniclassError": "Uniclass Pr Error: {{message}}",
+    "ebkphError": "eBKP-H Error: {{message}}",
+    "addCondition": "Add Condition",
+    "saveRule": "Save Rule",
+    "copyRule": "Copy Rule",
+    "editRule": "Edit Rule",
+    "deleteRule": "Delete Rule",
+    "previewRule": "Preview Rule Impact",
+    "clearPreview": "Clear Preview",
+    "mapFromModel": "Map From Model"
+  },
+  "messages": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "success": "Success!",
+    "noDataAvailable": "No data available",
+    "highlightToAssign": "Highlight a classification to assign."
+  },
+  "modelViewer": {
+    "fitToView": "Fit to View (E)",
+    "wireframe": "Wireframe",
+    "resetCamera": "Reset Camera",
+    "showAll": "Show All",
+    "hideAll": "Hide All",
+    "selectAllVisible": "Select All Visible (Ctrl/Cmd+A)",
+    "zoomToSelected": "Zoom to Selected (F)",
+    "toggleVisibility": "Toggle Visibility of Selected (Spacebar)",
+    "selectElementToToggle": "Select an element to toggle visibility",
+    "unhideLast": "Unhide Last (Cmd/Ctrl+Z)",
+    "unhideAll": "Unhide All Elements (Shift+A)",
+    "showModel": "Show {{name}}",
+    "hideModel": "Hide {{name}}",
+    "showStorey": "Show Storey",
+    "hideStorey": "Hide Storey",
+    "removeModel": "Remove {{name}}",
+    "useLoadButton": "Select a file or model to load.",
+    "search": "Search",
+    "searchTreePlaceholder": "Search model tree...",
+    "searchCanvasPlaceholder": "Search elements..."
+  },
+  "tooltips": {
+    "defaultClassification": "Sets the default classification system. This system will be used if automatic application is enabled below.",
+    "autoLoad": "If enabled, the selected 'Default Classification' will be automatically applied on load.",
+    "alwaysApplyOnLoadCombinedTitle": "Automatic Application on Load",
+    "alwaysApplyOnLoadCombinedDescription": "If enabled, the selected 'Default Classification' system above will be automatically applied when a new model is loaded via URL or file upload.",
+    "modelUrls": "Manage a list of IFC model URLs. You can add custom URLs or use the demo models.",
+    "originalColors": "Show original model colors (hides all classification colors).",
+    "classificationColors": "Apply all classification colors to the model.",
+    "canvasSearch": "Filter elements by properties. Supports * wildcard and regex.",
+    "psetNameHelp": "Name of the property set containing classification values. Supports * wildcard",
+    "propertyNameHelp": "The exact name of the property containing the classification code or identifier"
+  },
+  "sections": {
+    "defaultSets": "Default Sets",
+    "manageData": "Manage Data",
+    "basicInformation": "Basic Information",
+    "attributes": "Attributes",
+    "propertySets": "Property Sets",
+    "classifications": "Classifications"
+  },
+  "classifications": {
+    "code": "Code",
+    "name": "Name",
+    "elements": "Elements",
+    "color": "Color",
+    "addNew": "Add New Classification",
+    "editClassification": "Edit Classification",
+    "removeClassification": "Remove Classification",
+    "exportClassifiedModel": "Export Classified Model",
+    "selectModelToExport": "Select model to export:",
+    "exportingModel": "Exporting model:",
+    "exportIFC": "Export IFC",
+    "exporting": "Exporting...",
+    "createFromRule": "Create New Classification",
+    "codePlaceholder": "Enter a code (e.g., A1.1)",
+    "namePlaceholder": "Enter a descriptive name",
+    "basicInfo": "Basic Information",
+    "classificationSingular": "classification",
+    "classificationPlural": "classifications",
+    "searchPlaceholder": "Search classifications...",
+    "noSearchResults": "No classifications match your search.",
+    "mapFromModelTitle": "Map Classifications from Model",
+    "mapFromModelDescription": "Extract classifications from property values in the model",
+    "psetName": "PSet Name",
+    "propertyName": "Property Name"
+  },
+  "rules": {
+    "addNew": "Add New Rule",
+    "editRule": "Edit Rule",
+    "defineConditions": "Define the conditions and classification for this rule.",
+    "name": "Name",
+    "description": "Description",
+    "conditions": "Conditions",
+    "applyClassification": "Apply Classification",
+    "active": "Active",
+    "confirmRemoval": "Confirm Removal",
+    "confirmRuleRemoval": "Confirm Rule Removal",
+    "confirmRemoveAll": "Are you sure you want to remove all rules? This action cannot be undone.",
+    "confirmRemoveRule": "Are you sure you want to remove this rule? This action cannot be undone.",
+    "namePlaceholder": "e.g., External Non-Loadbearing Walls",
+    "descriptionPlaceholder": "Briefly describe what this rule does",
+    "loadEbkph": "Load eBKP-H Rules ({{count}})",
+    "loadingEbkph": "Loading eBKP-H Rules...",
+    "noEbkphFound": "No eBKP-H rules found.",
+    "ebkphError": "eBKP-H Rules Error: {{message}}",
+    "removeAllRules": "Remove All Rules",
+    "propertyPlaceholder": "Select or create property...",
+    "searchPropertyPlaceholder": "Search properties...",
+    "noPropertyFound": "No property found. Type to create.",
+    "operatorPlaceholder": "Select operator",
+    "valuePlaceholder": "Value",
+    "booleanValuePlaceholder": "e.g., true, false, yes, no",
+    "matchType": "Condition Logic",
+    "matchAll": "All conditions (AND)",
+    "matchAny": "Any condition (OR)",
+    "selectClassification": "Select classification to apply",
+    "manageRules": "Manage Rules",
+    "searchClassificationPlaceholder": "Search or create classification...",
+    "noClassificationFound": "No classification found. Type to create.",
+    "createNewClassification": "Create new classification \"{{value}}\"",
+    "searchPlaceholder": "Search rules...",
+    "noSearchResults": "No rules match your search."
+  },
+  "operators": {
+    "equals": "Equals",
+    "notEquals": "Not Equals",
+    "contains": "Contains",
+    "greaterThan": "Greater Than",
+    "lessThan": "Less Than"
+  },
+  "logic": {
+    "and": "AND",
+    "or": "OR"
+  },
+  "docs": {
+    "latestFeaturesTitle": "Latest Features",
+    "featureImportExport": "Import/export classifications and rules (JSON or Excel)",
+    "featureCopyGuid": "Copy Global IDs from the properties panel",
+    "featureSelection": "Manual 3D selection for quick assignments"
+  },
+  "errors": {
+    "psetNameRequired": "Property set name is required",
+    "propertyNameRequired": "Property name is required",
+    "unknownMappingError": "An unknown error occurred during mapping"
+  },
+  "contact_us": {
+    "title": "Contact Us",
+    "subtitle": "We’re always happy to hear from you. Whether you have a question, need assistance, or want to share feedback, our team is ready to support you. Feel free to connect with us through any of the channels below.",
+    "contact_info": {
+      "phone": "+84 339 001 600",
+      "email": "deepbim@gmail.com",
+      "address": "HO CHI MINH CITY, VietNam"
+    }
+  },
+  "connector": {
+    "title": "Connectors",
+    "subtitle": "Bridge your design tools with Viralution by uploading BIM models through our dedicated connectors.",
+    "items": {
+      "item_1": {
+        "title": "Revit",
+        "subtitles": "Revit Connector enables direct BIM data transfer from Autodesk Revit to Viralution, streamlining your workflow and centralizing project collaboration in the cloud."
+      },
+      "item_2": {
+        "title": "Tekla Structures (Coming soon)",
+        "subtitles": "Tekla Connector allows you to upload detailed structural BIM models and metadata from Tekla Structures to Viralution, supporting seamless integration and data continuity."
+      },
+      "item_3": {
+        "title": "Archicad (Coming soon)",
+        "subtitles": "With the Archicad Connector, architects and designers will be able to send BIM models and design data directly from Graphisoft Archicad to Viralution for centralized project access."
+      }
+    }
+  },
+  "navbar": {
+    "home": "Home",
+    "connect": "Connectors",
+    "features": "Features",
+    "how_it_works": "How it works",
+    "contact": "Contact Us",
+    "auth": "Sign In",
+    "tutorial": "Tutorial",
+    "blog": "Blog"
+  },
+  "panel_alert": {
+    "message": "You are currently browsing as a guest. Sign in to access advanced features.",
+    "action_text": "Sign In"
+  },
+  "hero": {
+    "welcome": "Optimize and accelerate your project ",
+    "subtitle": "seamlessly",
+    "description": "Enhance your 3D model workflow, ensure absolute data control, and leverage powerful BIM analytics. By applying AI, automatically detect design conflicts, predict risks, and optimize costs, enabling higher efficiency and smarter decision-making for investors, businesses, and engineers. Elevate your projects with AI & BIM technology! 🚀",
+    "start": "Discovery",
+    "demo": "Demo",
+    "deploy": "Deploy Yourself"
+  },
+  "benefits": {
+    "title": "Enhance your workflow",
+    "description": "Experience next-gen 3D visualization and collaboration for better teamwork.",
+    "items": {
+      "visualization": {
+        "title": "Visualization",
+        "desc": "View and interact with BIM models and real-time cloud points with strong rendering capabilities, delivering a smooth experience."
+      },
+      "data_ownership": {
+        "title": "Data Ownership",
+        "desc": "Gain full control of your data by storing it in your private system, ensuring security, privacy, and absolute ownership."
+      },
+      "bim_utilization": {
+        "title": "BIM Data Utilization",
+        "desc": "Maximize the use of your BIM data with powerful tools for analysis, extraction, and accurate decision-making."
+      }
+    }
+  },
+  "features": {
+    "title": "Main Features",
+    "items": {
+      "feature_1": {
+        "title": "Comprehensive BIM Data",
+        "desc": "Leverage the power of BIM models with seamless integration and real-time data synchronization throughout the project lifecycle."
+      },
+      "feature_2": {
+        "title": "Version Control",
+        "desc": "Manage and track all project changes effectively, ensuring each update is stored, accessible, and easy to restore."
+      },
+      "feature_3": {
+        "title": "Model Comparison",
+        "desc": "Instantly detect changes between different model versions, helping control errors and improving design accuracy."
+      },
+      "feature_4": {
+        "title": "Model Integration",
+        "desc": "Merge multiple models into a unified environment, facilitating collaboration and reducing design conflicts."
+      }
+    }
+  },
+  "problems": {
+    "title": "Your Problems",
+    "description": "Let's explore the key challenges that DeepBim helps you solve.",
+    "items": {
+      "platform_dependency": {
+        "title": "Platform Dependency",
+        "desc": "Users face risks when relying on third-party platforms, reducing control and flexibility."
+      },
+      "communication_challenges": {
+        "title": "Project Communication Challenges",
+        "desc": "Ineffective communication leads to misunderstandings, delays, and disrupted collaboration."
+      },
+      "downtime_disruptions": {
+        "title": "Downtime & Interruptions",
+        "desc": "Unexpected outages can disrupt workflows, reduce productivity, and slow project progress."
+      }
+    }
+  },
+  "solutions": {
+    "title": "Our Solutions",
+    "description": "With DeepBim, you have the tools and platform to manage projects easily.",
+    "items": {
+      "own_data": {
+        "title": "Full Data Ownership",
+        "desc": "Gain full control over your data, infrastructure, and workflow—ensuring security, privacy, and absolute ownership."
+      },
+      "data_utilization": {
+        "title": "Data Utilization & Connectivity",
+        "desc": "Leverage powerful tools to extract, analyze, and connect your BIM data, enhancing collaboration and efficiency."
+      },
+      "bim": {
+        "title": "What is BIM?",
+        "desc": "BIM is a digital method for designing, building, and managing projects using smart 3D models to improve accuracy, collaboration, and efficiency."
+      }
+    }
+  },
+  "how_it_works": {
+    "title": "How It Works",
+    "description": "Simply upload BIM models via connectors or directly using IFC files.",
+    "download": "Download Connectors Now"
+  },
+  "cta": {
+    "title": "Ready to enhance your workflow?",
+    "description": "Join thousands of experts using DeepBim to optimize their projects.",
+    "placeholder": "Enter your email",
+    "button": "Sign Up Now",
+    "error": "Please enter a valid email address.",
+    "success": "Thank you for signing up!"
+  },
+  "footer": {
+    "copyright": "All rights reserved to DeepBim.",
+    "terms": "Terms of Service",
+    "privacy": "Privacy Policy",
+    "contact": "Contact"
+  },
+  "personal_cv": {
+    "name": "Nguyen Ngoc Due",
+    "alias": "(Nissan)",
+    "role": "Tech Enthusiast | Web Developer - BIM Developer | Python & Dynamo Specialist | Crafting Innovative 3D Web Solutions",
+    "passion": {
+      "title": "About my passion for coding",
+      "description": "Coding isn’t just work for me — it’s what I enjoy doing. I love turning simple ideas into powerful tools that help people work better. Whether it’s improving BIM workflows or building web apps, I’m always learning, improving, and sharing what I know."
+    },
+    "contact": {
+      "email": "duengocnguyen@gmail.com",
+      "phone": "+0339001600 (Zalo, WhatsApp)",
+      "location": "Ho Chi Minh City, Vietnam"
+    },
+    "social": {
+      "title": "CV - Social Links - Portfolio"
+    },
+    "cv": {
+      "title": "CV - Personal Information",
+      "description": "This is my personal CV, showcasing my skills and experiences in the field of BIM and web development. If you have any questions or would like to discuss potential collaborations, feel free to reach out!"
+    },
+    "overview_groups": [
+      {
+        "group": "BIM Experience",
+        "items": [
+          {
+            "title": "Global Projects",
+            "desc": "2+ years of BIM experience in Japan and Singapore."
+          },
+          {
+            "title": "Major Projects",
+            "desc": "Infrastructure, hospitals, schools, bridges."
+          },
+          {
+            "title": "Design Tools",
+            "desc": "AutoCAD, Revit, Civil 3D, Navisworks"
+          },
+          {
+            "title": "Revit Automation",
+            "desc": "Dynamo, pyRevit, C#, Python Addins."
+          }
+        ]
+      },
+      {
+        "group": "Web Development",
+        "items": [
+          {
+            "title": "Frontend & Backend",
+            "desc": "ReactJS, PHP, Laravel, JavaScript, RESTful API."
+          },
+          {
+            "title": "DevOps",
+            "desc": "Docker, basic Kubernetes (K8s), CI/CD pipelines"
+          },
+          {
+            "title": "System Architecture",
+            "desc": "Microservices, RabbitMQ, distributed design."
+          },
+          {
+            "title": "BIM Viewer Development",
+            "desc": "Three.js, IFC parsers, ThatOpenBIM, IfcOpenShell"
+          }
+        ]
+      },
+      {
+        "group": "Environments & Supporting Skills",
+        "items": [
+          {
+            "title": "Working Environment",
+            "desc": "Linux, Windows, Git, Bitbucket, Nginx."
+          },
+          {
+            "title": "Databases",
+            "desc": "PostgreSQL, MySQL. Proficient in writing and optimizing complex SQL queries."
+          },
+          {
+            "title": "Soft Skills",
+            "desc": "Teamwork, problem-solving, logical thinking, stakeholder communication."
+          }
+        ]
+      }
+    ],
+    "work_experience": {
+      "title": "Work Experience",
+      "description": "These are some of the public projects I’ve worked on, mostly related to data, BIM, and automation. I’ve also contributed to developing WebApps for managing production lines and modular components in factories. If you’d like to learn more about any of these projects, feel free to reach out via the chat support below!"
+    },
+    "work_steps": [
+      {
+        "title": "University of Technical Education HCMC",
+        "description": "Studied engineering and BIM fundamentals at HCMUTE."
+      },
+      {
+        "title": "THE BIM FACTORY",
+        "description": "Develop architectural, structural, and MEP models using Revit & Dynamo tools."
+      },
+      {
+        "title": "TOBIC OF JAPAN, VIET NAM",
+        "description": "Lead BIM models, develop tools with Python/C#, teach programming for automation."
+      },
+      {
+        "title": "TLC - MODULAR",
+        "description": "Fullstack dev: React, Blade, MySQL, Docker for QAQC systems."
+      },
+      {
+        "title": "Remote Software Consultant",
+        "description": "Currently working remotely with international firms on AEC/BIM software development."
+      }
+    ],
+    "projects": {
+      "title": "Projects",
+      "description": "These are some of the public projects I've worked on, mostly related to data, BIM, and automation. If you're curious about any project or want a deeper look, feel free to reach out via the chat support below!"
+    },
+    "skill_map": {
+      "title": "🧠 Skill Visual Map",
+      "description": "Explore grouped development skills in frontend, backend, DevOps, frameworks, databases, and 3D/BIM.",
+      "show_labels": "Show Labels"
+    },
+    "thank_you": {
+      "title": "Thank you for visiting!",
+      "note": "I truly appreciate you taking the time to view my profile.\nLooking forward to the opportunity to collaborate in the future!"
+    }
+  }
+}

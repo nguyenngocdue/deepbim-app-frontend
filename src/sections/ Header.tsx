@@ -28,10 +28,16 @@ interface LanguageContext {
 
 const Header: React.FC = () => {
   const { t } = useTranslation();
+
+
+  console.log("due",t("navbar"))
+
+
   const { language, toggleLanguage } = useLanguage() as LanguageContext;
   const [showBottomNav, setShowBottomNav] = useState<boolean>(true);
   const [hideTimeout, setHideTimeout] = useState<NodeJS.Timeout | null>(null);
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+
 
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const isActive = (href: string): boolean => pathname === href;

@@ -16,7 +16,7 @@ import { useTranslation } from "react-i18next";
 
 
 function StepWorkExperience() {
-    const { t } = useTranslation("translation");
+    const { t } = useTranslation();
 
     const workSteps = [
     {

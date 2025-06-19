@@ -99,7 +99,7 @@ const itemVariants = {
 
 
 export function IntroSection() {
-  const { t } = useTranslation("translation");
+  const { t } = useTranslation();
   const avatarUrls = [
     "/assets/avatars/avatar_1.png",
     "/assets/avatars/avatar_2.png",

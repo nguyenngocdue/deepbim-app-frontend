@@ -1,0 +1,435 @@
+[
+  {
+    "id": "rule-beam",
+    "name": "Träger",
+    "description": "Klassifizierung von Träger-Elementen",
+    "classificationCode": "C04.01",
+    "active": true,
+    "conditions": [
+      {
+        "property": "Ifc Class",
+        "operator": "equals",
+        "value": "IFCBEAM"
+      }
+    ]
+  },
+  {
+    "id": "rule-bearing",
+    "name": "Lager",
+    "description": "Klassifizierung von Lager-Elementen",
+    "classificationCode": "C04.01",
+    "active": true,
+    "conditions": [
+      {
+        "property": "Ifc Class",
+        "operator": "equals",
+        "value": "IFCBEARING"
+      }
+    ]
+  },
+  {
+    "id": "rule-element-proxy",
+    "name": "Element-Proxies",
+    "description": "Klassifizierung von Element-Proxy-Elementen",
+    "classificationCode": "C05.01",
+    "active": true,
+    "conditions": [
+      {
+        "property": "Ifc Class",
+        "operator": "equals",
+        "value": "IFCBUILDINGELEMENTPROXY"
+      }
+    ]
+  },
+  {
+    "id": "rule-chimney",
+    "name": "Schornsteine",
+    "description": "Klassifizierung von Schornstein-Elementen",
+    "classificationCode": "F01.03",
+    "active": true,
+    "conditions": [
+      {
+        "property": "Ifc Class",
+        "operator": "equals",
+        "value": "IFCCHIMNEY"
+      }
+    ]
+  },
+  {
+    "id": "rule-covering",
+    "name": "Bekleidungen",
+    "description": "Klassifizierung von Bekleidungs-Elementen",
+    "classificationCode": "G04.01",
+    "active": true,
+    "conditions": [
+      {
+        "property": "Ifc Class",
+        "operator": "equals",
+        "value": "IFCCOVERING"
+      }
+    ]
+  },
+  {
+    "id": "rule-curtain-wall",
+    "name": "Vorhangfassaden",
+    "description": "Klassifizierung von Vorhangfassaden-Elementen",
+    "classificationCode": "E02.04",
+    "active": true,
+    "conditions": [
+      {
+        "property": "Ifc Class",
+        "operator": "equals",
+        "value": "IFCCURTAINWALL"
+      }
+    ]
+  },
+  {
+    "id": "rule-doors",
+    "name": "Türen",
+    "description": "Klassifizierung von Tür-Elementen",
+    "classificationCode": "E03.02",
+    "active": true,
+    "conditions": [
+      {
+        "property": "Ifc Class",
+        "operator": "equals",
+        "value": "IFCDOOR"
+      }
+    ]
+  },
+  {
+    "id": "rule-member",
+    "name": "Strukturelemente",
+    "description": "Klassifizierung von Strukturelement-Elementen",
+    "classificationCode": "C04.01",
+    "active": true,
+    "conditions": [
+      {
+        "property": "Ifc Class",
+        "operator": "equals",
+        "value": "IFCMEMBER"
+      }
+    ]
+  },
+  {
+    "id": "rule-plate",
+    "name": "Platten",
+    "description": "Klassifizierung von Platten-Elementen",
+    "classificationCode": "C05.02",
+    "active": true,
+    "conditions": [
+      {
+        "property": "Ifc Class",
+        "operator": "equals",
+        "value": "IFCPLATE"
+      }
+    ]
+  },
+  {
+    "id": "rule-railing",
+    "name": "Geländer",
+    "description": "Klassifizierung von Geländer-Elementen",
+    "classificationCode": "B03.01",
+    "active": true,
+    "conditions": [
+      {
+        "property": "Ifc Class",
+        "operator": "equals",
+        "value": "IFCRAILING"
+      }
+    ]
+  },
+  {
+    "id": "rule-ramp",
+    "name": "Rampen (Tiefgaragen-Typ)",
+    "description": "Klassifizierung von tragenden internen Rampen (z. B. Zufahrtsrampen zu Tiefgaragen)",
+    "classificationCode": "C04.02",
+    "active": true,
+    "conditions": [
+      {
+        "property": "Ifc Class",
+        "operator": "equals",
+        "value": "IFCRAMP"
+      },
+      {
+        "property": "Pset_RampCommon.IsExternal",
+        "operator": "equals",
+        "value": "false"
+      }
+    ]
+  },
+  {
+    "id": "rule-ramp-flight",
+    "name": "Rampenläufe",
+    "description": "Klassifizierung von Rampenlauf-Elementen",
+    "classificationCode": "C04.02",
+    "active": true,
+    "conditions": [
+      {
+        "property": "Ifc Class",
+        "operator": "equals",
+        "value": "IFCRAMPFLIGHT"
+      }
+    ]
+  },
+  {
+    "id": "rule-roof",
+    "name": "Dächer",
+    "description": "Klassifizierung von Dach-Elementen",
+    "classificationCode": "F01.03",
+    "active": true,
+    "conditions": [
+      {
+        "property": "Ifc Class",
+        "operator": "equals",
+        "value": "IFCROOF"
+      }
+    ]
+  },
+  {
+    "id": "rule-shading-device",
+    "name": "Sonnenschutzvorrichtungen",
+    "description": "Klassifizierung von Sonnenschutz-Elementen",
+    "classificationCode": "E01.03",
+    "active": true,
+    "conditions": [
+      {
+        "property": "Ifc Class",
+        "operator": "equals",
+        "value": "IFCSHADINGDEVICE"
+      }
+    ]
+  },
+  {
+    "id": "rule-slab",
+    "name": "Geschossdecken",
+    "description": "Klassifizierung von Geschossdecken-Elementen",
+    "classificationCode": "C04.01",
+    "active": true,
+    "conditions": [
+      {
+        "property": "Ifc Class",
+        "operator": "equals",
+        "value": "IFCSLAB"
+      }
+    ]
+  },
+  {
+    "id": "rule-stair",
+    "name": "Treppen",
+    "description": "Klassifizierung von Treppen-Elementen",
+    "classificationCode": "G01.03",
+    "active": true,
+    "conditions": [
+      {
+        "property": "Ifc Class",
+        "operator": "equals",
+        "value": "IFCSTAIR"
+      }
+    ]
+  },
+  {
+    "id": "rule-external-wall",
+    "name": "Aussenwände (tragend)",
+    "description": "Aussenwand, tragend",
+    "classificationCode": "C02.01",
+    "active": true,
+    "conditions": [
+      {
+        "property": "Ifc Class",
+        "operator": "equals",
+        "value": "IFCWALL"
+      },
+      {
+        "property": "Pset_WallCommon.IsExternal",
+        "operator": "equals",
+        "value": "true"
+      },
+      {
+        "property": "Pset_WallCommon.LoadBearing",
+        "operator": "equals",
+        "value": "true"
+      }
+    ]
+  },
+  {
+    "id": "rule-internal-wall",
+    "name": "Innenwände (tragend)",
+    "description": "Innenwand, tragend",
+    "classificationCode": "C02.02",
+    "active": true,
+    "conditions": [
+      {
+        "property": "Ifc Class",
+        "operator": "equals",
+        "value": "IFCWALL"
+      },
+      {
+        "property": "Pset_WallCommon.IsExternal",
+        "operator": "notEquals",
+        "value": "true"
+      },
+      {
+        "property": "Pset_WallCommon.LoadBearing",
+        "operator": "equals",
+        "value": "true"
+      }
+    ]
+  },
+  {
+    "id": "rule-partition-wall",
+    "name": "Trennwände (nicht tragend)",
+    "description": "Leichte Trennwand",
+    "classificationCode": "G01.01",
+    "active": true,
+    "conditions": [
+      {
+        "property": "Ifc Class",
+        "operator": "equals",
+        "value": "IFCWALL"
+      },
+      {
+        "property": "Pset_WallCommon.IsExternal",
+        "operator": "equals",
+        "value": "false"
+      },
+      {
+        "property": "Pset_WallCommon.LoadBearing",
+        "operator": "equals",
+        "value": "false"
+      }
+    ]
+  },
+  {
+    "id": "rule-wall-standard-case",
+    "name": "Standard-Wand",
+    "description": "Klassifizierung von Standard-Wand-Elementen",
+    "classificationCode": "I02.08",
+    "active": true,
+    "conditions": [
+      {
+        "property": "Ifc Class",
+        "operator": "equals",
+        "value": "IFCWALLSTANDARDCASE"
+      }
+    ]
+  },
+  {
+    "id": "rule-windows",
+    "name": "Fenster",
+    "description": "Klassifizierung von Fenstern",
+    "classificationCode": "E03.01",
+    "active": true,
+    "conditions": [
+      {
+        "property": "Ifc Class",
+        "operator": "equals",
+        "value": "IFCWINDOW"
+      }
+    ]
+  },
+  {
+    "id": "rule-caisson-foundation",
+    "name": "Senkkasten-Fundamente",
+    "description": "Klassifizierung von Senkkasten-Fundament-Elementen",
+    "classificationCode": "C01.02",
+    "active": true,
+    "conditions": [
+      {
+        "property": "Ifc Class",
+        "operator": "equals",
+        "value": "IFCCAISSONFOUNDATION"
+      }
+    ]
+  },
+  {
+    "id": "rule-footing",
+    "name": "Fundamente",
+    "description": "Klassifizierung von Fundament-Elementen",
+    "classificationCode": "C01.02",
+    "active": true,
+    "conditions": [
+      {
+        "property": "Ifc Class",
+        "operator": "equals",
+        "value": "IFCFOOTING"
+      }
+    ]
+  },
+  {
+    "id": "rule-pile",
+    "name": "Pfähle",
+    "description": "Klassifizierung von Pfahl-Elementen",
+    "classificationCode": "B07.02",
+    "active": true,
+    "conditions": [
+      {
+        "property": "Ifc Class",
+        "operator": "equals",
+        "value": "IFCPILE"
+      }
+    ]
+  },
+  {
+    "id": "rule-reinforcing-bar",
+    "name": "Bewehrungsstäbe",
+    "description": "Klassifizierung von Bewehrungsstab-Elementen",
+    "classificationCode": "B07.03",
+    "active": true,
+    "conditions": [
+      {
+        "property": "Ifc Class",
+        "operator": "contains",
+        "value": "IFCREINFORCING"
+      }
+    ]
+  },
+  {
+    "id": "rule-external-column",
+    "name": "Aussenstützen",
+    "description": "Stütze aussen",
+    "classificationCode": "C03.01",
+    "active": true,
+    "conditions": [
+      {
+        "property": "Ifc Class",
+        "operator": "equals",
+        "value": "IFCCOLUMN"
+      },
+      {
+        "property": "Pset_ColumnCommon.IsExternal",
+        "operator": "equals",
+        "value": "true"
+      },
+      {
+        "property": "Pset_ColumnCommon.LoadBearing",
+        "operator": "equals",
+        "value": "true"
+      }
+    ]
+  },
+  {
+    "id": "rule-internal-column",
+    "name": "Innenstützen",
+    "description": "Stütze innen",
+    "classificationCode": "C03.02",
+    "active": true,
+    "conditions": [
+      {
+        "property": "Ifc Class",
+        "operator": "equals",
+        "value": "IFCCOLUMN"
+      },
+      {
+        "property": "Pset_ColumnCommon.IsExternal",
+        "operator": "notEquals",
+        "value": "true"
+      },
+      {
+        "property": "Pset_ColumnCommon.LoadBearing",
+        "operator": "equals",
+        "value": "true"
+      }
+    ]
+  }
+]

@@ -51,7 +51,7 @@ const links = skills
 
 export function SkillSection() {
   const [showLabels, setShowLabels] = useState(true);
-  const { t } = useTranslation("translation");
+  const { t } = useTranslation();
   
 
   return (

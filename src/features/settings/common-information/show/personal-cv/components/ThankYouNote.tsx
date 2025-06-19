@@ -10,7 +10,7 @@ export default function ThankYouNote() {
     const timer = setTimeout(() => setVisible(false), 10000); // 10s
     return () => clearTimeout(timer);
   }, []);
-  const { t } = useTranslation("translation");
+  const { t } = useTranslation();
 
   return (
     <AnimatePresence>

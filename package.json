@@ -69,8 +69,9 @@
     "echarts-for-react": "^3.0.2",
     "embla-carousel-react": "^8.6.0",
     "framer-motion": "^12.4.12",
-    "i18next": "^24.2.2",
-    "i18next-browser-languagedetector": "^8.0.4",
+    "i18next": "^24.2.3",
+    "i18next-browser-languagedetector": "^8.2.0",
+    "i18next-http-backend": "^3.0.2",
     "js-cookie": "^3.0.5",
     "leaflet": "^1.9.4",
     "leva": "^0.10.0",
@@ -85,7 +86,7 @@
     "react-dom": "^19.1.0",
     "react-draggable": "^4.4.6",
     "react-hook-form": "^7.54.0",
-    "react-i18next": "^15.4.1",
+    "react-i18next": "^15.5.3",
     "react-icons": "^5.5.0",
     "react-intersection-observer": "^9.16.0",
     "react-leaflet": "^5.0.0",
@@ -97,6 +98,7 @@
     "react-select": "^5.10.1",
     "react-toastify": "^11.0.5",
     "react-type-animation": "^3.2.0",
+    "react-window": "^1.8.11",
     "recharts": "^2.14.1",
     "socket.io-client": "^4.8.1",
     "sonner": "^2.0.3",
@@ -107,7 +109,8 @@
     "tailwind-scrollbar": "^3.0.0",
     "tailwindcss-animate": "^1.0.7",
     "three": "^0.175.0",
-    "web-ifc": "^0.0.68"
+    "web-ifc": "^0.0.46",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@eslint/js": "^9.16.0",
