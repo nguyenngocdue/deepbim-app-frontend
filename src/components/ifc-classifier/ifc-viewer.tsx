@@ -1707,7 +1707,7 @@ function ViewerContent() {
         }}
       >
         {ifcEngineReady && !webGLContextLost && (
-          <Canvas
+          <Canvas 
             onCreated={({ gl }) => {
               console.log("R3F Canvas with IFCModel: onCreated called.");
               const context = gl.getContext();

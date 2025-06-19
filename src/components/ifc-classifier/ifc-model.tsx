@@ -22,7 +22,7 @@ import {
   IFCRELASSOCIATESMATERIAL,
   Properties,
 } from "web-ifc"; // Import IfcAPI type and constants
-import { addDefaultLights, addGrid, centerObjectAtOrigin, fitCameraToObject } from "./FitCameraToObject";
+import { addGrid, centerObjectAtOrigin, fitCameraToObject, setOtherLighting } from "./FitCameraToObject";
 
 interface IFCModelProps {
   modelData: LoadedModelData;
@@ -734,7 +734,7 @@ const createMeshes = useCallback(() => {
         // Note: setModelMeshesProcessedForInitialView is NOT set here directly,
         // it will be handled by the new useEffect that depends on meshesRef.current becoming available.
         addGrid(scene)
-        addDefaultLights(scene)
+        setOtherLighting(scene)
 
         console.log(
           `IFCModel (${modelData.id}): Extracting data for modelID ${newIfcModelID}...`

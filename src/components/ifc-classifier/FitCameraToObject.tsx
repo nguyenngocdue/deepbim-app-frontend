@@ -41,7 +41,25 @@ export function addGrid(scene, size = 1000, divisions = 100) {
 }
 
 
-export function addDefaultLights(scene) {
- 
-}
+/**
+ * Thêm ánh sáng mặc định vào scene giúp mô hình sáng và có chiều sâu.
+ * @param scene - THREE.Scene cần thêm ánh sáng.
+ */
+export function setOtherLighting(scene: THREE.Scene) {
+  // Clear old lights if needed
+  scene.children
+    .filter((obj) => obj.type === 'DirectionalLight' || obj.type === 'AmbientLight')
+    .forEach((light) => scene.remove(light));
 
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.5); // ánh sáng dịu
+  scene.add(ambientLight);
+
+  const dirLight = new THREE.DirectionalLight(0xffffff, 0.8); // ánh sáng chính
+  dirLight.position.set(10, 20, 10);
+  dirLight.castShadow = false;
+  scene.add(dirLight);
+
+  const fillLight = new THREE.DirectionalLight(0xffffff, 0.3); // ánh sáng phụ ngược
+  fillLight.position.set(-10, 10, -10);
+  scene.add(fillLight);
+}
