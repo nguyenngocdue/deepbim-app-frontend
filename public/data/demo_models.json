@@ -1,22 +1,26 @@
 [
   {
-    "name": "Building Architecture",
-    "url": "https://raw.githubusercontent.com/buildingSMART/Sample-Test-Files/main/IFC%204.0.2.1%20(IFC%204)/PCERT-Sample-Scene/Building-Architecture.ifc"
+    "name": "Building Architecture ",
+    "url": "https://minio.deepbim.net:9000/deepbim-fe/1750348687954-Snowdon Towers Sample Architectural.ifc"
   },
   {
     "name": "Building HVAC",
-    "url": "https://raw.githubusercontent.com/buildingSMART/Sample-Test-Files/main/IFC%204.0.2.1%20(IFC%204)/PCERT-Sample-Scene/Building-Hvac.ifc"
+    "url": "https://minio.deepbim.net:9000/deepbim-fe/1750349580555-Plumbing.ifc"
   },
   {
-    "name": "Building Landscaping",
-    "url": "https://raw.githubusercontent.com/buildingSMART/Sample-Test-Files/main/IFC%204.0.2.1%20(IFC%204)/PCERT-Sample-Scene/Building-Landscaping.ifc"
+    "name": "Terrain",
+    "url": "https://minio.deepbim.net:9000/deepbim-fe/1750350445775-01.Terrain_Model.ifc"
   },
   {
     "name": "Building Structural",
-    "url": "https://raw.githubusercontent.com/buildingSMART/Sample-Test-Files/main/IFC%204.0.2.1%20(IFC%204)/PCERT-Sample-Scene/Building-Structural.ifc"
+    "url": "https://minio.deepbim.net:9000/deepbim-fe/1749268728563-Bank_Structure_ViewModel_R24.ifc"
+  },
+  {
+    "name": "Building Structural Steel",
+    "url": "https://minio.deepbim.net:9000/deepbim-fe/1750348995233-STEEL_R25.ifc"
   },
   {
     "name": "Infra Bridge",
-    "url": "https://raw.githubusercontent.com/buildingSMART/Sample-Test-Files/main/IFC%204.0.2.1%20(IFC%204)/PCERT-Sample-Scene/Infra-Bridge.ifc"
+    "url": "https://minio.deepbim.net:9000/deepbim-fe/1749267153526-K2.ifc"
   }
 ]

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { Checkbox } from "@/components/ui/checkbox";
 import { useIFCContext, SelectedElementInfo } from "@/context/ifc-context";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export default function SelectionListOverlay() {
   const { selectedElements, getElementPropertiesCached, toggleElementSelection } = useIFCContext();
@@ -68,9 +68,22 @@ export default function SelectionListOverlay() {
             (sel) => sel.modelID === el.modelID && sel.expressID === el.expressID
           );
           return (
-            <div key={key} className="flex items-center gap-2 hover:bg-accent/50 rounded px-2 py-1 transition-colors">
-              <Checkbox checked={isSelected} onCheckedChange={() => handleToggleElement(el)} className="h-3.5 w-3.5 flex-shrink-0" />
-              <label className="text-xs truncate flex-1 cursor-pointer select-none" onClick={(e) => { e.preventDefault(); handleToggleElement(el); }}>
+            <div
+              key={key}
+              className="flex items-center gap-2 hover:bg-accent/50 rounded px-2 py-1 transition-colors"
+            >
+              <Checkbox
+                checked={isSelected}
+                onCheckedChange={() => handleToggleElement(el)}
+                className="h-3.5 w-3.5 flex-shrink-0"
+              />
+              <label
+                className="text-xs truncate flex-1 cursor-pointer select-none"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleToggleElement(el);
+                }}
+              >
                 {names[key] || `#${el.expressID}`}
               </label>
             </div>

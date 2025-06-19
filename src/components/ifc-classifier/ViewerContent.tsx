@@ -1,26 +1,33 @@
+
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { Environment, OrbitControls } from "@react-three/drei";
-import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
+import { Panel, PanelGroup, ImperativePanelHandle } from "react-resizable-panels";
 import { useTranslation } from "react-i18next";
+import { IfcAPI, Properties } from "web-ifc";
 import * as THREE from "three";
-import { IfcAPI } from "web-ifc";
-import { useIFCContext, LoadedModelData, SelectedElementInfo, SpatialStructureNode } from "@/context/ifc-context";
-import { IFCModel } from "./ifc-model";
-import FileUpload from "./FileUpload";
+import {
+  useIFCContext,
+  LoadedModelData,
+  SelectedElementInfo,
+  SpatialStructureNode,
+} from "@/context/ifc-context";
 import ViewToolbar from "./ViewToolbar";
 import SelectionListOverlay from "./SelectionListOverlay";
 import ResponsiveTabs from "./ResponsiveTabs";
-import ResizeHandleHorizontal from "./ResizeHandles";
+import { ResizeHandleHorizontal, ResizeHandleVertical } from "./ResizeHandles";
+import { IFCModel } from "./ifc-model";
 import { SpatialTreePanel } from "./spatial-tree-panel";
 import { ModelInfo } from "./model-info";
-import { CameraActionsController, GlobalInteractionHandler, SceneCapture } from "./ThreeJSComponents";
-import { OUTLINE_SELECTION_LAYER } from "./ThreeJSComponents";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { useThree } from "@react-three/fiber";
+import GlobalInteractionHandler from "./GlobalInteractionHandler";
+import CameraActionsController, { CameraActions } from "./CameraActionsController";
+import FileUpload from "./FileUpload";
 
-interface CameraActions {
-  zoomToExtents: () => void;
-  zoomToSelected: (selection: SelectedElementInfo | null) => void;
-}
+const SKIP_IFC_INITIALIZATION_FOR_TEST = false;
 
 export default function ViewerContent() {
   const {
@@ -52,16 +59,15 @@ export default function ViewerContent() {
   const searchHiddenRef = useRef<SelectedElementInfo[]>([]);
   const scene = useRef<THREE.Scene | null>(null);
 
-  const leftPanelRef = useRef<Panel>(null);
-  const rightPanelRef = useRef<Panel>(null);
+  const leftPanelRef = useRef<ImperativePanelHandle>(null);
+  const rightPanelRef = useRef<ImperativePanelHandle>(null);
   const cameraActionsRef = useRef<CameraActions>(null);
-
-  const SKIP_IFC_INITIALIZATION_FOR_TEST = false;
-
   const [settingsVersion, setSettingsVersion] = useState(0);
-  const [hasAutoLoadedModels, setHasAutoLoadedModels] = useState(false);
   const [leftPanelCollapsed, setLeftPanelCollapsed] = useState(false);
   const [rightPanelCollapsed, setRightPanelCollapsed] = useState(false);
+  const [hasAutoLoadedModels, setHasAutoLoadedModels] = useState(false);
+
+  const OUTLINE_SELECTION_LAYER = 10;
 
   const gatherAllElements = useCallback((root: SpatialStructureNode | null) => {
     const items: SpatialStructureNode[] = [];
@@ -110,11 +116,15 @@ export default function ViewerContent() {
           expressID: object.userData.expressID,
         };
         const isUserHidden = userHiddenElements.some(
-          hidden => hidden.modelID === elementInfo.modelID && hidden.expressID === elementInfo.expressID
+          (hidden) =>
+            hidden.modelID === elementInfo.modelID &&
+            hidden.expressID === elementInfo.expressID
         );
         if (!isUserHidden) {
           const alreadyAdded = visibleElements.some(
-            el => el.modelID === elementInfo.modelID && el.expressID === elementInfo.expressID
+            (el) =>
+              el.modelID === elementInfo.modelID &&
+              el.expressID === elementInfo.expressID
           );
           if (!alreadyAdded) {
             visibleElements.push(elementInfo);
@@ -172,74 +182,6 @@ export default function ViewerContent() {
     }, 1500);
   }, []);
 
-  const customUnhideAllElements = useCallback(() => {
-    unhideAllElements();
-    setCanvasSearch("");
-    setConfirmedSearch("");
-  }, [unhideAllElements]);
-
-  const customUnhideLastElement = useCallback(() => {
-    unhideLastElement();
-    setCanvasSearch("");
-    setConfirmedSearch("");
-  }, [unhideLastElement]);
-
-  // Initialize WebIFC
-  useEffect(() => {
-    if (SKIP_IFC_INITIALIZATION_FOR_TEST) return;
-    if (ifcApi) {
-      setIfcEngineReady(true);
-      return;
-    }
-    let didCancel = false;
-    const initializeWebIFC = async () => {
-      try {
-        const ifcAPIInstance = new IfcAPI();
-        ifcAPIInstance.SetWasmPath("https://cdn.jsdelivr.net/npm/web-ifc@0.0.68/", true);
-        await ifcAPIInstance.Init();
-        if (!didCancel) {
-          if (!ifcAPIInstance.properties) {
-            ifcAPIInstance.properties = new Properties(ifcAPIInstance);
-          }
-          if (setIfcApi) setIfcApi(ifcAPIInstance);
-          setIfcEngineReady(true);
-        }
-      } catch (error) {
-        console.error("ViewerContent: Error initializing WebIFC:", error);
-        setIfcEngineReady(false);
-      }
-    };
-    initializeWebIFC();
-    return () => {
-      didCancel = true;
-    };
-  }, [ifcApi, setIfcApi, SKIP_IFC_INITIALIZATION_FOR_TEST]);
-
-  // Auto-load models
-  useEffect(() => {
-    if (!ifcEngineReady || hasAutoLoadedModels || loadedModels.length > 0) return;
-    try {
-      const stored = localStorage.getItem("appSettings");
-      if (!stored) return;
-      const { modelUrls, alwaysLoad } = JSON.parse(stored);
-      if (!alwaysLoad || !Array.isArray(modelUrls)) return;
-      modelUrls.forEach((m: any) => addIFCModel(m.url, m.name));
-      setHasAutoLoadedModels(true);
-    } catch (err) {
-      console.error("Failed to autoload models", err);
-    }
-  }, [ifcEngineReady, hasAutoLoadedModels, loadedModels, addIFCModel]);
-
-  // Log selected element
-  useEffect(() => {
-    if (selectedElement) {
-      console.log("ViewerContent: Selected element changed: ", selectedElement);
-    } else {
-      console.log("ViewerContent: No element selected / selection cleared.");
-    }
-  }, [selectedElement]);
-
-  // Reset search progress
   useEffect(() => {
     if (!confirmedSearch) {
       setSearchProgress({ active: false, percent: 0, status: '' });
@@ -247,7 +189,10 @@ export default function ViewerContent() {
     }
   }, [confirmedSearch]);
 
-  // Apply search filtering
+  useEffect(() => {
+    console.log("userHiddenElements changed:", userHiddenElements.length, userHiddenElements.slice(0, 5));
+  }, [userHiddenElements]);
+
   useEffect(() => {
     if (!ifcApi || !isSearchRunning) return;
     let cancelled = false;
@@ -299,7 +244,6 @@ export default function ViewerContent() {
         showElements(searchHiddenRef.current);
         searchHiddenRef.current = [];
       }
-
       const query = confirmedSearch.trim();
       console.log("Applying filter with query:", query);
       if (!query) {
@@ -307,23 +251,18 @@ export default function ViewerContent() {
         setIsSearchRunning(false);
         return;
       }
-
       setSearchProgress({ active: true, percent: 0, status: 'Preparing search...' });
-
       const regex = toRegex(query);
       console.log("Search regex:", regex.source);
       const toHide: SelectedElementInfo[] = [];
-
       console.log("Loaded models:", loadedModels.length, loadedModels.map(m => ({
         id: m.id,
         name: m.name,
         modelID: m.modelID,
         hasSpatialTree: !!m.spatialTree
       })));
-
       const availableMeshIds: Record<number, Set<number>> = {};
       const allMeshes: Record<number, Record<number, THREE.Mesh>> = {};
-
       scene.current?.traverse((object) => {
         if (
           object instanceof THREE.Mesh &&
@@ -341,7 +280,6 @@ export default function ViewerContent() {
           allMeshes[modelID][expressID] = object;
         }
       });
-
       if (Object.keys(availableMeshIds).length === 0) {
         console.log("WARNING: No meshes found in the scene with IFC data!");
       } else {
@@ -349,30 +287,24 @@ export default function ViewerContent() {
           ([modelID, ids]) => `Model ${modelID}: ${ids.size} meshes`
         ));
       }
-
       for (const model of loadedModels) {
         if (model.modelID === null || model.modelID === undefined || !model.spatialTree) {
           console.log(`Model ${model.id} (${model.name}) skipped - modelID: ${model.modelID}, hasSpatialTree: ${!!model.spatialTree}`);
           continue;
         }
-
         console.log(`Spatial tree root for model ${model.id}:`, {
           rootExpressID: model.spatialTree.expressID,
           rootType: model.spatialTree.type,
           rootName: model.spatialTree.Name,
           childrenCount: model.spatialTree.children?.length || 0
         });
-
         const nodes = gatherAllElements(model.spatialTree);
         console.log(`Model ${model.id} (${model.name}): Processing ${nodes.length} nodes for filtering.`);
-
         const modelMeshes = availableMeshIds[model.modelID] || new Set();
         const nodesWithMeshes = nodes.filter(node =>
           node.expressID !== undefined && modelMeshes.has(node.expressID)
         );
-
         console.log(`Model ${model.id}: ${nodes.length} tree nodes, ${nodesWithMeshes.length} have corresponding meshes`);
-
         if (nodes.length > 0) {
           console.log(`Sample node data (first node):`, {
             expressID: nodes[0].expressID,
@@ -381,20 +313,16 @@ export default function ViewerContent() {
             hasMesh: nodes[0].expressID !== undefined && modelMeshes.has(nodes[0].expressID)
           });
         }
-
         let matchCount = 0;
         let noMatchCount = 0;
         const processedExpressIDsFromSpatialTree = new Set<number>();
         let errorCount = 0;
-
         const processNode = async (node: any): Promise<{ match: boolean; expressID: number }> => {
           if (typeof node.expressID !== 'number' || isNaN(node.expressID) || model.modelID === null || model.modelID === undefined) {
             return { match: false, expressID: -1 };
           }
-
           const expressID = node.expressID;
           processedExpressIDsFromSpatialTree.add(expressID);
-
           let match = false;
           if (node.Name && node.Name.value && typeof node.Name.value === 'string' && regex.test(node.Name.value.toLowerCase())) {
             match = true;
@@ -403,7 +331,6 @@ export default function ViewerContent() {
           } else if (node.GlobalId && node.GlobalId.value && typeof node.GlobalId.value === 'string' && regex.test(node.GlobalId.value.toLowerCase())) {
             match = true;
           }
-
           if (!match) {
             try {
               const props = await getElementPropertiesCached(model.modelID as number, expressID);
@@ -417,31 +344,25 @@ export default function ViewerContent() {
               }
             }
           }
-
           return { match, expressID };
         };
-
         const batchSize = 20;
         const nodesToProcess = nodes.filter(node => node.expressID !== undefined);
         const results: { match: boolean; expressID: number }[] = [];
         const MAX_MATCHES = 1000;
         let hasReachedMaxMatches = false;
-
         for (let i = 0; i < nodesToProcess.length; i += batchSize) {
           if (cancelled || hasReachedMaxMatches) break;
-
           const currentBatch = nodesToProcess.slice(i, i + batchSize);
           const batchPromises = currentBatch.map(node => processNode(node));
           const batchResults = await Promise.all(batchPromises);
           results.push(...batchResults);
-
           const matchCount = results.filter(r => r.match).length;
           if (matchCount >= MAX_MATCHES) {
             console.log(`Found ${matchCount} matches, stopping search early`);
             setSearchProgress({ active: true, percent: 100, status: `Found ${matchCount} matches (stopped early)` });
             hasReachedMaxMatches = true;
           }
-
           if (i % 20 === 0 || i + batchSize >= nodesToProcess.length) {
             const percentComplete = Math.round((i / nodesToProcess.length) * 100);
             console.log(`Processed ${i}/${nodesToProcess.length} nodes (${percentComplete}%)...`);
@@ -450,7 +371,6 @@ export default function ViewerContent() {
               percent: percentComplete,
               status: `Searching... ${i}/${nodesToProcess.length} elements (${matchCount} matches found)`
             });
-
             if (i % 100 === 0) {
               const partialResults = results.filter(r => !r.match && r.expressID !== -1)
                 .map(r => ({ modelID: model.modelID as number, expressID: r.expressID }));
@@ -466,7 +386,6 @@ export default function ViewerContent() {
             }
           }
         }
-
         for (const result of results) {
           if (result.expressID === -1) continue;
           if (result.match) {
@@ -480,7 +399,6 @@ export default function ViewerContent() {
             }
           }
         }
-
         const modelMeshesMap = allMeshes[model.modelID];
         if (query && modelMeshesMap) {
           for (const expressIDStr in modelMeshesMap) {
@@ -497,9 +415,7 @@ export default function ViewerContent() {
         }
         console.log(`Filter results for model ${model.id}: ${matchCount} matches, ${noMatchCount} non-matches (to hide, incl. non-spatial), ${errorCount} errors`);
       }
-
       console.log(`Filter identified ${toHide.length} elements to hide overall.`);
-
       if (!cancelled && toHide.length > 0) {
         console.log("Calling hideElements with", toHide.length, "elements");
         hideElements(toHide);
@@ -510,14 +426,12 @@ export default function ViewerContent() {
           }
         });
       }
-
       setSearchProgress({
         active: false,
         percent: 100,
         status: `Search complete: ${toHide.length} elements hidden`
       });
       setIsSearchRunning(false);
-
       setTimeout(() => {
         setSearchProgress(prev => {
           if (prev.percent === 100) {
@@ -534,7 +448,6 @@ export default function ViewerContent() {
     };
   }, [confirmedSearch, loadedModels, ifcApi, hideElements, showElements, gatherAllElements, scene, isSearchRunning, getElementPropertiesCached]);
 
-  // Update panel collapse state
   useEffect(() => {
     const checkPanelState = () => {
       if (leftPanelRef.current) {
@@ -544,58 +457,102 @@ export default function ViewerContent() {
         setRightPanelCollapsed(rightPanelRef.current.getSize() === 0);
       }
     };
-
     checkPanelState();
     const observer = new MutationObserver(checkPanelState);
-    const leftPanelElement = leftPanelRef.current ? document.getElementById(leftPanelRef.current.getId()) : null;
-    const rightPanelElement = rightPanelRef.current ? document.getElementById(rightPanelRef.current.getId()) : null;
-
-    if (leftPanelElement) observer.observe(leftPanelElement, { attributes: true });
-    if (rightPanelElement) observer.observe(rightPanelElement, { attributes: true });
-
-    return () => observer.disconnect();
+    const leftPanelElement = leftPanelRef.current
+      ? document.getElementById(leftPanelRef.current.getId())
+      : null;
+    const rightPanelElement = rightPanelRef.current
+      ? document.getElementById(rightPanelRef.current.getId())
+      : null;
+    if (leftPanelElement) {
+      observer.observe(leftPanelElement, { attributes: true });
+    }
+    if (rightPanelElement) {
+      observer.observe(rightPanelElement, { attributes: true });
+    }
+    return () => {
+      observer.disconnect();
+    };
   }, [ifcEngineReady]);
 
-  // Apply userHiddenElements visibility
   useEffect(() => {
-    if (!scene.current) return;
-    console.log("Direct visibility effect: Processing userHiddenElements", userHiddenElements.length);
-    const hiddenElements = new Map<number, Set<number>>();
-    userHiddenElements.forEach(element => {
-      if (!hiddenElements.has(element.modelID)) {
-        hiddenElements.set(element.modelID, new Set());
-      }
-      hiddenElements.get(element.modelID)?.add(element.expressID);
-    });
-
-    let appliedHideCount = 0;
-    scene.current.traverse(object => {
-      if (
-        object instanceof THREE.Mesh &&
-        object.userData &&
-        object.userData.expressID !== undefined &&
-        object.userData.modelID !== undefined
-      ) {
-        const modelID = object.userData.modelID;
-        const expressID = object.userData.expressID;
-        if (hiddenElements.has(modelID) && hiddenElements.get(modelID)?.has(expressID)) {
-          if (object.visible) {
-            object.visible = false;
-            appliedHideCount++;
+    if (SKIP_IFC_INITIALIZATION_FOR_TEST) {
+      return;
+    }
+    if (ifcApi) {
+      setIfcEngineReady(true);
+      return;
+    }
+    let didCancel = false;
+    const initializeWebIFC = async () => {
+      try {
+        const ifcAPIInstance = new IfcAPI();
+        ifcAPIInstance.SetWasmPath("https://cdn.jsdelivr.net/npm/web-ifc@0.0.68/", true);
+        await ifcAPIInstance.Init();
+        if (!didCancel) {
+          if (!ifcAPIInstance.properties) {
+            ifcAPIInstance.properties = new Properties(ifcAPIInstance);
           }
+          if (setIfcApi) setIfcApi(ifcAPIInstance);
+          setIfcEngineReady(true);
+        }
+      } catch (error) {
+        if (!didCancel) {
+          console.error("ViewerContent: Error initializing WebIFC:", error);
+          setIfcEngineReady(false);
         }
       }
-    });
-    console.log(`Direct visibility effect: Applied visibility=false to ${appliedHideCount} meshes`);
-  }, [userHiddenElements, scene]);
+    };
+    initializeWebIFC();
+    return () => {
+      didCancel = true;
+    };
+  }, [ifcApi, setIfcApi]);
 
-  // Keyboard shortcuts
+  useEffect(() => {
+    if (!ifcEngineReady || hasAutoLoadedModels || loadedModels.length > 0)
+      return;
+    try {
+      const stored = localStorage.getItem("appSettings");
+      if (!stored) return;
+      const { modelUrls, alwaysLoad } = JSON.parse(stored);
+      if (!alwaysLoad || !Array.isArray(modelUrls)) return;
+      modelUrls.forEach((m: any) => addIFCModel(m.url, m.name));
+      setHasAutoLoadedModels(true);
+    } catch (err) {
+      console.error("Failed to autoload models", err);
+    }
+  }, [ifcEngineReady, hasAutoLoadedModels, loadedModels, addIFCModel]);
+
+  useEffect(() => {
+    if (selectedElement) {
+      console.log("ViewerContent: Selected element changed: ", selectedElement);
+    } else {
+      console.log("ViewerContent: No element selected / selection cleared.");
+    }
+  }, [selectedElement]);
+
+  const customUnhideAllElements = useCallback(() => {
+    unhideAllElements();
+    setCanvasSearch("");
+    setConfirmedSearch("");
+  }, [unhideAllElements]);
+
+  const customUnhideLastElement = useCallback(() => {
+    unhideLastElement();
+    setCanvasSearch("");
+    setConfirmedSearch("");
+  }, [unhideLastElement]);
+
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       const target = event.target as HTMLElement;
-      const isTyping = target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.isContentEditable;
+      const isTyping =
+        target.tagName === "INPUT" ||
+        target.tagName === "TEXTAREA" ||
+        target.isContentEditable;
       if (isTyping) return;
-
       switch (event.code) {
         case "Space":
           if (selectedElements.length) {
@@ -638,12 +595,15 @@ export default function ViewerContent() {
           break;
       }
     };
-
     window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
   }, [
     selectedElements,
     toggleUserHideElement,
+    unhideLastElement,
+    unhideAllElements,
     userHiddenElements,
     handleZoomExtents,
     handleZoomSelected,
@@ -652,6 +612,37 @@ export default function ViewerContent() {
     customUnhideLastElement,
     clearSelection,
   ]);
+
+  useEffect(() => {
+    if (!scene.current) return;
+    console.log("Direct visibility effect: Processing userHiddenElements", userHiddenElements.length);
+    const hiddenElements = new Map<number, Set<number>>();
+    userHiddenElements.forEach(element => {
+      if (!hiddenElements.has(element.modelID)) {
+        hiddenElements.set(element.modelID, new Set());
+      }
+      hiddenElements.get(element.modelID)?.add(element.expressID);
+    });
+    let appliedHideCount = 0;
+    scene.current.traverse(object => {
+      if (
+        object instanceof THREE.Mesh &&
+        object.userData &&
+        object.userData.expressID !== undefined &&
+        object.userData.modelID !== undefined
+      ) {
+        const modelID = object.userData.modelID;
+        const expressID = object.userData.expressID;
+        if (hiddenElements.has(modelID) && hiddenElements.get(modelID)?.has(expressID)) {
+          if (object.visible) {
+            object.visible = false;
+            appliedHideCount++;
+          }
+        }
+      }
+    });
+    console.log(`Direct visibility effect: Applied visibility=false to ${appliedHideCount} meshes`);
+  }, [userHiddenElements, scene]);
 
   if (!ifcEngineReady && !SKIP_IFC_INITIALIZATION_FOR_TEST) {
     return (
@@ -684,7 +675,16 @@ export default function ViewerContent() {
 
   return (
     <div className="flex h-full w-full relative overflow-hidden" style={{ isolation: 'isolate' }}>
-      <div style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", zIndex: 0 }}>
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          zIndex: 0,
+        }}
+      >
         {ifcEngineReady && !webGLContextLost && (
           <Canvas
             onCreated={({ gl }) => {
@@ -702,16 +702,28 @@ export default function ViewerContent() {
                 setWebGLContextLost(true);
               }
               if (gl.domElement) {
-                gl.domElement.addEventListener("webglcontextlost", (event) => {
-                  event.preventDefault();
-                  console.error("R3F Canvas with IFCModel: WebGL context lost! (event listener)");
-                  setWebGLContextLost(true);
-                }, false);
-                gl.domElement.addEventListener("webglcontextcreationerror", (event) => {
-                  const webglEvent = event as WebGLContextEvent;
-                  console.error("R3F Canvas with IFCModel: WebGL context CREATION ERROR!", "Status:", webglEvent.statusMessage || "No status message.");
-                  setWebGLContextLost(true);
-                }, false);
+                gl.domElement.addEventListener(
+                  "webglcontextlost",
+                  (event) => {
+                    event.preventDefault();
+                    console.error("R3F Canvas with IFCModel: WebGL context lost! (event listener)");
+                    setWebGLContextLost(true);
+                  },
+                  false
+                );
+                gl.domElement.addEventListener(
+                  "webglcontextcreationerror",
+                  (event) => {
+                    const webglEvent = event as WebGLContextEvent;
+                    console.error(
+                      "R3F Canvas with IFCModel: WebGL context CREATION ERROR!",
+                      "Status:",
+                      webglEvent.statusMessage || "No status message."
+                    );
+                    setWebGLContextLost(true);
+                  },
+                  false
+                );
               } else {
                 console.error("R3F Canvas with IFCModel: gl.domElement not available.");
                 setWebGLContextLost(true);
@@ -725,21 +737,38 @@ export default function ViewerContent() {
             <GlobalInteractionHandler />
             <SceneCapture onSceneCapture={captureScene} />
             {loadedModels.map((modelEntry) => (
-              <IFCModel key={modelEntry.id} modelData={modelEntry} outlineLayer={OUTLINE_SELECTION_LAYER} />
+              <IFCModel
+                key={modelEntry.id}
+                modelData={modelEntry}
+                outlineLayer={OUTLINE_SELECTION_LAYER}
+              />
             ))}
             <CameraActionsController ref={cameraActionsRef} />
           </Canvas>
         )}
       </div>
-
       <PanelGroup
         direction="horizontal"
         autoSaveId="ifc-viewer-layout"
-        style={{ zIndex: 1, position: "relative", pointerEvents: "none", height: "calc(100% - 4rem)", marginTop: "4rem" }}
+        style={{
+          zIndex: 1,
+          position: "relative",
+          pointerEvents: "none",
+          height: "calc(100% - 4rem)",
+          marginTop: "4rem",
+        }}
       >
-        <Panel id="left-sidebar" ref={leftPanelRef} defaultSize={25} minSize={15} maxSize={40} collapsible className="bg-transparent pointer-events-auto">
+        <Panel
+          id="left-sidebar"
+          ref={leftPanelRef}
+          defaultSize={25}
+          minSize={15}
+          maxSize={40}
+          collapsible
+          className="bg-transparent pointer-events-auto"
+        >
           <div className="h-full flex flex-col shadow-lg bg-gradient-to-r from-[hsl(var(--card))]">
-            <div className="p-2 border-b flex justify-between items-center shrink-0">
+            <div className="p-2 border-b border-color-standard flex justify-between items-center shrink-0">
               <h3 className="text-sm font-semibold px-2">{t('modelExplorer')}</h3>
               <FileUpload key={`file-upload-sidebar-${settingsVersion}`} isAdding={true} />
             </div>
@@ -749,12 +778,10 @@ export default function ViewerContent() {
                   <SpatialTreePanel />
                 </div>
               </Panel>
-              <PanelResizeHandle className="h-2 flex items-center justify-center group transition-colors hover:bg-muted/80 active:bg-muted rounded cursor-row-resize">
-                <div className="h-0.5 w-8 bg-border group-hover:bg-muted-foreground/60 group-active:bg-muted-foreground/80 rounded-full transition-colors" />
-              </PanelResizeHandle>
+              <ResizeHandleVertical />
               <Panel id="properties-panel" defaultSize={30} minSize={20}>
                 <div className="h-full flex flex-col">
-                  <div className="p-1 border-b">
+                  <div className="p-1 border-b border-color-standard">
                     <h3 className="text-sm font-semibold px-2">{t('properties')}</h3>
                   </div>
                   <div className="p-2 overflow-y-auto flex-grow">
@@ -765,14 +792,21 @@ export default function ViewerContent() {
             </PanelGroup>
           </div>
         </Panel>
-
-        <ResizeHandleHorizontal onToggle={handleToggleLeftPanel} collapsed={leftPanelCollapsed} isLeftSide={true} className="pointer-events-auto" />
-
-        <Panel id="main-content" defaultSize={50} className="bg-transparent pointer-events-none">
+        <ResizeHandleHorizontal
+          onToggle={handleToggleLeftPanel}
+          collapsed={leftPanelCollapsed}
+          isLeftSide={true}
+          className="pointer-events-auto"
+        />
+        <Panel
+          id="main-content"
+          defaultSize={50}
+          className="bg-transparent pointer-events-none"
+        >
           <div className="relative h-full bg-transparent pointer-events-none">
             {ifcEngineReady && !webGLContextLost && (
               <div className="absolute top-4 right-4 z-20 pointer-events-auto">
-                <div className="flex items-center gap-2 p-1 bg-background/80 backdrop-blur-sm border border-border rounded-lg shadow-lg">
+                <div className="flex items-center gap-2 p-1 bg-background/80 backdrop-blur-sm border border-border rounded-lg shadow-lg border-color-standard">
                   <TooltipProvider delayDuration={300}>
                     <Tooltip>
                       <TooltipTrigger asChild>
@@ -800,10 +834,16 @@ export default function ViewerContent() {
                             }
                           }}
                           placeholder={isSearchFocused ? t('modelViewer.searchCanvasPlaceholder') : "Search..."}
-                          className={`h-8 text-xs transition-all duration-300 ease-in-out rounded-md ${isSearchFocused ? 'w-48 px-3' : 'w-24 px-2 text-[11px]'}`}
+                          className={`h-8 text-xs transition-all duration-300 ease-in-out rounded-md ${
+                            isSearchFocused ? 'w-48 px-3' : 'w-24 px-2 text-[11px]'
+                          }`}
                         />
                       </TooltipTrigger>
-                      <TooltipContent side="bottom" align="end" className="max-w-xs p-3 bg-popover text-popover-foreground shadow-md rounded-md z-50 flex flex-col gap-1">
+                      <TooltipContent
+                        side="bottom"
+                        align="end"
+                        className="max-w-xs p-3 bg-popover text-popover-foreground shadow-md rounded-md z-50 flex flex-col gap-1"
+                      >
                         <p className="font-medium">Filter elements by properties</p>
                         <p className="text-xs text-muted-foreground">
                           Supports wildcard <code className="p-0.5 bg-muted rounded-sm">*</code> and regular expressions (regex).
@@ -815,18 +855,11 @@ export default function ViewerContent() {
                     </Tooltip>
                   </TooltipProvider>
                   {isSearchRunning ? (
-                    <Button variant="ghost" onClick={handleCancelSearch} title="Cancel search" className="transition-all duration-300 ease-in-out flex items-center justify-center rounded-md h-8 w-8">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M18 6L6 18"></path>
-                        <path d="M6 6l12 12"></path>
-                      </svg>
-                    </Button>
-                  ) : (
                     <Button
                       variant="ghost"
-                      onClick={() => handleSearchSubmit(canvasSearch)}
-                      title={t('modelViewer.search')}
-                      className={`transition-all duration-300 ease-in-out flex items-center justify-center rounded-md ${isSearchFocused ? 'h-8 w-8' : 'h-7 w-7 p-0.5'}`}
+                      onClick={handleCancelSearch}
+                      title="Cancel search"
+                      className="transition-all duration-300 ease-in-out flex items-center justify-center rounded-md h-8 w-8"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -838,7 +871,33 @@ export default function ViewerContent() {
                         strokeWidth="2"
                         strokeLinecap="round"
                         strokeLinejoin="round"
-                        className={`transition-all duration-300 ease-in-out ${isSearchFocused ? 'scale-100' : 'scale-[0.80]'}`}
+                      >
+                        <path d="M18 6L6 18"></path>
+                        <path d="M6 6l12 12"></path>
+                      </svg>
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="ghost"
+                      onClick={() => handleSearchSubmit(canvasSearch)}
+                      title={t('modelViewer.search')}
+                      className={`transition-all duration-300 ease-in-out flex items-center justify-center rounded-md ${
+                        isSearchFocused ? 'h-8 w-8' : 'h-7 w-7 p-0.5'
+                      }`}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className={`transition-all duration-300 ease-in-out ${
+                          isSearchFocused ? 'scale-100' : 'scale-[0.80]'
+                        }`}
                       >
                         <circle cx="11" cy="11" r="8"></circle>
                         <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
@@ -853,7 +912,10 @@ export default function ViewerContent() {
                       <span>{searchProgress.percent}%</span>
                     </div>
                     <div className="w-full bg-muted rounded-full h-2 overflow-hidden">
-                      <div className="bg-primary h-full transition-all duration-300 ease-in-out" style={{ width: `${searchProgress.percent}%` }}></div>
+                      <div
+                        className="bg-primary h-full transition-all duration-300 ease-in-out"
+                        style={{ width: `${searchProgress.percent}%` }}
+                      ></div>
                     </div>
                   </div>
                 )}
@@ -882,13 +944,33 @@ export default function ViewerContent() {
             <SelectionListOverlay />
           </div>
         </Panel>
-
-        <ResizeHandleHorizontal onToggle={handleToggleRightPanel} collapsed={rightPanelCollapsed} isLeftSide={false} className="pointer-events-auto" />
-
-        <Panel id="right-sidebar" ref={rightPanelRef} defaultSize={25} minSize={15} maxSize={40} collapsible className="bg-transparent pointer-events-auto">
+        <ResizeHandleHorizontal
+          onToggle={handleToggleRightPanel}
+          collapsed={rightPanelCollapsed}
+          isLeftSide={false}
+          className="pointer-events-auto"
+        />
+        <Panel
+          id="right-sidebar"
+          ref={rightPanelRef}
+          defaultSize={25}
+          minSize={15}
+          maxSize={40}
+          collapsible
+          className="bg-transparent pointer-events-auto"
+        >
           <ResponsiveTabs onSettingsChanged={handleSettingsChanged} />
         </Panel>
       </PanelGroup>
     </div>
   );
+
+  function SceneCapture({ onSceneCapture }: { onSceneCapture: (scene: THREE.Scene) => void }) {
+    const { scene } = useThree();
+    useEffect(() => {
+      console.log("SceneCapture: Capturing scene");
+      onSceneCapture(scene);
+    }, [scene, onSceneCapture]);
+    return null;
+  }
 }
