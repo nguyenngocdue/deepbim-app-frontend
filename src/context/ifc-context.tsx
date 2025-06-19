@@ -177,11 +177,30 @@ interface IFCContextType {
     psetName: string,
     propertyName: string,
   ) => Promise<void>;
+
+
+
+  // set loading
+  isLoading: boolean;
+  setIsLoading: (value: boolean) => void;
+  loadingProgress: number;
+  setLoadingProgress: (value: number) => void;
+  loadingMessage: string;
+  setLoadingMessage: (value: string) => void;
+
 }
 
 const IFCContext = createContext<IFCContextType | undefined>(undefined);
 
 export function IFCContextProvider({ children }: { children: ReactNode }) {
+
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [loadingProgress, setLoadingProgress] = useState(0);
+  const [loadingMessage, setLoadingMessage] = useState("");
+
+
+
   const [loadedModels, setLoadedModels] = useState<LoadedModelData[]>([]);
   const [selectedElement, setSelectedElement] =
     useState<SelectedElementInfo | null>(null);
@@ -2123,6 +2142,15 @@ export function IFCContextProvider({ children }: { children: ReactNode }) {
         mapClassificationsFromModel,
         naturalIfcClassNames,
         getNaturalIfcClassName,
+
+
+        isLoading,
+        setIsLoading,
+        loadingProgress,
+        setLoadingProgress,
+        loadingMessage,
+        setLoadingMessage
+
       }}
     >
       {children}

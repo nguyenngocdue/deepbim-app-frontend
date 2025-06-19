@@ -424,7 +424,7 @@ function extractDirectAttributes(
   }
 }
 
-export function IFCModel({ modelData, outlineLayer }: IFCModelProps) {
+export function IFCModel({ modelData }: IFCModelProps) {
   const { scene, camera, controls } = useThree(); // Get controls directly
   const ownModelID = useRef<number | null>(null);
   const meshesRef = useRef<THREE.Group | null>(null);
@@ -448,9 +448,16 @@ export function IFCModel({ modelData, outlineLayer }: IFCModelProps) {
     baseCoordinationMatrix,
     setBaseCoordinationMatrix,
     getElementPropertiesCached,
+
+
+    setIsLoading,
+  setLoadingProgress,
+  setLoadingMessage,
+
+
   } = useIFCContext();
 
-  const [isLoading, setIsLoading] = useState(true);
+  // const [isLoading, setIsLoading] = useState(true);
   const [internalApiIdForEffects, setInternalApiIdForEffects] = useState<
     number | null
   >(null);
@@ -649,7 +656,12 @@ const createMeshes = useCallback(() => {
         console.log(`IFCModel (${modelData.id}): Waiting for ifcApi...`);
       return;
     }
+    // setIsLoading(true);
+
     setIsLoading(true);
+    setLoadingMessage(`Loading ${modelData.name}...`);
+    setLoadingProgress(0);
+
     setModelMeshesProcessedForInitialView(false); // <<< RESET FLAG FOR NEW MODEL LOAD
 
     const loadThisModel = async () => {
@@ -702,7 +714,7 @@ const createMeshes = useCallback(() => {
           console.error(
             `IFCModel (${modelData.id}): ifcApi not available at OpenModel call.`
           );
-          setIsLoading(false);
+          // setIsLoading(false);
           return;
         }
 
@@ -758,24 +770,45 @@ const createMeshes = useCallback(() => {
           allTypesArray.map(String)
         );
         console.log(`IFCModel (${modelData.id}): Available categories set.`);
-        setIsLoading(false);
+        // setIsLoading(false);
+
+      setLoadingProgress(100);
+            setIsLoading(false);
+            setLoadingMessage("");
+
+
+
+
+
       } catch (error) {
         console.error(`IFCModel (${modelData.id}): Error loading:`, error);
+        // setIsLoading(false);
+
+
         setIsLoading(false);
+        setLoadingMessage("Error loading model");
+
+
       }
     };
     loadThisModel();
   }, [
     modelData.url,
-    ifcApi,
-    scene,
-    modelData.id,
-    setModelIDForLoadedModel,
-    setSpatialTreeForModel,
-    setAvailableCategoriesForModel,
-    setInternalApiIdForEffects,
-    setRawBufferForModel,
-    createMeshes,
+    // ifcApi,
+    // scene,
+    // modelData.id,
+    // setModelIDForLoadedModel,
+    // setSpatialTreeForModel,
+    // setAvailableCategoriesForModel,
+    // setInternalApiIdForEffects,
+    // setRawBufferForModel,
+    // createMeshes,
+
+
+    // setIsLoading,
+    // setLoadingProgress,
+    // setLoadingMessage,
+
   ]);
 
   // New useEffect for initial camera positioning
@@ -1135,7 +1168,8 @@ const createMeshes = useCallback(() => {
     // If it has no specific logic tied to modelData.id and does nothing, it might be removable.
   }, [modelData.id]);
 
-  return isLoading ? (
-    <>{/* Optionally return a per-model loader here */}</>
-  ) : null;
+  // return isLoading ? (
+  //   <>{/* Optionally return a per-model loader here */}</>
+  // ) : null;
+  // return ()
 }
