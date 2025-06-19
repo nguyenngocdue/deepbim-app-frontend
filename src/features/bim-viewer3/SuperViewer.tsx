@@ -11,7 +11,7 @@ export function SuperViewer() {
     const initAndLoadIFC = async () => {
       // Khởi tạo IfcAPI và cấu hình WASM
       const api = new IfcAPI();
-      await api.SetWasmPath("/wasm/web-ifc/", true); // Chỉ định đường dẫn đến file WASM
+      await api.SetWasmPath("https://cdn.jsdelivr.net/npm/web-ifc@0.0.68/", true); // Chỉ định đường dẫn đến file WASM
       await api.Init(); // Khởi tạo API
       setIfcAPI(api);
 

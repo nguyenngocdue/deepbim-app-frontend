@@ -1483,7 +1483,8 @@ function ViewerContent() {
     const initializeWebIFC = async () => {
       try {
         const ifcAPIInstance = new IfcAPI();
-        ifcAPIInstance.SetWasmPath("/wasm/web-ifc/", true);
+        
+        ifcAPIInstance.SetWasmPath("https://cdn.jsdelivr.net/npm/web-ifc@0.0.68/", true);
         await ifcAPIInstance.Init();
         if (!didCancel) {
           if (!ifcAPIInstance.properties) {
