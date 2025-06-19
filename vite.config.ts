@@ -13,6 +13,7 @@ const pdfjsDistPath = path.dirname(require.resolve('pdfjs-dist/package.json'));
 const cMapsDir = normalizePath(path.join(pdfjsDistPath, 'cmaps'));
 // https://vite.dev/config/
 export default defineConfig({
+  assetsInclude: ['**/*.wasm'],
   server: {
     host: '0.0.0.0', // Lắng nghe trên tất cả interface (cần cho Docker)
     port: 3003,      // Thay đổi port mặc định từ 5173 sang 3003 (hoặc port bạn muốn)
