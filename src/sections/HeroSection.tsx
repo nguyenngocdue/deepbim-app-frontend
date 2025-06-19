@@ -7,7 +7,11 @@ import AnimatedBorderImage3 from "@/components/ui/animated-border-image3";
 import { CLASS_NAME_DEFAULT } from "@/utils/class";
 import { Link } from "@tanstack/react-router";
 import AppButton from "@/components/bim-viewer/common/AppButton";
-
+import AppButton2 from "@/components/bim-viewer/common/AppButton2";
+import { PiShootingStarThin } from "react-icons/pi";
+import { MdOutlineViewInAr } from "react-icons/md";
+import { LuGitPullRequestCreateArrow } from "react-icons/lu";
+import { SiQuicklook } from "react-icons/si";
 const HeroSection = () => {
   const { t } = useTranslation();
   const { language } = useLanguage();
@@ -66,7 +70,8 @@ const HeroSection = () => {
         </motion.p>
         <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
           <Link to="/managements/workflows">
-            <AppButton 
+            <AppButton
+              icon={<SiQuicklook   className="text-yellow-300"/>}
               className="bg-button-1 text-white dark:bg-green-600 dark:text-white hover:bg-zinc-900 dark:hover:bg-zinc-900" 
               falseName={t("hero.start")}
               >
@@ -74,30 +79,33 @@ const HeroSection = () => {
             </AppButton>
           </Link>
           <Link to="/managements/projects">
-            <AppButton 
-              className="bg-button-2 text-white  bg-gray-700 hover:bg-zinc-900 dark:hover:bg-gray-400" 
+            <AppButton2
+              icon={<LuGitPullRequestCreateArrow  className="text-yellow-300"/>}
+              className=" text-white dark:bg-slate-900 dark:text-white bg-gray-500 hover:bg-zinc-900 dark:hover:bg-zinc-800" 
               falseName={t("hero.deploy")}
               >
               {t("hero.deploy")}
-            </AppButton>
+            </AppButton2>
           </Link>
 
           <Link to="/examples/bim-viewer">
-            <AppButton 
-              className="bg-red-950 text-white dark:text-white  dark:bg-orange-800  hover:bg-zinc-900 dark:hover:bg-zinc-500" 
+            <AppButton2
+              icon={<MdOutlineViewInAr  className="text-yellow-300"/>}
+              className="bg-red-950 text-white dark:text-white  dark:bg-orange-800  hover:bg-zinc-900 dark:hover:bg-zinc-800" 
               falseName={t("hero.demo")}
               >
               {t("hero.demo")}
-            </AppButton>
+            </AppButton2>
           </Link>
 
              <Link to="/app/viewer">
-            <AppButton 
-              className=" text-white bg-purple-700 dark:bg-slate-800 dark:text-white hover:bg-zinc-900 dark:hover:bg-zinc-500" 
+            <AppButton2
+              icon={<PiShootingStarThin className="text-yellow-300"/>}
+              className=" text-white bg-purple-700 dark:bg-slate-800 dark:text-white hover:bg-zinc-900 dark:hover:bg-zinc-800" 
               falseName={t("hero.deploy_ifc")}
               >
               {t("hero.deploy_ifc")}
-            </AppButton>
+            </AppButton2>
           </Link>
 
 

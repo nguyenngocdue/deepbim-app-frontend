@@ -813,8 +813,8 @@ export function ClassificationPanel() {
     <div className="space-y-4 h-full flex flex-col">
       <div className="shrink-0 space-y-2">
         <div className="flex justify-between items-center gap-2">
-          <h3 className="text-lg font-medium whitespace-nowrap">
-            {t("classificationsPanel")}
+          <h3 className="text-lg whitespace-nowrap">
+            {t("classificationsPanel")} (dev)
           </h3>
           <div className="flex items-center gap-2">
             {" "}

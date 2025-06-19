@@ -31,7 +31,8 @@ type ButtonType =
   | "ok"
   | "signin"
   | "signout"
-  | "back";
+  | "back"
+  ;
 
 const buttonTypeStyles: Record<ButtonType, string> = {
   delete: "bg-red-600 dark:bg-red-800 hover:bg-red-700 dark:hover:bg-red-700 text-white dark:text-slate-200",
