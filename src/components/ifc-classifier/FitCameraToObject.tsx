@@ -42,12 +42,6 @@ export function addGrid(scene, size = 1000, divisions = 100) {
 
 
 export function addDefaultLights(scene) {
-  const ambient = new THREE.AmbientLight(0xffffff, 0.5); // ánh sáng môi trường nhẹ
-  const directional = new THREE.DirectionalLight(0xffffff, 1); // ánh sáng mặt trời
-  directional.position.set(10, 10, 10);
-  directional.castShadow = true;
-
-  scene.add(ambient);
-  scene.add(directional);
+ 
 }
 
