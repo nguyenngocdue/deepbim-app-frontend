@@ -26,7 +26,6 @@ import { useThree } from "@react-three/fiber";
 import GlobalInteractionHandler from "./GlobalInteractionHandler";
 import CameraActionsController, { CameraActions } from "./CameraActionsController";
 import FileUpload from "./FileUpload";
-import { LoadingOverlay } from "../common/LoadingOverlay";
 import { LoadingOverlay2 } from "../common/LoadingOverlayV2";
 
 const SKIP_IFC_INITIALIZATION_FOR_TEST = false;
