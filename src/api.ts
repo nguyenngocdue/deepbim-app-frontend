@@ -244,7 +244,7 @@ export async function apiGet<T>(
     // console.error('[apiGet error]', err);
     // throw new Error(err.message || 'Unknown error during GET request');
     toast.warning("", {
-      description: "Please log in again to continue.",
+      description: "Please log in again to continue using all features.",
       action: {
         label: "Sign In",
         onClick: () => window.location.href = '/sign-in',
