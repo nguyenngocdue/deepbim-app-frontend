@@ -71,7 +71,7 @@ const Header: React.FC = () => {
     { href: "/app/features", label: t("navbar.features"), icon: <FaStar className="h-5 w-5" />, ariaLabel: t("navbar.features") },
     { href: "/app/how-it-works", label: t("navbar.how_it_works"), icon: <FaQuestionCircle className="h-5 w-5" />, ariaLabel: t("navbar.how_it_works") },
     { href: "/app/contact-us", label: t("navbar.contact"), icon: <FaEnvelope className="h-5 w-5" />, ariaLabel: t("navbar.contact") },
-    { href: "/tutorials/home-page", label: t("navbar.tutorial"), icon: <VscRemoteExplorer className="h-5 w-5" />, ariaLabel: t("navbar.tutorial"), isDev: true },
+    { href: "/tutorials/home-page", label: t("navbar.tutorial"), icon: <VscRemoteExplorer className="h-5 w-5" />, ariaLabel: t("navbar.tutorial"), isDev: false },
     { href: "/coming-soon", label: t("navbar.blog"), icon: <VscRemoteExplorer className="h-5 w-5" />, ariaLabel: t("navbar.blog"), isDev: true },
   ];
 

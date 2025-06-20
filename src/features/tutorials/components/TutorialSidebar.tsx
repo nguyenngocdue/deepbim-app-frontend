@@ -52,9 +52,48 @@ export function TutorialSidebar({ isOpen, onToggle }: TutorialSidebarProps) {
   ];
 
   const isAdmin = currentUser?.email === "deepbimnet@gmail.com";
+  const [showMobileSidebar, setShowMobileSidebar] = useState(true);
+   useEffect(() => {
+    let lastScrollY = window.scrollY;
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      setShowMobileSidebar(currentScrollY < lastScrollY || currentScrollY < 10);
+      lastScrollY = currentScrollY;
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
-    <>
+  <>
+      {/* Sidebar ngang cho mobile */}
+      <aside
+        className={`fixed bottom-0 left-0 right-0 w-full h-16 bg-gradient-to-br from-zinc-900 via-gray-900 to-neutral-800 backdrop-blur-lg border-t border-zinc-700 text-white transition-all duration-300 ease-in-out z-20 flex md:hidden flex-row items-center justify-around px-2 ${showMobileSidebar ? 'translate-y-0' : 'translate-y-full'} transform`}
+      >
+        {menuItems.map((item, index) => (
+          <Link
+            key={index}
+            to={item.url}
+            className="flex flex-col items-center justify-center text-emerald-400 hover:text-emerald-300"
+          >
+            <item.icon className="h-6 w-6" />
+            <span className="text-xs mt-1">{item.label}</span>
+          </Link>
+        ))}
+
+        {isAdmin && (
+          <button
+            onClick={() => setIsAdminMenuOpen(!isAdminMenuOpen)}
+            className="flex flex-col items-center justify-center text-emerald-400 hover:text-emerald-300"
+          >
+            <Users className="h-6 w-6" />
+            <span className="text-xs mt-1">Admin</span>
+          </button>
+        )}
+      </aside>
+
+      {/* Sidebar dọc gốc */}
       <aside
         ref={sidebarRef}
         className={`fixed  ${isOpen ? 'top-40' : 'top-1/4'} left-4 h-auto bg-gradient-to-br from-zinc-900 via-gray-900 to-neutral-800 backdrop-blur-lg border border-zinc-700 text-white transition-all duration-300 ease-in-out z-20 ${
@@ -135,9 +174,10 @@ export function TutorialSidebar({ isOpen, onToggle }: TutorialSidebarProps) {
                 </button>
               </div>
             </div>
-
-          </div>
+        </div>
       </aside>
     </>
+
+
   );
 }
