@@ -6,7 +6,7 @@ export default function ResponsiveMyRoom() {
 
   useEffect(() => {
     const checkScreen = () => {
-      setIsLargeScreen(window.innerWidth >= 1024); // lg breakpoint (Tailwind)
+      setIsLargeScreen(window.innerWidth >= 1024); 
     };
     checkScreen();
 
