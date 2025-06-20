@@ -155,7 +155,7 @@ const Header: React.FC = () => {
 
       {/* Fixed Bottom Navigation (Mobile Only) */}
       <nav
-        className={`fixed bottom-0 left-0 w-full md:hidden bg-white/80 dark:bg-slate-900/80 backdrop-blur-md shadow-md z-20 flex justify-around items-center py-2 transition-transform duration-300 ease-in-out ${
+        className={`fixed bottom-0 transparent opacity-90 left-0 w-full md:hidden bg-white/80 dark:bg-slate-900/80 backdrop-blur-md shadow-md z-20 flex justify-around items-center py-2 transition-transform duration-300 ease-in-out ${
           showMobileSidebar ? "translate-y-0" : "translate-y-full"
         }`}
       >

@@ -40,8 +40,8 @@ export function TutorialSidebar({ isOpen, onToggle }: TutorialSidebarProps) {
   const menuItems = [
     { icon: Home, label: "Trang chủ", url: "/" },
     { icon: Book, label: "Khóa học", url: "/tutorials/home-page" },
-    { icon: FileText, label: "Bài viết", url: "/tutorials/home-page", status: <CustomBadge text="Dev" className="ml-2 bg-pink-600 text-white" /> },
-    { icon: Users, label: "Cộng đồng", url: "/tutorials/home-page", status: <CustomBadge text="Dev" className="ml-2 bg-pink-600 text-white" /> },
+    { icon: FileText, label: "Bài viết", url: "/coming-soon", status: <CustomBadge text="Dev" className="ml-2 bg-pink-600 text-white" /> },
+    { icon: Users, label: "Cộng đồng", url: "/coming-soon", status: <CustomBadge text="Dev" className="ml-2 bg-pink-600 text-white" /> },
   ];
 
   const adminMenuItems = [
@@ -53,29 +53,33 @@ export function TutorialSidebar({ isOpen, onToggle }: TutorialSidebarProps) {
 
   const isAdmin = currentUser?.email === "deepbimnet@gmail.com";
   const [showMobileSidebar, setShowMobileSidebar] = useState(true);
-   useEffect(() => {
+
+  useEffect(() => {
     let lastScrollY = window.scrollY;
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       setShowMobileSidebar(currentScrollY < lastScrollY || currentScrollY < 10);
       lastScrollY = currentScrollY;
     };
-
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
-  <>
+    <>
       {/* Sidebar ngang cho mobile */}
       <aside
-        className={`fixed bottom-0 left-0 right-0 w-full h-16 bg-gradient-to-br from-zinc-900 via-gray-900 to-neutral-800 backdrop-blur-lg border-t border-zinc-700 text-white transition-all duration-300 ease-in-out z-20 flex md:hidden flex-row items-center justify-around px-2 ${showMobileSidebar ? 'translate-y-0' : 'translate-y-full'} transform`}
+        className={`fixed bottom-0 left-0 right-0 w-full h-16 bg-gradient-to-br transparent opacity-90 from-zinc-900 via-gray-900 to-neutral-800 backdrop-blur-lg border-t border-zinc-700 text-white transition-all duration-300 ease-in-out z-20 flex md:hidden flex-row items-center justify-around px-2 ${showMobileSidebar ? 'translate-y-0' : 'translate-y-full'} transform`}
       >
         {menuItems.map((item, index) => (
           <Link
             key={index}
             to={item.url}
-            className="flex flex-col items-center justify-center text-emerald-400 hover:text-emerald-300"
+            className={`flex flex-col items-center justify-center px-2 py-1 rounded-md transition-all duration-200 ${
+              location.pathname === item.url
+                ? 'bg-emerald-700/40 text-white'
+                : 'text-slate-400 hover:text-emerald-300'
+            }`}
           >
             <item.icon className="h-6 w-6" />
             <span className="text-xs mt-1">{item.label}</span>
@@ -92,11 +96,26 @@ export function TutorialSidebar({ isOpen, onToggle }: TutorialSidebarProps) {
           </button>
         )}
       </aside>
+        {/* on mobile */}
+      {isAdmin && isAdminMenuOpen && (
+        <div className="absolute bottom-16 left-0 w-full bg-zinc-900/90 border-t border-zinc-700 text-white z-30 px-4 pt-2 pb-4 md:hidden">
+          {adminMenuItems.map((item, index) => (
+            <Link
+              key={index}
+              to={item.url}
+              className="flex items-center py-2 border-b border-zinc-700 last:border-none"
+            >
+              <item.icon className="h-5 w-5 text-emerald-400 mr-3" />
+              <span className="text-sm">{item.label}</span>
+            </Link>
+          ))}
+        </div>
+      )}
 
-      {/* Sidebar dọc gốc */}
+      {/* Sidebar dọc gốc: On desktop */} 
       <aside
         ref={sidebarRef}
-        className={`fixed  ${isOpen ? 'top-40' : 'top-1/4'} left-4 h-auto bg-gradient-to-br from-zinc-900 via-gray-900 to-neutral-800 backdrop-blur-lg border border-zinc-700 text-white transition-all duration-300 ease-in-out z-20 ${
+        className={`fixed ${isOpen ? 'top-40' : 'top-1/4'} left-4 h-auto bg-gradient-to-br from-zinc-900 via-gray-900 to-neutral-800 backdrop-blur-lg border border-zinc-700 text-white transition-all duration-300 ease-in-out z-20 ${
           isOpen ? "w-64" : "w-16"
         } hidden md:flex flex-col items-center py-6 px-2 group rounded-[2rem] shadow-[0_10px_40px_rgba(0,0,0,0.6)]`}
       >
@@ -111,73 +130,72 @@ export function TutorialSidebar({ isOpen, onToggle }: TutorialSidebarProps) {
             )}
           </div>
           <div className="flex-1 overflow-y-auto lg:max-h-[70vh] md:max-h-[50vh] max-h-[20vh]">
-              <nav className="flex flex-col space-y-4 flex-1 w-full">
-                {menuItems.map((item, index) => (
-                  <Link
-                    key={index}
-                    to={item.url}
-                    className={`w-full h-12 rounded-xl bg-zinc-800/70 hover:bg-emerald-600/30 flex items-center px-4 transition-all duration-300 ${
-                      !isOpen ? "justify-center" : "justify-start"
-                    } hover:shadow-md hover:shadow-emerald-400/20`}
-                  >
-                    <item.icon className="h-6 w-6 text-emerald-400" />
-                    {isOpen && (
-                      <>
-                        <span className="ml-4 text-base font-semibold text-white/90">{item.label}</span>
-                        {item.status}
-                      </>
-                    )}
-                  </Link>
-                ))}
-
-                {isAdmin && isOpen && (
-                  <div className="mt-6">
-                    <button
-                      onClick={() => setIsAdminMenuOpen(!isAdminMenuOpen)}
-                      className="w-full h-12 rounded-xl bg-zinc-800/70 hover:bg-emerald-600/30 flex items-center justify-between px-4 transition-all duration-300 hover:shadow-md hover:shadow-emerald-400/20"
-                    >
-                      <div className="flex items-center">
-                        <Users className="h-6 w-6 text-emerald-400" />
-                        <span className="ml-4 text-base font-semibold text-white/90">Admin</span>
-                      </div>
-                      <span className="transition-transform duration-300">
-                        {isAdminMenuOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
-                      </span>
-                    </button>
-                    {isAdminMenuOpen && (
-                      <div className="flex flex-col space-y-2 mt-2 pl-8">
-                        {adminMenuItems.map((item, index) => (
-                          <Link
-                            key={index}
-                            to={item.url}
-                            className="w-full h-10 rounded-lg bg-zinc-800/50 hover:bg-emerald-700/30 flex items-center px-4 transition-all duration-300 hover:shadow-sm hover:shadow-emerald-400/10"
-                          >
-                            <item.icon className="h-5 w-5 text-emerald-400" />
-                            <span className="ml-4 text-sm font-medium text-white/90">{item.label}</span>
-                          </Link>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                )}
-              </nav>
-
-              <div className="absolute top-1/2 -right-4 hidden group-hover:block opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none group-hover:pointer-events-auto md:block">
-                <button
-                  onClick={handleToggle}
-                  className="absolute -right-2 bg-zinc-800/70 w-8 h-8 hover:bg-emerald-600/40 text-white flex items-center justify-center rounded-full shadow-lg transition-all duration-300"
-                  title={isOpen ? 'Thu gọn' : 'Mở rộng'}
+            <nav className="flex flex-col space-y-4 flex-1 w-full">
+              {menuItems.map((item, index) => (
+                <Link
+                  key={index}
+                  to={item.url}
+                  className={`w-full h-12 rounded-xl flex items-center px-4 transition-all duration-300 ${
+                    location.pathname === item.url
+                      ? 'bg-emerald-700/40'
+                      : 'bg-zinc-800/70 hover:bg-emerald-600/30'
+                  } ${!isOpen ? "justify-center" : "justify-start"} hover:shadow-md hover:shadow-emerald-400/20`}
                 >
-                  <div className="transition-transform duration-300">
-                    {isOpen ? <ChevronLeft size={20} /> : <ChevronRight size={20} />}
-                  </div>
-                </button>
-              </div>
+                  <item.icon className="h-6 w-6 text-emerald-400" />
+                  {isOpen && (
+                    <>
+                      <span className="ml-4 text-base font-semibold text-white/90">{item.label}</span>
+                      {item.status}
+                    </>
+                  )}
+                </Link>
+              ))}
+
+              {isAdmin && isOpen && (
+                <div className="mt-6">
+                  <button
+                    onClick={() => setIsAdminMenuOpen(!isAdminMenuOpen)}
+                    className="w-full h-12 rounded-xl bg-zinc-800/70 hover:bg-emerald-600/30 flex items-center justify-between px-4 transition-all duration-300 hover:shadow-md hover:shadow-emerald-400/20"
+                  >
+                    <div className="flex items-center">
+                      <Users className="h-6 w-6 text-emerald-400" />
+                      <span className="ml-4 text-base font-semibold text-white/90">Admin</span>
+                    </div>
+                    <span className="transition-transform duration-300">
+                      {isAdminMenuOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                    </span>
+                  </button>
+                  {isAdminMenuOpen && (
+                    <div className="flex flex-col space-y-2 mt-2 pl-8">
+                      {adminMenuItems.map((item, index) => (
+                        <Link
+                          key={index}
+                          to={item.url}
+                          className="w-full h-10 rounded-lg bg-zinc-800/50 hover:bg-emerald-700/30 flex items-center px-4 transition-all duration-300 hover:shadow-sm hover:shadow-emerald-400/10"
+                        >
+                          <item.icon className="h-5 w-5 text-emerald-400" />
+                          <span className="ml-4 text-sm font-medium text-white/90">{item.label}</span>
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+            </nav>
+            <div className="absolute top-1/2 -right-4 hidden group-hover:block opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none group-hover:pointer-events-auto md:block">
+              <button
+                onClick={handleToggle}
+                className="absolute -right-2 bg-zinc-800/70 w-8 h-8 hover:bg-emerald-600/40 text-white flex items-center justify-center rounded-full shadow-lg transition-all duration-300"
+                title={isOpen ? 'Thu gọn' : 'Mở rộng'}
+              >
+                <div className="transition-transform duration-300">
+                  {isOpen ? <ChevronLeft size={20} /> : <ChevronRight size={20} />}
+                </div>
+              </button>
             </div>
+          </div>
         </div>
       </aside>
     </>
-
-
   );
 }

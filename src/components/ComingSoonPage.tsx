@@ -13,7 +13,7 @@ export default function ComingSoonPage() {
             btnType="back"
             variant="outline"
             className="rounded-full text-sm px-4 py-2 hover:bg-primary hover:text-white transition"
-            onClick={() => window.location.href = "/"}
+            onClick={() => window.history.back()}
           />
         }
       />
