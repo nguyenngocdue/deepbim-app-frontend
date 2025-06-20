@@ -11,6 +11,8 @@ import LanguageButton from "@/components/common/LanguageButton";
 import { LuBadgePlus } from "react-icons/lu";
 import { VscRemoteExplorer } from "react-icons/vsc";
 import CustomBadge from "@/components/common/CustomBadge";
+import { LiaBlogSolid } from "react-icons/lia";
+import { RiPresentationFill } from "react-icons/ri";
 
 // Define interfaces for type safety
 interface NavLink {
@@ -34,34 +36,28 @@ const Header: React.FC = () => {
 
 
   const { language, toggleLanguage } = useLanguage() as LanguageContext;
-  const [showBottomNav, setShowBottomNav] = useState<boolean>(true);
-  const [hideTimeout, setHideTimeout] = useState<NodeJS.Timeout | null>(null);
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+
+
+    const [showMobileSidebar, setShowMobileSidebar] = useState(true);
+
+     useEffect(() => {
+      let lastScrollY = window.scrollY;
+      const handleScroll = () => {
+        const currentScrollY = window.scrollY;
+        setShowMobileSidebar(currentScrollY < lastScrollY || currentScrollY < 10);
+        lastScrollY = currentScrollY;
+      };
+  
+      window.addEventListener('scroll', handleScroll);
+      return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+  
 
 
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const isActive = (href: string): boolean => pathname === href;
 
-  const resetHideTimer = () => {
-    if (hideTimeout) clearTimeout(hideTimeout);
-    const timeout = setTimeout(() => setShowBottomNav(false), 15000);
-    setHideTimeout(timeout);
-  };
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setShowBottomNav(true);
-        resetHideTimer();
-      }
-    };
-    window.addEventListener("scroll", handleScroll);
-    resetHideTimer();
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      if (hideTimeout) clearTimeout(hideTimeout);
-    };
-  }, []);
 
   const navLinkStyle = `sm:mt-4 text-sm sm:text-base md:text-lg`;
 
@@ -71,8 +67,8 @@ const Header: React.FC = () => {
     { href: "/app/features", label: t("navbar.features"), icon: <FaStar className="h-5 w-5" />, ariaLabel: t("navbar.features") },
     { href: "/app/how-it-works", label: t("navbar.how_it_works"), icon: <FaQuestionCircle className="h-5 w-5" />, ariaLabel: t("navbar.how_it_works") },
     { href: "/app/contact-us", label: t("navbar.contact"), icon: <FaEnvelope className="h-5 w-5" />, ariaLabel: t("navbar.contact") },
-    { href: "/tutorials/home-page", label: t("navbar.tutorial"), icon: <VscRemoteExplorer className="h-5 w-5" />, ariaLabel: t("navbar.tutorial"), isDev: false },
-    { href: "/coming-soon", label: t("navbar.blog"), icon: <VscRemoteExplorer className="h-5 w-5" />, ariaLabel: t("navbar.blog"), isDev: true },
+    { href: "/tutorials/home-page", label: t("navbar.tutorial"), icon: <RiPresentationFill className="h-5 w-5" />, ariaLabel: t("navbar.tutorial"), isDev: false },
+    { href: "/coming-soon", label: t("navbar.blog"), icon: <LiaBlogSolid  className="h-5 w-5" />, ariaLabel: t("navbar.blog"), isDev: true },
   ];
 
   return (
@@ -160,7 +156,7 @@ const Header: React.FC = () => {
       {/* Fixed Bottom Navigation (Mobile Only) */}
       <nav
         className={`fixed bottom-0 left-0 w-full md:hidden bg-white/80 dark:bg-slate-900/80 backdrop-blur-md shadow-md z-20 flex justify-around items-center py-2 transition-transform duration-300 ease-in-out ${
-          showBottomNav ? "translate-y-0" : "translate-y-full"
+          showMobileSidebar ? "translate-y-0" : "translate-y-full"
         }`}
       >
         {links.map((link) => (

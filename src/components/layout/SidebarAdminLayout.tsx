@@ -13,7 +13,6 @@ import LeftHeader from "@/sections/LeftHeader"
 import { Button } from "../ui/button"
 import { MdWorkspaces } from "react-icons/md"
 import { GrProjects } from "react-icons/gr"
-import { TiFlowChildren } from "react-icons/ti";
 
 export default function SidebarAdminLayout({ children }: { children: React.ReactNode }) {
     const [collapsed, setCollapsed] = useState(() => {
