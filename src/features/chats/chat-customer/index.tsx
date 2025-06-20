@@ -32,7 +32,7 @@ export default function CustomerChat() {
       {!open && (
         <button
           onClick={() => setOpen(true)}
-          className="fixed bottom-6 right-6 z-50 bg-green-600 text-white p-3 rounded-full shadow-lg hover:bg-green-700 transition-all"
+          className="fixed bottom-16 md:lg:bottom-6 right-5 md:lg:right-6 z-50 bg-green-600 text-white p-3 rounded-full shadow-lg hover:bg-green-700 transition-all"
         >
           <MessageCircle className="w-6 h-6" />
         </button>
