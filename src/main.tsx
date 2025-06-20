@@ -119,7 +119,11 @@ if (!rootElement.innerHTML) {
           <QueryClientProvider client={queryClient}>
             <ThemeProvider defaultTheme='light' storageKey='vite-ui-theme'>
               <FontProvider>
-                <Toaster richColors closeButton />
+                <Toaster  position="top-center" 
+                          richColors
+                          closeButton
+                          duration={10000}
+                    />
                 <RouterProvider router={router} />
               </FontProvider>
             </ThemeProvider>

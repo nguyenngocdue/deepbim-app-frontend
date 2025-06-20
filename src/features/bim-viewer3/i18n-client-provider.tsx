@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { I18nextProvider } from "react-i18next";
 import i18n from "@/lib/i18n-config";
+import { LoadingScreen } from "@/components/LoadingScreen";
 
 export default function I18nClientProvider({
   children,
@@ -53,7 +54,10 @@ export default function I18nClientProvider({
   }, []);
 
   if (!isReady) {
-    return <div>{t('loadingTranslations')}</div>;
+    // return <div>{t('loadingTranslations')}</div>;
+    return (
+      <LoadingScreen/>
+    );
   }
 
   return <I18nextProvider i18n={i18n}>{children}</I18nextProvider>;
