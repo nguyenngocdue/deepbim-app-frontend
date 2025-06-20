@@ -1,7 +1,7 @@
 import { UserAuthForm } from './components/user-auth-form'
 import { LogoWord } from '@/components/LogoWord'
 import ParticlesContainer from '@/components/ParticlesContainer'
-import MyRoom from '@/features/my-room-3d/components/MyRoom'
+import ResponsiveMyRoom from '@/features/my-room-3d/components/ResponsiveMyRoom'
 import { useEffect } from 'react'
 
 export default function SignIn2() {
@@ -23,7 +23,7 @@ export default function SignIn2() {
             <LogoWord size='lg' path="/images/logo_no_bg.png"/>
           </div>
           
-          <div className='absolute bottom-10 left-0 right-0 px-10 z-20 invisible  lg:visible md:visible'>
+          <div className='absolute bottom-10 left-0 right-0 px-10 z-20 invisible  lg:visible'>
             <blockquote className='space-y-2'>
               <p className='text-sm font-heading text-subtitle2'>
                 "Deep Bim is a powerful tool for BIM professionals, providing
@@ -36,9 +36,8 @@ export default function SignIn2() {
           </div>
           {/* My room 3D */}
           <div className='w-full h-hull invisible lg:visible'>
-            <MyRoom showFakeLights={true}/>
+            <ResponsiveMyRoom />
           </div>
-          
         </div>
         <div className='lg:p-8  h-svh bg-transparent overflow-y-auto'>
           <div className='mx-auto flex w-full h-full flex-col justify-center space-y-2 sm:w-[500px]'>

@@ -122,7 +122,7 @@ if (!rootElement.innerHTML) {
                 <Toaster  position="bottom-right" 
                           richColors
                           closeButton
-                          duration={10000}
+                          duration={4000}
                     />
                 <RouterProvider router={router} />
               </FontProvider>
