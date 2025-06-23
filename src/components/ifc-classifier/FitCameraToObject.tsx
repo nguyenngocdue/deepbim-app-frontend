@@ -7,6 +7,7 @@ import * as THREE from 'three';
  * @param {OrbitControls} [controls] - Optional orbit controls to update target.
  */
 export function fitCameraToObject(camera, object, controls) {
+  console.log("camera");
   const box = new THREE.Box3().setFromObject(object);
   const size = box.getSize(new THREE.Vector3());
   const center = box.getCenter(new THREE.Vector3());
@@ -32,11 +33,27 @@ export function centerObjectAtOrigin(object) {
   object.position.sub(center); // dịch ngược lại về (0,0,0)
 }
 
-export function addGrid(scene, size = 1000, divisions = 100) {
-  const grid = new THREE.GridHelper(size, divisions);
-  grid.name = 'SceneGrid';
-  grid.material.opacity = 0.25;
-  grid.material.transparent = true;
+export function addGrid(
+  scene: THREE.Scene,
+  objectOrSize: THREE.Object3D | number = 1000,
+  divisions: number = 100
+): void {
+  let gridSize = 1000;
+  if (typeof objectOrSize === "number") {
+    gridSize = objectOrSize;
+  } else if (objectOrSize) {
+    const box = new THREE.Box3().setFromObject(objectOrSize);
+    const size = box.getSize(new THREE.Vector3());
+    const maxDim = Math.max(size.x, size.y, size.z, 100); // Ensure minimum size
+    gridSize = Math.ceil(maxDim * 4); // Quadruple the max dimension for wider coverage
+    divisions = Math.ceil(gridSize / 10); // Adjust divisions for readability
+  }
+  const grid = new THREE.GridHelper(gridSize, divisions, 0x888888, 0x444444);
+  grid.name = "SceneGrid";
+  if (grid.material instanceof THREE.Material) {
+    grid.material.opacity = 0.1;
+    grid.material.transparent = true;
+  }
   scene.add(grid);
 }
 

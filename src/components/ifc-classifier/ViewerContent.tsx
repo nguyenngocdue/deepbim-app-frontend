@@ -16,7 +16,7 @@ import ViewToolbar from "./ViewToolbar";
 import SelectionListOverlay from "./SelectionListOverlay";
 import ResponsiveTabs from "./ResponsiveTabs";
 import { ResizeHandleHorizontal, ResizeHandleVertical } from "./ResizeHandles";
-import { IFCModel } from "./ifc-model";
+// import { IFCModel } from "./IFCModel";
 import { SpatialTreePanel } from "./spatial-tree-panel";
 import { ModelInfo } from "./model-info";
 import { Input } from "@/components/ui/input";
@@ -27,6 +27,7 @@ import GlobalInteractionHandler from "./GlobalInteractionHandler";
 import CameraActionsController, { CameraActions } from "./CameraActionsController";
 import FileUpload from "./FileUpload";
 import { LoadingOverlay2 } from "../common/LoadingOverlayV2";
+import { IFCModel } from "@/features/bim-viewer3/ifc/components/IFCModelCore";
 
 const SKIP_IFC_INITIALIZATION_FOR_TEST = false;
 

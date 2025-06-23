@@ -61,7 +61,7 @@ import {
   ImperativePanelHandle,
 } from "react-resizable-panels";
 import { useTranslation } from "react-i18next";
-import { IFCModel } from "./ifc-model";
+import { IFCModel } from "./IFCModel";
 import { ClassificationPanel } from "./classification-panel";
 import { RulePanel } from "./rule-panel";
 import { SettingsPanel } from "./settings-panel";

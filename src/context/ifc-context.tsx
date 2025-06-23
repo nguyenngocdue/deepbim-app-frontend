@@ -485,10 +485,10 @@ export function IFCContextProvider({ children }: { children: ReactNode }) {
       const sortedProps = Array.from(allProps).sort();
       setAvailablePropertiesInternal(sortedProps);
       if (sortedProps.length > 0) {
-        console.log(
-          "IFCContext: Updated available properties for rule creation:",
-          sortedProps,
-        );
+        // console.log(
+        //   "IFCContext: Updated available properties for rule creation:",
+        //   sortedProps,
+        // );
       }
     };
 
@@ -596,9 +596,9 @@ export function IFCContextProvider({ children }: { children: ReactNode }) {
             if (!psetObject && elementNode.expressID) {
               if (condition.property === "Pset_WallCommon.IsExternal") {
                 // Debug for this specific property
-                console.log(
-                  `[DEBUG RULE TRACE - Type Fetch] Element ID: ${elementNode.expressID}, PSet ${psetName} not in itemProps. Attempting type property fetch.`,
-                );
+                // console.log(
+                //   `[DEBUG RULE TRACE - Type Fetch] Element ID: ${elementNode.expressID}, PSet ${psetName} not in itemProps. Attempting type property fetch.`,
+                // );
               }
               try {
                 // First try to get property sets directly for this element
@@ -614,9 +614,9 @@ export function IFCContextProvider({ children }: { children: ReactNode }) {
                     if (ps.Name?.value === psetName) {
                       psetObject = ps;
                       if (condition.property === "Pset_WallCommon.IsExternal") {
-                        console.log(
-                          `[DEBUG RULE TRACE - Direct PSets] Element ID: ${elementNode.expressID}, Found PSet ${psetName} via getPropertySets`
-                        );
+                        // console.log(
+                        //   `[DEBUG RULE TRACE - Direct PSets] Element ID: ${elementNode.expressID}, Found PSet ${psetName} via getPropertySets`
+                        // );
                       }
                       break;
                     }
@@ -641,12 +641,12 @@ export function IFCContextProvider({ children }: { children: ReactNode }) {
                       if (foundPsetInType) {
                         psetObject = foundPsetInType;
                         if (condition.property === "Pset_WallCommon.IsExternal") {
-                          console.log(
-                            `[DEBUG RULE TRACE - Type Fetch] Element ID: ${elementNode.expressID}, Found PSet ${psetName} in Type Object:`,
-                            psetObject
-                              ? JSON.parse(JSON.stringify(psetObject))
-                              : "undefined",
-                          );
+                          // console.log(
+                          //   `[DEBUG RULE TRACE - Type Fetch] Element ID: ${elementNode.expressID}, Found PSet ${psetName} in Type Object:`,
+                          //   psetObject
+                          //     ? JSON.parse(JSON.stringify(psetObject))
+                          //     : "undefined",
+                          // );
                         }
                         break; // Found the PSet in a type object
                       }
@@ -682,9 +682,9 @@ export function IFCContextProvider({ children }: { children: ReactNode }) {
                           if (propDef && propDef.Name?.value === psetName) {
                             psetObject = propDef;
                             if (condition.property === "Pset_WallCommon.IsExternal") {
-                              console.log(
-                                `[DEBUG RULE TRACE - Direct Relationship] Element ID: ${elementNode.expressID}, Found PSet ${psetName} via relationship query`
-                              );
+                              // console.log(
+                              //   `[DEBUG RULE TRACE - Direct Relationship] Element ID: ${elementNode.expressID}, Found PSet ${psetName} via relationship query`
+                              // );
                             }
                             break;
                           }
@@ -697,10 +697,10 @@ export function IFCContextProvider({ children }: { children: ReactNode }) {
                   }
                 }
               } catch (e) {
-                console.warn(
-                  `[RULE ENGINE] Error fetching type properties for ${elementNode.expressID} while looking for PSet ${psetName}:`,
-                  e,
-                );
+                // console.warn(
+                //   `[RULE ENGINE] Error fetching type properties for ${elementNode.expressID} while looking for PSet ${psetName}:`,
+                //   e,
+                // );
               }
             }
 
