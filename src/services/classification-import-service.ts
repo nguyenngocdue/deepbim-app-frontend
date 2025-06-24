@@ -1,5 +1,5 @@
 import * as XLSX from "xlsx";
-import { ClassificationItem, SelectedElementInfo } from "@/context/ifc-context";
+import { ClassificationItem, SelectedElementInfo } from "@/context/ifc/ifc-context";
 
 /**
  * Parse an Excel file and return an array of ClassificationItem objects.

@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { UploadCloud, PlusSquare } from "lucide-react";
-import { useIFCContext } from "@/context/ifc-context";
+import { useIFCContext } from "@/context/ifc/ifc-context";
 import { useTranslation } from "react-i18next";
 
 interface ModelSource {

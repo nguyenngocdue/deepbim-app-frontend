@@ -13,7 +13,7 @@ import {
   type SelectedElementInfo,
   type LoadedModelData,
   type ClassificationItem,
-} from "@/context/ifc-context";
+} from "@/context/ifc/ifc-context";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";

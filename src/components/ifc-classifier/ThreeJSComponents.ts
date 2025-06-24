@@ -1,7 +1,7 @@
 import { useEffect, useFrame, useRef } from "react";
 import { useThree } from "@react-three/fiber";
 import * as THREE from "three";
-import { useIFCContext, SelectedElementInfo } from "@/context/ifc-context";
+import { useIFCContext, SelectedElementInfo } from "@/context/ifc/ifc-context";
 import { forwardRef, useImperativeHandle } from "react";
 
 // Define the layer for outlines

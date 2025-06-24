@@ -8,7 +8,8 @@ i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
-    debug: import.meta.env.DEV,
+    // debug: import.meta.env.DEV,
+     debug: false,
     fallbackLng: "en",
     supportedLngs: ["en", "vi"],
     ns: ["common"],

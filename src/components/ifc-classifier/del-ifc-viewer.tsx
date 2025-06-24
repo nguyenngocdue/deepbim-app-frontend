@@ -49,8 +49,8 @@ import {
   LoadedModelData,
   SelectedElementInfo,
   SpatialStructureNode,
-} from "@/context/ifc-context";
-import { IFCContextProvider } from "@/context/ifc-context";
+} from "@/context/ifc/ifc-context";
+import { IFCContextProvider } from "@/context/ifc/ifc-context";
 import { IfcAPI, Properties } from "web-ifc";
 import { cn } from "@/lib/utils";
 import * as THREE from "three";

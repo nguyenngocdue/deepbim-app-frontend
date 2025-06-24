@@ -1,5 +1,5 @@
 import * as XLSX from "xlsx";
-import { ClassificationItem, SelectedElementInfo } from "@/context/ifc-context";
+import { ClassificationItem, SelectedElementInfo } from "@/context/ifc/ifc-context";
 
 /**
  * Export classifications to an Excel workbook.

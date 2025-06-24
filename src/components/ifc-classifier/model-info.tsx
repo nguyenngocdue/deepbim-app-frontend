@@ -1,6 +1,6 @@
 "use client";
 
-import { useIFCContext } from "@/context/ifc-context";
+import { useIFCContext } from "@/context/ifc/ifc-context";
 import type { IfcAPI } from "web-ifc";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";

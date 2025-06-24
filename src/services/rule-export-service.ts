@@ -1,5 +1,5 @@
 import * as XLSX from "xlsx";
-import { Rule } from "@/context/ifc-context";
+import { Rule } from "@/context/ifc/ifc-context";
 
 /**
  * Convert an array of rules to an Excel workbook and return

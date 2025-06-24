@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
-import { Rule, RuleCondition, useIFCContext } from "@/context/ifc-context";
+import { Rule, RuleCondition, useIFCContext } from "@/context/ifc/ifc-context";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,

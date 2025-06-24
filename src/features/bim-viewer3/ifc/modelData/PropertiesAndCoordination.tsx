@@ -1,4 +1,4 @@
-import { SelectedElementInfo } from "@/context/ifc-context";
+import { SelectedElementInfo } from "@/context/ifc/ifc-context";
 import { useEffect, useCallback } from "react";
 import * as THREE from "three";
 import { IfcAPI } from "web-ifc";

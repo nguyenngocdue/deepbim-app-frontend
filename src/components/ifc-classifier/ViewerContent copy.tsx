@@ -11,7 +11,7 @@ import {
   LoadedModelData,
   SelectedElementInfo,
   SpatialStructureNode,
-} from "@/context/ifc-context"; // Context để quản lý trạng thái liên quan đến IFC
+} from "@/context/ifc/ifc-context"; // Context để quản lý trạng thái liên quan đến IFC
 import ViewToolbar from "./ViewToolbar"; // Component thanh công cụ điều khiển giao diện
 import SelectionListOverlay from "./SelectionListOverlay"; // Component hiển thị danh sách các phần tử được chọn
 import ResponsiveTabs from "./ResponsiveTabs"; // Component tab responsive

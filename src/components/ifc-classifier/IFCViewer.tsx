@@ -1,5 +1,5 @@
 
-import { IFCContextProvider } from "@/context/ifc-context";
+import { IFCContextProvider } from "@/context/ifc/ifc-context";
 import ViewerContent from "./ViewerContent";
 
 

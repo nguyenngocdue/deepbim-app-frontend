@@ -6,6 +6,7 @@ import { SelectedElementInfo } from "./viewer";
 export interface CameraActions {
   zoomToExtents: () => void;
   zoomToSelected: (selection: SelectedElementInfo | null) => void;
+  camera: THREE.PerspectiveCamera | null;
 }
 
 const CameraActionsController = forwardRef<CameraActions, {}>((props, ref) => {
@@ -138,6 +139,7 @@ const CameraActionsController = forwardRef<CameraActions, {}>((props, ref) => {
       startAnimation(newCamPos, center.clone());
       console.log("CameraActionsController: Zoom to selected (fit sphere) animation started.");
     },
+     camera: camera instanceof THREE.PerspectiveCamera ? camera : null,
   }));
 
   return null;

@@ -13,7 +13,7 @@ import {
   SpatialStructureNode,
   LoadedModelData,
   SelectedElementInfo,
-} from "@/context/ifc-context";
+} from "@/context/ifc/ifc-context";
 import {
   ChevronRight,
   ChevronDown,

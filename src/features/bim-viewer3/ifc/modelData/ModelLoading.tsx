@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import * as THREE from "three";
 import { IfcAPI } from "web-ifc";
 import { fetchFullSpatialStructure } from "./IFCHelpers";
-import { LoadedModelData, SpatialStructureNode } from "@/context/ifc-context"; // Adjust path
+import { LoadedModelData, SpatialStructureNode } from "@/context/ifc/ifc-context"; // Adjust path
 import { addGrid, setOtherLighting } from "@/components/ifc-classifier/FitCameraToObject";
 
 export function useModelLoading(

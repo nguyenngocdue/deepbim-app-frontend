@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { useIFCContext, SelectedElementInfo } from "@/context/ifc-context";
+import { useIFCContext, SelectedElementInfo } from "@/context/ifc/ifc-context";
 import { useTranslation } from "react-i18next";
 import { EyeOff, Layers as LayersIcon, Maximize, Focus, Undo2 } from "lucide-react";
 

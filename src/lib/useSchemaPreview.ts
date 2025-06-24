@@ -24,7 +24,7 @@ const loadPreviewCacheFromStorage = (): void => {
             previewCache.set(url, entry.preview);
           }
         });
-        console.log(`Loaded ${previewCache.size} cached previews from localStorage (v6)`);
+        // console.log(`Loaded ${previewCache.size} cached previews from localStorage (v6)`);
       }
     }
   } catch (error) {

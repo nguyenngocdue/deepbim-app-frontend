@@ -9,7 +9,7 @@ import {
   LoadedModelData,
   SpatialStructureNode,
   SelectedElementInfo,
-} from "@/context/ifc-context";
+} from "@/context/ifc/ifc-context";
 import { useModelLoading } from "../modelData/ModelLoading";
 import { useCameraAndHighlighting } from "../modelData/CameraAndHighlighting";
 import { usePropertiesAndCoordination } from "../modelData/PropertiesAndCoordination";

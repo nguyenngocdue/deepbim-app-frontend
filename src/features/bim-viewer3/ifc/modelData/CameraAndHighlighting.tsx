@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import * as THREE from "three";
-import { SelectedElementInfo } from "@/context/ifc-context"; // Adjust path
+import { SelectedElementInfo } from "@/context/ifc/ifc-context"; // Adjust path
 import { IfcAPI } from "web-ifc";
 import { fitCameraToObject } from "@/components/ifc-classifier/FitCameraToObject";
 

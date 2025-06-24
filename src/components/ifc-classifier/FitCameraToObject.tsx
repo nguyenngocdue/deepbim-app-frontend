@@ -7,7 +7,6 @@ import * as THREE from 'three';
  * @param {OrbitControls} [controls] - Optional orbit controls to update target.
  */
 export function fitCameraToObject(camera, object, controls) {
-  console.log("camera");
   const box = new THREE.Box3().setFromObject(object);
   const size = box.getSize(new THREE.Vector3());
   const center = box.getCenter(new THREE.Vector3());

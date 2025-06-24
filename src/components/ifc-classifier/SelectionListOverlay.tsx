@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useIFCContext, SelectedElementInfo } from "@/context/ifc-context";
+import { useIFCContext, SelectedElementInfo } from "@/context/ifc/ifc-context";
 import { Checkbox } from "@/components/ui/checkbox";
 
 export default function SelectionListOverlay() {

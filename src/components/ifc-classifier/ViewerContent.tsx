@@ -1,7 +1,7 @@
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Canvas } from "@react-three/fiber";
-import { Environment, OrbitControls } from "@react-three/drei";
+import { Environment, GizmoHelper, GizmoViewport, Html, OrbitControls } from "@react-three/drei";
 import { Panel, PanelGroup, ImperativePanelHandle } from "react-resizable-panels";
 import { useTranslation } from "react-i18next";
 import { IfcAPI, Properties } from "web-ifc";
@@ -11,7 +11,7 @@ import {
   LoadedModelData,
   SelectedElementInfo,
   SpatialStructureNode,
-} from "@/context/ifc-context";
+} from "@/context/ifc/ifc-context";
 import ViewToolbar from "./ViewToolbar";
 import SelectionListOverlay from "./SelectionListOverlay";
 import ResponsiveTabs from "./ResponsiveTabs";
@@ -28,6 +28,7 @@ import CameraActionsController, { CameraActions } from "./CameraActionsControlle
 import FileUpload from "./FileUpload";
 import { LoadingOverlay2 } from "../common/LoadingOverlayV2";
 import { IFCModel } from "@/features/bim-viewer3/ifc/components/IFCModelCore";
+import { GizmoCanvas } from "./GizmoCanvas";
 
 const SKIP_IFC_INITIALIZATION_FOR_TEST = false;
 
@@ -75,6 +76,14 @@ export default function ViewerContent() {
     const [hasAutoLoadedModels, setHasAutoLoadedModels] = useState(false); // Trạng thái đã tự động tải mô hình
   
     const OUTLINE_SELECTION_LAYER = 10; // Layer để hiển thị outline của phần tử được chọn
+
+    const [positionCube, setPositionCube] = useState({x : 400, y : 80})
+
+    // // Use the ViewportGizmo hook
+    // useViewportGizmo({
+    //   cameraActionsRef,
+    //   scene,
+    // });
   
   // Hàm thu thập tất cả các node từ cây không gian
   const gatherAllElements = useCallback((root: SpatialStructureNode | null) => {
@@ -502,6 +511,7 @@ export default function ViewerContent() {
         const ifcAPIInstance = new IfcAPI();
         ifcAPIInstance.SetWasmPath("https://cdn.jsdelivr.net/npm/web-ifc@0.0.68/", true);
         await ifcAPIInstance.Init();
+
         if (!didCancel) {
           if (!ifcAPIInstance.properties) {
             ifcAPIInstance.properties = new Properties(ifcAPIInstance);
@@ -521,6 +531,7 @@ export default function ViewerContent() {
       didCancel = true;
     };
   }, [ifcApi, setIfcApi]);
+
 
   // Effect để tự động tải các mô hình từ localStorage
   useEffect(() => {
@@ -543,7 +554,7 @@ export default function ViewerContent() {
     if (selectedElement) {
       console.log("ViewerContent: Selected element changed: ", selectedElement);
     } else {
-      console.log("ViewerContent: No element selected / selection cleared.");
+      // console.log("ViewerContent: No element selected / selection cleared.");
     }
   }, [selectedElement]);
 
@@ -690,9 +701,15 @@ export default function ViewerContent() {
     );
   }
 
+
   // Giao diện chính của Viewer
   return (
     <div className="flex h-full w-full relative overflow-hidden" style={{ isolation: 'isolate' }}>
+        
+        {/* {cameraActionsRef.current?.camera && (
+          <GizmoCanvas mainCameraRef={{ current: cameraActionsRef.current.camera }} />
+        )} */}
+
        {/* Container cho canvas 3D */}
       <div
         style={{
@@ -707,15 +724,15 @@ export default function ViewerContent() {
         {ifcEngineReady && !webGLContextLost && (
           <Canvas
             onCreated={({ gl }) => {
-              console.log("R3F Canvas with IFCModel: onCreated called.");
+              // console.log("R3F Canvas with IFCModel: onCreated called.");
               const context = gl.getContext();
               if (!context) {
                 console.error("R3F Canvas with IFCModel: Failed to get WebGL context.");
                 setWebGLContextLost(true);
                 return;
               }
-              console.log("R3F Canvas with IFCModel: Context attributes:", context.getContextAttributes());
-              console.log("R3F Canvas with IFCModel: Is context lost initially?", context.isContextLost());
+              // console.log("R3F Canvas with IFCModel: Context attributes:", context.getContextAttributes());
+              // console.log("R3F Canvas with IFCModel: Is context lost initially?", context.isContextLost());
               if (context.isContextLost()) {
                 console.error("R3F Canvas with IFCModel: Context is lost immediately in onCreated.");
                 setWebGLContextLost(true);
@@ -763,6 +780,12 @@ export default function ViewerContent() {
               /> /* Hiển thị các mô hình IFC */
             ))}
             <CameraActionsController ref={cameraActionsRef} /> {/* Điều khiển camera */}
+            <GizmoHelper
+              alignment="bottom-right" 
+              margin={[positionCube.x, positionCube.y]} 
+            >
+              <GizmoViewport axisColors={['red', 'green', 'blue']} labelColor="black" />
+            </GizmoHelper>
           </Canvas>
         )}
       </div>
@@ -995,7 +1018,7 @@ export default function ViewerContent() {
   function SceneCapture({ onSceneCapture }: { onSceneCapture: (scene: THREE.Scene) => void }) {
     const { scene } = useThree();
     useEffect(() => {
-      console.log("SceneCapture: Capturing scene");
+      // console.log("SceneCapture: Capturing scene");
       onSceneCapture(scene);
     }, [scene, onSceneCapture]);
     return null;

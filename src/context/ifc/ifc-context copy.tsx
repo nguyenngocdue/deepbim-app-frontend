@@ -103,11 +103,13 @@ interface IFCContextType {
     name: string,
     fileId?: string,
   ) => Promise<number | null>; // Returns modelID or null
+  
   addIFCModel: (
     url: string,
     name: string,
     fileId?: string,
   ) => Promise<number | null>; // Returns modelID or null
+
   removeIFCModel: (id: string) => void; // id is LoadedModelData.id
   setModelIDForLoadedModel: (loadedModelId: string, ifcModelId: number) => void;
   setSpatialTreeForModel: (
@@ -262,7 +264,7 @@ export function IFCContextProvider({ children }: { children: ReactNode }) {
         }
         const data = await response.json();
         setNaturalIfcClassNames(data);
-        console.log("IFCContext: Natural IFC class names loaded with external schema URLs.", data);
+        // console.log("IFCContext: Natural IFC class names loaded with external schema URLs.", data);
       } catch (error) {
         console.error(
           "IFCContext: Error loading natural IFC class names:",
@@ -948,9 +950,9 @@ export function IFCContextProvider({ children }: { children: ReactNode }) {
 
   const applyAllActiveRules = useCallback(async () => {
     if (!ifcApiInternal) {
-      console.log(
-        "IFC API not available, skipping rule application that might need it.",
-      );
+      // console.log(
+      //   "IFC API not available, skipping rule application that might need it.",
+      // );
       // Only clear elements if there are no models. Definitions should persist.
       if (loadedModels.length === 0) {
         setClassifications((prevClassifications) => {
@@ -1154,9 +1156,9 @@ export function IFCContextProvider({ children }: { children: ReactNode }) {
   );
 
   useEffect(() => {
-    console.log(
-      "Main effect for applyAllActiveRules triggered by changes in models, rules, or classification codes.",
-    );
+    // console.log(
+    //   "Main effect for applyAllActiveRules triggered by changes in models, rules, or classification codes.",
+    // );
     applyAllActiveRules();
   }, [modelsReadyKey, rulesKey, classificationCodesKey, applyAllActiveRules]);
 

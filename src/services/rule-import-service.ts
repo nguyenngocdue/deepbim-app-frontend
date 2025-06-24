@@ -1,5 +1,5 @@
 import * as XLSX from "xlsx";
-import { Rule, RuleCondition } from "@/context/ifc-context";
+import { Rule, RuleCondition } from "@/context/ifc/ifc-context";
 
 /**
  * Parse an Excel file into Rule objects.

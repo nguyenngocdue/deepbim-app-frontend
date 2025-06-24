@@ -91,7 +91,7 @@ const loadSchemaCacheFromStorage = (): void => {
                         schemaCache.set(url, entry.sections);
                     }
                 });
-                console.log(`Loaded ${schemaCache.size} cached schemas from localStorage`);
+                // console.log(`Loaded ${schemaCache.size} cached schemas from localStorage`);
             }
         }
     } catch (error) {
