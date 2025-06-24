@@ -1,36 +1,38 @@
-
+// Import các thư viện và hook cần thiết từ React và các thư viện liên quan
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { Canvas } from "@react-three/fiber";
-import { Environment, OrbitControls } from "@react-three/drei";
-import { Panel, PanelGroup, ImperativePanelHandle } from "react-resizable-panels";
-import { useTranslation } from "react-i18next";
-import { IfcAPI, Properties } from "web-ifc";
-import * as THREE from "three";
+import { Canvas } from "@react-three/fiber"; // Thư viện để tạo canvas 3D với React
+import { Environment, OrbitControls } from "@react-three/drei"; // Các thành phần hỗ trợ 3D như môi trường ánh sáng và điều khiển quay
+import { Panel, PanelGroup, ImperativePanelHandle } from "react-resizable-panels"; // Thư viện để tạo các panel có thể thay đổi kích thước
+import { useTranslation } from "react-i18next"; // Hook để hỗ trợ đa ngôn ngữ
+import { IfcAPI, Properties } from "web-ifc"; // Thư viện để xử lý file IFC (Industry Foundation Classes)
+import * as THREE from "three"; // Thư viện Three.js để làm việc với đồ họa 3D
 import {
   useIFCContext,
   LoadedModelData,
   SelectedElementInfo,
   SpatialStructureNode,
-} from "@/context/ifc-context";
-import ViewToolbar from "./ViewToolbar";
-import SelectionListOverlay from "./SelectionListOverlay";
-import ResponsiveTabs from "./ResponsiveTabs";
-import { ResizeHandleHorizontal, ResizeHandleVertical } from "./ResizeHandles";
-// import { IFCModel } from "./IFCModel";
-import { SpatialTreePanel } from "./spatial-tree-panel";
-import { ModelInfo } from "./model-info";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { useThree } from "@react-three/fiber";
-import GlobalInteractionHandler from "./GlobalInteractionHandler";
-import CameraActionsController, { CameraActions } from "./CameraActionsController";
-import FileUpload from "./FileUpload";
-import { LoadingOverlay2 } from "../common/LoadingOverlayV2";
-import { IFCModel } from "@/features/bim-viewer3/ifc/components/IFCModelCore";
+} from "@/context/ifc-context"; // Context để quản lý trạng thái liên quan đến IFC
+import ViewToolbar from "./ViewToolbar"; // Component thanh công cụ điều khiển giao diện
+import SelectionListOverlay from "./SelectionListOverlay"; // Component hiển thị danh sách các phần tử được chọn
+import ResponsiveTabs from "./ResponsiveTabs"; // Component tab responsive
+import { ResizeHandleHorizontal, ResizeHandleVertical } from "./ResizeHandles"; // Các thanh kéo để thay đổi kích thước panel
+// import { IFCModel } from "./IFCModel"; // Component IFCModel bị comment, có thể không sử dụng
+import { SpatialTreePanel } from "./spatial-tree-panel"; // Panel hiển thị cấu trúc không gian của mô hình
+import { ModelInfo } from "./model-info"; // Component hiển thị thông tin mô hình
+import { Input } from "@/components/ui/input"; // Component Input từ thư viện UI
+import { Button } from "@/components/ui/button"; // Component Button từ thư viện UI
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"; // Các component để tạo tooltip
+import { useThree } from "@react-three/fiber"; // Hook để truy cập vào Three.js context
+import GlobalInteractionHandler from "./GlobalInteractionHandler"; // Component xử lý tương tác toàn cục
+import CameraActionsController, { CameraActions } from "./CameraActionsController"; // Component điều khiển camera
+import FileUpload from "./FileUpload"; // Component để tải file lên
+import { LoadingOverlay2 } from "../common/LoadingOverlayV2"; // Component hiển thị overlay khi đang tải
+import { IFCModel } from "@/features/bim-viewer3/ifc/components/IFCModelCore"; // Component chính để hiển thị mô hình IFC
 
+// Biến cờ để bỏ qua khởi tạo IFC khi chạy test
 const SKIP_IFC_INITIALIZATION_FOR_TEST = false;
 
+// Component chính của ViewerContent
 export default function ViewerContent() {
   // Lấy các giá trị và hàm từ IFC context
   const {
@@ -54,28 +56,28 @@ export default function ViewerContent() {
     addIFCModel, // Hàm để thêm mô hình IFC
     clearSelection, // Hàm để xóa lựa chọn
   } = useIFCContext();
+  
+  const { t } = useTranslation(); // Hook để dịch ngôn ngữ
+  const [ifcEngineReady, setIfcEngineReady] = useState(false); // Trạng thái sẵn sàng của IFC engine
+  const [webGLContextLost, setWebGLContextLost] = useState(false); // Trạng thái mất context WebGL
+  const [canvasSearch, setCanvasSearch] = useState(""); // Giá trị tìm kiếm trên canvas
+  const [confirmedSearch, setConfirmedSearch] = useState(""); // Giá trị tìm kiếm đã xác nhận
+  const [isSearchFocused, setIsSearchFocused] = useState(false); // Trạng thái focus của ô tìm kiếm
+  const [searchProgress, setSearchProgress] = useState({ active: false, percent: 0, status: '' }); // Tiến trình tìm kiếm
+  const [isSearchRunning, setIsSearchRunning] = useState(false); // Trạng thái đang chạy tìm kiếm
+  const searchHiddenRef = useRef<SelectedElementInfo[]>([]); // Ref để lưu các phần tử bị ẩn do tìm kiếm
+  const scene = useRef<THREE.Scene | null>(null); // Ref để lưu scene Three.js
 
-    const { t } = useTranslation(); // Hook để dịch ngôn ngữ
-    const [ifcEngineReady, setIfcEngineReady] = useState(false); // Trạng thái sẵn sàng của IFC engine
-    const [webGLContextLost, setWebGLContextLost] = useState(false); // Trạng thái mất context WebGL
-    const [canvasSearch, setCanvasSearch] = useState(""); // Giá trị tìm kiếm trên canvas
-    const [confirmedSearch, setConfirmedSearch] = useState(""); // Giá trị tìm kiếm đã xác nhận
-    const [isSearchFocused, setIsSearchFocused] = useState(false); // Trạng thái focus của ô tìm kiếm
-    const [searchProgress, setSearchProgress] = useState({ active: false, percent: 0, status: '' }); // Tiến trình tìm kiếm
-    const [isSearchRunning, setIsSearchRunning] = useState(false); // Trạng thái đang chạy tìm kiếm
-    const searchHiddenRef = useRef<SelectedElementInfo[]>([]); // Ref để lưu các phần tử bị ẩn do tìm kiếm
-    const scene = useRef<THREE.Scene | null>(null); // Ref để lưu scene Three.js
-  
-    const leftPanelRef = useRef<ImperativePanelHandle>(null); // Ref cho panel bên trái
-    const rightPanelRef = useRef<ImperativePanelHandle>(null); // Ref cho panel bên phải
-    const cameraActionsRef = useRef<CameraActions>(null); // Ref cho camera actions
-    const [settingsVersion, setSettingsVersion] = useState(0); // Phiên bản cài đặt để forced re-render
-    const [leftPanelCollapsed, setLeftPanelCollapsed] = useState(false); // Trạng thái thu gọn của panel trái
-    const [rightPanelCollapsed, setRightPanelCollapsed] = useState(false); // Trạng thái thu gọn của panel phải
-    const [hasAutoLoadedModels, setHasAutoLoadedModels] = useState(false); // Trạng thái đã tự động tải mô hình
-  
-    const OUTLINE_SELECTION_LAYER = 10; // Layer để hiển thị outline của phần tử được chọn
-  
+  const leftPanelRef = useRef<ImperativePanelHandle>(null); // Ref cho panel bên trái
+  const rightPanelRef = useRef<ImperativePanelHandle>(null); // Ref cho panel bên phải
+  const cameraActionsRef = useRef<CameraActions>(null); // Ref cho camera actions
+  const [settingsVersion, setSettingsVersion] = useState(0); // Phiên bản cài đặt để forced re-render
+  const [leftPanelCollapsed, setLeftPanelCollapsed] = useState(false); // Trạng thái thu gọn của panel trái
+  const [rightPanelCollapsed, setRightPanelCollapsed] = useState(false); // Trạng thái thu gọn của panel phải
+  const [hasAutoLoadedModels, setHasAutoLoadedModels] = useState(false); // Trạng thái đã tự động tải mô hình
+
+  const OUTLINE_SELECTION_LAYER = 10; // Layer để hiển thị outline của phần tử được chọn
+
   // Hàm thu thập tất cả các node từ cây không gian
   const gatherAllElements = useCallback((root: SpatialStructureNode | null) => {
     const items: SpatialStructureNode[] = [];
@@ -89,7 +91,7 @@ export default function ViewerContent() {
     return items;
   }, []);
 
-   // Hàm lưu scene vào ref
+  // Hàm lưu scene vào ref
   const captureScene = useCallback((threeScene: THREE.Scene) => {
     scene.current = threeScene;
   }, []);
@@ -99,18 +101,21 @@ export default function ViewerContent() {
     setSettingsVersion(v => v + 1);
   }, []);
 
-   // Hàm zoom đến toàn bộ mô hình
+  // Hàm zoom đến toàn bộ mô hình
   const handleZoomExtents = useCallback(() => {
+    console.log("ViewerContent: handleZoomExtents called");
     cameraActionsRef.current?.zoomToExtents();
   }, []);
 
   // Hàm zoom đến phần tử được chọn
   const handleZoomSelected = useCallback(() => {
+    console.log("ViewerContent: handleZoomSelected called");
     cameraActionsRef.current?.zoomToSelected(selectedElement);
   }, [selectedElement]);
 
   // Hàm chọn tất cả các phần tử đang hiển thị
   const handleSelectAllVisible = useCallback(() => {
+    console.log("ViewerContent: handleSelectAllVisible called");
     if (!scene.current) return;
     const visibleElements: SelectedElementInfo[] = [];
     scene.current.traverse((object) => {
@@ -156,7 +161,8 @@ export default function ViewerContent() {
       }
     }
   };
- // Hàm toggle panel phải
+
+  // Hàm toggle panel phải
   const toggleRightPanel = () => {
     if (rightPanelRef.current) {
       if (rightPanelRef.current.getSize() > 0) {
@@ -173,7 +179,7 @@ export default function ViewerContent() {
     setLeftPanelCollapsed(!leftPanelCollapsed);
   };
 
- // Hàm xử lý toggle panel phải
+  // Hàm xử lý toggle panel phải
   const handleToggleRightPanel = () => {
     toggleRightPanel();
     setRightPanelCollapsed(!rightPanelCollapsed);
@@ -181,6 +187,7 @@ export default function ViewerContent() {
 
   // Hàm xử lý tìm kiếm khi submit
   const handleSearchSubmit = useCallback((searchTerm: string) => {
+    console.log("Search submitted:", searchTerm);
     setConfirmedSearch(searchTerm);
     if (searchTerm.trim()) {
       setIsSearchRunning(true);
@@ -206,6 +213,7 @@ export default function ViewerContent() {
 
   // Effect để log khi danh sách phần tử ẩn thay đổi
   useEffect(() => {
+    console.log("userHiddenElements changed:", userHiddenElements.length, userHiddenElements.slice(0, 5));
   }, [userHiddenElements]);
 
   // Effect để xử lý logic tìm kiếm
@@ -213,7 +221,7 @@ export default function ViewerContent() {
     if (!ifcApi || !isSearchRunning) return;
     let cancelled = false;
 
-  // Hàm chuyển đổi chuỗi tìm kiếm thành regex
+    // Hàm chuyển đổi chuỗi tìm kiếm thành regex
     const toRegex = (q: string) => {
       const pattern = q.replace(/\*/g, ".*");
       try {
@@ -259,10 +267,12 @@ export default function ViewerContent() {
     // Hàm áp dụng bộ lọc tìm kiếm
     const applyFilter = async () => {
       if (searchHiddenRef.current.length > 0) {
+        console.log("Showing previously hidden elements:", searchHiddenRef.current.length);
         showElements(searchHiddenRef.current);
         searchHiddenRef.current = [];
       }
       const query = confirmedSearch.trim();
+      console.log("Applying filter with query:", query);
       if (!query) {
         setSearchProgress({ active: false, percent: 0, status: '' });
         setIsSearchRunning(false);
@@ -272,6 +282,12 @@ export default function ViewerContent() {
       const regex = toRegex(query);
       console.log("Search regex:", regex.source);
       const toHide: SelectedElementInfo[] = [];
+      console.log("Loaded models:", loadedModels.length, loadedModels.map(m => ({
+        id: m.id,
+        name: m.name,
+        modelID: m.modelID,
+        hasSpatialTree: !!m.spatialTree
+      })));
       const availableMeshIds: Record<number, Set<number>> = {};
       const allMeshes: Record<number, Record<number, THREE.Mesh>> = {};
       scene.current?.traverse((object) => {
@@ -458,6 +474,7 @@ export default function ViewerContent() {
       cancelled = true;
     };
   }, [confirmedSearch, loadedModels, ifcApi, hideElements, showElements, gatherAllElements, scene, isSearchRunning, getElementPropertiesCached]);
+
   // Effect để kiểm tra trạng thái thu gọn của các panel
   useEffect(() => {
     const checkPanelState = () => {
@@ -538,7 +555,7 @@ export default function ViewerContent() {
     }
   }, [ifcEngineReady, hasAutoLoadedModels, loadedModels, addIFCModel]);
 
-    // Effect để log khi phần tử được chọn thay đổi
+  // Effect để log khi phần tử được chọn thay đổi
   useEffect(() => {
     if (selectedElement) {
       console.log("ViewerContent: Selected element changed: ", selectedElement);
@@ -547,21 +564,21 @@ export default function ViewerContent() {
     }
   }, [selectedElement]);
 
-    // Hàm hiện lại tất cả phần tử ẩn và reset tìm kiếm
+  // Hàm hiện lại tất cả phần tử ẩn và reset tìm kiếm
   const customUnhideAllElements = useCallback(() => {
     unhideAllElements();
     setCanvasSearch("");
     setConfirmedSearch("");
   }, [unhideAllElements]);
 
-    // Hàm hiện lại phần tử ẩn cuối cùng và reset tìm kiếm
+  // Hàm hiện lại phần tử ẩn cuối cùng và reset tìm kiếm
   const customUnhideLastElement = useCallback(() => {
     unhideLastElement();
     setCanvasSearch("");
     setConfirmedSearch("");
   }, [unhideLastElement]);
 
-    // Effect xử lý các phím tắt
+  // Effect xử lý các phím tắt
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       const target = event.target as HTMLElement;
@@ -629,6 +646,7 @@ export default function ViewerContent() {
     customUnhideLastElement,
     clearSelection,
   ]);
+
   // Effect để áp dụng trạng thái ẩn cho các phần tử
   useEffect(() => {
     if (!scene.current) return;
@@ -660,6 +678,7 @@ export default function ViewerContent() {
     });
     console.log(`Direct visibility effect: Applied visibility=false to ${appliedHideCount} meshes`);
   }, [userHiddenElements, scene]);
+
   // Hiển thị màn hình chờ khi IFC engine chưa sẵn sàng
   if (!ifcEngineReady && !SKIP_IFC_INITIALIZATION_FOR_TEST) {
     return (
@@ -671,6 +690,7 @@ export default function ViewerContent() {
       </div>
     );
   }
+
   // Hiển thị thông báo lỗi khi mất context WebGL
   if (webGLContextLost) {
     return (
@@ -693,7 +713,7 @@ export default function ViewerContent() {
   // Giao diện chính của Viewer
   return (
     <div className="flex h-full w-full relative overflow-hidden" style={{ isolation: 'isolate' }}>
-       {/* Container cho canvas 3D */}
+      {/* Container cho canvas 3D */}
       <div
         style={{
           position: "absolute",
@@ -778,7 +798,7 @@ export default function ViewerContent() {
           marginTop: "4rem",
         }}
       >
-         {/* Panel trái */}
+        {/* Panel trái */}
         <Panel
           id="left-sidebar"
           ref={leftPanelRef}
@@ -791,7 +811,7 @@ export default function ViewerContent() {
           <div className="h-full flex flex-col shadow-lg bg-gradient-to-r from-[hsl(var(--card))]">
             <div className="p-2 border-b border-color-standard flex justify-between items-center shrink-0">
               <h3 className="text-sm font-semibold px-2">{t('modelExplorer')}</h3>
-              <FileUpload key={`file-upload-sidebar-${settingsVersion}`} isAdding={true} />
+              <FileUpload key={`file-upload-sidebar-${settingsVersion}`} isAdding={true} /> {/* Upload file */}
             </div>
             <PanelGroup direction="vertical" className="flex-grow">
               <Panel id="spatial-tree" defaultSize={70} minSize={30}>
@@ -819,13 +839,13 @@ export default function ViewerContent() {
           isLeftSide={true}
           className="pointer-events-auto"
         /> {/* Thanh kéo ngang cho panel trái */}
-       {/* Panel chính */}
+        {/* Panel chính */}
         <Panel
           id="main-content"
           defaultSize={50}
           className="bg-transparent pointer-events-none relative"
         >
-          <LoadingOverlay2 open={isLoading}  message={loadingMessage} progress={loadingProgress} />
+          <LoadingOverlay2 open={isLoading} message={loadingMessage} progress={loadingProgress} /> {/* Overlay khi tải */}
           <div className="relative h-full bg-transparent pointer-events-none">
             {ifcEngineReady && !webGLContextLost && (
               <div className="absolute top-4 right-4 z-20 pointer-events-auto">
@@ -860,7 +880,7 @@ export default function ViewerContent() {
                           className={`h-8 text-xs transition-all duration-300 ease-in-out rounded-md ${
                             isSearchFocused ? 'w-48 px-3' : 'w-24 px-2 text-[11px]'
                           }`}
-                        />
+                        /> {/* Ô tìm kiếm */}
                       </TooltipTrigger>
                       <TooltipContent
                         side="bottom"
@@ -943,7 +963,7 @@ export default function ViewerContent() {
                     </div>
                   </div>
                 )}
-                 {/* Hiển thị trạng thái tìm kiếm hoàn tất */}
+                {/* Hiển thị trạng thái tìm kiếm hoàn tất */}
                 {!searchProgress.active && searchProgress.status && (
                   <div className="mt-2 p-2 bg-background/95 backdrop-blur-sm border border-border rounded-lg shadow-lg text-xs w-full">
                     <div className="text-center font-medium">{searchProgress.status}</div>
@@ -951,7 +971,7 @@ export default function ViewerContent() {
                 )}
               </div>
             )}
-             {/* Hiển thị giao diện upload nếu chưa có mô hình */}
+            {/* Hiển thị giao diện upload nếu chưa có mô hình */}
             {loadedModels.length === 0 && ifcEngineReady && !SKIP_IFC_INITIALIZATION_FOR_TEST && (
               <div className="absolute inset-0 flex items-center justify-center bg-background/50 backdrop-blur-sm z-10 pointer-events-auto">
                 <FileUpload key={`file-upload-main-${settingsVersion}`} isAdding={false} />
@@ -991,6 +1011,7 @@ export default function ViewerContent() {
       </PanelGroup>
     </div>
   );
+
   // Component để lưu scene vào ref
   function SceneCapture({ onSceneCapture }: { onSceneCapture: (scene: THREE.Scene) => void }) {
     const { scene } = useThree();

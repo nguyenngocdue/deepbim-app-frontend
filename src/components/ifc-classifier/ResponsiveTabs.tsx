@@ -3,7 +3,7 @@ import { useCallback, useLayoutEffect, useRef, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { Layers, Filter, Settings } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { ClassificationPanel } from "./classification-panel";
+import { ClassificationPanel } from "./del-classification-panel";
 import { RulePanel } from "./rule-panel";
 import { SettingsPanel } from "./settings-panel";
 

@@ -829,8 +829,8 @@ export function ClassificationPanel() {
                       className={`px-2 py-1 h-auto rounded-full text-xs transition-all duration-150 ease-in-out flex items-center justify-center
                         ${
                           !showAllClassificationColors
-                            ? "bg-primary text-primary-foreground shadow-sm"
-                            : "bg-transparent text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                            ? "text-primary-foreground shadow-sm bg-slate-500 text-slate-700"
+                            : " bg-slate-500 text-slate-700 hover:bg-accent hover:text-accent-foreground"
                         }`}
                       onClick={() => {
                         if (showAllClassificationColors)
@@ -867,8 +867,8 @@ export function ClassificationPanel() {
                       className={`px-2 py-1 h-auto rounded-full text-xs transition-all duration-150 ease-in-out flex items-center justify-center
                         ${
                           showAllClassificationColors
-                            ? "bg-primary text-primary-foreground shadow-sm"
-                            : "bg-transparent text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                            ? " text-primary-foreground shadow-sm bg-slate-500"
+                            : " text-muted-foreground hover:bg-accent bg-slate-600 hover:text-accent-foreground"
                         }`}
                       onClick={() => {
                         if (!showAllClassificationColors) {

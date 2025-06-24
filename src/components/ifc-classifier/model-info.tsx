@@ -25,7 +25,7 @@ import {
   MousePointer2,
 } from "lucide-react";
 import React, { useState, useMemo, useEffect } from "react";
-import { MaterialSectionDisplay } from "./material-section-display";
+import { MaterialSectionDisplay } from "./del-material-section-display";
 import { cn } from "@/lib/utils";
 import {
   Tooltip,
