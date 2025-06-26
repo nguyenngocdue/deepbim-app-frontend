@@ -77,7 +77,7 @@ export default function ViewerContent() {
   
     const OUTLINE_SELECTION_LAYER = 10; // Layer để hiển thị outline của phần tử được chọn
 
-    const [positionCube, setPositionCube] = useState({x : 400, y : 80})
+    const [positionCube, setPositionCube] = useState({x : 500, y : 80})
 
     // // Use the ViewportGizmo hook
     // useViewportGizmo({
