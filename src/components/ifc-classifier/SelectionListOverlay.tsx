@@ -75,7 +75,7 @@ export default function SelectionListOverlay() {
               <Checkbox
                 checked={isSelected}
                 onCheckedChange={() => handleToggleElement(el)}
-                className="h-3.5 w-3.5 flex-shrink-0"
+                className="h-3.5 w-3.5 flex-shrink-0 dark:text-blue-400 text-blue-600 "
               />
               <label
                 className="text-xs truncate flex-1 cursor-pointer select-none"

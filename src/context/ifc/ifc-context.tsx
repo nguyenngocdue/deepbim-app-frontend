@@ -279,6 +279,7 @@ export function IFCContextProvider({ children }: { children: ReactNode }) {
     ifcApiInternal,
     loadedModels,
     rules,
+    setRules,
     classifications,
     setClassifications,
     setHighlightedClassificationCode,

@@ -1,6 +1,6 @@
 // src/context/rule-service.ts
 import { useCallback, useEffect, useMemo } from "react";
-import type { IfcAPI } from "web-ifc";
+import { Properties, type IfcAPI } from "web-ifc";
 import { LoadedModelData, Rule, RuleCondition, SelectedElementInfo } from "./types";
 import { getAllElementsFromSpatialTreeNodesRecursive } from "./utils";
 
