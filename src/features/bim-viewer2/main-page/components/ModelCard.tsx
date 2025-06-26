@@ -16,24 +16,37 @@ export default function ModelCard({
 }: ModelCardProps) {
   const [isLoading, setIsLoading] = useState(true);
 
-  const CardWrapper = linkUrl
-    ? (props: any) => (
-        <a href={linkUrl} target="_blank" rel="noopener noreferrer" {...props} />
-      )
-    : (props: any) => <div {...props} />;
+const CardWrapper = linkUrl
+  ? ({ children, ...props }: any) => (
+      <a
+        href={linkUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        {...props}
+        className="block h-full w-full" // đảm bảo thẻ <a> là block-level
+      >
+        {children}
+      </a>
+    )
+  : ({ children, ...props }: any) => (
+      <div {...props} className="h-full w-full">
+        {children}
+      </div>
+    );
 
-  return (
+return (
+  <div className="h-full">
     <CardWrapper>
-      <div className="relative group rounded-xl overflow-hidden shadow-lg shadow-zinc-500 border border-gray-200 dark:border-zinc-700 transition-all hover:shadow-xl hover:shadow-green-300 dark:hover:shadow-green-900 hover:ring-2 hover:ring-green-400 w-full max-w-full sm:max-w-sm md:max-w-md">
-        {/* SpinnerOverlay when loading */}
+      <div className="relative group h-full flex flex-col rounded-xl overflow-hidden shadow-lg shadow-zinc-500 border border-gray-200 dark:border-zinc-700 transition-all hover:shadow-xl hover:shadow-green-300 dark:hover:shadow-green-900 hover:ring-2 hover:ring-green-400 w-full">
+        {/* SpinnerOverlay */}
         <SpinnerOverlay message="Loading model" show={isLoading} />
 
         {/* Image */}
-        <div className="aspect-[4/3] w-full overflow-hidden bg-transparent">
+        <div className="aspect-[4/3] w-full bg-transparent overflow-hidden">
           <img
             src={imageUrl}
             alt={title}
-            className="w-full h-full object-contain transition duration-300 ease-in-out group-hover:brightness-110"
+            className="w-full h-full object-cover block transition duration-300 ease-in-out group-hover:brightness-110"
             onLoad={() => setIsLoading(false)}
           />
         </div>
@@ -43,12 +56,15 @@ export default function ModelCard({
           <h3 className="text-white text-base sm:text-lg font-semibold group-hover:text-green-300">
             {title}
           </h3>
-         <p className="mt-1 text-xs md:text-sm text-gray-300 group-hover:text-green-200 hidden md:block">
-        {description}
-      </p>
-
+          <p className="mt-1 text-xs md:text-sm text-gray-300 group-hover:text-green-200 hidden md:block">
+            {description}
+          </p>
         </div>
       </div>
     </CardWrapper>
-  );
+  </div>
+);
+
+
+
 }
