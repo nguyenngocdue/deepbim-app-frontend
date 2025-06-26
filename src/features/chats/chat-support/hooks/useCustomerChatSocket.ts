@@ -94,10 +94,7 @@ export function useCustomerChatSocket(userId?: number) {
       console.log("[user] Received admin_typing");
       setIsTyping(true);
     });
-
     socket.on("admin_stop_typing", () => setIsTyping(false));
-    console.log(isTyping);
-
     return () => {
       socket.disconnect();
       socketRef.current = null;
