@@ -73,6 +73,7 @@ export function useCustomerChatSocket(userId?: number) {
         auth: { token: localStorage.getItem('access_token') },
       });
     socketRef.current = socket;
+    console.log("socket", socket, SOCKET_URL)
 
     socket.on("connect", () => {
       console.log("[socket] Connected:", socket.id);
