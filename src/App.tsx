@@ -8,6 +8,7 @@ import { fetchCurrentUser } from './store/slices/AuthSlice';
 import useScrollRestoration from './hooks/useScrollRestoration';
 import { LoadingScreen } from './components/LoadingScreen';
 
+
 function App() {
   useScrollRestoration();
   const dispatch = useDispatch<AppDispatch>();

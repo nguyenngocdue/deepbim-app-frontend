@@ -189,6 +189,8 @@ export async function fetchWithAuth2<T = any>(
     headers,
     credentials: "include",
   });
+  
+
 
   if (response.status === 401 && retryCount < 1) {
     try {
@@ -200,7 +202,6 @@ export async function fetchWithAuth2<T = any>(
       throw new Error("Session expired. Please log in again to fully experience all features.");
     }
   }
-
   if (!response.ok) {
     let errorData: any = {};
     try {

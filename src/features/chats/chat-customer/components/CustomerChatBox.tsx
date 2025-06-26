@@ -32,6 +32,7 @@ export function CustomerChatBox({
   chatEndRef: React.RefObject<HTMLDivElement>;
   showAvatar?: boolean;
 }) {
+
   return (
     <Card
       className="

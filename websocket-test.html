@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Soketi WebSocket Test</title>
+</head>
+<body>
+  <h3>Soketi WebSocket Status</h3>
+  <pre id="log"></pre>
+
+  <script>
+    const log = (msg) => {
+      document.getElementById("log").textContent += msg + '\n';
+    };
+
+    const socket = new WebSocket("ws://localhost:6002/app/tlc-key?protocol=7&client=js&version=8.0.0");
+
+    socket.onopen = () => log("✅ Connected to Soketi!");
+    socket.onerror = (e) => log("❌ WebSocket error: " + JSON.stringify(e));
+    socket.onclose = () => log("🔌 Connection closed.");
+    socket.onmessage = (e) => log("📨 Received: " + e.data);
+  </script>
+</body>
+</html>

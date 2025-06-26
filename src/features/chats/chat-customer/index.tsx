@@ -2,8 +2,8 @@ import React, { useRef, useEffect } from "react";
 import { MessageCircle } from "lucide-react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
-import { useCustomerChatSocket } from "../chat-support/hooks/useCustomerChatSocket";
 import { CustomerChatBox } from "./components/CustomerChatBox";
+import { useCustomerChatSocket } from "../chat-support/hooks/useCustomerChatSocket";
 
 export default function CustomerChat() {
   const currentUser = useSelector((state: RootState) => state.auth.user);

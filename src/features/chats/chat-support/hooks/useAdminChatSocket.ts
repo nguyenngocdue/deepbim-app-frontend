@@ -3,7 +3,7 @@ import { getSessionList, getMessageHistory } from "@/apis/chat";
 import { io, Socket } from "socket.io-client";
 import { mapMessages, DisplayMessage } from "./useChatMessages";
 
-const SOCKET_URL = import.meta.env.VITE_API_BASE_URL;
+const SOCKET_URL = import.meta.env.VITE_WEBSOCKET_API_BASE_URL;
 
 export function useAdminChatSocket(adminId?: number) {
   const [sessions, setSessions] = useState<any[]>([]);
@@ -30,7 +30,11 @@ export function useAdminChatSocket(adminId?: number) {
   useEffect(() => {
     if (!selectedSession || !adminId) return;
     let mounted = true;
-    const socket = io(SOCKET_URL, { transports: ["websocket"] });
+    const socket = io(SOCKET_URL,
+      {
+        transports: ["websocket"],
+        auth: { token: localStorage.getItem('access_token') },
+      });
     socketRef.current = socket;
     socket.emit("join_chat", selectedSession.id);
 
@@ -52,6 +56,7 @@ export function useAdminChatSocket(adminId?: number) {
 
     socket.on("user_typing", () => setIsTyping(true));
     socket.on("user_stop_typing", () => setIsTyping(false));
+
 
     return () => {
       mounted = false;

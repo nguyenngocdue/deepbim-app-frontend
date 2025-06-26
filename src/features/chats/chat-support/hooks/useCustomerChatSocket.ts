@@ -4,9 +4,9 @@ import { getMessageHistory, initSession } from "@/apis/chat";
 import { io, Socket } from "socket.io-client";
 import { mapMessages, DisplayMessage } from "./useChatMessages";
 
-const SOCKET_URL = import.meta.env.VITE_API_BASE_URL;
+const SOCKET_URL = import.meta.env.VITE_WEBSOCKET_API_BASE_URL;
 const AUTO_REPLY_DELAY = 8000; // 8s, bạn muốn chờ bao lâu thì chỉnh
-const AUTO_REPLY_TEXT = "Chúng tôi sẽ phản hồi bạn khi chúng tôi online.";
+const AUTO_REPLY_TEXT = "We will get back to you when we are online.";
 
 
 export function useCustomerChatSocket(userId?: number) {
@@ -18,10 +18,11 @@ export function useCustomerChatSocket(userId?: number) {
   const [isTyping, setIsTyping] = useState(false);
   const socketRef = useRef<Socket | null>(null);
 
-const defaultWelcomeMessages: DisplayMessage[] = [
-  { text: "Thank you for visiting our website.", from: "support" },
-  { text: "How can I help you today?", from: "support" },
-];
+  const defaultWelcomeMessages: DisplayMessage[] = [
+    { text: "Thank you for visiting our website.", from: "support" },
+    { text: "How can I help you today?", from: "support" },
+  ];
+
 
   useEffect(() => {
     if (open && messages.length === 0) {
@@ -63,13 +64,20 @@ const defaultWelcomeMessages: DisplayMessage[] = [
     })();
   }, [open, adminId, sessionId, userId]);
 
-  // Khởi tạo và quản lý socket
+  // setting ws
   useEffect(() => {
     if (!open || !sessionId || !userId) return;
-    const socket = io(SOCKET_URL, { transports: ["websocket"] });
+
+    const socket = io(SOCKET_URL, 
+      { transports: ["websocket"],
+        auth: { token: localStorage.getItem('access_token') },
+      });
     socketRef.current = socket;
 
-    socket.emit("join_chat", sessionId);
+    socket.on("connect", () => {
+      console.log("[socket] Connected:", socket.id);
+      socket.emit("join_chat", sessionId); // ✅ Emit chỉ sau khi connect
+    });
 
     socket.on("receive_message", (msg) => {
       setMessages((prev) => [
@@ -82,8 +90,13 @@ const defaultWelcomeMessages: DisplayMessage[] = [
       ]);
     });
 
-    socket.on("admin_typing", () => setIsTyping(true));
+    socket.on("admin_typing", () => {
+      console.log("[user] Received admin_typing");
+      setIsTyping(true);
+    });
+
     socket.on("admin_stop_typing", () => setIsTyping(false));
+    console.log(isTyping);
 
     return () => {
       socket.disconnect();
@@ -91,13 +104,14 @@ const defaultWelcomeMessages: DisplayMessage[] = [
     };
   }, [open, sessionId, userId]);
 
+
+
+
   // Gửi tin nhắn qua socket
   const handleSend = () => {
     if (!input.trim() || !sessionId || !socketRef.current || !userId) return;
-
     // Đánh dấu thời điểm gửi của user
     const sentAt = new Date().getTime();
-
     socketRef.current.emit("send_message", {
       sessionId,
       sender_id: userId,
@@ -106,7 +120,7 @@ const defaultWelcomeMessages: DisplayMessage[] = [
     setInput("");
 
 
-     // Đặt timer chờ phản hồi admin
+    // Đặt timer chờ phản hồi admin
     setTimeout(() => {
       // Kiểm tra trong messages: từ lúc gửi đến giờ, có tin nhắn nào from support mới không?
       setMessages(prevMessages => {
@@ -129,16 +143,19 @@ const defaultWelcomeMessages: DisplayMessage[] = [
   };
 
   // Emit typing event
-  const handleInputChange = (e: any) => {
-    setInput(e.target.value);
-    if (sessionId && socketRef.current) {
-      socketRef.current.emit("user_typing", { sessionId });
-      clearTimeout((handleInputChange as any).typingTimeout);
-      (handleInputChange as any).typingTimeout = setTimeout(() => {
-        socketRef.current?.emit("user_stop_typing", { sessionId });
-      }, 1200);
-    }
-  };
+const handleInputChange = (e: any) => {
+  setInput(e.target.value);
+  if (sessionId && socketRef.current && socketRef.current.connected) {
+    socketRef.current.emit("user_typing", { sessionId });
+
+    clearTimeout((handleInputChange as any).typingTimeout);
+    (handleInputChange as any).typingTimeout = setTimeout(() => {
+      socketRef.current?.emit("user_stop_typing", { sessionId });
+    }, 1200);
+  } else {
+    console.warn("[client] socket not ready or disconnected");
+  }
+};
 
   const handleClose = () => setOpen(false);
 
