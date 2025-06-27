@@ -28,7 +28,7 @@ import CameraActionsController, { CameraActions } from "./CameraActionsControlle
 import FileUpload from "./FileUpload";
 import { LoadingOverlay2 } from "../common/LoadingOverlayV2";
 import { IFCModel } from "@/features/bim-viewer3/ifc/components/IFCModelCore";
-import { buildSpatialTree, gatherAllElements2 } from "@/utils/web-ifc/buildSpatialTree";
+import { buildSpatialTree, gatherAllElements2 } from "@/utils/web-ifc/BuildSpatialTree";
 
 const SKIP_IFC_INITIALIZATION_FOR_TEST = false;
 
@@ -533,7 +533,6 @@ export default function ViewerContent() {
         if (query && modelMeshesMap) { // query is confirmedSearch.trim()
           for (const expressIDStr in modelMeshesMap) {
             const expressID = parseInt(expressIDStr, 10);
-            console.log(processedExpressIDsFromSpatialTree, modelMeshesMap)
             if (!processedExpressIDsFromSpatialTree.has(expressID)) {
               // This mesh element was not found in the spatial tree.
               // If a search is active, it should be hidden because it can't be "matched" via properties.
