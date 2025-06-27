@@ -29,6 +29,8 @@ import FileUpload from "./FileUpload";
 import { LoadingOverlay2 } from "../common/LoadingOverlayV2";
 import { IFCModel } from "@/features/bim-viewer3/ifc/components/IFCModelCore";
 import { buildSpatialTree, gatherAllElements2 } from "@/utils/web-ifc/BuildSpatialTree";
+import { getLineProperties } from "@/utils/web-ifc/ParsingDataIfc";
+import ElementInfoPopup from "./ElementInfoPopup";
 
 const SKIP_IFC_INITIALIZATION_FOR_TEST = false;
 
@@ -671,14 +673,41 @@ export default function ViewerContent() {
     }
   }, [ifcEngineReady, hasAutoLoadedModels, loadedModels, addIFCModel]);
 
+  // show selected item when click on elements 
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  useEffect(() => {
+    function handleClick(event: MouseEvent) {
+      setMousePosition({ x: event.clientX, y: event.clientY });
+
+      // Nếu không có element nào được chọn → ẩn bảng thông tin
+      if (!selectedElement) {
+        setElementInfo(null);
+      }
+    }
+
+    window.addEventListener("click", handleClick);
+    return () => window.removeEventListener("click", handleClick);
+  }, [selectedElement]); // cần thêm selectedElement vào dependency
+
+  const [elementInfo, setElementInfo] = useState<any | null>(null);
     // Effect để log khi phần tử được chọn thay đổi
   useEffect(() => {
-    if (selectedElement) {
-      console.log("ViewerContent: Selected element changed: ", selectedElement);
+    if (selectedElement && ifcApi) {
+      const line = getLineProperties(selectedElement,ifcApi);
+      const objectTypeValue = line.ObjectType?.value;
+      const objectTypeName = line.ObjectType?.name; 
+      const info =  {
+        globalId: line.GlobalId?.value,
+        name: line.Name?.value,
+        type_name: objectTypeName,
+        type_value: objectTypeValue,
+      }
+      setElementInfo(info);
     } else {
-      // console.log("ViewerContent: No element selected / selection cleared.");
+      setElementInfo(null); 
     }
-  }, [selectedElement]);
+  }, [selectedElement, ifcApi]);
+
 
     // Hàm hiện lại tất cả phần tử ẩn và reset tìm kiếm
   const customUnhideAllElements = useCallback(() => {
@@ -835,315 +864,320 @@ export default function ViewerContent() {
 
   // Giao diện chính của Viewer
   return (
-    <div className="flex h-full w-full relative overflow-hidden" style={{ isolation: 'isolate' }}>
-        
-        {/* {cameraActionsRef.current?.camera && (
-          <GizmoCanvas mainCameraRef={{ current: cameraActionsRef.current.camera }} />
-        )} */}
 
-       {/* Container cho canvas 3D */}
-      <div
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%",
-          zIndex: 0,
-        }}
-      >
-        {ifcEngineReady && !webGLContextLost && (
-          <Canvas
-            onCreated={({ gl }) => {
-              // console.log("R3F Canvas with IFCModel: onCreated called.");
-              const context = gl.getContext();
-              if (!context) {
-                console.error("R3F Canvas with IFCModel: Failed to get WebGL context.");
-                setWebGLContextLost(true);
-                return;
-              }
-              // console.log("R3F Canvas with IFCModel: Context attributes:", context.getContextAttributes());
-              // console.log("R3F Canvas with IFCModel: Is context lost initially?", context.isContextLost());
-              if (context.isContextLost()) {
-                console.error("R3F Canvas with IFCModel: Context is lost immediately in onCreated.");
-                setWebGLContextLost(true);
-              }
-              if (gl.domElement) {
-                gl.domElement.addEventListener(
-                  "webglcontextlost",
-                  (event) => {
-                    event.preventDefault();
-                    console.error("R3F Canvas with IFCModel: WebGL context lost! (event listener)");
-                    setWebGLContextLost(true);
-                  },
-                  false
-                );
-                gl.domElement.addEventListener(
-                  "webglcontextcreationerror",
-                  (event) => {
-                    const webglEvent = event as WebGLContextEvent;
-                    console.error(
-                      "R3F Canvas with IFCModel: WebGL context CREATION ERROR!",
-                      "Status:",
-                      webglEvent.statusMessage || "No status message."
-                    );
-                    setWebGLContextLost(true);
-                  },
-                  false
-                );
-              } else {
-                console.error("R3F Canvas with IFCModel: gl.domElement not available.");
-                setWebGLContextLost(true);
-              }
-            }}
-          >
-            <ambientLight intensity={0.5} /> {/* Ánh sáng môi trường */}
-            <directionalLight position={[10, 10, 5]} intensity={1} /> {/* Ánh sáng định hướng */}
-            <Environment preset="city" /> {/* Môi trường ánh sáng preset */}
-            <OrbitControls makeDefault enableDamping={false} /> {/* Điều khiển quay camera */}
-            <GlobalInteractionHandler /> {/* Xử lý tương tác toàn cục */}
-            <SceneCapture onSceneCapture={captureScene} /> {/* Component lưu scene */}
-            {loadedModels.map((modelEntry) => (
-              <IFCModel
-                key={modelEntry.id}
-                modelData={modelEntry}
-                outlineLayer={OUTLINE_SELECTION_LAYER}
-              /> /* Hiển thị các mô hình IFC */
-            ))}
-            <CameraActionsController ref={cameraActionsRef} /> {/* Điều khiển camera */}
-            <GizmoHelper
-              alignment="bottom-right" 
-              margin={[positionCube.x, positionCube.y]} 
+    <>
+      <ElementInfoPopup elementInfo={elementInfo} position={mousePosition} />
+      <div className="flex h-full w-full relative overflow-hidden" style={{ isolation: 'isolate' }}>
+          
+          {/* {cameraActionsRef.current?.camera && (
+            <GizmoCanvas mainCameraRef={{ current: cameraActionsRef.current.camera }} />
+          )} */}
+
+        {/* Container cho canvas 3D */}
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            zIndex: 0,
+          }}
+        >
+          {ifcEngineReady && !webGLContextLost && (
+            <Canvas
+              onCreated={({ gl }) => {
+                // console.log("R3F Canvas with IFCModel: onCreated called.");
+                const context = gl.getContext();
+                if (!context) {
+                  console.error("R3F Canvas with IFCModel: Failed to get WebGL context.");
+                  setWebGLContextLost(true);
+                  return;
+                }
+                // console.log("R3F Canvas with IFCModel: Context attributes:", context.getContextAttributes());
+                // console.log("R3F Canvas with IFCModel: Is context lost initially?", context.isContextLost());
+                if (context.isContextLost()) {
+                  console.error("R3F Canvas with IFCModel: Context is lost immediately in onCreated.");
+                  setWebGLContextLost(true);
+                }
+                if (gl.domElement) {
+                  gl.domElement.addEventListener(
+                    "webglcontextlost",
+                    (event) => {
+                      event.preventDefault();
+                      console.error("R3F Canvas with IFCModel: WebGL context lost! (event listener)");
+                      setWebGLContextLost(true);
+                    },
+                    false
+                  );
+                  gl.domElement.addEventListener(
+                    "webglcontextcreationerror",
+                    (event) => {
+                      const webglEvent = event as WebGLContextEvent;
+                      console.error(
+                        "R3F Canvas with IFCModel: WebGL context CREATION ERROR!",
+                        "Status:",
+                        webglEvent.statusMessage || "No status message."
+                      );
+                      setWebGLContextLost(true);
+                    },
+                    false
+                  );
+                } else {
+                  console.error("R3F Canvas with IFCModel: gl.domElement not available.");
+                  setWebGLContextLost(true);
+                }
+              }}
             >
-              <GizmoViewport axisColors={['red', 'green', 'blue']} labelColor="black" />
-            </GizmoHelper>
-          </Canvas>
-        )}
-      </div>
-      {/* PanelGroup để quản lý layout */}
-      <PanelGroup
-        direction="horizontal"
-        autoSaveId="ifc-viewer-layout"
-        style={{
-          zIndex: 1,
-          position: "relative",
-          pointerEvents: "none",
-          height: "calc(100% - 4rem)",
-          marginTop: "4rem",
-        }}
-      >
-         {/* Panel trái */}
-        <Panel
-          id="left-sidebar"
-          ref={leftPanelRef}
-          defaultSize={25}
-          minSize={15}
-          maxSize={40}
-          collapsible
-          className="bg-transparent pointer-events-auto"
+              <ambientLight intensity={0.5} /> {/* Ánh sáng môi trường */}
+              <directionalLight position={[10, 10, 5]} intensity={1} /> {/* Ánh sáng định hướng */}
+              <Environment preset="city" /> {/* Môi trường ánh sáng preset */}
+              <OrbitControls makeDefault enableDamping={false} /> {/* Điều khiển quay camera */}
+              <GlobalInteractionHandler /> {/* Xử lý tương tác toàn cục */}
+              <SceneCapture onSceneCapture={captureScene} /> {/* Component lưu scene */}
+              {loadedModels.map((modelEntry) => (
+                <IFCModel
+                  key={modelEntry.id}
+                  modelData={modelEntry}
+                  outlineLayer={OUTLINE_SELECTION_LAYER}
+                /> /* Hiển thị các mô hình IFC */
+              ))}
+              <CameraActionsController ref={cameraActionsRef} /> {/* Điều khiển camera */}
+              <GizmoHelper
+                alignment="bottom-right" 
+                margin={[positionCube.x, positionCube.y]} 
+              >
+                <GizmoViewport axisColors={['red', 'green', 'blue']} labelColor="black" />
+              </GizmoHelper>
+            </Canvas>
+          )}
+        </div>
+        {/* PanelGroup để quản lý layout */}
+        <PanelGroup
+          direction="horizontal"
+          autoSaveId="ifc-viewer-layout"
+          style={{
+            zIndex: 1,
+            position: "relative",
+            pointerEvents: "none",
+            height: "calc(100% - 4rem)",
+            marginTop: "4rem",
+          }}
         >
-          <div className="h-full flex flex-col shadow-lg bg-gradient-to-r from-[hsl(var(--card))]">
-            <div className="p-2 border-b border-color-standard flex justify-between items-center shrink-0">
-              <h3 className="text-sm font-semibold px-2">{t('modelExplorer')}</h3>
-              <FileUpload key={`file-upload-sidebar-${settingsVersion}`} isAdding={true} />
+          {/* Panel trái */}
+          <Panel
+            id="left-sidebar"
+            ref={leftPanelRef}
+            defaultSize={25}
+            minSize={15}
+            maxSize={40}
+            collapsible
+            className="bg-transparent pointer-events-auto"
+          >
+            <div className="h-full flex flex-col shadow-lg bg-gradient-to-r from-[hsl(var(--card))]">
+              <div className="p-2 border-b border-color-standard flex justify-between items-center shrink-0">
+                <h3 className="text-sm font-semibold px-2">{t('modelExplorer')}</h3>
+                <FileUpload key={`file-upload-sidebar-${settingsVersion}`} isAdding={true} />
+              </div>
+              <PanelGroup direction="vertical" className="flex-grow">
+                <Panel id="spatial-tree" defaultSize={70} minSize={30}>
+                  <div className="h-full overflow-y-auto">
+                    <SpatialTreePanel /> {/* Hiển thị cây không gian */}
+                  </div>
+                </Panel>
+                <ResizeHandleVertical /> {/* Thanh kéo dọc */}
+                <Panel id="properties-panel" defaultSize={30} minSize={20}>
+                  <div className="h-full flex flex-col">
+                    <div className="p-1 border-b border-color-standard">
+                      <h3 className="text-sm font-semibold px-2">{t('properties')}</h3>
+                    </div>
+                    <div className="p-2 overflow-y-auto flex-grow">
+                      <ModelInfo /> {/* Hiển thị thông tin mô hình */}
+                    </div>
+                  </div>
+                </Panel>
+              </PanelGroup>
             </div>
-            <PanelGroup direction="vertical" className="flex-grow">
-              <Panel id="spatial-tree" defaultSize={70} minSize={30}>
-                <div className="h-full overflow-y-auto">
-                  <SpatialTreePanel /> {/* Hiển thị cây không gian */}
-                </div>
-              </Panel>
-              <ResizeHandleVertical /> {/* Thanh kéo dọc */}
-              <Panel id="properties-panel" defaultSize={30} minSize={20}>
-                <div className="h-full flex flex-col">
-                  <div className="p-1 border-b border-color-standard">
-                    <h3 className="text-sm font-semibold px-2">{t('properties')}</h3>
-                  </div>
-                  <div className="p-2 overflow-y-auto flex-grow">
-                    <ModelInfo /> {/* Hiển thị thông tin mô hình */}
-                  </div>
-                </div>
-              </Panel>
-            </PanelGroup>
-          </div>
-        </Panel>
-        <ResizeHandleHorizontal
-          onToggle={handleToggleLeftPanel}
-          collapsed={leftPanelCollapsed}
-          isLeftSide={true}
-          className="pointer-events-auto"
-        /> {/* Thanh kéo ngang cho panel trái */}
-       {/* Panel chính */}
-        <Panel
-          id="main-content"
-          defaultSize={50}
-          className="bg-transparent pointer-events-none relative"
-        >
-          <LoadingOverlay2 open={isLoading}  message={loadingMessage} progress={loadingProgress} />
-          <div className="relative h-full bg-transparent pointer-events-none">
-            {ifcEngineReady && !webGLContextLost && (
-              <div className="absolute top-4 right-4 z-20 pointer-events-auto">
-                <div className="flex items-center gap-2 p-1 bg-background/80 backdrop-blur-sm border border-border rounded-lg shadow-lg border-color-standard">
-                  <TooltipProvider delayDuration={300}>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Input
-                          value={canvasSearch}
-                          onFocus={() => setIsSearchFocused(true)}
-                          onBlur={() => setIsSearchFocused(false)}
-                          onChange={(e) => {
-                            const newSearch = e.target.value;
-                            setCanvasSearch(newSearch);
-                            if (newSearch.trim() === "") {
-                              setConfirmedSearch("");
-                              if (searchHiddenRef.current.length > 0) {
-                                showElements(searchHiddenRef.current); // 👈 hiện lại các phần tử đã ẩn khi xoá search
-                                searchHiddenRef.current = [];
+          </Panel>
+          <ResizeHandleHorizontal
+            onToggle={handleToggleLeftPanel}
+            collapsed={leftPanelCollapsed}
+            isLeftSide={true}
+            className="pointer-events-auto"
+          /> {/* Thanh kéo ngang cho panel trái */}
+        {/* Panel chính */}
+          <Panel
+            id="main-content"
+            defaultSize={50}
+            className="bg-transparent pointer-events-none relative"
+          >
+            <LoadingOverlay2 open={isLoading}  message={loadingMessage} progress={loadingProgress} />
+            <div className="relative h-full bg-transparent pointer-events-none">
+              {ifcEngineReady && !webGLContextLost && (
+                <div className="absolute top-4 right-4 z-20 pointer-events-auto">
+                  <div className="flex items-center gap-2 p-1 bg-background/80 backdrop-blur-sm border border-border rounded-lg shadow-lg border-color-standard">
+                    <TooltipProvider delayDuration={300}>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Input
+                            value={canvasSearch}
+                            onFocus={() => setIsSearchFocused(true)}
+                            onBlur={() => setIsSearchFocused(false)}
+                            onChange={(e) => {
+                              const newSearch = e.target.value;
+                              setCanvasSearch(newSearch);
+                              if (newSearch.trim() === "") {
+                                setConfirmedSearch("");
+                                if (searchHiddenRef.current.length > 0) {
+                                  showElements(searchHiddenRef.current); // 👈 hiện lại các phần tử đã ẩn khi xoá search
+                                  searchHiddenRef.current = [];
+                                }
+                                setSearchProgress({ active: false, percent: 0, status: '' });
+                                setIsSearchRunning(false);
                               }
-                              setSearchProgress({ active: false, percent: 0, status: '' });
-                              setIsSearchRunning(false);
-                            }
-                          }}
-                          onKeyDown={(e) => {
-                            if (e.key === 'Enter') {
-                              e.preventDefault();
-                              handleSearchSubmit(canvasSearch);
-                            }
-                          }}
-                          placeholder={isSearchFocused ? t('modelViewer.searchCanvasPlaceholder') : "Search..."}
-                          className={`h-8 text-xs transition-all duration-300 ease-in-out rounded-md ${
-                            isSearchFocused ? 'w-48 px-3' : 'w-24 px-2 text-[11px]'
-                          }`}
-                        />
-                      </TooltipTrigger>
-                      <TooltipContent
-                        side="bottom"
-                        align="end"
-                        className="max-w-xs p-3 bg-popover text-popover-foreground shadow-md rounded-md z-50 flex flex-col gap-1"
+                            }}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter') {
+                                e.preventDefault();
+                                handleSearchSubmit(canvasSearch);
+                              }
+                            }}
+                            placeholder={isSearchFocused ? t('modelViewer.searchCanvasPlaceholder') : "Search..."}
+                            className={`h-8 text-xs transition-all duration-300 ease-in-out rounded-md ${
+                              isSearchFocused ? 'w-48 px-3' : 'w-24 px-2 text-[11px]'
+                            }`}
+                          />
+                        </TooltipTrigger>
+                        <TooltipContent
+                          side="bottom"
+                          align="end"
+                          className="max-w-xs p-3 bg-popover text-popover-foreground shadow-md rounded-md z-50 flex flex-col gap-1"
+                        >
+                          <p className="font-medium">Filter elements by properties</p>
+                          <p className="text-xs text-muted-foreground">
+                            Supports wildcard <code className="p-0.5 bg-muted rounded-sm">*</code> and regular expressions (regex).
+                          </p>
+                          <p className="text-xs text-muted-foreground mt-1">
+                            Learn more about <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions" target="_blank" rel="noopener noreferrer" className="underline hover:text-primary">regex</a> or test on <a href="https://regex101.com/" target="_blank" rel="noopener noreferrer" className="underline hover:text-primary">regex101.com</a>.
+                          </p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                    {isSearchRunning ? (
+                      <Button
+                        variant="ghost"
+                        onClick={handleCancelSearch}
+                        title="Cancel search"
+                        className="transition-all duration-300 ease-in-out flex items-center justify-center rounded-md h-8 w-8"
                       >
-                        <p className="font-medium">Filter elements by properties</p>
-                        <p className="text-xs text-muted-foreground">
-                          Supports wildcard <code className="p-0.5 bg-muted rounded-sm">*</code> and regular expressions (regex).
-                        </p>
-                        <p className="text-xs text-muted-foreground mt-1">
-                          Learn more about <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions" target="_blank" rel="noopener noreferrer" className="underline hover:text-primary">regex</a> or test on <a href="https://regex101.com/" target="_blank" rel="noopener noreferrer" className="underline hover:text-primary">regex101.com</a>.
-                        </p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                  {isSearchRunning ? (
-                    <Button
-                      variant="ghost"
-                      onClick={handleCancelSearch}
-                      title="Cancel search"
-                      className="transition-all duration-300 ease-in-out flex items-center justify-center rounded-md h-8 w-8"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="16"
-                        height="16"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <path d="M18 6L6 18"></path>
-                        <path d="M6 6l12 12"></path>
-                      </svg>
-                    </Button>
-                  ) : (
-                    <Button
-                      variant="ghost"
-                      onClick={() => handleSearchSubmit(canvasSearch)}
-                      title={t('modelViewer.search')}
-                      className={`transition-all duration-300 ease-in-out flex items-center justify-center rounded-md ${
-                        isSearchFocused ? 'h-8 w-8' : 'h-7 w-7 p-0.5'
-                      }`}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="16"
-                        height="16"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className={`transition-all duration-300 ease-in-out ${
-                          isSearchFocused ? 'scale-100' : 'scale-[0.80]'
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path d="M18 6L6 18"></path>
+                          <path d="M6 6l12 12"></path>
+                        </svg>
+                      </Button>
+                    ) : (
+                      <Button
+                        variant="ghost"
+                        onClick={() => handleSearchSubmit(canvasSearch)}
+                        title={t('modelViewer.search')}
+                        className={`transition-all duration-300 ease-in-out flex items-center justify-center rounded-md ${
+                          isSearchFocused ? 'h-8 w-8' : 'h-7 w-7 p-0.5'
                         }`}
                       >
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                      </svg>
-                    </Button>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className={`transition-all duration-300 ease-in-out ${
+                            isSearchFocused ? 'scale-100' : 'scale-[0.80]'
+                          }`}
+                        >
+                          <circle cx="11" cy="11" r="8"></circle>
+                          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                      </Button>
+                    )}
+                  </div>
+                  {/* Hiển thị tiến trình tìm kiếm */}
+                  {searchProgress.active && (
+                    <div className="mt-2 p-2 bg-background/95 backdrop-blur-sm border border-border rounded-lg shadow-lg text-xs w-full">
+                      <div className="mb-1 flex justify-between font-medium">
+                        <span>{searchProgress.status}</span>
+                        <span>{searchProgress.percent}%</span>
+                      </div>
+                      <div className="w-full bg-muted rounded-full h-2 overflow-hidden">
+                        <div
+                          className="bg-primary h-full transition-all duration-300 ease-in-out"
+                          style={{ width: `${searchProgress.percent}%` }}
+                        ></div>
+                      </div>
+                    </div>
+                  )}
+                  {/* Hiển thị trạng thái tìm kiếm hoàn tất */}
+                  {!searchProgress.active && searchProgress.status && (
+                    <div className="mt-2 p-2 bg-background/95 backdrop-blur-sm border border-border rounded-lg shadow-lg text-xs w-full">
+                      <div className="text-center font-medium">{searchProgress.status}</div>
+                    </div>
                   )}
                 </div>
-                {/* Hiển thị tiến trình tìm kiếm */}
-                {searchProgress.active && (
-                  <div className="mt-2 p-2 bg-background/95 backdrop-blur-sm border border-border rounded-lg shadow-lg text-xs w-full">
-                    <div className="mb-1 flex justify-between font-medium">
-                      <span>{searchProgress.status}</span>
-                      <span>{searchProgress.percent}%</span>
-                    </div>
-                    <div className="w-full bg-muted rounded-full h-2 overflow-hidden">
-                      <div
-                        className="bg-primary h-full transition-all duration-300 ease-in-out"
-                        style={{ width: `${searchProgress.percent}%` }}
-                      ></div>
-                    </div>
-                  </div>
-                )}
-                 {/* Hiển thị trạng thái tìm kiếm hoàn tất */}
-                {!searchProgress.active && searchProgress.status && (
-                  <div className="mt-2 p-2 bg-background/95 backdrop-blur-sm border border-border rounded-lg shadow-lg text-xs w-full">
-                    <div className="text-center font-medium">{searchProgress.status}</div>
-                  </div>
-                )}
-              </div>
-            )}
-             {/* Hiển thị giao diện upload nếu chưa có mô hình */}
-            {loadedModels.length === 0 && ifcEngineReady && !SKIP_IFC_INITIALIZATION_FOR_TEST && (
-              <div className="absolute inset-0 flex items-center justify-center bg-background/50 backdrop-blur-sm z-10 pointer-events-auto">
-                <FileUpload key={`file-upload-main-${settingsVersion}`} isAdding={false} />
-              </div>
-            )}
-            {ifcEngineReady && !webGLContextLost && (
-              <ViewToolbar
-                onZoomExtents={handleZoomExtents}
-                onZoomSelected={handleZoomSelected}
-                isElementSelected={selectedElements.length > 0}
-                onUnhideAll={customUnhideAllElements}
-                onUnhideLast={customUnhideLastElement}
-                onSelectAllVisible={handleSelectAllVisible}
-              /> /* Thanh công cụ điều khiển */
-            )}
-            <SelectionListOverlay /> {/* Overlay hiển thị danh sách lựa chọn */}
-          </div>
-        </Panel>
-        <ResizeHandleHorizontal
-          onToggle={handleToggleRightPanel}
-          collapsed={rightPanelCollapsed}
-          isLeftSide={false}
-          className="pointer-events-auto"
-        /> {/* Thanh kéo ngang cho panel phải */}
-        {/* Panel phải */}
-        <Panel
-          id="right-sidebar"
-          ref={rightPanelRef}
-          defaultSize={25}
-          minSize={15}
-          maxSize={40}
-          collapsible
-          className="bg-transparent pointer-events-auto"
-        >
-          <ResponsiveTabs onSettingsChanged={handleSettingsChanged} /> {/* Tab responsive */}
-        </Panel>
-      </PanelGroup>
-    </div>
+              )}
+              {/* Hiển thị giao diện upload nếu chưa có mô hình */}
+              {loadedModels.length === 0 && ifcEngineReady && !SKIP_IFC_INITIALIZATION_FOR_TEST && (
+                <div className="absolute inset-0 flex items-center justify-center bg-background/50 backdrop-blur-sm z-10 pointer-events-auto">
+                  <FileUpload key={`file-upload-main-${settingsVersion}`} isAdding={false} />
+                </div>
+              )}
+              {ifcEngineReady && !webGLContextLost && (
+                <ViewToolbar
+                  onZoomExtents={handleZoomExtents}
+                  onZoomSelected={handleZoomSelected}
+                  isElementSelected={selectedElements.length > 0}
+                  onUnhideAll={customUnhideAllElements}
+                  onUnhideLast={customUnhideLastElement}
+                  onSelectAllVisible={handleSelectAllVisible}
+                /> /* Thanh công cụ điều khiển */
+              )}
+              <SelectionListOverlay /> {/* Overlay hiển thị danh sách lựa chọn */}
+            </div>
+          </Panel>
+          <ResizeHandleHorizontal
+            onToggle={handleToggleRightPanel}
+            collapsed={rightPanelCollapsed}
+            isLeftSide={false}
+            className="pointer-events-auto"
+          /> {/* Thanh kéo ngang cho panel phải */}
+          {/* Panel phải */}
+          <Panel
+            id="right-sidebar"
+            ref={rightPanelRef}
+            defaultSize={25}
+            minSize={15}
+            maxSize={40}
+            collapsible
+            className="bg-transparent pointer-events-auto"
+          >
+            <ResponsiveTabs onSettingsChanged={handleSettingsChanged} /> {/* Tab responsive */}
+          </Panel>
+        </PanelGroup>
+      </div>
+    </>
+
   );
   // Component để lưu scene vào ref
   function SceneCapture({ onSceneCapture }: { onSceneCapture: (scene: THREE.Scene) => void }) {
