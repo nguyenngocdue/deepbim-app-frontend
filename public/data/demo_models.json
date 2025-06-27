@@ -3,6 +3,10 @@
     "name": "Building Architecture ",
     "url": "https://minio.deepbim.net:9000/deepbim-fe/1750348687954-Snowdon Towers Sample Architectural.ifc"
   },
+   {
+    "name": "EcoHill House Architecture",
+    "url": "https://minio.deepbim.net:9000/deepbim-fe/1751007174045-racbasicsampleproject.ifc"
+  },
   {
     "name": "Building HVAC",
     "url": "https://minio.deepbim.net:9000/deepbim-fe/1750349580555-Plumbing.ifc"
