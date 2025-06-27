@@ -2,12 +2,13 @@
 // 📦 Type Definitions
 // =========================
 export type SpatialNode = {
-  id: number;
+  Name: string;
+  GlobalId: string;
   type: string;
-  name: string;
   level: number;
   children: SpatialNode[];
   expressID?: number;
+
 };
 
 // =========================
@@ -37,11 +38,13 @@ export async function buildSpatialTree(modelID: number, ifcApi: any): Promise<Sp
   const projectLine = getLineCached(modelID, ifcApi, projectIdsVec.get(0));
   const typeName = ifcApi.GetNameFromTypeCode(projectLine.type);
 
+  console.log(projectLine);
+
   const root: SpatialNode = {
-    id: projectLine.expressID,
+    GlobalId: projectLine.GlobalId.value,
+    Name: projectLine.Name?.value || 'Unnamed Project',
     expressID: projectLine.expressID,
     type: typeName,
-    name: projectLine.Name?.value || 'Unnamed Project',
     level: 0,
     children: getSpatialChildren(modelID, ifcApi, projectLine, 1)
   };
@@ -64,10 +67,10 @@ function getSpatialChildren(modelID: number, ifcApi: any, parentLine: any, level
       const typeName = ifcApi.GetNameFromTypeCode(childLine.type) || "UNKNOWN";
 
       const childNode: SpatialNode = {
-        id: childID,
         expressID: childID,
+        Name: childLine.Name?.value || `Unnamed ${typeName}`,
         type: typeName,
-        name: childLine.Name?.value || `Unnamed ${typeName}`,
+        GlobalId: childLine.GlobalId.value,
         level,
         children: getSpatialChildren(modelID, ifcApi, childLine, level + 1)
       };
@@ -104,10 +107,10 @@ export function loadContainedElements(modelID: number, ifcApi: any, spatialNodeI
       const typeName = ifcApi.GetNameFromTypeCode(childLine.type) || "UNKNOWN";
 
       const childNode: SpatialNode = {
-        id: childID,
         expressID: childID,
         type: typeName,
-        name: childLine.Name?.value || `Unnamed ${typeName}`,
+        Name: childLine.Name?.value || `Unnamed ${typeName}`,
+        GlobalId: childLine.GlobalId.value,
         level: parentLevel,
         // children: loadContainedElements(modelID, ifcApi, childID, parentLevel+1)
         children: []

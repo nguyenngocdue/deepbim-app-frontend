@@ -4,6 +4,7 @@ import { IfcAPI } from "web-ifc";
 import { fetchFullSpatialStructure } from "./IFCHelpers";
 import { LoadedModelData, SpatialStructureNode } from "@/context/ifc/ifc-context"; // Adjust path
 import { addGrid, setOtherLighting } from "@/components/ifc-classifier/FitCameraToObject";
+import { buildSpatialTree } from "@/utils/web-ifc/BuildSpatialTree";
 
 export function useModelLoading(
   modelData: LoadedModelData,
@@ -106,7 +107,8 @@ export function useModelLoading(
         }
 
         console.log(`IFCModel (${modelData.id}): Extracting data for modelID ${newIfcModelID}...`);
-        const tree = await fetchFullSpatialStructure(ifcApi, newIfcModelID);
+        // const _tree = await fetchFullSpatialStructure(ifcApi, newIfcModelID);
+        const tree = await buildSpatialTree(newIfcModelID, ifcApi);
         if (tree) {
           console.log(`IFCModel (${modelData.id}): Spatial structure extracted.`);
           setSpatialTreeForModel(newIfcModelID, tree);

@@ -675,19 +675,19 @@ export default function ViewerContent() {
 
   // show selected item when click on elements 
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  useEffect(() => {
-    function handleClick(event: MouseEvent) {
-      setMousePosition({ x: event.clientX, y: event.clientY });
+  const [hasFired, setHasFired] = useState(false);
 
-      // Nếu không có element nào được chọn → ẩn bảng thông tin
-      if (!selectedElement) {
-        setElementInfo(null);
-      }
+  useEffect(() => {
+    function handleMouseDown(event: MouseEvent) {
+      if (hasFired) return;
+
+      setHasFired(true);
+      setMousePosition({ x: event.clientX, y: event.clientY });
     }
 
-    window.addEventListener("click", handleClick);
-    return () => window.removeEventListener("click", handleClick);
-  }, [selectedElement]); // cần thêm selectedElement vào dependency
+    window.addEventListener("mousedown", handleMouseDown);
+    return () => window.removeEventListener("mousedown", handleMouseDown);
+  }, [hasFired]);
 
   const [elementInfo, setElementInfo] = useState<any | null>(null);
     // Effect để log khi phần tử được chọn thay đổi
@@ -866,7 +866,7 @@ export default function ViewerContent() {
   return (
 
     <>
-      <ElementInfoPopup elementInfo={elementInfo} position={mousePosition} />
+      {/* <ElementInfoPopup elementInfo={elementInfo} position={mousePosition} /> */}
       <div className="flex h-full w-full relative overflow-hidden" style={{ isolation: 'isolate' }}>
           
           {/* {cameraActionsRef.current?.camera && (

@@ -29,6 +29,9 @@ import {
   AlertTriangle,
   ExternalLink,
   MousePointer2,
+  Building2,
+  Layers3,
+  Shapes,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -51,6 +54,10 @@ import { Badge } from "@/components/ui/badge";
 import { useTranslation } from "react-i18next";
 import { SchemaReader } from "./schema-reader";
 import { useSchemaPreview } from "@/lib/useSchemaPreview";
+import IconIfcHierarchy from "@/utils/web-ifc/IconIfcHierarchy";
+import { FaHouse } from "react-icons/fa6";
+import { BiLandscape } from "react-icons/bi";
+import { FaLandmark } from "react-icons/fa";
 
 // Helper function to generate a unique key for a node
 const getNodeKey = (
@@ -174,27 +181,28 @@ const TreeNode: React.FC<TreeNodeProps> = ({
   const getIcon = (type: string) => {
     if (isRootModelNode)
       return <FileText className="w-4 h-4 mr-2 text-sky-500" />;
-    if (type.includes("PROJECT"))
-      return <Landmark className="w-4 h-4 mr-2 text-purple-500" />;
-    if (type.includes("SITE"))
-      return <Landmark className="w-4 h-4 mr-2 text-orange-500" />;
-    if (type.includes("BUILDING"))
-      return <Building className="w-4 h-4 mr-2 text-blue-500" />;
-    if (type.includes("STOREY"))
-      return <LayersIcon className="w-4 h-4 mr-2 text-green-500" />;
+    if (type.includes("IfcProject"))
+      return <FaLandmark  className="w-4 h-4 mr-2 text-purple-500" />;
+    if (type.includes("IfcSite"))
+      return <BiLandscape   className="w-4 h-4 mr-2 text-orange-500" />;
+    if (type.includes("IfcBuilding"))
+      return <Building2 className="w-4 h-4 mr-2 text-blue-500" />;
+    if (type.includes("IfcBuildingStorey"))
+      return <Layers3 className="w-4 h-4 mr-2 text-green-500" />;
     if (
-      type.includes("ELEMENT") ||
-      type.includes("PROXY") ||
-      type.includes("WALL") ||
-      type.includes("SLAB") ||
-      type.includes("BEAM") ||
-      type.includes("COLUMN") ||
-      type.includes("SPACE")
+      type.includes("IfcElement") ||
+      type.includes("IfcProxy") ||
+      type.includes("IfcWall") ||
+      type.includes("IfcSlab") ||
+      type.includes("IfcBeam") ||
+      type.includes("IfcColumn") ||
+      type.includes("IfcSpace")
     ) {
       return <Cuboid className="w-4 h-4 mr-2 text-gray-500" />;
     }
     return <HelpCircle className="w-4 h-4 mr-2 text-gray-400" />;
   };
+
 
   const handleToggleExpansion = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -319,7 +327,7 @@ const TreeNode: React.FC<TreeNodeProps> = ({
         <TooltipProvider delayDuration={300}>
           <Tooltip>
             <TooltipTrigger asChild>
-              <span className="truncate flex-grow">{displayName}</span>
+              <span className="truncate flex-grow">{displayName} ({originalIfcType})</span>
             </TooltipTrigger>
             <TooltipContent
               side="right"
