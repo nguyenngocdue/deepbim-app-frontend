@@ -38,8 +38,6 @@ export async function buildSpatialTree(modelID: number, ifcApi: any): Promise<Sp
   const projectLine = getLineCached(modelID, ifcApi, projectIdsVec.get(0));
   const typeName = ifcApi.GetNameFromTypeCode(projectLine.type);
 
-  console.log(projectLine);
-
   const root: SpatialNode = {
     GlobalId: projectLine.GlobalId.value,
     Name: projectLine.Name?.value || 'Unnamed Project',
@@ -112,8 +110,8 @@ export function loadContainedElements(modelID: number, ifcApi: any, spatialNodeI
         Name: childLine.Name?.value || `Unnamed ${typeName}`,
         GlobalId: childLine.GlobalId.value,
         level: parentLevel,
-        // children: loadContainedElements(modelID, ifcApi, childID, parentLevel+1)
-        children: []
+        children: loadContainedElements(modelID, ifcApi, childID, parentLevel+1)
+        // children: []
       };
 
       elements.push(childNode);

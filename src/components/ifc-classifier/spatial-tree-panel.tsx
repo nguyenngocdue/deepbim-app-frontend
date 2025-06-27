@@ -297,7 +297,7 @@ const TreeNode: React.FC<TreeNodeProps> = ({
       <div
         ref={shouldScrollToThisNode ? selectedNodeActualRef : null}
         className={cn(
-          "flex items-center py-1.5 px-2 rounded-md hover:bg-accent group text-left",
+          "flex items-center py-1.5 px-2 rounded-md hover:bg-accent group text-left pr-10",
           isSelected && "bg-accent text-accent-foreground font-semibold",
           !isSelected && matchesSearch && "bg-primary/10",
           isRootModelNode ? "cursor-default" : "cursor-pointer",
@@ -332,7 +332,7 @@ const TreeNode: React.FC<TreeNodeProps> = ({
             <TooltipContent
               side="right"
               align="start"
-              className="flex flex-col gap-1 max-w-sm"
+              className="flex flex-col gap-1 max-w-sm ml-6 mt-6"
             >
               <p>{tooltipPrimaryContent}</p>
               {!isRootModelNode && (
@@ -418,19 +418,20 @@ const TreeNode: React.FC<TreeNodeProps> = ({
         )}
 
         {!isRootModelNode && node.type.includes("IfcBuildingStorey") && (
-          <Button
-            variant="ghost"
+         <Button
+            variant="ghost" // dùng ghost để tránh màu nền làm "vỡ bố cục"
             size="icon"
-            className="w-6 h-6 ml-1 opacity-0 group-hover:opacity-100 transition-opacity"
-            title={isStoreyHidden ? t('modelViewer.showStorey') : t('modelViewer.hideStorey')}
             onClick={handleToggleStoreyVisibility}
+            title={isStoreyHidden ? t('modelViewer.showStorey') : t('modelViewer.hideStorey')}
+            className="w-6 h-6 ml-1 opacity-0 group-hover:opacity-100 hover:opacity-100 transition-opacity"
           >
             {isStoreyHidden ? (
-              <EyeOff className="w-4 h-4" />
+              <EyeOff className="w-6 h-6 text-red-300   bg-accent" />
             ) : (
-              <Eye className="w-4 h-4" />
+              <Eye className="w-6 h-6 text-green-400  bg-accent" />
             )}
           </Button>
+
         )}
       </div>
 
