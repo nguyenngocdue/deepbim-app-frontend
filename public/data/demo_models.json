@@ -26,5 +26,9 @@
   {
     "name": "Infra Bridge",
     "url": "https://minio.deepbim.net:9000/deepbim-fe/1749267153526-K2.ifc"
+  },
+  {
+    "name": "File to develop IFC",
+    "url": "https://minio.deepbim.net:9000/deepbim-fe/1751007661992-ExampleCreatedIFC.ifc"
   }
 ]

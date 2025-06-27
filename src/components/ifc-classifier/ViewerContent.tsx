@@ -4,7 +4,7 @@ import { Canvas } from "@react-three/fiber";
 import { Environment, GizmoHelper, GizmoViewport, Html, OrbitControls } from "@react-three/drei";
 import { Panel, PanelGroup, ImperativePanelHandle } from "react-resizable-panels";
 import { useTranslation } from "react-i18next";
-import { IfcAPI, Properties } from "web-ifc";
+import { IfcAPI, IFCWALL, Properties } from "web-ifc";
 import * as THREE from "three";
 import {
   useIFCContext,
@@ -28,6 +28,7 @@ import CameraActionsController, { CameraActions } from "./CameraActionsControlle
 import FileUpload from "./FileUpload";
 import { LoadingOverlay2 } from "../common/LoadingOverlayV2";
 import { IFCModel } from "@/features/bim-viewer3/ifc/components/IFCModelCore";
+import { buildSpatialTree, gatherAllElements2 } from "@/utils/web-ifc/buildSpatialTree";
 
 const SKIP_IFC_INITIALIZATION_FOR_TEST = false;
 
@@ -54,6 +55,7 @@ export default function ViewerContent() {
     addIFCModel, // Hàm để thêm mô hình IFC
     clearSelection, // Hàm để xóa lựa chọn
   } = useIFCContext();
+
 
     const { t } = useTranslation(); // Hook để dịch ngôn ngữ
     const [ifcEngineReady, setIfcEngineReady] = useState(false); // Trạng thái sẵn sàng của IFC engine
@@ -94,9 +96,11 @@ export default function ViewerContent() {
       items.push(node);
       if (node.children) stack.push(...node.children);
     }
+    //items are ifcBuildingStorey
     return items;
   }, []);
 
+  
    // Hàm lưu scene vào ref
   const captureScene = useCallback((threeScene: THREE.Scene) => {
     scene.current = threeScene;
@@ -230,6 +234,15 @@ export default function ViewerContent() {
     const recursiveSearch = (data: any, regexInstance: RegExp, searchKeys: boolean = false): boolean => {
       if (data === null || data === undefined) return false;
 
+      // {
+      //   Name: { value: 'Wall Type A' },
+      //   GlobalId: { value: 'XYZ123' },
+      //   Dimensions: {
+      //     NominalValue: { value: '3.2m' }
+      //   },
+      //   SomeArray: ['abc', 'Wall']
+      // }
+
       // Test stringified value for primitive types
       if (typeof data === 'string') return regexInstance.test(data.toLowerCase());
       if (typeof data === 'number' || typeof data === 'boolean') return regexInstance.test(String(data).toLowerCase());
@@ -243,20 +256,39 @@ export default function ViewerContent() {
 
       if (typeof data === 'object') {
         // Handle IFC.js specific structures like { value: X } or { NominalValue: { value: Y } } etc.
-        if (data.hasOwnProperty('value')) {
-          if (recursiveSearch(data.value, regexInstance, false)) return true;
-        }
-        if (data.hasOwnProperty('NominalValue')) {
-          if (recursiveSearch(data.NominalValue, regexInstance, false)) return true;
-        }
-        if (data.hasOwnProperty('wrappedValue')) {
-          if (recursiveSearch(data.wrappedValue, regexInstance, false)) return true;
-        }
+        // ✅ Check if the object has a 'value' property
+          // Common in IFC structure for fields like: { value: "Wall" }
+          if (data.hasOwnProperty('value')) {
+            // Recursively search inside the 'value'
+            if (recursiveSearch(data.value, regexInstance, false)) return true;
+          }
 
-        for (const key in data) {
-          if (Object.prototype.hasOwnProperty.call(data, key)) {
-            if (searchKeys && regexInstance.test(key.toLowerCase())) return true;
-            if (recursiveSearch(data[key], regexInstance, searchKeys)) return true;
+          // ✅ Check for 'NominalValue'
+          // Typically used for quantitative properties in IFC like Height, Width, Area, etc.
+          // Example: { NominalValue: { value: 3000 } }
+          if (data.hasOwnProperty('NominalValue')) {
+            // Recursively search inside 'NominalValue'
+            if (recursiveSearch(data.NominalValue, regexInstance, false)) return true;
+          }
+
+          // ✅ Check for 'wrappedValue'
+          // Some IFC libraries (or custom wrappers) use 'wrappedValue' to wrap raw data
+          // Example: { wrappedValue: "IfcWall" }
+          if (data.hasOwnProperty('wrappedValue')) {
+            // Recursively search inside 'wrappedValue'
+            if (recursiveSearch(data.wrappedValue, regexInstance, false)) return true;
+          }
+
+          
+          for (const key in data) {
+            if (Object.prototype.hasOwnProperty.call(data, key)) {
+              // kiểm tra xem tên của một thuộc tính (key) có khớp với biểu thức chính quy (regex) hay không.
+              if (searchKeys && regexInstance.test(key.toLowerCase())) {
+                return true
+              };
+              if (recursiveSearch(data[key], regexInstance, searchKeys)) {
+              return true
+            };
           }
         }
         return false;
@@ -322,6 +354,9 @@ export default function ViewerContent() {
         }
       });
 
+
+      // console.log(allMeshes);
+
       if (Object.keys(availableMeshIds).length === 0) {
         console.log("WARNING: No meshes found in the scene with IFC data!");
       } else {
@@ -344,7 +379,10 @@ export default function ViewerContent() {
           childrenCount: model.spatialTree.children?.length || 0
         });
 
-        const nodes = gatherAllElements(model.spatialTree);
+        // const nodes = gatherAllElements(model.spatialTree);
+        const tree = await buildSpatialTree(model.modelID, ifcApi);
+        const nodes = gatherAllElements2(tree);
+        // console.log("allNodes", allNodes);
         console.log(`Model ${model.id} (${model.name}): Processing ${nodes.length} nodes for filtering.`);
 
         // Check how many nodes in spatial tree have actual meshes
@@ -404,9 +442,10 @@ export default function ViewerContent() {
               }
             }
           }
-
+          
           return { match, expressID };
         };
+
 
         // Split nodes into batches for concurrent processing
         const batchSize = 20; // Number of concurrent operations
@@ -423,7 +462,7 @@ export default function ViewerContent() {
 
           const currentBatch = nodesToProcess.slice(i, i + batchSize);
           const batchPromises = currentBatch.map(node => processNode(node));
-
+          
           // Wait for the current batch to complete
           const batchResults = await Promise.all(batchPromises);
           results.push(...batchResults);
@@ -455,10 +494,11 @@ export default function ViewerContent() {
               const partialResults = results.filter(r => !r.match && r.expressID !== -1)
                 .map(r => ({ modelID: model.modelID as number, expressID: r.expressID }));
 
-              if (partialResults.length > 0) {
-                // Apply visibility changes for partial results
-                for (const result of partialResults) {
-                  if (allMeshes[result.modelID]?.[result.expressID]) {
+                // partialResults are hiddened in model
+                if (partialResults.length > 0) {
+                  // Apply visibility changes for partial results
+                  for (const result of partialResults) {
+                    if (allMeshes[result.modelID]?.[result.expressID]) {
                     const meshToHide = allMeshes[result.modelID][result.expressID];
                     meshToHide.visible = false;
                   }
@@ -493,6 +533,7 @@ export default function ViewerContent() {
         if (query && modelMeshesMap) { // query is confirmedSearch.trim()
           for (const expressIDStr in modelMeshesMap) {
             const expressID = parseInt(expressIDStr, 10);
+            console.log(processedExpressIDsFromSpatialTree, modelMeshesMap)
             if (!processedExpressIDsFromSpatialTree.has(expressID)) {
               // This mesh element was not found in the spatial tree.
               // If a search is active, it should be hidden because it can't be "matched" via properties.
@@ -505,6 +546,7 @@ export default function ViewerContent() {
             }
           }
         }
+        console.log("meshToHide", toHide)
         console.log(`Filter results for model ${model.id}: ${matchCount} matches, ${noMatchCount} non-matches (to hide, incl. non-spatial), ${errorCount} errors`);
       }
 
@@ -956,7 +998,7 @@ export default function ViewerContent() {
                             if (newSearch.trim() === "") {
                               setConfirmedSearch("");
                               if (searchHiddenRef.current.length > 0) {
-                                showElements(searchHiddenRef.current);
+                                showElements(searchHiddenRef.current); // 👈 hiện lại các phần tử đã ẩn khi xoá search
                                 searchHiddenRef.current = [];
                               }
                               setSearchProgress({ active: false, percent: 0, status: '' });

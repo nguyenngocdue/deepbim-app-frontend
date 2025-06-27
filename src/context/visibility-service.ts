@@ -88,18 +88,22 @@ export const useVisibilityService = (
 
   const hideElements = useCallback(
     (elements: SelectedElementInfo[]) => {
-      console.log("IFCContext: hideElements called with", elements.length, "elements");
+      console.log("IFCContext: hideElements called with", elements.length, "elements", elements);
+
+      // DEBUG: Log sample elements
       if (elements.length > 0) {
         console.log("IFCContext: First 3 elements to hide:", elements.slice(0, 3));
       }
+
       setUserHiddenElements((prev) => {
-        console.log("IFCContext: Previous hidden elements count:", prev.length);
+        console.log("IFCContext: Previous hidden elements count:", prev.length, prev);
         const newHidden = [...prev];
         let addedCount = 0;
+
         elements.forEach((el) => {
           if (
             !newHidden.some(
-              (h) => h.modelID === el.modelID && h.expressID === el.expressID
+              (h) => h.modelID === el.modelID && h.expressID === el.expressID,
             )
           ) {
             if (
@@ -115,29 +119,24 @@ export const useVisibilityService = (
             addedCount++;
           }
         });
-        console.log(
-          `IFCContext: Added ${addedCount} elements to hidden list. New total:`,
-          newHidden.length
-        );
+
+        console.log(`IFCContext: Added ${addedCount} elements to hidden list. New total:`, newHidden.length);
         return newHidden;
       });
     },
-    [selectedElement, setSelectedElement, setElementPropertiesInternal, setUserHiddenElements]
+    [selectedElement, setSelectedElement, setElementPropertiesInternal],
   );
 
-  const showElements = useCallback(
-    (elements: SelectedElementInfo[]) => {
-      setUserHiddenElements((prev) =>
-        prev.filter(
-          (el) =>
-            !elements.some(
-              (e) => e.modelID === el.modelID && e.expressID === el.expressID
-            )
-        )
-      );
-    },
-    [setUserHiddenElements]
-  );
+  const showElements = useCallback((elements: SelectedElementInfo[]) => {
+    setUserHiddenElements((prev) =>
+      prev.filter(
+        (el) =>
+          !elements.some(
+            (e) => e.modelID === el.modelID && e.expressID === el.expressID,
+          ),
+      ),
+    );
+  }, []);
 
   return {
     toggleUserHideElement,
