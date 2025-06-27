@@ -266,6 +266,7 @@ export default function ViewerContent() {
 
     const applyFilter = async () => {
       // unhide previous search-hidden elements
+
       if (searchHiddenRef.current.length > 0) {
         console.log("Showing previously hidden elements:", searchHiddenRef.current.length);
         showElements(searchHiddenRef.current);

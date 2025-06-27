@@ -25,7 +25,7 @@ export function LoadingOverlay2({
   const brightness = Math.min(1 + progress * 0.7, 1);
   const glowOpacity = progress < 0.8 ? 0.4 : 1;
   const overlay = (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center pointer-events-none">
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center pointer-events-none overflow-hidden">
       {/* Background layer with fade */}
       <div
         className="absolute inset-0 bg-black/90 backdrop-blur-sm"
@@ -59,10 +59,10 @@ export function LoadingOverlay2({
             </div>
           </div>
 
-          <div className="text-lg font-semibold tracking-wide text-blue-100 text-center truncate">
-            {message}
-            <span>{'.'.repeat(dotCount)}</span>
-          </div>
+          <div className="text-lg font-semibold tracking-wide text-blue-100 text-center truncate max-w-[300px]">
+              {message}
+              <span>{'.'.repeat(dotCount)}</span>
+            </div>
 
           <p className="text-sm text-zinc-400 text-center leading-snug">
             Please wait while we process your request.

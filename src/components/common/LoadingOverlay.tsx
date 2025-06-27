@@ -28,7 +28,7 @@ export function LoadingOverlay({
 
   const overlay = (
     <div
-      className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90 backdrop-blur-sm"
+      className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90 backdrop-blur-sm overflow-hidden"
       style={{ opacity: brightness, transition: "opacity 0.5s ease-in-out" }}
     >
       <div className="relative w-[360px] px-8 py-6 rounded-2xl shadow-xl bg-[#0f0f1a] text-white border border-purple-700 ring-1 ring-blue-700/40 backdrop-blur-xl">
