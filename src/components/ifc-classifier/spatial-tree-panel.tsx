@@ -157,14 +157,14 @@ const TreeNode: React.FC<TreeNodeProps> = ({
     : false;
 
   const storeyDescendantIds = useMemo(() => {
-    if (node.type.includes("STOREY")) {
+    if (node.type.includes("IfcBuildingStorey")) {
       return gatherDescendantIds(node);
     }
     return [] as number[];
   }, [node]);
 
   const isStoreyHidden = useMemo(() => {
-    if (!node.type.includes("STOREY") || modelFileInfo.modelID === null)
+    if (!node.type.includes("IfcBuildingStorey") || modelFileInfo.modelID === null)
       return false;
     return storeyDescendantIds.every((id) =>
       userHiddenElements.some(
@@ -213,14 +213,14 @@ const TreeNode: React.FC<TreeNodeProps> = ({
     if (isRootModelNode || modelFileInfo.modelID === null) return;
 
     if (
-      node.type.includes("ELEMENT") ||
-      node.type.includes("PROXY") ||
+      node.type.includes("IfcElement") ||
+      node.type.includes("IfcProxy") ||
       node.children.length === 0 ||
-      node.type.includes("SPACE") ||
-      node.type.includes("STOREY") ||
-      node.type.includes("BUILDING") ||
-      node.type.includes("SITE") ||
-      node.type.includes("PROJECT")
+      node.type.includes("IfcSpace") ||
+      node.type.includes("IfcBuildingStorey") ||
+      node.type.includes("IfcBuilding") ||
+      node.type.includes("IfcSite") ||
+      node.type.includes("IfcProject")
     ) {
       onSelectNode({
         modelID: modelFileInfo.modelID,
@@ -245,7 +245,7 @@ const TreeNode: React.FC<TreeNodeProps> = ({
 
   const handleToggleStoreyVisibility = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (modelFileInfo.modelID === null || !node.type.includes("STOREY")) return;
+    if (modelFileInfo.modelID === null || !node.type.includes("IfcBuildingStorey")) return;
 
     const elements = storeyDescendantIds.map((id) => ({
       modelID: modelFileInfo.modelID as number,
@@ -416,7 +416,8 @@ const TreeNode: React.FC<TreeNodeProps> = ({
             <XCircle className="w-4 h-4 text-destructive" />
           </Button>
         )}
-        {!isRootModelNode && node.type.includes("STOREY") && (
+
+        {!isRootModelNode && node.type.includes("IfcBuildingStorey") && (
           <Button
             variant="ghost"
             size="icon"
@@ -515,7 +516,7 @@ export function SpatialTreePanel() {
       currentPathKeys.push(nodeKey);
 
       let newStoreyKey = currentStoreyKey;
-      if (currentNode.type.includes("STOREY")) {
+      if (currentNode.type.includes("IfcBuildingStorey")) {
         newStoreyKey = nodeKey;
       }
 
