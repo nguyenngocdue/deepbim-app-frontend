@@ -105,11 +105,11 @@ export function setCameraType(
   }
 
   // Cập nhật camera vào react-three-fiber
-  // set({ camera: newCamera });
+  set({ camera: newCamera });
   controller.camera = newCamera;
 
   // Trigger re-render
-  // invalidate();
+  invalidate();
 
   // Debug log
 //   console.log("Camera Type:", type);
