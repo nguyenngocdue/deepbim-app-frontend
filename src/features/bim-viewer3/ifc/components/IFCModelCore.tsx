@@ -147,9 +147,9 @@ export function IFCModel({ modelData }: IFCModelProps) {
       }
 
       const box = new THREE.Box3().setFromObject(group);
-      const center = box.getCenter(new THREE.Vector3());
+      // const center = box.getCenter(new THREE.Vector3());
       const size = box.getSize(new THREE.Vector3());
-      group.position.sub(center);
+      // group.position.sub(center);
 
       if (camera instanceof THREE.PerspectiveCamera) {
         camera.far = size.length() * 10;
