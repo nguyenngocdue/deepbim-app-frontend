@@ -33,6 +33,7 @@ import { getLineProperties } from "@/utils/web-ifc/ParsingDataIfc";
 import ElementInfoPopup from "./ElementInfoPopup";
 import { addGrid, setOtherLighting } from "./FitCameraToObject";
 import { setCameraType } from "@/utils/web-ifc/CameraType";
+import { LoadingOverlay } from "../common/LoadingOverlay";
 
 const SKIP_IFC_INITIALIZATION_FOR_TEST = false;
 
@@ -84,12 +85,7 @@ export default function ViewerContent() {
 
     const [positionCube, setPositionCube] = useState({x : 500, y : 80})
 
-    // // Use the ViewportGizmo hook
-    // useViewportGizmo({
-    //   cameraActionsRef,
-    //   scene,
-    // });
-  
+
   // Hàm thu thập tất cả các node từ cây không gian
   const gatherAllElements = useCallback((root: SpatialStructureNode | null) => {
     const items: SpatialStructureNode[] = [];
@@ -242,7 +238,7 @@ export default function ViewerContent() {
 
   // DEBUG: Log userHiddenElements when it changes
   useEffect(() => {
-    console.log("userHiddenElements changed:", userHiddenElements.length, userHiddenElements.slice(0, 5));
+    // console.log("userHiddenElements changed:", userHiddenElements.length, userHiddenElements.slice(0, 5));
   }, [userHiddenElements]);
 
   // Apply search filtering on 3D elements - now depends on isSearchRunning instead of confirmedSearch
@@ -264,15 +260,6 @@ export default function ViewerContent() {
     // Helper function to recursively search for regex matches in an object/array
     const recursiveSearch = (data: any, regexInstance: RegExp, searchKeys: boolean = false): boolean => {
       if (data === null || data === undefined) return false;
-
-      // {
-      //   Name: { value: 'Wall Type A' },
-      //   GlobalId: { value: 'XYZ123' },
-      //   Dimensions: {
-      //     NominalValue: { value: '3.2m' }
-      //   },
-      //   SomeArray: ['abc', 'Wall']
-      // }
 
       // Test stringified value for primitive types
       if (typeof data === 'string') return regexInstance.test(data.toLowerCase());
@@ -866,16 +853,15 @@ export default function ViewerContent() {
     console.log(`Direct visibility effect: Applied visibility=false to ${appliedHideCount} meshes`);
   }, [userHiddenElements, scene]);
   // Hiển thị màn hình chờ khi IFC engine chưa sẵn sàng
-  if (!ifcEngineReady && !SKIP_IFC_INITIALIZATION_FOR_TEST) {
+  
+  if (!ifcEngineReady) {
     return (
-      <div className="flex h-screen w-full items-center justify-center">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold mb-4">{t('loadingWebIFCEngine')}</h2>
-          <p className="text-muted-foreground">{t('pleaseWaitMoment')}</p>
-        </div>
-      </div>
+      <LoadingOverlay open={!ifcEngineReady} message={`${t('loadingWebIFCEngine')} \n ${t('pleaseWaitMoment')}`}/>
     );
   }
+
+
+
   // Hiển thị thông báo lỗi khi mất context WebGL
   if (webGLContextLost) {
     return (
@@ -902,11 +888,6 @@ export default function ViewerContent() {
     <>
       {/* <ElementInfoPopup elementInfo={elementInfo} position={mousePosition} /> */}
       <div className="flex h-full w-full relative overflow-hidden" style={{ isolation: 'isolate' }}>
-          
-          {/* {cameraActionsRef.current?.camera && (
-            <GizmoCanvas mainCameraRef={{ current: cameraActionsRef.current.camera }} />
-          )} */}
-
         {/* Container cho canvas 3D */}
         <div
           style={{

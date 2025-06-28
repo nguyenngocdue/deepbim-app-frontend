@@ -1,5 +1,5 @@
 // src/context/rule-service.ts
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Properties, type IfcAPI } from "web-ifc";
 import { LoadedModelData, Rule, RuleCondition, SelectedElementInfo } from "./types";
 import { getAllElementsFromSpatialTreeNodesRecursive } from "./utils";
@@ -273,8 +273,12 @@ export const useRuleService = (
     },
     []
   );
-
+  
   const applyAllActiveRules = useCallback(async () => {
+    const allModelsReady = loadedModels.length > 0 && loadedModels.every(m => m.modelID != null && m.spatialTree != null);
+    if (!allModelsReady) {
+      return;
+    }
     if (!ifcApiInternal) {
       if (loadedModels.length === 0) {
         setClassifications((prevClassifications) => {

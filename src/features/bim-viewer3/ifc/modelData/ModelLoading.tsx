@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { IfcAPI } from "web-ifc";
 import { fetchFullSpatialStructure } from "./IFCHelpers";
@@ -27,12 +27,19 @@ export function useModelLoading(
 ) {
   const [internalApiIdForEffects, setInternalApiIdForEffects] = useState<number | null>(null);
   const [modelMeshesProcessedForInitialView, setModelMeshesProcessedForInitialView] = useState(false);
+  const loadedModelIds = useRef<Set<string>>(new Set());
 
   useEffect(() => {
     if (!modelData.url || !ifcApi) {
       if (!ifcApi) console.log(`IFCModel (${modelData.id}): Waiting for ifcApi...`);
       return;
     }
+
+  if (loadedModelIds.current.has(modelData.id)) {
+    // console.log(`⛔ IFCModel (${modelData.id}) already loaded. Skipping re-load.`);
+    return;
+  }
+  loadedModelIds.current.add(modelData.id);
 
     setIsLoading(true);
     setLoadingMessage(`Loading ${modelData.name}...`);
