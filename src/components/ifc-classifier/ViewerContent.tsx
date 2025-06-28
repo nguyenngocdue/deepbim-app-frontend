@@ -899,7 +899,7 @@ export default function ViewerContent() {
             zIndex: 0,
           }}
         >
-          {ifcEngineReady && !webGLContextLost && (
+          {loadedModels.length  && ifcEngineReady && !webGLContextLost && (
             <Canvas
               onCreated={({ gl }) => {
                 // console.log("R3F Canvas with IFCModel: onCreated called.");
