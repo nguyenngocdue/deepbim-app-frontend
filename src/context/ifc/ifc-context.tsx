@@ -307,7 +307,7 @@ export function IFCContextProvider({ children }: { children: ReactNode }) {
     exportRulesAsExcel,
     importRulesFromJson,
     importRulesFromExcel,
-  } = useClassificationService(setClassifications, classifications, setRules);
+  } = useClassificationService(setClassifications, classifications, setRules, rules);
 
   const {
     selectElement,
