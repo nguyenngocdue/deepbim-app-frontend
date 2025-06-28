@@ -418,19 +418,22 @@ const TreeNode: React.FC<TreeNodeProps> = ({
         )}
 
         {!isRootModelNode && node.type.includes("IfcBuildingStorey") && (
-         <Button
-            variant="ghost" // dùng ghost để tránh màu nền làm "vỡ bố cục"
+        <Button
+            variant="ghost"
             size="icon"
             onClick={handleToggleStoreyVisibility}
-            title={isStoreyHidden ? t('modelViewer.showStorey') : t('modelViewer.hideStorey')}
-            className="w-6 h-6 ml-1 opacity-0 group-hover:opacity-100 hover:opacity-100 transition-opacity"
+            title={isStoreyHidden ? t("modelViewer.showStorey") : t("modelViewer.hideStorey")}
+            className={`w-6 h-6 transition-opacity ${
+              isStoreyHidden ? "opacity-100" : "opacity-0 group-hover:opacity-100 hover:opacity-100"
+            }`}
           >
             {isStoreyHidden ? (
-              <EyeOff className="w-6 h-6 text-red-300   bg-accent" />
+              <EyeOff className="w-6 h-6 text-red-300" />
             ) : (
-              <Eye className="w-6 h-6 text-green-400  bg-accent" />
+              <Eye className="w-6 h-6 text-green-400" />
             )}
           </Button>
+
 
         )}
       </div>
