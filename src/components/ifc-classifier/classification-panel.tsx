@@ -7,8 +7,12 @@ import React, {
   useMemo,
   useCallback,
 } from "react";
+import { FixedSizeList as List } from "react-window"; // Import react-window
 import {
   useIFCContext,
+  type SelectedElementInfo,
+  type LoadedModelData,
+  type ClassificationItem,
 } from "@/context/ifc/ifc-context";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -61,7 +65,6 @@ import {
   ArchiveRestore,
   Star,
   Cuboid,
-  List,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -150,13 +153,13 @@ export function ClassificationPanel() {
   const [mapPropertyNameError, setMapPropertyNameError] = useState<
     string | null
   >(null);
-  // const [defaultUniclassPr, setDefaultUniclassPr] = useState<
-  //   ClassificationItem[]
-  // >([]);
-  // const [isLoadingUniclass, setIsLoadingUniclass] = useState(true);
-  // const [errorLoadingUniclass, setErrorLoadingUniclass] = useState<
-  //   string | null
-  // >(null);
+  const [defaultUniclassPr, setDefaultUniclassPr] = useState<
+    ClassificationItem[]
+  >([]);
+  const [isLoadingUniclass, setIsLoadingUniclass] = useState(true);
+  const [errorLoadingUniclass, setErrorLoadingUniclass] = useState<
+    string | null
+  >(null);
 
   // State for eBKP-H
   // const [defaultEBKPH, setDefaultEBKPH] = useState<ClassificationItem[]>([]);
@@ -164,7 +167,7 @@ export function ClassificationPanel() {
   // const [errorLoadingEBKPH, setErrorLoadingEBKPH] = useState<string | null>(
   //   null
   // );
-  // const [hasAutoLoaded, setHasAutoLoaded] = useState(false);
+  const [hasAutoLoaded, setHasAutoLoaded] = useState(false);
 
   const [sortConfig, setSortConfig] = useState<{
     key: SortableKey;
@@ -307,40 +310,40 @@ export function ClassificationPanel() {
   };
 
   // Effect to manage the default selected model for export
-  // useEffect(() => {
-  //   if (exportableModels.length > 0) {
-  //     if (
-  //       !selectedModelIdForExport ||
-  //       !exportableModels.find((m) => m.id === selectedModelIdForExport)
-  //     ) {
-  //       setSelectedModelIdForExport(exportableModels[0].id);
-  //     }
-  //   } else {
-  //     setSelectedModelIdForExport(undefined);
-  //   }
-  // }, [exportableModels, selectedModelIdForExport]);
+  useEffect(() => {
+    if (exportableModels.length > 0) {
+      if (
+        !selectedModelIdForExport ||
+        !exportableModels.find((m) => m.id === selectedModelIdForExport)
+      ) {
+        setSelectedModelIdForExport(exportableModels[0].id);
+      }
+    } else {
+      setSelectedModelIdForExport(undefined);
+    }
+  }, [exportableModels, selectedModelIdForExport]);
 
-  // useEffect(() => {
-  //   const fetchUniclassData = async () => {
-  //     setIsLoadingUniclass(true);
-  //     setErrorLoadingUniclass(null);
-  //     try {
-  //       const response = await fetch("/data/uniclass_pr.json");
-  //       if (!response.ok)
-  //         throw new Error(
-  //           `Failed to fetch Uniclass PR data: ${response.statusText}`
-  //         );
-  //       const data: ClassificationItem[] = await response.json();
-  //       setDefaultUniclassPr(data);
-  //     } catch (error) {
-  //       console.error("Error loading Uniclass PR data:", error);
-  //       setErrorLoadingUniclass(
-  //         error instanceof Error ? error.message : "Unknown error"
-  //       );
-  //     } finally {
-  //       setIsLoadingUniclass(false);
-  //     }
-  //   };
+  useEffect(() => {
+    const fetchUniclassData = async () => {
+      setIsLoadingUniclass(true);
+      setErrorLoadingUniclass(null);
+      try {
+        const response = await fetch("/data/uniclass_pr.json");
+        if (!response.ok)
+          throw new Error(
+            `Failed to fetch Uniclass PR data: ${response.statusText}`
+          );
+        const data: ClassificationItem[] = await response.json();
+        setDefaultUniclassPr(data);
+      } catch (error) {
+        console.error("Error loading Uniclass PR data:", error);
+        setErrorLoadingUniclass(
+          error instanceof Error ? error.message : "Unknown error"
+        );
+      } finally {
+        setIsLoadingUniclass(false);
+      }
+    };
 
     // const fetcheBKPHData = async () => {
     //   setIsLoadingEBKPH(true);
@@ -363,9 +366,9 @@ export function ClassificationPanel() {
     //   }
     // };
 
-  //   fetchUniclassData();
-  //   fetcheBKPHData();
-  // }, []);
+    // fetchUniclassData();
+    // fetcheBKPHData();
+  }, []);
 
   const sortedClassificationEntries = useMemo(() => {
     const currentEntries = filteredClassificationEntries;
@@ -439,17 +442,17 @@ export function ClassificationPanel() {
     }
   }, [sortedClassificationEntries.length]); // Re-observe if the list appears/disappears
 
-  // const handleAddAllUniclassPr = useCallback(() => {
-  //   if (!defaultUniclassPr || defaultUniclassPr.length === 0) return;
-  //   let addedCount = 0;
-  //   defaultUniclassPr.forEach((defClass) => {
-  //     if (!classifications[defClass.code]) {
-  //       addClassification(defClass);
-  //       addedCount++;
-  //     }
-  //   });
-  //   console.log(`Added ${addedCount} Uniclass Pr classifications.`);
-  // }, [defaultUniclassPr, classifications, addClassification]);
+  const handleAddAllUniclassPr = useCallback(() => {
+    if (!defaultUniclassPr || defaultUniclassPr.length === 0) return;
+    let addedCount = 0;
+    defaultUniclassPr.forEach((defClass) => {
+      if (!classifications[defClass.code]) {
+        addClassification(defClass);
+        addedCount++;
+      }
+    });
+    console.log(`Added ${addedCount} Uniclass Pr classifications.`);
+  }, [defaultUniclassPr, classifications, addClassification]);
 
   // const handleAddAlleBKPH = useCallback(() => {
   //   if (!defaultEBKPH || defaultEBKPH.length === 0) return;
@@ -463,22 +466,22 @@ export function ClassificationPanel() {
   //   console.log(`Added ${addedCount} eBKP-H classifications.`);
   // }, [defaultEBKPH, classifications, addClassification]);
 
-  // const areAllUniclassAdded = useCallback(() => {
-  //   if (
-  //     isLoadingUniclass ||
-  //     errorLoadingUniclass ||
-  //     defaultUniclassPr.length === 0
-  //   )
-  //     return false;
-  //   return defaultUniclassPr.every(
-  //     (defClass) => !!classifications[defClass.code]
-  //   );
-  // }, [
-  //   isLoadingUniclass,
-  //   errorLoadingUniclass,
-  //   defaultUniclassPr,
-  //   classifications,
-  // ]);
+  const areAllUniclassAdded = useCallback(() => {
+    if (
+      isLoadingUniclass ||
+      errorLoadingUniclass ||
+      defaultUniclassPr.length === 0
+    )
+      return false;
+    return defaultUniclassPr.every(
+      (defClass) => !!classifications[defClass.code]
+    );
+  }, [
+    isLoadingUniclass,
+    errorLoadingUniclass,
+    defaultUniclassPr,
+    classifications,
+  ]);
 
   // const areAlleBKPHAdded = useCallback(() => {
   //   if (isLoadingEBKPH || errorLoadingEBKPH || defaultEBKPH.length === 0)
@@ -486,49 +489,49 @@ export function ClassificationPanel() {
   //   return defaultEBKPH.every((defClass) => !!classifications[defClass.code]);
   // }, [isLoadingEBKPH, errorLoadingEBKPH, defaultEBKPH, classifications]);
 
-  // // Auto load default classifications based on stored settings
-  // useEffect(() => {
-  //   if (hasAutoLoaded) return;
-  //   const stored = localStorage.getItem("appSettings");
-  //   if (!stored) return;
-  //   try {
-  //     const { defaultClassification, alwaysLoad } = JSON.parse(stored);
-  //     if (!alwaysLoad) return;
-  //     if (
-  //       defaultClassification === "uniclass" &&
-  //       !isLoadingUniclass &&
-  //       !errorLoadingUniclass &&
-  //       defaultUniclassPr.length > 0 &&
-  //       !areAllUniclassAdded()
-  //     ) {
-  //       handleAddAllUniclassPr();
-  //       setHasAutoLoaded(true);
-  //     } else if (
-  //       defaultClassification === "ebkph" &&
-  //       !isLoadingEBKPH &&
-  //       !errorLoadingEBKPH &&
-  //       defaultEBKPH.length > 0 &&
-  //       !areAlleBKPHAdded()
-  //     ) {
-  //       handleAddAlleBKPH();
-  //       setHasAutoLoaded(true);
-  //     }
-  //   } catch (err) {
-  //     console.error("Failed to auto load classifications", err);
-  //   }
-  // }, [
-  //   isLoadingUniclass,
-  //   isLoadingEBKPH,
-  //   defaultUniclassPr,
-  //   defaultEBKPH,
-  //   errorLoadingUniclass,
-  //   errorLoadingEBKPH,
-  //   hasAutoLoaded,
-  //   areAllUniclassAdded,
-  //   areAlleBKPHAdded,
-  //   handleAddAllUniclassPr,
-  //   handleAddAlleBKPH,
-  // ]);
+  // Auto load default classifications based on stored settings
+  useEffect(() => {
+    if (hasAutoLoaded) return;
+    const stored = localStorage.getItem("appSettings");
+    if (!stored) return;
+    try {
+      const { defaultClassification, alwaysLoad } = JSON.parse(stored);
+      if (!alwaysLoad) return;
+      if (
+        defaultClassification === "uniclass" &&
+        !isLoadingUniclass &&
+        !errorLoadingUniclass &&
+        defaultUniclassPr.length > 0 &&
+        !areAllUniclassAdded()
+      ) {
+        handleAddAllUniclassPr();
+        setHasAutoLoaded(true);
+      // } else if (
+      //   defaultClassification === "ebkph" &&
+      //   !isLoadingEBKPH &&
+      //   !errorLoadingEBKPH &&
+      //   defaultEBKPH.length > 0 &&
+      //   !areAlleBKPHAdded()
+      // )
+        // handleAddAlleBKPH();
+        setHasAutoLoaded(true);
+      }
+    } catch (err) {
+      console.error("Failed to auto load classifications", err);
+    }
+  }, [
+    isLoadingUniclass,
+    // isLoadingEBKPH,
+    defaultUniclassPr,
+    // defaultEBKPH,
+    errorLoadingUniclass,
+    // errorLoadingEBKPH,
+    hasAutoLoaded,
+    areAllUniclassAdded,
+    // areAlleBKPHAdded,
+    handleAddAllUniclassPr,
+    // handleAddAlleBKPH,
+  ]);
 
   const handleAddClassification = () => {
     if (newClassification.code && newClassification.name) {
@@ -915,7 +918,7 @@ export function ClassificationPanel() {
                   Add New Classification
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                {/* <DropdownMenuLabel className="text-xs font-semibold text-muted-foreground px-2 py-1.5">
+                <DropdownMenuLabel className="text-xs font-semibold text-muted-foreground px-2 py-1.5">
                   {t("sections.defaultSets")}
                 </DropdownMenuLabel>
                 {isLoadingUniclass && (
@@ -929,8 +932,8 @@ export function ClassificationPanel() {
                       message: errorLoadingUniclass,
                     })}
                   </DropdownMenuItem>
-                )} */}
-                {/* {!isLoadingUniclass &&
+                )}
+                {!isLoadingUniclass &&
                   !errorLoadingUniclass &&
                   defaultUniclassPr.length > 0 && (
                     <DropdownMenuItem
@@ -952,7 +955,7 @@ export function ClassificationPanel() {
                       {t("buttons.noUniclassFound")}
                     </DropdownMenuItem>
                   )}
-                {isLoadingEBKPH && (
+                {/* {isLoadingEBKPH && (
                   <DropdownMenuItem disabled>
                     {t("buttons.loadingEbkph")}
                   </DropdownMenuItem>
@@ -977,10 +980,10 @@ export function ClassificationPanel() {
                   )}
                 {!isLoadingEBKPH &&
                   !errorLoadingEBKPH &&
-                  // defaultEBKPH.length === 0 && (
-                    // <DropdownMenuItem disabled>
-                      // {t("buttons.noEbkphFound")}
-                    // </DropdownMenuItem>
+                  defaultEBKPH.length === 0 && (
+                    <DropdownMenuItem disabled>
+                      {t("buttons.noEbkphFound")}
+                    </DropdownMenuItem>
                   )} */}
                 <DropdownMenuSeparator />
                 <DropdownMenuLabel className="text-xs font-semibold text-muted-foreground px-2 py-1.5">
