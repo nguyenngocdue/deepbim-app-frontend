@@ -6,13 +6,14 @@ export function setCameraType(
   type: "perspective" | "orthographic",
   controller: CameraActions & {
     camera: THREE.PerspectiveCamera | THREE.OrthographicCamera;
+    scene: THREE.Scene;
   }
 ) {
-  const { camera, gl, set, controls } = controller;
-
+  const { camera, gl, set, controls, scene } = controller;
+  
   // Kiểm tra các thành phần cần thiết
-  if (!gl || !set || !camera) {
-    console.warn("Missing camera setup");
+  if (!gl || !set || !camera || !scene) {
+    console.warn("Missing camera or scene setup");
     return;
   }
 
@@ -21,7 +22,7 @@ export function setCameraType(
     (type === "perspective" && camera instanceof THREE.PerspectiveCamera) ||
     (type === "orthographic" && camera instanceof THREE.OrthographicCamera)
   ) {
-    return; // Không cần thay đổi
+    return;
   }
 
   // Lấy tỷ lệ khung hình
@@ -31,17 +32,32 @@ export function setCameraType(
   const oldPosition = camera.position.clone();
   const oldQuaternion = camera.quaternion.clone();
   const oldTarget = controls?.target?.clone() ?? new THREE.Vector3();
-  const oldDistance = oldPosition.distanceTo(oldTarget); // Lưu khoảng cách hiện tại
-  const oldNear = camera.near;
-  const oldFar = camera.far;
+  const oldDistance = oldPosition.distanceTo(oldTarget);
   const oldUp = camera.up.clone();
-  const oldFov = camera instanceof THREE.PerspectiveCamera ? camera.fov : 60; // Lấy fov từ perspective hoặc mặc định 60
+  const oldFov = camera instanceof THREE.PerspectiveCamera ? camera.fov : 60;
   const oldZoom = camera instanceof THREE.OrthographicCamera ? camera.zoom : 1;
+
+  // Tính bounding box của scene
+  const box = new THREE.Box3().setFromObject(scene);
+  const center = new THREE.Vector3();
+  box.getCenter(center);
+  const size = box.getSize(new THREE.Vector3());
+  const maxDim = Math.max(size.x, size.y, size.z);
+
+  // Tính near và far động với giới hạn an toàn
+  const minNear = 0.01;
+  let newNear = Math.max(minNear, oldDistance * 0.05); // Giảm tỷ lệ để near không quá nhỏ
+  let newFar = Math.max(maxDim * 50, oldDistance * 5 + maxDim * 5); // Giảm tỷ lệ far để tránh quá lớn
+
+  // Đảm bảo near < far và không vượt quá giới hạn thực tế
+  if (newNear >= newFar) {
+    newNear = minNear;
+    newFar = Math.max(newFar, minNear * 2);
+  }
 
   let newCamera: THREE.PerspectiveCamera | THREE.OrthographicCamera;
 
   if (type === "orthographic") {
-    // Tính frustumSize dựa trên fov và khoảng cách
     const frustumHeight = 2 * oldDistance * Math.tan(THREE.MathUtils.degToRad(oldFov / 2));
     const frustumWidth = frustumHeight * aspect;
 
@@ -50,30 +66,28 @@ export function setCameraType(
       frustumWidth / 2,
       frustumHeight / 2,
       -frustumHeight / 2,
-      oldNear,
-      oldFar
+      newNear,
+      newFar
     );
-    newCamera.zoom = oldZoom; // Khôi phục zoom
+    newCamera.zoom = oldZoom;
     newCamera.updateProjectionMatrix();
   } else {
-    newCamera = new THREE.PerspectiveCamera(oldFov, aspect, oldNear, oldFar);
+    newCamera = new THREE.PerspectiveCamera(oldFov, aspect, newNear, newFar);
   }
 
   // Đặt camera về giữa màn hình và lùi xa hơn
-  const distanceMultiplier = 2; // Tăng khoảng cách 1.5 lần (có thể điều chỉnh)
-  const direction = new THREE.Vector3(0, 0, -1).applyQuaternion(oldQuaternion).normalize(); // Hướng dựa trên quaternion
-  newCamera.position.copy(oldTarget).add(direction.multiplyScalar(oldDistance * distanceMultiplier)); // Lùi xa hơn
-  newCamera.lookAt(oldTarget); // Hướng camera về target
-//   newCamera.up.copy(oldUp); // Giữ hướng up
+  const distanceMultiplier = 5;
+  const direction = new THREE.Vector3(0, 0, -1).applyQuaternion(oldQuaternion).normalize();
+  newCamera.position.copy(oldTarget).add(direction.multiplyScalar(oldDistance * distanceMultiplier));
+  newCamera.lookAt(oldTarget);
+  newCamera.up.copy(oldUp);
   newCamera.updateMatrixWorld(true);
 
   // Cập nhật controls
   if (controls) {
-    // Khóa target và khôi phục chính xác
     controls.target.copy(oldTarget);
-    if (controls.saveState) controls.saveState(); // Lưu trạng thái nếu hỗ trợ
+    if (controls.saveState) controls.saveState();
 
-    // Điều chỉnh vị trí camera để giữ khoảng cách mong muốn
     const currentDistance = newCamera.position.distanceTo(controls.target);
     const targetDistance = oldDistance * distanceMultiplier;
     if (Math.abs(currentDistance - targetDistance) > 0.001) {
@@ -84,23 +98,20 @@ export function setCameraType(
       newCamera.updateMatrixWorld(true);
     }
 
-    // Gán camera mới vào controls
     controls.object = newCamera;
 
-    // Cấu hình controls dựa trên loại camera
     if (newCamera instanceof THREE.OrthographicCamera) {
-      controls.minDistance = 0;
+      controls.minDistance = newNear;
       controls.maxDistance = Infinity;
-      controls.minZoom = 0.1;
-      controls.maxZoom = 100;
+      controls.minZoom = 0.001;
+      controls.maxZoom = 10000;
     } else {
-      controls.minDistance = 0.1;
-      controls.maxDistance = oldFar;
+      controls.minDistance = newNear;
+      controls.maxDistance = newFar;
       controls.minZoom = 0;
       controls.maxZoom = 0;
     }
 
-    // Cập nhật controls
     controls.update();
   }
 
@@ -109,12 +120,5 @@ export function setCameraType(
   controller.camera = newCamera;
 
   // Trigger re-render
-  invalidate();
-
-  // Debug log
-//   console.log("Camera Type:", type);
-//   console.log("Position:", newCamera.position);
-//   console.log("Target:", controls?.target);
-//   console.log("Distance:", newCamera.position.distanceTo(controls?.target || new THREE.Vector3()));
-//   console.log("FOV/Zoom:", newCamera instanceof THREE.PerspectiveCamera ? `FOV: ${newCamera.fov}` : `Zoom: ${newCamera.zoom}`);
+  // invalidate();
 }

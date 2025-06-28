@@ -149,6 +149,7 @@ const CameraActionsController = forwardRef<CameraActions, {}>((props, ref) => {
     gl,
     set,
     controls,
+    scene
   }));
 
   return null;
