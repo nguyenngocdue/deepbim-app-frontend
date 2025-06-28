@@ -88,16 +88,16 @@ import {
 import { useTranslation } from "react-i18next";
 
 // Helper function to compare two arrays of SelectedElementInfo (order-independent)
-function areElementArraysEqual(arr1: any[], arr2: any[]): boolean {
-  if (!arr1 || !arr2) return arr1 === arr2; // Handle null/undefined cases
-  if (arr1.length !== arr2.length) return false;
-  const key = (el: any) => `${el.modelID}-${el.expressID}`;
-  const set1 = new Set(arr1.map(key));
-  for (const el of arr2) {
-    if (!set1.has(key(el))) return false;
-  }
-  return true;
-}
+// function areElementArraysEqual(arr1: any[], arr2: any[]): boolean {
+//   if (!arr1 || !arr2) return arr1 === arr2; // Handle null/undefined cases
+//   if (arr1.length !== arr2.length) return false;
+//   const key = (el: any) => `${el.modelID}-${el.expressID}`;
+//   const set1 = new Set(arr1.map(key));
+//   for (const el of arr2) {
+//     if (!set1.has(key(el))) return false;
+//   }
+//   return true;
+// }
 
 // Define sortable keys
 type SortableKey = "code" | "name" | "elementsCount";
@@ -162,11 +162,11 @@ export function ClassificationPanel() {
   >(null);
 
   // State for eBKP-H
-  const [defaultEBKPH, setDefaultEBKPH] = useState<ClassificationItem[]>([]);
-  const [isLoadingEBKPH, setIsLoadingEBKPH] = useState(true);
-  const [errorLoadingEBKPH, setErrorLoadingEBKPH] = useState<string | null>(
-    null
-  );
+  // const [defaultEBKPH, setDefaultEBKPH] = useState<ClassificationItem[]>([]);
+  // const [isLoadingEBKPH, setIsLoadingEBKPH] = useState(true);
+  // const [errorLoadingEBKPH, setErrorLoadingEBKPH] = useState<string | null>(
+  //   null
+  // );
   const [hasAutoLoaded, setHasAutoLoaded] = useState(false);
 
   const [sortConfig, setSortConfig] = useState<{
@@ -345,29 +345,29 @@ export function ClassificationPanel() {
       }
     };
 
-    const fetcheBKPHData = async () => {
-      setIsLoadingEBKPH(true);
-      setErrorLoadingEBKPH(null);
-      try {
-        const response = await fetch("/data/ebkph.json");
-        if (!response.ok)
-          throw new Error(
-            `Failed to fetch eBKP-H data: ${response.statusText}`
-          );
-        const data: ClassificationItem[] = await response.json();
-        setDefaultEBKPH(data);
-      } catch (error) {
-        console.error("Error loading eBKP-H data:", error);
-        setErrorLoadingEBKPH(
-          error instanceof Error ? error.message : "Unknown error"
-        );
-      } finally {
-        setIsLoadingEBKPH(false);
-      }
-    };
+    // const fetcheBKPHData = async () => {
+    //   setIsLoadingEBKPH(true);
+    //   setErrorLoadingEBKPH(null);
+    //   try {
+    //     const response = await fetch("/data/ebkph.json");
+    //     if (!response.ok)
+    //       throw new Error(
+    //         `Failed to fetch eBKP-H data: ${response.statusText}`
+    //       );
+    //     const data: ClassificationItem[] = await response.json();
+    //     setDefaultEBKPH(data);
+    //   } catch (error) {
+    //     console.error("Error loading eBKP-H data:", error);
+    //     setErrorLoadingEBKPH(
+    //       error instanceof Error ? error.message : "Unknown error"
+    //     );
+    //   } finally {
+    //     setIsLoadingEBKPH(false);
+    //   }
+    // };
 
     fetchUniclassData();
-    fetcheBKPHData();
+    // fetcheBKPHData();
   }, []);
 
   const sortedClassificationEntries = useMemo(() => {
@@ -454,17 +454,17 @@ export function ClassificationPanel() {
     console.log(`Added ${addedCount} Uniclass Pr classifications.`);
   }, [defaultUniclassPr, classifications, addClassification]);
 
-  const handleAddAlleBKPH = useCallback(() => {
-    if (!defaultEBKPH || defaultEBKPH.length === 0) return;
-    let addedCount = 0;
-    defaultEBKPH.forEach((defClass) => {
-      if (!classifications[defClass.code]) {
-        addClassification(defClass);
-        addedCount++;
-      }
-    });
-    console.log(`Added ${addedCount} eBKP-H classifications.`);
-  }, [defaultEBKPH, classifications, addClassification]);
+  // const handleAddAlleBKPH = useCallback(() => {
+  //   if (!defaultEBKPH || defaultEBKPH.length === 0) return;
+  //   let addedCount = 0;
+  //   defaultEBKPH.forEach((defClass) => {
+  //     if (!classifications[defClass.code]) {
+  //       addClassification(defClass);
+  //       addedCount++;
+  //     }
+  //   });
+  //   console.log(`Added ${addedCount} eBKP-H classifications.`);
+  // }, [defaultEBKPH, classifications, addClassification]);
 
   const areAllUniclassAdded = useCallback(() => {
     if (
@@ -483,11 +483,11 @@ export function ClassificationPanel() {
     classifications,
   ]);
 
-  const areAlleBKPHAdded = useCallback(() => {
-    if (isLoadingEBKPH || errorLoadingEBKPH || defaultEBKPH.length === 0)
-      return false;
-    return defaultEBKPH.every((defClass) => !!classifications[defClass.code]);
-  }, [isLoadingEBKPH, errorLoadingEBKPH, defaultEBKPH, classifications]);
+  // const areAlleBKPHAdded = useCallback(() => {
+  //   if (isLoadingEBKPH || errorLoadingEBKPH || defaultEBKPH.length === 0)
+  //     return false;
+  //   return defaultEBKPH.every((defClass) => !!classifications[defClass.code]);
+  // }, [isLoadingEBKPH, errorLoadingEBKPH, defaultEBKPH, classifications]);
 
   // Auto load default classifications based on stored settings
   useEffect(() => {
@@ -504,33 +504,35 @@ export function ClassificationPanel() {
         defaultUniclassPr.length > 0 &&
         !areAllUniclassAdded()
       ) {
-        handleAddAllUniclassPr();
-        setHasAutoLoaded(true);
-      } else if (
-        defaultClassification === "ebkph" &&
-        !isLoadingEBKPH &&
-        !errorLoadingEBKPH &&
-        defaultEBKPH.length > 0 &&
-        !areAlleBKPHAdded()
-      ) {
-        handleAddAlleBKPH();
+        // handleAddAllUniclassPr();
         setHasAutoLoaded(true);
       }
+      //  else if (
+      //   defaultClassification === "ebkph" &&
+      //   !isLoadingEBKPH &&
+      //   !errorLoadingEBKPH &&
+      //   defaultEBKPH.length > 0 &&
+      //   !areAlleBKPHAdded()
+      // ) 
+      // {
+      //   // handleAddAlleBKPH();
+      //   setHasAutoLoaded(true);
+      // }
     } catch (err) {
       console.error("Failed to auto load classifications", err);
     }
   }, [
     isLoadingUniclass,
-    isLoadingEBKPH,
+    // isLoadingEBKPH,
     defaultUniclassPr,
-    defaultEBKPH,
+    // defaultEBKPH,
     errorLoadingUniclass,
-    errorLoadingEBKPH,
+    // errorLoadingEBKPH,
     hasAutoLoaded,
     areAllUniclassAdded,
-    areAlleBKPHAdded,
+    // areAlleBKPHAdded,
     handleAddAllUniclassPr,
-    handleAddAlleBKPH,
+    // handleAddAlleBKPH,
   ]);
 
   const handleAddClassification = () => {
@@ -955,7 +957,7 @@ export function ClassificationPanel() {
                       {t("buttons.noUniclassFound")}
                     </DropdownMenuItem>
                   )}
-                {isLoadingEBKPH && (
+                {/* {isLoadingEBKPH && (
                   <DropdownMenuItem disabled>
                     {t("buttons.loadingEbkph")}
                   </DropdownMenuItem>
@@ -984,7 +986,7 @@ export function ClassificationPanel() {
                     <DropdownMenuItem disabled>
                       {t("buttons.noEbkphFound")}
                     </DropdownMenuItem>
-                  )}
+                  )} */}
                 <DropdownMenuSeparator />
                 <DropdownMenuLabel className="text-xs font-semibold text-muted-foreground px-2 py-1.5">
                   {t("sections.manageData")}
