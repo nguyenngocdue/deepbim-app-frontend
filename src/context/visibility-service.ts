@@ -128,6 +128,7 @@ export const useVisibilityService = (
   );
 
   const showElements = useCallback((elements: SelectedElementInfo[]) => {
+    console.log("elements", elements);
     setUserHiddenElements((prev) =>
       prev.filter(
         (el) =>

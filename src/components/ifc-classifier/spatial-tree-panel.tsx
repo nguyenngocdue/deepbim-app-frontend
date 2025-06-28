@@ -855,7 +855,7 @@ const handleChangeColorBuildingStorey = (node: SpatialNode, modelId: number) => 
               >
                 <span className="animate-pulse block w-2 h-2 bg-foreground/40 rounded-full"></span>
                 <span className="text-base font-medium">
-                  {t('modelLoadingStructure', { name: modelEntry.name })}
+                  {t('modelLoadingStructure', { name: modelEntry.Name })}
                 </span>
               </div>
             );

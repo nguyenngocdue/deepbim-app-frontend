@@ -37,7 +37,7 @@ export async function buildSpatialTree(modelID: number, ifcApi: any): Promise<Sp
   const projectIdsVec = ifcApi.GetLineIDsWithType(modelID, ifcProjectType, true);
   const projectLine = getLineCached(modelID, ifcApi, projectIdsVec.get(0));
   const typeName = ifcApi.GetNameFromTypeCode(projectLine.type);
-
+  
   const root: SpatialNode = {
     GlobalId: projectLine.GlobalId.value,
     Name: projectLine.Name?.value || 'Unnamed Project',
@@ -46,6 +46,7 @@ export async function buildSpatialTree(modelID: number, ifcApi: any): Promise<Sp
     level: 0,
     children: getSpatialChildren(modelID, ifcApi, projectLine, 1)
   };
+  console.log("projectLine", root)
 
   return root;
 }
@@ -63,7 +64,7 @@ function getSpatialChildren(modelID: number, ifcApi: any, parentLine: any, level
       if (!childLine) continue;
 
       const typeName = ifcApi.GetNameFromTypeCode(childLine.type) || "UNKNOWN";
-
+      
       const childNode: SpatialNode = {
         expressID: childID,
         Name: childLine.Name?.value || `Unnamed ${typeName}`,
@@ -72,6 +73,7 @@ function getSpatialChildren(modelID: number, ifcApi: any, parentLine: any, level
         level,
         children: getSpatialChildren(modelID, ifcApi, childLine, level + 1)
       };
+      childNode.Name = `${childNode.Name} (${childNode.children.length})`
       children.push(childNode);
     }
   }
