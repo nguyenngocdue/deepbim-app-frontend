@@ -88,19 +88,31 @@ export function useModelLoading(
         setModelIDForLoadedModel(modelData.id, newIfcModelID);
         setInternalApiIdForEffects(newIfcModelID);
 
+
+        // Lấy ma trận phối hợp (coordination matrix) của mô hình vừa mở
         const modelCoordMatrix = ifcApi.GetCoordinationMatrix(newIfcModelID);
+
         let relativeMatrix = new THREE.Matrix4();
+
         if (!baseCoordinationMatrix) {
+          // Đây là mô hình đầu tiên: dùng làm gốc tọa độ chung cho các mô hình khác
           setBaseCoordinationMatrix(modelCoordMatrix);
-          relativeMatrix.identity();
+          relativeMatrix.identity(); // Không cần chuyển đổi
         } else {
+          // Mô hình khác: tính chuyển đổi tương đối về hệ gốc của mô hình đầu
           const baseMat = new THREE.Matrix4().fromArray(baseCoordinationMatrix);
           const currentMat = new THREE.Matrix4().fromArray(modelCoordMatrix);
-          const baseInv = baseMat.clone().invert();
-          relativeMatrix.multiplyMatrices(baseInv, currentMat);
+          const baseInv = baseMat.clone().invert(); // Lấy nghịch đảo để đưa về gốc
+          relativeMatrix.multiplyMatrices(baseInv, currentMat); // Áp chuyển đổi tương đối
         }
+
+        // Lưu lại để nếu cần transform group/matrix thủ công sau này
         modelTransformRef.current.copy(relativeMatrix);
+
+        // Thiết lập ma trận transform toàn cục cho model trước khi sinh geometry
         ifcApi.SetGeometryTransformation(newIfcModelID, Array.from(relativeMatrix.elements));
+
+
         createMeshes();
         console.log(`IFCModel (${modelData.id}): Extracting data for modelID ${newIfcModelID}...`);
         // const _tree = await fetchFullSpatialStructure(ifcApi, newIfcModelID);
