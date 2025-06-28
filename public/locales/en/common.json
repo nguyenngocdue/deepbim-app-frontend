@@ -136,6 +136,7 @@
   },
   "modelViewer": {
     "fitToView": "Fit to View (E)",
+    "gridToView": "Grid to View (G)",
     "wireframe": "Wireframe",
     "resetCamera": "Reset Camera",
     "showAll": "Show All",

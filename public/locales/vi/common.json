@@ -136,6 +136,7 @@
   },
   "modelViewer": {
     "fitToView": "Phù hợp với chế độ xem (E)",
+    "gridToView": "Lưới để xem (G)",
     "wireframe": "Dàn khung",
     "resetCamera": "Đặt lại camera",
     "showAll": "Hiển thị hết",

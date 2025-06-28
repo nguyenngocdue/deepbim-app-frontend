@@ -2,8 +2,10 @@ import { Button } from "@/components/ui/button";
 import { useIFCContext, SelectedElementInfo } from "@/context/ifc/ifc-context";
 import { useTranslation } from "react-i18next";
 import { EyeOff, Layers as LayersIcon, Maximize, Focus, Undo2 } from "lucide-react";
+import { MdOutlineGridOn } from "react-icons/md";
 
 interface ViewToolbarProps {
+  onShowGrids: ()=>void;
   onZoomExtents: () => void;
   onZoomSelected: () => void;
   isElementSelected: boolean;
@@ -13,6 +15,7 @@ interface ViewToolbarProps {
 }
 
 export default function ViewToolbar({
+  onShowGrids,
   onZoomExtents,
   onZoomSelected,
   isElementSelected,
@@ -42,6 +45,15 @@ export default function ViewToolbar({
     <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-20 pointer-events-auto">
       <div className="flex items-center gap-1 p-2 bg-background/95 backdrop-blur-md border border-border rounded-xl shadow-2xl border-color-standard">
         <div className="flex items-center gap-1 px-1">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={onShowGrids}
+            title={t('modelViewer.gridToView')}
+            className="hover:bg-accent/80 transition-colors"
+          >
+            <MdOutlineGridOn  className="w-4 h-4" />
+          </Button>
           <Button
             variant="ghost"
             size="icon"

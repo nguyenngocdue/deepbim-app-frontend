@@ -94,18 +94,7 @@ export function useModelLoading(
         }
         modelTransformRef.current.copy(relativeMatrix);
         ifcApi.SetGeometryTransformation(newIfcModelID, Array.from(relativeMatrix.elements));
-
         createMeshes();
-        // Wait for meshes to be created before adding grid
-        if (meshesRef.current) {
-          addGrid(scene, meshesRef.current); // Pass meshesRef.current to size grid dynamically
-          setOtherLighting(scene);
-        } else {
-          console.warn(`IFCModel (${modelData.id}): meshesRef.current is null, using default grid size`);
-          addGrid(scene);
-          setOtherLighting(scene);
-        }
-
         console.log(`IFCModel (${modelData.id}): Extracting data for modelID ${newIfcModelID}...`);
         // const _tree = await fetchFullSpatialStructure(ifcApi, newIfcModelID);
         const tree = await buildSpatialTree(newIfcModelID, ifcApi);

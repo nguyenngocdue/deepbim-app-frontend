@@ -31,6 +31,7 @@ import { IFCModel } from "@/features/bim-viewer3/ifc/components/IFCModelCore";
 import { buildSpatialTree, gatherAllElements2 } from "@/utils/web-ifc/BuildSpatialTree";
 import { getLineProperties } from "@/utils/web-ifc/ParsingDataIfc";
 import ElementInfoPopup from "./ElementInfoPopup";
+import { addGrid, setOtherLighting } from "./FitCameraToObject";
 
 const SKIP_IFC_INITIALIZATION_FOR_TEST = false;
 
@@ -117,6 +118,24 @@ export default function ViewerContent() {
   const handleZoomExtents = useCallback(() => {
     cameraActionsRef.current?.zoomToExtents();
   }, []);
+
+  // add grid to viewer
+  const gridRef = useRef<THREE.GridHelper | null>(null);
+  const handleToggleGrid = useCallback(() => {
+    if (!scene) return;
+    if (gridRef.current) {
+      if (scene.current) {
+        scene.current.remove(gridRef.current);
+      }
+      gridRef.current = null;
+    } else {
+      if (scene.current) {
+        const grid = addGrid(scene.current);
+        gridRef.current = grid;
+      }
+    }
+  }, [scene]);
+
 
   // Hàm zoom đến phần tử được chọn
   const handleZoomSelected = useCallback(() => {
@@ -753,6 +772,10 @@ export default function ViewerContent() {
           event.preventDefault();
           handleZoomExtents();
           break;
+        case "KeyG":
+          event.preventDefault();
+          handleToggleGrid();
+          break;
         case "KeyF":
           if (selectedElements.length) {
             event.preventDefault();
@@ -770,6 +793,7 @@ export default function ViewerContent() {
             }
           }
           break;
+        
         default:
           break;
       }
@@ -1145,6 +1169,7 @@ export default function ViewerContent() {
               )}
               {ifcEngineReady && !webGLContextLost && (
                 <ViewToolbar
+                  onShowGrids={handleToggleGrid }
                   onZoomExtents={handleZoomExtents}
                   onZoomSelected={handleZoomSelected}
                   isElementSelected={selectedElements.length > 0}

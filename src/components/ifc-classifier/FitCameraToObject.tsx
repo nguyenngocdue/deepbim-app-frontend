@@ -32,29 +32,51 @@ export function centerObjectAtOrigin(object) {
   object.position.sub(center); // dịch ngược lại về (0,0,0)
 }
 
+/**
+ * Adds a grid helper to the scene, optionally sized based on an object or a numeric value.
+ * Allows customizing divisions and line colors.
+ *
+ * @param scene - The THREE.Scene to which the grid will be added.
+ * @param objectOrSize - Either a 3D object to fit the grid to, or a fixed numeric size.
+ * @param divisions - Number of grid divisions (default is 100).
+ * @param colorMajor - Color for the main (center) grid lines.
+ * @param colorMinor - Color for the minor grid lines.
+ * @returns The created THREE.GridHelper instance.
+ */
 export function addGrid(
   scene: THREE.Scene,
   objectOrSize: THREE.Object3D | number = 1000,
-  divisions: number = 100
-): void {
+  divisions: number = 100,
+  colorMajor: THREE.ColorRepresentation = 0x888888,
+  colorMinor: THREE.ColorRepresentation = 0x444444
+): THREE.GridHelper {
   let gridSize = 1000;
+
   if (typeof objectOrSize === "number") {
     gridSize = objectOrSize;
   } else if (objectOrSize) {
     const box = new THREE.Box3().setFromObject(objectOrSize);
     const size = box.getSize(new THREE.Vector3());
-    const maxDim = Math.max(size.x, size.y, size.z, 100); // Ensure minimum size
-    gridSize = Math.ceil(maxDim * 4); // Quadruple the max dimension for wider coverage
-    divisions = Math.ceil(gridSize / 10); // Adjust divisions for readability
+    const maxDim = Math.max(size.x, size.y, size.z, 100); // Ensure a minimum size
+    gridSize = Math.ceil(maxDim * 4); // Extend grid to cover a larger area
+    divisions = Math.ceil(gridSize / 10); // Adjust divisions for visual clarity
   }
-  const grid = new THREE.GridHelper(gridSize, divisions, 0x888888, 0x444444);
+
+  // ✅ Create grid with custom colors
+  const grid = new THREE.GridHelper(gridSize, divisions, colorMajor, colorMinor);
   grid.name = "SceneGrid";
+
+  // ✅ Set grid transparency
   if (grid.material instanceof THREE.Material) {
-    grid.material.opacity = 0.1;
+    grid.material.opacity = 0.5;
     grid.material.transparent = true;
   }
+
   scene.add(grid);
+  return grid;
 }
+
+
 
 
 /**
