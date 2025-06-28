@@ -137,6 +137,7 @@
   "modelViewer": {
     "fitToView": "Fit to View (E)",
     "gridToView": "Grid to View (G)",
+    "cameraType": "Camera Type (C)",
     "wireframe": "Wireframe",
     "resetCamera": "Reset Camera",
     "showAll": "Show All",

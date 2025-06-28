@@ -3,8 +3,12 @@ import { useIFCContext, SelectedElementInfo } from "@/context/ifc/ifc-context";
 import { useTranslation } from "react-i18next";
 import { EyeOff, Layers as LayersIcon, Maximize, Focus, Undo2 } from "lucide-react";
 import { MdOutlineGridOn } from "react-icons/md";
+import { GiLookAt } from "react-icons/gi";
+import { SiQuicklook } from "react-icons/si";
+import { TbEyeShare } from "react-icons/tb";
 
 interface ViewToolbarProps {
+  onSelectedCamera: () =>void;
   onShowGrids: ()=>void;
   onZoomExtents: () => void;
   onZoomSelected: () => void;
@@ -12,9 +16,11 @@ interface ViewToolbarProps {
   onUnhideAll: () => void;
   onUnhideLast: () => void;
   onSelectAllVisible: () => void;
+  cameraType: string;
 }
 
 export default function ViewToolbar({
+  onSelectedCamera,
   onShowGrids,
   onZoomExtents,
   onZoomSelected,
@@ -22,6 +28,7 @@ export default function ViewToolbar({
   onUnhideAll,
   onUnhideLast,
   onSelectAllVisible,
+  cameraType,
 }: ViewToolbarProps) {
   const {
     selectedElements,
@@ -45,6 +52,23 @@ export default function ViewToolbar({
     <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-20 pointer-events-auto">
       <div className="flex items-center gap-1 p-2 bg-background/95 backdrop-blur-md border border-border rounded-xl shadow-2xl border-color-standard">
         <div className="flex items-center gap-1 px-1">
+         <Button
+              variant="ghost"
+              size="icon"
+              onClick={onSelectedCamera}
+              title={
+                cameraType === "perspective"
+                  ? t('modelViewer.switchToOrthographic')
+                  : t('modelViewer.switchToPerspective')
+              }
+              className="hover:bg-accent/80 transition-colors"
+            >
+              {cameraType === "perspective" ? (
+                <TbEyeShare className="w-4 h-4" /> // icon for perspective
+              ) : (
+                <GiLookAt className="w-4 h-4" /> // icon for orthographic
+              )}
+            </Button>
           <Button
             variant="ghost"
             size="icon"

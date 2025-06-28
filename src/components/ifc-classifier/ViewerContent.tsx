@@ -32,6 +32,7 @@ import { buildSpatialTree, gatherAllElements2 } from "@/utils/web-ifc/BuildSpati
 import { getLineProperties } from "@/utils/web-ifc/ParsingDataIfc";
 import ElementInfoPopup from "./ElementInfoPopup";
 import { addGrid, setOtherLighting } from "./FitCameraToObject";
+import { setCameraType } from "@/utils/web-ifc/CameraType";
 
 const SKIP_IFC_INITIALIZATION_FOR_TEST = false;
 
@@ -135,6 +136,15 @@ export default function ViewerContent() {
       }
     }
   }, [scene]);
+
+  //handle camera type
+  const [cameraType, setCameraTypeState] = useState<"perspective" | "orthographic">("perspective");
+  const handleSelectedCamera = useCallback(() => {
+    if (!cameraActionsRef.current) return;
+    const next = cameraType === "perspective" ? "orthographic" : "perspective";
+    setCameraType(next, cameraActionsRef.current);
+    setCameraTypeState(next);
+  }, [cameraType]);
 
 
   // Hàm zoom đến phần tử được chọn
@@ -966,7 +976,7 @@ export default function ViewerContent() {
                   outlineLayer={OUTLINE_SELECTION_LAYER}
                 /> /* Hiển thị các mô hình IFC */
               ))}
-              <CameraActionsController ref={cameraActionsRef} /> {/* Điều khiển camera */}
+             <CameraActionsController ref={cameraActionsRef} />  {/* Điều khiển camera */}
               <GizmoHelper
                 alignment="bottom-right" 
                 margin={[positionCube.x, positionCube.y]} 
@@ -1169,6 +1179,8 @@ export default function ViewerContent() {
               )}
               {ifcEngineReady && !webGLContextLost && (
                 <ViewToolbar
+                  onSelectedCamera={handleSelectedCamera}
+                  cameraType={cameraType} 
                   onShowGrids={handleToggleGrid }
                   onZoomExtents={handleZoomExtents}
                   onZoomSelected={handleZoomSelected}

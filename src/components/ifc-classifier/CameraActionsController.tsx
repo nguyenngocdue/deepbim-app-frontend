@@ -3,14 +3,19 @@ import { useThree, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { SelectedElementInfo } from "./viewer";
 
+import type { Camera } from "@react-three/fiber";
+
 export interface CameraActions {
   zoomToExtents: () => void;
   zoomToSelected: (selection: SelectedElementInfo | null) => void;
-  camera: THREE.PerspectiveCamera | null;
+  camera: THREE.PerspectiveCamera | THREE.OrthographicCamera | null;
+  gl: THREE.WebGLRenderer;
+  set: (state: Partial<{ camera: Camera }>) => void;
+  controls: any;
 }
 
 const CameraActionsController = forwardRef<CameraActions, {}>((props, ref) => {
-  const { scene, camera, controls, clock } = useThree();
+  const { scene, camera, controls, clock, gl, set } = useThree();
   const animationRef = useRef<{
     active: boolean;
     startTime: number;
@@ -56,6 +61,7 @@ const CameraActionsController = forwardRef<CameraActions, {}>((props, ref) => {
       (controls as any).update();
     }
   });
+
 
   useImperativeHandle(ref, () => ({
     zoomToExtents: () => {
@@ -139,7 +145,10 @@ const CameraActionsController = forwardRef<CameraActions, {}>((props, ref) => {
       startAnimation(newCamPos, center.clone());
       console.log("CameraActionsController: Zoom to selected (fit sphere) animation started.");
     },
-     camera: camera instanceof THREE.PerspectiveCamera ? camera : null,
+    camera ,
+    gl,
+    set,
+    controls,
   }));
 
   return null;

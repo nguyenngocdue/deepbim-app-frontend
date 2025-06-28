@@ -1,4 +1,7 @@
 import * as THREE from 'three';
+import { useImperativeHandle, forwardRef } from "react";
+import { useThree } from '@react-three/fiber';
+import { SelectedElementInfo } from '@/context/ifc/types';
 
 /**
  * Adjusts camera and controls to frame a given object in the scene.
@@ -76,9 +79,6 @@ export function addGrid(
   return grid;
 }
 
-
-
-
 /**
  * Thêm ánh sáng mặc định vào scene giúp mô hình sáng và có chiều sâu.
  * @param scene - THREE.Scene cần thêm ánh sáng.
@@ -101,3 +101,12 @@ export function setOtherLighting(scene: THREE.Scene) {
   fillLight.position.set(-10, 10, -10);
   scene.add(fillLight);
 }
+
+
+
+export interface CameraControllerRef {
+  camera: THREE.Camera;
+  gl: THREE.WebGLRenderer;
+  set: (state: Partial<{ camera: THREE.Camera }>) => void;
+}
+
