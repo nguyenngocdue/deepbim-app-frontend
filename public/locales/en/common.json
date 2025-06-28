@@ -137,6 +137,8 @@
   "modelViewer": {
     "fitToView": "Fit to View (E)",
     "gridToView": "Grid to View (G)",
+    "switchToOrthographic": "Switch to Orthographic View (O)",
+    "switchToPerspective": "Switch to Perspective View (P)",
     "cameraType": "Camera Type (C)",
     "wireframe": "Wireframe",
     "resetCamera": "Reset Camera",

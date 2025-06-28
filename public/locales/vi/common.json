@@ -137,6 +137,8 @@
   "modelViewer": {
     "fitToView": "Phù hợp với chế độ xem (E)",
     "gridToView": "Lưới để xem (G)",
+    "switchToOrthographic": "Chế độ xem phối cảnh Orthographic (O)",
+    "switchToPerspective": "Chế độ xem phối cảnh Perspective (P)",
     "cameraType": "Loại camera (C)",
     "wireframe": "Dàn khung",
     "resetCamera": "Đặt lại camera",
