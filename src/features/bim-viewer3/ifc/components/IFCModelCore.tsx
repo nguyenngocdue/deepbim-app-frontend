@@ -96,22 +96,24 @@ export function IFCModel({ modelData }: IFCModelProps) {
     [ifcApi]
   );
 
-const createMeshes = useCallback(() => {
+  const createMeshes = useCallback(() => {
     if (!ifcApi || ownModelID.current === null) return;
+
     if (meshesRef.current) {
       scene.remove(meshesRef.current);
       meshesRef.current.traverse((child) => {
         if (child instanceof THREE.Mesh) {
           child.geometry.dispose();
-          if (Array.isArray(child.material))
-            child.material.forEach((m) => m.dispose());
+          if (Array.isArray(child.material)) child.material.forEach((m) => m.dispose());
           else child.material.dispose();
         }
       });
     }
+
     const group = new THREE.Group();
     group.name = `IFCModelGroup_${modelData.id}_${ownModelID.current}`;
     meshesRef.current = group;
+
     try {
       const flatMeshes = ifcApi.LoadAllGeometry(ownModelID.current!);
       for (let i = 0; i < flatMeshes.size(); i++) {
@@ -120,10 +122,7 @@ const createMeshes = useCallback(() => {
         const placedGeometries = flatMesh.geometries;
         for (let j = 0; j < placedGeometries.size(); j++) {
           const placedGeometry = placedGeometries.get(j);
-          const ifcGeometryData = ifcApi.GetGeometry(
-            ownModelID.current!,
-            placedGeometry.geometryExpressID
-          );
+          const ifcGeometryData = ifcApi.GetGeometry(ownModelID.current!, placedGeometry.geometryExpressID);
           const threeJsGeometry = createThreeJSGeometry(ifcGeometryData);
           const color = placedGeometry.color;
           const material = new THREE.MeshStandardMaterial({
@@ -131,6 +130,8 @@ const createMeshes = useCallback(() => {
             side: THREE.DoubleSide,
             transparent: color.w < 1,
             opacity: color.w,
+            metalness: 0.1,
+            roughness: 0.1
           });
           const mesh = new THREE.Mesh(threeJsGeometry, material);
           const matrix = placedGeometry.flatTransformation;
@@ -144,15 +145,22 @@ const createMeshes = useCallback(() => {
           group.add(mesh);
         }
       }
-      group.applyMatrix4(modelTransformRef.current);
-      scene.add(group); // Add this model's group to the main scene
+
+      const box = new THREE.Box3().setFromObject(group);
+      const center = box.getCenter(new THREE.Vector3());
+      const size = box.getSize(new THREE.Vector3());
+      group.position.sub(center);
+
+      if (camera instanceof THREE.PerspectiveCamera) {
+        camera.far = size.length() * 10;
+        camera.updateProjectionMatrix();
+      }
+
+      scene.add(group);
     } catch (error) {
-      console.error(
-        `IFCModel (${modelData.id}): Error creating meshes:`,
-        error
-      );
+      console.error(`IFCModel (${modelData.id}): Error creating meshes:`, error);
     }
-  }, [ifcApi, scene, modelData.id, createThreeJSGeometry]);
+  }, [ifcApi, scene, modelData.id, createThreeJSGeometry, camera]);
 
   const { internalApiIdForEffects, modelMeshesProcessedForInitialView, setModelMeshesProcessedForInitialView } = useModelLoading(
     modelData,
