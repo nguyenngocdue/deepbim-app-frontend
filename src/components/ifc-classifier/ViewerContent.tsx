@@ -997,7 +997,7 @@ export default function ViewerContent() {
               <PanelGroup direction="vertical" className="flex-grow">
                 <Panel id="spatial-tree" defaultSize={70} minSize={30}>
                   <div className="h-full overflow-y-auto">
-                    <SpatialTreePanel /> {/* Hiển thị cây không gian */}
+                    <SpatialTreePanel  scene={scene}/> {/* Hiển thị cây không gian */}
                   </div>
                 </Panel>
                 <ResizeHandleVertical /> {/* Thanh kéo dọc */}

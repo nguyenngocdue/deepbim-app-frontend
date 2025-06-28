@@ -11,6 +11,7 @@ import React, {
   useRef,
   type ReactNode,
 } from "react";
+import * as THREE from 'three';
 import type { IfcAPI } from "web-ifc";
 import { Properties } from "web-ifc";
 import { IFCContextType, LoadedModelData, SelectedElementInfo, Rule, ClassificationItem } from "./types";
@@ -519,7 +520,7 @@ export function IFCContextProvider({ children }: { children: ReactNode }) {
       getAllElementsFromSpatialTreeNodesRecursive,
     ]
   );
-
+  const meshesRef = useRef<Record<number, THREE.Group>>({});
   return (
     <IFCContext.Provider
       value={{
@@ -593,6 +594,7 @@ export function IFCContextProvider({ children }: { children: ReactNode }) {
         setLoadingProgress,
         loadingMessage,
         setLoadingMessage,
+        meshesRef,
       }}
     >
       {children}

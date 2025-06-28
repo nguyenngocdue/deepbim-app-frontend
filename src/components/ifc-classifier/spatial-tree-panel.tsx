@@ -33,6 +33,7 @@ import {
   Layers3,
   Shapes,
 } from "lucide-react";
+import * as THREE from 'three';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
@@ -50,14 +51,13 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Badge } from "@/components/ui/badge";
 import { useTranslation } from "react-i18next";
 import { SchemaReader } from "./schema-reader";
 import { useSchemaPreview } from "@/lib/useSchemaPreview";
-import IconIfcHierarchy from "@/utils/web-ifc/IconIfcHierarchy";
-import { FaHouse } from "react-icons/fa6";
 import { BiLandscape } from "react-icons/bi";
-import { FaLandmark } from "react-icons/fa";
+import { FaLandmark, FaPencilAlt } from "react-icons/fa";
+import { IfcAPI } from "web-ifc";
+import { invalidate } from "@react-three/fiber";
 
 // Helper function to generate a unique key for a node
 const getNodeKey = (
@@ -104,6 +104,8 @@ interface TreeNodeProps {
   modelID: number | null;
   t: (key: string, options?: any) => string;
   searchQuery: string;
+  handleChangeColorBuildingStorey: (selection: SelectedElementInfo) => void;
+
 }
 
 const TreeNode: React.FC<TreeNodeProps> = ({
@@ -121,6 +123,7 @@ const TreeNode: React.FC<TreeNodeProps> = ({
   modelID,
   t,
   searchQuery,
+  handleChangeColorBuildingStorey,
 }) => {
   const {
     getNaturalIfcClassName,
@@ -209,6 +212,8 @@ const TreeNode: React.FC<TreeNodeProps> = ({
     toggleNodeExpansion(nodeKey);
   };
 
+
+
   const handleSelect = () => {
     if (isRootModelNode || modelFileInfo.modelID === null) return;
 
@@ -258,6 +263,7 @@ const TreeNode: React.FC<TreeNodeProps> = ({
       hideElements(elements);
     }
   };
+
 
   const originalIfcType = node.type;
   const naturalNameResult = getNaturalIfcClassName(originalIfcType, lang);
@@ -428,7 +434,7 @@ const TreeNode: React.FC<TreeNodeProps> = ({
             }`}
           >
             {isStoreyHidden ? (
-              <EyeOff className="w-6 h-6 text-red-300" />
+              <EyeOff className="w-6 h-6 text-red-500" />
             ) : (
               <Eye className="w-6 h-6 text-green-400" />
             )}
@@ -436,7 +442,29 @@ const TreeNode: React.FC<TreeNodeProps> = ({
 
 
         )}
+
+
+
+          {!isRootModelNode && node.type.includes("IfcBuildingStorey") && (
+        <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => handleChangeColorBuildingStorey(node, modelID)}
+            title={isStoreyHidden ? t("modelViewer.showStorey") : t("modelViewer.hideStorey")}
+            className={`w-6 h-6 transition-opacity ${
+              isStoreyHidden ? "opacity-100" : "opacity-0 group-hover:opacity-100 hover:opacity-100"
+            }`}
+          >
+          <FaPencilAlt  className="w-6 h-6 text-blue-500" />
+          </Button>
+
+
+        )}
+
       </div>
+
+
+      
 
       {isExpanded && memoizedChildren.map((child, index) => (
         <TreeNode
@@ -455,6 +483,7 @@ const TreeNode: React.FC<TreeNodeProps> = ({
           modelID={modelID}
           t={t}
           searchQuery={searchQuery}
+          handleChangeColorBuildingStorey={handleChangeColorBuildingStorey}
         />
       ))}
 
@@ -469,7 +498,7 @@ const TreeNode: React.FC<TreeNodeProps> = ({
   );
 };
 
-export function SpatialTreePanel() {
+export function SpatialTreePanel(scene) {
   const {
     loadedModels,
     selectElement,
@@ -477,6 +506,7 @@ export function SpatialTreePanel() {
     ifcApi,
     removeIFCModel,
     getNaturalIfcClassName,
+    meshesRef,
   } = useIFCContext();
   const { t, i18n } = useTranslation();
   const lang = i18n.language === "de" ? "de" : "en";
@@ -720,6 +750,39 @@ export function SpatialTreePanel() {
     selectElement(selection);
   };
 
+
+const handleChangeColorBuildingStorey = (node: SpatialNode, modelId: number) => {
+  const expressIDs = gatherDescendantIds(node);
+  const expressIDSet = new Set(expressIDs);
+  const targetColor = new THREE.Color("#f308ff");
+
+  scene.scene?.current?.traverse((obj) => {
+    if (
+      obj.isMesh &&
+      expressIDSet.has(obj.userData.expressID)
+    ) {
+      const mesh = obj as THREE.Mesh;
+      const newMaterial = mesh.material.clone();
+      newMaterial.color = targetColor;
+      newMaterial.transparent = true;
+      newMaterial.opacity = 0.6;
+      newMaterial.side = THREE.DoubleSide;
+      newMaterial.needsUpdate = true;
+
+      mesh.material = newMaterial;
+
+      // ✅ Gắn dấu vết để tránh bị override
+      mesh.userData.customColor = true;
+    }
+  });
+
+  console.log(`✅ Changed color of ${expressIDs.length} elements in model ${modelId}`);
+};
+
+
+
+
+
   const handleAttemptRemoveModel = (modelId: string, modelName: string) => {
     setModelToRemove({ id: modelId, name: modelName });
     setIsConfirmRemoveOpen(true);
@@ -833,6 +896,7 @@ export function SpatialTreePanel() {
                 modelID={modelEntry.modelID}
                 t={t}
                 searchQuery={searchQuery}
+                handleChangeColorBuildingStorey={handleChangeColorBuildingStorey}
               />
             );
           }

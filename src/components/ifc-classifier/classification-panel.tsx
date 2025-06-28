@@ -531,7 +531,7 @@ export function ClassificationPanel() {
     hasAutoLoaded,
     areAllUniclassAdded,
     // areAlleBKPHAdded,
-    handleAddAllUniclassPr,
+    // handleAddAllUniclassPr,
     // handleAddAlleBKPH,
   ]);
 

@@ -1,5 +1,6 @@
 // src/context/types.ts
 import type { IfcAPI } from "web-ifc";
+import * as THREE from "three";
 
 // Rule types
 export interface RuleCondition {
@@ -124,4 +125,5 @@ export interface IFCContextType {
   setLoadingProgress: (value: number) => void;
   loadingMessage: string;
   setLoadingMessage: (value: string) => void;
+  meshesRef: React.RefObject<THREE.Mesh> | null;
 }
