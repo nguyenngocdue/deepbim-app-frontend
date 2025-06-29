@@ -16,15 +16,15 @@
     "url": "https://minio.deepbim.net:9000/deepbim-fe/1750350445775-01.Terrain_Model.ifc"
   },
   {
-    "name": "Building Structural",
+    "name": "Building Structure",
     "url": "https://minio.deepbim.net:9000/deepbim-fe/1749268728563-Bank_Structure_ViewModel_R24.ifc"
   },
   {
-    "name": "Building Structural Steel",
+    "name": "Building Structure with Steel",
     "url": "https://minio.deepbim.net:9000/deepbim-fe/1750348995233-STEEL_R25.ifc"
   },
   {
-    "name": "Infra Bridge",
+    "name": "Infrastructure Bridge",
     "url": "https://minio.deepbim.net:9000/deepbim-fe/1749267153526-K2.ifc"
   },
   {
